@@ -1,0 +1,10 @@
+per importare le publicazioni preparare un file bib (ad es. References.bib)
+e da questa directory usare il comando:
+
+academic import --bibtex ~/References.bib
+
+------
+
+aggiornamento tema:
+
+hugo mod get -u
