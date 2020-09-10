@@ -5,7 +5,7 @@ title: Viscous flow and jump dynamics in molecular supercooled liquids. I. Trans
 subtitle: ''
 summary: ''
 authors:
-- C.D. De Michele
+- C. De Michele
 - D. Leporini
 tags: []
 categories: []
