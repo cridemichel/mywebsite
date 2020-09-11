@@ -1,5 +1,5 @@
 ---
-title: Teaching
+title:
 summary: Past and Present Teaching Duties
 date: "2020-09-10"
 
@@ -14,55 +14,68 @@ header:
   image: ""
 ---
 
+# **PRESENT COURSES** {#CMP}
 
-## ATOMISTIC SIMULATIONS (first year - master in physics)
+[COMPUTING METHODS FOR PHYSICS](https://elearning.uniroma1.it/course/view.php?id=7741 "elearning web page of the course") (first year - master in physics)
 
-LABORATORIO DI CALCOLO (primo anno - laurea triennala in fisica)
+[LABORATORIO DI CALCOLO](https://elearning.uniroma1.it/course/view.php?id=7718 "elearning webpage of the course") (primo anno - laurea triennale in fisica)
 
-SIMULAZIONI ATOMISTICHE (2017-18)
+---
 
 
-* Programma del corso *
+
+# **PAST COURSES**
+
+## ATOMISTIC SIMULATIONS (2019-20) 
+
+see [COMPUTING METHODS FOR PHYSICS](#CMP)
+
+---
+
+## SIMULAZIONI ATOMISTICHE (2018-19)
+
+**Programma del corso**
 
 Descrizione: Il corso e' dedicato allo studio di sistemi a molti corpi classici tramite tecniche di simulazione numerica. Verranno illustrati i metodi alla base delle tecniche di Dinamica Molecolare e Monte Carlo per sistemi atomici e molecolari. Verranno discussi la risoluzione delle equazioni del moto con algoritmi simplettici, integratori con passi di integrazione multipli, gli algoritmi per il controllo della temperatura e pressione, per la dinamica browniana, per la trattazione dei vincoli olonomi, per la dinamica dei corpi rigidi, per la valutazioni numeriche dell' energia libera di fluidi e solidi, per lo studio dei diagrammi di fase.
 
 
-* Obiettivi formativi: *
+**Obiettivi formativi:**
 
 Lo studente apprendera' la teoria alla base delle tecniche numeriche di Dinamica Molecolare (MD) e Monte Carlo (MC) e l'implementazione di tali conoscenze, con l' obiettivo di arrivare a scrivere un proprio codice di simulazione MD e di utilizzarlo per lo studio della struttura e della dinamica del modello scelto. Alla fine del corso lo studente sara' anche in grado di utilizzare i piu' comuni programmi attualmente disponibili per lo studio di sistemi complessi (inclusi sistemi colloidali e biomolecolari) avendo sviluppato una piena conoscenza degli algoritmi e delle tecniche numeriche su cui tali programmi sono costruiti.
 
-* BIBLIOGRAFIA *
+**BIBLIOGRAFIA**
 
-    Understanding Molecular Simulation, D. Frenkel and B. Smit, Academic Press
-    Computer Simulation of Liquids, M. P. Allen and D. J. Tildesley, Clarendon Press - Oxford
-    The Art of Molecular Dynamics Simulation, D. C. Rapapaport, Cambridge University Press
-    Theory of Simple Liquids, J.-P. Hansen and I. R. McDonald, Academic Press
-    Statistical Mechanics: Theory and Molecular Simulation, Mark Tuckerman, Oxford Graduate Press - Oxford
-    Dispense del Corso
-    Articoli utilizzati durante il corso
+-  *Understanding Molecular Simulation*, D. Frenkel and B. Smit, Academic Press
+-  *Computer Simulation of Liquids*, M. P. Allen and D. J. Tildesley, Clarendon Press - Oxford
+-  *The Art of Molecular Dynamics Simulation*, D. C. Rapapaport, Cambridge University Press
+-  *Theory of Simple Liquids*, J.-P. Hansen and I. R. McDonald, Academic Press
+-  *Statistical Mechanics: Theory and Molecular Simulation*, Mark Tuckerman, Oxford Graduate Press - Oxford
+-  *Dispense del Corso*
+-  *Articoli utilizzati durante il corso*
 
-COMPUTATIONAL PHYSICS OF MATTER
+---
+
+## COMPUTATIONAL PHYSICS OF MATTER 
 
 The course "Computational Physics of Matter" is intended to provide to the master students in Physics some basic techniques to solve numerically problems which can be encountered in the Physics of Matter. The course can be divided in three distinct parts: a first part which is dedicated to illustrate simple numerical methods to solve some types of linear partial differential equation (e.g. diffusion equation or Schrodinger equation), a second part where numerical methods to integrate stochastic differential equations are shown and a third part, which is devoted to describe the basics of Molecular Dynamics and Monte Carlo simulations.
 
-COURSE REFERENCES
+**COURSE REFERENCES**
 
-    Understanding Molecular Simulation, D. Frenkel and B. Smit, Academic Press
-    Computer Simulation of Liquids, M. P. Allen and D. J. Tildesley, Clarendon Press - Oxford
-    The Art of Molecular Dynamics Simulation, D. C. Rapapaport, Cambridge University Press
-    Theory of Simple Liquids, J.-P. Hansen and I. R. McDonald, Academic Press
-    Computational Physics - Problem Solving with Computers, R. H. Landau and M. J. Paez, John Wiley & Sons, Inc.
-    Note del corso di Fisica Computazionale della Materia
-    Computational Physics of Matter Notes
-    Slides of introductory lectures ( POWERPOINT or PDF ) 
+-   *Understanding Molecular Simulation*, D. Frenkel and B. Smit, Academic Press
+-   *Computer Simulation of Liquids*, M. P. Allen and D. J. Tildesley, Clarendon Press - Oxford
+-   *The Art of Molecular Dynamics Simulation*, D. C. Rapapaport, Cambridge University Press
+-   *Theory of Simple Liquids*, J.-P. Hansen and I. R. McDonald, Academic Press
+-   *Computational Physics* - Problem Solving with Computers, R. H. Landau and M. J. Paez, John Wiley & Sons, Inc.
+-   *Note del corso di Fisica Computazionale della Materia*
+-   *Computational Physics of Matter Notes*
+-   *Slides of introductory lectures ( POWERPOINT or PDF )* 
 
+---
 
+## FISICA GENERALE - MODULO I (MECCANICA E TERMODINAMICA)
+### CORSO DI LAUREA IN SCIENZE GEOLOGICHE
 
-
-FISICA GENERALE - MODULO I (MECCANICA E TERMODINAMICA)
-CORSO DI LAUREA IN SCIENZE GEOLOGICHE
-
-PROGRAMMA DEL CORSO
+**PROGRAMMA DEL CORSO**
 
 - Cinematica del punto materiale
 - Dinamica Classica e la legge delle Forze
@@ -74,7 +87,7 @@ PROGRAMMA DEL CORSO
 - Cenni di Meccanica dei fluidi
 - Onde
 
-VALUTAZIONE FINALE
+**VALUTAZIONE FINALE**
 
 L'esame consiste in un esame orale che verte sugli argomenti del primo e del secondo modulo del corso trattati nelle lezioni frontali e mira a verificare che lo studente abbia padronanza dei concetti teorici e sia in grado di applicarli alla risoluzione di problemi semplici.
 
@@ -82,8 +95,7 @@ Prova di esonero: durante questo modulo verrá svolta una prova di esonero nel m
 
 Esame orale: gli studenti che hanno superato solo uno dei due esoneri devono presentare all'orale solo il programma del modulo corrispondente che non hanno passato. Gli studenti che non hanno superato o non hanno svolto gli esoneri devono presentare tutto il programma relativo al primo e al secondo modulo del corso.
 
-TESTI CONSIGLIATI
+**TESTI CONSIGLIATI**
 
 - Ferrari V., Luci C, Mariani C., Fisica vol. I e vol. II, editore Idelson-Gnocchi, 2009
-
 - Serway e Jewett, Principi di Fisica, editore EDISES
