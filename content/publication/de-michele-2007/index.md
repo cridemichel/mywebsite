@@ -8,10 +8,13 @@ authors:
 - C. De Michele
 - R. Schilling
 - F. Sciortino
-tags: []
+tags:
+- '"Aspect ratio;  Glass transition;  Molecular dynamics;  Volume fraction"'
+- '"Drot diffusion coefficients;  Hard ellipsoids;  Scattering function"'
+- '"Molecular structure"'
 categories: []
 date: '2007-01-01'
-lastmod: 2020-09-10T15:16:47+02:00
+lastmod: 2020-09-11T10:24:42+02:00
 featured: false
 draft: false
 
@@ -29,10 +32,20 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-10T13:16:47.584659Z'
+publishDate: '2020-09-11T08:24:42.418625Z'
 publication_types:
 - 2
-abstract: ''
+abstract: We study the dynamics of monodisperse hard ellipsoids via a new event-driven
+  molecular dynamics algorithm as a function of volume fraction and aspect ratio X0.
+  We evaluate the translational Dtrans and the rotational Drot diffusion coefficients
+  and the associated isodiffusivity lines in the X0 plane. We observe a decoupling
+  of the translational and rotational dynamics which generates an almost perpendicular
+  crossing of the Dtrans and Drot isodiffusivity lines. While the self-intermediate
+  scattering function exhibits stretched relaxation, i.e., glassy dynamics, only for
+  large and X0≈1, the second order orientational correlator C2(t) shows stretching
+  only for large and small X0 values. We discuss these findings in the context of
+  a possible prenematic order driven glass transition. © 2007 The American Physical
+  Society.
 publication: '*Physical Review Letters*'
 url_pdf: https://www.scopus.com/inward/record.uri?eid=2-s2.0-34547331992&doi=10.1103%2fPhysRevLett.98.265702&partnerID=40&md5=72fbecc367450e2dd208df4abe46a7a6
 doi: 10.1103/PhysRevLett.98.265702

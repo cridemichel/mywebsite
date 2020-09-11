@@ -8,10 +8,14 @@ authors:
 - E. Romani
 - A. Ferrarini
 - C. De Michele
-tags: []
+tags:
+- '"Elastic constants;  Intelligent systems;  Monte Carlo methods;  Self assembly;  Solutions"'
+- '"Chromonic liquid crystals;  Confined volume;  Elastic properties;  Large anisotropy;  Molecular
+  self assembly;  Nematic phase;  Self-assemble;  Semi-flexible chains"'
+- '"Liquid crystals"'
 categories: []
 date: '2018-01-01'
-lastmod: 2020-09-10T15:16:42+02:00
+lastmod: 2020-09-11T10:24:38+02:00
 featured: false
 draft: false
 
@@ -29,10 +33,22 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-10T13:16:42.583070Z'
+publishDate: '2020-09-11T08:24:38.485024Z'
 publication_types:
 - 2
-abstract: ''
+abstract: Chromonics are a class of liquid crystals made of aqueous solutions of plank-like
+  molecules, which self-assemble into semiflexible chains. At a given temperature
+  a nematic phase is formed when the system reaches a sufficiently high concentration.
+  Among the unusual properties of chromonic liquid crystals, particularly prominent
+  is the large anisotropy of elastic constants, which leads to new phenomenologies
+  in confined volumes. To gain insights into the microscopic origin of this behavior,
+  we have investigated the elastic properties of a model system that undergoes self-assembly
+  driven nematization by using Monte Carlo simulations and an Onsager-like theory.
+  The relative magnitude of the elastic constants and their dependence on temperature
+  and density show the distinguishing features found in chromonic liquid crystals.
+  We identify the relevant microscopic determinants of this behavior, and we discuss
+  the role played by both the molecular self-assembly and the intrinsic flexibility
+  of aggregates. © 2018 American Chemical Society.
 publication: '*Macromolecules*'
 url_pdf: https://www.scopus.com/inward/record.uri?eid=2-s2.0-85050691266&doi=10.1021%2facs.macromol.8b00900&partnerID=40&md5=c877b3173922698b7fca8214ee424dea
 doi: 10.1021/acs.macromol.8b00900

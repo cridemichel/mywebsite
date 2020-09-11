@@ -10,10 +10,15 @@ authors:
 - F. Zamponi
 - C. De Michele
 - T. Scopigno
-tags: []
+tags:
+- '"Activation energy;  Correlation methods;  Entropy;  Functions;  Glass transition;  Hydrodynamics;  Reaction
+  kinetics;  Relaxation processes;  Supercooling;  Thermodynamics;  Viscosity"'
+- '"Adam-Gibbs relations;  Maxwell relations;  Potential energy landscapes (PEL);  Supercooled
+  liquids"'
+- '"Potential energy"'
 categories: []
 date: '2004-01-01'
-lastmod: 2020-09-10T15:16:49+02:00
+lastmod: 2020-09-11T10:24:43+02:00
 featured: false
 draft: false
 
@@ -31,10 +36,15 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-10T13:16:49.088771Z'
+publishDate: '2020-09-11T08:24:43.226238Z'
 publication_types:
 - 2
-abstract: ''
+abstract: The definitions of kinetic and thermodynamic fragility and their interrelations
+  were discussed. The models for the statistical properties of the potential energy
+  landscape (PEL) were analyzed. The relation between statistical properties of the
+  landscape and fragility was described, building on the Adam-Gibbs relation, which
+  connects structural relaxation times to configurational entropy. Two different possibilities
+  for generating strong behavior were discussed.
 publication: '*Journal of Chemical Physics*'
 url_pdf: https://www.scopus.com/inward/record.uri?eid=2-s2.0-2942659865&doi=10.1063%2f1.1736628&partnerID=40&md5=3fa2eb64eeb8995d1ecc6ce6eda422da
 doi: 10.1063/1.1736628

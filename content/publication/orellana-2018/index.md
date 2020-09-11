@@ -8,10 +8,16 @@ authors:
 - A.G. Orellana
 - E. Romani
 - C. De Michele
-tags: []
+tags:
+- '"Cylinders (shapes);  Intelligent systems"'
+- '"Anisotropic particles;  Colloidal system;  Cylinder model;  Soft matter;  Speed
+  up;  Spherocylinders"'
+- '"Monte Carlo methods"'
+- '"algorithm;  article;  computer simulation;  intermethod comparison;  Monte Carlo
+  method;  topical drug administration;  velocity"'
 categories: []
 date: '2018-01-01'
-lastmod: 2020-09-10T15:16:42+02:00
+lastmod: 2020-09-11T10:24:38+02:00
 featured: false
 draft: false
 
@@ -29,10 +35,22 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-10T13:16:42.708939Z'
+publishDate: '2020-09-11T08:24:38.599185Z'
 publication_types:
 - 2
-abstract: ''
+abstract: 'Abstract.: The hard cylinder model decorated with attractive patches proved
+  to be very useful recently in studying physical properties of several colloidal
+  systems. Phase diagram, elastic constants and cholesteric properties obtained from
+  computer simulations based on a simple hard cylinder model have been all successfully
+  and quantitatively compared to experimental results. Key to these simulations is
+  an efficient algorithm to check the overlap between hard cylinders. Here, we propose
+  two algorithms to check the hard cylinder overlap and we assess their efficiency
+  through a comparison with an existing method available in the literature and with
+  the well-established algorithm for simulating hard spherocylinders. In addition,
+  we discuss a couple of optimizations for performing computer simulations of patchy
+  anisotropic particles and we estimate the speed-up which they can provide in the
+  case of patchy hard cylinders. © 2018, EDP Sciences, SIF, Springer-Verlag GmbH Germany,
+  part of Springer Nature.'
 publication: '*European Physical Journal E*'
 url_pdf: https://www.scopus.com/inward/record.uri?eid=2-s2.0-85045523213&doi=10.1140%2fepje%2fi2018-11657-0&partnerID=40&md5=01887f5421bed3eb05027126bbcb42a3
 doi: 10.1140/epje/i2018-11657-0

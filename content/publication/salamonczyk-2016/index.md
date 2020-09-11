@@ -16,10 +16,19 @@ authors:
 - J.K.G. Dhont
 - S. Sprunt
 - E. Stiakakis
-tags: []
+tags:
+- '"double stranded DNA;  single stranded DNA;  DNA;  single stranded DNA"'
+- '"aqueous solution;  crystal structure;  DNA;  experimental study;  fragmentation;  liquid"'
+- '"aqueous solution;  Article;  bioenergy;  computer simulation;  DNA conformation;  DNA
+  structure;  DNA synthesis;  entropy;  liquid crystal;  Monte Carlo method;  phase
+  transition;  physical chemistry;  smectic a phase;  structure analysis;  suspension;  thermodynamics;  X
+  ray crystallography;  chemistry;  conformation;  molecular model;  temperature;  thermodynamics"'
+- '"DNA;  DNA"'
+- '"Single-Stranded;  Liquid Crystals;  Models"'
+- '"Molecular;  Monte Carlo Method;  Nucleic Acid Conformation;  Phase Transition;  Temperature;  Thermodynamics"'
 categories: []
 date: '2016-01-01'
-lastmod: 2020-09-10T15:16:42+02:00
+lastmod: 2020-09-11T10:24:38+02:00
 featured: false
 draft: false
 
@@ -37,10 +46,22 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-10T13:16:42.831273Z'
+publishDate: '2020-09-11T08:24:38.717327Z'
 publication_types:
 - 2
-abstract: ''
+abstract: Smectic ordering in aqueous solutions of monodisperse stiff double-stranded
+  DNA fragments is known not to occur, despite the fact that these systems exhibit
+  both chiral nematic and columnar mesophases. Here, we show, unambiguously, that
+  a smectic-A type of phase is formed by increasing the DNA's flexibility through
+  the introduction of an unpaired single-stranded DNA spacer in the middle of each
+  duplex. This is unusual for a lyotropic system, where flexibility typically destabilizes
+  the smectic phase. We also report on simulations suggesting that the gapped duplexes
+  (resembling chain-sticks) attain a folded conformation in the smectic layers, and
+  argue that this layer structure, which we designate as smectic-fA phase, is thermodynamically
+  stabilized by both entropic and energetic contributions to the system's free energy.
+  Our results demonstrate that DNA as a building block offers an exquisitely tunable
+  means to engineer a potentially rich assortment of lyotropic liquid crystals. ©
+  The Author(s) 2016.
 publication: '*Nature Communications*'
 url_pdf: https://www.scopus.com/inward/record.uri?eid=2-s2.0-84995468813&doi=10.1038%2fncomms13358&partnerID=40&md5=4ae13628b294cc6c8c13eecec4bf2514
 doi: 10.1038/ncomms13358

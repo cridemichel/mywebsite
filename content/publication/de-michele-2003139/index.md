@@ -11,7 +11,7 @@ authors:
 tags: []
 categories: []
 date: '2003-01-01'
-lastmod: 2020-09-10T15:16:49+02:00
+lastmod: 2020-09-11T10:24:43+02:00
 featured: false
 draft: false
 
@@ -29,10 +29,20 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-10T13:16:49.335706Z'
+publishDate: '2020-09-11T08:24:43.484081Z'
 publication_types:
 - 2
-abstract: ''
+abstract: The transport and the relaxation properties of a biatomic supercooled liquid
+  are studied by molecular-dynamics methods. Both translational and rotational jumps
+  are evidenced. At lower temperatures their waiting-time distributions decay as a
+  power law at short times. The Stokes-Einstein relation (SE) breaks down at a temperature
+  which is close to the onset of the intermittency. A precursor effect of the SE breakdown
+  is observed as an apparent stick-slip transition. The breakdown of Debye-Stokes-Einstein
+  law for rotational motion is also observed. On cooling, the changes of the rotational
+  correlation time τ1 and the translational diffusion coefficient at low temperatures
+  are fitted by power laws over more than three and four orders of magnitude, respectively.
+  A less impressive agreement is found for τl with l = 2 - 4 and the rotational diffusion
+  coefficient.
 publication: '*Fractals*'
 url_pdf: https://www.scopus.com/inward/record.uri?eid=2-s2.0-0037310347&doi=10.1142%2fS0218348X0300180X&partnerID=40&md5=dae05c7236dd04da8c13b33f03faeaad
 doi: 10.1142/S0218348X0300180X

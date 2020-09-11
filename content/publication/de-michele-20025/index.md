@@ -11,7 +11,7 @@ authors:
 tags: []
 categories: []
 date: '2002-01-01'
-lastmod: 2020-09-10T15:16:49+02:00
+lastmod: 2020-09-11T10:24:43+02:00
 featured: false
 draft: false
 
@@ -29,10 +29,20 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-10T13:16:49.602028Z'
+publishDate: '2020-09-11T08:24:43.728165Z'
 publication_types:
 - 2
-abstract: ''
+abstract: Generation of equilibrium configurations is the major obstacle for numerical
+  investigation of the slow dynamics in supercooled liquid states. The parallel tempering
+  (PT) technique, originally proposed for the numerical equilibration of discrete
+  spin-glass model configurations, has recently been applied in the study of supercooled
+  structural glasses. We present an investigation of the ability of parallel tempering
+  to properly sample the liquid configuration space at different temperatures, by
+  mapping the PT dynamics into the dynamics of the closest local potential energy
+  minima (inherent structures). Comparing the PT equilibration process with the standard
+  molecular dynamics equilibration process we find that the PT does not increase the
+  speed of equilibration of the (slow) configurational degrees of freedom. © 2002
+  The American Physical Society.
 publication: '*Physical Review E - Statistical Physics, Plasmas, Fluids, and Related
   Interdisciplinary Topics*'
 url_pdf: https://www.scopus.com/inward/record.uri?eid=2-s2.0-85035256812&doi=10.1103%2fPhysRevE.65.051202&partnerID=40&md5=77eb31712c684ec9950a35361331197e
