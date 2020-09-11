@@ -9,15 +9,10 @@ authors:
 - E. Pyanzina
 - C. De Michele
 - F. Sciortino
-tags:
-- '"Amorphous alloys;  Anisotropy;  Metallic glass;  Monte Carlo methods"'
-- '"Anisotropic particles;  Gay-Berne potentials;  Monte- carlo simulations;  Pair
-  correlation functions;  Radial distribution functions;  Structure factors;  Theoretical
-  approach;  Thermodynamic equilibria"'
-- '"Density functional theory"'
+tags: []
 categories: []
 date: '2013-01-01'
-lastmod: 2020-09-11T10:24:40+02:00
+lastmod: 2020-09-11T18:05:54+02:00
 featured: false
 draft: false
 
@@ -35,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:40.419575Z'
+publishDate: '2020-09-11T16:05:54.167892Z'
 publication_types:
 - 2
 abstract: We put forward a theoretical approach to analyse the structure factors obtained

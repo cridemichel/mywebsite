@@ -8,14 +8,10 @@ authors:
 - C. De Michele
 - P. Tartaglia
 - F. Sciortino
-tags:
-- '"Chemical bonds;  Colloids;  Computer simulation;  Constraint theory;  Monte Carlo
-  methods"'
-- '"Colloidal dispersions;  Isodiffusivity;  Liquid phase;  Tetrahedral network models"'
-- '"Molecular dynamics"'
+tags: []
 categories: []
 date: '2006-01-01'
-lastmod: 2020-09-11T11:10:20+02:00
+lastmod: 2020-09-11T18:05:57+02:00
 featured: false
 draft: false
 
@@ -33,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:10:19.982702Z'
+publishDate: '2020-09-11T16:05:57.178914Z'
 publication_types:
 - 2
 abstract: We report extensive Monte Carlo and event-driven molecular dynamics simulations

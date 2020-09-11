@@ -9,14 +9,10 @@ authors:
 - E.S. Pyanzina
 - S.S. Kantorovich
 - C. De Michele
-tags:
-- '"Chains;  Cylinders (shapes);  Distribution functions;  Liquid crystals"'
-- '"Crystalline axis;  Ordered systems;  Pair distribution functions;  Pair distributions;  Self
-  organisation;  Self-assembling;  Spatial correlations;  Theoretical framework"'
-- '"Nematic liquid crystals"'
+tags: []
 categories: []
 date: '2015-01-01'
-lastmod: 2020-09-11T10:24:39+02:00
+lastmod: 2020-09-11T18:05:53+02:00
 featured: false
 draft: false
 
@@ -34,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:39.255041Z'
+publishDate: '2020-09-11T16:05:53.101739Z'
 publication_types:
 - 2
 abstract: 'Abstract: We put forward a theoretical framework to calculate pair distribution

@@ -6,14 +6,10 @@ subtitle: ''
 summary: ''
 authors:
 - C. De Michele
-tags:
-- '"Event-driven molecular dynamics;  Linked cell list;  Molecular liquids;  Nearest
-  neighbors;  Rigid body;  Sticky spots"'
-- '"Computational chemistry;  Dynamics;  Molecular dynamics;  Optimization"'
-- '"Computer simulation"'
+tags: []
 categories: []
 date: '2011-01-01'
-lastmod: 2020-09-11T11:10:19+02:00
+lastmod: 2020-09-11T18:05:54+02:00
 featured: false
 draft: false
 
@@ -31,7 +27,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:10:19.164629Z'
+publishDate: '2020-09-11T16:05:54.741208Z'
 publication_types:
 - 2
 abstract: Event-driven molecular dynamics is a valuable tool in condensed and soft

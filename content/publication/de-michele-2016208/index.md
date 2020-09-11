@@ -14,7 +14,7 @@ authors:
 tags: []
 categories: []
 date: '2016-01-01'
-lastmod: 2020-09-11T10:24:39+02:00
+lastmod: 2020-09-11T18:05:52+02:00
 featured: false
 draft: false
 
@@ -32,7 +32,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:38.992854Z'
+publishDate: '2020-09-11T16:05:52.868497Z'
 publication_types:
 - 2
 abstract: Unveiling the subtle rules that control the buildup of macroscopic chirality

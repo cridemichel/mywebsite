@@ -10,14 +10,10 @@ authors:
 - J.-C. Gimel
 - T. Nicolai
 - C. De Michele
-tags:
-- '"Diffusion;  Hydrodynamics;  Molecular structure;  Rigidity"'
-- '"Bond rigidity;  Brownian cluster dynamics (BCD);  Cluster diffusion;  Square well
-  potential"'
-- '"Chemical bonds"'
+tags: []
 categories: []
 date: '2008-01-01'
-lastmod: 2020-09-11T11:07:14+02:00
+lastmod: 2020-09-11T18:05:56+02:00
 featured: false
 draft: false
 
@@ -35,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:07:13.959308Z'
+publishDate: '2020-09-11T16:05:56.128267Z'
 publication_types:
 - 2
 abstract: 'Hard spheres interacting through a square well potential were simulated

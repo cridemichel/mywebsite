@@ -10,22 +10,10 @@ authors:
 - C. De Michele
 - P. De Los Rios
 - G. Foffi
-tags:
-- '"Diffusion in liquids;  Spheres"'
-- '"Diffusion limited reactions;  Hard spheres;  Infinite dilution;  Macromolecular
-  complexes;  Spherical particle;  Stationary densities;  Theoretical approach;  Theoretical
-  framework"'
-- '"Local density approximation"'
-- '"polymer;  polymer"'
-- '"algorithm;  article;  chemistry;  diffusion;  molecular dynamics;  theoretical
-  model;  chemistry"'
-- '"Algorithms;  Diffusion;  Models"'
-- '"Theoretical;  Molecular Dynamics Simulation;  Polymers"'
-- '"Algorithms;  Diffusion;  Models"'
-- '"Theoretical;  Molecular Dynamics Simulation;  Polymers"'
+tags: []
 categories: []
 date: '2013-01-01'
-lastmod: 2020-09-11T10:24:40+02:00
+lastmod: 2020-09-11T18:05:53+02:00
 featured: false
 draft: false
 
@@ -43,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:40.048178Z'
+publishDate: '2020-09-11T16:05:53.796356Z'
 publication_types:
 - 2
 abstract: In the real world, diffusion-limited reactions in chemistry and biology

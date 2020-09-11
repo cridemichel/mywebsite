@@ -11,15 +11,10 @@ authors:
 - C. De Michele
 - E. Zaccarelli
 - F. Sciortino
-tags:
-- '"Computer simulation;  Diffusion;  Gels;  Solvents"'
-- '"Aggregation kinetics;  Cluster diffusion;  Diffusion time;  Forming systems;  Gain
-  insight;  Irreversible aggregation;  Late stage;  Numerical simulation;  Simulation
-  data;  Small clusters;  Time-scales"'
-- '"Agglomeration"'
+tags: []
 categories: []
 date: '2010-01-01'
-lastmod: 2020-09-11T10:24:41+02:00
+lastmod: 2020-09-11T18:05:55+02:00
 featured: false
 draft: false
 
@@ -37,7 +32,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:41.348134Z'
+publishDate: '2020-09-11T16:05:55.213395Z'
 publication_types:
 - 2
 abstract: The analysis of realistic numerical simulations of a gel-forming irreversible

@@ -12,15 +12,10 @@ authors:
 - J. Russo
 - E. Zaccarelli
 - P. Tartaglia
-tags:
-- '"Assembly process;  Branched structures;  Branching points;  Brownian dynamics
-  simulations;  Irreversible aggregation;  Particle systems;  Rate equations;  Thermodynamic
-  perturbation theory;  Wertheim"'
-- '"Brownian movement;  Coagulation;  Computer simulation;  Gelation"'
-- '"Perturbation techniques"'
+tags: []
 categories: []
 date: '2009-01-01'
-lastmod: 2020-09-11T10:24:41+02:00
+lastmod: 2020-09-11T18:05:55+02:00
 featured: false
 draft: false
 
@@ -38,7 +33,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:41.719252Z'
+publishDate: '2020-09-11T16:05:55.677874Z'
 publication_types:
 - 2
 abstract: We study, via Brownian dynamics simulation, the kinetics of formation of

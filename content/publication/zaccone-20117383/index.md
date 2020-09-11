@@ -12,16 +12,10 @@ authors:
 - C. De Michele
 - M. Morbidelli
 - G. Foffi
-tags:
-- '"Chemical reactions;  Diffusion;  Liquids;  Partial differential equations;  Suspensions
-  (fluids)"'
-- '"Colloidal Stability;  Diffusion equations;  Diffusion model;  Intermolecular interactions;  Low
-  flow;  Many-body problems;  One-dimensional problem;  Shear-flow effects;  Short-range
-  structure;  Smoluchowski equation"'
-- '"Shear flow"'
+tags: []
 categories: []
 date: '2011-01-01'
-lastmod: 2020-09-11T10:24:41+02:00
+lastmod: 2020-09-11T18:05:54+02:00
 featured: false
 draft: false
 
@@ -39,7 +33,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:40.958975Z'
+publishDate: '2020-09-11T16:05:54.856859Z'
 publication_types:
 - 2
 abstract: In the diffusion model of chemical reactions, the encounter (reaction) rate

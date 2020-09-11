@@ -10,19 +10,10 @@ authors:
 - D. Ancora
 - F. Sciortino
 - C. De Michele
-tags:
-- '"Chains;  Crystal atomic structure;  Liquid crystals;  Phase boundaries;  Self
-  assembly"'
-- '"All-atom simulations;  Bent-core mesogens;  Coarse grained models;  Geometric
-  properties;  Liquid crystal phasis;  Persistence length;  Semi-flexible chains;  Sequence-dependent"'
-- '"DNA"'
-- '"DNA;  nanomaterial"'
-- '"chemical structure;  chemistry;  liquid crystal;  Monte Carlo method"'
-- '"DNA;  Liquid Crystals;  Models"'
-- '"Molecular;  Monte Carlo Method;  Nanostructures"'
+tags: []
 categories: []
 date: '2015-01-01'
-lastmod: 2020-09-11T10:24:39+02:00
+lastmod: 2020-09-11T18:05:53+02:00
 featured: false
 draft: false
 
@@ -40,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:39.622561Z'
+publishDate: '2020-09-11T16:05:53.447505Z'
 publication_types:
 - 2
 abstract: Short cylinder-like DNA duplexes, comprising 6 to 20 base pairs, self-assemble

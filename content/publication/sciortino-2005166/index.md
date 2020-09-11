@@ -16,15 +16,10 @@ authors:
 - I. Saika-Voivod
 - P. Tartaglia
 - E. Zaccarelli
-tags:
-- '"Correlation methods;  Gels;  Glass transition;  Mathematical models;  Particle
-  size analysis;  Phase separation"'
-- '"Colloidal suspensions;  Inter-particle potential;  Repulsive interactions;  Surface
-  free energy"'
-- '"Colloid chemistry"'
+tags: []
 categories: []
 date: '2005-01-01'
-lastmod: 2020-09-11T11:10:20+02:00
+lastmod: 2020-09-11T18:05:57+02:00
 featured: false
 draft: false
 
@@ -42,7 +37,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:10:20.098374Z'
+publishDate: '2020-09-11T16:05:57.521871Z'
 publication_types:
 - 2
 abstract: We discuss features of simple inter-particle potentials which are able to

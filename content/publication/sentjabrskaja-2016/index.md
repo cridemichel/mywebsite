@@ -13,13 +13,10 @@ authors:
 - T. Voigtmann
 - S.U. Egelhaaf
 - M. Laurati
-tags:
-- '"asymmetry;  autocorrelation;  composite;  density;  glass;  mobility;  nanoparticle;  numerical
-  model;  protein"'
-- '"behavior;  cytology;  microscopy;  model"'
+tags: []
 categories: []
 date: '2016-01-01'
-lastmod: 2020-09-11T11:10:19+02:00
+lastmod: 2020-09-11T18:05:52+02:00
 featured: false
 draft: false
 
@@ -37,7 +34,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:10:18.931825Z'
+publishDate: '2020-09-11T16:05:52.627226Z'
 publication_types:
 - 2
 abstract: Many natural and industrial processes rely on constrained transport, such

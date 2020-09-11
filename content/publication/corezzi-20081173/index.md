@@ -10,13 +10,10 @@ authors:
 - E. Zaccarelli
 - D. Fioretto
 - F. Sciortino
-tags:
-- '"Function evaluation;  Gelation;  Mathematical models;  Parameter estimation"'
-- '"Cluster size distribution;  Patchy particle model"'
-- '"Molecular dynamics"'
+tags: []
 categories: []
 date: '2008-01-01'
-lastmod: 2020-09-11T10:24:42+02:00
+lastmod: 2020-09-11T18:05:56+02:00
 featured: false
 draft: false
 
@@ -34,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:42.040954Z'
+publishDate: '2020-09-11T16:05:56.244856Z'
 publication_types:
 - 2
 abstract: We report event-driven molecular dynamics simulations of the irreversible

@@ -9,15 +9,10 @@ authors:
 - F. Puosi
 - C. De Michele
 - D. Leporini
-tags:
-- '"Characteristic length;  Information concerning;  Molecular dynamics simulations;  Rattling
-  motion;  Slow relaxations;  Thermodynamic scaling;  Transition regions;  Universal
-  scaling"'
-- '"Atoms;  Dynamics;  Glass transition;  Polymer melts"'
-- '"Binary mixtures"'
+tags: []
 categories: []
 date: '2013-01-01'
-lastmod: 2020-09-11T10:24:40+02:00
+lastmod: 2020-09-11T18:05:54+02:00
 featured: false
 draft: false
 
@@ -35,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:40.539375Z'
+publishDate: '2020-09-11T16:05:54.281955Z'
 publication_types:
 - 2
 abstract: The universal scaling between the average slow relaxation/transport and

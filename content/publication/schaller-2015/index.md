@@ -19,7 +19,7 @@ authors:
 tags: []
 categories: []
 date: '2015-01-01'
-lastmod: 2020-09-11T10:24:39+02:00
+lastmod: 2020-09-11T18:05:53+02:00
 featured: false
 draft: false
 
@@ -37,7 +37,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:39.379247Z'
+publishDate: '2020-09-11T16:05:53.215350Z'
 publication_types:
 - 2
 abstract: In particulate systems with short-range interactions, such as granular matter

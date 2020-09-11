@@ -16,19 +16,10 @@ authors:
 - J.K.G. Dhont
 - S. Sprunt
 - E. Stiakakis
-tags:
-- '"double stranded DNA;  single stranded DNA;  DNA;  single stranded DNA"'
-- '"aqueous solution;  crystal structure;  DNA;  experimental study;  fragmentation;  liquid"'
-- '"aqueous solution;  Article;  bioenergy;  computer simulation;  DNA conformation;  DNA
-  structure;  DNA synthesis;  entropy;  liquid crystal;  Monte Carlo method;  phase
-  transition;  physical chemistry;  smectic a phase;  structure analysis;  suspension;  thermodynamics;  X
-  ray crystallography;  chemistry;  conformation;  molecular model;  temperature;  thermodynamics"'
-- '"DNA;  DNA"'
-- '"Single-Stranded;  Liquid Crystals;  Models"'
-- '"Molecular;  Monte Carlo Method;  Nucleic Acid Conformation;  Phase Transition;  Temperature;  Thermodynamics"'
+tags: []
 categories: []
 date: '2016-01-01'
-lastmod: 2020-09-11T10:24:38+02:00
+lastmod: 2020-09-11T18:05:52+02:00
 featured: false
 draft: false
 
@@ -46,7 +37,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:38.717327Z'
+publishDate: '2020-09-11T16:05:52.510770Z'
 publication_types:
 - 2
 abstract: Smectic ordering in aqueous solutions of monodisperse stiff double-stranded

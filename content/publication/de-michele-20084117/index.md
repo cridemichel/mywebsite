@@ -8,17 +8,10 @@ authors:
 - C. De Michele
 - R. Schilling
 - F. Sciortino
-tags:
-- '"Aspect ratio;  Computer simulation;  Dynamics;  Glass;  Isotopes;  Joints (structural
-  components);  Molecular dynamics;  Quantum chemistry;  Supercooling"'
-- '"Cage effects;  Drot diffusion coefficients;  Glassy dynamics;  Hard ellipsoids;  Intermediate
-  scattering functions;  Logarithmic times;  Mode coupling theory;  Molecular dynamics
-  simulations;  Nematic order;  Orientational correlators;  Packing fractions;  Perpendicular
-  crossings;  Rotational dynamics;  Second orders"'
-- '"Glass transition"'
+tags: []
 categories: []
 date: '2008-01-01'
-lastmod: 2020-09-11T11:10:19+02:00
+lastmod: 2020-09-11T18:05:56+02:00
 featured: false
 draft: false
 
@@ -36,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:10:19.403420Z'
+publishDate: '2020-09-11T16:05:55.899761Z'
 publication_types:
 - 2
 abstract: We study a system of uniaxial hard ellipsoids by molecular dynamics simulations,

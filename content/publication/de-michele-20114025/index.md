@@ -9,15 +9,10 @@ authors:
 - C. De Michele
 - E. Del Gado
 - D. Leporini
-tags:
-- '"Colloidal gels;  Gel networks;  General nature;  Glassy dynamics;  Glassy systems;  Length
-  scale;  Localization length;  Low density;  Mean squared displacement;  Particle
-  diameters;  Scaling forms;  Single particle;  Strong coupling;  Supercooled liquids"'
-- '"Polymer melts;  Structural relaxation;  Supercooling"'
-- '"Gels"'
+tags: []
 categories: []
 date: '2011-01-01'
-lastmod: 2020-09-11T10:24:41+02:00
+lastmod: 2020-09-11T18:05:55+02:00
 featured: false
 draft: false
 
@@ -35,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:41.098130Z'
+publishDate: '2020-09-11T16:05:54.974813Z'
 publication_types:
 - 2
 abstract: In glassy dynamics, the rattling of particles in a cage formed by their

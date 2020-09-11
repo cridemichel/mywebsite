@@ -7,14 +7,10 @@ summary: ''
 authors:
 - K.T. Nguyen
 - C. De Michele
-tags:
-- '"Anisotropy;  Cylinders (shapes);  Self assembly"'
-- '"Anisotropic interaction;  Nematic transitions;  Numerical results;  Particle orientation;  Semi-flexible
-  chains;  Soft matter;  Theoretical approach;  Theoretical treatments"'
-- '"Nematic liquid crystals"'
+tags: []
 categories: []
 date: '2018-01-01'
-lastmod: 2020-09-11T10:24:38+02:00
+lastmod: 2020-09-11T18:05:52+02:00
 featured: false
 draft: false
 
@@ -32,7 +28,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:38.371277Z'
+publishDate: '2020-09-11T16:05:52.042695Z'
 publication_types:
 - 2
 abstract: 'Abstract.: Anisotropic interactions can bring about the formation, through

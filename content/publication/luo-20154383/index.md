@@ -11,15 +11,10 @@ authors:
 - H.C. Öttinger
 - C. De Michele
 - P. Ilg
-tags:
-- '"Elasticity;  Fluidity;  Hamiltonians;  Thermodynamics"'
-- '"Anisotropic particles;  Dilatational modulus;  Fluid fluid interfaces;  Hamiltonian
-  dynamics;  Macroscopic rheology;  Microscopic modeling;  Non equilibrium thermodynamics;  Rheological
-  behaviour"'
-- '"Constitutive equations"'
+tags: []
 categories: []
 date: '2015-01-01'
-lastmod: 2020-09-11T10:24:39+02:00
+lastmod: 2020-09-11T18:05:53+02:00
 featured: false
 draft: false
 
@@ -37,7 +32,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:39.499191Z'
+publishDate: '2020-09-11T16:05:53.329876Z'
 publication_types:
 - 2
 abstract: We present a general approach based on nonequilibrium thermodynamics for

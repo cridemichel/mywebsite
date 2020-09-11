@@ -8,16 +8,10 @@ authors:
 - A.G. Orellana
 - E. Romani
 - C. De Michele
-tags:
-- '"Cylinders (shapes);  Intelligent systems"'
-- '"Anisotropic particles;  Colloidal system;  Cylinder model;  Soft matter;  Speed
-  up;  Spherocylinders"'
-- '"Monte Carlo methods"'
-- '"algorithm;  article;  computer simulation;  intermethod comparison;  Monte Carlo
-  method;  topical drug administration;  velocity"'
+tags: []
 categories: []
 date: '2018-01-01'
-lastmod: 2020-09-11T10:24:38+02:00
+lastmod: 2020-09-11T18:05:52+02:00
 featured: false
 draft: false
 
@@ -35,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:38.599185Z'
+publishDate: '2020-09-11T16:05:52.393284Z'
 publication_types:
 - 2
 abstract: 'Abstract.: The hard cylinder model decorated with attractive patches proved

@@ -9,18 +9,10 @@ authors:
 - F. Piazza
 - G. Foffi
 - C. De Michele
-tags:
-- '"Analytical expressions;  Analytical formulas;  Asymptotic exponential decay;  Bimolecular
-  reaction;  Characteristic time;  Intermediate densities;  Simulation protocols;  Survival
-  probabilities"'
-- '"Condensed matter physics;  Physics"'
-- '"Brownian movement"'
-- '"biochemistry;  chemical model;  diffusion;  kinetics;  probability"'
-- '"Biochemistry;  Diffusion;  Kinetics;  Models"'
-- '"Chemical;  Probability"'
+tags: []
 categories: []
 date: '2013-01-01'
-lastmod: 2020-09-11T10:24:40+02:00
+lastmod: 2020-09-11T18:05:54+02:00
 featured: false
 draft: false
 
@@ -38,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:40.294161Z'
+publishDate: '2020-09-11T16:05:54.044836Z'
 publication_types:
 - 2
 abstract: We investigate numerically pseudo-first-order irreversible bimolecular reactions

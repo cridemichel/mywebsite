@@ -1,24 +1,18 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: Diffusion-limited reactions in crowded environments
+title: Inertial effects in diffusion-limited reactions
 subtitle: ''
 summary: ''
 authors:
 - N. Dorsaz
 - C. De Michele
 - F. Piazza
-- P. De Los Rios
 - G. Foffi
-tags:
-- '"Density waves;  Diffusion-limited reactions;  Excluded volume effects;  Hard spheres;  High
-  density;  Inter-particle interaction;  Mean field analysis;  Nonmonotonic;  Particle
-  size ratio;  Smoluchowski equation"'
-- '"Association reactions;  Spheres"'
-- '"Slow light"'
+tags: []
 categories: []
 date: '2010-01-01'
-lastmod: 2020-09-11T10:24:41+02:00
+lastmod: 2020-09-11T18:05:55+02:00
 featured: false
 draft: false
 
@@ -36,22 +30,23 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:41.226077Z'
+publishDate: '2020-09-11T16:05:55.328237Z'
 publication_types:
 - 2
-abstract: Diffusion-limited reactions are usually described within the Smoluchowski
-  theory, which neglects interparticle interactions. We propose a simple way to incorporate
-  excluded-volume effects building on simulations of hard sphere in the presence of
-  a sink. For large values of the sink-to-particle size ratio Rs, the measured encounter
-  rate is in good agreement with a simple generalization of the Smoluchowski equation
-  at high densities. Reducing Rs, the encounter rate is substantially depressed and
-  becomes even nonmonotonic for Rs1. Concurrently with the saturation of the rate,
-  stationary density waves set in close to the sink. A mean-field analysis helps to
-  shed light on the subtle link between such ordering and the slowing down of the
-  encounter dynamics. Finally, we show how an infinitesimal amount of nonreacting
-  impurities can equally slow down dramatically the reaction. © 2010 The American
-  Physical Society.
-publication: '*Physical Review Letters*'
-url_pdf: https://www.scopus.com/inward/record.uri?eid=2-s2.0-77957130092&doi=10.1103%2fPhysRevLett.105.120601&partnerID=40&md5=45801919c1b81df954a04572f5789f32
-doi: 10.1103/PhysRevLett.105.120601
+abstract: Diffusion-limited reactions are commonly found in biochemical processes
+  such as enzyme catalysis, colloid and protein aggregation and binding between different
+  macromolecules in cells. Usually, such reactions are modeled within the Smoluchowski
+  framework by considering purely diffusive boundary problems. However, inertial effects
+  are not always negligible in real biological or physical media on typical observation
+  time frames. This is all the more so for non-bulk phenomena involving physical boundaries,
+  that introduce additional time and space constraints. In this paper, we present
+  and test a novel numerical scheme, based on event-driven Brownian dynamics, that
+  allows us to explore a wide range of velocity relaxation times, from the purely
+  diffusive case to the underdamped regime. We show that our algorithm perfectly reproduces
+  the solution of the Fokker-Planck problem with absorbing boundary conditions in
+  all the regimes considered and is thus a good tool for studying diffusion-guided
+  reactions in complex biological environments. © 2010 IOP Publishing Ltd.
+publication: '*Journal of Physics Condensed Matter*'
+url_pdf: https://www.scopus.com/inward/record.uri?eid=2-s2.0-77649223484&doi=10.1088%2f0953-8984%2f22%2f10%2f104116&partnerID=40&md5=e54d8239d2e4b75cb32ea1508ad4f279
+doi: 10.1088/0953-8984/22/10/104116
 ---

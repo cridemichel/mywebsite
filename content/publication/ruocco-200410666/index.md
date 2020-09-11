@@ -10,15 +10,10 @@ authors:
 - F. Zamponi
 - C. De Michele
 - T. Scopigno
-tags:
-- '"Activation energy;  Correlation methods;  Entropy;  Functions;  Glass transition;  Hydrodynamics;  Reaction
-  kinetics;  Relaxation processes;  Supercooling;  Thermodynamics;  Viscosity"'
-- '"Adam-Gibbs relations;  Maxwell relations;  Potential energy landscapes (PEL);  Supercooled
-  liquids"'
-- '"Potential energy"'
+tags: []
 categories: []
 date: '2004-01-01'
-lastmod: 2020-09-11T10:24:43+02:00
+lastmod: 2020-09-11T18:05:58+02:00
 featured: false
 draft: false
 
@@ -36,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:43.226238Z'
+publishDate: '2020-09-11T16:05:58.098797Z'
 publication_types:
 - 2
 abstract: The definitions of kinetic and thermodynamic fragility and their interrelations

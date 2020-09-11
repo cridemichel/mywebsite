@@ -8,16 +8,10 @@ authors:
 - S. Corezzi
 - F. Sciortino
 - C. De Michele
-tags:
-- '"amine"'
-- '"aggregation;  catalysis;  catalyst;  molecular analysis;  particle size;  polymerization;  reaction
-  kinetics"'
-- '"analytic method;  Article;  autocatalysis;  catalysis;  chemical reaction;  controlled
-  study;  degradation kinetics;  geometry;  mathematical analysis;  molecular mechanics;  particle
-  size;  physical chemistry;  polymerization;  reaction analysis"'
+tags: []
 categories: []
 date: '2018-01-01'
-lastmod: 2020-09-11T11:10:18+02:00
+lastmod: 2020-09-11T18:05:52+02:00
 featured: false
 draft: false
 
@@ -35,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:10:18.813915Z'
+publishDate: '2020-09-11T16:05:52.158047Z'
 publication_types:
 - 2
 abstract: Autocatalysis, i.e., the speeding up of a reaction through the very same

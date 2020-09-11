@@ -10,16 +10,10 @@ authors:
 - L. Rovigatti
 - T. Bellini
 - F. Sciortino
-tags:
-- '"Base pairs;  Bulk system;  Coarse grained models;  Coarse-grained;  Critical concentration;  DNA
-  duplexes;  DNA model;  Double-helical;  In-line;  Isotropic phase;  Liquid crystal
-  phasis;  Polydisperses;  Self-assemble;  Semi-flexible chains;  Stacking interaction;  Theoretical
-  approach;  Theoretical framework;  Theoretical prediction;  Theoretical values"'
-- '"Liquid crystals;  Self assembly"'
-- '"DNA"'
+tags: []
 categories: []
 date: '2012-01-01'
-lastmod: 2020-09-11T10:24:40+02:00
+lastmod: 2020-09-11T18:05:54+02:00
 featured: false
 draft: false
 
@@ -37,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:40.661348Z'
+publishDate: '2020-09-11T16:05:54.399347Z'
 publication_types:
 - 2
 abstract: Short blunt-ended DNA duplexes comprising 6 to 20 base pairs self-assemble

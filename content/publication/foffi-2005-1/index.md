@@ -10,16 +10,10 @@ authors:
 - C. De Michele
 - F. Sciortino
 - P. Tartaglia
-tags:
-- '"Critical temperature;  Newtonian dynamics (ND);  Packing fractions;  Short-ranged
-  attractive colloidal (SARC) systems"'
-- '"Agglomeration;  Binary mixtures;  Computer simulation;  Decomposition;  Glass;  Glass
-  transition;  Mathematical models;  Newtonian flow;  Phase separation;  Quenching;  Van
-  der Waals forces;  Vectors"'
-- '"Colloids"'
+tags: []
 categories: []
 date: '2005-01-01'
-lastmod: 2020-09-11T11:10:20+02:00
+lastmod: 2020-09-11T18:05:57+02:00
 featured: false
 draft: false
 
@@ -37,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:10:20.213049Z'
+publishDate: '2020-09-11T16:05:57.640229Z'
 publication_types:
 - 2
 abstract: We numerically investigate the competition between phase separation and

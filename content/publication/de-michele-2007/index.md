@@ -8,13 +8,10 @@ authors:
 - C. De Michele
 - R. Schilling
 - F. Sciortino
-tags:
-- '"Aspect ratio;  Glass transition;  Molecular dynamics;  Volume fraction"'
-- '"Drot diffusion coefficients;  Hard ellipsoids;  Scattering function"'
-- '"Molecular structure"'
+tags: []
 categories: []
 date: '2007-01-01'
-lastmod: 2020-09-11T10:24:42+02:00
+lastmod: 2020-09-11T18:05:56+02:00
 featured: false
 draft: false
 
@@ -32,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:42.418625Z'
+publishDate: '2020-09-11T16:05:56.821810Z'
 publication_types:
 - 2
 abstract: We study the dynamics of monodisperse hard ellipsoids via a new event-driven

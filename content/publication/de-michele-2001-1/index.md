@@ -7,14 +7,10 @@ summary: ''
 authors:
 - C.D. De Michele
 - D. Leporini
-tags:
-- '"Supercooled liquids"'
-- '"Computational fluid dynamics;  Diffusion in liquids;  High temperature properties;  Relaxation
-  processes;  Supercooling;  Transport properties;  Viscous flow"'
-- '"Molecular dynamics"'
+tags: []
 categories: []
 date: '2001-01-01'
-lastmod: 2020-09-11T10:24:44+02:00
+lastmod: 2020-09-11T18:05:58+02:00
 featured: false
 draft: false
 
@@ -32,7 +28,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:43.912720Z'
+publishDate: '2020-09-11T16:05:58.667041Z'
 publication_types:
 - 2
 abstract: The transport and relaxation properties of a molecular supercooled liquid

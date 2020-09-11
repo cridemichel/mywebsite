@@ -11,7 +11,7 @@ authors:
 tags: []
 categories: []
 date: '2008-01-01'
-lastmod: 2020-09-11T10:24:42+02:00
+lastmod: 2020-09-11T18:05:56+02:00
 featured: false
 draft: false
 
@@ -29,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:42.298440Z'
+publishDate: '2020-09-11T16:05:56.474128Z'
 publication_types:
 - '0'
 abstract: We introduce a novel algorithm to perform event-driven simulations of hard

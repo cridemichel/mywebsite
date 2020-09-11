@@ -15,20 +15,10 @@ authors:
 - B. Farago
 - P. Schurtenberger
 - A. Stradner
-tags:
-- '"Binary mixtures;  Dynamic light scattering;  Dynamics;  Light scattering;  Liquids;  Neutron
-  scattering;  Phase separation;  Proteins;  Slow light;  Spin polarization;  Volume
-  fraction"'
-- '"arrest transition;  Critical phenomenon;  Lens proteins;  Neutron spin echo;  Protein
-  dynamics"'
-- '"Spin dynamics"'
-- '"crystallin"'
-- '"gammaB;  gamma crystallin;  protein;  solution and solubility"'
-- '"animal;  bovine;  chemistry;  protein folding;  solution and solubility"'
-- '"Animals;  Cattle;  gamma-Crystallins;  Protein Folding;  Proteins;  Solutions"'
+tags: []
 categories: []
 date: '2015-01-01'
-lastmod: 2020-09-11T10:24:39+02:00
+lastmod: 2020-09-11T18:05:53+02:00
 featured: false
 draft: false
 
@@ -46,7 +36,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:39.121164Z'
+publishDate: '2020-09-11T16:05:52.987517Z'
 publication_types:
 - 2
 abstract: The globular protein γB-crystallin exhibits a complex phase behavior, where

@@ -8,15 +8,10 @@ authors:
 - S. Mossa
 - C. De Michele
 - F. Sciortino
-tags:
-- '"Clay;  Computer simulation;  Density (specific gravity);  Mathematical models;  Numerical
-  methods;  Phase equilibria"'
-- '"Brownian dynamics simulation;  Laponite colloidal suspension;  Rigid charged disks;  Synthetic
-  clay"'
-- '"Brownian movement"'
+tags: []
 categories: []
 date: '2007-01-01'
-lastmod: 2020-09-11T10:24:42+02:00
+lastmod: 2020-09-11T18:05:57+02:00
 featured: false
 draft: false
 
@@ -34,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:42.540440Z'
+publishDate: '2020-09-11T16:05:57.057097Z'
 publication_types:
 - 2
 abstract: The authors report Brownian dynamics simulation of the out-of-equilibrium

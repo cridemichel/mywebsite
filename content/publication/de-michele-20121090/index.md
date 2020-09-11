@@ -9,19 +9,10 @@ authors:
 - C. De Michele
 - T. Bellini
 - F. Sciortino
-tags:
-- '"Base pairs;  Bifunctional;  Coarse grained models;  Concentrated solution;  Critical
-  volume;  Cylindrical particles;  DNA duplexes;  Double-helical;  Energy functionals;  Equilibrium
-  polymerization;  Liquid crystal phasis;  Nematic liquids;  Numerical results;  Persistence
-  length;  Polydisperse chains;  Reactive site;  Square-well potentials;  Stacking
-  energy;  Stacking interaction;  System structures;  Terminal site;  Theoretical
-  result"'
-- '"Computer simulation;  DNA;  Experiments;  Nematic liquid crystals;  Polydispersity;  Self
-  assembly"'
-- '"Liquid crystal polymers"'
+tags: []
 categories: []
 date: '2012-01-01'
-lastmod: 2020-09-11T10:24:40+02:00
+lastmod: 2020-09-11T18:05:54+02:00
 featured: false
 draft: false
 
@@ -39,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:40.798521Z'
+publishDate: '2020-09-11T16:05:54.511908Z'
 publication_types:
 - 2
 abstract: Concentrated solutions of short blunt-ended DNA duplexes, as short as 6

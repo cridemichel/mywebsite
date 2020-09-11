@@ -10,16 +10,10 @@ authors:
 - G. Nyström
 - C. De Michele
 - R. Mezzenga
-tags:
-- '"Aspect ratio;  Drops;  Glycoproteins;  Liquid crystals;  Shear stress"'
-- '"Chiral nematics;  chiral rods;  Frank-Oseen;  twist;  Water-in-water emulsions"'
-- '"Nematic liquid crystals"'
-- '"amyloid;  lactoglobulin"'
-- '"chemistry;  isomerism;  liquid crystal;  polymerization"'
-- '"Amyloid;  Isomerism;  Lactoglobulins;  Liquid Crystals;  Polymerization"'
+tags: []
 categories: []
 date: '2019-01-01'
-lastmod: 2020-09-11T11:10:18+02:00
+lastmod: 2020-09-11T18:05:52+02:00
 featured: false
 draft: false
 
@@ -37,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:10:18.689256Z'
+publishDate: '2020-09-11T16:05:51.922771Z'
 publication_types:
 - 2
 abstract: Amyloid fibrils offer the possibility of controlling their contour length,

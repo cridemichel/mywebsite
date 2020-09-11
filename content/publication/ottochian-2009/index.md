@@ -9,20 +9,10 @@ authors:
 - A. Ottochian
 - C. De Michele
 - D. Leporini
-tags:
-- '"Analytic models;  Characteristic length;  Debye Waller factor;  Density scaling;  Escape
-  time;  Glass-forming systems;  Glassformers;  Length scale;  Lindemann melting;  Master
-  curve;  Microscopic kinetics;  Molecular dynamics simulations;  Numerical evidence;  Orders
-  of magnitude;  Picoseconds;  Polymer length;  Polymer systems;  Supercooled state;  Transition
-  state;  Translation diffusion"'
-- '"Binary mixtures;  Glass;  Glass forming machines;  Simulators;  Structural relaxation"'
-- '"Glass transition"'
-- '"glass;  polymer"'
-- '"article;  chemistry;  molecular dynamics"'
-- '"Glass;  Molecular Dynamics Simulation;  Polymers"'
+tags: []
 categories: []
 date: '2009-01-01'
-lastmod: 2020-09-11T11:10:19+02:00
+lastmod: 2020-09-11T18:05:55+02:00
 featured: false
 draft: false
 
@@ -40,7 +30,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:10:19.284732Z'
+publishDate: '2020-09-11T16:05:55.561283Z'
 publication_types:
 - 2
 abstract: On approaching the glass transition, the microscopic kinetic unit spends

@@ -10,14 +10,10 @@ authors:
 - C. De Michele
 - F. Sciortino
 - P. Tartaglia
-tags:
-- '"Decomposition kinetics;  Hard spheres;  Liquid-gas lines;  Packing fractions"'
-- '"Brownian movement;  Crystals;  Gels;  Mathematical models;  Phase separation;  Phase
-  transitions;  Thermodynamics"'
-- '"Colloids"'
+tags: []
 categories: []
 date: '2005-01-01'
-lastmod: 2020-09-11T10:24:42+02:00
+lastmod: 2020-09-11T18:05:57+02:00
 featured: false
 draft: false
 
@@ -35,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:42.791439Z'
+publishDate: '2020-09-11T16:05:57.759620Z'
 publication_types:
 - 2
 abstract: We numerically study the dependence of the dynamics on the range of interaction

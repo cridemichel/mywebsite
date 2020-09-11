@@ -10,15 +10,10 @@ authors:
 - E. Zaccarelli
 - P. Tartaglia
 - F. Sciortino
-tags:
-- '"Forming;  Gelation;  Molecular dynamics;  Polymers"'
-- '"Branched systems;  Equilibrium polymerizations;  Equilibrium temperatures;  Extended
-  networks;  Irreversible aggregations;  Loopless;  Molecular dynamics simulations;  Reversible
-  aggregations;  Self- assemblies"'
-- '"Dynamics"'
+tags: []
 categories: []
 date: '2009-01-01'
-lastmod: 2020-09-11T10:24:42+02:00
+lastmod: 2020-09-11T18:05:55+02:00
 featured: false
 draft: false
 
@@ -36,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:41.907813Z'
+publishDate: '2020-09-11T16:05:55.787637Z'
 publication_types:
 - 2
 abstract: We report molecular dynamics simulations of a gel-forming mixture of ellipsoidal

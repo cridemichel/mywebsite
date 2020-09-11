@@ -8,17 +8,10 @@ authors:
 - A. Ottochian
 - C. De Michele
 - D. Leporini
-tags:
-- '"Gaussian noise (electronic);  Glass;  Glass transition;  Molecular dynamics;  Molecular
-  mechanics;  Monomers;  Photoresists;  Polymers;  Quantum chemistry;  Trellis codes"'
-- '"Ballistic regimes;  Cage dynamics;  Chain connectivities;  Gaussian effects;  Gaussian
-  parameters;  Interaction potentials;  Intermediate scattering functions;  Molecular
-  dynamics simulation;  Physical states;  Polymer systems;  Rouse dynamics;  Time
-  windows;  Universal curves;  Vibration amplitudes"'
-- '"Dynamics"'
+tags: []
 categories: []
 date: '2008-01-01'
-lastmod: 2020-09-11T11:10:19+02:00
+lastmod: 2020-09-11T18:05:56+02:00
 featured: false
 draft: false
 
@@ -36,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:10:19.519607Z'
+publishDate: '2020-09-11T16:05:56.017204Z'
 publication_types:
 - 2
 abstract: The correlation between the fast cage dynamics and structural relaxation

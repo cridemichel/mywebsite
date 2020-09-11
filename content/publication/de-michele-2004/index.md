@@ -8,14 +8,10 @@ authors:
 - C. De Michele
 - F. Sciortino
 - A. Coniglio
-tags:
-- '"Amorphous materials;  Binary mixtures;  Computer simulation;  Crystallization;  Entropy;  Fluid
-  dynamics;  Glass transition;  Supercooling;  Viscosity of liquids"'
-- '"Fragility;  Soft spheres;  Softness"'
-- '"Materials science"'
+tags: []
 categories: []
 date: '2004-01-01'
-lastmod: 2020-09-11T10:24:43+02:00
+lastmod: 2020-09-11T18:05:57+02:00
 featured: false
 draft: false
 
@@ -33,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:42.966922Z'
+publishDate: '2020-09-11T16:05:57.873163Z'
 publication_types:
 - 2
 abstract: We address the question of the dependence of the fragility of glass forming

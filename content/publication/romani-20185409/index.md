@@ -8,14 +8,10 @@ authors:
 - E. Romani
 - A. Ferrarini
 - C. De Michele
-tags:
-- '"Elastic constants;  Intelligent systems;  Monte Carlo methods;  Self assembly;  Solutions"'
-- '"Chromonic liquid crystals;  Confined volume;  Elastic properties;  Large anisotropy;  Molecular
-  self assembly;  Nematic phase;  Self-assemble;  Semi-flexible chains"'
-- '"Liquid crystals"'
+tags: []
 categories: []
 date: '2018-01-01'
-lastmod: 2020-09-11T10:24:38+02:00
+lastmod: 2020-09-11T18:05:52+02:00
 featured: false
 draft: false
 
@@ -33,7 +29,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:38.485024Z'
+publishDate: '2020-09-11T16:05:52.277692Z'
 publication_types:
 - 2
 abstract: Chromonics are a class of liquid crystals made of aqueous solutions of plank-like

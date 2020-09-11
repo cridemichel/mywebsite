@@ -10,16 +10,10 @@ authors:
 - C. De Michele
 - D. Marenduzzo
 - E. Sanz
-tags:
-- '"Brownian particles;  MONTE CARLO;  Monte Carlo algorithms;  Monte Carlo dynamics;  Sampling
-  efficiency;  Spherical particle"'
-- '"Approximation algorithms;  Brownian movement;  Dynamics"'
-- '"Monte Carlo methods"'
-- '"algorithm;  article;  molecular dynamics;  Monte Carlo method;  particle size"'
-- '"Algorithms;  Molecular Dynamics Simulation;  Monte Carlo Method;  Particle Size"'
+tags: []
 categories: []
 date: '2011-01-01'
-lastmod: 2020-09-11T11:10:19+02:00
+lastmod: 2020-09-11T18:05:54+02:00
 featured: false
 draft: false
 
@@ -37,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T09:10:19.051902Z'
+publishDate: '2020-09-11T16:05:54.627050Z'
 publication_types:
 - 2
 abstract: Recently, a simple scaling argument was introduced that allows us to map,

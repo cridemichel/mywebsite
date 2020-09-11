@@ -10,14 +10,10 @@ authors:
 - P. Tartaglia
 - C. De Michele
 - S. Mossa
-tags:
-- '"Computer simulation;  Free energy;  Glass transition;  Liquids;  Molecular dynamics;  Molecular
-  vibrations"'
-- '"Glass forming liquid;  Statistical property;  Supercooled liquid"'
-- '"Statistical mechanics"'
+tags: []
 categories: []
 date: '2003-01-01'
-lastmod: 2020-09-11T10:24:43+02:00
+lastmod: 2020-09-11T18:05:58+02:00
 featured: false
 draft: false
 
@@ -35,7 +31,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2020-09-11T08:24:43.355794Z'
+publishDate: '2020-09-11T16:05:58.209208Z'
 publication_types:
 - 2
 abstract: The techniques which allow the numerical evaluation of the statistical properties
