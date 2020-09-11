@@ -14,7 +14,7 @@ header:
   image: ""
 ---
 
-# **PRESENT COURSES** {#CMP}
+## **PRESENT COURSES** {#CMP}
 
 [COMPUTING METHODS FOR PHYSICS](https://elearning.uniroma1.it/course/view.php?id=7741 "elearning web page of the course") (first year - master in physics)
 
@@ -24,15 +24,15 @@ header:
 
 
 
-# **PAST COURSES**
+## **PAST COURSES**
 
-## ATOMISTIC SIMULATIONS (2019-20) 
+### ATOMISTIC SIMULATIONS (2019-20) 
 
 see [COMPUTING METHODS FOR PHYSICS](#CMP)
 
 ---
 
-## SIMULAZIONI ATOMISTICHE (2018-19)
+### SIMULAZIONI ATOMISTICHE (2018-19)
 
 **Programma del corso**
 
@@ -55,7 +55,7 @@ Lo studente apprendera' la teoria alla base delle tecniche numeriche di Dinamica
 
 ---
 
-## COMPUTATIONAL PHYSICS OF MATTER 
+### COMPUTATIONAL PHYSICS OF MATTER 
 
 The course "Computational Physics of Matter" is intended to provide to the master students in Physics some basic techniques to solve numerically problems which can be encountered in the Physics of Matter. The course can be divided in three distinct parts: a first part which is dedicated to illustrate simple numerical methods to solve some types of linear partial differential equation (e.g. diffusion equation or Schrodinger equation), a second part where numerical methods to integrate stochastic differential equations are shown and a third part, which is devoted to describe the basics of Molecular Dynamics and Monte Carlo simulations.
 
@@ -72,8 +72,8 @@ The course "Computational Physics of Matter" is intended to provide to the maste
 
 ---
 
-## FISICA GENERALE - MODULO I (MECCANICA E TERMODINAMICA)
-### CORSO DI LAUREA IN SCIENZE GEOLOGICHE
+### FISICA GENERALE - MODULO I (MECCANICA E TERMODINAMICA)
+#### CORSO DI LAUREA IN SCIENZE GEOLOGICHE
 
 **PROGRAMMA DEL CORSO**
 
