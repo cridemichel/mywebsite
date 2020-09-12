@@ -24,6 +24,7 @@ interests:
 - Computer Simulations 
 - Colloidal Liquid Crystals
 - Theoretical Modelling
+- Self-assembling materials
 
 education:
   courses:
