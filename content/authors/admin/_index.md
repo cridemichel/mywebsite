@@ -68,4 +68,4 @@ user_groups:
 - Visitors
 ---
 
-Cristiano De Michele is Associate Professor at the Department of Physics, "Sapienza" University of Rome. He received his master degree in Physics from University of Pisa in 1998 and his PhD from University of Naples "Federico II" in 2003. Since then He has been working in Rome on supercooled liquids and structrural glasses and afterwards on colloidal systems. Recently, he has started studying both theoretically and numerically colloidal self-assembly-driven liquid crystals. 
+Cristiano De Michele is Associate Professor at the Department of Physics, "Sapienza" University of Rome. He received his master degree in Physics from University of Pisa in 1998 and his PhD from University of Naples "Federico II" in 2003. Since then he has been working in Rome on supercooled liquids and structrural glasses and afterwards on colloidal systems. Recently, he has started studying both theoretically and numerically colloidal self-assembly-driven liquid crystals. 
