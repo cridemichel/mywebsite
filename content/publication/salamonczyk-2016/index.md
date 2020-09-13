@@ -57,3 +57,8 @@ publication: '*Nature Communications*'
 url_pdf: https://www.scopus.com/inward/record.uri?eid=2-s2.0-84995468813&doi=10.1038%2fncomms13358&partnerID=40&md5=4ae13628b294cc6c8c13eecec4bf2514
 doi: 10.1038/ncomms13358
 ---
+
+Press Releases (in Italian):
+- [ANSA](https://www.ansa.it/scienza/notizie/rubriche/biotech/2016/11/21/pelle-del-corpo-diventa-hi-tech-con-display-e-tattoo-animati-_5c221269-4b6e-4e84-87a3-fb53dc42aeb0.html)   
+- [GALILEO.NET](https://www.galileonet.it/tatuaggio-display-febbre/)
+- [DIPARTIMENTO DI FISICA SAPIENZA](https://www.phys.uniroma1.it/fisica/archivionotizie/mamma-ho-la-febbre)

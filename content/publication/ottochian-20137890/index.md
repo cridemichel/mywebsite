@@ -1,8 +1,8 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: Comment on \"generalized localization model of relaxation in glass-forming
-  liquids\"
+title: Comment on "generalized localization model of relaxation in glass-forming
+  liquids"
 subtitle: ''
 summary: ''
 authors:

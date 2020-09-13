@@ -52,3 +52,5 @@ publication: '*Journal of Chemical Physics*'
 url_pdf: https://www.scopus.com/inward/record.uri?eid=2-s2.0-20544449875&doi=10.1063%2f1.1924704&partnerID=40&md5=d1356fb75b3cbced56de4d2f162a3fcd
 doi: 10.1063/1.1924704
 ---
+
+[ see comment by S. Sastry: Nature 441, 671 (2006) ]
