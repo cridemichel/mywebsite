@@ -18,11 +18,15 @@ header:
 
 [COMPUTING METHODS FOR PHYSICS](https://elearning.uniroma1.it/course/view.php?id=7741 "elearning web page of the course") (first year - master in physics)
 
-[LABORATORIO DI CALCOLO](https://elearning.uniroma1.it/course/view.php?id=7718 "elearning webpage of the course") (primo anno - laurea triennale in fisica)
+virtual classrom (google meet link):
+https://meet.google.com/dym-vpon-oiq
 
 ---
 
+[LABORATORIO DI CALCOLO](https://elearning.uniroma1.it/course/view.php?id=7718 "elearning webpage of the course") (primo anno - laurea triennale in fisica)
 
+link google meet per seguire le lezioni a distanza: 
+[https://meet.google.com/dkg-mcoo-ugr](https://meet.google.com/dkg-mcoo-ugr) 
 
 ## **PAST COURSES**
 
@@ -36,7 +40,7 @@ see [COMPUTING METHODS FOR PHYSICS](#CMP)
 
 **Programma del corso**
 
-Descrizione: Il corso e' dedicato allo studio di sistemi a molti corpi classici tramite tecniche di simulazione numerica. Verranno illustrati i metodi alla base delle tecniche di Dinamica Molecolare e Monte Carlo per sistemi atomici e molecolari. Verranno discussi la risoluzione delle equazioni del moto con algoritmi simplettici, integratori con passi di integrazione multipli, gli algoritmi per il controllo della temperatura e pressione, per la dinamica browniana, per la trattazione dei vincoli olonomi, per la dinamica dei corpi rigidi, per la valutazioni numeriche dell' energia libera di fluidi e solidi, per lo studio dei diagrammi di fase.
+Descrizione: Il corso è dedicato allo studio di sistemi a molti corpi classici tramite tecniche di simulazione numerica. Verranno illustrati i metodi alla base delle tecniche di Dinamica Molecolare e Monte Carlo per sistemi atomici e molecolari. Verranno discussi la risoluzione delle equazioni del moto con algoritmi simplettici, integratori con passi di integrazione multipli, gli algoritmi per il controllo della temperatura e pressione, per la dinamica browniana, per la trattazione dei vincoli olonomi, per la dinamica dei corpi rigidi, per la valutazioni numeriche dell' energia libera di fluidi e solidi, per lo studio dei diagrammi di fase.
 
 
 **Obiettivi formativi:**
