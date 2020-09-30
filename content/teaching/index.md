@@ -21,12 +21,21 @@ header:
 virtual classrom (google meet link):
 https://meet.google.com/dym-vpon-oiq
 
+virtual reception:
+
+- (Google Meet)[https://meet.google.com/urh-mtyf-jvr?hs=122&authuser=1]
+- (Zoom) [https://uniroma1.zoom.us/j/89778380987?pwd=QmUrYml3a2xiVHY5WERsWFFqa2NyQT09]
+
 ---
 
 [LABORATORIO DI CALCOLO](https://elearning.uniroma1.it/course/view.php?id=7718 "elearning webpage of the course") (primo anno - laurea triennale in fisica)
 
 link google meet per seguire le lezioni a distanza: 
 [https://meet.google.com/dkg-mcoo-ugr](https://meet.google.com/dkg-mcoo-ugr) 
+
+Ricevimento virtuale:
+- (Google Meet)[https://meet.google.com/urh-mtyf-jvr?hs=122&authuser=1]
+- (Zoom)[https://uniroma1.zoom.us/j/92922738810?pwd=QUdWNXJzcmhVZzNpcUhoTk1iNDcydz09]
 
 ## **PAST COURSES**
 
