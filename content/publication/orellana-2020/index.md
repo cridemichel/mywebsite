@@ -6,8 +6,8 @@ title: 'Algorithm 1010: Boosting Efficiency in Solving Quartic Equations with No
 subtitle: ''
 summary: ''
 authors:
-- Alberto Giacomo Orellana
-- Cristiano De Michele
+- A. G. Orellana
+- C. De Michele
 tags:
 - '"numerical solver design"'
 - '"Quartic equation"'

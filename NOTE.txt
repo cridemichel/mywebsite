@@ -3,6 +3,10 @@ e da questa directory usare il comando:
 
 academic import --bibtex ~/References.bib
 
+si può anche importare una sola referenza (il comando import aggiunge referenze)
+
+per far scaricare il pdf copiare l'articolo in formato pdf con lo stesso nome
+della cartella relativa che si trova in "contests/publications"
 ------
 
 aggiornamento tema:
