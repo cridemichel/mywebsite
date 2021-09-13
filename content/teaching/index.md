@@ -14,7 +14,7 @@ header:
   image: ""
 ---
 
-## **PRESENT COURSES ** {#CMP}
+## **PRESENT COURSES** {#CMP}
 
 [COMPUTING METHODS FOR PHYSICS](https://elearning.uniroma1.it/course/view.php?id=7741 "elearning web page of the course") (first year - master in physics)
 
