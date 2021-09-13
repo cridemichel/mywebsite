@@ -1,7 +1,7 @@
 ---
 title:
 summary: Past and Present Teaching Duties
-date: "2020-09-10"
+date: "2021-09-13"
 
 eading_time: false  # Show estimated reading time?
 share: false  # Show social sharing links?
@@ -14,17 +14,17 @@ header:
   image: ""
 ---
 
-## **PRESENT COURSES** {#CMP}
+## **PRESENT COURSES ** {#CMP}
 
 [COMPUTING METHODS FOR PHYSICS](https://elearning.uniroma1.it/course/view.php?id=7741 "elearning web page of the course") (first year - master in physics)
 
 virtual classrom (google meet link):
-https://meet.google.com/dym-vpon-oiq
+https://meet.google.com/szf-gndu-pwc
 
 virtual reception:
 
-- [Google Meet](https://meet.google.com/urh-mtyf-jvr?hs=122&authuser=1)
-- [Zoom](https://uniroma1.zoom.us/j/89778380987?pwd=QmUrYml3a2xiVHY5WERsWFFqa2NyQT09)
+- [Google Meet](https://meet.google.com/urh-mtyf-jvr)
+- [Zoom](https://uniroma1.zoom.us/j/85479173826?pwd=QjdVT1dYaUpYU3FnVkMvNGF3eXZSZz09)
 
 ---
 
@@ -34,8 +34,8 @@ link google meet per seguire le lezioni a distanza:
 [https://meet.google.com/dkg-mcoo-ugr](https://meet.google.com/dkg-mcoo-ugr) 
 
 Ricevimento virtuale:
-- [Google Meet](https://meet.google.com/urh-mtyf-jvr?hs=122&authuser=1)
-- [Zoom](https://uniroma1.zoom.us/j/92922738810?pwd=QUdWNXJzcmhVZzNpcUhoTk1iNDcydz09)
+- [Google Meet](https://meet.google.com/urh-mtyf-jvr)
+- [Zoom](https://uniroma1.zoom.us/j/82347435116?pwd=WTRhK1Rmd1c4VmRGM2lLUnh6eUgydz09)
 
 ## **PAST COURSES**
 
