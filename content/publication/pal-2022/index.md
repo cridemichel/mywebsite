@@ -40,20 +40,20 @@ abstract: An anisotropic colloidal shape in combination with an externally tunab
   interaction potential results in a plethora of self-assembled structures with potential
   applications toward the fabrication of smart materials. Here we present our investigation
   on the influence of an external magnetic field on the self-assembly of hematite-silica
-  core--shell prolate colloids for two aspect ratios $h̊o$ = 2.9 and 3.69. Our study
+  core--shell prolate colloids for two aspect ratios ρ = 2.9 and 3.69. Our study
   shows a rather counterintuitive but interesting phenomenon, where prolate colloids
   self-assemble into oblate liquid crystalline (LC) phases. With increasing concentration,
-  particles with smaller $o̊$ reveal a sequence of LC phases involving para-nematic,
+  particles with smaller ρ reveal a sequence of LC phases involving para-nematic,
   nematic, smectic, and oriented glass phases. The occurrence of a smectic phase for
   colloidal ellipsoids has been neither predicted nor reported before. Quantitative
   shape analysis of the particles together with extensive computer simulations indicate
-  that in addition to $r$̊, a subtle deviation from the ideal ellipsoidal shape dictates
+  that in addition to ρ, a subtle deviation from the ideal ellipsoidal shape dictates
   the formation of this unusual sequence of field-induced structures. Particles with
-  $rh ̊= 2.9 exhibit a hybrid shape containing features from both spherocylinders
+  ρ = 2.9 exhibit a hybrid shape containing features from both spherocylinders
   and ellipsoids, which make their self-assembly behavior richer than that observed
-  for either of the ``pure'' shapes. The shape of the particles with higher $ρm̊atches
+  for either of the "pure" shapes. The shape of the particles with higher ρ matches
   closely with the ideal ellipsoids, as a result their phase behavior follows the
-  one expected for a ``pure'' ellipsoidal shape. Using anisotropic building blocks
+  one expected for a "pure" ellipsoidal shape. Using anisotropic building blocks
   and external fields, our study demonstrates the ramifications of the subtle changes
   in the particle shape on the field-directed self-assembled structures with externally
   tunable properties.
