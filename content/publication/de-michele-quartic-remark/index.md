@@ -2,7 +2,7 @@
 # Documentation: https://wowchemy.com/docs/managing-content/
 
 title: 'Remark on Algorithm 1010: Boosting Efficiency in Solving Quartic Equations
-  with No Compromise in Accuracy.'
+  with No Compromise in Accuracy'
 subtitle: ''
 summary: ''
 authors:
