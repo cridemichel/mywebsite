@@ -20,6 +20,13 @@ header:
 
 ## **MASTER THESES**
 
+- [Giorgio Contestabile (2022)]()
+
+- [Mattia Trapella (2022): "Studio Tramite Simulazioni "Coarse-grained" al calcolatore della formazione di doppie eliche
+    di DNA a partire da singole nucleobasi"]()
+
+- [Simone Milano (2021): "Transizioni di fase in un sistema di cristalli liquidi di DNA" (in italian)](Milano-thesis.pdf)
+
 - [Carlo Andrea De Filippo (2020): "Nanomattoncini di DNA attrattivi: studio numerico del diagramma di fase" (in italian)](DeFilippo-thesis.pdf)
 
 - [Alberto Giacomo Orellana (2018): "Cristalli Liquidi Basati sul DNA: Modellizzazione e Simulazioni al Computer" (in italian)](Orellana-thesis.pdf)
