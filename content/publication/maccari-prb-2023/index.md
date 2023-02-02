@@ -16,7 +16,7 @@ authors:
 - C. De Michele
 - C. Castellani
 - L. Benfatto
-- Dragana Popoviıfmmode \acutec\else ć\fi
+- Dragana Popović
 tags: []
 categories: []
 date: '2023-01-01'
