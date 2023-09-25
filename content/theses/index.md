@@ -27,7 +27,7 @@ header:
 - [Giorgio Contestabile (2023)]()
 
 - [Mattia Trapella (2022): "Studio Tramite Simulazioni "Coarse-grained" al calcolatore della formazione di doppie eliche
-    di DNA a partire da singole nucleobasi"]()
+    di DNA a partire da singole nucleobasi"](tesi_trapella.pdf)
 
 - [Simone Milano (2021): "Transizioni di fase in un sistema di cristalli liquidi di DNA" (in italian)](Milano-thesis.pdf)
 
