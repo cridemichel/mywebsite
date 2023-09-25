@@ -20,7 +20,11 @@ header:
 
 ## **MASTER THESES**
 
-- [Giorgio Contestabile (2022)]()
+- [Alessandro Forina (2023)]()
+
+- [Tommaso Temperini (2023)]()
+
+- [Giorgio Contestabile (2023)]()
 
 - [Mattia Trapella (2022): "Studio Tramite Simulazioni "Coarse-grained" al calcolatore della formazione di doppie eliche
     di DNA a partire da singole nucleobasi"]()
