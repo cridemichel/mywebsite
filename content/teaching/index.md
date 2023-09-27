@@ -18,24 +18,15 @@ header:
 
 [COMPUTING METHODS FOR PHYSICS](https://elearning.uniroma1.it/course/view.php?id=7741 "elearning web page of the course") (first year - master in physics)
 
-virtual classrom (google meet link):
-https://meet.google.com/szf-gndu-pwc
-
-virtual reception:
-
-- [Google Meet](https://meet.google.com/urh-mtyf-jvr)
-- [Zoom](https://uniroma1.zoom.us/j/85479173826?pwd=QjdVT1dYaUpYU3FnVkMvNGF3eXZSZz09)
+[CLASSROOM](https://classroom.google.com/c/NjI0MDYyMTk2Nzkw?cjc=svgtdpi)
 
 ---
 
 [LABORATORIO DI CALCOLO](https://elearning.uniroma1.it/course/view.php?id=7718 "elearning webpage of the course") (primo anno - laurea triennale in fisica)
 
-link google meet per seguire le lezioni a distanza: 
-[https://meet.google.com/dkg-mcoo-ugr](https://meet.google.com/dkg-mcoo-ugr) 
+[QUESTIONARIO 2023-24](https://docs.google.com/forms/d/e/1FAIpQLSeXGUYTMUgLHHS4SxbzXgr0_bNCL52fGdpt6iX_vMfd1-JIig/viewform)
 
-Ricevimento virtuale:
-- [Google Meet](https://meet.google.com/urh-mtyf-jvr)
-- [Zoom](https://uniroma1.zoom.us/j/82347435116?pwd=WTRhK1Rmd1c4VmRGM2lLUnh6eUgydz09)
+[CLASSROOM](https://classroom.google.com/c/NjI0MDYwNzIwNDU4?cjc=mgqkbx3)
 
 ## **PAST COURSES**
 
