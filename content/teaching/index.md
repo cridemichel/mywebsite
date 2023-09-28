@@ -16,17 +16,17 @@ header:
 
 ## **PRESENT COURSES** {#CMP}
 
-# COMPUTING METHODS FOR PHYSICS
+# COMPUTING METHODS FOR PHYSICS (first year - master in physics) 
 
-[elearnng webpage](https://elearning.uniroma1.it/course/view.php?id=7741 "elearning web page of the course") (first year - master in physics)
+[elearnng webpage](https://elearning.uniroma1.it/course/view.php?id=7741 "elearning web page of the course") 
 
 [google classroom](https://classroom.google.com/c/NjI0MDYyMTk2Nzkw?cjc=svgtdpi)
 
 ---
 
-# LABORATORIO DI CALCOLO 
+# LABORATORIO DI CALCOLO (primo anno - laurea triennale in fisica)
 
-[Pagina elearning](https://elearning.uniroma1.it/course/view.php?id=7718 "elearning webpage of the course") (primo anno - laurea triennale in fisica)
+[Pagina elearning](https://elearning.uniroma1.it/course/view.php?id=7718 "elearning webpage of the course") 
 
 [Questionario 2023-24](https://docs.google.com/forms/d/e/1FAIpQLSeXGUYTMUgLHHS4SxbzXgr0_bNCL52fGdpt6iX_vMfd1-JIig/viewform)
 
