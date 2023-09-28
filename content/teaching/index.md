@@ -16,7 +16,7 @@ header:
 
 ## **PRESENT COURSES** {#CMP}
 
-# COMPUTING METHODS FOR PHYSICS (first year - master in physics) 
+### COMPUTING METHODS FOR PHYSICS (first year - master in physics) 
 
 [elearnng webpage](https://elearning.uniroma1.it/course/view.php?id=7741 "elearning web page of the course") 
 
@@ -24,7 +24,7 @@ header:
 
 ---
 
-# LABORATORIO DI CALCOLO (primo anno - laurea triennale in fisica)
+### LABORATORIO DI CALCOLO (primo anno - laurea triennale in fisica)
 
 [Pagina elearning](https://elearning.uniroma1.it/course/view.php?id=7718 "elearning webpage of the course") 
 
