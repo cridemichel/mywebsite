@@ -1,5 +1,5 @@
 ---
-title: Observation of the most H<sub>2</sub>-dense filled ice under high pressure
+title: Observation of the most H2-dense filled ice under high pressure
 
 # Authors
 # A YAML list of author names
