@@ -1,7 +1,7 @@
 per importare le publicazioni preparare un file bib (ad es. References.bib)
 e da questa directory usare il comando:
 
-academic import --bibtex ~/References.bib
+academic import --bibtex ~/References.bib content/publication/<nome_cartella> 
 
 si può anche importare una sola referenza (il comando import aggiunge referenze)
 
