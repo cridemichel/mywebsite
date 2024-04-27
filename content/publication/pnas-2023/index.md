@@ -1,7 +1,7 @@
 ---
 # Documentation: https://wowchemy.com/docs/managing-content/
 
-title: "Observation of the most H<sub>2</sub>-dense filled ice under high pressure"
+title: "Observation of the most H2-dense filled ice under high pressure"
 authors:
 - Umbertoluca Ranieri
 - Simone Di Cataldo
