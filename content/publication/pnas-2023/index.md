@@ -29,7 +29,7 @@ publishDate: '2024-04-27T09:32:29.693768Z'
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- article-journal
+- '2'
 
 # Publication name and optional abbreviated publication name.
 publication: '*Proceedings of the National Academy of Sciences*'
