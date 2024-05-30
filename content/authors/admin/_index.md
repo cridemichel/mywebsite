@@ -21,7 +21,8 @@ organizations:
 bio: My research interests include computer simulations and theory of soft matter systems
 
 interests:
-- Computer Simulations 
+- Computer Simulations
+- Numerical Algorithms
 - Colloidal Liquid Crystals
 - Theoretical Modelling
 - Self-assembling materials
