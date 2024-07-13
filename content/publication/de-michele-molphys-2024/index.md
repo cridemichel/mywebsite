@@ -22,7 +22,7 @@ publishDate: '2024-07-13T09:59:49.450831Z'
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- article-journal
+- '2'
 
 # Publication name and optional abbreviated publication name.
 publication: '*Molecular Physics*'
