@@ -82,7 +82,7 @@ image:
 #   E.g. `projects: ['internal-project']` links to `content/project/internal-project/index.md`.
 #   Otherwise, set `projects: []`.
 projects: []
-links:
-- name: URL
-  url: https://doi.org/10.1080/00268976.2024.2364834
+# links:
+# - name: URL
+#  url: https://doi.org/10.1080/00268976.2024.2364834
 ---
