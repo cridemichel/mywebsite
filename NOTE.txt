@@ -9,7 +9,14 @@ per far scaricare il pdf copiare l'articolo in formato pdf con lo stesso nome
 della cartella relativa che si trova in "content/publication"
 
 
-N.B. cambiare article type in '2' altrimenti il build fallisce
+N.B. 
+
+1) cambiare article type in '2' altrimenti il build fallisce
+
+2) nell'url togliere i singoli apici ovvero deve essere del tipo:
+ 
+url: https://doi.org/10.1080/00268976.2024.2364834
+
 ------
 
 aggiornamento tema:
