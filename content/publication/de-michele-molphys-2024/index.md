@@ -84,5 +84,5 @@ image:
 projects: []
 links:
 - name: URL
-  url: '   https://doi.org/10.1080/00268976.2024.2364834   '
+  url: https://doi.org/10.1080/00268976.2024.2364834
 ---
