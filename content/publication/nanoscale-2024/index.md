@@ -8,8 +8,8 @@ title: 'Dilute suspensions of Janus rods: the role of bond and shape anisotropy'
 authors:
 - Carlo Andrea De Filippo
 - Sara Del Galdo
-- Cristiano De Michele
 - Emanuela Bianchi
+- Cristiano De Michele
 - Barbara Capone
 
 # Author notes (such as 'Equal Contribution')
