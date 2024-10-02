@@ -32,7 +32,7 @@ header:
 
 [Questionario 2024-25](https://docs.google.com/forms/d/e/1FAIpQLSeXGUYTMUgLHHS4SxbzXgr0_bNCL52fGdpt6iX_vMfd1-JIig/viewform)
 
-[google classroom](https://classroom.google.com/c/NzE3OTMzNzUyNjUw)
+[google classroom](https://classroom.google.com/c/NzE3OTMzNzUyNjUw?cjc=faar2xc)
 
 ## **PAST COURSES**
 
