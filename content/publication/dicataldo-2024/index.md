@@ -1,5 +1,5 @@
 ---
-title: Giant Splitting of the Hydrogen Rotational Eigenenergies in the $mathrmC_2$
+title: Giant Splitting of the Hydrogen Rotational Eigenenergies in the $C_2$
   Filled Ice
 
 # Authors
