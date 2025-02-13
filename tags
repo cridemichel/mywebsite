@@ -8223,6 +8223,7 @@ PhD THESES	public/theses/index.html	/^<a href=# class="dropdown-item js-set-them
 PhysRevB.107.014509	content/publication/maccari-prb-2023/cite.bib	/^@article{PhysRevB.107.014509,$/;"	a
 PhysRevB.107.014509	public/publication/maccari-prb-2023/cite.bib	/^@article{PhysRevB.107.014509,$/;"	a
 PhysRevLett.133.236101	content/publication/dicataldo-2024/cite.bib	/^@article{PhysRevLett.133.236101,$/;"	a
+PhysRevResearch.7.013160	content/publication/physrevres_2025/cite.bib	/^@article{PhysRevResearch.7.013160,$/;"	a
 Pi	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	c
 Piazza2013-1	content/publication/piazza-2013-1/cite.bib	/^@article{Piazza2013-1,$/;"	a
 Piazza2013-1	public/publication/piazza-2013-1/cite.bib	/^@article{Piazza2013-1,$/;"	a
