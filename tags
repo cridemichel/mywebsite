@@ -8110,6 +8110,7 @@ Monte Carlo and event-driven dynamics of Brownian particles with orientational d
 Monte Carlo and event-driven dynamics of Brownian particles with orientational degrees of freedom | C. De Michele Web	public/publication/romano-2011/index.html	/^<link rel=stylesheet href="https:\/\/fonts.googleapis.com\/css?family=Montserrat:400,700%7CRobot/;"	j
 Mossa2007	content/publication/mossa-2007/cite.bib	/^@article{Mossa2007,$/;"	a
 Mossa2007	public/publication/mossa-2007/cite.bib	/^@article{Mossa2007,$/;"	a
+Mostarac2025	content/publication/mostarac-2025/cite.bib	/^@article{Mostarac2025,$/;"	a
 N. Dorsaz	public/author/n.-dorsaz/index.html	/^<a href=# class="dropdown-item js-set-theme-auto"><span>Automatic<\/span><\/a><\/div><\/li><\/ul/;"	h
 N. Dorsaz | C. De Michele Web	public/author/n.-dorsaz/index.html	/^<link rel=stylesheet href="https:\/\/fonts.googleapis.com\/css?family=Montserrat:400,700%7CRobot/;"	j
 N. Ghofraniha	public/author/n.-ghofraniha/index.html	/^<a href=# class="dropdown-item js-set-theme-auto"><span>Automatic<\/span><\/a><\/div><\/li><\/ul/;"	h
@@ -9236,7 +9237,6 @@ Zi	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e
 [❤️ Click here to unlock rewards with sponsorship](https://wowchemy.com/plans/)	README.md	/^### [❤️ Click here to unlock rewards with sponsorship](https:\/\/wowchemy.com\/plans\/)$/;"	S	section:Academic Template for [Hugo](https://github.com/gohugoio/hugo)""Crowd-funded open-source software
 _	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	v	function:anonymousFunction0335e1fa0300
 _	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:Ri
-_activate	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	class:t
 _activate	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 _activate	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	f	method:d
 _activate	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^for(var i=this._offsets.length;i--;){var isActiveTarget=this._activeTarget!==this._targets[i]&&s/;"	f
@@ -9291,7 +9291,7 @@ _cleanTipClass	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^retu
 _cleanTipClass	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^return config;};_proto._cleanTipClass=function _cleanTipClass(){var $tip=$(this.getTipElement())/;"	f	variable:_proto
 _cleanTipClass	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return config;};_proto._cleanTipClass=function _cleanTipClass(){var $tip=$(this.getTipElement())/;"	f
 _cleanTipClass	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return config;};_proto._cleanTipClass=function _cleanTipClass(){var $tip=$(this.getTipElement())/;"	f	variable:_proto
-_cleanTipClass	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:s
+_cleanTipClass	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	method:s
 _clear	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^$(this._scrollElement).trigger(EVENT_ACTIVATE,{relatedTarget:target});};_proto._clear=function _/;"	f
 _clear	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^$(this._scrollElement).trigger(EVENT_ACTIVATE,{relatedTarget:target});};_proto._clear=function _/;"	f	variable:_proto
 _clear	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^$(this._scrollElement).trigger(EVENT_ACTIVATE,{relatedTarget:target});};_proto._clear=function _/;"	f
@@ -9306,7 +9306,7 @@ _clearMenus	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^data[co
 _clearMenus	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^data[config]();}});};Dropdown._clearMenus=function _clearMenus(event){if(event&&(event.which===R/;"	f	variable:Dropdown
 _clearMenus	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^data[config]();}});};Dropdown._clearMenus=function _clearMenus(event){if(event&&(event.which===R/;"	f
 _clearMenus	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^data[config]();}});};Dropdown._clearMenus=function _clearMenus(event){if(event&&(event.which===R/;"	f	variable:Dropdown
-_clearMenus	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+_clearMenus	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 _close	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 _close	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^$(this._element).off(EVENT_CLICK_DISMISS$1);$.removeData(this._element,DATA_KEY$a);this._element/;"	f
 _close	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^$(this._element).off(EVENT_CLICK_DISMISS$1);$.removeData(this._element,DATA_KEY$a);this._element/;"	f	variable:_proto
@@ -9314,7 +9314,7 @@ _close	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^$(this._elem
 _close	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^$(this._element).off(EVENT_CLICK_DISMISS$1);$.removeData(this._element,DATA_KEY$a);this._element/;"	f	variable:_proto
 _close	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^$(this._element).off(EVENT_CLICK_DISMISS$1);$.removeData(this._element,DATA_KEY$a);this._element/;"	f
 _close	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^$(this._element).off(EVENT_CLICK_DISMISS$1);$.removeData(this._element,DATA_KEY$a);this._element/;"	f	variable:_proto
-_close	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+_close	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 _createClass	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^function _createClass(Constructor,protoProps,staticProps){if(protoProps)_defineProperties(Constr/;"	f	function:anonymousFunction2ed755a80300
 _createClass	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^function _createClass(Constructor,protoProps,staticProps){if(protoProps)_defineProperties(Constr/;"	f	function:anonymousFunctione3f729c20300
 _createClass	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^function _createClass(Constructor,protoProps,staticProps){if(protoProps)_defineProperties(Constr/;"	f	function:anonymousFunction023a12f80300
@@ -9334,7 +9334,7 @@ _dataApiKeydownHandler	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.j
 _dataApiKeydownHandler	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^return parent||element.parentNode;};Dropdown._dataApiKeydownHandler=function _dataApiKeydownHand/;"	f	variable:Dropdown
 _dataApiKeydownHandler	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return parent||element.parentNode;};Dropdown._dataApiKeydownHandler=function _dataApiKeydownHand/;"	f
 _dataApiKeydownHandler	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return parent||element.parentNode;};Dropdown._dataApiKeydownHandler=function _dataApiKeydownHand/;"	f	variable:Dropdown
-_dataApiKeydownHandler	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+_dataApiKeydownHandler	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 _defineProperties	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^*\/(function(global,factory){typeof exports==='object'&&typeof module!=='undefined'?factory(expo/;"	f	function:anonymousFunction2ed755a80300
 _defineProperties	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^*\/(function(global,factory){typeof exports==='object'&&typeof module!=='undefined'?factory(expo/;"	f	function:anonymousFunctione3f729c20300
 _defineProperties	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^*\/(function(global,factory){typeof exports==='object'&&typeof module!=='undefined'?factory(expo/;"	f	function:anonymousFunction023a12f80300
@@ -9389,7 +9389,6 @@ _getAttachment	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^retu
 _getAttachment	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^return $(document).find(this.config.container);};_proto._getAttachment=function _getAttachment(p/;"	f	variable:_proto
 _getAttachment	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return $(document).find(this.config.container);};_proto._getAttachment=function _getAttachment(p/;"	f
 _getAttachment	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return $(document).find(this.config.container);};_proto._getAttachment=function _getAttachment(p/;"	f	variable:_proto
-_getConfig	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	class:t
 _getConfig	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 _getConfig	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	m	method:t
 _getConfig	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	f	method:c
@@ -9402,7 +9401,6 @@ _getConfig	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^var dire
 _getConfig	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var direction=index>activeIndex?DIRECTION_NEXT:DIRECTION_PREV;this._slide(direction,this._items[/;"	f
 _getConfig	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var direction=index>activeIndex?DIRECTION_NEXT:DIRECTION_PREV;this._slide(direction,this._items[/;"	f	variable:_proto
 _getConfig	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
-_getConfig	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
 _getConfig	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:o
 _getConfig	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	class:e
 _getContainer	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^return offset;};_proto._getContainer=function _getContainer(){if(this.config.container===false){/;"	f
@@ -9418,7 +9416,7 @@ _getContent	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this.se
 _getContent	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this.setElementContent($tip.find(SELECTOR_CONTENT),content);$tip.removeClass(CLASS_NAME_FADE$3+"/;"	f	variable:_proto
 _getContent	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this.setElementContent($tip.find(SELECTOR_CONTENT),content);$tip.removeClass(CLASS_NAME_FADE$3+"/;"	f
 _getContent	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this.setElementContent($tip.find(SELECTOR_CONTENT),content);$tip.removeClass(CLASS_NAME_FADE$3+"/;"	f	variable:_proto
-_getContent	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:s
+_getContent	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	method:s
 _getDelegateConfig	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^return config;};_proto._getDelegateConfig=function _getDelegateConfig(){var config={};if(this.co/;"	f
 _getDelegateConfig	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^return config;};_proto._getDelegateConfig=function _getDelegateConfig(){var config={};if(this.co/;"	f	variable:_proto
 _getDelegateConfig	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^return config;};_proto._getDelegateConfig=function _getDelegateConfig(){var config={};if(this.co/;"	f
@@ -9468,7 +9466,7 @@ _getOffset	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^return p
 _getOffset	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return placement;};_proto._detectNavbar=function _detectNavbar(){return $(this._element).closest/;"	f
 _getOffset	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return placement;};_proto._detectNavbar=function _detectNavbar(){return $(this._element).closest/;"	f	variable:_proto
 _getOffset	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:o
-_getOffsetHeight	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	class:t
+_getOffsetHeight	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 _getOffsetHeight	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	f	method:c
 _getOffsetHeight	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f
 _getOffsetHeight	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
@@ -9476,7 +9474,7 @@ _getOffsetHeight	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^Ut
 _getOffsetHeight	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
 _getOffsetHeight	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f
 _getOffsetHeight	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
-_getOffsetHeight	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+_getOffsetHeight	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 _getParent	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	m	method:t
 _getParent	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	m	method:c
 _getParent	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^this.setTransitioning(true);var complete=function complete(){_this2.setTransitioning(false);$(_t/;"	f
@@ -9494,7 +9492,7 @@ _getParentFromElement	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js
 _getParentFromElement	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^$(dropdownMenu).removeClass(CLASS_NAME_SHOW$2);$(parent).removeClass(CLASS_NAME_SHOW$2).trigger(/;"	f	variable:Dropdown
 _getParentFromElement	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^$(dropdownMenu).removeClass(CLASS_NAME_SHOW$2);$(parent).removeClass(CLASS_NAME_SHOW$2).trigger(/;"	f
 _getParentFromElement	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^$(dropdownMenu).removeClass(CLASS_NAME_SHOW$2);$(parent).removeClass(CLASS_NAME_SHOW$2).trigger(/;"	f	variable:Dropdown
-_getParentFromElement	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+_getParentFromElement	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 _getPlacement	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 _getPlacement	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	f	variable:e
 _getPlacement	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^return this._menu;};_proto._getPlacement=function _getPlacement(){var $parentDropdown=$(this._el/;"	f
@@ -9522,7 +9520,7 @@ _getRootElement	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^thi
 _getRootElement	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._removeElement(rootElement);};_proto.dispose=function dispose(){$.removeData(this._element,/;"	f
 _getRootElement	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._removeElement(rootElement);};_proto.dispose=function dispose(){$.removeData(this._element,/;"	f	variable:_proto
 _getRootElement	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	method:s
-_getScrollHeight	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	class:t
+_getScrollHeight	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 _getScrollHeight	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	f	method:c
 _getScrollHeight	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f
 _getScrollHeight	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
@@ -9530,8 +9528,8 @@ _getScrollHeight	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^Ut
 _getScrollHeight	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
 _getScrollHeight	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f
 _getScrollHeight	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
-_getScrollHeight	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
-_getScrollTop	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	class:t
+_getScrollHeight	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
+_getScrollTop	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 _getScrollTop	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	f	method:c
 _getScrollTop	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f
 _getScrollTop	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
@@ -9539,7 +9537,7 @@ _getScrollTop	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^Util.
 _getScrollTop	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
 _getScrollTop	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f
 _getScrollTop	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
-_getScrollTop	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+_getScrollTop	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 _getScrollbarWidth	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^$(document.body).addClass(CLASS_NAME_OPEN);};_proto._resetScrollbar=function _resetScrollbar(){v/;"	f
 _getScrollbarWidth	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^$(document.body).addClass(CLASS_NAME_OPEN);};_proto._resetScrollbar=function _resetScrollbar(){v/;"	f	variable:_proto
 _getScrollbarWidth	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^$(document.body).addClass(CLASS_NAME_OPEN);};_proto._resetScrollbar=function _resetScrollbar(){v/;"	f
@@ -9645,10 +9643,9 @@ _jQueryInterface	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^va
 _jQueryInterface	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var transitionDuration=Util.getTransitionDurationFromElement(element);$(element).one(Util.TRANSI/;"	f	variable:Alert
 _jQueryInterface	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 _jQueryInterface	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	method:n
-_jQueryInterface	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
 _jQueryInterface	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:i
+_jQueryInterface	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	class:e
 _jQueryInterface	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	class:o
-_jQueryInterface	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	variable:e
 _keydown	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 _keydown	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^_this3.touchTimeout=setTimeout(function(event){return _this3.cycle(event);},TOUCHEVENT_COMPAT_WA/;"	f
 _keydown	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^_this3.touchTimeout=setTimeout(function(event){return _this3.cycle(event);},TOUCHEVENT_COMPAT_WA/;"	f	variable:_proto
@@ -9681,7 +9678,7 @@ _offsets	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^data[confi
 _offsets	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=ScrollSpy.prototype;_proto.refresh=function refresh(){var _this2=this;var autoMethod=/;"	p	function:_proto.refresh
 _offsets	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	function:anonymousFunction2fb944ed16c00.o
 _offsets	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	function:e.refresh
-_process	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	class:t
+_process	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 _process	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	f	method:c
 _process	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f
 _process	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
@@ -9689,7 +9686,7 @@ _process	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^Util.typeC
 _process	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
 _process	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f
 _process	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^Util.typeCheckConfig(NAME$8,config,DefaultType$6);return config;};_proto._getScrollTop=function /;"	f	variable:_proto
-_process	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+_process	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 _removeBackdrop	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^_this4._isTransitioning=false;$(_this4._element).trigger(shownEvent);};if(transition){var transi/;"	f
 _removeBackdrop	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^_this4._isTransitioning=false;$(_this4._element).trigger(shownEvent);};if(transition){var transi/;"	f	variable:_proto
 _removeBackdrop	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^_this4._isTransitioning=false;$(_this4._element).trigger(shownEvent);};if(transition){var transi/;"	f
@@ -9738,7 +9735,7 @@ _setListeners	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^retur
 _setListeners	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^return $(document).find(this.config.container);};_proto._getAttachment=function _getAttachment(p/;"	f	variable:_proto
 _setListeners	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return $(document).find(this.config.container);};_proto._getAttachment=function _getAttachment(p/;"	f
 _setListeners	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return $(document).find(this.config.container);};_proto._getAttachment=function _getAttachment(p/;"	f	variable:_proto
-_setListeners	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+_setListeners	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 _setResizeEvent	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^_this4._isTransitioning=false;$(_this4._element).trigger(shownEvent);};if(transition){var transi/;"	f
 _setResizeEvent	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^_this4._isTransitioning=false;$(_this4._element).trigger(shownEvent);};if(transition){var transi/;"	f	variable:_proto
 _setResizeEvent	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^_this4._isTransitioning=false;$(_this4._element).trigger(shownEvent);};if(transition){var transi/;"	f
@@ -9764,7 +9761,7 @@ _showElement	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._
 _showElement	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._element.classList.add(CLASS_NAME_STATIC);var modalTransitionDuration=Util.getTransitionDur/;"	f	variable:_proto
 _showElement	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._element.classList.add(CLASS_NAME_STATIC);var modalTransitionDuration=Util.getTransitionDur/;"	f
 _showElement	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._element.classList.add(CLASS_NAME_STATIC);var modalTransitionDuration=Util.getTransitionDur/;"	f	variable:_proto
-_showElement	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+_showElement	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 _slide	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 _slide	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^var delta=direction===DIRECTION_PREV?-1:1;var itemIndex=(activeIndex+delta)%this._items.length;r/;"	f
 _slide	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^var delta=direction===DIRECTION_PREV?-1:1;var itemIndex=(activeIndex+delta)%this._items.length;r/;"	f	variable:_proto
@@ -9807,7 +9804,7 @@ _triggerBackdropTransition	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66
 _triggerBackdropTransition	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._setEscapeEvent();this._setResizeEvent();$(document).off(EVENT_FOCUSIN);$(this._element).re/;"	f	variable:_proto
 _triggerBackdropTransition	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._setEscapeEvent();this._setResizeEvent();$(document).off(EVENT_FOCUSIN);$(this._element).re/;"	f
 _triggerBackdropTransition	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._setEscapeEvent();this._setResizeEvent();$(document).off(EVENT_FOCUSIN);$(this._element).re/;"	f	variable:_proto
-_triggerBackdropTransition	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+_triggerBackdropTransition	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 _triggerCloseEvent	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 _triggerCloseEvent	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	f	method:d
 _triggerCloseEvent	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^return parent;};_proto._triggerCloseEvent=function _triggerCloseEvent(element){var closeEvent=$./;"	f
@@ -10006,7 +10003,7 @@ addAttachmentClass	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^
 addAttachmentClass	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f	variable:_proto
 addAttachmentClass	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f
 addAttachmentClass	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f	variable:_proto
-addAttachmentClass	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:s
+addAttachmentClass	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	method:s
 address	config/_default/params.toml	/^address = {street = "Piazzale Aldo Moro N. 2", city = "Rome", region = "Lazio", postcode = "I-00/;"	K
 address	exampleSite/config/_default/params.toml	/^address = {street = "450 Serra Mall", city = "Stanford", region = "CA", postcode = "94305", coun/;"	K
 address	public/css/academic.css	/^ *\/:root{--blue: #007bff;--indigo: #6610f2;--purple: #6f42c1;--pink: #e83e8c;--red: #dc3545;--o/;"	s
@@ -12723,7 +12720,7 @@ disable	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^var _proto=
 disable	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^var _proto=Tooltip.prototype;_proto.enable=function enable(){this._isEnabled=true;};_proto.disab/;"	f	variable:_proto
 disable	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=Tooltip.prototype;_proto.enable=function enable(){this._isEnabled=true;};_proto.disab/;"	f
 disable	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=Tooltip.prototype;_proto.enable=function enable(){this._isEnabled=true;};_proto.disab/;"	f	variable:_proto
-disable	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+disable	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 disableEventListeners	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^function disableEventListeners(){if(this.state.eventsEnabled){cancelAnimationFrame(this.schedule/;"	f	function:anonymousFunction2ed755a80300
 disableEventListeners	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^function disableEventListeners(){if(this.state.eventsEnabled){cancelAnimationFrame(this.schedule/;"	f	function:anonymousFunctione3f729c20300
 disableEventListeners	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^function disableEventListeners(){if(this.state.eventsEnabled){cancelAnimationFrame(this.schedule/;"	f	function:anonymousFunction023a12f80300
@@ -12740,7 +12737,6 @@ display	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^createClass
 display	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	variable:anonymousObject2fb944edb705
 display	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	variable:anonymousObject2fb944edb805
 displayMath	public/js/mathjax-config.js	/^    displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],$/;"	p	property:window.MathJax.tex
-dispose	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	class:t
 dispose	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 dispose	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	m	method:t
 dispose	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	f	method:c
@@ -12755,7 +12751,6 @@ dispose	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._remov
 dispose	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._removeElement(rootElement);};_proto.dispose=function dispose(){$.removeData(this._element,/;"	f
 dispose	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._removeElement(rootElement);};_proto.dispose=function dispose(){$.removeData(this._element,/;"	f	variable:_proto
 dispose	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
-dispose	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
 dispose	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:o
 dispose	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	class:e
 dispose	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	method:n
@@ -12866,7 +12861,7 @@ enable	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^var _proto=T
 enable	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^var _proto=Tooltip.prototype;_proto.enable=function enable(){this._isEnabled=true;};_proto.disab/;"	f	variable:_proto
 enable	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=Tooltip.prototype;_proto.enable=function enable(){this._isEnabled=true;};_proto.disab/;"	f
 enable	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=Tooltip.prototype;_proto.enable=function enable(){this._isEnabled=true;};_proto.disab/;"	f	variable:_proto
-enable	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+enable	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 enableEmoji	config/_default/config.toml	/^enableEmoji = true$/;"	K
 enableEmoji	exampleSite/config/_default/config.toml	/^enableEmoji = true$/;"	K
 enableEventListeners	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^function enableEventListeners(){if(!this.state.eventsEnabled){this.state=setupEventListeners(thi/;"	f	function:anonymousFunction2ed755a80300
@@ -13444,7 +13439,7 @@ getTipElement	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this.
 getTipElement	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f	variable:_proto
 getTipElement	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f
 getTipElement	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f	variable:_proto
-getTipElement	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:s
+getTipElement	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	method:s
 getTitle	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^$element.html(content);}else{$element.text(content);}};_proto.getTitle=function getTitle(){var t/;"	f
 getTitle	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^$element.html(content);}else{$element.text(content);}};_proto.getTitle=function getTitle(){var t/;"	f	variable:_proto
 getTitle	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^$element.html(content);}else{$element.text(content);}};_proto.getTitle=function getTitle(){var t/;"	f
@@ -13572,7 +13567,7 @@ handleUpdate	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._
 handleUpdate	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._setEscapeEvent();this._setResizeEvent();$(document).off(EVENT_FOCUSIN);$(this._element).re/;"	f	variable:_proto
 handleUpdate	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._setEscapeEvent();this._setResizeEvent();$(document).off(EVENT_FOCUSIN);$(this._element).re/;"	f
 handleUpdate	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._setEscapeEvent();this._setResizeEvent();$(document).off(EVENT_FOCUSIN);$(this._element).re/;"	f	variable:_proto
-handleUpdate	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+handleUpdate	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 hasCJKLanguage	config/_default/config.toml	/^hasCJKLanguage = false  # Set `true` for Chinese\/Japanese\/Korean languages.$/;"	K
 hasCJKLanguage	exampleSite/config/_default/config.toml	/^hasCJKLanguage = false  # Set `true` for Chinese\/Japanese\/Korean languages.$/;"	K
 hash	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^function getOppositePlacement(placement){var hash={left:'right',right:'left',bottom:'top',top:'b/;"	v	function:anonymousFunction2ed755a80300.getOppositePlacement
@@ -13642,7 +13637,7 @@ hide	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return false;}
 hide	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this.setTransitioning(true);var complete=function complete(){$(_this._element).removeClass(CLASS/;"	f
 hide	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this.setTransitioning(true);var complete=function complete(){$(_this._element).removeClass(CLASS/;"	f	variable:_proto
 hide	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var modifiers={shift:{order:100,enabled:true,fn:shift},offset:{order:200,enabled:true,fn:offset,/;"	p	variable:anonymousFunction023a12f80300.modifiers
-hide	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+hide	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 hide	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:o
 hide	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	variable:Ri.Nn
 hide	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	variable:anonymousObject2fb944ed14305
@@ -13914,7 +13909,7 @@ isWithContent	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this.
 isWithContent	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f	variable:_proto
 isWithContent	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f
 isWithContent	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f	variable:_proto
-isWithContent	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:s
+isWithContent	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	method:s
 it	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f
 itemSelector	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^$container.imagesLoaded(function(){$container.isotope({itemSelector:'.isotope-item',layoutMode:l/;"	p	variable:anonymousObject0335e1fa19a05
 itemSelector	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^window.addEventListener("hashchange",scrollToAnchor);$('#navbar-main li.nav-item a.nav-link, .js/;"	p	variable:anonymousObject0335e1fa17f05
@@ -16266,7 +16261,7 @@ reference	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(fun
 reference	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	variable:anonymousObject2fb944edb805
 reflow	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	m	variable:anonymousFunction0335e1fa0300._
 reflow	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	variable:anonymousObject2fb944ed0b05
-refresh	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	class:t
+refresh	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	f	method:t
 refresh	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	f	method:c
 refresh	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^var _proto=ScrollSpy.prototype;_proto.refresh=function refresh(){var _this2=this;var autoMethod=/;"	f
 refresh	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^var _proto=ScrollSpy.prototype;_proto.refresh=function refresh(){var _this2=this;var autoMethod=/;"	f	variable:_proto
@@ -16274,7 +16269,7 @@ refresh	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^var _proto=
 refresh	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^var _proto=ScrollSpy.prototype;_proto.refresh=function refresh(){var _this2=this;var autoMethod=/;"	f	variable:_proto
 refresh	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=ScrollSpy.prototype;_proto.refresh=function refresh(){var _this2=this;var autoMethod=/;"	f
 refresh	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=ScrollSpy.prototype;_proto.refresh=function refresh(){var _this2=this;var autoMethod=/;"	f	variable:_proto
-refresh	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+refresh	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 region	config/_default/params.toml	/^address = {street = "Piazzale Aldo Moro N. 2", city = "Rome", region = "Lazio", postcode = "I-00/;"	K
 region	exampleSite/config/_default/params.toml	/^address = {street = "450 Serra Mall", city = "Stanford", region = "CA", postcode = "94305", coun/;"	K
 rel	config/_default/config.toml	/^  rel = "manifest"$/;"	K	table:outputFormats.WebAppManifest
@@ -17643,7 +17638,7 @@ setContent	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._ho
 setContent	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f	variable:_proto
 setContent	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f
 setContent	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f	variable:_proto
-setContent	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:s
+setContent	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	method:s
 setElementContent	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f
 setElementContent	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f	variable:_proto
 setElementContent	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._hoverState='';};_proto.update=function update(){if(this._popper!==null){this._popper.sched/;"	f
@@ -17716,7 +17711,6 @@ show	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^return false;}
 show	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=Collapse.prototype;_proto.toggle=function toggle(){if($(this._element).hasClass(CLASS/;"	f
 show	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=Collapse.prototype;_proto.toggle=function toggle(){if($(this._element).hasClass(CLASS/;"	f	variable:_proto
 show	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
-show	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
 show	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:o
 show	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	variable:anonymousObject2fb944ed14305
 show	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	variable:anonymousObject2fb944edd905
@@ -18318,7 +18312,6 @@ toggle	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^event.preven
 toggle	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=Button.prototype;_proto.toggle=function toggle(){var triggerChangeEvent=true;var addA/;"	f
 toggle	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=Button.prototype;_proto.toggle=function toggle(){var triggerChangeEvent=true;var addA/;"	f	variable:_proto
 toggle	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
-toggle	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
 toggle	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:o
 toggle	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	variable:anonymousObject2fb944ed5305
 toggle	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	variable:anonymousObject2fb944ed5405
@@ -18330,7 +18323,7 @@ toggleEnabled	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^var _
 toggleEnabled	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^var _proto=Tooltip.prototype;_proto.enable=function enable(){this._isEnabled=true;};_proto.disab/;"	f	variable:_proto
 toggleEnabled	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=Tooltip.prototype;_proto.enable=function enable(){this._isEnabled=true;};_proto.disab/;"	f
 toggleEnabled	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^var _proto=Tooltip.prototype;_proto.enable=function enable(){this._isEnabled=true;};_proto.disab/;"	f	variable:_proto
-toggleEnabled	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:e
+toggleEnabled	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	class:e
 toggleSearchDialog	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^function toggleSearchDialog(){if($('body').hasClass('searching')){$('[id=search-query]').blur();/;"	f	function:anonymousFunction0335e1fa17800
 toggleSearchDialog	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^function toggleSearchDialog(){if($('body').hasClass('searching')){$('[id=search-query]').blur();/;"	f	function:anonymousFunction2ed755a8fe00
 toggleSearchDialog	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^function toggleSearchDialog(){if($('body').hasClass('searching')){$('[id=search-query]').blur();/;"	f	function:anonymousFunctione3f729c2fe00
