@@ -26,7 +26,7 @@ publishDate: '2025-04-15T10:38:30.817852Z'
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- article-journal
+- 2
 
 # Publication name and optional abbreviated publication name.
 publication: '*Biomacromolecules*'
