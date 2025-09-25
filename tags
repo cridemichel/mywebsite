@@ -9238,7 +9238,7 @@ _activate	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^for(var i
 _activate	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^for(var i=this._offsets.length;i--;){var isActiveTarget=this._activeTarget!==this._targets[i]&&s/;"	f	variable:_proto
 _activate	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^for(var i=this._offsets.length;i--;){var isActiveTarget=this._activeTarget!==this._targets[i]&&s/;"	f
 _activate	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^for(var i=this._offsets.length;i--;){var isActiveTarget=this._activeTarget!==this._targets[i]&&s/;"	f	variable:_proto
-_activate	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	variable:s
+_activate	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	f	method:s
 _addAriaAndCollapsedClass	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	m	method:t
 _addAriaAndCollapsedClass	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^var selector="[data-toggle=\\"collapse\\"][data-parent=\\""+this._config.parent+"\\"]";var child/;"	f
 _addAriaAndCollapsedClass	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^var selector="[data-toggle=\\"collapse\\"][data-parent=\\""+this._config.parent+"\\"]";var child/;"	f	variable:_proto
@@ -9786,7 +9786,7 @@ _transitionComplete	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/
 _transitionComplete	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^this._activate(this._element,listElement);var complete=function complete(){var hiddenEvent=$.Eve/;"	f	variable:_proto
 _transitionComplete	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._activate(this._element,listElement);var complete=function complete(){var hiddenEvent=$.Eve/;"	f
 _transitionComplete	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^this._activate(this._element,listElement);var complete=function complete(){var hiddenEvent=$.Eve/;"	f	variable:_proto
-_transitionComplete	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	variable:s
+_transitionComplete	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	method:s
 _triggerArray	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	p	function:anonymousFunction0335e1fa5900.a
 _triggerArray	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	p	function:anonymousFunction631ec8be6d00.e
 _triggerArray	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^event.preventDefault();};_createClass(Carousel,null,[{key:"VERSION",get:function get(){return VE/;"	p	class:anonymousFunction2ed755a80300.Collapse.Collapse
@@ -12658,7 +12658,6 @@ dispose	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(funct
 dispose	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	class:e
 dispose	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	method:n
 dispose	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	method:s
-dispose	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	m	variable:s
 distance	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^let resizeTimer;$(window).resize(function(){clearTimeout(resizeTimer);resizeTimer=setTimeout(fix/;"	p	variable:fuseOptions
 distance	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	p	variable:fuseOptions
 distance	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^let resizeTimer;$(window).resize(function(){clearTimeout(resizeTimer);resizeTimer=setTimeout(fix/;"	p	variable:fuseOptions
