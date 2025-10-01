@@ -21,7 +21,7 @@ header:
 
 [elearning webpage](https://elearning.uniroma1.it/course/view.php?id=7741 "elearning web page of the course") 
 
-[google classroom](https://classroom.google.com/c/NzE3OTM0OTg5NjA5?cjc=6fsjq46)
+[google classroom](https://classroom.google.com/c/ODA3MjMwMDI2Nzg1?cjc=f3wrxe7c)
 
 ---
 
@@ -30,9 +30,9 @@ header:
 
 [pagina elearning](https://elearning.uniroma1.it/course/view.php?id=7718 "elearning webpage of the course") 
 
-[Questionario 2024-25](https://docs.google.com/forms/d/e/1FAIpQLSeXGUYTMUgLHHS4SxbzXgr0_bNCL52fGdpt6iX_vMfd1-JIig/viewform)
+[Questionario 2024-25](https://docs.google.com/forms/d/e/1FAIpQLSeXGUYTMUgLHHS4SxbzXgr0_bNCL52fGdpt6iX_vMfd1-JIig/viewform?usp=header)
 
-[google classroom](https://classroom.google.com/c/NzE3OTMzNzUyNjUw?cjc=faar2xc)
+[google classroom](https://classroom.google.com/c/ODA3MjI3NzQ2MjUw?cjc=7i5fyuqu)
 
 ## **PAST COURSES**
 
