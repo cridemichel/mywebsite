@@ -28,6 +28,8 @@ header:
 ### LABORATORIO DI CALCOLO 
 ### (primo anno - laurea triennale in fisica)
 
+[ Risultati Esame Gennaio 2026 ](RisultatiLCGen26.pdf)
+
 [pagina elearning](https://elearning.uniroma1.it/course/view.php?id=7718 "elearning webpage of the course") 
 
 [Questionario 2025-26](https://docs.google.com/forms/d/e/1FAIpQLSeXGUYTMUgLHHS4SxbzXgr0_bNCL52fGdpt6iX_vMfd1-JIig/viewform?usp=header)
