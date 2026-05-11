@@ -1,5 +1,5 @@
 ---
-title: 'Erratum: Giant Splitting of the Hydrogen Rotational Eigenenergies in the $mathrmC_2$
+title: 'Erratum: Giant Splitting of the Hydrogen Rotational Eigenenergies in the C2
   Filled Ice [Phys. Rev. Lett. 133, 236101 (2024)]'
 authors:
 - Simone Di Cataldo
