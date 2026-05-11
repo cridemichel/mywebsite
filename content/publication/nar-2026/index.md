@@ -19,7 +19,7 @@ authors:
 date: '2026-05-01'
 publishDate: '2026-05-11T08:13:11.656576Z'
 publication_types:
-- article-journal
+- 2
 publication: '*Nucleic Acids Research*'
 doi: 10.1093/nar/gkag403
 abstract: G-quadruplexes (G4s) are noncanonical nucleic acid structures especially
