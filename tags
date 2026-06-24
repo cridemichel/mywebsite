@@ -6547,7 +6547,6 @@ $i	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e
 10	public/index.json	/^[{"authors":["admin"],"categories":null,"content":"Cristiano De Michele is Associate Professor a/;"	s	array:22.authors
 10	public/index.json	/^[{"authors":["admin"],"categories":null,"content":"Cristiano De Michele is Associate Professor a/;"	s	array:62.authors
 10.1063/5.0226019	content/publication/trapella-2024/cite.bib	/^@article{10.1063\/5.0226019,$/;"	a
-10.1063/5.0308262	cite.bib	/^@article{10.1063\/5.0308262,$/;"	a
 10.1063/5.0308262	content/publication/shadow-2026/cite.bib	/^@article{10.1063\/5.0308262,$/;"	a
 10.1093/nar/gkag403	content/publication/nar-2026/cite.bib	/^@article{10.1093\/nar\/gkag403,$/;"	a
 10.1145/3564270	content/publication/de-michele-quartic-remark/cite.bib	/^@article{10.1145\/3564270,$/;"	a
@@ -8033,6 +8032,8 @@ M. Salamonczyk	public/author/m.-salamonczyk/index.html	/^<a href=# class="dropdo
 M. Salamonczyk | C. De Michele Web	public/author/m.-salamonczyk/index.html	/^<link rel=stylesheet href="https:\/\/fonts.googleapis.com\/css?family=Montserrat:400,700%7CRobot/;"	j
 M. Schröter	public/author/m.-schroter/index.html	/^<a href=# class="dropdown-item js-set-theme-auto"><span>Automatic<\/span><\/a><\/div><\/li><\/ul/;"	h
 M. Schröter | C. De Michele Web	public/author/m.-schroter/index.html	/^<link rel=stylesheet href="https:\/\/fonts.googleapis.com\/css?family=Montserrat:400,700%7CRobot/;"	j
+MALASPINA2026152622	cite.bib	/^@article{MALASPINA2026152622,$/;"	a
+MALASPINA2026152622	content/publication/malaspina-2026/cite.bib	/^@article{MALASPINA2026152622,$/;"	a
 MASTER THESES	public/theses/index.html	/^<a href=# class="dropdown-item js-set-theme-auto"><span>Automatic<\/span><\/a><\/div><\/li><\/ul/;"	i
 MOUSEDOWN_DISMISS	public/js/academic.min.3b2b658c61ebd725bd5fc606c89fe44c.js	/^*\/!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("jquery/;"	p	variable:anonymousObject0335e1fa9e05
 MOUSEDOWN_DISMISS	public/js/academic.min.f534d4005a735a5aecb0c0413dd4764e.js	/^  *\/!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?b(exports,require("jque/;"	p	variable:anonymousObject631ec8beb405
