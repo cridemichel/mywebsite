@@ -6547,6 +6547,8 @@ $i	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e
 10	public/index.json	/^[{"authors":["admin"],"categories":null,"content":"Cristiano De Michele is Associate Professor a/;"	s	array:22.authors
 10	public/index.json	/^[{"authors":["admin"],"categories":null,"content":"Cristiano De Michele is Associate Professor a/;"	s	array:62.authors
 10.1063/5.0226019	content/publication/trapella-2024/cite.bib	/^@article{10.1063\/5.0226019,$/;"	a
+10.1063/5.0308262	cite.bib	/^@article{10.1063\/5.0308262,$/;"	a
+10.1063/5.0308262	content/publication/shadow-2026/cite.bib	/^@article{10.1063\/5.0308262,$/;"	a
 10.1093/nar/gkag403	content/publication/nar-2026/cite.bib	/^@article{10.1093\/nar\/gkag403,$/;"	a
 10.1145/3564270	content/publication/de-michele-quartic-remark/cite.bib	/^@article{10.1145\/3564270,$/;"	a
 10.1145/3564270	public/publication/de-michele-quartic-remark/cite.bib	/^@article{10.1145\/3564270,$/;"	a
@@ -17377,7 +17379,6 @@ span	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^$target.one(EV
 span	public/js/wowchemy.min.a38e006a3cab951992b7cf4b14da66b1.js	/^$target.one(EVENT_HIDDEN$2,function(){if($(_this11).is(':visible')){_this11.focus();}});});Modal/;"	p	variable:anonymousFunctione3f729c20300.DefaultWhitelist
 span	public/js/wowchemy.min.d9d80f811e95b4b4f6df1eaaf297b05f.js	/^$target.one(EVENT_HIDDEN$2,function(){if($(_this11).is(':visible')){_this11.focus();}});});Modal/;"	p	variable:anonymousFunction023a12f80300.DefaultWhitelist
 span	public/js/wowchemy.min.ee9dd1b51c1cbfc9adeb51e02586011c.js	/^  *\/(function(e,t){typeof exports=="object"&&typeof module!="undefined"?t(exports,require("jque/;"	p	variable:anonymousObject2fb944ed11005
-srpf-rp6z	cite.bib	/^@article{srpf-rp6z,$/;"	a
 srpf-rp6z	content/publication/erratum-prl-2025/cite.bib	/^@article{srpf-rp6z,$/;"	a
 start	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^function shift(data){var placement=data.placement;var basePlacement=placement.split('-')[0];var /;"	p	variable:anonymousFunction2ed755a80300.shift.shiftOffsets
 start	public/js/wowchemy.min.4c2bca31150ce93c5a5e43b8a50f22fd.js	/^var start=function start(event){if(_this3._pointerEvent&&PointerType[event.originalEvent.pointer/;"	f	function:_proto._addTouchEventListeners
