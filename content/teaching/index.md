@@ -16,6 +16,14 @@ header:
 
 ## **PRESENT COURSES** {#CSM}
 
+### PROGRAMMAZIONE SCIENTIFICA++ 
+### (Master in Physics)
+
+[Vai al Sito e alle Slide del Corso](/prog-sci/index.html)
+
+---
+
+
 ### COMPUTATIONAL STATISTICAL MECHANICS
 ### (first year - master in physics) 
 

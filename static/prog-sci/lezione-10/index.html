@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Docente">
+  <title>Programmazione Scientifica++ – Programmazione Scientifica++: Lezione 10</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Programmazione Scientifica++: Lezione 10</h1>
+  <p class="subtitle">Programmazione Scientifica++: Lezione 10</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Docente
+</div>
+</div>
+</div>
+
+</section>
+<section id="argomenti-di-oggi" class="slide level2">
+<h2>Argomenti di Oggi</h2>
+<ul>
+<li><strong>Membri Dati Allocati Dinamicamente</strong>
+<ul>
+<li>Ripasso: Costruttori e Distruttori</li>
+</ul></li>
+<li><strong>Il Disastro della Shallow Copy</strong>
+<ul>
+<li>L’assegnamento di default</li>
+<li>Double Free</li>
+</ul></li>
+<li><strong>La Soluzione: Deep Copy</strong>
+<ul>
+<li>La <em>Rule of Three</em></li>
+</ul></li>
+<li><strong>Il Puntatore Segreto: <code>this</code></strong>
+<ul>
+<li>Auto-assegnamento</li>
+</ul></li>
+<li><strong>Overloading degli Operatori</strong>
+<ul>
+<li>Matematica elegante per le classi</li>
+</ul></li>
+</ul>
+</section>
+<section id="ripasso-classi-pesanti" class="slide level2 smaller">
+<h2>Ripasso: Classi “Pesanti”</h2>
+<p>Nelle scorse lezioni abbiamo visto come una classe possa usare l’Heap per gestire una quantità di dati non nota a priori. Queste classi “pesanti” avranno al loro interno dei <strong>Puntatori</strong> come attributi.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-label="1"></a><span class="kw">class</span> SequentialNetwork <span class="op">{</span></span>
+<span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-3" class="code-annotation-target"><a href="#annotated-cell-1-3" aria-label="3"></a>    Layer<span class="op">**</span> <span class="va">layers_</span><span class="op">;</span> <span class="co">// Un array di puntatori a Layer</span></span>
+<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-label="4"></a>    <span class="dt">int</span> <span class="va">num_layers_</span><span class="op">;</span></span>
+<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-label="5"></a></span>
+<span id="annotated-cell-1-6"><a href="#annotated-cell-1-6" aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-label="7"></a>    SequentialNetwork<span class="op">(</span><span class="dt">int</span> n<span class="op">);</span></span>
+<span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-label="8"></a>    <span class="op">~</span>SequentialNetwork<span class="op">();</span></span>
+<span id="annotated-cell-1-9"><a href="#annotated-cell-1-9" aria-label="9"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="3" data-code-annotation="1">La dimensione esatta dell’array non è nota a tempo di compilazione.</span>
+</dd>
+</dl>
+</section>
+<section id="gestione-della-memoria-raii" class="slide level2 smaller">
+<h2>Gestione della Memoria (RAII)</h2>
+<p>Per gestire questa classe senza causare <em>Memory Leaks</em>, applichiamo il pattern RAII: acquisiamo la memoria nel Costruttore e la rilasciamo nel Distruttore.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Costruttore (Nascita)</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-16"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-label="1"></a>SequentialNetwork<span class="op">::</span>SequentialNetwork<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-label="2"></a>    <span class="va">num_layers_</span> <span class="op">=</span> n<span class="op">;</span></span>
+<span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-label="3"></a>    </span>
+<span id="annotated-cell-16-4"><a href="#annotated-cell-16-4" aria-label="4"></a>    <span class="co">// Alloco dinamicamente la memoria</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1">1</button><span id="annotated-cell-16-5" class="code-annotation-target"><a href="#annotated-cell-16-5" aria-label="5"></a>    <span class="va">layers_</span> <span class="op">=</span> <span class="kw">new</span> Layer<span class="op">*[</span><span class="va">num_layers_</span><span class="op">];</span></span>
+<span id="annotated-cell-16-6"><a href="#annotated-cell-16-6" aria-label="6"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-16" data-code-lines="5" data-code-annotation="1">Acquisizione.</span>
+</dd>
+</dl>
+</div><div class="column" style="width:50%;">
+<p><strong>Distruttore (Morte)</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-17"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-label="1"></a>SequentialNetwork<span class="op">::~</span>SequentialNetwork<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-17-2"><a href="#annotated-cell-17-2" aria-label="2"></a>    </span>
+<span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-label="3"></a>    <span class="co">// Libero tutta la memoria dell'Heap</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="2">2</button><span id="annotated-cell-17-4" class="code-annotation-target"><a href="#annotated-cell-17-4" aria-label="4"></a>    <span class="kw">delete</span><span class="op">[]</span> <span class="va">layers_</span><span class="op">;</span></span>
+<span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-label="5"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-17" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-17" data-code-lines="4" data-code-annotation="2">Rilascio. Se non lo facessi, la RAM esploderebbe in pochi minuti!</span>
+</dd>
+</dl>
+</div></div>
+</section>
+<section id="tutto-sembra-perfetto" class="slide level2 smaller">
+<h2>Tutto sembra perfetto…</h2>
+<p>Nel nostro <code>main.cpp</code> creiamo una rete neurale e la usiamo. Non ci sono perdite di memoria. L’architettura è solida.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-2"><a aria-label="2"></a>    SequentialNetwork net1<span class="op">(</span><span class="dv">5</span><span class="op">);</span> <span class="co">// Crea una rete con 5 layer</span></span>
+<span id="cb1-3"><a aria-label="3"></a>    </span>
+<span id="cb1-4"><a aria-label="4"></a>    <span class="co">// ... addestro la rete ...</span></span>
+<span id="cb1-5"><a aria-label="5"></a>    </span>
+<span id="cb1-6"><a aria-label="6"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// "net1" muore qui e il distruttore cancella i layer.</span></span>
+<span id="cb1-7"><a aria-label="7"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ma cosa succede se un vostro utente cerca di <strong>copiare</strong> la rete?</p>
+</section>
+<section id="lassegnamento-di-default" class="slide level2 smaller">
+<h2>L’Assegnamento di Default</h2>
+<p>In C++, non sei obbligato a scrivere una funzione speciale per dire come copiare un oggetto. Il compilatore ti <em>regala</em> l’operatore di assegnamento <code>=</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-label="2"></a>    <span class="co">// 1. Creo una particella</span></span>
+<span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-label="3"></a>    Particella p1<span class="op">;</span></span>
+<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-label="4"></a>    p1<span class="op">.</span>massa <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span></span>
+<span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-label="5"></a>    </span>
+<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-label="6"></a>    <span class="co">// 2. Creo una seconda particella</span></span>
+<span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-label="7"></a>    Particella p2<span class="op">;</span></span>
+<span id="annotated-cell-3-8"><a href="#annotated-cell-3-8" aria-label="8"></a>    </span>
+<span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-label="9"></a>    <span class="co">// 3. Le copio!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-10" class="code-annotation-target"><a href="#annotated-cell-3-10" aria-label="10"></a>    p2 <span class="op">=</span> p1<span class="op">;</span></span>
+<span id="annotated-cell-3-11"><a href="#annotated-cell-3-11" aria-label="11"></a>    </span>
+<span id="annotated-cell-3-12"><a href="#annotated-cell-3-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-3-13"><a href="#annotated-cell-3-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="10" data-code-annotation="1">Il compilatore, dietro le quinte, copia bit-per-bit i valori di <code>p1</code> dentro <code>p2</code>. Essendo formati solo da numeri (es. <code>double</code>), questa copia funziona perfettamente!</span>
+</dd>
+</dl>
+</section>
+<section id="linganno-copiare-classi-pesanti" class="slide level2 smaller">
+<h2>L’Inganno: Copiare Classi Pesanti</h2>
+<p>Proviamo ad usare lo stesso identico assegnamento gratuito sulla nostra rete neurale “pesante” che alloca memoria dinamica.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-4"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-label="2"></a>    SequentialNetwork net1<span class="op">(</span><span class="dv">5</span><span class="op">);</span> <span class="co">// Crea una rete con 5 layer</span></span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-label="3"></a>    SequentialNetwork net2<span class="op">(</span><span class="dv">10</span><span class="op">);</span> <span class="co">// Crea una rete con 10 layer</span></span>
+<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-label="4"></a>    </span>
+<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-label="5"></a>    <span class="co">// Copiamo la rete 1 nella rete 2</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6" aria-label="6"></a>    net2 <span class="op">=</span> net1<span class="op">;</span></span>
+<span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-label="7"></a>    </span>
+<span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-label="8"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-label="9"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="6" data-code-annotation="1">L’operatore gratuito <code>=</code> interviene di nuovo. Fa la sua copia bit-per-bit di tutti gli attributi di <code>net1</code> dentro <code>net2</code>. Ma cosa sta copiando esattamente?</span>
+</dd>
+</dl>
+</section>
+<section id="linganno-della-shallow-copy" class="slide level2 smaller">
+<h2>L’Inganno della Shallow Copy</h2>
+<p>Il compilatore ha copiato il numero intero <code>num_layers_</code> (5 al posto di 10). Ottimo. Poi ha copiato la variabile <code>layers_</code> da <code>net1</code> a <code>net2</code>.</p>
+<p>Cosa c’era in <code>layers_</code>? Un <strong>Puntatore</strong>, cioè un <em>indirizzo di memoria</em>! (es. <code>0x1A2B3C</code>).</p>
+<p>Il compilatore non ha copiato i layer veri e propri. Ha copiato l’indirizzo! Ora <code>net1</code> e <code>net2</code> possiedono lo <strong>stesso identico indirizzo</strong> dell’Heap.</p>
+<p>Questa tragedia informatica è chiamata <strong>Shallow Copy</strong> (Copia Superficiale).</p>
+</section>
+<section id="shallow-copy-rappresentazione-visiva" class="slide level2 smaller">
+<h2>Shallow Copy: Rappresentazione Visiva</h2>
+<p>Dopo aver scritto <code>net2 = net1;</code> la situazione in memoria è questa:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Stack (I nostri oggetti)</strong> - <code>net1.layers_</code> punta a <code>0x1A2B3C</code> - <code>net2.layers_</code> punta a <code>0x1A2B3C</code></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Heap (I Dati Reali)</strong> L’indirizzo <code>0x1A2B3C</code> contiene l’array dei 5 Layer. L’array dei vecchi 10 Layer di <code>net2</code> non è più puntato da nessuno! (Abbiamo appena generato un <em>Memory Leak</em>!).</p>
+</div></div>
+<p>Due oggetti si stanno contendendo la <strong>stessa</strong> fetta di torta.</p>
+</section>
+<section id="la-bomba-a-orologeria" class="slide level2 smaller">
+<h2>La Bomba a Orologeria</h2>
+<p>Il codice continua la sua esecuzione illudendo il programmatore che tutto vada bene. Poi, arriviamo alla riga magica <code>return 0;</code>. Il programma sta per chiudersi e gli oggetti sullo stack muoiono.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-label="2"></a>    SequentialNetwork net1<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-label="3"></a>    SequentialNetwork net2<span class="op">(</span><span class="dv">10</span><span class="op">);</span></span>
+<span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-label="4"></a>    net2 <span class="op">=</span> net1<span class="op">;</span> <span class="co">// Errore invisibile (Shallow Copy)</span></span>
+<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-label="5"></a>    </span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-label="6"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-label="7"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="1">L’ordine di distruzione è LIFO (Last-In, First-Out).</span>
+</dd>
+</dl>
+<p><strong>Passo 1:</strong> Muore <code>net2</code>. Viene invocato il suo distruttore: <code>delete[] layers_;</code>. Il C++ va all’indirizzo <code>0x1A2B3C</code> e <strong>cancella</strong> tutto l’array dei 5 Layer.</p>
+</section>
+<section id="il-crash-double-free" class="slide level2 smaller">
+<h2>Il Crash (Double Free)</h2>
+<p>Subito dopo… <strong>Passo 2:</strong> Muore <code>net1</code>. Viene invocato il suo distruttore: <code>delete[] layers_;</code>.</p>
+<p>Il C++ va all’indirizzo <code>0x1A2B3C</code>… e cerca di cancellare i dati! Ma <code>net2</code> li ha già polverizzati un microsecondo prima!</p>
+<p>Stai cercando di de-allocare al S.O. una memoria che non ti appartiene più. <strong>Esito: Crash istantaneo, Abort, Double Free Corruption.</strong></p>
+</section>
+<section id="la-regola-del-tre-rule-of-three" class="slide level2 smaller">
+<h2>La Regola del Tre (Rule of Three)</h2>
+<p>Esiste una regola famosissima nel C++ chiamata <em>Rule of Three</em>:</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Se la tua classe è così complessa da aver bisogno di un <strong>Distruttore</strong> esplicito (perché usi <code>new</code> nel costruttore), quasi certamente il C++ non sarà in grado di copiare gli oggetti da solo in modo sicuro. Devi sovrascrivere l’Operatore di Assegnamento.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="la-soluzione-deep-copy" class="slide level2 smaller">
+<h2>La Soluzione: Deep Copy</h2>
+<p>Dobbiamo dire al C++ che, per la nostra classe, l’operatore <code>=</code> <strong>non deve</strong> fare una copia bit-per-bit.</p>
+<p>Dobbiamo scrivere noi una funzione che insegni all’operatore <code>=</code> a fare una <strong>Deep Copy</strong> (Copia Profonda): Alloca nuova memoria nello Heap, e copia i veri valori uno ad uno!</p>
+</section>
+<section id="deep-copy-rappresentazione-visiva" class="slide level2 smaller">
+<h2>Deep Copy: Rappresentazione Visiva</h2>
+<p>Con una Deep Copy, ecco cosa succede quando scrivi <code>net2 = net1;</code>:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Stack (I nostri oggetti)</strong> - <code>net1.layers_</code> punta a <code>0x1A2B3C</code> - <code>net2.layers_</code> punta a <code>0x8F9E7D</code> // INDIRIZZO NUOVO!</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Heap (I Dati Reali)</strong> - <code>0x1A2B3C</code> contiene l’array dei 5 Layer originali. - <code>0x8F9E7D</code> contiene l’array dei 5 Layer <strong>fotocopiati</strong>.</p>
+</div></div>
+<p>Alla fine del programma, entrambi i distruttori chiameranno <code>delete</code> sul proprio puntatore. Nessun Double Free, e il programma esce pulito!</p>
+</section>
+<section id="scrivere-loperatore-di-assegnamento" class="slide level2 smaller">
+<h2>Scrivere l’Operatore di Assegnamento</h2>
+<p>Per sovrascrivere l’operatore <code>=</code>, dobbiamo dichiarare un metodo speciale.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="kw">class</span> SequentialNetwork <span class="op">{</span></span>
+<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-label="3"></a>    <span class="co">// Questa è la firma obbligatoria!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4" aria-label="4"></a>    <span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> rhs<span class="op">);</span></span>
+<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-label="5"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="1"><code>rhs</code> sta per <em>Right Hand Side</em> (il lato destro dell’uguaglianza). Quando scrivi <code>net2 = net1</code>, il C++ invoca il metodo <code>operator=</code> <strong>sull’oggetto <code>net2</code></strong>, passandogli <code>net1</code> come parametro (il lato destro).</span>
+</dd>
+</dl>
+</section>
+<section id="il-puntatore-magico-this" class="slide level2 smaller">
+<h2>Il puntatore magico <code>this</code></h2>
+<p>Prima di implementare la Deep Copy, c’è un trucco da sapere. Dentro a qualsiasi metodo di una classe, il C++ inietta silenziosamente un puntatore speciale chiamato <strong><code>this</code></strong>.</p>
+<p><code>this</code> punta all’oggetto stesso che sta eseguendo il metodo!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="kw">class</span> Esempio <span class="op">{</span></span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a>    <span class="dt">int</span> <span class="va">x_</span><span class="op">;</span></span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-label="5"></a>    <span class="dt">void</span> stampaIndirizzo<span class="op">()</span> <span class="op">{</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-6" class="code-annotation-target"><a href="#annotated-cell-7-6" aria-label="6"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Il mio indirizzo in RAM è: "</span> <span class="op">&lt;&lt;</span> <span class="kw">this</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="6" data-code-annotation="1">L’oggetto conosce il proprio posto nel mondo.</span>
+</dd>
+</dl>
+</section>
+<section id="il-puntatore-this-in-azione" class="slide level2 smaller">
+<h2>Il puntatore <code>this</code> in azione</h2>
+<p>Il <code>this</code> è utilissimo per risolvere le ambiguità (quando un parametro della funzione ha lo stesso nome di una variabile membro).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="kw">class</span> Esempio <span class="op">{</span></span>
+<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-label="3"></a>    <span class="dt">int</span> parametro<span class="op">;</span></span>
+<span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-label="4"></a>    </span>
+<span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-label="6"></a>    <span class="dt">void</span> setParametro<span class="op">(</span><span class="dt">int</span> parametro<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-label="7"></a>        <span class="co">// parametro = parametro; // NON HA SENSO!</span></span>
+<span id="annotated-cell-8-8"><a href="#annotated-cell-8-8" aria-label="8"></a>        </span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1">1</button><span id="annotated-cell-8-9" class="code-annotation-target"><a href="#annotated-cell-8-9" aria-label="9"></a>        <span class="kw">this</span><span class="op">-&gt;</span>parametro <span class="op">=</span> parametro<span class="op">;</span></span>
+<span id="annotated-cell-8-10"><a href="#annotated-cell-8-10" aria-label="10"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-8-11"><a href="#annotated-cell-8-11" aria-label="11"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="9" data-code-annotation="1">Usando <code>this-&gt;</code> (l’operatore freccia perché <code>this</code> è un puntatore), specifichiamo inequivocabilmente: “La variabile dell’oggetto = la variabile della funzione”.</span>
+</dd>
+</dl>
+</section>
+<section id="prevenire-lauto-assegnamento" class="slide level2 smaller">
+<h2>Prevenire l’Auto-Assegnamento</h2>
+<p>Il motivo principale per cui ci serve <code>this</code> nella Deep Copy, è prevenire una cosa stupida ma letale che i programmatori fanno spesso: l’auto-assegnamento.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a>net1 <span class="op">=</span> net1<span class="op">;</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Se la prima cosa che fa il nostro operatore <code>=</code> per fare spazio ai nuovi dati è un <code>delete</code> della propria memoria… ci distruggeremmo i dati prima ancora di averli potuti fotocopiare!</p>
+<p>Dobbiamo inserire una clausola di salvaguardia usando <code>this</code>.</p>
+</section>
+<section id="deep-copy-implementazione-completa" class="slide level2 smaller">
+<h2>Deep Copy: Implementazione completa</h2>
+<p>Ecco finalmente il codice salvavita per le classi pesanti!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-10"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-label="1"></a><span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> SequentialNetwork<span class="op">::</span><span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-label="2"></a>    </span>
+<span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-label="3"></a>    <span class="co">// 1. Clausola di auto-assegnamento (salvavita!)</span></span>
+<span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-label="4"></a>    <span class="cf">if</span> <span class="op">(</span><span class="kw">this</span> <span class="op">==</span> <span class="op">&amp;</span>rhs<span class="op">)</span> <span class="op">{</span> <span class="co">// "Se il mio indirizzo è uguale a quello del lato destro"</span></span>
+<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-label="5"></a>        <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span>   <span class="co">// Restituisci l'oggetto intatto (deferenziando il this)</span></span>
+<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-label="6"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-label="7"></a>    </span>
+<span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-label="8"></a>    <span class="co">// 2. Libero la mia vecchia memoria! (Evito un Memory Leak)</span></span>
+<span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-label="9"></a>    <span class="kw">delete</span><span class="op">[]</span> <span class="kw">this</span><span class="op">-&gt;</span><span class="va">layers_</span><span class="op">;</span> </span>
+<span id="annotated-cell-10-10"><a href="#annotated-cell-10-10" aria-label="10"></a>    </span>
+<span id="annotated-cell-10-11"><a href="#annotated-cell-10-11" aria-label="11"></a>    <span class="co">// 3. Copio le grandezze base</span></span>
+<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-label="12"></a>    <span class="kw">this</span><span class="op">-&gt;</span><span class="va">num_layers_</span> <span class="op">=</span> rhs<span class="op">.</span><span class="va">num_layers_</span><span class="op">;</span></span>
+<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-label="13"></a>    </span>
+<span id="annotated-cell-10-14"><a href="#annotated-cell-10-14" aria-label="14"></a>    <span class="co">// 4. ALLoco NUOVA MEMORIA (Deep Copy!)</span></span>
+<span id="annotated-cell-10-15"><a href="#annotated-cell-10-15" aria-label="15"></a>    <span class="kw">this</span><span class="op">-&gt;</span><span class="va">layers_</span> <span class="op">=</span> <span class="kw">new</span> Layer<span class="op">*[</span><span class="kw">this</span><span class="op">-&gt;</span><span class="va">num_layers_</span><span class="op">];</span> </span>
+<span id="annotated-cell-10-16"><a href="#annotated-cell-10-16" aria-label="16"></a>    </span>
+<span id="annotated-cell-10-17"><a href="#annotated-cell-10-17" aria-label="17"></a>    <span class="co">// 5. Fotocopio i dati uno ad uno!</span></span>
+<span id="annotated-cell-10-18"><a href="#annotated-cell-10-18" aria-label="18"></a>    <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">num_layers_</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-10-19"><a href="#annotated-cell-10-19" aria-label="19"></a>        <span class="kw">this</span><span class="op">-&gt;</span><span class="va">layers_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> rhs<span class="op">.</span><span class="va">layers_</span><span class="op">[</span>i<span class="op">];</span></span>
+<span id="annotated-cell-10-20"><a href="#annotated-cell-10-20" aria-label="20"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-10-21"><a href="#annotated-cell-10-21" aria-label="21"></a>    </span>
+<span id="annotated-cell-10-22"><a href="#annotated-cell-10-22" aria-label="22"></a>    <span class="co">// 6. Restituisco me stesso (permette roba come a = b = c;)</span></span>
+<span id="annotated-cell-10-23"><a href="#annotated-cell-10-23" aria-label="23"></a>    <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span> </span>
+<span id="annotated-cell-10-24"><a href="#annotated-cell-10-24" aria-label="24"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="overloading-degli-operatori" class="slide level2 smaller">
+<h2>Overloading degli Operatori</h2>
+<p>Ora che abbiamo “sovraccaricato” (Overload) l’operatore <code>=</code>, possiamo farlo anche con gli altri operatori matematici?</p>
+<p>Sì! In C++ puoi sovraccaricare <code>+</code>, <code>-</code>, <code>*</code>, <code>&lt;&lt;</code>, <code>==</code> e molti altri, affinché funzionino in modo “naturale” con le tue classi personalizzate.</p>
+</section>
+<section id="perché-overloadare-gli-operatori" class="slide level2 smaller">
+<h2>Perché Overloadare gli Operatori?</h2>
+<p>Immagina di avere una classe <code>Vettore2D</code>. Vuoi sommare due vettori.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Senza Overloading:</strong> Devi creare una funzione dal nome fittizio.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-label="1"></a>Vettore2D v1<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
+<span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-label="2"></a>Vettore2D v2<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
+<span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-label="3"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1">1</button><span id="annotated-cell-18-4" class="code-annotation-target"><a href="#annotated-cell-18-4" aria-label="4"></a>Vettore2D v3 <span class="op">=</span> v1<span class="op">.</span>somma<span class="op">(</span>v2<span class="op">);</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-18" data-code-lines="4" data-code-annotation="1">Brutto da leggere. E se volessi sommare tre vettori? <code>v1.somma(v2.somma(v3))</code>! Orribile.</span>
+</dd>
+</dl>
+</div><div class="column" style="width:50%;">
+<p><strong>Con Overloading:</strong> Usiamo la matematica come natura comanda.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-19"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-label="1"></a>Vettore2D v1<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
+<span id="annotated-cell-19-2"><a href="#annotated-cell-19-2" aria-label="2"></a>Vettore2D v2<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
+<span id="annotated-cell-19-3"><a href="#annotated-cell-19-3" aria-label="3"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2">2</button><span id="annotated-cell-19-4" class="code-annotation-target"><a href="#annotated-cell-19-4" aria-label="4"></a>Vettore2D v3 <span class="op">=</span> v1 <span class="op">+</span> v2<span class="op">;</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-19" data-code-lines="4" data-code-annotation="2">Elegante, compatto, intuitivo! E <code>v1 + v2 + v3</code> funziona perfettamente!</span>
+</dd>
+</dl>
+</div></div>
+</section>
+<section id="sintassi-delloverloading-metodi" class="slide level2 smaller">
+<h2>Sintassi dell’Overloading (Metodi)</h2>
+<p>Come si definisce? Esattamente come abbiamo fatto per l’operatore <code>=</code>, ma cambiando simbolo!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
+<span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-label="3"></a>    <span class="co">// Questa funzione definisce cosa fa il simbolo "+"</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1">1</button><span id="annotated-cell-11-4" class="code-annotation-target"><a href="#annotated-cell-11-4" aria-label="4"></a>    Vettore2D <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-11" data-code-lines="4" data-code-annotation="1">Notare il <code>const</code> finale! Sommare due vettori genera un <em>nuovo</em> vettore, ma NON altera i due vettori originali (principio di minor privilegio!). L’operatore <code>=</code> invece alterava l’oggetto, per cui non era marcato <code>const</code> alla fine.</span>
+</dd>
+</dl>
+</section>
+<section id="esempio-la-classe-vettore2d" class="slide level2 smaller">
+<h2>Esempio: La classe Vettore2D</h2>
+<p>Vediamo come si implementa l’Header.</p>
+<p><strong><code>Vettore2D.hpp</code></strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="pp">#pragma once</span></span>
+<span id="cb3-2"><a aria-label="2"></a></span>
+<span id="cb3-3"><a aria-label="3"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
+<span id="cb3-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb3-5"><a aria-label="5"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
+<span id="cb3-6"><a aria-label="6"></a></span>
+<span id="cb3-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb3-8"><a aria-label="8"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">{</span> <span class="va">x_</span> <span class="op">=</span> x<span class="op">;</span> <span class="va">y_</span> <span class="op">=</span> y<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb3-9"><a aria-label="9"></a>    </span>
+<span id="cb3-10"><a aria-label="10"></a>    <span class="co">// Dichiaro la voglia di supportare il "+"</span></span>
+<span id="cb3-11"><a aria-label="11"></a>    Vettore2D <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb3-12"><a aria-label="12"></a>    </span>
+<span id="cb3-13"><a aria-label="13"></a>    <span class="dt">double</span> getX<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">x_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb3-14"><a aria-label="14"></a>    <span class="dt">double</span> getY<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">y_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb3-15"><a aria-label="15"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="esempio-operatore-in-azione" class="slide level2 smaller">
+<h2>Esempio: Operatore <code>+</code> in azione</h2>
+<p>Implementiamolo nel Source file!</p>
+<p><strong><code>Vettore2D.cpp</code></strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-13"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-label="1"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
+<span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-label="2"></a></span>
+<span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-label="3"></a><span class="co">// Restituisco un nuovo Vettore2D</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1">1</button><span id="annotated-cell-13-4" class="code-annotation-target"><a href="#annotated-cell-13-4" aria-label="4"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="annotated-cell-13-5"><a href="#annotated-cell-13-5" aria-label="5"></a>    </span>
+<span id="annotated-cell-13-6"><a href="#annotated-cell-13-6" aria-label="6"></a>    <span class="co">// Sommo le componenti X e Y separatamente (regola del parallelogramma)</span></span>
+<span id="annotated-cell-13-7"><a href="#annotated-cell-13-7" aria-label="7"></a>    <span class="dt">double</span> nuovo_x <span class="op">=</span> <span class="kw">this</span><span class="op">-&gt;</span><span class="va">x_</span> <span class="op">+</span> rhs<span class="op">.</span><span class="va">x_</span><span class="op">;</span></span>
+<span id="annotated-cell-13-8"><a href="#annotated-cell-13-8" aria-label="8"></a>    <span class="dt">double</span> nuovo_y <span class="op">=</span> <span class="kw">this</span><span class="op">-&gt;</span><span class="va">y_</span> <span class="op">+</span> rhs<span class="op">.</span><span class="va">y_</span><span class="op">;</span></span>
+<span id="annotated-cell-13-9"><a href="#annotated-cell-13-9" aria-label="9"></a>    </span>
+<span id="annotated-cell-13-10"><a href="#annotated-cell-13-10" aria-label="10"></a>    <span class="co">// Restituisco un nuovissimo oggetto nato da questi valori!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="2">2</button><span id="annotated-cell-13-11" class="code-annotation-target"><a href="#annotated-cell-13-11" aria-label="11"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span>nuovo_x<span class="op">,</span> nuovo_y<span class="op">);</span></span>
+<span id="annotated-cell-13-12"><a href="#annotated-cell-13-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-13" data-code-lines="4" data-code-annotation="1">Firma complessa ma logica.</span>
+</dd>
+<dt data-target-cell="annotated-cell-13" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-13" data-code-lines="11" data-code-annotation="2">Restituisco un pacchetto anonimo già pronto.</span>
+</dd>
+</dl>
+</section>
+<section id="le-regole-del-gioco-cosa-è-vietato" class="slide level2 smaller">
+<h2>Le Regole del Gioco: Cosa è vietato</h2>
+<p>Cosa <strong>NON puoi</strong> fare con l’Overloading degli operatori:</p>
+<ol type="1">
+<li>Non puoi creare <strong>nuovi</strong> simboli (es. non puoi creare un operatore <code>@</code> o <code>**</code> come in Python). Puoi solo usare quelli preesistenti.</li>
+<li>Non puoi cambiare il significato degli operatori per i tipi di base (non puoi fare in modo che <code>1 + 1</code> degli interi restituisca <code>3</code>).</li>
+<li>Non puoi cambiare il numero di argomenti (il <code>+</code> deve rimanere binario, non può prendere tre oggetti alla volta).</li>
+</ol>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>L’Abuso degli Operatori:</strong> Usate gli operatori solo se il significato logico è scontato. Un <code>*</code> tra due vettori è intuibile (prodotto scalare). Ma un <code>*</code> tra due classi “Studente” non significa niente! Creerete solo codice impossibile da debuggare.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="esercizio-in-classe-20-min" class="slide level2 smaller">
+<h2>Esercizio in Classe (20 min)</h2>
+<p>Espandiamo la classe Vettore2D!</p>
+<ol type="1">
+<li>Prendi la classe <code>Vettore2D</code> appena descritta in due file separati.</li>
+<li>Abbiamo implementato l’operatore <code>+</code>. Ora implementa l’overloading dell’operatore <strong><code>*</code></strong> (prodotto per uno scalare).</li>
+<li>Questo operatore dovrà permetterti di scrivere nel <code>main</code>: <code>Vettore2D v2 = v1 * 5.0;</code>. <em>(Suggerimento: il lato destro dell’operazione, la variabile <code>rhs</code>, non sarà un altro <code>Vettore2D</code>, ma sarà un semplice <code>double</code>!)</em>.</li>
+<li>Metti un semplice <code>cout</code> in un file <code>main.cpp</code> e verifica che la moltiplicazione per 5.0 abbia scalato sia <code>x_</code> che <code>y_</code>!</li>
+</ol>
+</section>
+<section id="esercizio-soluzione" class="slide level2 smaller">
+<h2>Esercizio: Soluzione</h2>
+<p><strong><code>Vettore2D.hpp</code></strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-label="1"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
+<span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-label="2"></a>    <span class="co">// ... codice precedente ...</span></span>
+<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-label="3"></a>    </span>
+<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-label="4"></a>    <span class="co">// Moltiplicazione per uno scalare!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1">1</button><span id="annotated-cell-14-5" class="code-annotation-target"><a href="#annotated-cell-14-5" aria-label="5"></a>    Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> rhs<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-label="6"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-lines="5" data-code-annotation="1">L’argomento non è un riferimento a una classe, ma è solo un banale numero!</span>
+</dd>
+</dl>
+<p><strong><code>Vettore2D.cpp</code></strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="co">// Implementazione</span></span>
+<span id="cb4-2"><a aria-label="2"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> scalare<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb4-3"><a aria-label="3"></a>    <span class="dt">double</span> nuovo_x <span class="op">=</span> <span class="kw">this</span><span class="op">-&gt;</span><span class="va">x_</span> <span class="op">*</span> scalare<span class="op">;</span></span>
+<span id="cb4-4"><a aria-label="4"></a>    <span class="dt">double</span> nuovo_y <span class="op">=</span> <span class="kw">this</span><span class="op">-&gt;</span><span class="va">y_</span> <span class="op">*</span> scalare<span class="op">;</span></span>
+<span id="cb4-5"><a aria-label="5"></a>    </span>
+<span id="cb4-6"><a aria-label="6"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span>nuovo_x<span class="op">,</span> nuovo_y<span class="op">);</span></span>
+<span id="cb4-7"><a aria-label="7"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>Tutto molto logico ed elegante! (Nota: questo funzionerà per <code>v1 * 5.0</code>, ma NON funzionerà per <code>5.0 * v1</code>. Lo vedremo in futuro con le funzioni Friend).</em></p>
+<p><a href="../index.html">Torna all’indice</a></p>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'convex',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+            let selectedAnnoteEl;
+            const selectorForAnnotation = ( cell, annotation) => {
+              let cellAttr = 'data-code-cell="' + cell + '"';
+              let lineAttr = 'data-code-annotation="' +  annotation + '"';
+              const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+              return selector;
+            }
+            const selectCodeLines = (annoteEl) => {
+              const doc = window.document;
+              const targetCell = annoteEl.getAttribute("data-target-cell");
+              const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+              const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+              const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+              const lineIds = lines.map((line) => {
+                return targetCell + "-" + line;
+              })
+              let top = null;
+              let height = null;
+              let parent = null;
+              if (lineIds.length > 0) {
+                  //compute the position of the single el (top and bottom and make a div)
+                  const el = window.document.getElementById(lineIds[0]);
+                  top = el.offsetTop;
+                  height = el.offsetHeight;
+                  parent = el.parentElement.parentElement;
+                if (lineIds.length > 1) {
+                  const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+                  const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+                  height = bottom - top;
+                }
+                if (top !== null && height !== null && parent !== null) {
+                  // cook up a div (if necessary) and position it 
+                  let div = window.document.getElementById("code-annotation-line-highlight");
+                  if (div === null) {
+                    div = window.document.createElement("div");
+                    div.setAttribute("id", "code-annotation-line-highlight");
+                    div.style.position = 'absolute';
+                    parent.appendChild(div);
+                  }
+                  div.style.top = top - 2 + "px";
+                  div.style.height = height + 4 + "px";
+                  div.style.left = 0;
+                  let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+                  if (gutterDiv === null) {
+                    gutterDiv = window.document.createElement("div");
+                    gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                    gutterDiv.style.position = 'absolute';
+                    const codeCell = window.document.getElementById(targetCell);
+                    const gutter = codeCell.querySelector('.code-annotation-gutter');
+                    gutter.appendChild(gutterDiv);
+                  }
+                  gutterDiv.style.top = top - 2 + "px";
+                  gutterDiv.style.height = height + 4 + "px";
+                }
+                selectedAnnoteEl = annoteEl;
+              }
+            };
+            const unselectCodeLines = () => {
+              const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+              elementsIds.forEach((elId) => {
+                const div = window.document.getElementById(elId);
+                if (div) {
+                  div.remove();
+                }
+              });
+              selectedAnnoteEl = undefined;
+            };
+              // Handle positioning of the toggle
+          window.addEventListener(
+            "resize",
+            throttle(() => {
+              elRect = undefined;
+              if (selectedAnnoteEl) {
+                selectCodeLines(selectedAnnoteEl);
+              }
+            }, 10)
+          );
+          function throttle(fn, ms) {
+          let throttle = false;
+          let timer;
+            return (...args) => {
+              if(!throttle) { // first call gets through
+                  fn.apply(this, args);
+                  throttle = true;
+              } else { // all the others get throttled
+                  if(timer) clearTimeout(timer); // cancel #2
+                  timer = setTimeout(() => {
+                    fn.apply(this, args);
+                    timer = throttle = false;
+                  }, ms);
+              }
+            };
+          }
+            const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+            for (let i=0; i<annoteTargets.length; i++) {
+              const annoteTarget = annoteTargets[i];
+              const targetCell = annoteTarget.getAttribute("data-target-cell");
+              const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+              const contentFn = () => {
+                const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+                if (content) {
+                  const tipContent = content.cloneNode(true);
+                  tipContent.classList.add("code-annotation-tip-content");
+                  return tipContent.outerHTML;
+                }
+              }
+              const config = {
+                allowHTML: true,
+                content: contentFn,
+                onShow: (instance) => {
+                  selectCodeLines(instance.reference);
+                  instance.reference.classList.add('code-annotation-active');
+                  window.tippy.hideAll();
+                },
+                onHide: (instance) => {
+                  unselectCodeLines();
+                  instance.reference.classList.remove('code-annotation-active');
+                },
+                maxWidth: 300,
+                delay: [50, 0],
+                duration: [200, 0],
+                offset: [5, 10],
+                arrow: true,
+                appendTo: function(el) {
+                  return el.parentElement.parentElement.parentElement;
+                },
+                interactive: true,
+                interactiveBorder: 10,
+                theme: 'light-border',
+                placement: 'right',
+                popperOptions: {
+                  modifiers: [
+                  {
+                    name: 'flip',
+                    options: {
+                      flipVariations: false, // true by default
+                      allowedAutoPlacements: ['right'],
+                      fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                    },
+                  },
+                  {
+                    name: 'preventOverflow',
+                    options: {
+                      mainAxis: false,
+                      altAxis: false
+                    }
+                  }
+                  ]        
+                }      
+              };
+              window.tippy(annoteTarget, config); 
+            }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

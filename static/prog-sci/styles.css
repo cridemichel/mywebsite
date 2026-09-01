@@ -1,0 +1,14 @@
+/* stili base per la homepage del corso */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3 {
+  color: #2c3e50;
+}
+
+/* Rendi la navigazione leggermente più elegante */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
