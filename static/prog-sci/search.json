@@ -1257,7 +1257,7 @@
     "href": "lezione-01/index.html#obiettivi-principali-del-corso",
     "title": "Programmazione Scientifica++: Lezione 1",
     "section": "Obiettivi Principali del Corso",
-    "text": "Obiettivi Principali del Corso\n\nCapire limportanza della programmazione ad oggetti e del C++ moderno.\nSaper scrivere programmi usando classi appropriate per risolvere problemi.\nCapire come usare e integrare librerie esterne (es. Eigen).\nProgetto Finale:\n\nSviluppare una vera rete neurale (Multi-Layer Perceptron) in C++.\nRiconoscere numeri scritti a mano dal dataset MNIST."
+    "text": "Obiettivi Principali del Corso\n\nCapire l’importanza della programmazione ad oggetti e del C++ moderno.\nSaper scrivere programmi usando classi appropriate per risolvere problemi.\nCapire come usare e integrare librerie esterne (es. Eigen).\nProgetto Finale:\n\nSviluppare una vera rete neurale (Multi-Layer Perceptron) in C++.\nRiconoscere numeri scritti a mano dal dataset MNIST."
   },
   {
     "objectID": "lezione-01/index.html#esempi-di-uso-di-c-in-fisica-e-non-solo",
@@ -1285,7 +1285,7 @@
     "href": "lezione-01/index.html#come-funzionerà-il-corso",
     "title": "Programmazione Scientifica++: Lezione 1",
     "section": "Come Funzionerà il Corso?",
-    "text": "Come Funzionerà il Corso?\n\nNon discuterò in dettaglio tutti i possibili operatori, comandi e sintassi di C++\n\nCi sono ottimi libri e siti web (e le intelligenze artificiali!) che illustrano tutto\nCercare di ripetere questo livello di dettaglio a lezione è dispersivo ed inutile\n\nLe lezioni si focalizzeranno su aspetti importanti che rendono C++ superiore a C\nFornirò esempi specifici per illustrarvi lutilizzo di C++ e possibili problemi tecnici\nLintero corso è Project-Based: il codice sviluppato a laboratorio andrà a comporre larchitettura del vostro framework BASIC_NEURAL++."
+    "text": "Come Funzionerà il Corso?\n\nNon discuterò in dettaglio tutti i possibili operatori, comandi e sintassi di C++\n\nCi sono ottimi libri e siti web (e le intelligenze artificiali!) che illustrano tutto\nCercare di ripetere questo livello di dettaglio a lezione è dispersivo ed inutile\n\nLe lezioni si focalizzeranno su aspetti importanti che rendono C++ superiore a C\nFornirò esempi specifici per illustrarvi l’utilizzo di C++ e possibili problemi tecnici\nL’intero corso è Project-Based: il codice sviluppato a laboratorio andrà a comporre l’architettura del vostro framework BASIC_NEURAL++."
   },
   {
     "objectID": "lezione-01/index.html#imparare-un-linguaggio-come-una-lingua",
@@ -1319,8 +1319,8 @@
     "objectID": "lezione-01/index.html#tematiche-la-base-e-larchitettura",
     "href": "lezione-01/index.html#tematiche-la-base-e-larchitettura",
     "title": "Programmazione Scientifica++: Lezione 1",
-    "section": "Tematiche: La Base e lArchitettura",
-    "text": "Tematiche: La Base e lArchitettura\n\nGestione della memoria C++ (Puntatori, Heap).\nCiclo di vita degli oggetti (Costruttori, Distruttori).\nIntroduzione allObject-Oriented Programming (OOP).\nPolimorfismo, ereditarietà ed incapsulamento.\nAstrazione: interfacce e classi virtuali pure."
+    "section": "Tematiche: La Base e l’Architettura",
+    "text": "Tematiche: La Base e l’Architettura\n\nGestione della memoria C++ (Puntatori, Heap).\nCiclo di vita degli oggetti (Costruttori, Distruttori).\nIntroduzione all’Object-Oriented Programming (OOP).\nPolimorfismo, ereditarietà ed incapsulamento.\nAstrazione: interfacce e classi virtuali pure."
   },
   {
     "objectID": "lezione-01/index.html#tematiche-strumenti-e-deep-learning",
@@ -1341,14 +1341,14 @@
     "href": "lezione-01/index.html#compilato-vs-interpretato-13",
     "title": "Programmazione Scientifica++: Lezione 1",
     "section": "Compilato vs Interpretato (1/3)",
-    "text": "Compilato vs Interpretato (1/3)\n\nPython, MATLAB e R sono linguaggi interpretati.\nIl codice viene letto riga per riga da un “interprete” durante lesecuzione.\nVantaggi: Facilissimi da usare, non serve compilare, typing dinamico.\nSvantaggi: Sono lenti. Molto, molto lenti per operazioni matematiche su larga scala."
+    "text": "Compilato vs Interpretato (1/3)\n\nPython, MATLAB e R sono linguaggi interpretati.\nIl codice viene letto riga per riga da un “interprete” durante l’esecuzione.\nVantaggi: Facilissimi da usare, non serve compilare, typing dinamico.\nSvantaggi: Sono lenti. Molto, molto lenti per operazioni matematiche su larga scala."
   },
   {
     "objectID": "lezione-01/index.html#compilato-vs-interpretato-23",
     "href": "lezione-01/index.html#compilato-vs-interpretato-23",
     "title": "Programmazione Scientifica++: Lezione 1",
     "section": "Compilato vs Interpretato (2/3)",
-    "text": "Compilato vs Interpretato (2/3)\n\nC e C++ sono linguaggi compilati.\nIl codice sorgente viene tradotto in linguaggio macchina (binario) prima dellesecuzione da un programma chiamato compilatore (es. g++).\nIl computer esegue direttamente le istruzioni binarie.\nSvantaggi: Tempi di compilazione, gestione manuale dei tipi e della memoria.\nVantaggi: Prestazioni assolute. Sei a diretto contatto con lhardware (CPU/GPU)."
+    "text": "Compilato vs Interpretato (2/3)\n\nC e C++ sono linguaggi compilati.\nIl codice sorgente viene tradotto in linguaggio macchina (binario) prima dellesecuzione da un programma chiamato compilatore (es. g++).\nIl computer esegue direttamente le istruzioni binarie.\nSvantaggi: Tempi di compilazione, gestione manuale dei tipi e della memoria.\nVantaggi: Prestazioni assolute. Sei a diretto contatto con l’hardware (CPU/GPU)."
   },
   {
     "objectID": "lezione-01/index.html#compilato-vs-interpretato-33",
@@ -1383,21 +1383,21 @@
     "href": "lezione-01/index.html#la-filosofia-di-basic_neural",
     "title": "Programmazione Scientifica++: Lezione 1",
     "section": "La Filosofia di BASIC_NEURAL++",
-    "text": "La Filosofia di BASIC_NEURAL++\n\nDurante il corso costruiremo BASIC_NEURAL++.\nRegola doro: Niente librerie magiche per il Machine Learning (Niente PyTorch, niente TensorFlow).\nCosa useremo?\n\nSolo la Standard Library del C++.\nEigen: per lalgebra lineare veloce.\nOpenCV: solo alla fine, per leggere le immagini che disegnerete voi a mano!"
+    "text": "La Filosofia di BASIC_NEURAL++\n\nDurante il corso costruiremo BASIC_NEURAL++.\nRegola doro: Niente librerie magiche per il Machine Learning (Niente PyTorch, niente TensorFlow).\nCosa useremo?\n\nSolo la Standard Library del C++.\nEigen: per l’algebra lineare veloce.\nOpenCV: solo alla fine, per leggere le immagini che disegnerete voi a mano!"
   },
   {
     "objectID": "lezione-01/index.html#capire-la-scatola-nera",
     "href": "lezione-01/index.html#capire-la-scatola-nera",
     "title": "Programmazione Scientifica++: Lezione 1",
     "section": "Capire la scatola nera",
-    "text": "Capire la scatola nera\n\nSviluppando tutto da zero, “apriremo la scatola nera” dellIntelligenza Artificiale.\nCapirete esattamente cosè un gradiente.\nVedrete con i vostri occhi come i pesi sinaptici (che sono solo numeri in una matrice) cambiano valore passo dopo passo.\nImparerete cosa significa il temuto “Overfitting” o l”Esplosione del Gradiente”, perché li vedrete accadere nel vostro codice!"
+    "text": "Capire la scatola nera\n\nSviluppando tutto da zero, “apriremo la scatola nera” dellIntelligenza Artificiale.\nCapirete esattamente cos’è un gradiente.\nVedrete con i vostri occhi come i pesi sinaptici (che sono solo numeri in una matrice) cambiano valore passo dopo passo.\nImparerete cosa significa il temuto “Overfitting” o l”Esplosione del Gradiente”, perché li vedrete accadere nel vostro codice!"
   },
   {
     "objectID": "lezione-01/index.html#la-struttura-di-una-rete-multi-layer-perceptron",
     "href": "lezione-01/index.html#la-struttura-di-una-rete-multi-layer-perceptron",
     "title": "Programmazione Scientifica++: Lezione 1",
     "section": "La Struttura di una Rete (Multi-Layer Perceptron)",
-    "text": "La Struttura di una Rete (Multi-Layer Perceptron)\n\nLa nostra rete sarà composta da Strati (Layers).\nStrato di Input: 784 neuroni (i 28x28 pixel dellimmagine MNIST).\nStrati Nascosti (Hidden): Deciderete voi quanti neuroni usare per estrarre i concetti (linee, curve, anelli).\nStrato di Output: 10 neuroni (le probabilità che limmagine sia la cifra 0, 1, …, 9)."
+    "text": "La Struttura di una Rete (Multi-Layer Perceptron)\n\nLa nostra rete sarà composta da Strati (Layers).\nStrato di Input: 784 neuroni (i 28x28 pixel dellimmagine MNIST).\nStrati Nascosti (Hidden): Deciderete voi quanti neuroni usare per estrarre i concetti (linee, curve, anelli).\nStrato di Output: 10 neuroni (le probabilità che l’immagine sia la cifra 0, 1, …, 9)."
   },
   {
     "objectID": "lezione-01/index.html#lambiente-di-lavoro-cmake",
@@ -1431,15 +1431,15 @@
     "objectID": "lezione-01/index.html#dal-procedurale-c-allobject-oriented-c",
     "href": "lezione-01/index.html#dal-procedurale-c-allobject-oriented-c",
     "title": "Programmazione Scientifica++: Lezione 1",
-    "section": "Dal Procedurale (C) allObject-Oriented (C++)",
-    "text": "Dal Procedurale (C) allObject-Oriented (C++)\n\nIl C (anni 70) è un linguaggio procedurale.\n\nIncentrato sulle azioni da compiere sulle strutture dati (i “verbi”).\nI dati sono strutture passive passate alle funzioni.\n\nNegli anni 80, Bjarne Stroustrup ha sviluppato il C++, introducendo il paradigma Object-Oriented (OOP).\n\nLesecuzione del programma diventa uninterazione tra “oggetti” intelligenti."
+    "section": "Dal Procedurale (C) all’Object-Oriented (C++)",
+    "text": "Dal Procedurale (C) all’Object-Oriented (C++)\n\nIl C (anni 70) è un linguaggio procedurale.\n\nIncentrato sulle azioni da compiere sulle strutture dati (i “verbi”).\nI dati sono strutture passive passate alle funzioni.\n\nNegli anni 80, Bjarne Stroustrup ha sviluppato il C++, introducendo il paradigma Object-Oriented (OOP).\n\nL’esecuzione del programma diventa un’interazione tra “oggetti” intelligenti."
   },
   {
     "objectID": "lezione-01/index.html#cosè-la-programmazione-orientata-agli-oggetti",
     "href": "lezione-01/index.html#cosè-la-programmazione-orientata-agli-oggetti",
     "title": "Programmazione Scientifica++: Lezione 1",
-    "section": "Cosè la Programmazione Orientata agli Oggetti?",
-    "text": "Cosè la Programmazione Orientata agli Oggetti?\n\nIn passato (es. vecchi corsi) vi avrebbero fatto lesempio delloggetto Automobile che può essere guidata, o della Porta che può essere aperta…\nNoi faremo sul serio. Gli oggetti sono dati dotati di comportamento (attributi + metodi).\nNel nostro framework neurale:\n\nUna Matrice non è solo una griglia di numeri, ma un oggetto che “sa” come calcolare il prodotto punto con unaltra matrice.\nUn Layer non è solo un array di pesi, ma un oggetto che espone un metodo forward() per propagare il segnale e un metodo backward() per calcolare il suo gradiente.\n\n\nSiete pronti a costruire la vostra IA?\nTorna allindice"
+    "section": "Cos’è la Programmazione Orientata agli Oggetti?",
+    "text": "Cos’è la Programmazione Orientata agli Oggetti?\n\nIn passato (es. vecchi corsi) vi avrebbero fatto l’esempio dell’oggetto Automobile che può essere guidata, o della Porta che può essere aperta…\nNoi faremo sul serio. Gli oggetti sono dati dotati di comportamento (attributi + metodi).\nNel nostro framework neurale:\n\nUna Matrice non è solo una griglia di numeri, ma un oggetto che “sa” come calcolare il prodotto punto con un’altra matrice.\nUn Layer non è solo un array di pesi, ma un oggetto che espone un metodo forward() per propagare il segnale e un metodo backward() per calcolare il suo gradiente.\n\n\nSiete pronti a costruire la vostra IA?\nTorna all’indice"
   },
   {
     "objectID": "lezione-09/index.html#i-distruttori-classe",
