@@ -1302,18 +1302,18 @@
     "text": "Lingua del Corso\n\nLe lezioni saranno in italiano ma alcune risorse potrebbero essere in inglese\nPerché?\n\nMolti termini tecnici non sono nemmeno tradotti in italiano (es. “template” o “design pattern”)\nSarà più facile per voi cercare referenze e materiale aggiuntivo\nVi abituerete ai testi in inglese che nei corsi futuri saranno sempre più comuni"
   },
   {
-    "objectID": "lezione-01/index.html#alcuni-testi-da-consultare",
-    "href": "lezione-01/index.html#alcuni-testi-da-consultare",
+    "objectID": "lezione-01/index.html#alcuni-testi-da-consultare-per-iniziare",
+    "href": "lezione-01/index.html#alcuni-testi-da-consultare-per-iniziare",
     "title": "Programmazione Scientifica++: Lezione 1",
-    "section": "Alcuni Testi da Consultare",
-    "text": "Alcuni Testi da Consultare\n\n\nDeitel & Deitel, C++ How To Program, editore Pearson - Prentice Hall\n\nBuono se non conoscete C++ ed avete bisogno di un testo che vi segua passo per passo. Tantissimi esempi.\n\nJ. Barton & L. Nackman, Scientific and Engineering C++, editore Addison-Wesley\n\nSemplice e conciso. Un po minimalista. Tratta tutti gli argomenti importanti."
+    "section": "Alcuni Testi da Consultare per Iniziare",
+    "text": "Alcuni Testi da Consultare per Iniziare\n\n\n - Deitel, C++ How To Program - Buono se non conoscete C++ e vi serve un testo passo-passo.\n\n - Stroustrup, Programming: Principles and Practice - (3^ Ed. 2024, C++20). Il manuale didattico introduttivo ufficiale del creatore del C++. Perfetto per iniziare."
   },
   {
     "objectID": "lezione-01/index.html#altri-testi-di-riferimento",
     "href": "lezione-01/index.html#altri-testi-di-riferimento",
     "title": "Programmazione Scientifica++: Lezione 1",
     "section": "Altri Testi di Riferimento",
-    "text": "Altri Testi di Riferimento\n\n\n\n\n\n\n\n\nB. Stroustrup, C++ Programming Language\n\nLa “bibbia” del C++ direttamente dal suo creatore.\nNon un testo didattico ma ottimo punto di riferimento.\n\n\n\n\n\n\n\n\n\nLippman, C++ Primer\n\nUn altro testo completo, forse un po meno pesante."
+    "text": "Altri Testi di Riferimento\n\n\n\n\n\n\n\n\nStroustrup, C++ Programming Language\n\nLa “bibbia” storica (ferma al C++11). Ottimo punto di riferimento per le basi.\n\n\n\n\n\n\n\n\n\nStroustrup, A Tour of C++ (3^ Ed.)\n\nModerno e rapido (C++20). Non per principianti, ma ideale per chi sa già programmare.\n\n\n\n\n\n\n\n\n\nLippman, C++ Primer\n\nTesto didattico completo (anche questo fermo al C++11), forse un po’ meno “pesante”."
   },
   {
     "objectID": "lezione-01/index.html#tematiche-la-base-e-larchitettura",
