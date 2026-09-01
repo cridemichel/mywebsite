@@ -355,22 +355,18 @@ ul.task-list li input[type="checkbox"] {
 <div style="text-align: center; margin-bottom: 2rem;">
 <p><img src="images/logo_sapienza.png" alt="Logo Sapienza" style="max-width: 300px;"></p>
 </div>
-<div id="website-home-link" style="display: none; text-align: center; margin-bottom: 2rem; background-color: #f8f9fa; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
-  <a href="./" style="font-weight: bold; font-size: 1.1em; text-decoration: none;">
+<div style="text-align: center; margin-bottom: 2rem; background-color: #f8f9fa; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+  <a href="../teaching/" style="font-weight: bold; font-size: 1.1em; text-decoration: none;">
     ← Torna alla Home del Sito Personale
   </a>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Mostra il link solo se il sito è ospitato dentro la sottocartella /prog-sci/ 
-    // del sito web personale (sia in locale tramite Hugo, sia online).
-    // Nasconde automaticamente il link se stai usando "quarto preview" puro.
-    if (window.location.pathname.indexOf("/prog-sci") !== -1) {
-      document.getElementById("website-home-link").style.display = "block";
-    }
-  });
-</script>
+<div style="text-align: center; margin-bottom: 2rem;">
+  <a href="Materiale_Corso.zip" download="" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; font-weight: bold; border-radius: 5px;">
+    📦 Scarica tutto il materiale pubblicato (ZIP)
+  </a>
+  <p style="font-size: 0.9em; color: #666; margin-top: 5px;">Scarica l'intero sito web per consultare le slide offline.</p>
+</div>
 <p>Benvenuti al corso di <strong>Programmazione Scientifica++</strong> per la laurea triennale in Fisica.</p>
 <p>In questo corso esploreremo i fondamenti e i concetti avanzati del linguaggio C++. A partire dalle basi della programmazione procedurale (confrontandola con il C che già conoscete), passeremo alla programmazione orientata agli oggetti (OOP), all’utilizzo delle classi, dei template e all’uso pratico della memoria.</p>
 <p>La teoria verrà subito messa in pratica: durante le ore di laboratorio lavoreremo insieme allo <strong>sviluppo da zero in C++ di una Rete Neurale MLP (Multilayer Perceptron)</strong> per il riconoscimento di numeri scritti a mano utilizzando il dataset <strong>MNIST</strong>, ispirandoci alla metodologia del libro <em>“Make Your Own Neural Network”</em> di Tariq Rashid.</p>

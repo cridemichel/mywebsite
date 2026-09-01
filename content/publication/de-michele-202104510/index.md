@@ -19,7 +19,7 @@ tags:
 - '"patchy particles"'
 - '"self-assembly"'
 categories: []
-date: -01-01
+date: 2021-01-01
 lastmod: 2021-12-04T08:19:07+01:00
 featured: false
 draft: false
