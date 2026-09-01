@@ -17,8 +17,8 @@ header:
 ## **PRESENT COURSES** {#CSM}
 
 ### PROGRAMMAZIONE SCIENTIFICA++ 
-### (Master in Physics)
-
+### (III anno della Laurea Triennale in Fisica)
+ 
 [Vai al Sito e alle Slide del Corso](/prog-sci/index.html)
 
 ---
@@ -33,6 +33,8 @@ header:
 
 ---
 
+## **PAST COURSES**
+
 ### LABORATORIO DI CALCOLO 
 ### (primo anno - laurea triennale in fisica)
 
@@ -43,8 +45,6 @@ header:
 [Questionario 2025-26](https://docs.google.com/forms/d/e/1FAIpQLSeXGUYTMUgLHHS4SxbzXgr0_bNCL52fGdpt6iX_vMfd1-JIig/viewform?usp=header)
 
 [google classroom](https://classroom.google.com/c/ODA3MjI3NzQ2MjUw?cjc=7i5fyuqu)
-
-## **PAST COURSES**
 
 ### COMPUTING METHIDS FOR PHYSICS (2021-24) 
 

@@ -1399,7 +1399,7 @@ $v	static/prog-sci/site_libs/quarto-diagram/mermaid.min.js	/^`)},"setAccDescript
 '	static/prog-sci/site_libs/revealjs/plugin/markdown/plugin.js	/^  "'": '&#39;'$/;"	p	variable:HTML_ESCAPE_MAP
 '	static/prog-sci/site_libs/revealjs/plugin/notes/notes.esm.js	/^function t(){return{async:!1,baseUrl:null,breaks:!1,extensions:null,gfm:!0,headerIds:!0,headerPr/;"	p	variable:a
 '	static/prog-sci/site_libs/revealjs/plugin/notes/notes.js	/^!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function/;"	p	variable:anonymousFunctionf8b279910200.a
-(Master in Physics)	content/teaching/index.md	/^### (Master in Physics)$/;"	S	section:**PRESENT COURSES** {#CSM}
+(III anno della Laurea Triennale in Fisica)	content/teaching/index.md	/^### (III anno della Laurea Triennale in Fisica)$/;"	S	section:**PRESENT COURSES** {#CSM}
 (first year - master in physics)	content/teaching/index.md	/^### (first year - master in physics) $/;"	S	section:**PRESENT COURSES** {#CSM}
 (primo anno - laurea triennale in fisica)	content/teaching/index.md	/^### (primo anno - laurea triennale in fisica)$/;"	S	section:**PRESENT COURSES** {#CSM}
 *	public/css/academic.css	/^ *\/:root{--blue: #007bff;--indigo: #6610f2;--purple: #6f42c1;--pink: #e83e8c;--red: #dc3545;--o/;"	s
