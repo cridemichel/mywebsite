@@ -1271,7 +1271,7 @@
     "href": "lezione-01/index.html#informazioni-di-servizio",
     "title": "Programmazione Scientifica++: Lezione 1",
     "section": "Informazioni di Servizio",
-    "text": "Informazioni di Servizio\n\nSito web del corso: [INSERIRE LINK QUI]\nOrario di ricevimento: [INSERIRE ORARI E LUOGO/TEAMS]\nTutte le comunicazioni ufficiali avverranno tramite la piattaforma di ateneo.\nIl materiale didattico, le slide e i codici di partenza dei laboratori verranno caricati sul sito web/repository del corso."
+    "text": "Informazioni di Servizio\n\nSito web del corso:cristiano-de-michele.netlify.app/prog-sci\nOrario di ricevimento: Martedì 12-13\nTutte le comunicazioni ufficiali avverranno tramite la piattaforma di ateneo: elearning.uniroma1.it\nUtilizzerò anche il seguente google classroom: iguoftb2\nIl materiale didattico, le slide e i codici di partenza dei laboratori verranno caricati sul sito web/repository del corso."
   },
   {
     "objectID": "lezione-01/index.html#organizzazione-delle-lezioni",
@@ -1314,6 +1314,13 @@
     "title": "Programmazione Scientifica++: Lezione 1",
     "section": "Altri Testi di Riferimento",
     "text": "Altri Testi di Riferimento\n\n\n\n\n\n\n\n\nStroustrup, C++ Programming Language\n\nLa “bibbia” storica (ferma al C++11). Ottimo punto di riferimento per le basi.\n\n\n\n\n\n\n\n\n\nStroustrup, A Tour of C++ (3^ Ed.)\n\nModerno e rapido (C++20). Non per principianti, ma ideale per chi sa già programmare.\n\n\n\n\n\n\n\n\n\nLippman, C++ Primer\n\nTesto didattico completo (anche questo fermo al C++11), forse un po’ meno “pesante”."
+  },
+  {
+    "objectID": "lezione-01/index.html#testo-di-riferimento-reti-neurali",
+    "href": "lezione-01/index.html#testo-di-riferimento-reti-neurali",
+    "title": "Programmazione Scientifica++: Lezione 1",
+    "section": "Testo di Riferimento: Reti Neurali",
+    "text": "Testo di Riferimento: Reti Neurali\n\n\n\n\n\n\n\n\n - Tariq Rashid, Make Your Own Neural Network - Il libro su cui si baserà il nostro progetto finale. - Non usa librerie esterne, spiega la matematica alla base del Deep Learning passo dopo passo. - Ottimo per capire davvero come funziona una rete neurale prima di scriverla in C++."
   },
   {
     "objectID": "lezione-01/index.html#tematiche-la-base-e-larchitettura",
