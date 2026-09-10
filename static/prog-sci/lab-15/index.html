@@ -6,7 +6,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Docente">
@@ -34,11 +34,79 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -51,6 +119,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -134,7 +203,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Laboratorio 15</h1>
-  <p class="subtitle">Data Visualization in Python e Progetto Finale</p>
+  <p class="subtitle">Studi di Performance e Tracce dei Progetti Finali</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -145,26 +214,300 @@ Docente
 </div>
 
 </section>
-<section id="obiettivo-del-laboratorio" class="slide level2">
-<h2>Obiettivo del Laboratorio</h2>
-<p>L’addestramento è concluso, ma le tabelle CSV non sono belle da vedere. Utilizzeremo un semplice script Python per dar vita ai dati generati dal C++.</p>
+<section id="soluzione-del-laboratorio-14" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 14</h2>
+<p>Il cuore del <code>Trainer</code>: quattro righe, tutto il machine learning.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a>Batch<span class="op">&lt;</span>ntype<span class="op">&gt;</span> batch <span class="op">=</span> train_dataset<span class="op">.</span>get_next_batch<span class="op">();</span></span>
+<span id="cb1-2"><a aria-label="2"></a></span>
+<span id="cb1-3"><a aria-label="3"></a>Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> preds <span class="op">=</span> model<span class="op">-&gt;</span>forward<span class="op">(</span>batch<span class="op">.</span>inputs<span class="op">);</span>        <span class="co">// 1A. Forward</span></span>
+<span id="cb1-4"><a aria-label="4"></a>loss <span class="op">+=</span> lossfunc<span class="op">-&gt;</span>forward<span class="op">(</span>preds<span class="op">,</span> batch<span class="op">.</span>targets<span class="op">);</span>            <span class="co">// 1B. Loss</span></span>
+<span id="cb1-5"><a aria-label="5"></a>model<span class="op">-&gt;</span>backward<span class="op">(</span>lossfunc<span class="op">-&gt;</span>backward<span class="op">(</span>preds<span class="op">,</span> batch<span class="op">.</span>targets<span class="op">));</span>  <span class="co">// 2A. Backward</span></span>
+<span id="cb1-6"><a aria-label="6"></a>model<span class="op">-&gt;</span>update_parameters<span class="op">(</span>optimizer<span class="op">);</span>                        <span class="co">// 2B. Update</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>E la differenza fra addestramento e test:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a>model<span class="op">-&gt;</span>train<span class="op">();</span>  train_dataset<span class="op">.</span>reset_and_shuffle<span class="op">();</span>       <span class="co">// training: mescola</span></span>
+<span id="cb2-2"><a aria-label="2"></a>model<span class="op">-&gt;</span>eval<span class="op">();</span>   test_dataset<span class="op">.</span>reset_and_shuffle<span class="op">(</span><span class="kw">false</span><span class="op">);</span>   <span class="co">// test: NON mescola,</span></span>
+<span id="cb2-3"><a aria-label="3"></a>                                                          <span class="co">// e nessun backward</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>L’argmax con Eigen, che scrive l’indice negli argomenti:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a>preds<span class="op">.</span>array<span class="op">().</span>maxCoeff<span class="op">(&amp;</span>pred_class<span class="op">,</span> <span class="op">&amp;</span>dummy<span class="op">);</span></span>
+<span id="cb3-2"><a aria-label="2"></a>targets<span class="op">.</span>array<span class="op">().</span>maxCoeff<span class="op">(&amp;</span>target_class<span class="op">,</span> <span class="op">&amp;</span>dummy<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Chi ha addestrato su tutto MNIST dovrebbe essere oltre il 94%.</p>
 </section>
-<section id="task-da-completare" class="slide level2">
+<section id="obiettivo-di-oggi" class="slide level2">
+<h2>Obiettivo di Oggi</h2>
+<p>Una rete che funziona non è una rete che si capisce. Sappiamo che con <code>lr = 0.1</code> e 128 nodi si arriva al 94%, ma non sappiamo <strong>perché quei numeri</strong>, né cosa accade cambiandoli.</p>
+<p>Oggi facciamo scienza sperimentale sul nostro modello: tre studi sistematici che producono file di dati, e che nel Lab 16 diventeranno grafici. Il primo programma lo scrivete per intero; il secondo e il terzo sono <strong>lo stesso programma con un ciclo diverso</strong>: copiate, adattate, e usate il tempo risparmiato per un quarto studio opzionale sull’augmentation.</p>
+<p>Nella seconda parte: le <strong>tracce dei progetti finali</strong>.</p>
+</section>
+<section id="il-metodo-un-parametro-alla-volta" class="slide level2 smaller">
+<h2>Il metodo: un parametro alla volta</h2>
+<p>La struttura è sempre la stessa. Si fissa tutto tranne una variabile, si addestra, si registra la performance:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> nodes<span class="op">{</span><span class="dv">10</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">50</span><span class="op">,</span> <span class="dv">100</span><span class="op">,</span> <span class="dv">200</span><span class="op">};</span></span>
+<span id="cb4-2"><a aria-label="2"></a></span>
+<span id="cb4-3"><a aria-label="3"></a><span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> v <span class="op">:</span> nodes<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-4"><a aria-label="4"></a>    mlp<span class="op">(</span>v<span class="op">,</span> model<span class="op">);</span>                                       <span class="co">// costruisci</span></span>
+<span id="cb4-5"><a aria-label="5"></a>    trainer<span class="op">.</span>train<span class="op">(</span>train_dataset<span class="op">,</span> val_dataset<span class="op">,</span> performance<span class="op">,</span> neps<span class="op">,</span> max_batches<span class="op">);</span></span>
+<span id="cb4-6"><a aria-label="6"></a>    f <span class="op">&lt;&lt;</span> v <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> performance<span class="op">.</span>get_result<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>   <span class="co">// registra</span></span>
+<span id="cb4-7"><a aria-label="7"></a>    model<span class="op">.</span>clear<span class="op">();</span>                                       <span class="co">// e azzera</span></span>
+<span id="cb4-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Tre dettagli non negoziabili:</p>
+<ul>
+<li><code>rng.seed(12345)</code> <strong>prima</strong> del ciclo: senza un seme fisso, differenze fra configurazioni si confondono con il rumore dell’inizializzazione casuale.</li>
+<li><code>model.clear()</code> alla fine di ogni giro: è il metodo aggiunto nel Lab 10. Dimenticarlo accumula layer sopra i precedenti, e i risultati diventano senza senso.</li>
+<li>Il formato dei dati è due colonne separate da spazio: <code>valore performance</code>.</li>
+</ul>
+</section>
+<section id="task-1-perf_vs_nodes.cpp" class="slide level2 smaller">
+<h2>Task 1: <code>perf_vs_nodes.cpp</code></h2>
+<p>Quanti neuroni servono nel layer nascosto?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./mnist_dataset.hpp"</span></span>
+<span id="cb5-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">"./sequential.hpp"</span></span>
+<span id="cb5-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">"./loss.hpp"</span></span>
+<span id="cb5-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">"./optimizers.hpp"</span></span>
+<span id="cb5-5"><a aria-label="5"></a><span class="pp">#include </span><span class="im">"./mnist_metric.hpp"</span></span>
+<span id="cb5-6"><a aria-label="6"></a><span class="pp">#include </span><span class="im">"./trainer.hpp"</span></span>
+<span id="cb5-7"><a aria-label="7"></a></span>
+<span id="cb5-8"><a aria-label="8"></a><span class="co">// Costruisce una rete 784 -&gt; Nnodes -&gt; 10</span></span>
+<span id="cb5-9"><a aria-label="9"></a><span class="dt">void</span> mlp<span class="op">(</span><span class="dt">int</span> Nnodes<span class="op">,</span> Sequential<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&amp;</span> model<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-10"><a aria-label="10"></a>    model<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;(</span>Nnodes<span class="op">,</span> <span class="dv">784</span><span class="op">));</span></span>
+<span id="cb5-11"><a aria-label="11"></a>    model<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>SigmoidLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;());</span></span>
+<span id="cb5-12"><a aria-label="12"></a>    model<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;(</span><span class="dv">10</span><span class="op">,</span> Nnodes<span class="op">));</span></span>
+<span id="cb5-13"><a aria-label="13"></a>    model<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>SigmoidLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;());</span></span>
+<span id="cb5-14"><a aria-label="14"></a><span class="op">}</span></span>
+<span id="cb5-15"><a aria-label="15"></a></span>
+<span id="cb5-16"><a aria-label="16"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb5-17"><a aria-label="17"></a>    MnistDataset<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> train_dataset<span class="op">(</span><span class="st">"mnist_train.csv"</span><span class="op">);</span></span>
+<span id="cb5-18"><a aria-label="18"></a>    MnistDataset<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> val_dataset<span class="op">(</span><span class="st">"mnist_test.csv"</span><span class="op">);</span></span>
+<span id="cb5-19"><a aria-label="19"></a></span>
+<span id="cb5-20"><a aria-label="20"></a>    <span class="bu">std::</span>fstream f<span class="op">;</span></span>
+<span id="cb5-21"><a aria-label="21"></a>    f<span class="op">.</span>open<span class="op">(</span><span class="st">"perf_vs_nodes.dat"</span><span class="op">,</span> <span class="bu">std::</span>ios::trunc <span class="op">|</span> <span class="bu">std::</span>ios::out<span class="op">);</span></span>
+<span id="cb5-22"><a aria-label="22"></a></span>
+<span id="cb5-23"><a aria-label="23"></a>    <span class="dt">int</span> neps <span class="op">=</span> <span class="dv">2</span><span class="op">,</span> max_batches <span class="op">=</span> <span class="dv">100</span><span class="op">;</span>      <span class="co">// pochi, per un test veloce</span></span>
+<span id="cb5-24"><a aria-label="24"></a>    <span class="dt">double</span> lr <span class="op">=</span> <span class="fl">0.05</span><span class="op">;</span></span>
+<span id="cb5-25"><a aria-label="25"></a></span>
+<span id="cb5-26"><a aria-label="26"></a>    MSELoss<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> lossfunc<span class="op">;</span></span>
+<span id="cb5-27"><a aria-label="27"></a>    SDOptimizer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> optimizer<span class="op">(</span><span class="fl">0.1</span><span class="op">);</span></span>
+<span id="cb5-28"><a aria-label="28"></a>    fixedScheduler<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> fixedlr<span class="op">(&amp;</span>optimizer<span class="op">,</span> lr<span class="op">);</span></span>
+<span id="cb5-29"><a aria-label="29"></a>    MnistMetric<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> performance<span class="op">;</span></span>
+<span id="cb5-30"><a aria-label="30"></a>    Sequential<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> model<span class="op">;</span></span>
+<span id="cb5-31"><a aria-label="31"></a>    Trainer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> trainer<span class="op">(&amp;</span>model<span class="op">,</span> <span class="op">&amp;</span>lossfunc<span class="op">,</span> <span class="op">&amp;</span>optimizer<span class="op">,</span> <span class="op">&amp;</span>fixedlr<span class="op">);</span></span>
+<span id="cb5-32"><a aria-label="32"></a></span>
+<span id="cb5-33"><a aria-label="33"></a>    rng<span class="op">.</span>seed<span class="op">(</span><span class="dv">12345</span><span class="op">);</span></span>
+<span id="cb5-34"><a aria-label="34"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> nodes<span class="op">{</span><span class="dv">10</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">50</span><span class="op">,</span> <span class="dv">100</span><span class="op">,</span> <span class="dv">200</span><span class="op">};</span></span>
+<span id="cb5-35"><a aria-label="35"></a></span>
+<span id="cb5-36"><a aria-label="36"></a>    <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> v <span class="op">:</span> nodes<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-37"><a aria-label="37"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"--- Test con "</span> <span class="op">&lt;&lt;</span> v <span class="op">&lt;&lt;</span> <span class="st">" Nodi ---"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb5-38"><a aria-label="38"></a>        mlp<span class="op">(</span>v<span class="op">,</span> model<span class="op">);</span></span>
+<span id="cb5-39"><a aria-label="39"></a>        trainer<span class="op">.</span>train<span class="op">(</span>train_dataset<span class="op">,</span> val_dataset<span class="op">,</span> performance<span class="op">,</span> neps<span class="op">,</span> max_batches<span class="op">);</span></span>
+<span id="cb5-40"><a aria-label="40"></a>        f <span class="op">&lt;&lt;</span> v <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> performance<span class="op">.</span>get_result<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb5-41"><a aria-label="41"></a>        model<span class="op">.</span>clear<span class="op">();</span></span>
+<span id="cb5-42"><a aria-label="42"></a>    <span class="op">}</span></span>
+<span id="cb5-43"><a aria-label="43"></a>    f<span class="op">.</span>close<span class="op">();</span></span>
+<span id="cb5-44"><a aria-label="44"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Notate la funzione <code>mlp()</code>: estrarre la costruzione della rete in una funzione è ciò che rende possibile il ciclo.</p>
+</section>
+<section id="task-2-perf_vs_learning_rate.cpp" class="slide level2 smaller">
+<h2>Task 2: <code>perf_vs_learning_rate.cpp</code></h2>
+<p>Stessa struttura, ma qui non si ricostruisce la rete: si cambia solo il learning rate attraverso lo scheduler.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> lrates <span class="op">=</span> <span class="op">{</span><span class="fl">0.001</span><span class="op">,</span> <span class="fl">0.01</span><span class="op">,</span> <span class="fl">0.05</span><span class="op">,</span> <span class="fl">0.1</span><span class="op">,</span> <span class="fl">0.5</span><span class="op">};</span></span>
+<span id="cb6-2"><a aria-label="2"></a>f<span class="op">.</span>open<span class="op">(</span><span class="st">"perf_vs_learning_rate.dat"</span><span class="op">,</span> <span class="bu">std::</span>ios::trunc <span class="op">|</span> <span class="bu">std::</span>ios::out<span class="op">);</span></span>
+<span id="cb6-3"><a aria-label="3"></a></span>
+<span id="cb6-4"><a aria-label="4"></a><span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> lr <span class="op">:</span> lrates<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-5"><a aria-label="5"></a>    mlp<span class="op">(</span><span class="dv">100</span><span class="op">,</span> model<span class="op">);</span></span>
+<span id="cb6-6"><a aria-label="6"></a>    fixedlr<span class="op">.</span>set_lr<span class="op">(</span>lr<span class="op">);</span>          <span class="co">// &lt;- il punto dello studio</span></span>
+<span id="cb6-7"><a aria-label="7"></a>    trainer<span class="op">.</span>train<span class="op">(</span>train_dataset<span class="op">,</span> val_dataset<span class="op">,</span> performance<span class="op">,</span> neps<span class="op">,</span> max_batches<span class="op">);</span></span>
+<span id="cb6-8"><a aria-label="8"></a>    f <span class="op">&lt;&lt;</span> lr <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> performance<span class="op">.</span>get_result<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb6-9"><a aria-label="9"></a>    model<span class="op">.</span>clear<span class="op">();</span></span>
+<span id="cb6-10"><a aria-label="10"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ecco a cosa serviva <code>set_lr</code> nell’interfaccia <code>Scheduler</code>: senza, bisognerebbe ricreare l’ottimizzatore a ogni giro.</p>
+</section>
+<section id="task-3-perf_vs_epochs.cpp" class="slide level2 smaller">
+<h2>Task 3: <code>perf_vs_epochs.cpp</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> eps <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">5</span><span class="op">};</span></span>
+<span id="cb7-2"><a aria-label="2"></a>f<span class="op">.</span>open<span class="op">(</span><span class="st">"perf_vs_epochs.dat"</span><span class="op">,</span> <span class="bu">std::</span>ios::trunc <span class="op">|</span> <span class="bu">std::</span>ios::out<span class="op">);</span></span>
+<span id="cb7-3"><a aria-label="3"></a></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> ep <span class="op">:</span> eps<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-5"><a aria-label="5"></a>    mlp<span class="op">(</span><span class="dv">100</span><span class="op">,</span> model<span class="op">);</span></span>
+<span id="cb7-6"><a aria-label="6"></a>    trainer<span class="op">.</span>train<span class="op">(</span>train_dataset<span class="op">,</span> val_dataset<span class="op">,</span> performance<span class="op">,</span> ep<span class="op">,</span> max_batches<span class="op">);</span></span>
+<span id="cb7-7"><a aria-label="7"></a>    f <span class="op">&lt;&lt;</span> ep <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> performance<span class="op">.</span>get_result<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb7-8"><a aria-label="8"></a>    model<span class="op">.</span>clear<span class="op">();</span></span>
+<span id="cb7-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Qui c’è una scelta di metodo: con <code>model.clear()</code> ogni punto è un addestramento indipendente da zero. Senza <code>clear()</code>, <code>train()</code> continuerebbe ad addestrare la stessa rete, e i punti sarebbero cumulativi. Sono due esperimenti diversi — decidete quale volete misurare, e siate coerenti.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="studio-4-opzionale-laugmentation-aiuta" class="slide level2 smaller scrollable">
+<h2>Studio 4 (opzionale): l’augmentation aiuta?</h2>
+<p>Il <code>mnist_dataset.hpp</code> di riferimento del Lab 12 contiene il codice di <strong>augmentation</strong>: a ogni batch, con probabilità <code>aug_prob</code>, l’immagine viene ruotata di un angolo casuale entro <code>±maxAngle</code> gradi e riscalata fra <code>minscale</code> e <code>maxscale</code>. La rete non vede mai due volte la stessa cifra.</p>
+<p>Prendete quel codice (<code>augmentation()</code>, <code>random_augment()</code>, i membri e i rami <code>aug_mode</code> in <code>get_next_batch</code>) e misurate se serve davvero:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="co">// una sola riga in più, dopo aver costruito il dataset di training</span></span>
+<span id="cb8-2"><a aria-label="2"></a>train_dataset<span class="op">.</span>augmentation<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="fl">0.72</span><span class="op">,</span> <span class="fl">12.0</span><span class="op">);</span>   <span class="co">// modalità 1: augmentation con probabilità 0.72</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol type="1">
+<li>Stessa rete (<code>mlp(100, model)</code>), stesso seed, stesso <code>lr</code>, <strong>3 epoche</strong>, con e senza quella riga. Due numeri: la performance sul validation set.</li>
+<li>Ripetete a 10 epoche. L’augmentation è un <strong>regolarizzatore</strong>: a poche epoche di solito costa qualcosa, a molte epoche impedisce alla rete di imparare a memoria i 60.000 esempi. Il guadagno atteso è di qualche decimo di punto percentuale — piccolo, ma con seed fisso è un confronto pulito.</li>
+<li>Provate <code>aug_prob = 1.0</code> e <code>maxAngle = 30</code>: troppa augmentation distrugge l’informazione. Dove sta il massimo?</li>
+</ol>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>È l’antipasto della <strong>traccia 3</strong>. Chi la sceglierà dovrà anche capire i modi 2 e 3 (<code>num_batches_fact</code>), che invece di <em>modificare</em> le immagini <strong>triplicano</strong> il dataset con copie ruotate, come nel libro di Rashid.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="cosa-aspettarsi-dai-dati" class="slide level2 smaller">
+<h2>Cosa aspettarsi dai dati</h2>
+<p>I risultati di riferimento sul framework completo:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>nodi</th>
+<th>performance</th>
+<th></th>
+<th>learning rate</th>
+<th>performance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td>0.921</td>
+<td></td>
+<td>0.01</td>
+<td>0.911</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td>0.948</td>
+<td></td>
+<td>0.1</td>
+<td>0.952</td>
+</tr>
+<tr class="odd">
+<td>50</td>
+<td>0.966</td>
+<td></td>
+<td>0.2</td>
+<td>0.957</td>
+</tr>
+<tr class="even">
+<td>100</td>
+<td>0.972</td>
+<td></td>
+<td>0.3</td>
+<td>0.963</td>
+</tr>
+<tr class="odd">
+<td>200</td>
+<td>0.975</td>
+<td></td>
+<td>0.6</td>
+<td>0.947</td>
+</tr>
+</tbody>
+</table>
+<p>Due andamenti da leggere, e sono qualitativamente diversi:</p>
+<p><strong>I nodi danno rendimenti decrescenti.</strong> Da 10 a 50 nodi si guadagnano 4.5 punti; da 100 a 200 se ne guadagnano 0.3, raddoppiando i parametri e il tempo di calcolo. È il momento in cui la capacità del modello smette di essere il collo di bottiglia.</p>
+<p><strong>Il learning rate ha un massimo.</strong> Cresce fino a ~0.3 e poi <strong>peggiora</strong>: oltre un certo passo l’ottimizzatore scavalca il minimo invece di scendervi (la figura della Lezione 3). Esiste un valore ottimale, e va trovato sperimentalmente.</p>
+</section>
+<section id="leffetto-del-learning-rate" class="slide level2">
+<h2>L’effetto del learning rate</h2>
+
+<img data-src="images/gradient_descent.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><p>Il pannello di destra è esattamente ciò che il vostro <code>perf_vs_learning_rate.dat</code> misura: passo piccolo significa convergenza lenta, passo grande significa oscillare intorno al minimo senza raggiungerlo.</p>
+</section>
+<section id="le-due-facce-della-convergenza" class="slide level2 smaller">
+<h2>Le due facce della convergenza</h2>
+
+<img data-src="images/loss_curve.png" class="quarto-figure quarto-figure-center r-stretch" style="width:94.0%"><p><code>Trainer::train</code> stampa a ogni epoca la <strong>Train Loss</strong>, e con <code>running_test=true</code> anche la performance: sono i due pannelli. Il Task 3 misura quello di destra, il sinistro scorre sul terminale.</p>
+<div title="Curve qualitative, non misure">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Curve qualitative, non misure</strong></p>
+</div>
+<div class="callout-content">
+<p>Servono a dirvi che <strong>forma</strong> aspettarsi. L’unico numero ancorato al dato reale è il plateau (0.9718 a 100 nodi). La zona arancione è il motivo dello <strong>Studio 4</strong>: se la loss scende ma la performance no, la rete impara a memoria.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="progetti-finali-le-tracce" class="slide level2 smaller">
+<h2>Progetti Finali: le tracce</h2>
+<p>Il progetto si presenta all’orale. Può estendere <code>BASIC_NEURAL++</code> oppure partire dal framework più avanzato <code>NEURAL++</code> fornito a lezione.</p>
+<p><strong>1. Ottimizzatori Avanzati (AdamW, SGD + Momentum)</strong><br>
+Nuove classi derivate da <code>Optimizer&lt;ntype&gt;</code>, con gestione dello stato interno (le velocità del momentum, le medie mobili di Adam). Verifica: grafico comparativo che mostri il vantaggio in velocità di convergenza e stabilità rispetto allo Steepest Descent.</p>
+<p><strong>2. Scheduler Dinamici</strong><br>
+<code>Cosine Annealing</code> (decadimento su una curva cosinusoidale) e <code>ReduceLROnPlateau</code> (riduzione quando la validation loss smette di migliorare). Verifica: mostrare come evitino di scavalcare il minimo nelle fasi finali.</p>
+<p><strong>3. Data Augmentation</strong><br>
+Rotazioni, deformazioni elastiche, zoom applicati durante l’estrazione dei mini-batch. Verifica: il divario fra accuratezza su training e test set si riduce.</p>
+</section>
+<section id="progetti-finali-le-tracce-2" class="slide level2 smaller">
+<h2>Progetti Finali: le tracce (2)</h2>
+<p><strong>4. Reti Convoluzionali (CNN)</strong> — <em>per studenti eccellenti</em><br>
+Layer convoluzionali 2D e di pooling. Richiede tensori 3D/4D, l’implementazione della cross-correlazione nel forward e la derivazione del gradiente rispetto a filtri e input. Verifica: una piccola CNN tipo LeNet che superi il 99% su MNIST.</p>
+<p><strong>5. Loss Alternative e Softmax</strong><br>
+Sostituire la MSE con la Categorical Cross-Entropy più un layer finale Softmax. Verifica: analizzare <strong>matematicamente</strong> perché quella combinazione dà gradienti più informativi quando le predizioni sono molto sbagliate, accelerando l’apprendimento iniziale. Le formule sono nel Lab 14.</p>
+<p><strong>6. App di Inferenza Interattiva</strong><br>
+Un’interfaccia grafica (OpenCV UI, Qt) dove disegnare una cifra col mouse, che viene classificata in tempo reale. Richiede di caricare i pesi salvati in una sessione di sola inferenza e gestire l’I/O grafico.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Le tracce 1, 2 e 5 sono le più abbordabili perché le interfacce esistono già: <code>Optimizer</code>, <code>Scheduler</code> e <code>Loss</code> sono state progettate esattamente per essere estese senza toccare il resto. La 4 è la più impegnativa.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="task-da-completare" class="slide level2 smaller scrollable">
 <h2>Task da Completare</h2>
 <ul class="task-list">
-<li><label><input type="checkbox">Scrivere uno script Python di 10 righe usando <code>pandas</code> e <code>matplotlib</code></label></li>
-<li><label><input type="checkbox">Plottare la curva della Loss (x=Epoca, y=Loss) leggendo il CSV generato dal programma C++</label></li>
-<li><label><input type="checkbox">Ottimizzazioni finali e Fine-Tuning: provare ad usare Adam invece di SGD</label></li>
-<li><label><input type="checkbox">Presentazione e assegnazione delle tracce per i Progetti Finali</label></li>
+<li><label><input type="checkbox">Estrarre la costruzione della rete in una funzione <code>mlp(Nnodes, model)</code></label></li>
+<li><label><input type="checkbox">Scrivere <code>perf_vs_nodes.cpp</code> con il ciclo su <code>{10, 20, 50, 100, 200}</code></label></li>
+<li><label><input type="checkbox">Scrivere <code>perf_vs_learning_rate.cpp</code> usando <code>fixedlr.set_lr(lr)</code></label></li>
+<li><label><input type="checkbox">Scrivere <code>perf_vs_epochs.cpp</code> e decidere se i punti sono cumulativi o indipendenti</label></li>
+<li><label><input type="checkbox"><strong>Opzionale</strong>: misurare la performance con e senza <code>train_dataset.augmentation(1, 0.72, 12.0)</code> a 3 e a 10 epoche</label></li>
+<li><label><input type="checkbox">Chiamare <code>rng.seed(12345)</code> <strong>prima</strong> del ciclo per la riproducibilità</label></li>
+<li><label><input type="checkbox">Chiamare <code>model.clear()</code> alla fine di ogni iterazione</label></li>
+<li><label><input type="checkbox">Verificare che i <code>.dat</code> abbiano due colonne separate da spazio</label></li>
+<li><label><input type="checkbox">Confrontare i vostri numeri con quelli di riferimento</label></li>
+<li><label><input type="checkbox">Individuare il learning rate ottimale dai vostri dati</label></li>
+<li><label><input type="checkbox">Scegliere una traccia per il progetto finale</label></li>
+<li><label><input type="checkbox"><strong>Domanda</strong>: perché aumentare i nodi da 100 a 200 rende così poco?</label></li>
 </ul>
+<p><strong>Nel prossimo laboratorio trasformeremo questi <code>.dat</code> in grafici.</strong></p>
 <p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
 <div class="footer footer-default">
-
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
 </div>
 </div></div>
 
@@ -175,6 +518,7 @@ Docente
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -196,7 +540,8 @@ Docente
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -217,7 +562,7 @@ Docente
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -322,14 +667,14 @@ Docente
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'convex',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: 'fade',
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
@@ -367,7 +712,7 @@ Docente
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
           RevealNotes,

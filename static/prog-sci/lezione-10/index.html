@@ -202,7 +202,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 10</h1>
-  <p class="subtitle">Programmazione Scientifica++: Lezione 10</p>
+  <p class="subtitle">Deep Copy, Regola del Tre e Overloading degli Operatori</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -213,7 +213,7 @@ Docente
 </div>
 
 </section>
-<section id="argomenti-di-oggi" class="slide level2">
+<section id="argomenti-di-oggi" class="slide level2 smaller">
 <h2>Argomenti di Oggi</h2>
 <ul>
 <li><strong>Membri Dati Allocati Dinamicamente</strong>
@@ -264,29 +264,29 @@ Docente
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Costruttore (Nascita)</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-16"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-label="1"></a>SequentialNetwork<span class="op">::</span>SequentialNetwork<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-label="2"></a>    <span class="va">num_layers_</span> <span class="op">=</span> n<span class="op">;</span></span>
-<span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-label="3"></a>    </span>
-<span id="annotated-cell-16-4"><a href="#annotated-cell-16-4" aria-label="4"></a>    <span class="co">// Alloco dinamicamente la memoria</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1">1</button><span id="annotated-cell-16-5" class="code-annotation-target"><a href="#annotated-cell-16-5" aria-label="5"></a>    <span class="va">layers_</span> <span class="op">=</span> <span class="kw">new</span> Layer<span class="op">*[</span><span class="va">num_layers_</span><span class="op">];</span></span>
-<span id="annotated-cell-16-6"><a href="#annotated-cell-16-6" aria-label="6"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-label="1"></a>SequentialNetwork<span class="op">::</span>SequentialNetwork<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-label="2"></a>    <span class="va">num_layers_</span> <span class="op">=</span> n<span class="op">;</span></span>
+<span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-label="3"></a>    </span>
+<span id="annotated-cell-18-4"><a href="#annotated-cell-18-4" aria-label="4"></a>    <span class="co">// Alloco dinamicamente la memoria</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1">1</button><span id="annotated-cell-18-5" class="code-annotation-target"><a href="#annotated-cell-18-5" aria-label="5"></a>    <span class="va">layers_</span> <span class="op">=</span> <span class="kw">new</span> Layer<span class="op">*[</span><span class="va">num_layers_</span><span class="op">];</span></span>
+<span id="annotated-cell-18-6"><a href="#annotated-cell-18-6" aria-label="6"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-16" data-code-lines="5" data-code-annotation="1">Acquisizione.</span>
+<span data-code-cell="annotated-cell-18" data-code-lines="5" data-code-annotation="1">Acquisizione.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:50%;">
 <p><strong>Distruttore (Morte)</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-17"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-label="1"></a>SequentialNetwork<span class="op">::~</span>SequentialNetwork<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-17-2"><a href="#annotated-cell-17-2" aria-label="2"></a>    </span>
-<span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-label="3"></a>    <span class="co">// Libero tutta la memoria dell'Heap</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="2">2</button><span id="annotated-cell-17-4" class="code-annotation-target"><a href="#annotated-cell-17-4" aria-label="4"></a>    <span class="kw">delete</span><span class="op">[]</span> <span class="va">layers_</span><span class="op">;</span></span>
-<span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-label="5"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-19"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-label="1"></a>SequentialNetwork<span class="op">::~</span>SequentialNetwork<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-19-2"><a href="#annotated-cell-19-2" aria-label="2"></a>    </span>
+<span id="annotated-cell-19-3"><a href="#annotated-cell-19-3" aria-label="3"></a>    <span class="co">// Libero tutta la memoria dell'Heap</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2">2</button><span id="annotated-cell-19-4" class="code-annotation-target"><a href="#annotated-cell-19-4" aria-label="4"></a>    <span class="kw">delete</span><span class="op">[]</span> <span class="va">layers_</span><span class="op">;</span></span>
+<span id="annotated-cell-19-5"><a href="#annotated-cell-19-5" aria-label="5"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-17" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-17" data-code-lines="4" data-code-annotation="2">Rilascio. Se non lo facessi, la RAM esploderebbe in pochi minuti!</span>
+<span data-code-cell="annotated-cell-19" data-code-lines="4" data-code-annotation="2">Rilascio. Se non lo facessi, la RAM esploderebbe in pochi minuti!</span>
 </dd>
 </dl>
 </div></div>
@@ -521,26 +521,26 @@ Docente
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Senza Overloading:</strong> Devi creare una funzione dal nome fittizio.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-label="1"></a>Vettore2D v1<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
-<span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-label="2"></a>Vettore2D v2<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
-<span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-label="3"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1">1</button><span id="annotated-cell-18-4" class="code-annotation-target"><a href="#annotated-cell-18-4" aria-label="4"></a>Vettore2D v3 <span class="op">=</span> v1<span class="op">.</span>somma<span class="op">(</span>v2<span class="op">);</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-label="1"></a>Vettore2D v1<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
+<span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-label="2"></a>Vettore2D v2<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
+<span id="annotated-cell-20-3"><a href="#annotated-cell-20-3" aria-label="3"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1">1</button><span id="annotated-cell-20-4" class="code-annotation-target"><a href="#annotated-cell-20-4" aria-label="4"></a>Vettore2D v3 <span class="op">=</span> v1<span class="op">.</span>somma<span class="op">(</span>v2<span class="op">);</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-18" data-code-lines="4" data-code-annotation="1">Brutto da leggere. E se volessi sommare tre vettori? <code>v1.somma(v2.somma(v3))</code>! Orribile.</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="4" data-code-annotation="1">Brutto da leggere. E se volessi sommare tre vettori? <code>v1.somma(v2.somma(v3))</code>! Orribile.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:50%;">
 <p><strong>Con Overloading:</strong> Usiamo la matematica come natura comanda.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-19"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-label="1"></a>Vettore2D v1<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
-<span id="annotated-cell-19-2"><a href="#annotated-cell-19-2" aria-label="2"></a>Vettore2D v2<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
-<span id="annotated-cell-19-3"><a href="#annotated-cell-19-3" aria-label="3"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2">2</button><span id="annotated-cell-19-4" class="code-annotation-target"><a href="#annotated-cell-19-4" aria-label="4"></a>Vettore2D v3 <span class="op">=</span> v1 <span class="op">+</span> v2<span class="op">;</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-21"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-21-1"><a href="#annotated-cell-21-1" aria-label="1"></a>Vettore2D v1<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
+<span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-label="2"></a>Vettore2D v2<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
+<span id="annotated-cell-21-3"><a href="#annotated-cell-21-3" aria-label="3"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="2">2</button><span id="annotated-cell-21-4" class="code-annotation-target"><a href="#annotated-cell-21-4" aria-label="4"></a>Vettore2D v3 <span class="op">=</span> v1 <span class="op">+</span> v2<span class="op">;</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-21" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-19" data-code-lines="4" data-code-annotation="2">Elegante, compatto, intuitivo! E <code>v1 + v2 + v3</code> funziona perfettamente!</span>
+<span data-code-cell="annotated-cell-21" data-code-lines="4" data-code-annotation="2">Elegante, compatto, intuitivo! E <code>v1 + v2 + v3</code> funziona perfettamente!</span>
 </dd>
 </dl>
 </div></div>
@@ -607,6 +607,68 @@ Docente
 </dd>
 </dl>
 </section>
+<section id="e-se-le-dimensioni-non-tornano" class="slide level2 smaller">
+<h2>E se le Dimensioni non Tornano?</h2>
+<p><code>operator+</code> deve <strong>restituire una <code>Matrix</code></strong>. Ma se <code>a</code> è 3×3 e <code>b</code> è 2×2, quale matrice restituiamo? In C si sarebbe restituito un codice d’errore, o stampato un messaggio e chiamato <code>exit()</code>. Nessuna delle due cose è possibile qui: il tipo di ritorno è già deciso, e uccidere il programma da dentro una libreria è inaccettabile.</p>
+<p>C++ ha un meccanismo apposta: <strong>lanciare un’eccezione</strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1">1</button><span id="annotated-cell-14-1" class="code-annotation-target"><a href="#annotated-cell-14-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
+<span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-label="2"></a></span>
+<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-label="3"></a>Matrix Matrix<span class="op">::</span><span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Matrix<span class="op">&amp;</span> other<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-label="4"></a>    <span class="cf">if</span> <span class="op">(</span><span class="va">rows_</span> <span class="op">!=</span> other<span class="op">.</span><span class="va">rows_</span> <span class="op">||</span> <span class="va">cols_</span> <span class="op">!=</span> other<span class="op">.</span><span class="va">cols_</span><span class="op">)</span> <span class="op">{</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="2">2</button><span id="annotated-cell-14-5" class="code-annotation-target"><a href="#annotated-cell-14-5" aria-label="5"></a>        <span class="cf">throw</span> <span class="bu">std::</span>invalid_argument<span class="op">(</span><span class="st">"Matrix::operator+: dimensioni incompatibili"</span><span class="op">);</span></span>
+<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-label="6"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-label="7"></a>    Matrix result<span class="op">(</span><span class="va">rows_</span><span class="op">,</span> <span class="va">cols_</span><span class="op">);</span></span>
+<span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-label="8"></a>    <span class="co">// ... somma elemento per elemento ...</span></span>
+<span id="annotated-cell-14-9"><a href="#annotated-cell-14-9" aria-label="9"></a>    <span class="cf">return</span> result<span class="op">;</span></span>
+<span id="annotated-cell-14-10"><a href="#annotated-cell-14-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-lines="1" data-code-annotation="1">Qui vivono i tipi di errore standard: <code>std::invalid_argument</code>, <code>std::out_of_range</code>, <code>std::runtime_error</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-14" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-lines="5" data-code-annotation="2"><code>throw</code> <strong>interrompe la funzione all’istante</strong> e consegna al chiamante un oggetto che descrive l’errore. Nessun valore di ritorno fasullo, nessun errore che passa inosservato.</span>
+</dd>
+</dl>
+</section>
+<section id="chi-riceve-leccezione" class="slide level2 smaller">
+<h2>Chi Riceve l’Eccezione?</h2>
+<p>Il chiamante può <strong>intercettarla</strong> con <code>try</code>/<code>catch</code>. Se non lo fa, l’eccezione risale la catena delle chiamate fino a <code>main</code>, e il programma termina stampando il messaggio: molto meglio di un risultato sbagliato in silenzio.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-15"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-label="2"></a>    Matrix a<span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dv">3</span><span class="op">),</span> b<span class="op">(</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span><span class="op">);</span></span>
+<span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-label="3"></a>    <span class="cf">try</span> <span class="op">{</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1">1</button><span id="annotated-cell-15-4" class="code-annotation-target"><a href="#annotated-cell-15-4" aria-label="4"></a>        Matrix c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span></span>
+<span id="annotated-cell-15-5"><a href="#annotated-cell-15-5" aria-label="5"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Somma calcolata</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>       <span class="co">// mai raggiunto</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="2">2</button><span id="annotated-cell-15-6" class="code-annotation-target"><a href="#annotated-cell-15-6" aria-label="6"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>invalid_argument<span class="op">&amp;</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-15-7"><a href="#annotated-cell-15-7" aria-label="7"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore: "</span> <span class="op">&lt;&lt;</span> e<span class="op">.</span>what<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
+<span id="annotated-cell-15-8"><a href="#annotated-cell-15-8" aria-label="8"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-15-9"><a href="#annotated-cell-15-9" aria-label="9"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-15-10"><a href="#annotated-cell-15-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="4" data-code-annotation="1">Il <code>throw</code> dentro <code>operator+</code> fa saltare <strong>tutto</strong> il resto del blocco <code>try</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-15" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="6" data-code-annotation="2"><code>e.what()</code> restituisce la stringa passata a <code>throw</code>.</span>
+</dd>
+</dl>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Da oggi, nel Laboratorio 05, userete <code>throw</code> per proteggere costruttore e indicizzazione di <code>Matrix</code>. Questo è tutto ciò che vi serve per adesso. Il meccanismo completo — la gerarchia dei tipi di errore, cosa succede alla memoria mentre l’eccezione risale, quando <strong>non</strong> usarle — è materia delle Lezioni 19 e 20.</p>
+</div>
+</div>
+</div>
+</section>
 <section id="le-regole-del-gioco-cosa-è-vietato" class="slide level2 smaller">
 <h2>Le Regole del Gioco: Cosa è vietato</h2>
 <p>Cosa <strong>NON puoi</strong> fare con l’Overloading degli operatori:</p>
@@ -642,16 +704,16 @@ Docente
 <section id="esercizio-soluzione" class="slide level2 smaller">
 <h2>Esercizio: Soluzione</h2>
 <p><strong><code>Vettore2D.hpp</code></strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-label="1"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
-<span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-label="2"></a>    <span class="co">// ... codice precedente ...</span></span>
-<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-label="3"></a>    </span>
-<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-label="4"></a>    <span class="co">// Moltiplicazione per uno scalare!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1">1</button><span id="annotated-cell-14-5" class="code-annotation-target"><a href="#annotated-cell-14-5" aria-label="5"></a>    Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> rhs<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
-<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-label="6"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-16"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-label="1"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
+<span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-label="2"></a>    <span class="co">// ... codice precedente ...</span></span>
+<span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-label="3"></a>    </span>
+<span id="annotated-cell-16-4"><a href="#annotated-cell-16-4" aria-label="4"></a>    <span class="co">// Moltiplicazione per uno scalare!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1">1</button><span id="annotated-cell-16-5" class="code-annotation-target"><a href="#annotated-cell-16-5" aria-label="5"></a>    Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> rhs<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="annotated-cell-16-6"><a href="#annotated-cell-16-6" aria-label="6"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-14" data-code-lines="5" data-code-annotation="1">L’argomento non è un riferimento a una classe, ma è solo un banale numero!</span>
+<span data-code-cell="annotated-cell-16" data-code-lines="5" data-code-annotation="1">L’argomento non è un riferimento a una classe, ma è solo un banale numero!</span>
 </dd>
 </dl>
 <p><strong><code>Vettore2D.cpp</code></strong></p>

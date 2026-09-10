@@ -6,7 +6,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Docente">
@@ -34,11 +34,79 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -51,6 +119,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -134,7 +203,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Laboratorio 02</h1>
-  <p class="subtitle">Tipi Base e Funzioni di Attivazione</p>
+  <p class="subtitle">Setup dell’Ambiente e Primo Programma C++</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -145,41 +214,68 @@ Docente
 </div>
 
 </section>
+<section id="soluzione-del-laboratorio-01" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 01</h2>
+<p>Il <code>CMakeLists.txt</code> minimo e il test di Eigen visti la volta scorsa:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb1-1"><a aria-label="1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> <span class="dt">3.10</span>)</span>
+<span id="cb1-2"><a aria-label="2"></a><span class="kw">project</span>(BasicNeuralPlusPlus)</span>
+<span id="cb1-3"><a aria-label="3"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 17)</span>
+<span id="cb1-4"><a aria-label="4"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="ot">ON</span>)</span>
+<span id="cb1-5"><a aria-label="5"></a><span class="kw">add_executable</span>(<span class="bn">basic_neural</span> main.cpp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb2-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;Eigen/Dense&gt;</span></span>
+<span id="cb2-3"><a aria-label="3"></a></span>
+<span id="cb2-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-5"><a aria-label="5"></a>    Eigen<span class="op">::</span>MatrixXd A <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dv">3</span><span class="op">);</span></span>
+<span id="cb2-6"><a aria-label="6"></a>    Eigen<span class="op">::</span>MatrixXd B <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Identity<span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dv">3</span><span class="op">);</span></span>
+<span id="cb2-7"><a aria-label="7"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> A <span class="op">*</span> B <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span>   <span class="co">// deve stampare A</span></span>
+<span id="cb2-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Se <code>A * B</code> stampa esattamente <code>A</code>, Eigen è installato e trovato correttamente: moltiplicare per l’identità è il test più economico che esista.</p>
+</section>
 <section id="obiettivo-di-oggi" class="slide level2">
 <h2>Obiettivo di Oggi</h2>
-<p>Iniziare a scrivere la logica matematica fondamentale che dà “intelligenza” a un neurone artificiale. Impareremo a usare il <strong>Control Flow</strong> del C++ (<code>if</code>, <code>for</code>) e definiremo le <strong>Funzioni di Attivazione</strong>.</p>
+<p>Iniziare la costruzione del framework <strong><code>BASIC_NEURAL++</code></strong> partendo dalle basi assolute. Non scriveremo ancora codice neurale, ma prepareremo il terreno.</p>
+<p><strong>L’ambiente di lavoro è fondamentale:</strong> un ingegnere del software deve conoscere e controllare perfettamente i propri strumenti (compilatore, IDE, build system).</p>
 </section>
-<section id="task-1-la-funzione-relu" class="slide level2">
-<h2>Task 1: La funzione ReLU</h2>
-<p>La <em>Rectified Linear Unit</em> (ReLU) è la funzione di attivazione più usata nel Deep Learning moderno. Formula: <span class="math inline">\(f(x) = \max(0, x)\)</span>.</p>
+<section id="task-1-il-compilatore" class="slide level2">
+<h2>Task 1: Il Compilatore</h2>
+<p>Verifica di avere a disposizione un compilatore C++ moderno.</p>
+<ul>
+<li><strong>Linux:</strong> <code>g++ --version</code> (usa <code>apt-get install build-essential</code>)</li>
+<li><strong>macOS:</strong> <code>clang++ --version</code> (installa gli Xcode Command Line Tools)</li>
+<li><strong>Windows:</strong> Installa WSL2 (Ubuntu) oppure MSYS2 (MinGW-w64) e verifica <code>g++</code>.</li>
+</ul>
+</section>
+<section id="task-2-cmake-e-ide" class="slide level2 scrollable">
+<h2>Task 2: CMake e IDE</h2>
+<p>Useremo <strong>CMake</strong> per gestire la compilazione multi-file del nostro framework, e un IDE per scrivere il codice.</p>
 <ol type="1">
-<li>Nel tuo <code>main.cpp</code>, scrivi una funzione <code>double relu(double x)</code>.</li>
-<li>Implementala usando un classico costrutto <code>if/else</code>.</li>
-<li>Testala passandole un numero negativo e uno positivo, stampando i risultati a schermo con <code>std::cout</code>.</li>
+<li>Verifica l’installazione di CMake: <code>cmake --version</code></li>
+<li>Apri il tuo IDE preferito (VS Code, CLion, ecc.)</li>
+<li>Crea una nuova cartella per il progetto: <code>basic_neural_plusplus</code></li>
 </ol>
 </section>
-<section id="task-2-la-derivata-della-relu" class="slide level2">
-<h2>Task 2: La derivata della ReLU</h2>
-<p>Durante la Backpropagation, la rete neurale dovrà calcolare la pendenza (derivata) della funzione di attivazione. Derivata di ReLU: <span class="math inline">\(f'(x) = 1\)</span> se <span class="math inline">\(x &gt; 0\)</span>, altrimenti <span class="math inline">\(0\)</span>.</p>
+<section id="task-3-hello-world-con-cmake" class="slide level2 scrollable">
+<h2>Task 3: Hello World con CMake</h2>
 <ol type="1">
-<li>Scrivi una funzione <code>double relu_derivative(double x)</code>.</li>
-<li>Implementala e testala.</li>
+<li><p>Crea un file <code>CMakeLists.txt</code> minimo:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb3-1"><a aria-label="1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> <span class="dt">3.10</span>)</span>
+<span id="cb3-2"><a aria-label="2"></a><span class="kw">project</span>(BasicNeuralPlusPlus)</span>
+<span id="cb3-3"><a aria-label="3"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 17)</span>
+<span id="cb3-4"><a aria-label="4"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="ot">ON</span>)</span>
+<span id="cb3-5"><a aria-label="5"></a><span class="kw">add_executable</span>(<span class="bn">basic_neural</span> main.cpp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Crea un file <code>main.cpp</code> che stampi a schermo “Inizio progetto BASIC_NEURAL++!”.</p></li>
+<li><p>Compila ed esegui usando CMake (da terminale o tramite l’estensione del tuo IDE).</p></li>
 </ol>
 </section>
-<section id="task-3-la-sigmoide-e-cmath" class="slide level2">
-<h2>Task 3: La Sigmoide e <code>&lt;cmath&gt;</code></h2>
-<p>La Sigmoide “schiaccia” qualsiasi numero reale nell’intervallo <span class="math inline">\((0, 1)\)</span>. Formula: <span class="math inline">\(\sigma(x) = \frac{1}{1 + e^{-x}}\)</span>.</p>
-<ol type="1">
-<li>Includi l’header della libreria matematica standard: <code>#include &lt;cmath&gt;</code></li>
-<li>Scrivi una funzione <code>double sigmoid(double x)</code>. Usa la funzione esponenziale <code>std::exp()</code>.</li>
-<li>Scrivi la sua derivata: <span class="math inline">\(\sigma'(x) = \sigma(x) \cdot (1 - \sigma(x))\)</span>.</li>
-</ol>
-</section>
-<section id="task-4-validazione-con-il-ciclo-for" class="slide level2">
-<h2>Task 4: Validazione con il Ciclo For</h2>
-<p>Scrivi un ciclo <code>for</code> nel <code>main()</code> che iteri una variabile <code>x</code> partendo da <code>-5.0</code> fino a <code>+5.0</code>, avanzando a step di <code>1.0</code>.</p>
-<p>Ad ogni iterazione, stampa a schermo una tabella rudimentale usando <code>\t</code> (tabulazione): - Il valore <code>x</code> - <code>relu(x)</code> e <code>relu_derivative(x)</code> - <code>sigmoid(x)</code> e <code>sigmoid_derivative(x)</code></p>
-<p>Controlla che i numeri stampati abbiano senso logico!</p>
+<section id="task-4-esplorazione-tipi-base" class="slide level2">
+<h2>Task 4: Esplorazione Tipi Base</h2>
+<p>Nel tuo <code>main.cpp</code>, prova a dichiarare, stampare e combinare alcune variabili fondamentali per il Machine Learning:</p>
+<ul>
+<li>Un <code>int</code> (es. numero di epoche)</li>
+<li>Un <code>double</code> (es. learning rate o peso)</li>
+<li>Prova a moltiplicarli e stamparli. Cosa succede se dividi un <code>int</code> per un altro <code>int</code> (es. <code>5 / 2</code>)? E se ne casti uno a <code>double</code>?</li>
+</ul>
 <p><strong>Buon lavoro! La soluzione di riferimento verrà discussa all’inizio della prossima lezione.</strong></p>
 <p><a href="../index.html">Torna all’indice</a></p>
 
@@ -187,8 +283,9 @@ Docente
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
 <div class="footer footer-default">
-
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
 </div>
 </div></div>
 
@@ -199,6 +296,7 @@ Docente
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -220,7 +318,8 @@ Docente
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -241,7 +340,7 @@ Docente
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -346,14 +445,14 @@ Docente
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'convex',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: 'fade',
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
@@ -391,7 +490,7 @@ Docente
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
           RevealNotes,

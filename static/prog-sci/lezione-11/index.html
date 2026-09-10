@@ -202,7 +202,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 11</h1>
-  <p class="subtitle">Programmazione Scientifica++: Lezione 11</p>
+  <p class="subtitle">File I/O, Parsing CSV e Namespace negli Header</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -213,81 +213,268 @@ Docente
 </div>
 
 </section>
-<section id="argomenti-di-oggi" class="slide level2">
-<h2>Argomenti di Oggi</h2>
-<ul>
-<li><strong>Membri Dati <code>static</code></strong>
-<ul>
-<li>Condividere informazioni tra oggetti</li>
-</ul></li>
-<li><strong>Metodi <code>static</code></strong>
-<ul>
-<li>Funzioni di classe e Utility Classes</li>
-</ul></li>
-<li><strong>I Limiti dell’Overloading Interno</strong>
-<ul>
-<li>L’asimmetria matematica</li>
-</ul></li>
-<li><strong>Funzioni Globali</strong>
-<ul>
-<li>Estendere gli operatori dall’esterno</li>
-</ul></li>
-<li><strong>La direttiva <code>friend</code></strong>
-<ul>
-<li>Concedere permessi speciali</li>
-</ul></li>
-</ul>
+<section id="leggere-il-dataset-i-file-in-c" class="slide level2 smaller">
+<h2>Leggere il Dataset: I File in C++</h2>
+<p>L’altro grande input della nostra rete neurale saranno i <strong>Dati di Addestramento</strong>. Per il nostro progetto useremo il dataset <strong>MNIST</strong> (immagini di numeri scritti a mano).</p>
+<p>Questo dataset vi sarà fornito come un enorme file testuale <strong>CSV</strong> (Comma Separated Values), dove ogni riga rappresenta un’immagine, e i numeri separati da virgola sono i pixel (da 0 a 255).</p>
+<p>Per leggere i file in C++ si include la libreria <code>&lt;fstream&gt;</code> (File Stream) e si usa l’oggetto <strong><code>std::ifstream</code></strong> (Input File Stream).</p>
 </section>
-<section id="i-limiti-degli-attributi-normali" class="slide level2 smaller">
-<h2>I Limiti degli Attributi Normali</h2>
-<p>Fino ad ora, abbiamo imparato che il C++ si basa sull’Incapsulamento: ogni oggetto è una scatola chiusa con i propri dati. Se definiamo una classe <code>Particella</code> con un attributo <code>massa</code>, ogni singola particella creata avrà il <em>suo</em> personale valore di massa.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-label="1"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span></span>
-<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-label="4"></a><span class="op">};</span></span>
-<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-label="5"></a></span>
-<span id="annotated-cell-1-6"><a href="#annotated-cell-1-6" aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-label="7"></a>    Particella p1<span class="op">;</span> p1<span class="op">.</span><span class="va">massa_</span> <span class="op">=</span> <span class="fl">5.0</span><span class="op">;</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-8" class="code-annotation-target"><a href="#annotated-cell-1-8" aria-label="8"></a>    Particella p2<span class="op">;</span> p2<span class="op">.</span><span class="va">massa_</span> <span class="op">=</span> <span class="fl">10.0</span><span class="op">;</span></span>
-<span id="annotated-cell-1-9"><a href="#annotated-cell-1-9" aria-label="9"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="aprire-un-file-ifstream" class="slide level2 smaller">
+<h2>Aprire un File (<code>ifstream</code>)</h2>
+<p>Usiamo <code>ifstream</code> per aprire un canale di comunicazione con il disco fisso.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
+<span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-label="3"></a></span>
+<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-label="5"></a>    <span class="co">// 1. Creo l'oggetto e gli dico quale file aprire</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-6" class="code-annotation-target"><a href="#annotated-cell-1-6" aria-label="6"></a>    <span class="bu">std::</span>ifstream dataset<span class="op">(</span><span class="st">"mnist_test.csv"</span><span class="op">);</span></span>
+<span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-label="7"></a>    </span>
+<span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-label="8"></a>    <span class="co">// ... leggo i dati ...</span></span>
+<span id="annotated-cell-1-9"><a href="#annotated-cell-1-9" aria-label="9"></a>    </span>
+<span id="annotated-cell-1-10"><a href="#annotated-cell-1-10" aria-label="10"></a>    <span class="co">// 2. Chiudo la connessione al disco! Fondamentale!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2">2</button><span id="annotated-cell-1-11" class="code-annotation-target"><a href="#annotated-cell-1-11" aria-label="11"></a>    dataset<span class="op">.</span>close<span class="op">();</span></span>
+<span id="annotated-cell-1-12"><a href="#annotated-cell-1-12" aria-label="12"></a>    </span>
+<span id="annotated-cell-1-13"><a href="#annotated-cell-1-13" aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-1-14"><a href="#annotated-cell-1-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-1" data-code-lines="8" data-code-annotation="1"><code>p1</code> e <code>p2</code> sono entità separate in RAM. Modificare <code>p2</code> non ha alcun effetto su <code>p1</code>.</span>
+<span data-code-cell="annotated-cell-1" data-code-lines="6" data-code-annotation="1">Come per <code>std::cin</code> per la tastiera, <code>ifstream</code> funge da “tubo” verso il file.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="11" data-code-annotation="2">Usare il metodo <code>.close()</code> (o lasciare che intervenga il distruttore RAII) è obbligatorio.</span>
 </dd>
 </dl>
 </section>
-<section id="oggetti-come-isole" class="slide level2 smaller">
-<h2>Oggetti come Isole</h2>
-<p>Questa indipendenza è il punto di forza della programmazione orientata agli oggetti (OOP). Le istanze sono “isole” che non interferiscono tra loro.</p>
-<p>Ma cosa succede se abbiamo <strong>un’informazione che riguarda tutti gli oggetti contemporaneamente</strong>?</p>
-<p>Immaginate di voler tenere traccia di <strong>quante</strong> istanze di <code>Particella</code> sono state create nel corso del vostro programma.</p>
-<p>Un attributo di classe come <code>int totale_particelle;</code> non funzionerebbe! Essendo un normale attributo, ogni particella avrebbe il suo contatore personale (partente da 0), che non sa nulla delle altre particelle.</p>
-</section>
-<section id="la-soluzione-ingenua-variabile-globale" class="slide level2 smaller">
-<h2>La Soluzione Ingenua (Variabile Globale)</h2>
-<p>I programmatori alle prime armi (che spesso provengono dal C standard) tendono a risolvere questo problema dichiarando una variabile globale fuori da tutto.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1" aria-label="1"></a><span class="dt">int</span> TOTALE_PARTICELLE <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-label="2"></a></span>
-<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-label="5"></a>    Particella<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-label="6"></a>        TOTALE_PARTICELLE<span class="op">++;</span> <span class="co">// Incrementiamo la variabile globale</span></span>
-<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-label="7"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-label="8"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-label="9"></a>        TOTALE_PARTICELLE<span class="op">--;</span> <span class="co">// Decrementiamo alla distruzione</span></span>
-<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10" aria-label="10"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-label="11"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="controllare-lintegrità-del-file" class="slide level2 smaller">
+<h2>Controllare l’integrità del File</h2>
+<p>Cosa succede se il file <code>mnist_test.csv</code> non esiste nella cartella, o è rinominato male? Dovete <em>sempre</em> verificare che il file si sia aperto con successo prima di iniziare a estrarre milioni di pixel inesistenti!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-label="2"></a>    <span class="bu">std::</span>ifstream dataset<span class="op">(</span><span class="st">"mnist_test.csv"</span><span class="op">);</span></span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a>    </span>
+<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-label="4"></a>    <span class="co">// Controllo di sicurezza</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-5" class="code-annotation-target"><a href="#annotated-cell-2-5" aria-label="5"></a>    <span class="cf">if</span> <span class="op">(!</span>dataset<span class="op">.</span>is_open<span class="op">())</span> <span class="op">{</span></span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-label="6"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore CRITICO: Impossibile trovare il file CSV!</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-label="7"></a>        <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-label="8"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-label="9"></a>    </span>
+<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10" aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Dataset caricato con successo in RAM.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-label="11"></a>    dataset<span class="op">.</span>close<span class="op">();</span></span>
+<span id="annotated-cell-2-12"><a href="#annotated-cell-2-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="1" data-code-annotation="1">Questa variabile vive all’aperto, fuori da qualsiasi controllo.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="5" data-code-annotation="1"><code>is_open()</code> restituisce <code>true</code> solo se il file esiste e abbiamo i permessi di lettura.</span>
 </dd>
 </dl>
 </section>
-<section id="perché-le-variabili-globali-sono-il-male" class="slide level2 smaller">
-<h2>Perché le variabili globali sono il Male</h2>
-<p>Usare variabili globali in C++ (e in qualsiasi linguaggio moderno) è considerata una pratica disastrosa.</p>
+<section id="leggere-il-dataset-mnist-formato-csv" class="slide level2 smaller">
+<h2>Leggere il Dataset MNIST (Formato CSV)</h2>
+<p>Un file CSV del dataset MNIST è fatto da migliaia di righe. Una riga tipica è una stringa del genere: <code>"5, 0, 0, 128, 255, 10, 0 ..."</code> (La prima colonna è il numero raffigurato (es. 5), le altre colonne sono i 784 pixel dell’immagine).</p>
+<p>Per analizzarlo ci servono due passaggi: 1. Leggere una riga alla volta (fino ad esaurimento righe). 2. Spacchettare (fare <em>Parsing</em> de) la riga in base alle <strong>virgole</strong>.</p>
+</section>
+<section id="estrarre-intere-righe-getline" class="slide level2 smaller">
+<h2>Estrarre intere righe (<code>getline</code>)</h2>
+<p>Il primo passaggio è usare la funzione globale <code>std::getline()</code>. Questa funzione prende lo <em>stream</em> del file e una variabile <em>stringa</em>, e pompa caratteri dentro la stringa finché non incontra un <code>\n</code> (A capo).</p>
+<p>Restituisce <code>false</code> quando il file è finito.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-label="1"></a><span class="bu">std::</span>ifstream dataset<span class="op">(</span><span class="st">"mnist_test.csv"</span><span class="op">);</span></span>
+<span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-label="2"></a><span class="cf">if</span><span class="op">(!</span>dataset<span class="op">.</span>is_open<span class="op">())</span> <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-label="3"></a></span>
+<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-label="4"></a><span class="bu">std::</span>string riga<span class="op">;</span></span>
+<span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-label="5"></a></span>
+<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-label="6"></a><span class="co">// Finché c'è una riga da leggere nel dataset, mettila nella variabile "riga"</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-7" class="code-annotation-target"><a href="#annotated-cell-3-7" aria-label="7"></a><span class="cf">while</span> <span class="op">(</span> <span class="bu">std::</span>getline<span class="op">(</span>dataset<span class="op">,</span> riga<span class="op">)</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-3-8"><a href="#annotated-cell-3-8" aria-label="8"></a>    </span>
+<span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Letta una nuova riga dal dataset!</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-3-10"><a href="#annotated-cell-3-10" aria-label="10"></a>    </span>
+<span id="annotated-cell-3-11"><a href="#annotated-cell-3-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="7" data-code-annotation="1">Fantastico per iterare sull’intero dataset! Ora in <code>riga</code> abbiamo <code>"5, 0, 0, 128, ..."</code> come unica enorme stringa.</span>
+</dd>
+</dl>
+</section>
+<section id="il-problema-della-virgola" class="slide level2 smaller">
+<h2>Il Problema della Virgola</h2>
+<p>Ora abbiamo <code>"5,0,0,128,255"</code>. Ma a noi non serve un blocco di testo, ci servono i numeri separati: l’intero <code>5</code> per la label, l’intero <code>0</code> per il primo pixel e così via!</p>
+<p>Dobbiamo dire al C++: <em>“Prendi questa stringa, e leggila fino a quando non trovi una virgola. Quello è il primo pezzo. Poi continua.”</em>.</p>
+<p>Per farlo usiamo una magia potentissima del C++ moderno: lo <strong><code>std::stringstream</code></strong>!</p>
+</section>
+<section id="la-magia-di-stdstringstream" class="slide level2 smaller">
+<h2>La Magia di <code>std::stringstream</code></h2>
+<p>Includendo <code>&lt;sstream&gt;</code>, il C++ ci permette di inserire una variabile <code>string</code> dentro a uno “stream di memoria”. Lo stream si comporterà come se fosse un piccolo file virtuale di una sola riga! E potremo usare di nuovo <code>getline</code> su di esso!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-4"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;sstream&gt;</span></span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-label="3"></a></span>
+<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-label="4"></a><span class="co">// ... abbiamo appena letto la "riga" dal file ...</span></span>
+<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-label="5"></a></span>
+<span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-label="6"></a><span class="co">// 1. Infilo la mia stringa in un mini-file virtuale</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-7" class="code-annotation-target"><a href="#annotated-cell-4-7" aria-label="7"></a><span class="bu">std::</span>stringstream ss<span class="op">(</span>riga<span class="op">);</span></span>
+<span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-label="8"></a></span>
+<span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-label="9"></a><span class="bu">std::</span>string pixel_stringa<span class="op">;</span></span>
+<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-label="10"></a></span>
+<span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-label="11"></a><span class="co">// 2. Chiamo getline sul mini-file, e gli dico di FERMARSI ALLE VIRGOLE!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-12" class="code-annotation-target"><a href="#annotated-cell-4-12" aria-label="12"></a><span class="cf">while</span> <span class="op">(</span> <span class="bu">std::</span>getline<span class="op">(</span>ss<span class="op">,</span> pixel_stringa<span class="op">,</span> <span class="ch">','</span><span class="op">)</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-4-13"><a href="#annotated-cell-4-13" aria-label="13"></a>    <span class="co">// Faccio cose con i pezzi separati!</span></span>
+<span id="annotated-cell-4-14"><a href="#annotated-cell-4-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="7" data-code-annotation="1"><code>ss</code> è ora un tubo che pompa la nostra stringa.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="12" data-code-annotation="2">Il terzo parametro opzionale di <code>getline</code> è il <strong>Delimitatore</strong>.</span>
+</dd>
+</dl>
+</section>
+<section id="estrazione-dei-singoli-pixel" class="slide level2 smaller">
+<h2>Estrazione dei singoli Pixel</h2>
+<p>Mettiamo tutto insieme per estrarre il valore numerico dei pixel.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-label="1"></a><span class="co">// ... ciclo while principale del file ...</span></span>
+<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-label="2"></a><span class="bu">std::</span>stringstream ss<span class="op">(</span>riga<span class="op">);</span></span>
+<span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-label="3"></a><span class="bu">std::</span>string token<span class="op">;</span></span>
+<span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-label="4"></a></span>
+<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-label="5"></a><span class="dt">int</span> colonna <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-label="6"></a></span>
+<span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-label="7"></a><span class="co">// Estraggo "parole" divise da virgole</span></span>
+<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-label="8"></a><span class="cf">while</span> <span class="op">(</span> <span class="bu">std::</span>getline<span class="op">(</span>ss<span class="op">,</span> token<span class="op">,</span> <span class="ch">','</span><span class="op">)</span> <span class="op">)</span> <span class="op">{</span> </span>
+<span id="annotated-cell-5-9"><a href="#annotated-cell-5-9" aria-label="9"></a>    </span>
+<span id="annotated-cell-5-10"><a href="#annotated-cell-5-10" aria-label="10"></a>    <span class="co">// Converto il singolo testo "128" nell'intero 128!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-11" class="code-annotation-target"><a href="#annotated-cell-5-11" aria-label="11"></a>    <span class="dt">int</span> valore <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>token<span class="op">);</span></span>
+<span id="annotated-cell-5-12"><a href="#annotated-cell-5-12" aria-label="12"></a>    </span>
+<span id="annotated-cell-5-13"><a href="#annotated-cell-5-13" aria-label="13"></a>    <span class="cf">if</span> <span class="op">(</span>colonna <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-5-14"><a href="#annotated-cell-5-14" aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"L'etichetta del numero è: "</span> <span class="op">&lt;&lt;</span> valore <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-5-15"><a href="#annotated-cell-5-15" aria-label="15"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="annotated-cell-5-16"><a href="#annotated-cell-5-16" aria-label="16"></a>        <span class="co">// È un pixel! (Da salvare nell'array o matrice di Eigen)</span></span>
+<span id="annotated-cell-5-17"><a href="#annotated-cell-5-17" aria-label="17"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-5-18"><a href="#annotated-cell-5-18" aria-label="18"></a>    colonna<span class="op">++;</span></span>
+<span id="annotated-cell-5-19"><a href="#annotated-cell-5-19" aria-label="19"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="11" data-code-annotation="1">Ora avete il vero e proprio intero!</span>
+</dd>
+</dl>
+</section>
+<section id="esercizio-parse-mnist-10-min" class="slide level2 smaller">
+<h2>Esercizio: Parse MNIST (10 min)</h2>
+<p>Sei il Data Engineer del team. Nel tuo terminale (non via codice) crea a mano un file testo chiamato <code>finto_mnist.csv</code>. Scrivici dentro 2 o 3 righe così composte:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a aria-label="1"></a>3, 0, 128, 255</span>
+<span id="cb1-2"><a aria-label="2"></a>1, 0, 0, 255</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>(Immagina che il primo numero sia l’etichetta, e gli altri 3 siano i pixel).</em></p>
+<p>Nel tuo C++: apri il file con <code>ifstream</code>. Controlla che esista. Estrai le righe con un ciclo <code>while(getline)</code>. Estrai i numeri usando <code>stringstream</code> con separatore virgola <code>','</code>. Per ogni riga, stampa: <em>“Trovata immagine del numero: X. Pixel: Y Z W”</em>.</p>
+</section>
+<section id="scrivere-su-file-ofstream" class="slide level2 smaller">
+<h2>Scrivere su File (<code>ofstream</code>)</h2>
+<p>Leggere non basta: il training deve <strong>salvare</strong> i pesi e la storia della loss. La classe simmetrica a <code>ifstream</code> è <code>std::ofstream</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
+<span id="cb2-2"><a aria-label="2"></a></span>
+<span id="cb2-3"><a aria-label="3"></a><span class="bu">std::</span>ofstream os<span class="op">(</span><span class="st">"loss_history.csv"</span><span class="op">);</span></span>
+<span id="cb2-4"><a aria-label="4"></a><span class="cf">if</span> <span class="op">(!</span>os<span class="op">.</span>is_open<span class="op">())</span></span>
+<span id="cb2-5"><a aria-label="5"></a>    <span class="cf">throw</span> <span class="bu">std::</span>runtime_error<span class="op">(</span><span class="st">"Impossibile scrivere il file"</span><span class="op">);</span></span>
+<span id="cb2-6"><a aria-label="6"></a></span>
+<span id="cb2-7"><a aria-label="7"></a>os <span class="op">&lt;&lt;</span> <span class="st">"epoch,loss,accuracy</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>      <span class="co">// header</span></span>
+<span id="cb2-8"><a aria-label="8"></a>os <span class="op">&lt;&lt;</span> <span class="dv">1</span> <span class="op">&lt;&lt;</span> <span class="st">","</span> <span class="op">&lt;&lt;</span> <span class="fl">2.301</span> <span class="op">&lt;&lt;</span> <span class="st">","</span> <span class="op">&lt;&lt;</span> <span class="fl">0.112</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb2-9"><a aria-label="9"></a></span>
+<span id="cb2-10"><a aria-label="10"></a>os<span class="op">.</span>close<span class="op">();</span>   <span class="co">// opzionale: il distruttore lo fa da solo (RAII, Lezione 9)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il file si chiude quando l’oggetto esce dallo scope: è lo stesso RAII della Lezione 9.</p>
+</section>
+<section id="precisione-e-portabilità-dei-numeri" class="slide level2 smaller">
+<h2>Precisione e Portabilità dei Numeri</h2>
+<p>Attenzione a un errore che costa ore di debug: per default <code>ostream</code> stampa solo <strong>6 cifre significative</strong>. Salvare pesi <code>double</code> così li tronca, e la rete ricaricata non dà più gli stessi risultati.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a>os<span class="op">.</span>precision<span class="op">(</span><span class="dv">17</span><span class="op">);</span>   <span class="co">// round-trip esatto per un double</span></span>
+<span id="cb3-2"><a aria-label="2"></a>                    <span class="co">// (9 cifre sono sufficienti per un float)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Progettate i metodi di salvataggio su <code>std::ostream&amp;</code>, non su <code>std::ofstream&amp;</code>. Così lo stesso codice scrive su file, su <code>std::cout</code> o su uno <code>std::stringstream</code> per i test — ed è la firma che useremo nel framework: <code>virtual void save_weights(std::ostream&amp; os) const;</code></p>
+</div>
+</div>
+</div>
+</section>
+<section id="il-futuro-lanalisi-dati-nel-cern-root" class="slide level2 smaller">
+<h2>Il Futuro: L’Analisi Dati nel CERN (ROOT)</h2>
+<p>Stampare numeri sulla console va bene per piccoli script. Ma quando alleneremo la rete neurale e valuteremo la sua <em>Loss Function</em>, vorremo un <strong>grafico</strong> per vedere la curva che scende!</p>
+<p>Il C++ non ha capacità di plottaggio grafiche native. In Python usate <code>matplotlib</code>. In Fisica delle Alte Energie (INFN, CERN, CMS, ATLAS) il C++ domina, e si usa <strong>ROOT</strong>.</p>
+<p>ROOT è un framework gigantesco per l’analisi dati e la visualizzazione, e presto inizierete a usarlo per i vostri progetti finali.</p>
+</section>
+<section id="plottare-la-loss-function-in-c" class="slide level2 smaller">
+<h2>Plottare la Loss Function in C++</h2>
+<p>ROOT è stato costruito negli anni 90 usando un approccio estremamente basato sull’orientamento agli Oggetti. Se capite bene Costruttori, Distruttori, Puntatori e Heap (quello che abbiamo fatto in queste lezioni), sarete dei maghi di ROOT.</p>
+<p>Gli elementi principali per creare un grafico della “Loss” sono due oggetti: 1. Il grafico in sé: un oggetto <code>TGraph</code> (per punti X,Y) o <code>TH1F</code> (per gli istogrammi statistici 1D). 2. La “Tela”: un oggetto <code>TCanvas</code> su cui incollare il grafico prima di esporarlo in PDF.</p>
+</section>
+<section id="codice-reale-istogramma-1d-in-root" class="slide level2 smaller">
+<h2>Codice Reale: Istogramma 1D in ROOT</h2>
+<p>Ecco un esempio reale del codice C++ che potreste scrivere nel laboratorio finale per generare 10.000 pesi neurali casuali e visualizzarli:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-9"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-label="1"></a><span class="pp">#include </span><span class="im">"TH1F.h"</span><span class="pp">   </span><span class="co">// Header dell'Istogramma di ROOT</span></span>
+<span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-label="2"></a><span class="pp">#include </span><span class="im">"TCanvas.h"</span><span class="co">// Header della Tela di ROOT</span></span>
+<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-label="3"></a></span>
+<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-label="5"></a>    <span class="co">// Istanzio l'Istogramma (Nome interno, Titolo Esterno, Bins, Min, Max)</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1">1</button><span id="annotated-cell-9-6" class="code-annotation-target"><a href="#annotated-cell-9-6" aria-label="6"></a>    TH1F h1<span class="op">(</span><span class="st">"h1"</span><span class="op">,</span> <span class="st">"Distribuzione Pesi Iniziali"</span><span class="op">,</span> <span class="dv">100</span><span class="op">,</span> <span class="op">-</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">3.0</span><span class="op">);</span></span>
+<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-label="7"></a>    </span>
+<span id="annotated-cell-9-8"><a href="#annotated-cell-9-8" aria-label="8"></a>    <span class="co">// ROOT ha un metodo già pronto per iniettare numeri casuali (Gaussiani)!</span></span>
+<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-label="9"></a>    h1<span class="op">.</span>FillRandom<span class="op">(</span><span class="st">"gaus"</span><span class="op">,</span> <span class="dv">10000</span><span class="op">);</span> </span>
+<span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-label="10"></a>    </span>
+<span id="annotated-cell-9-11"><a href="#annotated-cell-9-11" aria-label="11"></a>    <span class="co">// ...</span></span>
+<span id="annotated-cell-9-12"><a href="#annotated-cell-9-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="6" data-code-annotation="1">Notate come la conoscenza profonda dei Costruttori in C++ renda immediata la lettura di questo codice professionale.</span>
+</dd>
+</dl>
+</section>
+<section id="salvare-il-plot-tcanvas" class="slide level2 smaller">
+<h2>Salvare il Plot (TCanvas)</h2>
+<p>L’oggetto in RAM <code>h1</code> contiene ora tutti i numeri, ma non si può guardare. Ci serve la tela su cui disegnarlo.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-10"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-label="1"></a>    <span class="co">// ... codice precedente ...</span></span>
+<span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-label="2"></a></span>
+<span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-label="3"></a>    <span class="co">// Istanzio la Tela (Nome, Titolo, Larghezza px, Altezza px)</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1">1</button><span id="annotated-cell-10-4" class="code-annotation-target"><a href="#annotated-cell-10-4" aria-label="4"></a>    TCanvas c1<span class="op">(</span><span class="st">"c1"</span><span class="op">,</span> <span class="st">"La mia Finestra"</span><span class="op">,</span> <span class="dv">800</span><span class="op">,</span> <span class="dv">600</span><span class="op">);</span></span>
+<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-label="5"></a>    </span>
+<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-label="6"></a>    <span class="co">// Dico all'istogramma di disegnarsi (di base cerca la Tela attiva)</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="2">2</button><span id="annotated-cell-10-7" class="code-annotation-target"><a href="#annotated-cell-10-7" aria-label="7"></a>    h1<span class="op">.</span>Draw<span class="op">();</span></span>
+<span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-label="8"></a>    </span>
+<span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-label="9"></a>    <span class="co">// Dico alla Tela di salvare il capolavoro sul mio Hard Disk!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="3">3</button><span id="annotated-cell-10-10" class="code-annotation-target"><a href="#annotated-cell-10-10" aria-label="10"></a>    c1<span class="op">.</span>SaveAs<span class="op">(</span><span class="st">"distribuzione_pesi.pdf"</span><span class="op">);</span></span>
+<span id="annotated-cell-10-11"><a href="#annotated-cell-10-11" aria-label="11"></a>    </span>
+<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="4" data-code-annotation="1">Costruttore della classe <code>TCanvas</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-10" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="7" data-code-annotation="2">Metodo per triggerare il rendering.</span>
+</dd>
+<dt data-target-cell="annotated-cell-10" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="10" data-code-annotation="3">Potete salvare in <code>.pdf</code>, <code>.png</code>, <code>.eps</code>, <code>.root</code>.</span>
+</dd>
+</dl>
+</section>
+<section id="il-peccato-capitale-degli-header" class="slide level2 smaller">
+<h2>Il Peccato Capitale degli Header</h2>
+<p>C’è un ultimo avvertimento vitale prima di iniziare a programmare file divisi e interfacciati con immense librerie esterne come Eigen e ROOT.</p>
+<p>Finora abbiamo spesso usato questa scorciatoia magica all’inizio dei nostri file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ci salvava dal dover digitare <code>std::cout</code>, <code>std::string</code> ecc.</p>
+</section>
+<section id="namespace-clashes-perché-è-il-male" class="slide level2 smaller">
+<h2>Namespace Clashes: Perché è il Male</h2>
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -297,218 +484,21 @@ Docente
 <p><strong>Warning</strong></p>
 </div>
 <div class="callout-content">
+<p><strong>NON METTERE MAI <code>using namespace std;</code> DENTRO UN FILE HEADER (<code>.hpp</code>)!</strong></p>
+</div>
+</div>
+</div>
+<p>Quando metti <code>using namespace std;</code> nel file <code>Vettore.hpp</code>, stai <strong>inquinando</strong> permanentemente lo spazio dei nomi globali. Qualsiasi programmatore che farà <code>#include "Vettore.hpp"</code> nel suo <code>main</code>, si ritroverà “iniettato” a forza il namespace <code>std</code>.</p>
+<p>Se lui usa una libreria come ROOT che ha per caso una funzione chiamata <code>max()</code>, e <code>std</code> ha una funzione chiamata <code>max()</code>, il compilatore impazzirà con un letale <strong>Namespace Clash</strong> (<code>Ambiguous reference to 'max'</code>).</p>
+</section>
+<section id="usare-bene-i-namespace" class="slide level2 smaller">
+<h2>Usare bene i Namespace</h2>
+<p>La regola professionale:</p>
 <ol type="1">
-<li><strong>Nessun Incapsulamento:</strong> Qualsiasi funzione, ovunque nel programma, può fare <code>TOTALE_PARTICELLE = -999;</code> e distruggere la logica della vostra applicazione.</li>
-<li><strong>Inquinamento del Namespace:</strong> Se usate librerie esterne che usano a loro volta una variabile globale con lo stesso nome… il programma non compilerà.</li>
+<li><strong>Nei file Header (<code>.hpp</code>)</strong>: Digita <strong>sempre</strong> il nome per esteso (es. <code>std::vector</code>, <code>std::string</code>). Proteggi l’ecosistema.</li>
+<li><strong>Nei file Sorgente (<code>.cpp</code>)</strong>: Puoi usare liberamente <code>using namespace std;</code> perché gli effetti resteranno confinati esclusivamente a quel singolo file isolato, e non contageranno nessuno in giro per il progetto!</li>
 </ol>
-</div>
-</div>
-</div>
-<p>Vogliamo una variabile globale, sì, ma <strong>protetta e confinata</strong> all’interno della nostra classe.</p>
-</section>
-<section id="la-soluzione-reale-membri-static" class="slide level2 smaller">
-<h2>La Soluzione Reale: Membri <code>static</code></h2>
-<p>Il C++ introduce la parola chiave <code>static</code> per i membri di una classe.</p>
-<p>Se dichiari un attributo come <code>static</code>, stai dicendo al compilatore: <em>“Non creare una copia di questa variabile per ogni oggetto. Creane <strong>una sola in assoluto</strong>, condivisa da tutte le istanze di questa classe!”</em>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-label="1"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-label="3"></a>    <span class="co">// Questa è CONDIVISA da tutte le particelle.</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-4" class="code-annotation-target"><a href="#annotated-cell-3-4" aria-label="4"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_particelle_</span><span class="op">;</span></span>
-<span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-label="5"></a>    </span>
-<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-label="6"></a>    <span class="co">// Questa è UNICA per ogni particella.</span></span>
-<span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-label="7"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span> </span>
-<span id="annotated-cell-3-8"><a href="#annotated-cell-3-8" aria-label="8"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="4" data-code-annotation="1">Essendo <code>private</code>, nessuno fuori dalla classe può manomettere il contatore!</span>
-</dd>
-</dl>
-</section>
-<section id="membri-static-dichiarazione-.hpp" class="slide level2 smaller">
-<h2>Membri <code>static</code>: Dichiarazione (.hpp)</h2>
-<p>Le variabili <code>static</code> richiedono una cura particolare: <strong>devono essere separate tra file Header e file Source</strong>.</p>
-<p>Nel file <code>.hpp</code> (l’Interfaccia) ci limitiamo a <strong>dichiarare</strong> che la variabile esisterà.</p>
-<p><strong><code>Particella.hpp</code></strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="pp">#pragma once</span></span>
-<span id="cb1-2"><a aria-label="2"></a></span>
-<span id="cb1-3"><a aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="cb1-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb1-5"><a aria-label="5"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_particelle_</span><span class="op">;</span> <span class="co">// Dichiaro l'esistenza</span></span>
-<span id="cb1-6"><a aria-label="6"></a>    </span>
-<span id="cb1-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb1-8"><a aria-label="8"></a>    Particella<span class="op">();</span></span>
-<span id="cb1-9"><a aria-label="9"></a>    <span class="op">~</span>Particella<span class="op">();</span></span>
-<span id="cb1-10"><a aria-label="10"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="membri-static-inizializzazione-.cpp" class="slide level2 smaller">
-<h2>Membri <code>static</code>: Inizializzazione (.cpp)</h2>
-<p>Nel file <code>.cpp</code> (l’Implementazione), la variabile statica <strong>deve</strong> essere inizializzata. E deve essere fatto <em>fuori</em> da qualsiasi costruttore! Questo perché la variabile statica esiste ancor prima che il primo oggetto venga creato!</p>
-<p><strong><code>Particella.cpp</code></strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-label="1"></a><span class="pp">#include </span><span class="im">"Particella.hpp"</span></span>
-<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-label="2"></a></span>
-<span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-label="3"></a><span class="co">// INIZIALIZZAZIONE DELLA VARIABILE STATICA</span></span>
-<span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-label="4"></a><span class="co">// Si fa usando il nome della classe e l'operatore di scope ::</span></span>
-<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-label="5"></a><span class="co">// Nota: NON devi rimettere la keyword "static" qui!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-label="6"></a><span class="dt">int</span> Particella<span class="op">::</span><span class="va">totale_particelle_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-label="7"></a></span>
-<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-label="8"></a>Particella<span class="op">::</span>Particella<span class="op">()</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2">2</button><span id="annotated-cell-5-9" class="code-annotation-target"><a href="#annotated-cell-5-9" aria-label="9"></a>    <span class="va">totale_particelle_</span><span class="op">++;</span></span>
-<span id="annotated-cell-5-10"><a href="#annotated-cell-5-10" aria-label="10"></a><span class="op">}</span></span>
-<span id="annotated-cell-5-11"><a href="#annotated-cell-5-11" aria-label="11"></a></span>
-<span id="annotated-cell-5-12"><a href="#annotated-cell-5-12" aria-label="12"></a>Particella<span class="op">::~</span>Particella<span class="op">()</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3">3</button><span id="annotated-cell-5-13" class="code-annotation-target"><a href="#annotated-cell-5-13" aria-label="13"></a>    <span class="va">totale_particelle_</span><span class="op">--;</span></span>
-<span id="annotated-cell-5-14"><a href="#annotated-cell-5-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="1">Inizializzata in RAM prima ancora che parta il <code>main()</code>.</span>
-</dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="9" data-code-annotation="2">Ogni volta che nasce un oggetto, il contatore sale.</span>
-</dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="13" data-code-annotation="3">Ogni volta che muore, scende.</span>
-</dd>
-</dl>
-</section>
-<section id="membri-static-un-esempio-completo" class="slide level2 smaller">
-<h2>Membri <code>static</code>: Un esempio completo</h2>
-<p>Rivediamo cosa accade in RAM se eseguiamo questo codice:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb2-2"><a aria-label="2"></a>    <span class="co">// totale_particelle_ in memoria vale 0</span></span>
-<span id="cb2-3"><a aria-label="3"></a>    </span>
-<span id="cb2-4"><a aria-label="4"></a>    Particella p1<span class="op">;</span> <span class="co">// totale_particelle_ diventa 1</span></span>
-<span id="cb2-5"><a aria-label="5"></a>    Particella p2<span class="op">;</span> <span class="co">// totale_particelle_ diventa 2</span></span>
-<span id="cb2-6"><a aria-label="6"></a>    </span>
-<span id="cb2-7"><a aria-label="7"></a>    <span class="op">{</span> <span class="co">// Apro uno scope limitato</span></span>
-<span id="cb2-8"><a aria-label="8"></a>        Particella p3<span class="op">;</span> <span class="co">// totale_particelle_ diventa 3</span></span>
-<span id="cb2-9"><a aria-label="9"></a>    <span class="op">}</span> <span class="co">// p3 muore qui! totale_particelle_ diventa 2</span></span>
-<span id="cb2-10"><a aria-label="10"></a>    </span>
-<span id="cb2-11"><a aria-label="11"></a>    <span class="co">// totale_particelle_ vale 2!</span></span>
-<span id="cb2-12"><a aria-label="12"></a>    </span>
-<span id="cb2-13"><a aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-14"><a aria-label="14"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>È un meccanismo perfetto per tenere traccia di ID, contatori, risorse condivise (come la connessione a un Database o un File di Log).</p>
-</section>
-<section id="la-domanda-fondamentale" class="slide level2 smaller">
-<h2>La Domanda Fondamentale</h2>
-<p>Tutto fantastico. Abbiamo incapsulato la nostra variabile statica mettendola <code>private</code>.</p>
-<p>Ma ora… come facciamo a leggerla? Dovremo scrivere un Getter!</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-3" class="code-annotation-target"><a href="#annotated-cell-7-3" aria-label="3"></a>    <span class="dt">int</span> getTotale<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">totale_particelle_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-label="4"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="3" data-code-annotation="1">Questo metodo appartiene agli oggetti. Funziona.</span>
-</dd>
-</dl>
-<p>Ma aspetta! Se non ho creato <strong>nemmeno un oggetto</strong>, come faccio a leggere il totale (che dovrebbe essere <code>0</code>)? Non ho un oggetto su cui chiamare <code>getTotale()</code>!</p>
-</section>
-<section id="metodi-static-le-funzioni-di-classe" class="slide level2 smaller">
-<h2>Metodi <code>static</code> (Le funzioni di Classe)</h2>
-<p>Per risolvere questo impasse, il C++ ci permette di dichiarare <code>static</code> anche le <strong>Funzioni Membro</strong> (i metodi).</p>
-<p>Un metodo <code>static</code> non appartiene ai singoli oggetti, appartiene all’<strong>Intera Classe</strong>. Può essere invocato <em>anche se non esistono istanze</em>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-label="3"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_particelle_</span><span class="op">;</span></span>
-<span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-label="4"></a>    </span>
-<span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-label="6"></a>    <span class="co">// Metodo STATICO!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1">1</button><span id="annotated-cell-8-7" class="code-annotation-target"><a href="#annotated-cell-8-7" aria-label="7"></a>    <span class="at">static</span> <span class="dt">int</span> getTotale<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">totale_particelle_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-8-8"><a href="#annotated-cell-8-8" aria-label="8"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="7" data-code-annotation="1">Attenzione: non può essere marcato <code>const</code> alla fine. Approfondiremo nella prossima slide il perché.</span>
-</dd>
-</dl>
-</section>
-<section id="invocare-un-metodo-static" class="slide level2 smaller">
-<h2>Invocare un metodo <code>static</code></h2>
-<p>Per invocare un metodo statico nel <code>main</code>, non usiamo il punto <code>.</code> su un oggetto. Usiamo l’operatore di scope <code>::</code> direttamente sul <em>nome della classe</em>!</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-9"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-label="2"></a>    <span class="co">// Non ho creato nessuna particella!</span></span>
-<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-label="3"></a>    </span>
-<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-label="4"></a>    <span class="co">// Invocazione statica</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1">1</button><span id="annotated-cell-9-5" class="code-annotation-target"><a href="#annotated-cell-9-5" aria-label="5"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Totale: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>getTotale<span class="op">();</span></span>
-<span id="annotated-cell-9-6"><a href="#annotated-cell-9-6" aria-label="6"></a>    </span>
-<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-label="7"></a>    <span class="co">// Ora creo un oggetto</span></span>
-<span id="annotated-cell-9-8"><a href="#annotated-cell-9-8" aria-label="8"></a>    Particella p1<span class="op">;</span></span>
-<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-label="9"></a>    </span>
-<span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-label="10"></a>    <span class="co">// L'output ora sarà 1</span></span>
-<span id="annotated-cell-9-11"><a href="#annotated-cell-9-11" aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Totale: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>getTotale<span class="op">();</span></span>
-<span id="annotated-cell-9-12"><a href="#annotated-cell-9-12" aria-label="12"></a>    </span>
-<span id="annotated-cell-9-13"><a href="#annotated-cell-9-13" aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-9-14"><a href="#annotated-cell-9-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-9" data-code-lines="5" data-code-annotation="1">Output: 0. Elegante e funzionale!</span>
-</dd>
-</dl>
-</section>
-<section id="cosa-non-puoi-fare-in-un-metodo-static" class="slide level2 smaller">
-<h2>Cosa NON puoi fare in un metodo <code>static</code></h2>
-<p>I metodi <code>static</code> vivono nel “vuoto cosmico” dell’astrazione della classe. Non sono agganciati a un oggetto fisico. Pertanto:</p>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Important</strong></p>
-</div>
-<div class="callout-content">
-<ol type="1">
-<li><strong>Nessun <code>this</code>:</strong> Non esiste il puntatore <code>this</code> in un metodo statico, perché non c’è nessun “oggetto corrente”.</li>
-<li><strong>Niente dati normali:</strong> Un metodo statico <strong>non può leggere</strong> le variabili normali della classe (es. <code>massa_</code>). Quale massa dovrebbe leggere, se non c’è l’oggetto?</li>
-<li><strong>Niente <code>const</code> finale:</strong> Come visto prima, il <code>const</code> alla fine di un metodo serve a proteggere l’oggetto fisico da modifiche. Non essendoci l’oggetto fisico, mettere <code>const</code> non ha senso (è un errore di compilazione).</li>
-</ol>
-</div>
-</div>
-</div>
-<p>I metodi statici possono accedere <strong>SOLO</strong> a variabili statiche!</p>
-</section>
-<section id="un-caso-duso-reale-le-utility-classes" class="slide level2 smaller">
-<h2>Un Caso d’Uso Reale: Le <em>Utility Classes</em></h2>
-<p>In ambiti scientifici e di Machine Learning, i metodi statici non si usano solo per i contatori. Si usano per creare le cosiddette <strong>Utility Classes</strong>.</p>
-<p>Immagina di dover applicare la funzione di attivazione <em>Sigmoide</em> a un neurone. La formula è universale: <span class="math inline">\(f(x) = \frac{1}{1 + e^{-x}}\)</span></p>
-<p>Dovremmo per forza creare un oggetto <code>Attivazione</code> per usarla?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a>Attivazione att<span class="op">;</span>   <span class="co">// Spreco di RAM!</span></span>
-<span id="cb3-2"><a aria-label="2"></a><span class="dt">double</span> y <span class="op">=</span> att<span class="op">.</span>sigmoide<span class="op">(</span><span class="fl">2.5</span><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Non ha senso. La sigmoide è logica matematica pura, non ha uno “stato”.</p>
-</section>
-<section id="utility-classes-nel-machine-learning" class="slide level2 smaller">
-<h2>Utility Classes nel Machine Learning</h2>
-<p>Raggruppiamo tutte le funzioni matematiche in una Classe che contiene <strong>SOLO metodi statici</strong>!</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
-<span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a></span>
-<span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-label="3"></a><span class="kw">class</span> MathUtils <span class="op">{</span></span>
-<span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a>    <span class="at">static</span> <span class="dt">double</span> relu<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-11-6"><a href="#annotated-cell-11-6" aria-label="6"></a>        <span class="cf">return</span> <span class="op">(</span>x <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">?</span> x <span class="op">:</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-label="7"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-11-8"><a href="#annotated-cell-11-8" aria-label="8"></a>    </span>
-<span id="annotated-cell-11-9"><a href="#annotated-cell-11-9" aria-label="9"></a>    <span class="at">static</span> <span class="dt">double</span> sigmoid<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-11-10"><a href="#annotated-cell-11-10" aria-label="10"></a>        <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>x<span class="op">));</span></span>
-<span id="annotated-cell-11-11"><a href="#annotated-cell-11-11" aria-label="11"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-11-12"><a href="#annotated-cell-11-12" aria-label="12"></a><span class="op">};</span></span>
-<span id="annotated-cell-11-13"><a href="#annotated-cell-11-13" aria-label="13"></a></span>
-<span id="annotated-cell-11-14"><a href="#annotated-cell-11-14" aria-label="14"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-11-15"><a href="#annotated-cell-11-15" aria-label="15"></a>    <span class="co">// Uso le funzioni come fossero una libreria matematica!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1">1</button><span id="annotated-cell-11-16" class="code-annotation-target"><a href="#annotated-cell-11-16" aria-label="16"></a>    <span class="dt">double</span> y <span class="op">=</span> MathUtils<span class="op">::</span>relu<span class="op">(-</span><span class="fl">5.0</span><span class="op">);</span></span>
-<span id="annotated-cell-11-17"><a href="#annotated-cell-11-17" aria-label="17"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="16" data-code-annotation="1">Questa è la base su cui sono costruite gran parte delle librerie professionali C++.</span>
-</dd>
-</dl>
+<p>Risparmiarsi 5 caratteri in un Header non vale le ore di debugging di un Namespace Clash in librerie da un milione di righe di codice.</p>
 <p><a href="../index.html">Torna all’indice</a></p>
 
 

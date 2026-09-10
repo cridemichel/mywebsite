@@ -6,7 +6,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Docente">
@@ -34,11 +34,79 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -51,6 +119,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -134,7 +203,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Laboratorio 06</h1>
-  <p class="subtitle">Funzioni di Attivazione e Performance (-O3)</p>
+  <p class="subtitle">Regola del Tre, Polimorfismo e SequentialNetwork</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -145,59 +214,241 @@ Docente
 </div>
 
 </section>
-<section id="obiettivo-di-oggi" class="slide level2">
+<section id="soluzione-del-laboratorio-05" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 05</h2>
+<p>La classe <code>Matrix</code> con dati privati e indicizzazione row-major:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a>Matrix<span class="op">::</span>Matrix<span class="op">(</span><span class="dt">int</span> r<span class="op">,</span> <span class="dt">int</span> c<span class="op">)</span> <span class="op">:</span> rows<span class="op">(</span>r<span class="op">),</span> cols<span class="op">(</span>c<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a aria-label="2"></a>    <span class="cf">if</span> <span class="op">(</span>r <span class="op">&lt;=</span> <span class="dv">0</span> <span class="op">||</span> c <span class="op">&lt;=</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb1-3"><a aria-label="3"></a>        <span class="cf">throw</span> <span class="bu">std::</span>invalid_argument<span class="op">(</span><span class="st">"Le dimensioni della matrice devono essere &gt; 0"</span><span class="op">);</span></span>
+<span id="cb1-4"><a aria-label="4"></a>    data <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>rows <span class="op">*</span> cols<span class="op">];</span></span>
+<span id="cb1-5"><a aria-label="5"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> rows <span class="op">*</span> cols<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> data<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb1-6"><a aria-label="6"></a><span class="op">}</span></span>
+<span id="cb1-7"><a aria-label="7"></a></span>
+<span id="cb1-8"><a aria-label="8"></a><span class="dt">double</span> Matrix<span class="op">::</span>get<span class="op">(</span><span class="dt">int</span> r<span class="op">,</span> <span class="dt">int</span> c<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb1-9"><a aria-label="9"></a>    <span class="cf">if</span> <span class="op">(</span>r <span class="op">&lt;</span> <span class="dv">0</span> <span class="op">||</span> r <span class="op">&gt;=</span> rows <span class="op">||</span> c <span class="op">&lt;</span> <span class="dv">0</span> <span class="op">||</span> c <span class="op">&gt;=</span> cols<span class="op">)</span></span>
+<span id="cb1-10"><a aria-label="10"></a>        <span class="cf">throw</span> <span class="bu">std::</span>out_of_range<span class="op">(</span><span class="st">"Indici di matrice fuori dai limiti!"</span><span class="op">);</span></span>
+<span id="cb1-11"><a aria-label="11"></a>    <span class="cf">return</span> data<span class="op">[</span>r <span class="op">*</span> cols <span class="op">+</span> c<span class="op">];</span>      <span class="co">// row-major: una 2D in un array 1D</span></span>
+<span id="cb1-12"><a aria-label="12"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>E il <code>DenseLayer</code> che invece delega la memoria a Eigen:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a>DenseLayer<span class="op">::</span>DenseLayer<span class="op">(</span><span class="dt">int</span> input_size<span class="op">,</span> <span class="dt">int</span> output_size<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a aria-label="2"></a>    weights <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span>output_size<span class="op">,</span> input_size<span class="op">);</span></span>
+<span id="cb2-3"><a aria-label="3"></a>    biases  <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Zero<span class="op">(</span>output_size<span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb2-4"><a aria-label="4"></a><span class="op">}</span></span>
+<span id="cb2-5"><a aria-label="5"></a></span>
+<span id="cb2-6"><a aria-label="6"></a>Eigen<span class="op">::</span>MatrixXd DenseLayer<span class="op">::</span>forward<span class="op">(</span><span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> input<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-7"><a aria-label="7"></a>    <span class="cf">return</span> <span class="op">(</span>weights <span class="op">*</span> input<span class="op">).</span>colwise<span class="op">()</span> <span class="op">+</span> biases<span class="op">.</span>col<span class="op">(</span><span class="dv">0</span><span class="op">);</span>   <span class="co">// broadcasting</span></span>
+<span id="cb2-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Restava aperta la bomba: <code>Matrix</code> alloca con <code>new[]</code> e non ha distruttore. Oggi la disinneschiamo.</p>
+</section>
+<section id="obiettivo-di-oggi" class="slide level2 scrollable">
 <h2>Obiettivo di Oggi</h2>
-<p>La nostra rete neurale ha un <code>DenseLayer</code> che esegue trasformazioni lineari (<span class="math inline">\(W \cdot X + b\)</span>). Una rete interamente lineare è equivalente a un singolo strato! Dobbiamo introdurre la non-linearità tramite le <strong>Funzioni di Attivazione</strong>.</p>
-<p>Oltre a questo, la nostra rete dovrà processare enormi quantità di dati: impareremo a misurare le performance in C++ e a istruire il compilatore per far volare la CPU.</p>
-</section>
-<section id="task-1-lo-strato-sigmoidlayer" class="slide level2">
-<h2>Task 1: Lo strato <code>SigmoidLayer</code></h2>
-<p>A differenza del <code>DenseLayer</code>, un layer di attivazione non ha pesi addestrabili, si limita ad applicare una funzione matematica a ogni elemento della matrice di input.</p>
+<p>Due argomenti che si intrecciano:</p>
 <ol type="1">
-<li>Crea <code>activation_layer.hpp</code> e dichiara la classe <code>SigmoidLayer</code> ereditando da <code>ILayer</code>.</li>
-<li>Dichiara il costruttore vuoto <code>SigmoidLayer() = default;</code></li>
-<li>Dichiara gli override di <code>forward</code> e <code>clone()</code>.</li>
-<li>Nel <code>.cpp</code>, implementa la <em>forward</em>: in Eigen puoi usare il formato array per applicare funzioni elemento-per-elemento: <code>return input.array().unaryExpr([](double x) { return 1.0 / (1.0 + std::exp(-x)); }).matrix();</code></li>
+<li>La <strong>Regola del Tre</strong>: se una classe possiede memoria cruda, servono distruttore, costruttore di copia e operatore di assegnazione. La applicheremo <strong>due volte</strong>, su <code>Matrix</code> e su <code>SequentialNetwork</code>.</li>
+<li>Il <strong>polimorfismo</strong>: un’interfaccia <code>ILayer</code> che permetta a <code>DenseLayer</code> e ai layer di attivazione di stare nello stesso contenitore.</li>
 </ol>
 </section>
-<section id="task-2-testare-la-non-linearità" class="slide level2">
-<h2>Task 2: Testare la Non-Linearità</h2>
-<p>Nel tuo <code>main.cpp</code>:</p>
-<ol type="1">
-<li>Istanzia una <code>SequentialNetwork</code> capace di contenere 4 layer.</li>
-<li>Aggiungi un <code>DenseLayer(784, 128)</code>, un <code>SigmoidLayer</code>, un <code>DenseLayer(128, 10)</code>, e un ultimo <code>SigmoidLayer</code>.</li>
-<li>Passa un vettore di input casuale <span class="math inline">\(784 \times 1\)</span>.</li>
-<li>Stampa la matrice di output (dovrebbe essere <span class="math inline">\(10 \times 1\)</span> con tutti i valori strettamente compresi tra <span class="math inline">\(0.0\)</span> e <span class="math inline">\(1.0\)</span>).</li>
-</ol>
+<section id="task-1-la-regola-del-tre-su-matrix" class="slide level2 smaller">
+<h2>Task 1: La Regola del Tre su <code>Matrix</code></h2>
+<p>Aggiungete a <code>matrix.hpp</code> i tre membri che mancano:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="kw">class</span> Matrix <span class="op">{</span></span>
+<span id="cb3-2"><a aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb3-3"><a aria-label="3"></a>    <span class="dt">int</span> rows<span class="op">,</span> cols<span class="op">;</span></span>
+<span id="cb3-4"><a aria-label="4"></a>    <span class="dt">double</span><span class="op">*</span> data<span class="op">;</span></span>
+<span id="cb3-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb3-6"><a aria-label="6"></a>    Matrix<span class="op">(</span><span class="dt">int</span> r<span class="op">,</span> <span class="dt">int</span> c<span class="op">);</span></span>
+<span id="cb3-7"><a aria-label="7"></a></span>
+<span id="cb3-8"><a aria-label="8"></a>    <span class="co">// ===== LA REGOLA DEL 3 =====</span></span>
+<span id="cb3-9"><a aria-label="9"></a>    <span class="op">~</span>Matrix<span class="op">();</span>                                  <span class="co">// 1. Distruttore</span></span>
+<span id="cb3-10"><a aria-label="10"></a>    Matrix<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&amp;</span> other<span class="op">);</span>                <span class="co">// 2. Costruttore di Copia</span></span>
+<span id="cb3-11"><a aria-label="11"></a>    Matrix<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> Matrix<span class="op">&amp;</span> other<span class="op">);</span>     <span class="co">// 3. Operatore di Assegnazione</span></span>
+<span id="cb3-12"><a aria-label="12"></a></span>
+<span id="cb3-13"><a aria-label="13"></a>    <span class="dt">double</span> get<span class="op">(</span><span class="dt">int</span> r<span class="op">,</span> <span class="dt">int</span> c<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb3-14"><a aria-label="14"></a>    <span class="dt">void</span> set<span class="op">(</span><span class="dt">int</span> r<span class="op">,</span> <span class="dt">int</span> c<span class="op">,</span> <span class="dt">double</span> val<span class="op">);</span></span>
+<span id="cb3-15"><a aria-label="15"></a>    <span class="dt">int</span> getRows<span class="op">()</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb3-16"><a aria-label="16"></a>    <span class="dt">int</span> getCols<span class="op">()</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb3-17"><a aria-label="17"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="task-3-benchmarking-cronometriamo" class="slide level2">
-<h2>Task 3: Benchmarking (Cronometriamo!)</h2>
-<p>Quanto è veloce il calcolo? Misuriamolo! Includi la libreria standard <code>#include &lt;chrono&gt;</code>.</p>
-<ol type="1">
-<li>Prima del <code>forward()</code>, salva il tempo attuale: <code>auto start = std::chrono::high_resolution_clock::now();</code></li>
-<li>Metti il <code>forward()</code> in un ciclo <code>for</code> che gira <strong>10.000 volte</strong> (per avere un tempo misurabile).</li>
-<li>Dopo il ciclo, prendi il tempo di fine.</li>
-<li>Calcola e stampa la differenza in millisecondi. Quanto ci ha messo?</li>
-</ol>
+<section id="task-2-implementare-i-tre" class="slide level2 smaller">
+<h2>Task 2: Implementare i tre</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="co">// 1. Distruttore</span></span>
+<span id="cb4-2"><a aria-label="2"></a>Matrix<span class="op">::~</span>Matrix<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-3"><a aria-label="3"></a>    <span class="kw">delete</span><span class="op">[]</span> data<span class="op">;</span></span>
+<span id="cb4-4"><a aria-label="4"></a><span class="op">}</span></span>
+<span id="cb4-5"><a aria-label="5"></a></span>
+<span id="cb4-6"><a aria-label="6"></a><span class="co">// 2. Costruttore di Copia — DEEP copy: nuova memoria, dati clonati</span></span>
+<span id="cb4-7"><a aria-label="7"></a>Matrix<span class="op">::</span>Matrix<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&amp;</span> other<span class="op">)</span> <span class="op">:</span> rows<span class="op">(</span>other<span class="op">.</span>rows<span class="op">),</span> cols<span class="op">(</span>other<span class="op">.</span>cols<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-8"><a aria-label="8"></a>    data <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>rows <span class="op">*</span> cols<span class="op">];</span></span>
+<span id="cb4-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> rows <span class="op">*</span> cols<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb4-10"><a aria-label="10"></a>        data<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> other<span class="op">.</span>data<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb4-11"><a aria-label="11"></a><span class="op">}</span></span>
+<span id="cb4-12"><a aria-label="12"></a></span>
+<span id="cb4-13"><a aria-label="13"></a><span class="co">// 3. Operatore di Assegnazione</span></span>
+<span id="cb4-14"><a aria-label="14"></a>Matrix<span class="op">&amp;</span> Matrix<span class="op">::</span><span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> Matrix<span class="op">&amp;</span> other<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-15"><a aria-label="15"></a>    <span class="cf">if</span> <span class="op">(</span><span class="kw">this</span> <span class="op">==</span> <span class="op">&amp;</span>other<span class="op">)</span> <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span>     <span class="co">// a. auto-assegnazione: m1 = m1</span></span>
+<span id="cb4-16"><a aria-label="16"></a></span>
+<span id="cb4-17"><a aria-label="17"></a>    <span class="kw">delete</span><span class="op">[]</span> data<span class="op">;</span>                        <span class="co">// b. libera la vecchia memoria</span></span>
+<span id="cb4-18"><a aria-label="18"></a></span>
+<span id="cb4-19"><a aria-label="19"></a>    rows <span class="op">=</span> other<span class="op">.</span>rows<span class="op">;</span>                    <span class="co">// c. copia campi e rialloca</span></span>
+<span id="cb4-20"><a aria-label="20"></a>    cols <span class="op">=</span> other<span class="op">.</span>cols<span class="op">;</span></span>
+<span id="cb4-21"><a aria-label="21"></a>    data <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>rows <span class="op">*</span> cols<span class="op">];</span></span>
+<span id="cb4-22"><a aria-label="22"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> rows <span class="op">*</span> cols<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb4-23"><a aria-label="23"></a>        data<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> other<span class="op">.</span>data<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb4-24"><a aria-label="24"></a></span>
+<span id="cb4-25"><a aria-label="25"></a>    <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span>                         <span class="co">// d. riferimento a se stesso</span></span>
+<span id="cb4-26"><a aria-label="26"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I quattro passi dell’operatore <code>=</code> vanno <strong>in quest’ordine</strong>: invertire (b) e (a) su <code>m1 = m1</code> distrugge i dati che si stanno per copiare.</p>
 </section>
-<section id="task-4-scatenare-il-compilatore--o3" class="slide level2">
-<h2>Task 4: Scatenare il Compilatore (-O3)</h2>
-<p>Probabilmente il codice ci ha messo qualche secondo. Il compilatore di default non applica ottimizzazioni (flag <code>-O0</code>), privilegiando la velocità di compilazione.</p>
-<ol type="1">
-<li>Apri il file <code>CMakeLists.txt</code>.</li>
-<li>Aggiungi la seguente linea per dire al compilatore di ottimizzare al massimo: <code>set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")</code></li>
-<li>Ricompila il codice e avvia il programma.</li>
-<li>Osserva il nuovo tempo: Eigen, combinato a <code>-O3</code>, userà le istruzioni vettoriali avanzate della tua CPU (AVX). Il tempo dovrebbe essere crollato drasticamente!</li>
-</ol>
-<p><strong>La soluzione del Docente verrà discusso al prossimo laboratorio.</strong></p>
+<section id="task-3-linterfaccia-ilayer" class="slide level2 smaller">
+<h2>Task 3: L’interfaccia <code>ILayer</code></h2>
+<p>Perché la rete possa contenere layer di tipi diversi, serve una base comune. Crea <code>ilayer.hpp</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="pp">#ifndef ILAYER_HPP</span></span>
+<span id="cb5-2"><a aria-label="2"></a><span class="pp">#define ILAYER_HPP</span></span>
+<span id="cb5-3"><a aria-label="3"></a></span>
+<span id="cb5-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;Eigen/Dense&gt;</span></span>
+<span id="cb5-5"><a aria-label="5"></a></span>
+<span id="cb5-6"><a aria-label="6"></a><span class="kw">class</span> ILayer <span class="op">{</span></span>
+<span id="cb5-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb5-8"><a aria-label="8"></a>    <span class="co">// Distruttore virtuale: obbligatorio, si farà delete su puntatori a ILayer</span></span>
+<span id="cb5-9"><a aria-label="9"></a>    <span class="kw">virtual</span> <span class="op">~</span>ILayer<span class="op">()</span> <span class="op">=</span> <span class="cf">default</span><span class="op">;</span></span>
+<span id="cb5-10"><a aria-label="10"></a></span>
+<span id="cb5-11"><a aria-label="11"></a>    <span class="co">// Virtuale puro: rende ILayer astratta (non istanziabile)</span></span>
+<span id="cb5-12"><a aria-label="12"></a>    <span class="kw">virtual</span> Eigen<span class="op">::</span>MatrixXd forward<span class="op">(</span><span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> input<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-13"><a aria-label="13"></a></span>
+<span id="cb5-14"><a aria-label="14"></a>    <span class="co">// Idioma del "Costruttore Virtuale": serve alla Deep Copy polimorfica</span></span>
+<span id="cb5-15"><a aria-label="15"></a>    <span class="kw">virtual</span> ILayer<span class="op">*</span> clone<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-16"><a aria-label="16"></a><span class="op">};</span></span>
+<span id="cb5-17"><a aria-label="17"></a></span>
+<span id="cb5-18"><a aria-label="18"></a><span class="pp">#endif</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Poi fate derivare <code>DenseLayer</code> da <code>ILayer</code>, aggiungendo <code>override</code> a <code>forward</code> e implementando <code>clone()</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a>ILayer<span class="op">*</span> DenseLayer<span class="op">::</span>clone<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb6-2"><a aria-label="2"></a>    <span class="cf">return</span> <span class="kw">new</span> DenseLayer<span class="op">(*</span><span class="kw">this</span><span class="op">);</span>    <span class="co">// usa il copy constructor generato da Eigen</span></span>
+<span id="cb6-3"><a aria-label="3"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><code>clone()</code> non è opzionale: il costruttore di copia di <code>SequentialNetwork</code> non può funzionare senza. Da un <code>ILayer*</code> non si sa quale tipo concreto copiare — solo l’oggetto stesso lo sa.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="task-4-sequentialnetwork-lheader" class="slide level2 smaller">
+<h2>Task 4: <code>SequentialNetwork</code> — l’header</h2>
+<p>Crea <code>sequential_network.hpp</code>. Il contenitore è un <strong>array C-style dinamico</strong>: serve a farvi toccare i problemi che <code>std::vector</code> risolverà da solo.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="pp">#ifndef SEQUENTIAL_NETWORK_HPP</span></span>
+<span id="cb7-2"><a aria-label="2"></a><span class="pp">#define SEQUENTIAL_NETWORK_HPP</span></span>
+<span id="cb7-3"><a aria-label="3"></a></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">"ilayer.hpp"</span></span>
+<span id="cb7-5"><a aria-label="5"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
+<span id="cb7-6"><a aria-label="6"></a></span>
+<span id="cb7-7"><a aria-label="7"></a><span class="kw">class</span> SequentialNetwork <span class="op">{</span></span>
+<span id="cb7-8"><a aria-label="8"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb7-9"><a aria-label="9"></a>    ILayer<span class="op">**</span> layers<span class="op">;</span>        <span class="co">// array dinamico di puntatori a ILayer</span></span>
+<span id="cb7-10"><a aria-label="10"></a>    <span class="dt">int</span> capacity<span class="op">;</span></span>
+<span id="cb7-11"><a aria-label="11"></a>    <span class="dt">int</span> size<span class="op">;</span></span>
+<span id="cb7-12"><a aria-label="12"></a></span>
+<span id="cb7-13"><a aria-label="13"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb7-14"><a aria-label="14"></a>    SequentialNetwork<span class="op">(</span><span class="dt">int</span> max_layers<span class="op">);</span></span>
+<span id="cb7-15"><a aria-label="15"></a></span>
+<span id="cb7-16"><a aria-label="16"></a>    <span class="co">// ===== LA REGOLA DEL 3 (di nuovo) =====</span></span>
+<span id="cb7-17"><a aria-label="17"></a>    <span class="op">~</span>SequentialNetwork<span class="op">();</span></span>
+<span id="cb7-18"><a aria-label="18"></a>    SequentialNetwork<span class="op">(</span><span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> other<span class="op">);</span></span>
+<span id="cb7-19"><a aria-label="19"></a>    SequentialNetwork<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> other<span class="op">);</span></span>
+<span id="cb7-20"><a aria-label="20"></a></span>
+<span id="cb7-21"><a aria-label="21"></a>    <span class="dt">void</span> add<span class="op">(</span>ILayer<span class="op">*</span> layer<span class="op">);</span></span>
+<span id="cb7-22"><a aria-label="22"></a>    Eigen<span class="op">::</span>MatrixXd forward<span class="op">(</span><span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> input<span class="op">);</span></span>
+<span id="cb7-23"><a aria-label="23"></a>    <span class="dt">int</span> getSize<span class="op">()</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb7-24"><a aria-label="24"></a><span class="op">};</span></span>
+<span id="cb7-25"><a aria-label="25"></a></span>
+<span id="cb7-26"><a aria-label="26"></a><span class="pp">#endif</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="task-5-sequentialnetwork-limplementazione" class="slide level2 smaller">
+<h2>Task 5: <code>SequentialNetwork</code> — l’implementazione</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>SequentialNetwork<span class="op">::</span>SequentialNetwork<span class="op">(</span><span class="dt">int</span> max_layers<span class="op">)</span></span>
+<span id="cb8-2"><a aria-label="2"></a>    <span class="op">:</span> capacity<span class="op">(</span>max_layers<span class="op">),</span> size<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-3"><a aria-label="3"></a>    <span class="cf">if</span> <span class="op">(</span>capacity <span class="op">&lt;=</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">throw</span> <span class="bu">std::</span>invalid_argument<span class="op">(</span><span class="st">"Capacity deve essere &gt; 0"</span><span class="op">);</span></span>
+<span id="cb8-4"><a aria-label="4"></a>    layers <span class="op">=</span> <span class="kw">new</span> ILayer<span class="op">*[</span>capacity<span class="op">];</span></span>
+<span id="cb8-5"><a aria-label="5"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> capacity<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> layers<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="kw">nullptr</span><span class="op">;</span></span>
+<span id="cb8-6"><a aria-label="6"></a><span class="op">}</span></span>
+<span id="cb8-7"><a aria-label="7"></a></span>
+<span id="cb8-8"><a aria-label="8"></a>SequentialNetwork<span class="op">::~</span>SequentialNetwork<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> size<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="kw">delete</span> layers<span class="op">[</span>i<span class="op">];</span>   <span class="co">// a. i layer</span></span>
+<span id="cb8-10"><a aria-label="10"></a>    <span class="kw">delete</span><span class="op">[]</span> layers<span class="op">;</span>                                   <span class="co">// b. l'array</span></span>
+<span id="cb8-11"><a aria-label="11"></a><span class="op">}</span></span>
+<span id="cb8-12"><a aria-label="12"></a></span>
+<span id="cb8-13"><a aria-label="13"></a>SequentialNetwork<span class="op">::</span>SequentialNetwork<span class="op">(</span><span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> other<span class="op">)</span></span>
+<span id="cb8-14"><a aria-label="14"></a>    <span class="op">:</span> capacity<span class="op">(</span>other<span class="op">.</span>capacity<span class="op">),</span> size<span class="op">(</span>other<span class="op">.</span>size<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-15"><a aria-label="15"></a>    layers <span class="op">=</span> <span class="kw">new</span> ILayer<span class="op">*[</span>capacity<span class="op">];</span></span>
+<span id="cb8-16"><a aria-label="16"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> size<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb8-17"><a aria-label="17"></a>        layers<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> other<span class="op">.</span>layers<span class="op">[</span>i<span class="op">]-&gt;</span>clone<span class="op">();</span>          <span class="co">// clone POLIMORFICO</span></span>
+<span id="cb8-18"><a aria-label="18"></a><span class="op">}</span></span>
+<span id="cb8-19"><a aria-label="19"></a></span>
+<span id="cb8-20"><a aria-label="20"></a><span class="dt">void</span> SequentialNetwork<span class="op">::</span>add<span class="op">(</span>ILayer<span class="op">*</span> layer<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-21"><a aria-label="21"></a>    <span class="cf">if</span> <span class="op">(</span>size <span class="op">&gt;=</span> capacity<span class="op">)</span> <span class="cf">throw</span> <span class="bu">std::</span>out_of_range<span class="op">(</span><span class="st">"Network capacity esaurita!"</span><span class="op">);</span></span>
+<span id="cb8-22"><a aria-label="22"></a>    layers<span class="op">[</span>size<span class="op">++]</span> <span class="op">=</span> layer<span class="op">;</span></span>
+<span id="cb8-23"><a aria-label="23"></a><span class="op">}</span></span>
+<span id="cb8-24"><a aria-label="24"></a></span>
+<span id="cb8-25"><a aria-label="25"></a>Eigen<span class="op">::</span>MatrixXd SequentialNetwork<span class="op">::</span>forward<span class="op">(</span><span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> input<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-26"><a aria-label="26"></a>    Eigen<span class="op">::</span>MatrixXd current <span class="op">=</span> input<span class="op">;</span></span>
+<span id="cb8-27"><a aria-label="27"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> size<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb8-28"><a aria-label="28"></a>        current <span class="op">=</span> layers<span class="op">[</span>i<span class="op">]-&gt;</span>forward<span class="op">(</span>current<span class="op">);</span>   <span class="co">// ogni output è il prossimo input</span></span>
+<span id="cb8-29"><a aria-label="29"></a>    <span class="cf">return</span> current<span class="op">;</span></span>
+<span id="cb8-30"><a aria-label="30"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>L’<code>operator=</code> segue lo stesso schema di <code>Matrix</code>: auto-assegnazione, libera, rialloca, clona. Attenzione che qui il “libera” è <strong>doppio</strong>: prima i layer, poi l’array.</p>
+</section>
+<section id="task-6-il-test-della-deep-copy" class="slide level2 smaller">
+<h2>Task 6: Il Test della Deep Copy</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb9-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;Eigen/Dense&gt;</span></span>
+<span id="cb9-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">"dense_layer.hpp"</span></span>
+<span id="cb9-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">"sequential_network.hpp"</span></span>
+<span id="cb9-5"><a aria-label="5"></a></span>
+<span id="cb9-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb9-7"><a aria-label="7"></a>    Eigen<span class="op">::</span>MatrixXd X <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb9-8"><a aria-label="8"></a></span>
+<span id="cb9-9"><a aria-label="9"></a>    SequentialNetwork net1<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
+<span id="cb9-10"><a aria-label="10"></a>    <span class="co">// La rete fa delete sui puntatori: passiamo oggetti creati con new</span></span>
+<span id="cb9-11"><a aria-label="11"></a>    net1<span class="op">.</span>add<span class="op">(</span><span class="kw">new</span> DenseLayer<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">128</span><span class="op">));</span></span>
+<span id="cb9-12"><a aria-label="12"></a>    net1<span class="op">.</span>add<span class="op">(</span><span class="kw">new</span> DenseLayer<span class="op">(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">10</span><span class="op">));</span></span>
+<span id="cb9-13"><a aria-label="13"></a></span>
+<span id="cb9-14"><a aria-label="14"></a>    Eigen<span class="op">::</span>MatrixXd Z1 <span class="op">=</span> net1<span class="op">.</span>forward<span class="op">(</span>X<span class="op">);</span></span>
+<span id="cb9-15"><a aria-label="15"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Rete 1:</span><span class="sc">\n</span><span class="st">"</span> <span class="op">&lt;&lt;</span> Z1<span class="op">.</span>transpose<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb9-16"><a aria-label="16"></a></span>
+<span id="cb9-17"><a aria-label="17"></a>    SequentialNetwork net2 <span class="op">=</span> net1<span class="op">;</span>          <span class="co">// &lt;- Costruttore di Copia</span></span>
+<span id="cb9-18"><a aria-label="18"></a>    Eigen<span class="op">::</span>MatrixXd Z2 <span class="op">=</span> net2<span class="op">.</span>forward<span class="op">(</span>X<span class="op">);</span></span>
+<span id="cb9-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Rete 2 (copia):</span><span class="sc">\n</span><span class="st">"</span> <span class="op">&lt;&lt;</span> Z2<span class="op">.</span>transpose<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb9-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Il criterio di correttezza</strong>: <code>Z1</code> e <code>Z2</code> devono essere <strong>identici</strong>. I pesi sono casuali, quindi due reti costruite da zero darebbero numeri diversi: se coincidono, il <code>clone()</code> ha davvero duplicato i pesi.</p>
+<p>Provate poi a commentare il copy constructor: il programma crasherà con un <strong>Double Free</strong>, perché entrambe le reti farebbero <code>delete</code> sugli stessi layer.</p>
+</section>
+<section id="task-da-completare" class="slide level2 smaller scrollable">
+<h2>Task da Completare</h2>
+<ul class="task-list">
+<li><label><input type="checkbox">Aggiungere distruttore, copy constructor e <code>operator=</code> a <code>Matrix</code></label></li>
+<li><label><input type="checkbox">Verificare l’auto-assegnazione: <code>m1 = m1</code> non deve corrompere i dati</label></li>
+<li><label><input type="checkbox">Creare <code>ilayer.hpp</code> con distruttore virtuale, <code>forward</code> puro virtuale e <code>clone()</code></label></li>
+<li><label><input type="checkbox">Far derivare <code>DenseLayer</code> da <code>ILayer</code> e implementare <code>clone()</code></label></li>
+<li><label><input type="checkbox">Creare <code>SequentialNetwork</code> con <code>ILayer** layers</code>, <code>capacity</code>, <code>size</code></label></li>
+<li><label><input type="checkbox">Applicare la Regola del Tre a <code>SequentialNetwork</code> usando <code>clone()</code> per la deep copy</label></li>
+<li><label><input type="checkbox">Verificare che <code>Z1</code> e <code>Z2</code> coincidano</label></li>
+<li><label><input type="checkbox"><strong>Esperimento</strong>: commentare il copy constructor e osservare il Double Free</label></li>
+</ul>
+<p><strong>La soluzione di riferimento verrà discussa all’inizio della prossima lezione.</strong></p>
 <p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
 <div class="footer footer-default">
-
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
 </div>
 </div></div>
 
@@ -208,6 +459,7 @@ Docente
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -229,7 +481,8 @@ Docente
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -250,7 +503,7 @@ Docente
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -355,14 +608,14 @@ Docente
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'convex',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: 'fade',
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
@@ -400,7 +653,7 @@ Docente
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
           RevealNotes,

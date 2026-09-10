@@ -6,7 +6,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Docente">
@@ -34,11 +34,79 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -51,6 +119,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -134,7 +203,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Laboratorio 03</h1>
-  <p class="subtitle">Gestione della Memoria e Vettori C-Style</p>
+  <p class="subtitle">Tipi Base e Funzioni di Attivazione</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -145,49 +214,107 @@ Docente
 </div>
 
 </section>
+<section id="soluzione-del-laboratorio-02" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb1-2"><a aria-label="2"></a></span>
+<span id="cb1-3"><a aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-4"><a aria-label="4"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Inizio progetto BASIC_NEURAL++!"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb1-5"><a aria-label="5"></a></span>
+<span id="cb1-6"><a aria-label="6"></a>    <span class="dt">int</span> epochs <span class="op">=</span> <span class="dv">100</span><span class="op">;</span></span>
+<span id="cb1-7"><a aria-label="7"></a>    <span class="dt">double</span> learning_rate <span class="op">=</span> <span class="fl">0.01</span><span class="op">;</span></span>
+<span id="cb1-8"><a aria-label="8"></a>    <span class="dt">double</span> weight <span class="op">=</span> <span class="fl">0.55</span><span class="op">;</span></span>
+<span id="cb1-9"><a aria-label="9"></a></span>
+<span id="cb1-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Epoche: "</span> <span class="op">&lt;&lt;</span> epochs <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb1-11"><a aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Learning Rate: "</span> <span class="op">&lt;&lt;</span> learning_rate <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb1-12"><a aria-label="12"></a></span>
+<span id="cb1-13"><a aria-label="13"></a>    <span class="dt">double</span> updated_weight <span class="op">=</span> weight <span class="op">-</span> <span class="op">(</span>learning_rate <span class="op">*</span> <span class="fl">0.1</span><span class="op">);</span></span>
+<span id="cb1-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Peso Aggiornato: "</span> <span class="op">&lt;&lt;</span> updated_weight <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb1-15"><a aria-label="15"></a></span>
+<span id="cb1-16"><a aria-label="16"></a>    <span class="co">// Il punto centrale del laboratorio</span></span>
+<span id="cb1-17"><a aria-label="17"></a>    <span class="dt">int</span> a <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb1-18"><a aria-label="18"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"5 / 2 = "</span> <span class="op">&lt;&lt;</span> <span class="op">(</span>a <span class="op">/</span> b<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">" (taglia i decimali!)"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb1-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"con cast = "</span> <span class="op">&lt;&lt;</span> <span class="op">(</span><span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span>a<span class="op">)</span> <span class="op">/</span> b<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb1-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>5 / 2</code> vale <code>2</code>, non <code>2.5</code>: se entrambi gli operandi sono <code>int</code>, C++ fa la divisione intera. È il bug più insidioso del calcolo scientifico, perché non dà nessun errore — dà solo il risultato sbagliato. Basta un <code>static_cast&lt;double&gt;</code> su <strong>uno</strong> dei due operandi.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong><code>static_cast&lt;double&gt;(a)</code> non modifica <code>a</code></strong>: produce una copia temporanea di tipo <code>double</code> da usare in quell’espressione. Basta convertire <strong>uno</strong> dei due operandi, perché a quel punto C++ promuove automaticamente anche l’altro. È lo stesso <code>static_cast</code> della Lezione 4 (divisione intera): qui lo usate per la prima volta in un programma vero. Le altre forme di cast arrivano nella Lezione 16.</p>
+</div>
+</div>
+</div>
+</section>
 <section id="obiettivo-di-oggi" class="slide level2">
 <h2>Obiettivo di Oggi</h2>
-<p>Per comprendere a fondo il C++ moderno e giustificare la necessità delle Classi (OOP), dobbiamo prima affrontare la gestione cruda e manuale della memoria (C-Style). Simuleremo i “pesi” di un singolo neurone usando array dinamici.</p>
+<p>Iniziare a scrivere la logica matematica fondamentale che dà “intelligenza” a un neurone artificiale. Impareremo a usare il <strong>Control Flow</strong> del C++ (<code>if</code>, <code>for</code>), definiremo le <strong>Funzioni di Attivazione</strong> con le loro derivate, e — da fisici — <strong>verificheremo numericamente</strong> che le derivate siano giuste. Nel Laboratorio 13 queste derivate diventeranno il cuore della backpropagation: un errore qui si pagherebbe lì, e sarebbe molto più difficile da trovare.</p>
 </section>
-<section id="task-1-allocazione-dinamica" class="slide level2">
-<h2>Task 1: Allocazione Dinamica</h2>
-<p>Dimentica i vector e gli array a dimensione fissa. Immagina di dover caricare <span class="math inline">\(N\)</span> pesi in memoria, dove <span class="math inline">\(N\)</span> è una variabile decisa a runtime (es. inserita dall’utente tramite <code>std::cin</code>).</p>
+<section id="task-1-la-funzione-relu" class="slide level2 scrollable">
+<h2>Task 1: La funzione ReLU</h2>
+<p>La <em>Rectified Linear Unit</em> (ReLU) è la funzione di attivazione più usata nel Deep Learning moderno. Formula: <span class="math inline">\(f(x) = \max(0, x)\)</span>.</p>
 <ol type="1">
-<li>Chiedi all’utente di inserire il numero di input <span class="math inline">\(N\)</span> (es. <span class="math inline">\(N=784\)</span> per un’immagine MNIST).</li>
-<li>Alloca dinamicamente sull’Heap due array di <code>double</code> grandi <span class="math inline">\(N\)</span>: uno per i <code>pesi</code> (Weights) e uno per gli <code>input</code> (X).</li>
-<li>Usa la keyword <code>new double[N]</code>.</li>
+<li>Nel tuo <code>main.cpp</code>, scrivi una funzione <code>double relu(double x)</code>.</li>
+<li>Implementala usando un classico costrutto <code>if/else</code>.</li>
+<li>Testala passandole un numero negativo e uno positivo, stampando i risultati a schermo con <code>std::cout</code>.</li>
 </ol>
 </section>
-<section id="task-2-inizializzazione" class="slide level2">
-<h2>Task 2: Inizializzazione</h2>
-<p>Scrivi un ciclo <code>for</code> che riempia questi due array con valori fittizi. - Per gli <code>input</code>: riempi con il valore <span class="math inline">\(1.0\)</span>. - Per i <code>pesi</code>: riempi con valori piccoli casuali o costanti (es. <span class="math inline">\(0.01\)</span>).</p>
-<p><em>Ricorda:</em> Puoi accedere agli elementi di un array dinamico usando la notazione <code>pesi[i]</code>.</p>
-</section>
-<section id="task-3-il-forward-pass-a-mano" class="slide level2">
-<h2>Task 3: Il Forward Pass (a mano)</h2>
-<p>L’equazione di un singolo neurone (prima della funzione di attivazione) è un prodotto scalare: <span class="math inline">\(Z = (\sum_{i=0}^{N-1} W_i \cdot X_i) + b\)</span>.</p>
+<section id="task-2-la-derivata-della-relu" class="slide level2 scrollable">
+<h2>Task 2: La derivata della ReLU</h2>
+<p>Durante la Backpropagation, la rete neurale dovrà calcolare la pendenza (derivata) della funzione di attivazione. Derivata di ReLU: <span class="math inline">\(f'(x) = 1\)</span> se <span class="math inline">\(x &gt; 0\)</span>, altrimenti <span class="math inline">\(0\)</span>.</p>
 <ol type="1">
-<li>Dichiara una variabile scalare <code>b</code> (bias) inizializzata a <span class="math inline">\(0.5\)</span>.</li>
-<li>Scrivi un ciclo <code>for</code> che moltiplichi ogni peso per il rispettivo input e accumuli il risultato in una variabile <code>z</code>.</li>
-<li>Aggiungi il bias a <code>z</code> e stampa il risultato finale.</li>
+<li>Scrivi una funzione <code>double relu_derivative(double x)</code>.</li>
+<li>Implementala e testala.</li>
 </ol>
 </section>
-<section id="task-4-evitare-i-memory-leak" class="slide level2">
-<h2>Task 4: Evitare i Memory Leak!</h2>
-<p>La regola d’oro del C++ è: <strong>“Per ogni <code>new[]</code>, ci deve essere un <code>delete[]</code>”</strong>.</p>
+<section id="task-3-la-sigmoide-e-cmath" class="slide level2 scrollable">
+<h2>Task 3: La Sigmoide e <code>&lt;cmath&gt;</code></h2>
+<p>La Sigmoide “schiaccia” qualsiasi numero reale nell’intervallo <span class="math inline">\((0, 1)\)</span>. Formula: <span class="math inline">\(\sigma(x) = \frac{1}{1 + e^{-x}}\)</span>.</p>
 <ol type="1">
-<li>Alla fine del tuo <code>main</code>, dealloca esplicitamente i due array usando <code>delete[] pesi;</code> e <code>delete[] input;</code>.</li>
-<li><em>(Domanda per te)</em>: Cosa succede se ometti il <code>delete[]</code> e metti l’intero programma in un ciclo infinito che fa addestramento?</li>
+<li>Includi l’header della libreria matematica standard: <code>#include &lt;cmath&gt;</code></li>
+<li>Scrivi una funzione <code>double sigmoid(double x)</code>. Usa la funzione esponenziale <code>std::exp()</code>.</li>
+<li>Scrivi la sua derivata: <span class="math inline">\(\sigma'(x) = \sigma(x) \cdot (1 - \sigma(x))\)</span>.</li>
 </ol>
-<p><strong>La soluzione (con i commenti sui pericoli di questo approccio) verrà discussa all’inizio della prossima lezione!</strong></p>
+</section>
+<section id="task-4-validazione-con-il-ciclo-for" class="slide level2">
+<h2>Task 4: Validazione con il Ciclo For</h2>
+<p>Scrivi un ciclo <code>for</code> nel <code>main()</code> che iteri una variabile <code>x</code> partendo da <code>-5.0</code> fino a <code>+5.0</code>, avanzando a step di <code>1.0</code>.</p>
+<p>Ad ogni iterazione, stampa a schermo una tabella rudimentale usando <code>\t</code> (tabulazione): - Il valore <code>x</code> - <code>relu(x)</code> e <code>relu_derivative(x)</code> - <code>sigmoid(x)</code> e <code>sigmoid_derivative(x)</code></p>
+<p>Controlla che i numeri stampati abbiano senso logico!</p>
+</section>
+<section id="task-5-la-tangente-iperbolica" class="slide level2 scrollable">
+<h2>Task 5: La Tangente Iperbolica</h2>
+<p>La terza attivazione classica, che schiaccia in <span class="math inline">\((-1, 1)\)</span> ed è centrata sullo zero: <span class="math inline">\(f(x) = \tanh(x)\)</span>, con derivata <span class="math inline">\(f'(x) = 1 - \tanh^2(x)\)</span>.</p>
+<ol type="1">
+<li>Scrivi <code>double tanh_act(double x)</code> usando <code>std::tanh</code> di <code>&lt;cmath&gt;</code> (il nome <code>tanh</code> da solo farebbe a pugni con quello della libreria).</li>
+<li>Scrivi <code>double tanh_derivative(double x)</code>: calcola <code>std::tanh(x)</code> <strong>una volta sola</strong> in una variabile e riusala.</li>
+<li>Aggiungi le due colonne alla tabella, o stampa una seconda tabella.</li>
+</ol>
+</section>
+<section id="task-6-le-derivate-sono-giuste-verifica-numerica" class="slide level2 smaller scrollable">
+<h2>Task 6: Le Derivate sono Giuste? Verifica Numerica</h2>
+<p>Una derivata analitica sbagliata di un segno o di un fattore 2 non produce nessun errore di compilazione: produce una rete che non impara. Il fisico ha un’arma: la <strong>derivata numerica</strong> con le differenze centrali, <span class="math inline">\(f'(x) \approx \dfrac{f(x+h) - f(x-h)}{2h}\)</span>.</p>
+<ol type="1">
+<li>Scrivi <code>double sigmoid_numerical_derivative(double x, double h)</code> e l’analoga per la tanh. (Una funzione per attivazione: passare una funzione come argomento lo vedremo più avanti.)</li>
+<li>Nel <code>main</code>, con <code>h = 1e-5</code>, scorri <code>x</code> da <span class="math inline">\(-5\)</span> a <span class="math inline">\(5\)</span> a passi di <span class="math inline">\(0.5\)</span> e tieni il <strong>massimo errore assoluto</strong> <code>std::fabs(analitica - numerica)</code> per ciascuna funzione.</li>
+<li>Stampa i due massimi (in notazione scientifica: <code>std::scientific</code>) e un <code>[PASS]</code> se entrambi sono sotto <code>1e-6</code>, <code>[FAIL]</code> altrimenti.</li>
+<li><strong>Perché proprio <code>1e-5</code>?</strong> Ripeti il confronto in <code>x = 1</code> per <code>h</code> = <span class="math inline">\(10^{-1}, 10^{-3}, \dots, 10^{-13}\)</span> e stampa l’errore. Scende, poi risale: troncamento da una parte, <strong>cancellazione numerica</strong> fra <code>f(x+h)</code> e <code>f(x-h)</code> dall’altra. È il primo incontro con i limiti del <code>double</code>, e non sarà l’ultimo.</li>
+</ol>
+<p><strong>Buon lavoro! La soluzione di riferimento verrà discussa all’inizio della prossima lezione.</strong></p>
 <p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
 <div class="footer footer-default">
-
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
 </div>
 </div></div>
 
@@ -198,6 +325,7 @@ Docente
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -219,7 +347,8 @@ Docente
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -240,7 +369,7 @@ Docente
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -345,14 +474,14 @@ Docente
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'convex',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: 'fade',
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
@@ -390,7 +519,7 @@ Docente
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
           RevealNotes,

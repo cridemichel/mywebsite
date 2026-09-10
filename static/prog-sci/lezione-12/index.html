@@ -202,7 +202,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 12</h1>
-  <p class="subtitle">Programmazione Scientifica++: Lezione 12</p>
+  <p class="subtitle">Ereditarietà, Polimorfismo e Classi Astratte</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -213,396 +213,419 @@ Docente
 </div>
 
 </section>
-<section id="il-problema-dellasimmetria-ripasso-lezione-6" class="slide level2 smaller">
-<h2>Il Problema dell’Asimmetria (Ripasso Lezione 6)</h2>
-<p>Passiamo ora al terzo argomento. Nella Lezione 6 abbiamo sovraccaricato l’operatore <code>*</code> per moltiplicare un vettore per uno scalare.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
-<span id="cb1-2"><a aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb1-3"><a aria-label="3"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
-<span id="cb1-4"><a aria-label="4"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">{</span> <span class="va">x_</span> <span class="op">=</span> x<span class="op">;</span> <span class="va">y_</span> <span class="op">=</span> y<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb1-5"><a aria-label="5"></a>    </span>
-<span id="cb1-6"><a aria-label="6"></a>    <span class="co">// Operatore Vettore * scalare</span></span>
-<span id="cb1-7"><a aria-label="7"></a>    Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> rhs<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb1-8"><a aria-label="8"></a>        <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="kw">this</span><span class="op">-&gt;</span><span class="va">x_</span> <span class="op">*</span> rhs<span class="op">,</span> <span class="kw">this</span><span class="op">-&gt;</span><span class="va">y_</span> <span class="op">*</span> rhs<span class="op">);</span></span>
-<span id="cb1-9"><a aria-label="9"></a>    <span class="op">}</span></span>
-<span id="cb1-10"><a aria-label="10"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Questo ci permetteva di scrivere in modo elegantissimo: <code>Vettore2D v2 = v1 * 5.0;</code></p>
+<section id="argomenti-di-oggi" class="slide level2 smaller">
+<h2>Argomenti di Oggi</h2>
+<ul>
+<li><strong>Ereditarietà (Inheritance)</strong>
+<ul>
+<li>La relazione “IS-A” ed evitare i copia-incolla</li>
+</ul></li>
+<li><strong>Upcasting</strong>
+<ul>
+<li>Trattare classi specifiche come entità generiche</li>
+</ul></li>
+<li><strong>Polimorfismo e <code>virtual</code></strong>
+<ul>
+<li>Late binding: chiamare la funzione giusta al momento giusto</li>
+</ul></li>
+<li><strong>Il Bug Fatale</strong>
+<ul>
+<li>Perché i distruttori <code>virtual</code> salvano la vita</li>
+</ul></li>
+<li><strong>Classi Astratte (Interfacce)</strong>
+<ul>
+<li>Costringere i programmatori a rispettare i Contratti</li>
+</ul></li>
+</ul>
 </section>
-<section id="la-tragedia-del-lato-sinistro" class="slide level2 smaller">
-<h2>La Tragedia del Lato Sinistro</h2>
-<p>La matematica ci insegna che la moltiplicazione scalare è commutativa: <code>v * 5.0</code> deve produrre lo stesso risultato di <code>5.0 * v</code>.</p>
-<p>Ma se proviamo a farlo in C++…</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-label="2"></a>    Vettore2D v1<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
-<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a>    </span>
-<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-label="4"></a>    Vettore2D v2 <span class="op">=</span> v1 <span class="op">*</span> <span class="fl">5.0</span><span class="op">;</span> <span class="co">// OK! Chiama v1.operator*(5.0)</span></span>
-<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-label="5"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-6" class="code-annotation-target"><a href="#annotated-cell-2-6" aria-label="6"></a>    Vettore2D v3 <span class="op">=</span> <span class="fl">5.0</span> <span class="op">*</span> v1<span class="op">;</span> <span class="co">// ERRORE DI COMPILAZIONE FATALE!</span></span>
-<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-label="7"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="linfrastruttura-della-rete-neurale" class="slide level2 smaller">
+<h2>L’Infrastruttura della Rete Neurale</h2>
+<p>Nelle lezioni di Laboratorio, dovrete costruire da zero una <strong>Rete Neurale</strong>. Una rete è tipicamente composta da un susseguirsi di “Strati” (Layers).</p>
+<p>Pensiamo a tre tipi di Layer comuni: 1. <strong>Dense Layer:</strong> Completamente connesso (moltiplica la matrice dei pesi). 2. <strong>Activation Layer:</strong> Applica una funzione non lineare (es. ReLU o Sigmoid). 3. <strong>Dropout Layer:</strong> Disattiva casualmente alcuni neuroni per evitare l’overfitting.</p>
+<p>Cosa hanno in comune? Tutti hanno una funzione <code>forward()</code> (per propagare il segnale in avanti) e una funzione <code>backward()</code> (per l’addestramento).</p>
+</section>
+<section id="il-problema-della-duplicazione-del-codice" class="slide level2 smaller">
+<h2>Il problema della Duplicazione del Codice</h2>
+<p>Immaginate di programmare in puro linguaggio C, o senza usare l’approccio Object-Oriented. Dovreste creare tre <code>struct</code> diverse:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="kw">struct</span> DenseLayer <span class="op">{</span></span>
+<span id="cb1-2"><a aria-label="2"></a>    <span class="bu">std::</span>string name<span class="op">;</span></span>
+<span id="cb1-3"><a aria-label="3"></a>    <span class="co">// ...</span></span>
+<span id="cb1-4"><a aria-label="4"></a><span class="op">};</span></span>
+<span id="cb1-5"><a aria-label="5"></a></span>
+<span id="cb1-6"><a aria-label="6"></a><span class="kw">struct</span> ActivationLayer <span class="op">{</span></span>
+<span id="cb1-7"><a aria-label="7"></a>    <span class="bu">std::</span>string name<span class="op">;</span></span>
+<span id="cb1-8"><a aria-label="8"></a>    <span class="co">// ...</span></span>
+<span id="cb1-9"><a aria-label="9"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Per ognuna dovrete riscrivere le variabili del nome, gli ID, le funzioni per stamparli. È un festival del <strong>copia-incolla</strong>, la peggiore pratica possibile nell’Ingegneria del Software: se c’è un bug in una funzione condivisa, dovete ricordarvi di correggerlo ovunque!</p>
+</section>
+<section id="la-soluzione-lereditarietà" class="slide level2 smaller">
+<h2>La Soluzione: L’Ereditarietà</h2>
+<p>Il C++ permette a una classe di <strong>ereditare</strong> (assorbire) tutte le caratteristiche di un’altra classe.</p>
+<p>Creiamo una singola “Classe Padre” (o Classe Base), chiamata <code>Layer</code>, in cui scriviamo <strong>una volta sola</strong> tutto il codice in comune (come la variabile <code>name</code> o la funzione <code>printName</code>).</p>
+<p>Poi creiamo le “Classi Figlie” (<code>DenseLayer</code>, <code>ActivationLayer</code>), dicendo al compilatore di <em>partire dalle basi del Padre</em> e aggiungere solo le formule matematiche specifiche.</p>
+</section>
+<section id="la-relazione-is-a-è-un" class="slide level2 smaller">
+<h2>La relazione “IS-A” (È UN)</h2>
+<p>L’Ereditarietà modella rigorosamente la relazione logica “È UN” (<em>IS-A</em>).</p>
+<ul>
+<li>Un <em>Cane</em> <strong>È UN</strong> <em>Animale</em>.</li>
+<li>Un <em>Cerchio</em> <strong>È UNA</strong> <em>Forma Geometrica</em>.</li>
+<li>Un <em>DenseLayer</em> <strong>È UN</strong> <em>Layer</em>.</li>
+</ul>
+<p>Se la frase ha senso in italiano, ha senso usare l’ereditarietà in C++. Se non ha senso (es. “Il Motore È UN’Auto”), allora state sbagliando! In quel caso dovrete usare la <em>Composizione</em> (l’Auto <em>contiene</em> un Motore come membro dato).</p>
+</section>
+<section id="anatomia-di-una-classe-base" class="slide level2 smaller">
+<h2>Anatomia di una Classe Base</h2>
+<p>Vediamo come scrivere la Classe Padre della nostra Rete Neurale.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a></span>
+<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-label="4"></a><span class="co">// LA CLASSE BASE (PADRE)</span></span>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-label="5"></a><span class="kw">class</span> Layer <span class="op">{</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-6" class="code-annotation-target"><a href="#annotated-cell-2-6" aria-label="6"></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-label="7"></a>    <span class="bu">std::</span>string <span class="va">name_</span><span class="op">;</span></span>
+<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-label="8"></a></span>
+<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-label="9"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10" aria-label="10"></a>    Layer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> name<span class="op">)</span> <span class="op">:</span> <span class="va">name_</span><span class="op">(</span>name<span class="op">)</span> <span class="op">{}</span></span>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-label="11"></a></span>
+<span id="annotated-cell-2-12"><a href="#annotated-cell-2-12" aria-label="12"></a>    <span class="dt">void</span> printName<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> </span>
+<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-label="13"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Layer: "</span> <span class="op">&lt;&lt;</span> <span class="va">name_</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> </span>
+<span id="annotated-cell-2-14"><a href="#annotated-cell-2-14" aria-label="14"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15" aria-label="15"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="6" data-code-annotation="1"><code>error: no match for 'operator*' in '5.0 * v1'</code></span>
+<span data-code-cell="annotated-cell-2" data-code-lines="6" data-code-annotation="1">Notate qualcosa di nuovo? La parola chiave <code>protected</code>! A cosa serve?</span>
 </dd>
 </dl>
-<p>Cosa è andato storto?</p>
 </section>
-<section id="perché-loverloading-interno-fallisce" class="slide level2 smaller">
-<h2>Perché l’Overloading interno fallisce?</h2>
-<p>Quando scriviamo <code>A * B</code>, il compilatore cerca il metodo <code>operator*</code> <strong>all’interno della classe del lato sinistro (A)</strong>.</p>
-<p>Nel caso <code>v1 * 5.0</code>, la classe del lato sinistro è <code>Vettore2D</code>. Trovato! Nel caso <code>5.0 * v1</code>, la classe del lato sinistro è… un semplice <code>double</code>!</p>
-<p>Per far funzionare il codice, dovremmo aggiungere un nostro metodo <code>operator*</code> alla libreria nativa <code>double</code> del linguaggio C++. Questo è letteralmente <strong>impossibile</strong>. Non possiamo toccare i tipi built-in.</p>
+<section id="la-visibilità-protected" class="slide level2 smaller">
+<h2>La visibilità <code>protected</code></h2>
+<p>Fino ad oggi conoscevamo due estremi: - <code>private</code>: Accessibile <strong>solo</strong> all’interno della classe stessa. Inviolabile. - <code>public</code>: Accessibile dal <code>main</code> o da qualsiasi altra parte del programma.</p>
+<p><strong><code>protected</code></strong> è la perfetta via di mezzo inventata per l’Ereditarietà. È come la “cassaforte di famiglia”: - Per il mondo esterno (il <code>main</code>) si comporta esattamente come <code>private</code> (è bloccata). - Ma le <strong>Classi Figlie</strong> avranno la chiave per aprirla e accedere ai dati del Padre!</p>
 </section>
-<section id="la-soluzione-funzioni-globali" class="slide level2 smaller">
-<h2>La Soluzione: Funzioni Globali</h2>
-<p>Il C++ ha una via di fuga. Gli operatori non devono necessariamente essere metodi <em>interni</em> a una classe. Possono essere <strong>Funzioni Globali</strong> esterne a tutto!</p>
-<p>Una funzione globale che fa da operatore prenderà <strong>DUE</strong> argomenti: 1. Il Lato Sinistro (<code>lhs</code> = Left Hand Side) 2. Il Lato Destro (<code>rhs</code> = Right Hand Side)</p>
-<p>In questo modo, possiamo far sì che il lato sinistro sia un <code>double</code>!</p>
-</section>
-<section id="overloading-con-funzioni-globali-firma" class="slide level2 smaller">
-<h2>Overloading con Funzioni Globali (Firma)</h2>
-<p>Ecco come si dichiara un operatore globale (Nota: lo scriviamo <strong>fuori</strong> dalla classe <code>Vettore2D</code>!):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-label="1"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
-<span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
-<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-label="4"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">{</span> <span class="va">x_</span><span class="op">=</span>x<span class="op">;</span> <span class="va">y_</span><span class="op">=</span>y<span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-label="5"></a><span class="op">};</span></span>
-<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-label="6"></a></span>
-<span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-label="7"></a><span class="co">// FUNZIONE GLOBALE (Fuori dalla classe!)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-8" class="code-annotation-target"><a href="#annotated-cell-3-8" aria-label="8"></a>Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> lhs<span class="op">,</span> <span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-label="9"></a>    <span class="co">// Come si implementa?</span></span>
-<span id="annotated-cell-3-10"><a href="#annotated-cell-3-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="anatomia-della-classe-derivata" class="slide level2 smaller">
+<h2>Anatomia della Classe Derivata</h2>
+<p>Creiamo un Figlio. Notate la sintassi <code>: public Layer</code> vicino al nome della classe. Significa: <em>“Eredita pubblicamente tutto ciò che c’è in Layer”</em>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-label="1"></a><span class="co">// LA CLASSE DERIVATA (FIGLIA)</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-2" class="code-annotation-target"><a href="#annotated-cell-3-2" aria-label="2"></a><span class="kw">class</span> DenseLayer <span class="op">:</span> <span class="kw">public</span> Layer <span class="op">{</span></span>
+<span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-label="3"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-label="4"></a>    <span class="dt">int</span> <span class="va">num_neurons_</span><span class="op">;</span></span>
+<span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-label="5"></a></span>
+<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-label="7"></a>    <span class="co">// Come gestiamo il costruttore? Lo vediamo tra poco!</span></span>
+<span id="annotated-cell-3-8"><a href="#annotated-cell-3-8" aria-label="8"></a>    DenseLayer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> name<span class="op">,</span> <span class="dt">int</span> neurons<span class="op">);</span></span>
+<span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-label="9"></a></span>
+<span id="annotated-cell-3-10"><a href="#annotated-cell-3-10" aria-label="10"></a>    <span class="dt">void</span> showDetails<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="annotated-cell-3-11"><a href="#annotated-cell-3-11" aria-label="11"></a>        <span class="co">// POSSO LEGGERE name_ PERCHE' E' PROTECTED NEL PADRE!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-12" class="code-annotation-target"><a href="#annotated-cell-3-12" aria-label="12"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Il layer "</span> <span class="op">&lt;&lt;</span> <span class="va">name_</span> <span class="op">&lt;&lt;</span> <span class="st">" ha "</span> <span class="op">&lt;&lt;</span> <span class="va">num_neurons_</span> <span class="op">&lt;&lt;</span> <span class="st">" neuroni.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-3-13"><a href="#annotated-cell-3-13" aria-label="13"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-3-14"><a href="#annotated-cell-3-14" aria-label="14"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="8" data-code-annotation="1">Questa funzione catturerà automaticamente qualsiasi calcolo nella forma <code>5.0 * v1</code> ! Il lato sinistro è <code>lhs</code>, il destro è <code>rhs</code>.</span>
+<span data-code-cell="annotated-cell-3" data-code-lines="2" data-code-annotation="1">L’ereditarietà <code>public</code> significa che le funzioni pubbliche del padre resteranno pubbliche nel figlio.</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="12" data-code-annotation="2">Se <code>name_</code> nel Padre fosse stato <code>private</code>, questa riga darebbe errore di compilazione!</span>
 </dd>
 </dl>
 </section>
-<section id="il-problema-dellincapsulamento" class="slide level2 smaller">
-<h2>Il Problema dell’Incapsulamento</h2>
-<p>Cerchiamo di implementare questa funzione globale. Sorgerà subito un problema drammatico di accessi!</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-4"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-label="1"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
-<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span> <span class="co">// INCAPSULAMENTO RIGOROSO</span></span>
-<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span> </span>
-<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-label="5"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">{</span> <span class="va">x_</span><span class="op">=</span>x<span class="op">;</span> <span class="va">y_</span><span class="op">=</span>y<span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-label="6"></a><span class="op">};</span></span>
-<span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-label="7"></a></span>
-<span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-label="8"></a>Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> lhs<span class="op">,</span> <span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-9" class="code-annotation-target"><a href="#annotated-cell-4-9" aria-label="9"></a>    <span class="co">// ERRORE DI COMPILAZIONE! x_ e y_ sono privati!</span></span>
-<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-label="10"></a>    <span class="dt">double</span> nuovo_x <span class="op">=</span> lhs <span class="op">*</span> rhs<span class="op">.</span><span class="va">x_</span><span class="op">;</span> </span>
-<span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-label="11"></a>    <span class="dt">double</span> nuovo_y <span class="op">=</span> lhs <span class="op">*</span> rhs<span class="op">.</span><span class="va">y_</span><span class="op">;</span></span>
-<span id="annotated-cell-4-12"><a href="#annotated-cell-4-12" aria-label="12"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span>nuovo_x<span class="op">,</span> nuovo_y<span class="op">);</span></span>
-<span id="annotated-cell-4-13"><a href="#annotated-cell-4-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="sinergia-tra-classi-codice" class="slide level2 smaller">
+<h2>Sinergia tra Classi (Codice)</h2>
+<p>Ecco cosa accade nel <code>main</code> quando usiamo la Classe Figlia:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-4"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-label="2"></a>    DenseLayer den<span class="op">(</span><span class="st">"Hidden1"</span><span class="op">,</span> <span class="dv">128</span><span class="op">);</span></span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-label="3"></a></span>
+<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-label="4"></a>    <span class="co">// 1. Chiamo un metodo scritto dentro DenseLayer</span></span>
+<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-label="5"></a>    den<span class="op">.</span>showDetails<span class="op">();</span> </span>
+<span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-label="6"></a>    </span>
+<span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-label="7"></a>    <span class="co">// 2. Chiamo un metodo scritto dentro Layer!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-8" class="code-annotation-target"><a href="#annotated-cell-4-8" aria-label="8"></a>    den<span class="op">.</span>printName<span class="op">();</span></span>
+<span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-label="9"></a>    </span>
+<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-label="10"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="9" data-code-annotation="1">Essendo una funzione esterna, la classe Vettore la vede come un’estranea. Non ha il permesso di accedere alle variabili in cassaforte!</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="8" data-code-annotation="1">La classe <code>DenseLayer</code> non contiene nessuna funzione chiamata <code>printName()</code>. Eppure compila e funziona, perché l’ha “ereditata gratis” dal Padre!</span>
 </dd>
 </dl>
 </section>
-<section id="getter-o-niente" class="slide level2 smaller">
-<h2>Getter o Niente?</h2>
-<p>L’istinto suggerirebbe di aggiungere metodi pubblici <code>getX()</code> e <code>getY()</code> alla classe e chiamare quelli dalla funzione globale.</p>
-<p>Sarebbe corretto, ma: 1. In calcoli matematici ad altissima intensità, chiamare metodi aggiunge un <em>overhead</em> (micro-ritardo) rispetto all’accesso diretto alla memoria. 2. Magari in alcuni casi non <em>vogliamo</em> che ci siano dei getter pubblici per un dato attributo!</p>
-<p>Vogliamo mantenere il dato privato al 100%, ma fare un’eccezione <strong>solo per questa specifica funzione globale</strong>.</p>
-</section>
-<section id="la-direttiva-friend" class="slide level2 smaller">
-<h2>La Direttiva <code>friend</code></h2>
-<p>Il C++ introduce il concetto di <strong>Amicizia</strong>. Una classe può dichiarare che un’entità esterna (una funzione globale o un’intera altra classe) è sua <code>friend</code> (amica).</p>
-<p>I <code>friend</code> bypassano del tutto l’incapsulamento! Hanno libero accesso a tutti i membri <code>private</code> e <code>protected</code> della classe che gli ha concesso l’amicizia!</p>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p>L’amicizia si <em>concede</em>, non si <em>prende</em>. È la classe <code>Vettore2D</code> che deve autorizzare esplicitamente la funzione globale a leggere i suoi dati, non viceversa!</p>
-</div>
-</div>
-</div>
-</section>
-<section id="come-dichiarare-unamicizia" class="slide level2 smaller">
-<h2>Come dichiarare un’Amicizia</h2>
-<p>Dentro al file Header (<code>Vettore2D.hpp</code>), posizioniamo la “tessera VIP” della funzione globale in qualsiasi punto della classe, facendola precedere dalla keyword <code>friend</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-label="1"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
-<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
-<span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-label="4"></a>    </span>
-<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-label="6"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">{</span> <span class="va">x_</span><span class="op">=</span>x<span class="op">;</span> <span class="va">y_</span><span class="op">=</span>y<span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-label="7"></a>    </span>
-<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-label="8"></a>    <span class="co">// Concedo a QUESTA SPECIFICA funzione globale l'accesso ai miei dati</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-9" class="code-annotation-target"><a href="#annotated-cell-5-9" aria-label="9"></a>    <span class="kw">friend</span> Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> lhs<span class="op">,</span> <span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">);</span></span>
-<span id="annotated-cell-5-10"><a href="#annotated-cell-5-10" aria-label="10"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="costruire-a-catena-constructors" class="slide level2 smaller">
+<h2>Costruire a Catena (Constructors)</h2>
+<p>Quando nasce un oggetto Figlio, <strong>deve prima nascere il Padre al suo interno</strong>. Quindi il Costruttore di <code>DenseLayer</code> non può inizializzare direttamente le variabili del Padre; deve <strong>chiamare</strong> il costruttore del Padre e passargli i dati!</p>
+<p>Come fa? Usando la magica <em>Initialization List</em> (<code>:</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-label="1"></a><span class="co">// Implementazione del costruttore di DenseLayer</span></span>
+<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-label="2"></a>DenseLayer<span class="op">::</span>DenseLayer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> name<span class="op">,</span> <span class="dt">int</span> neurons<span class="op">)</span> </span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-label="3"></a>    <span class="op">:</span> Layer<span class="op">(</span>name<span class="op">),</span> <span class="va">num_neurons_</span><span class="op">(</span>neurons<span class="op">)</span></span>
+<span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-label="4"></a><span class="op">{</span></span>
+<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-label="5"></a>    <span class="co">// Il corpo del costruttore figlio (spesso vuoto)</span></span>
+<span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-label="6"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="9" data-code-annotation="1">Avendo concesso l’amicizia qui dentro, ora l’implementazione della funzione globale compilerà perfettamente.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="1">Prima di far qualsiasi cosa, invoco il costruttore del Padre <code>Layer(name)</code>, delegando a lui il lavoro di settare il nome!</span>
 </dd>
 </dl>
 </section>
-<section id="loverloading-perfetto" class="slide level2 smaller">
-<h2>L’Overloading Perfetto</h2>
-<p>Mettiamo tutto assieme. Abbiamo creato l’overloading simmetrico perfetto.</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Dentro la classe (Metodo)</strong> Per <code>v1 * 5.0</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="co">// Vettore2D.cpp</span></span>
-<span id="cb2-2"><a aria-label="2"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> rhs<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb2-3"><a aria-label="3"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span></span>
-<span id="cb2-4"><a aria-label="4"></a>        <span class="kw">this</span><span class="op">-&gt;</span><span class="va">x_</span> <span class="op">*</span> rhs<span class="op">,</span> </span>
-<span id="cb2-5"><a aria-label="5"></a>        <span class="kw">this</span><span class="op">-&gt;</span><span class="va">y_</span> <span class="op">*</span> rhs</span>
-<span id="cb2-6"><a aria-label="6"></a>    <span class="op">);</span></span>
-<span id="cb2-7"><a aria-label="7"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<p><strong>Fuori dalla classe (Globale Friend)</strong> Per <code>5.0 * v1</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-16"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-label="1"></a><span class="co">// Vettore2D.cpp</span></span>
-<span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-label="2"></a>Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> lhs<span class="op">,</span> <span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-label="3"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1">1</button><span id="annotated-cell-16-4" class="code-annotation-target"><a href="#annotated-cell-16-4" aria-label="4"></a>        lhs <span class="op">*</span> rhs<span class="op">.</span><span class="va">x_</span><span class="op">,</span></span>
-<span id="annotated-cell-16-5"><a href="#annotated-cell-16-5" aria-label="5"></a>        lhs <span class="op">*</span> rhs<span class="op">.</span><span class="va">y_</span></span>
-<span id="annotated-cell-16-6"><a href="#annotated-cell-16-6" aria-label="6"></a>    <span class="op">);</span></span>
-<span id="annotated-cell-16-7"><a href="#annotated-cell-16-7" aria-label="7"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-16" data-code-lines="4" data-code-annotation="1"><code>rhs.x_</code> funziona tranquillamente pur essendo privato, grazie all’amicizia.</span>
-</dd>
-</dl>
-</div></div>
-</section>
-<section id="esercizio-in-classe-20-min" class="slide level2 smaller">
-<h2>Esercizio in Classe (20 min)</h2>
-<p>Applichiamo subito la direttiva <code>friend</code>!</p>
-<ol type="1">
-<li>Crea due file <code>Complex.hpp</code> e <code>Complex.cpp</code> per rappresentare un numero complesso (con due attributi privati <code>double real_</code> e <code>double imag_</code>).</li>
-<li>Crea un costruttore che inizializzi i due attributi.</li>
-<li>Vogliamo poter stampare a schermo l’oggetto direttamente con <code>std::cout &lt;&lt; numero_complesso;</code>.</li>
-<li>Nel <code>.hpp</code> dichiara questa funzione <code>friend</code> globale: <code>friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const Complex&amp; rhs);</code></li>
-<li>Nel <code>.cpp</code> implementa la funzione globale affinché stampi il numero nel formato <code>(real + i*imag)</code>.</li>
-<li>Testa nel main!</li>
-</ol>
-</section>
-<section id="esercizio-soluzione-.hpp" class="slide level2 smaller">
-<h2>Esercizio: Soluzione .hpp</h2>
-<p><strong><code>Complex.hpp</code></strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="pp">#pragma once</span></span>
-<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-label="3"></a></span>
-<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-label="4"></a><span class="kw">class</span> Complex <span class="op">{</span></span>
-<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-label="5"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">real_</span><span class="op">;</span></span>
-<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-label="7"></a>    <span class="dt">double</span> <span class="va">imag_</span><span class="op">;</span></span>
-<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-label="8"></a>    </span>
-<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-label="9"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-label="10"></a>    Complex<span class="op">(</span><span class="dt">double</span> r<span class="op">,</span> <span class="dt">double</span> i<span class="op">)</span> <span class="op">{</span> <span class="va">real_</span> <span class="op">=</span> r<span class="op">;</span> <span class="va">imag_</span> <span class="op">=</span> i<span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-label="11"></a>    </span>
-<span id="annotated-cell-6-12"><a href="#annotated-cell-6-12" aria-label="12"></a>    <span class="co">// Concedo l'accesso alla funzione di output (std::cout)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-13" class="code-annotation-target"><a href="#annotated-cell-6-13" aria-label="13"></a>    <span class="kw">friend</span> <span class="bu">std::</span>ostream<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&lt;&lt;(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">,</span> <span class="at">const</span> Complex<span class="op">&amp;</span> rhs<span class="op">);</span></span>
-<span id="annotated-cell-6-14"><a href="#annotated-cell-6-14" aria-label="14"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="13" data-code-annotation="1">È lo standard C++ per sovraccaricare <code>cout</code> per i propri oggetti!</span>
-</dd>
-</dl>
-</section>
-<section id="esercizio-soluzione-.cpp" class="slide level2 smaller">
-<h2>Esercizio: Soluzione .cpp</h2>
-<p><strong><code>Complex.cpp</code></strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="pp">#include </span><span class="im">"Complex.hpp"</span></span>
-<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a></span>
-<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a><span class="co">// Implementazione Globale (nessun "Complex::" davanti!)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-4" class="code-annotation-target"><a href="#annotated-cell-7-4" aria-label="4"></a><span class="bu">std::</span>ostream<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&lt;&lt;(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">,</span> <span class="at">const</span> Complex<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-label="5"></a>    </span>
-<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-label="6"></a>    <span class="co">// Stampo usando i dati PRIVATI dell'oggetto rhs</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2">2</button><span id="annotated-cell-7-7" class="code-annotation-target"><a href="#annotated-cell-7-7" aria-label="7"></a>    os <span class="op">&lt;&lt;</span> <span class="st">"("</span> <span class="op">&lt;&lt;</span> rhs<span class="op">.</span><span class="va">real_</span> <span class="op">&lt;&lt;</span> <span class="st">" + i*"</span> <span class="op">&lt;&lt;</span> rhs<span class="op">.</span><span class="va">imag_</span> <span class="op">&lt;&lt;</span> <span class="st">")"</span><span class="op">;</span></span>
-<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a>    </span>
-<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-label="9"></a>    <span class="co">// Restituisco lo stream per poter concatenare (cout &lt;&lt; a &lt;&lt; b;)</span></span>
-<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-label="10"></a>    <span class="cf">return</span> os<span class="op">;</span> </span>
-<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="4" data-code-annotation="1">Non dimenticate di includere gli Header corretti.</span>
-</dd>
-<dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="7" data-code-annotation="2">Senza <code>friend</code>, <code>rhs.real_</code> avrebbe causato un errore fatale del compilatore.</span>
-</dd>
-</dl>
-</section>
-<section id="prepararsi-al-machine-learning" class="slide level2 smaller">
-<h2>Prepararsi al Machine Learning</h2>
-<p>Nelle prossime lezioni praticheremo scrivendo un vero e proprio <strong>Framework per Reti Neurali</strong>. Non scriveremo piccoli script da 10 righe, ma un’infrastruttura completa che dovrà:</p>
-<ol type="1">
-<li>Fare calcoli matematici ad <strong>altissima velocità</strong>.</li>
-<li>Usare una libreria di algebra lineare esterna (<strong>Eigen</strong>).</li>
-<li>Ricevere gli iperparametri (Epoche, Learning Rate) dal <strong>Terminale</strong>.</li>
-<li>Leggere milioni di numeri da un file CSV (Il <strong>Dataset MNIST</strong>).</li>
-<li>(In futuro) Produrre grafici analitici dell’addestramento.</li>
-</ol>
-<p>Oggi impareremo esattamente <em>questi</em> strumenti.</p>
-</section>
-<section id="ottimizzazione-il-flag--o" class="slide level2 smaller">
-<h2>Ottimizzazione: Il flag <code>-O</code></h2>
-<p>Di default, quando usate <code>g++ main.cpp</code>, il compilatore traduce il vostro C++ in linguaggio macchina privilegiando una cosa sola: <strong>il tempo di compilazione</strong>.</p>
-<p>Non si preoccupa di far girare il programma velocemente, ma si preoccupa di <em>compilarlo</em> in una frazione di secondo e lasciare tutte le variabili intatte in memoria per facilitare il Debugging.</p>
-<p>Ma nell’addestramento di una Rete Neurale, le moltiplicazioni matriciali pesano. Il flag <strong><code>-O</code></strong> (Optimization) dice al compilatore: <em>“Prenditi tutto il tempo che ti serve per analizzare la matematica del mio codice e applica dei trucchi per sveltirlo”</em>.</p>
-</section>
-<section id="quale-livello-di-ottimizzazione-scegliere" class="slide level2 smaller">
-<h2>Quale livello di ottimizzazione scegliere?</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong><code>-O0</code> (Zero)</strong> È il default. Nessuna ottimizzazione. Variabili non eliminate, loop eseguiti esattamente come scritti. <em>(Da usare mentre state programmando e debuggando).</em></p>
-<p><strong><code>-O2</code> (Due)</strong> Ottimizzazione standard. Il compilatore inizia a srotolare i piccoli loop e a eliminare variabili inutili. <em>(Da usare se il programma è stabile ma non critico).</em></p>
-</div><div class="column" style="width:50%;">
-<p><strong><code>-O3</code> (Tre)</strong> L’estremo. Il compilatore applica la “Vettorizzazione”, cerca pattern hardware predittivi, e violenta la struttura del codice per estrarre la massima potenza dalla CPU. <em>(Da usare per il RUN FINALE della Rete Neurale).</em></p>
-</div></div>
-</section>
-<section id="sbloccare-le-performance-estreme" class="slide level2 smaller">
-<h2>Sbloccare le performance estreme</h2>
-<p>La differenza di velocità per codice intensivo (es. cicli <code>for</code> annidati) tra <code>-O0</code> e <code>-O3</code> può essere di un <strong>fattore 10 o superiore</strong>. Un training che dura 3 ore potrebbe concludersi in 20 minuti.</p>
-<p>Da oggi in poi, quando sarete certi che il vostro codice è privo di bug logici e volete lanciarlo, usate sempre:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-label="1"></a><span class="ex">$</span> g++ <span class="at">-Wall</span> <span class="at">-O3</span> <span class="at">-o</span> train_network main.cpp Network.cpp Layer.cpp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="callout callout-tip callout-titled callout-style-default">
+<section id="la-regola-dellinitialization-list" class="slide level2 smaller">
+<h2>La regola dell’Initialization List</h2>
+<div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
+<p><strong>Important</strong></p>
 </div>
 <div class="callout-content">
-<p>Ricordate: <code>-O3</code> aumenta notevolmente il <em>tempo di compilazione</em>. Usatelo solo quando avete finito di fare le modifiche al codice sorgente!</p>
+<p>È <strong>OBBLIGATORIO</strong> chiamare il costruttore della Classe Base nell’Initialization List del costruttore Figlio, <strong>a meno che</strong> la Classe Base non abbia un <em>Costruttore di Default</em> (quello vuoto).</p>
 </div>
 </div>
 </div>
+<p>Se omettete <code>Layer(name)</code> dalla lista, il compilatore cercherà disperatamente di chiamare il costruttore vuoto <code>Layer()</code>. Poiché non l’abbiamo scritto, il programma darà un Errore Fatale di compilazione.</p>
+<p>Si costruisce sempre dalle fondamenta (Padre) verso il tetto (Figlio).</p>
 </section>
-<section id="librerie-esterne-per-la-rete-neurale" class="slide level2 smaller">
-<h2>Librerie Esterne per la Rete Neurale</h2>
-<p>Il C++ nudo e crudo non conosce il concetto di <em>Matrice</em> o di <em>Vettore Matematico</em>.</p>
-<p>Per fare backpropagation e feedforward, la nostra Rete Neurale si affiderà a una delle librerie open-source più famose e veloci al mondo: <strong>Eigen</strong>.</p>
-<p>Ma se scriviamo <code>#include &lt;Eigen/Dense&gt;</code> nel nostro codice, il compilatore andrà in errore! Non sa dove si trovino i file scaricati di Eigen nel vostro computer.</p>
+<section id="un-layer-è-un-layer" class="slide level2 smaller">
+<h2>Un Layer è un Layer</h2>
+<p>Torniamo alla logica pura. Se “Un DenseLayer <strong>È UN</strong> Layer”, allora posso prendere un puntatore a un Layer generico (<code>Layer*</code>), e dirgli di puntare al mio DenseLayer fisico in RAM!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-label="2"></a>    <span class="co">// 1. Creo l'oggetto specifico in memoria RAM</span></span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-label="3"></a>    DenseLayer<span class="op">*</span> dense_ptr <span class="op">=</span> <span class="kw">new</span> DenseLayer<span class="op">(</span><span class="st">"Hidden1"</span><span class="op">,</span> <span class="dv">128</span><span class="op">);</span></span>
+<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-label="4"></a>    </span>
+<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-label="5"></a>    <span class="co">// 2. "UPCASTING": Uso un puntatore della classe base!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-6" class="code-annotation-target"><a href="#annotated-cell-6-6" aria-label="6"></a>    Layer<span class="op">*</span> generic_ptr <span class="op">=</span> dense_ptr<span class="op">;</span></span>
+<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-label="7"></a>    </span>
+<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-label="8"></a>    generic_ptr<span class="op">-&gt;</span>printName<span class="op">();</span> <span class="co">// Funziona! Stampa "Hidden1"</span></span>
+<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-label="9"></a>    </span>
+<span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-label="10"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="6" data-code-annotation="1">Questa operazione (<code>Layer* = DenseLayer*</code>) è lecita, silenziosa e automatica. Non richiede alcun Cast, perché un Figlio è sempre compatibile col ruolo del Padre.</span>
+</dd>
+</dl>
 </section>
-<section id="dove-sono-i-file-header-il-flag--i" class="slide level2 smaller">
-<h2>Dove sono i file Header? Il flag <code>-I</code></h2>
-<p>Dobbiamo “indicare la via” al compilatore tramite il flag <strong><code>-I</code></strong> (<em>Include path</em>).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a aria-label="1"></a><span class="co"># Esempio: Su un mac/linux standard Eigen si installa in /usr/include/eigen3</span></span>
-<span id="cb4-2"><a aria-label="2"></a><span class="ex">$</span> g++ <span class="at">-Wall</span> <span class="at">-O3</span> <span class="at">-I</span>/usr/include/eigen3 <span class="at">-o</span> train_network main.cpp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Con questo flag, quando il compilatore incontrerà l’istruzione <code>#include &lt;Eigen/Dense&gt;</code>, andrà prima a cercare nella cartella di default del sistema, e poi nella cartella <code>/usr/include/eigen3/Eigen/Dense</code>.</p>
+<section id="upcasting-il-superpotere-dei-puntatori" class="slide level2 smaller">
+<h2>Upcasting: Il superpotere dei Puntatori</h2>
+<p>Perché dovremmo mai voler “nascondere” l’identità del nostro <code>DenseLayer</code> dentro un banale <code>Layer*</code> generico?</p>
+<p>Pensateci: se ogni strato della rete neurale ha un tipo diverso (Dense, Conv, Sigmoid), come facciamo a metterli tutti <strong>in un unico Array</strong> (un <code>std::vector</code>) per far girare l’intera Rete con un semplice ciclo <code>for</code>?</p>
+<p>Un vettore C++ esige elementi tutti dello stesso tipo. La soluzione è creare un array di puntatori al Padre!</p>
 </section>
-<section id="come-funziona-eigen-header-only" class="slide level2 smaller">
-<h2>Come funziona Eigen? (Header-only)</h2>
-<p>Generalmente, quando usate una libreria esterna gigante, avete bisogno di <em>due</em> cose: 1. I file <code>.hpp</code> (che includete con <code>#include</code> e dite dove sono con <code>-I</code>). 2. I file binari <code>.so</code> o <code>.a</code> pre-compilati dagli autori (da lincare con <code>-L</code> e <code>-l</code>).</p>
-<p><strong>Ma Eigen è speciale.</strong> È una libreria <em>Header-Only</em>. Non c’è codice precompilato. Tutti i calcoli matriciali ultra-ottimizzati di Eigen sono interamente scritti nei file Header (sfruttando potentissimi <em>Template</em> che studieremo più avanti).</p>
-<p>Questo vi salva da ore di mal di testa durante la compilazione! Vi basterà solo il flag <code>-I</code> per usarla.</p>
+<section id="costruire-larray-neurale-stdvector" class="slide level2 smaller">
+<h2>Costruire l’Array Neurale (<code>std::vector</code>)</h2>
+<p>Questa è l’architettura verso cui convergerà il vostro framework. In laboratorio partirete però da un <strong>array C-style</strong> (<code>ILayer**</code>) gestito a mano con la Regola del Tre: serve a farvi toccare i problemi che <code>std::vector</code> e gli smart pointer risolvono da soli. Li vedremo nelle Lezioni 17 e 18, e li adotterete nel Laboratorio 10.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a></span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-label="4"></a>    <span class="co">// Un Array Eterogeneo! (Puntatori alla Classe Base)</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-5" class="code-annotation-target"><a href="#annotated-cell-7-5" aria-label="5"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span>Layer<span class="op">*&gt;</span> network<span class="op">;</span></span>
+<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-label="6"></a>    </span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a>    <span class="co">// Inseriamo oggetti diversissimi tra loro</span></span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a>    network<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> DenseLayer<span class="op">(</span><span class="st">"Dense_In"</span><span class="op">,</span> <span class="dv">128</span><span class="op">));</span></span>
+<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-label="9"></a>    network<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> ActivationLayer<span class="op">(</span><span class="st">"Sigmoid_1"</span><span class="op">));</span></span>
+<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-label="10"></a>    network<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> DenseLayer<span class="op">(</span><span class="st">"Dense_Out"</span><span class="op">,</span> <span class="dv">10</span><span class="op">));</span></span>
+<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-label="11"></a>    </span>
+<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-label="12"></a>    <span class="co">// ...</span></span>
+<span id="annotated-cell-7-13"><a href="#annotated-cell-7-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="5" data-code-annotation="1">Il vettore non sa cosa ci sia veramente dentro quegli indirizzi di RAM. Vede solo puntatori generici a <code>Layer</code>. È bellissimo.</span>
+</dd>
+</dl>
 </section>
-<section id="passare-argomenti-da-terminale" class="slide level2 smaller">
-<h2>Passare argomenti da terminale</h2>
-<p>Problema pratico: Volete addestrare la rete neurale 10 volte, testando <em>Learning Rate</em> diversi (0.01, 0.05, 0.1).</p>
-<p>Se il Learning Rate è una variabile dentro al vostro <code>main.cpp</code>, dovrete modificare il codice, salvare, e <em>ricompilare tutto</em> ogni singola volta!</p>
-<p><strong>Soluzione:</strong> Passare gli “Iperparametri” dinamicamente dal terminale.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a aria-label="1"></a><span class="co"># Formato: ./programma &lt;epoche&gt; &lt;learning_rate&gt;</span></span>
-<span id="cb5-2"><a aria-label="2"></a><span class="ex">$</span> ./train_network 100 0.01</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="il-ciclo-vitale-della-rete-neurale" class="slide level2 smaller">
+<h2>Il ciclo vitale della Rete Neurale</h2>
+<p>Ora possiamo propagare il segnale lungo l’intera Rete Neurale con tre righe di codice elegantissime!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="co">// Pseudo-codice del Forward Pass</span></span>
+<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> network<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1">1</button><span id="annotated-cell-8-3" class="code-annotation-target"><a href="#annotated-cell-8-3" aria-label="3"></a>    network<span class="op">[</span>i<span class="op">]-&gt;</span>forward<span class="op">();</span></span>
+<span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-label="4"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="3" data-code-annotation="1">Semplice, pulito. Che sia un DenseLayer o un ActivationLayer, ognuno calcolerà la propria matematica in totale autonomia. Giusto?</span>
+</dd>
+</dl>
 </section>
-<section id="la-firma-estesa-del-main" class="slide level2 smaller">
-<h2>La firma estesa del <code>main()</code></h2>
-<p>Per ricevere i dati dal Terminale, dobbiamo sostituire il banale <code>int main()</code> con la sua firma completa:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><button class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1">1</button><span id="annotated-cell-11-1" class="code-annotation-target"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
-<span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a>    </span>
-<span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-label="3"></a>    <span class="co">// Il nostro codice...</span></span>
-<span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-label="4"></a>    </span>
-<span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-11-6"><a href="#annotated-cell-11-6" aria-label="6"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="un-problema-invisibile-e-fatale" class="slide level2 smaller">
+<h2>Un problema invisibile e fatale</h2>
+<p>C’è un dettaglio terrificante. Il compilatore C++ in questa riga: <code>network[i]-&gt;forward();</code></p>
+<p>Guarda il tipo del puntatore <code>network[i]</code>. Di che tipo è? È di tipo <code>Layer*</code>. Quindi il compilatore, di default, decide ciecamente di <strong>eseguire il codice della funzione <code>Layer::forward()</code></strong> scritta nella Classe Padre!</p>
+<p>Ignorerà totalmente il complicato calcolo matriciale che avevamo faticosamente scritto in <code>DenseLayer::forward()</code> o in <code>ActivationLayer::forward()</code>.</p>
+</section>
+<section id="il-limite-del-binding-statico" class="slide level2 smaller">
+<h2>Il Limite del Binding Statico</h2>
+<p>Questo comportamento si chiama <strong>Binding Statico</strong> (Early Binding). Il C++ cerca di essere il più veloce possibile. Già in fase di compilazione, aggancia (“binda”) in modo indelebile la chiamata <code>ptr-&gt;forward()</code> al codice della classe dichiarata dal puntatore.</p>
+<p>Ma per l’OOP questo è un disastro. Noi non vogliamo chiamare la funzione del <em>Puntatore</em> (il Padre). Noi vogliamo chiamare la funzione del <strong>vero oggetto fisico in RAM</strong> (il Figlio)!</p>
+<p>Dobbiamo dire al compilatore: <em>“Fermati. Non decidere adesso in base al puntatore. Aspetta che il programma sia in esecuzione, segui l’indirizzo in RAM, guarda cos’è veramente quell’oggetto, e chiama la sua specifica funzione”</em>.</p>
+</section>
+<section id="polimorfismo-la-magia-di-virtual" class="slide level2 smaller">
+<h2>Polimorfismo: La Magia di <code>virtual</code></h2>
+<p>Per abilitare questo comportamento (il <strong>Late Binding</strong>), basta aggiungere una singola, potentissima parola chiave davanti alla funzione della Classe Base: <strong><code>virtual</code></strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-9"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-label="1"></a><span class="kw">class</span> Layer <span class="op">{</span></span>
+<span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-label="2"></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-label="3"></a>    <span class="bu">std::</span>string <span class="va">name_</span><span class="op">;</span></span>
+<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-label="5"></a>    Layer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> n<span class="op">)</span> <span class="op">:</span> <span class="va">name_</span><span class="op">(</span>n<span class="op">)</span> <span class="op">{}</span></span>
+<span id="annotated-cell-9-6"><a href="#annotated-cell-9-6" aria-label="6"></a></span>
+<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-label="7"></a>    <span class="co">// MAGIA: Questa funzione sarà risolta a Run-Time!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1">1</button><span id="annotated-cell-9-8" class="code-annotation-target"><a href="#annotated-cell-9-8" aria-label="8"></a>    <span class="kw">virtual</span> <span class="dt">void</span> forward<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-label="9"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Forward Base (non fa nulla)</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-label="10"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-9-11"><a href="#annotated-cell-9-11" aria-label="11"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="8" data-code-annotation="1">La parola <code>virtual</code> informa il C++ che i Figli potrebbero voler <em>sovrascrivere</em> questo comportamento.</span>
+</dd>
+</dl>
+</section>
+<section id="sovrascrivere-con-sicurezza-override" class="slide level2 smaller">
+<h2>Sovrascrivere con sicurezza (<code>override</code>)</h2>
+<p>Nelle Classi Figlie, riscriviamo la stessa esatta funzione, inserendo il nostro calcolo matematico specifico. È buona pratica (C++11 in poi) aggiungere alla fine la parola <code>override</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-10"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-label="1"></a><span class="kw">class</span> DenseLayer <span class="op">:</span> <span class="kw">public</span> Layer <span class="op">{</span></span>
+<span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-label="3"></a>    DenseLayer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> n<span class="op">)</span> <span class="op">:</span> Layer<span class="op">(</span>n<span class="op">)</span> <span class="op">{}</span></span>
+<span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-label="4"></a></span>
+<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-label="5"></a>    <span class="co">// SOVRASCRITTURA!</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1">1</button><span id="annotated-cell-10-6" class="code-annotation-target"><a href="#annotated-cell-10-6" aria-label="6"></a>    <span class="kw">virtual</span> <span class="dt">void</span> forward<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-label="7"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"DenseLayer: Moltiplico Matrice Pesi * Input</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-label="8"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-label="9"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="6" data-code-annotation="1"><code>override</code> non è obbligatorio, ma se fate un errore di battitura (es. scrivete <code>fowrard()</code>), il compilatore vi bloccherà dicendovi: <em>“Ehi, volevi fare un override ma nel padre non esiste nessuna funzione fowrard!”</em>.</span>
+</dd>
+</dl>
+</section>
+<section id="lesecuzione-perfetta" class="slide level2 smaller">
+<h2>L’Esecuzione Perfetta</h2>
+<p>Ora il Polimorfismo (che in greco significa <em>Molte Forme</em>) entra in azione!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span>Layer<span class="op">*&gt;</span> network<span class="op">;</span></span>
+<span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a>network<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> DenseLayer<span class="op">(</span><span class="st">"L1"</span><span class="op">));</span></span>
+<span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-label="3"></a>network<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> ActivationLayer<span class="op">(</span><span class="st">"L2"</span><span class="op">));</span></span>
+<span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-label="4"></a></span>
+<span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> network<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1">1</button><span id="annotated-cell-11-6" class="code-annotation-target"><a href="#annotated-cell-11-6" aria-label="6"></a>    network<span class="op">[</span>i<span class="op">]-&gt;</span>forward<span class="op">();</span></span>
+<span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-label="7"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="1" data-code-annotation="1">Spieghiamo i parametri:</span>
+<span data-code-cell="annotated-cell-11" data-code-lines="6" data-code-annotation="1">Quando l’indice è 0, il C++ “scende” in RAM, scopre che c’è un <code>DenseLayer</code> e stampa <em>“Moltiplico Matrice”</em>. Quando l’indice è 1, scopre un <code>ActivationLayer</code> e chiama la sua logica. Abbiamo una singola istruzione che assume <strong>molte forme</strong>!</span>
 </dd>
 </dl>
 </section>
-<section id="parsing-la-sicurezza-prima-di-tutto" class="slide level2 smaller">
-<h2>Parsing: La sicurezza prima di tutto</h2>
-<p>La regola fondamentale del terminale: <strong>Non fidarti mai dell’utente.</strong></p>
-<p>Se vi aspettate che l’utente inserisca <code>epoche</code> e <code>learning rate</code>, dovete verificare che l’abbia fatto, altrimenti il programma andrà in <em>Segmentation Fault</em> quando cercherete di leggere array inesistenti.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
-<span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-label="2"></a>    <span class="co">// Attenzione: Il NOME DEL PROGRAMMA stesso è il primo argomento (argv[0])!</span></span>
-<span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-label="3"></a>    <span class="co">// Quindi se vogliamo 2 iperparametri, ci aspettiamo che argc sia ALMENO 3.</span></span>
-<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-label="4"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1">1</button><span id="annotated-cell-12-5" class="code-annotation-target"><a href="#annotated-cell-12-5" aria-label="5"></a>    <span class="cf">if</span> <span class="op">(</span>argc <span class="op">&lt;</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-12-6"><a href="#annotated-cell-12-6" aria-label="6"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore: Uso scorretto del comando.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-12-7"><a href="#annotated-cell-12-7" aria-label="7"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Sintassi: "</span> <span class="op">&lt;&lt;</span> argv<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">" &lt;epoche&gt; &lt;learning_rate&gt;</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-12-8"><a href="#annotated-cell-12-8" aria-label="8"></a>        <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span> <span class="co">// Esco con un codice di errore</span></span>
-<span id="annotated-cell-12-9"><a href="#annotated-cell-12-9" aria-label="9"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-12-10"><a href="#annotated-cell-12-10" aria-label="10"></a>    </span>
-<span id="annotated-cell-12-11"><a href="#annotated-cell-12-11" aria-label="11"></a>    <span class="co">// ...</span></span>
-<span id="annotated-cell-12-12"><a href="#annotated-cell-12-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="la-trappola-mortale-della-memoria" class="slide level2 smaller">
+<h2>La Trappola Mortale della Memoria</h2>
+<p>C’è un ultimo scoglio gigantesco nell’Ereditarietà, ed è la causa numero uno di leak di memoria in C++.</p>
+<p>Immaginate che il programma sia finito, ed eseguiamo il <code>delete</code> del nostro vettore:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="co">// Svuoto il vettore eliminando gli oggetti dalla RAM Heap</span></span>
+<span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> network<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1">1</button><span id="annotated-cell-12-3" class="code-annotation-target"><a href="#annotated-cell-12-3" aria-label="3"></a>    <span class="kw">delete</span> network<span class="op">[</span>i<span class="op">];</span></span>
+<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-label="4"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="5" data-code-annotation="1">Controlliamo se <code>argc</code> è minore di 3 (<code>./train_network</code> è 1, <code>100</code> è 2, <code>0.01</code> è 3).</span>
+<span data-code-cell="annotated-cell-12" data-code-lines="3" data-code-annotation="1">Sappiamo che <code>delete</code> fa due cose: dealloca i byte e <strong>chiama il Distruttore</strong>.</span>
 </dd>
 </dl>
 </section>
-<section id="convertire-stringhe-in-numeri" class="slide level2 smaller">
-<h2>Convertire Stringhe in Numeri</h2>
-<p>Ora che siamo sicuri che gli argomenti esistano, dobbiamo estrarli. <code>argv[1]</code> contiene “100” e <code>argv[2]</code> contiene “0.01”.</p>
-<p>Ma questi non sono numeri, sono <strong>stringhe di testo</strong>! Usiamo la libreria standard <code>&lt;string&gt;</code> per convertirli.</p>
-<ul>
-<li><strong><code>std::stoi</code></strong>: (String-TO-Integer) converte verso <code>int</code>.</li>
-<li><strong><code>std::stod</code></strong>: (String-TO-Double) converte verso <code>double</code>.</li>
-</ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb6-2"><a aria-label="2"></a></span>
-<span id="cb6-3"><a aria-label="3"></a><span class="co">// ... dentro al main ...</span></span>
-<span id="cb6-4"><a aria-label="4"></a><span class="dt">int</span> epoche <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>argv<span class="op">[</span><span class="dv">1</span><span class="op">]);</span>        <span class="co">// Ora è un VERO int (100)</span></span>
-<span id="cb6-5"><a aria-label="5"></a><span class="dt">double</span> lr  <span class="op">=</span> <span class="bu">std::</span>stod<span class="op">(</span>argv<span class="op">[</span><span class="dv">2</span><span class="op">]);</span>        <span class="co">// Ora è un VERO double (0.01)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="linganno-del-delete" class="slide level2 smaller">
+<h2>L’inganno del <code>delete</code></h2>
+<p>Di che tipo è il puntatore <code>network[i]</code>? È di tipo <code>Layer*</code>. Il compilatore usa il binding statico e <strong>chiama il Distruttore del Padre</strong> (<code>~Layer()</code>).</p>
+<p>Cosa fa il distruttore del figlio <code>~DenseLayer()</code>? Magari conteneva un <code>delete[]</code> o della logica per svuotare i puntatori delle matrici di Eigen. <strong>QUEL DISTRUTTORE NON VERRA’ MAI CHIAMATO.</strong></p>
+<p>La classe Base morirà, la classe Figlia resterà a vagare in RAM per sempre.</p>
 </section>
-<section id="esempio-completo-iperparametri-da-cli" class="slide level2 smaller">
-<h2>Esempio Completo: Iperparametri da CLI</h2>
-<p>Mettiamo tutto insieme nel nostro main per la Rete Neurale:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-label="3"></a></span>
-<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-label="4"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
-<span id="annotated-cell-14-5"><a href="#annotated-cell-14-5" aria-label="5"></a>    <span class="cf">if</span><span class="op">(</span>argc <span class="op">&lt;</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-label="6"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Sintassi: ./train_net &lt;epoche&gt; &lt;learning_rate&gt;</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-label="7"></a>        <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span> </span>
-<span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-label="8"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-14-9"><a href="#annotated-cell-14-9" aria-label="9"></a></span>
-<span id="annotated-cell-14-10"><a href="#annotated-cell-14-10" aria-label="10"></a>    <span class="dt">int</span> epochs <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>argv<span class="op">[</span><span class="dv">1</span><span class="op">]);</span> </span>
-<span id="annotated-cell-14-11"><a href="#annotated-cell-14-11" aria-label="11"></a>    <span class="dt">double</span> learning_rate <span class="op">=</span> <span class="bu">std::</span>stod<span class="op">(</span>argv<span class="op">[</span><span class="dv">2</span><span class="op">]);</span> </span>
-<span id="annotated-cell-14-12"><a href="#annotated-cell-14-12" aria-label="12"></a></span>
-<span id="annotated-cell-14-13"><a href="#annotated-cell-14-13" aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Avvio training della Rete Neurale...</span><span class="sc">\n</span><span class="st">"</span></span>
-<span id="annotated-cell-14-14"><a href="#annotated-cell-14-14" aria-label="14"></a>              <span class="op">&lt;&lt;</span> <span class="st">" - Epoche impostate: "</span> <span class="op">&lt;&lt;</span> epochs <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
-<span id="annotated-cell-14-15"><a href="#annotated-cell-14-15" aria-label="15"></a>              <span class="op">&lt;&lt;</span> <span class="st">" - Learning Rate impostato: "</span> <span class="op">&lt;&lt;</span> learning_rate <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-14-16"><a href="#annotated-cell-14-16" aria-label="16"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1">1</button><span id="annotated-cell-14-17" class="code-annotation-target"><a href="#annotated-cell-14-17" aria-label="17"></a>    <span class="co">// network.train(epochs, learning_rate);</span></span>
-<span id="annotated-cell-14-18"><a href="#annotated-cell-14-18" aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-14-19"><a href="#annotated-cell-14-19" aria-label="19"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="distruttori-virtuali-la-soluzione" class="slide level2 smaller">
+<h2>Distruttori Virtuali: La Soluzione</h2>
+<p>La soluzione è identica a prima! Dobbiamo forzare il Late Binding anche per i Distruttori.</p>
+<p>Basta aggiungere <code>virtual</code> davanti al distruttore della <strong>Classe Base</strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-13"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-label="1"></a><span class="kw">class</span> Layer <span class="op">{</span></span>
+<span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-label="3"></a>    Layer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> n<span class="op">)</span> <span class="op">:</span> <span class="va">name_</span><span class="op">(</span>n<span class="op">)</span> <span class="op">{}</span></span>
+<span id="annotated-cell-13-4"><a href="#annotated-cell-13-4" aria-label="4"></a></span>
+<span id="annotated-cell-13-5"><a href="#annotated-cell-13-5" aria-label="5"></a>    <span class="co">// SALVA LA VITA AI VOSTRI PROGRAMMI</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1">1</button><span id="annotated-cell-13-6" class="code-annotation-target"><a href="#annotated-cell-13-6" aria-label="6"></a>    <span class="kw">virtual</span> <span class="op">~</span>Layer<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-13-7"><a href="#annotated-cell-13-7" aria-label="7"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Distruggo Base</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-13-8"><a href="#annotated-cell-13-8" aria-label="8"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-13-9"><a href="#annotated-cell-13-9" aria-label="9"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-13" data-code-lines="6" data-code-annotation="1">Ora <code>delete network[i];</code> chiamerà prima il distruttore reale del figlio (<code>~DenseLayer()</code>), e poi (automaticamente) risalirà l’albero per chiamare il distruttore del padre <code>~Layer()</code>. Pulizia perfetta!</span>
+</dd>
+</dl>
+</section>
+<section id="la-regola-doro-delloop-in-c" class="slide level2 smaller">
+<h2>La Regola d’Oro dell’OOP in C++</h2>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>Regola Universale: Se una classe ha <em>anche solo un</em> metodo <code>virtual</code>, <strong>DEVE avere un distruttore <code>virtual</code></strong>.</p>
+</div>
+</div>
+</div>
+<p>Ignorare questa regola significa condannare il vostro programma a consumare RAM all’infinito durante l’uso del polimorfismo.</p>
+</section>
+<section id="classi-astratte-interfacce" class="slide level2 smaller">
+<h2>Classi Astratte (Interfacce)</h2>
+<p>C’è un’ultima anomalia semantica. Nella nostra infrastruttura, ha senso istanziare un <code>DenseLayer</code>. Ha senso istanziare un <code>Layer</code> generico usando <code>new Layer("boh");</code> ?</p>
+<p>Cosa farebbe la sua funzione <code>forward()</code>? Niente. È un non-senso architettonico. <code>Layer</code> è solo un concetto, un’etichetta astratta.</p>
+<p>Vorremmo <strong>impedire legalmente</strong> a chiunque di istanziare oggetti di tipo <code>Layer</code>, lasciandolo esistere solo come base per le classi figlie.</p>
+</section>
+<section id="le-funzioni-pure-virtuali-0" class="slide level2 smaller">
+<h2>Le Funzioni Pure Virtuali (<code>= 0</code>)</h2>
+<p>Per trasformare una Classe in una <strong>Classe Astratta</strong> (in altri linguaggi nota come <em>Interfaccia</em>), basta dichiarare almeno un metodo come “Puro” mettendo un <code>= 0</code> alla fine.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-label="1"></a><span class="kw">class</span> Layer <span class="op">{</span></span>
+<span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-label="2"></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-label="3"></a>    <span class="bu">std::</span>string <span class="va">name_</span><span class="op">;</span></span>
+<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-14-5"><a href="#annotated-cell-14-5" aria-label="5"></a>    Layer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> n<span class="op">)</span> <span class="op">:</span> <span class="va">name_</span><span class="op">(</span>n<span class="op">)</span> <span class="op">{}</span></span>
+<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-label="6"></a>    <span class="kw">virtual</span> <span class="op">~</span>Layer<span class="op">()</span> <span class="op">{}</span></span>
+<span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-label="7"></a></span>
+<span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-label="8"></a>    <span class="co">// FUNZIONE PURA VIRTUALE</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1">1</button><span id="annotated-cell-14-9" class="code-annotation-target"><a href="#annotated-cell-14-9" aria-label="9"></a>    <span class="kw">virtual</span> <span class="dt">void</span> forward<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-14-10"><a href="#annotated-cell-14-10" aria-label="10"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-14" data-code-lines="17" data-code-annotation="1">Una riga di codice pulitissima e indipendente!</span>
+<span data-code-cell="annotated-cell-14" data-code-lines="9" data-code-annotation="1">Stiamo dicendo al compilatore: <em>“Questo metodo NON HA IMPLEMENTAZIONE. Esiste solo di nome.”</em></span>
 </dd>
 </dl>
 </section>
-<section id="esercizio-leggere-iperparametri-5-min" class="slide level2 smaller">
-<h2>Esercizio: Leggere Iperparametri (5 min)</h2>
-<p>Prendi dimestichezza con la linea di comando!</p>
+<section id="i-contratti-architetturali" class="slide level2 smaller">
+<h2>I Contratti Architetturali</h2>
+<p>Appena inserite quel <code>= 0</code>, succedono due cose meravigliose per la stabilità del software:</p>
 <ol type="1">
-<li>Crea un file <code>config.cpp</code>.</li>
-<li>Scrivi un <code>main</code> che accetti da terminale 3 argomenti: un <em>Batch Size</em> (<code>int</code>), un <em>Learning Rate</em> (<code>double</code>), e il <em>Nome del Dataset</em> (stringa normale, non va convertita!).</li>
-<li>Se l’utente digita meno argomenti del dovuto, stampa un errore chiaro.</li>
-<li>Se è tutto ok, stampa a schermo: <code>"Training sul dataset: NOME. Batch: X, LR: Y"</code>.</li>
+<li>Provate a fare <code>Layer l;</code> nel main? <strong>Errore fatale del compilatore.</strong> Non si possono istanziare classi astratte.</li>
+<li>Volete creare <code>class DenseLayer : public Layer</code>? Bellissimo, ma <strong>se non implementate</strong> <code>virtual void forward() override {}</code> nel figlio, il compilatore vi bloccherà, dicendo che il figlio è diventato astratto a sua volta!</li>
 </ol>
-<p><em>(Prova a compilarlo ed eseguirlo passando volutamente argomenti mancanti!)</em></p>
+<p>Avete appena creato un <strong>Contratto</strong>: <em>“Chiunque voglia far parte della mia Rete Neurale, è obbligato dalla legge a implementare una funzione forward() e una backward()”</em>.</p>
+</section>
+<section id="esercizio-il-contratto-della-loss-15-min" class="slide level2 smaller">
+<h2>Esercizio: Il Contratto della Loss (15 min)</h2>
+<p>Mettiamo in pratica questi concetti cruciali!</p>
+<ol type="1">
+<li>Crea un file <code>Loss.cpp</code>. Definisci una Classe Astratta Base <code>LossFunction</code>.</li>
+<li>Al suo interno crea un Distruttore Virtuale.</li>
+<li>Crea un metodo Puro Virtuale <code>virtual double compute(double y_true, double y_pred) = 0;</code>.</li>
+<li>Crea una classe derivata <code>MSE</code> (Mean Squared Error).</li>
+<li>Se non ricordi, il MSE per due numeri è semplicemente <span class="math inline">\((y_{pred} - y_{true})^2\)</span>.</li>
+<li>Crea un’altra classe derivata <code>AbsoluteError</code> che calcola <span class="math inline">\(|y_{pred} - y_{true}|\)</span> (usa <code>std::abs</code>).</li>
+<li>Nel <code>main</code>, crea un <code>std::vector&lt;LossFunction*&gt;</code> e inseriscili entrambi. Usa un ciclo per stampare l’errore per i valori (true=1.0, pred=0.5). Svuota la RAM a fine programma!</li>
+</ol>
 <p><a href="../index.html">Torna all’indice</a></p>
 
 

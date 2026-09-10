@@ -202,7 +202,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 9</h1>
-  <p class="subtitle">Programmazione Scientifica++: Lezione 9</p>
+  <p class="subtitle">Distruttori, RAII e Metodi Costanti</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -270,7 +270,7 @@ Docente
 </dd>
 </dl>
 </section>
-<section id="distruttori-e-memoria-dinamica" class="slide level2 smaller">
+<section id="distruttori-e-memoria-dinamica" class="slide level2 smaller scrollable">
 <h2>Distruttori e Memoria Dinamica</h2>
 <p>Il Distruttore è il posto <strong>naturale</strong> in cui posizionare i <code>delete</code> per le variabili allocate internamente all’oggetto. Questo garantisce che l’oggetto non generi Memory Leak quando muore!</p>
 <div class="columns">
@@ -455,10 +455,13 @@ Docente
 </dd>
 </dl>
 </section>
-<section id="argomenti-di-default" class="slide level2 smaller">
-<h2>Argomenti di Default</h2>
-<p>È possibile fornire un valore “di default” per gli argomenti di una funzione. Se l’utente non passa quell’argomento, verrà usato il default.</p>
-<p>Le regole d’oro: 1. Si dichiarano <strong>solo</strong> nell’interfaccia (file <code>.hpp</code>), non nell’implementazione! 2. Possono essere omessi <strong>solo a partire da destra</strong> (per evitare ambiguità).</p>
+<section id="argomenti-di-default-nelle-classi" class="slide level2 smaller">
+<h2>Argomenti di Default nelle Classi</h2>
+<p>Gli argomenti di default li conoscete dalla Lezione 5. Ora che abbiamo separato interfaccia e implementazione (Lezione 8) si aggiunge una regola che in una funzione libera non c’era:</p>
+<ol type="1">
+<li>Il default si dichiara <strong>solo</strong> nell’interfaccia (file <code>.hpp</code>), <strong>mai</strong> nel <code>.cpp</code>: ripeterlo è un errore di compilazione.</li>
+<li>Resta la regola di sempre: si omettono <strong>solo a partire da destra</strong>.</li>
+</ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="kw">class</span> Counter <span class="op">{</span></span>
 <span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
 <span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-label="3"></a>    <span class="co">// step ha come default 1</span></span>
@@ -573,7 +576,7 @@ Docente
 </dd>
 </dl>
 </section>
-<section id="soluzione-il-source-.cpp" class="slide level2 smaller">
+<section id="soluzione-il-source-.cpp" class="slide level2 smaller scrollable">
 <h2>Soluzione: Il Source <code>.cpp</code></h2>
 <p><strong><code>DynamicArray.cpp</code></strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="pp">#include </span><span class="im">"DynamicArray.hpp"</span></span>

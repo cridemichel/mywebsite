@@ -6,7 +6,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Docente">
@@ -34,11 +34,79 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -51,6 +119,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -134,7 +203,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Laboratorio 12</h1>
-  <p class="subtitle">La Sfida: Coding Backpropagation</p>
+  <p class="subtitle">Il Dataset MNIST — Parsing CSV, Batch e OpenCV</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -145,26 +214,373 @@ Docente
 </div>
 
 </section>
-<section id="obiettivo-del-laboratorio" class="slide level2">
-<h2>Obiettivo del Laboratorio</h2>
-<p>Questo laboratorio è il cuore matematico del corso. Dobbiamo tradurre le equazioni delle derivate (Loss rispetto ai Pesi) in C++.</p>
+<section id="soluzione-del-laboratorio-11" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 11</h2>
+<p>Il Factory Method che ricostruisce un layer dallo stream:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="at">static</span> DenseLayer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> create_from_stream<span class="op">(</span><span class="bu">std::</span>istream<span class="op">&amp;</span> is<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a aria-label="2"></a>    <span class="dt">int</span> nodes<span class="op">,</span> in_features<span class="op">;</span></span>
+<span id="cb1-3"><a aria-label="3"></a>    is <span class="op">&gt;&gt;</span> nodes <span class="op">&gt;&gt;</span> in_features<span class="op">;</span>               <span class="co">// stesso ordine di save_config</span></span>
+<span id="cb1-4"><a aria-label="4"></a>    <span class="cf">return</span> <span class="kw">new</span> DenseLayer<span class="op">&lt;</span>ntype<span class="op">&gt;(</span>nodes<span class="op">,</span> in_features<span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span>  <span class="co">// -1: no init</span></span>
+<span id="cb1-5"><a aria-label="5"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>E il caricamento polimorfico, con il puntatore protetto subito:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="cf">while</span> <span class="op">(</span>is <span class="op">&gt;&gt;</span> type<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a aria-label="2"></a>    layer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> raw_l <span class="op">=</span> <span class="kw">this</span><span class="op">-&gt;</span>create_layer<span class="op">(</span>is<span class="op">,</span> type<span class="op">,</span> <span class="st">"[load_model] Wrong layer name"</span><span class="op">);</span></span>
+<span id="cb2-3"><a aria-label="3"></a>    <span class="cf">if</span> <span class="op">(</span>raw_l <span class="op">!=</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-4"><a aria-label="4"></a>        <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>layer<span class="op">&lt;</span>ntype<span class="op">&gt;&gt;</span> l<span class="op">(</span>raw_l<span class="op">);</span>   <span class="co">// subito in un unique_ptr</span></span>
+<span id="cb2-5"><a aria-label="5"></a>        l<span class="op">-&gt;</span>load_weights<span class="op">(</span>is<span class="op">);</span></span>
+<span id="cb2-6"><a aria-label="6"></a>        <span class="kw">this</span><span class="op">-&gt;</span>add<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>l<span class="op">));</span></span>
+<span id="cb2-7"><a aria-label="7"></a>    <span class="op">}</span></span>
+<span id="cb2-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Chi ha visto numeri vicini ma non identici nel round-trip ha dimenticato <code>os.precision(17)</code>.</p>
 </section>
-<section id="task-da-completare" class="slide level2">
+<section id="obiettivo-di-oggi" class="slide level2">
+<h2>Obiettivo di Oggi</h2>
+<p>Basta con <code>Matrix::Random</code>. Oggi la rete riceve <strong>dati veri</strong>: 60.000 cifre scritte a mano.</p>
+<p>Costruiamo tre file:</p>
+<ul>
+<li><code>dataset.hpp</code> — l’interfaccia astratta e la struttura <code>Batch</code></li>
+<li><code>mnist_dataset.hpp</code> — il caricatore CSV concreto</li>
+<li><code>opencv_wrap.hpp</code> — per guardare con gli occhi quello che la rete legge</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Sul tempo.</strong> Oggi si scrivono circa 150 righe: è uno dei tre laboratori densi del corso, con il 9 e il 13. L’ordine dei Task è quello della catena dei dati — file, elemento, normalizzazione, batch — e ogni Task è verificabile da solo. Se il Task 8 (collegare il dataset alla rete) resta a casa, non perdete nulla: il Lab 13 ripartirà da lì.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="task-1-batch-e-basedataset" class="slide level2 smaller">
+<h2>Task 1: <code>Batch</code> e <code>BaseDataset</code></h2>
+<p>Crea <code>dataset.hpp</code>. Prima la struttura che viaggia dal dataset alla rete:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">&gt;</span></span>
+<span id="cb3-2"><a aria-label="2"></a><span class="kw">struct</span> Batch <span class="op">{</span></span>
+<span id="cb3-3"><a aria-label="3"></a>    Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;</span> inputs<span class="op">;</span>     <span class="co">// i pixel normalizzati</span></span>
+<span id="cb3-4"><a aria-label="4"></a>    Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;</span> targets<span class="op">;</span>    <span class="co">// la risposta attesa</span></span>
+<span id="cb3-5"><a aria-label="5"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Poi l’interfaccia astratta, perché domani il dataset potrebbe essere Fashion-MNIST o CIFAR:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">&gt;</span></span>
+<span id="cb4-2"><a aria-label="2"></a><span class="kw">class</span> BaseDataset <span class="op">{</span></span>
+<span id="cb4-3"><a aria-label="3"></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="cb4-4"><a aria-label="4"></a>    <span class="dt">bool</span> z_score <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb4-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb4-6"><a aria-label="6"></a>    <span class="kw">virtual</span> <span class="op">~</span>BaseDataset<span class="op">()</span> <span class="op">=</span> <span class="cf">default</span><span class="op">;</span></span>
+<span id="cb4-7"><a aria-label="7"></a></span>
+<span id="cb4-8"><a aria-label="8"></a>    <span class="kw">virtual</span> <span class="dt">void</span> reset_and_shuffle<span class="op">(</span><span class="dt">bool</span> shuffle <span class="op">=</span> <span class="kw">true</span><span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-9"><a aria-label="9"></a>    <span class="kw">virtual</span> <span class="dt">bool</span> has_next_batch<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-10"><a aria-label="10"></a>    <span class="kw">virtual</span> Batch<span class="op">&lt;</span>ntype<span class="op">&gt;</span> get_next_batch<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-11"><a aria-label="11"></a>    <span class="kw">virtual</span> <span class="dt">int</span> get_num_batches<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-12"><a aria-label="12"></a></span>
+<span id="cb4-13"><a aria-label="13"></a>    <span class="kw">virtual</span> <span class="bu">std::</span>vector<span class="op">&lt;</span>ntype<span class="op">&gt;</span> get_mean<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-14"><a aria-label="14"></a>    <span class="kw">virtual</span> <span class="bu">std::</span>vector<span class="op">&lt;</span>ntype<span class="op">&gt;</span> get_std<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-15"><a aria-label="15"></a></span>
+<span id="cb4-16"><a aria-label="16"></a>    <span class="dt">void</span> set_z_score<span class="op">(</span><span class="dt">bool</span> b<span class="op">)</span> <span class="op">{</span> z_score <span class="op">=</span> b<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb4-17"><a aria-label="17"></a></span>
+<span id="cb4-18"><a aria-label="18"></a>    <span class="co">// Punto di estensione: un dataset può dichiarare di voler</span></span>
+<span id="cb4-19"><a aria-label="19"></a>    <span class="co">// il label smoothing. Di default no.</span></span>
+<span id="cb4-20"><a aria-label="20"></a>    <span class="kw">virtual</span> <span class="dt">bool</span> isLabelsmoothingEnabled<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb4-21"><a aria-label="21"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>L’ultimo metodo non fa nulla di utile oggi, e va bene così: è un <strong>punto di estensione</strong>. Il <em>label smoothing</em> consiste nell’ammorbidire i target (invece di <code>0.99</code> per la classe giusta si usa, per esempio, <code>0.9</code> distribuendo il resto sulle altre) per evitare che la rete diventi troppo sicura di sé. Chi sceglie la traccia sull’augmentation lo troverà già agganciato.</p>
+<p>È lo stesso pattern di <code>layer&lt;ntype&gt;</code>: un contratto astratto, e implementazioni concrete che il resto del codice non deve conoscere.</p>
+</section>
+<section id="il-formato-csv" class="slide level2 smaller">
+<h2>Il formato CSV</h2>
+<pre><code>label,pixel0,pixel1,...,pixel783     &lt;- riga di intestazione, da saltare
+5,0,0,0,32,143,255,210,...
+0,0,0,0,0,0,12,...</code></pre>
+<p>Ogni riga: la cifra vera, poi 784 valori da 0 a 255 (l’immagine 28×28 serializzata riga per riga — la stessa indicizzazione row-major della vostra <code>Matrix</code> del Lab 05).</p>
+</section>
+<section id="come-appaiono-le-cifre" class="slide level2">
+<h2>Come appaiono le cifre</h2>
+
+<img data-src="images/mnist_samples.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section>
+<section id="task-2-lelemento-del-dataset" class="slide level2 smaller">
+<h2>Task 2: L’elemento del dataset</h2>
+<p>Un dettaglio di progetto che sembra minore e non lo è: i pixel si conservano <strong>come interi grezzi</strong>, non come <code>ntype</code> normalizzati.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">&gt;</span></span>
+<span id="cb6-2"><a aria-label="2"></a><span class="kw">struct</span> mnist_dataset_elem <span class="op">{</span></span>
+<span id="cb6-3"><a aria-label="3"></a>    Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;</span> pixels<span class="op">;</span></span>
+<span id="cb6-4"><a aria-label="4"></a>    <span class="dt">int</span> val<span class="op">;</span>                  <span class="co">// la label: 0...9</span></span>
+<span id="cb6-5"><a aria-label="5"></a>    <span class="dt">void</span> resize<span class="op">(</span><span class="dt">int</span> N<span class="op">)</span> <span class="op">{</span> Nin <span class="op">=</span> N<span class="op">;</span> pixels<span class="op">.</span>resize<span class="op">(</span>Nin<span class="op">,</span> <span class="dv">1</span><span class="op">);</span> <span class="op">}</span></span>
+<span id="cb6-6"><a aria-label="6"></a>    mnist_dataset_elem<span class="op">(</span><span class="dt">int</span> N<span class="op">)</span> <span class="op">{</span> resize<span class="op">(</span>N<span class="op">);</span> <span class="op">}</span></span>
+<span id="cb6-7"><a aria-label="7"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb6-8"><a aria-label="8"></a>    <span class="dt">int</span> Nin<span class="op">;</span></span>
+<span id="cb6-9"><a aria-label="9"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>E nella classe: <code>std::vector&lt;mnist_dataset_elem&lt;int&gt;&gt; ds;</code></p>
+<p>Perché <code>int</code> e non <code>double</code>? 60.000 immagini × 784 pixel × 8 byte fanno <strong>376 MB</strong> in doppia precisione. In <code>int</code> sono 188 MB, e su <code>short</code> sarebbero 94. La normalizzazione costa una moltiplicazione al momento del batch: è un ottimo scambio.</p>
+</section>
+<section id="task-3-il-parsing-del-csv" class="slide level2 smaller">
+<h2>Task 3: Il parsing del CSV</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="dt">void</span> load_csv<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> fn<span class="op">,</span> <span class="dt">int</span> maxelem <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a aria-label="2"></a>    <span class="bu">std::</span>fstream f<span class="op">;</span></span>
+<span id="cb7-3"><a aria-label="3"></a>    f<span class="op">.</span>open<span class="op">(</span>fn<span class="op">);</span></span>
+<span id="cb7-4"><a aria-label="4"></a></span>
+<span id="cb7-5"><a aria-label="5"></a>    <span class="bu">std::</span>string linea<span class="op">;</span></span>
+<span id="cb7-6"><a aria-label="6"></a>    <span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> linea<span class="op">);</span>        <span class="co">// salta l'intestazione</span></span>
+<span id="cb7-7"><a aria-label="7"></a>    ds<span class="op">.</span>clear<span class="op">();</span></span>
+<span id="cb7-8"><a aria-label="8"></a>    nl <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-9"><a aria-label="9"></a>    pixs<span class="op">.</span>resize<span class="op">(</span>Nin<span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb7-10"><a aria-label="10"></a>    pixs<span class="op">.</span>setConstant<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb7-11"><a aria-label="11"></a></span>
+<span id="cb7-12"><a aria-label="12"></a>    <span class="cf">while</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> linea<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb7-13"><a aria-label="13"></a>        <span class="bu">std::</span>stringstream ss<span class="op">(</span>linea<span class="op">);</span></span>
+<span id="cb7-14"><a aria-label="14"></a>        <span class="bu">std::</span>string valore<span class="op">;</span></span>
+<span id="cb7-15"><a aria-label="15"></a></span>
+<span id="cb7-16"><a aria-label="16"></a>        <span class="co">// il primo campo è la label</span></span>
+<span id="cb7-17"><a aria-label="17"></a>        <span class="bu">std::</span>getline<span class="op">(</span>ss<span class="op">,</span> valore<span class="op">,</span> <span class="ch">','</span><span class="op">);</span></span>
+<span id="cb7-18"><a aria-label="18"></a>        val <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>valore<span class="op">);</span></span>
+<span id="cb7-19"><a aria-label="19"></a></span>
+<span id="cb7-20"><a aria-label="20"></a>        <span class="co">// tutti i restanti sono pixel</span></span>
+<span id="cb7-21"><a aria-label="21"></a>        np <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-22"><a aria-label="22"></a>        <span class="cf">while</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>ss<span class="op">,</span> valore<span class="op">,</span> <span class="ch">','</span><span class="op">))</span> <span class="op">{</span></span>
+<span id="cb7-23"><a aria-label="23"></a>            pixs<span class="op">(</span>np<span class="op">,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>valore<span class="op">);</span></span>
+<span id="cb7-24"><a aria-label="24"></a>            np<span class="op">++;</span></span>
+<span id="cb7-25"><a aria-label="25"></a>        <span class="op">}</span></span>
+<span id="cb7-26"><a aria-label="26"></a>        add_element<span class="op">(</span>pixs<span class="op">,</span> val<span class="op">);</span></span>
+<span id="cb7-27"><a aria-label="27"></a></span>
+<span id="cb7-28"><a aria-label="28"></a>        pixs<span class="op">.</span>setConstant<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb7-29"><a aria-label="29"></a>        nl<span class="op">++;</span></span>
+<span id="cb7-30"><a aria-label="30"></a>        <span class="cf">if</span> <span class="op">(</span>maxelem <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> nl <span class="op">&gt;=</span> maxelem<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb7-31"><a aria-label="31"></a>    <span class="op">}</span></span>
+<span id="cb7-32"><a aria-label="32"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il doppio <code>getline</code> è l’idioma della Lezione 11: quello esterno con <code>'\n'</code> implicito prende la riga, quello interno con <code>','</code> prende i campi. Il <code>maxelem</code> serve durante lo sviluppo: caricare 1.000 righe invece di 60.000 rende ogni prova istantanea.</p>
+</section>
+<section id="task-4-normalizzazione-e-perché-non-0-1" class="slide level2 smaller">
+<h2>Task 4: Normalizzazione — e perché non <code>[0, 1]</code></h2>
+<p>Qui il framework fa una scelta precisa, e va capita:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="co">// rinormalizzazione suggerita nel libro "Make your own neural network"</span></span>
+<span id="cb8-2"><a aria-label="2"></a>b<span class="op">.</span>inputs <span class="op">=</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;((</span>dse<span class="op">.</span>pixels<span class="op">.</span><span class="kw">template</span> cast<span class="op">&lt;</span>ntype<span class="op">&gt;()</span> <span class="op">/</span> <span class="fl">255.0</span> <span class="op">*</span> <span class="fl">0.99</span><span class="op">)</span></span>
+<span id="cb8-3"><a aria-label="3"></a>                             <span class="op">.</span>array<span class="op">()</span> <span class="op">+</span> <span class="fl">0.01</span><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I pixel finiscono in <strong>[0.01, 0.99]</strong>, non in [0, 1]. Il motivo è la sigmoide: un input esattamente 0 azzera il contributo di quel peso al gradiente, e un peso che riceve sempre 0 non viene mai aggiornato. Lo <code>0.01</code> garantisce che ogni pixel abbia sempre una voce, anche minima.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><code>dse.pixels.template cast&lt;ntype&gt;()</code> — quel <code>template</code> in mezzo non è un errore di stampa. Serve quando si chiama un metodo template su un oggetto il cui tipo dipende da un parametro template: senza, il compilatore interpreta <code>&lt;</code> come “minore di”.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="task-5-i-target-la-stessa-logica" class="slide level2 smaller">
+<h2>Task 5: I target — la stessa logica</h2>
+<p>Simmetricamente, il target <strong>non</strong> è un one-hot 0/1:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a><span class="cf">if</span> <span class="op">(</span>targ_pm_one<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-2"><a aria-label="2"></a>    <span class="co">// se l'ultimo layer è una tanh, che produce valori in (-1, 1)</span></span>
+<span id="cb9-3"><a aria-label="3"></a>    b<span class="op">.</span>targets<span class="op">.</span>setConstant<span class="op">(</span><span class="kw">static_cast</span><span class="op">&lt;</span>ntype<span class="op">&gt;(-</span><span class="fl">0.99</span><span class="op">));</span></span>
+<span id="cb9-4"><a aria-label="4"></a>    b<span class="op">.</span>targets<span class="op">(</span>dse<span class="op">.</span>val<span class="op">,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> <span class="kw">static_cast</span><span class="op">&lt;</span>ntype<span class="op">&gt;(</span><span class="fl">0.99</span><span class="op">);</span></span>
+<span id="cb9-5"><a aria-label="5"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb9-6"><a aria-label="6"></a>    <span class="co">// se l'ultimo layer è una sigmoide, che produce valori in (0, 1)</span></span>
+<span id="cb9-7"><a aria-label="7"></a>    b<span class="op">.</span>targets<span class="op">.</span>setConstant<span class="op">(</span><span class="kw">static_cast</span><span class="op">&lt;</span>ntype<span class="op">&gt;(</span><span class="fl">0.01</span><span class="op">));</span></span>
+<span id="cb9-8"><a aria-label="8"></a>    b<span class="op">.</span>targets<span class="op">(</span>dse<span class="op">.</span>val<span class="op">,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> <span class="kw">static_cast</span><span class="op">&lt;</span>ntype<span class="op">&gt;(</span><span class="fl">0.99</span><span class="op">);</span></span>
+<span id="cb9-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Chiedere alla sigmoide di produrre esattamente <code>1.0</code> significa chiederle <span class="math inline">\(z \to +\infty\)</span>: i pesi crescerebbero senza limite inseguendo un obiettivo irraggiungibile, e la derivata <span class="math inline">\(\sigma(1-\sigma)\)</span> tenderebbe a zero proprio mentre l’errore resta. Con <code>0.99</code> l’obiettivo è raggiungibile e il gradiente resta sano.</p>
+<p>È lo stesso ragionamento sulla saturazione della Lezione 2, applicato all’altro capo della rete.</p>
+</section>
+<section id="task-6-batch-e-shuffle" class="slide level2 smaller">
+<h2>Task 6: Batch e shuffle</h2>
+<p>Attenzione a una scelta del framework che sorprende: <strong>il batch ha dimensione 1</strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a>Batch<span class="op">&lt;</span>ntype<span class="op">&gt;</span> get_next_batch<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb10-2"><a aria-label="2"></a>    Batch<span class="op">&lt;</span>ntype<span class="op">&gt;</span> b<span class="op">;</span></span>
+<span id="cb10-3"><a aria-label="3"></a>    b<span class="op">.</span>inputs<span class="op">.</span>resize<span class="op">(</span>Nin<span class="op">,</span> <span class="dv">1</span><span class="op">);</span>      <span class="co">// &lt;- una colonna sola</span></span>
+<span id="cb10-4"><a aria-label="4"></a>    b<span class="op">.</span>targets<span class="op">.</span>resize<span class="op">(</span>Nout<span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb10-5"><a aria-label="5"></a></span>
+<span id="cb10-6"><a aria-label="6"></a>    <span class="dt">int</span> real_idx <span class="op">=</span> indices<span class="op">[</span>current_batch_idx<span class="op">];</span></span>
+<span id="cb10-7"><a aria-label="7"></a>    mnist_dataset_elem<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> dse <span class="op">=</span> ds<span class="op">[</span>real_idx<span class="op">];</span></span>
+<span id="cb10-8"><a aria-label="8"></a>    current_batch_idx<span class="op">++;</span></span>
+<span id="cb10-9"><a aria-label="9"></a>    <span class="co">// ... normalizzazione e target come sopra ...</span></span>
+<span id="cb10-10"><a aria-label="10"></a>    <span class="cf">return</span> b<span class="op">;</span></span>
+<span id="cb10-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Un campione per aggiornamento: è <strong>Stochastic Gradient Descent</strong> puro, la strategia del libro di Rashid. Converge in poche epoche su MNIST, e rende la formula del gradiente più semplice (nessuna media su N).</p>
+<p>Lo shuffle usa Fisher-Yates su un vettore di indici, non sui dati:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="dt">void</span> reset_and_shuffle<span class="op">(</span><span class="dt">bool</span> shuffle <span class="op">=</span> <span class="kw">true</span><span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb11-2"><a aria-label="2"></a>    current_batch_idx <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-3"><a aria-label="3"></a>    sub_idx <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-4"><a aria-label="4"></a>    <span class="cf">if</span> <span class="op">(</span>shuffle<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-5"><a aria-label="5"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> ds<span class="op">.</span>size<span class="op">()</span> <span class="op">-</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&gt;</span> <span class="dv">0</span><span class="op">;</span> <span class="op">--</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-6"><a aria-label="6"></a>            <span class="dt">int</span> j <span class="op">=</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;(</span>rng<span class="op">.</span>ranf<span class="op">()</span> <span class="op">*</span> <span class="op">(</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">));</span></span>
+<span id="cb11-7"><a aria-label="7"></a>            <span class="bu">std::</span>swap<span class="op">(</span>indices<span class="op">[</span>i<span class="op">],</span> indices<span class="op">[</span>j<span class="op">]);</span></span>
+<span id="cb11-8"><a aria-label="8"></a>        <span class="op">}</span></span>
+<span id="cb11-9"><a aria-label="9"></a>    <span class="op">}</span></span>
+<span id="cb11-10"><a aria-label="10"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>std::swap(a, b)</code> scambia due valori (vive in <code>&lt;utility&gt;</code>, che avete già incluso indirettamente); <code>indices</code> va riempito una volta con <code>0, 1, 2, …</code> — <code>std::iota(indices.begin(), indices.end(), 0)</code> da <code>&lt;numeric&gt;</code> fa esattamente questo.</p>
+<p>Permutare 60.000 interi costa niente; permutare 60.000 immagini costerebbe 188 MB di copie a ogni epoca.</p>
+</section>
+<section id="task-7-verificare-con-opencv" class="slide level2 smaller">
+<h2>Task 7: Verificare con OpenCV</h2>
+<p>Un loader che legge i pixel nell’ordine sbagliato produce immagini illeggibili — ma la rete “impara” comunque qualcosa, e l’errore passa inosservato per giorni. Si verifica <strong>guardando</strong>.</p>
+<p>Aggiungete <code>opencv_wrap.hpp</code> (fornito dal docente): incapsula <code>cv::Mat</code> e offre <code>from_buffer()</code>, <code>to_buffer()</code>, la visualizzazione e le rotazioni che serviranno per l’augmentation. I metodi di <code>MnistDataset</code> che lo usano — <code>show</code>, <code>show_elem</code>, <code>save_elem</code> e il caricamento da file PNG — sono <strong>codice fornito</strong>: li trovate nell’appendice in fondo, da incollare così come sono. Sono plumbing OpenCV, non C++ da imparare, e serviranno anche nel Lab 16.</p>
+<p>Il test minimo: costruite a mano un’immagine con una croce e verificate che appaia come una croce.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a>MnistDataset<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> dataset<span class="op">(</span><span class="st">"mnist_train.csv"</span><span class="op">,</span> <span class="dv">1000</span><span class="op">);</span></span>
+<span id="cb12-2"><a aria-label="2"></a></span>
+<span id="cb12-3"><a aria-label="3"></a>Matrix<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> finta_img<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb12-4"><a aria-label="4"></a>finta_img<span class="op">.</span>setConstant<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb12-5"><a aria-label="5"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">28</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb12-6"><a aria-label="6"></a>    finta_img<span class="op">(</span><span class="dv">14</span> <span class="op">*</span> <span class="dv">28</span> <span class="op">+</span> i<span class="op">,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> <span class="dv">255</span><span class="op">;</span>   <span class="co">// riga orizzontale</span></span>
+<span id="cb12-7"><a aria-label="7"></a>    finta_img<span class="op">(</span>i <span class="op">*</span> <span class="dv">28</span> <span class="op">+</span> <span class="dv">14</span><span class="op">,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> <span class="dv">255</span><span class="op">;</span>   <span class="co">// riga verticale</span></span>
+<span id="cb12-8"><a aria-label="8"></a><span class="op">}</span></span>
+<span id="cb12-9"><a aria-label="9"></a>dataset<span class="op">.</span>add_element<span class="op">(</span>finta_img<span class="op">,</span> <span class="dv">7</span><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Se sullo schermo vedete una croce e non due segmenti sparsi, l’indicizzazione <code>riga * 28 + colonna</code> è corretta.</p>
+<p>Poi la verifica vera: visualizzate 3 immagini reali del dataset e controllate che la cifra che vedete corrisponda alla label stampata.</p>
+</section>
+<section id="task-8-collegare-il-dataset-alla-rete" class="slide level2 smaller">
+<h2>Task 8: Collegare il dataset alla rete</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb13-2"><a aria-label="2"></a>    rng<span class="op">.</span>seed<span class="op">(</span><span class="dv">42</span><span class="op">);</span></span>
+<span id="cb13-3"><a aria-label="3"></a></span>
+<span id="cb13-4"><a aria-label="4"></a>    MnistDataset<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> train<span class="op">(</span><span class="st">"mnist_train.csv"</span><span class="op">,</span> <span class="dv">1000</span><span class="op">);</span></span>
+<span id="cb13-5"><a aria-label="5"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Campioni caricati: "</span> <span class="op">&lt;&lt;</span> train<span class="op">.</span>get_num_batches<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb13-6"><a aria-label="6"></a></span>
+<span id="cb13-7"><a aria-label="7"></a>    Sequential<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> net<span class="op">;</span></span>
+<span id="cb13-8"><a aria-label="8"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;(</span><span class="dv">200</span><span class="op">,</span> <span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">));</span>  <span class="co">// Xavier, gauss</span></span>
+<span id="cb13-9"><a aria-label="9"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>SigmoidLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;());</span></span>
+<span id="cb13-10"><a aria-label="10"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">200</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">));</span></span>
+<span id="cb13-11"><a aria-label="11"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>SigmoidLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;());</span></span>
+<span id="cb13-12"><a aria-label="12"></a></span>
+<span id="cb13-13"><a aria-label="13"></a>    train<span class="op">.</span>reset_and_shuffle<span class="op">();</span></span>
+<span id="cb13-14"><a aria-label="14"></a>    Batch<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> b <span class="op">=</span> train<span class="op">.</span>get_next_batch<span class="op">();</span></span>
+<span id="cb13-15"><a aria-label="15"></a></span>
+<span id="cb13-16"><a aria-label="16"></a>    Matrix<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&amp;</span> out <span class="op">=</span> net<span class="op">.</span>forward<span class="op">(</span>b<span class="op">.</span>inputs<span class="op">);</span></span>
+<span id="cb13-17"><a aria-label="17"></a></span>
+<span id="cb13-18"><a aria-label="18"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Predizione:</span><span class="sc">\n</span><span class="st">"</span> <span class="op">&lt;&lt;</span> out<span class="op">.</span>transpose<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb13-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Target:</span><span class="sc">\n</span><span class="st">"</span>     <span class="op">&lt;&lt;</span> b<span class="op">.</span>targets<span class="op">.</span>transpose<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb13-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Cosa aspettarsi</strong>: dieci valori tutti intorno a 0.5, e un target con un solo <code>0.99</code>. La rete non ha ancora imparato niente — non sa nemmeno che esista un errore da correggere. È il compito del prossimo laboratorio.</p>
+</section>
+<section id="cosa-cè-nella-soluzione-che-non-avete-scritto" class="slide level2 smaller">
+<h2>Cosa c’è nella soluzione che non avete scritto</h2>
+<p>Il <code>mnist_dataset.hpp</code> di riferimento è lungo circa il doppio del vostro. La differenza è tutta <strong>codice fornito</strong>, in tre gruppi:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>gruppo</th>
+<th>metodi</th>
+<th>perché è fornito</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Visualizzazione e PNG</strong></td>
+<td><code>show</code>, <code>show_elem</code>, <code>save_elem</code>, <code>getelem</code>, <code>load_images</code>, <code>add_image_from_file</code>, costruttore da lista di file</td>
+<td>plumbing OpenCV; serve oggi (Task 7) e nel Lab 16 — <strong>appendice</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Augmentation</strong></td>
+<td><code>augmentation()</code>, <code>random_augment()</code>, i membri <code>aug_mode</code>, <code>aug_prob</code>, <code>maxAngle</code>, … e i rami <code>aug_mode</code> in <code>get_next_batch</code></td>
+<td>~90 righe di manipolazione di immagini: è la <strong>traccia 3</strong> dei progetti e uno studio opzionale del Lab 15</td>
+</tr>
+<tr class="odd">
+<td><strong>Utilità</strong></td>
+<td><code>clear_dataset</code>, <code>init_mnist_dataset</code>, <code>set_targ_pm_one</code>, <code>means</code>/<code>stds</code> per lo z-score</td>
+<td>comodità e varianti che non cambiano il disegno</td>
+</tr>
+</tbody>
+</table>
+<p>Il primo gruppo lo incollate oggi. Il secondo lo prenderete dalla soluzione quando vi servirà. Il terzo potete ignorarlo: <code>get_next_batch</code> funziona anche senza. Il vostro dataset e quello di riferimento devono coincidere in ciò che conta — <code>load_csv</code>, normalizzazione, target, shuffle, batch — e lì non c’è nulla di fornito.</p>
+</section>
+<section id="appendice-codice-fornito-1-visualizzare" class="slide level2 smaller">
+<h2>Appendice — Codice fornito (1): visualizzare</h2>
+<p>Serve un membro <code>opencv_wrap img;</code> inizializzato con <code>img = opencv_wrap(28, 28);</code> nel costruttore. Poi, dentro <code>MnistDataset</code>, così come sono:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a aria-label="1"></a>mnist_dataset_elem<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;&amp;</span> getelem<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> ds<span class="op">[</span>i<span class="op">];</span> <span class="op">}</span></span>
+<span id="cb14-2"><a aria-label="2"></a></span>
+<span id="cb14-3"><a aria-label="3"></a><span class="dt">void</span> show<span class="op">(</span>Matrix<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;&amp;</span> pixs<span class="op">,</span> <span class="dt">int</span> bc <span class="op">=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-4"><a aria-label="4"></a>    img<span class="op">.</span>from_buffer<span class="op">(</span>pixs<span class="op">.</span>col<span class="op">(</span>bc<span class="op">).</span>data<span class="op">());</span></span>
+<span id="cb14-5"><a aria-label="5"></a>    img<span class="op">.</span>display<span class="op">();</span></span>
+<span id="cb14-6"><a aria-label="6"></a><span class="op">}</span></span>
+<span id="cb14-7"><a aria-label="7"></a></span>
+<span id="cb14-8"><a aria-label="8"></a><span class="dt">void</span> show_elem<span class="op">(</span><span class="dt">int</span> t <span class="op">=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-9"><a aria-label="9"></a>    <span class="dt">int</span> tlen <span class="op">=</span> ds<span class="op">.</span>size<span class="op">();</span></span>
+<span id="cb14-10"><a aria-label="10"></a>    <span class="cf">if</span> <span class="op">(</span>t <span class="op">&lt;</span> tlen<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-11"><a aria-label="11"></a>        img<span class="op">.</span>from_buffer<span class="op">(</span>getelem<span class="op">(</span>t<span class="op">).</span>pixels<span class="op">.</span>data<span class="op">());</span></span>
+<span id="cb14-12"><a aria-label="12"></a>        img<span class="op">.</span>display<span class="op">();</span></span>
+<span id="cb14-13"><a aria-label="13"></a>    <span class="op">}</span></span>
+<span id="cb14-14"><a aria-label="14"></a><span class="op">}</span></span>
+<span id="cb14-15"><a aria-label="15"></a></span>
+<span id="cb14-16"><a aria-label="16"></a><span class="dt">void</span> save_elem<span class="op">(</span><span class="dt">int</span> t <span class="op">=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>                    <span class="co">// su disco, per guardarla dopo</span></span>
+<span id="cb14-17"><a aria-label="17"></a>    <span class="dt">int</span> tlen <span class="op">=</span> ds<span class="op">.</span>size<span class="op">();</span></span>
+<span id="cb14-18"><a aria-label="18"></a>    <span class="bu">std::</span>string s<span class="op">;</span></span>
+<span id="cb14-19"><a aria-label="19"></a>    <span class="cf">if</span> <span class="op">(</span>t <span class="op">&lt;</span> tlen<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-20"><a aria-label="20"></a>        img<span class="op">.</span>from_buffer<span class="op">(</span>getelem<span class="op">(</span>t<span class="op">).</span>pixels<span class="op">.</span>data<span class="op">());</span></span>
+<span id="cb14-21"><a aria-label="21"></a>        s <span class="op">=</span> <span class="st">"mnist-"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>t<span class="op">)</span> <span class="op">+</span> <span class="st">".png"</span><span class="op">;</span></span>
+<span id="cb14-22"><a aria-label="22"></a>        img<span class="op">.</span>save_image<span class="op">(</span>s<span class="op">);</span></span>
+<span id="cb14-23"><a aria-label="23"></a>    <span class="op">}</span></span>
+<span id="cb14-24"><a aria-label="24"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="appendice-codice-fornito-2-cifre-da-file-png" class="slide level2 smaller">
+<h2>Appendice — Codice fornito (2): cifre da file PNG</h2>
+<p>Nel Lab 16 darete alla rete cifre scritte da voi. Un secondo costruttore prende una lista di file invece del CSV; la label è <code>-1</code> perché non c’è.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="dt">void</span> add_image_from_file<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> fn<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-2"><a aria-label="2"></a>    Matrix<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> pixs<span class="op">;</span></span>
+<span id="cb15-3"><a aria-label="3"></a>    pixs<span class="op">.</span>resize<span class="op">(</span>Nin<span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb15-4"><a aria-label="4"></a>    pixs<span class="op">.</span>setConstant<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb15-5"><a aria-label="5"></a>    img<span class="op">.</span>load_from_file<span class="op">(</span>fn<span class="op">,</span> <span class="kw">true</span><span class="op">);</span>              <span class="co">// true: sfondo bianco da invertire (le cifre MNIST sono chiare su nero)</span></span>
+<span id="cb15-6"><a aria-label="6"></a>    img<span class="op">.</span>to_buffer<span class="op">(</span>pixs<span class="op">.</span>data<span class="op">());</span></span>
+<span id="cb15-7"><a aria-label="7"></a>    <span class="dt">int</span> val <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb15-8"><a aria-label="8"></a>    add_element<span class="op">(</span>pixs<span class="op">,</span> val<span class="op">);</span></span>
+<span id="cb15-9"><a aria-label="9"></a><span class="op">}</span></span>
+<span id="cb15-10"><a aria-label="10"></a></span>
+<span id="cb15-11"><a aria-label="11"></a><span class="dt">void</span> load_images<span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>string<span class="op">&gt;&amp;</span> images<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-12"><a aria-label="12"></a>    <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> fn <span class="op">:</span> images<span class="op">)</span> add_image_from_file<span class="op">(</span>fn<span class="op">);</span></span>
+<span id="cb15-13"><a aria-label="13"></a>    nl <span class="op">=</span> ds<span class="op">.</span>size<span class="op">();</span></span>
+<span id="cb15-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Lette "</span> <span class="op">&lt;&lt;</span> nl <span class="op">&lt;&lt;</span> <span class="st">" immagini"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb15-15"><a aria-label="15"></a>    indices<span class="op">.</span>resize<span class="op">(</span>ds<span class="op">.</span>size<span class="op">());</span></span>
+<span id="cb15-16"><a aria-label="16"></a>    <span class="bu">std::</span>iota<span class="op">(</span>indices<span class="op">.</span>begin<span class="op">(),</span> indices<span class="op">.</span>end<span class="op">(),</span> <span class="dv">0</span><span class="op">);</span>   <span class="co">// &lt;numeric&gt;</span></span>
+<span id="cb15-17"><a aria-label="17"></a><span class="op">}</span></span>
+<span id="cb15-18"><a aria-label="18"></a></span>
+<span id="cb15-19"><a aria-label="19"></a>MnistDataset<span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>string<span class="op">&gt;&amp;</span> images<span class="op">)</span></span>
+<span id="cb15-20"><a aria-label="20"></a>    <span class="op">:</span> aug_mode<span class="op">(</span><span class="dv">0</span><span class="op">),</span> aug_prob<span class="op">(</span><span class="fl">0.5</span><span class="op">),</span> current_batch_idx<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-21"><a aria-label="21"></a>    init_mnist_dataset<span class="op">();</span>                      <span class="co">// img = opencv_wrap(28, 28); Nin = 784; Nout = 10; ...</span></span>
+<span id="cb15-22"><a aria-label="22"></a>    load_images<span class="op">(</span>images<span class="op">);</span></span>
+<span id="cb15-23"><a aria-label="23"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Se non avete i membri <code>aug_mode</code>/<code>aug_prob</code>, togliete i due inizializzatori: sono dell’augmentation.</p>
+</section>
+<section id="task-da-completare" class="slide level2 smaller scrollable">
 <h2>Task da Completare</h2>
 <ul class="task-list">
-<li><label><input type="checkbox">Implementare il metodo <code>backward()</code> nel <code>DenseLayer</code> calcolando il gradiente rispetto ai pesi (<span class="math inline">\(dW\)</span>)</label></li>
-<li><label><input type="checkbox">Propagare il gradiente (<span class="math inline">\(dX\)</span>) al layer precedente</label></li>
-<li><label><input type="checkbox">Implementare il <code>backward()</code> nell’<code>ActivationLayer</code> calcolando la derivata punto a punto</label></li>
-<li><label><input type="checkbox">Testare un singolo step per verificare la discesa della derivata</label></li>
+<li><label><input type="checkbox">Creare <code>dataset.hpp</code> con <code>struct Batch</code> e <code>BaseDataset&lt;ntype&gt;</code> astratta</label></li>
+<li><label><input type="checkbox">Includere l’hook <code>isLabelsmoothingEnabled()</code> con default <code>false</code></label></li>
+<li><label><input type="checkbox">Creare <code>mnist_dataset.hpp</code> con <code>MnistDataset&lt;ntype&gt; : BaseDataset&lt;ntype&gt;</code></label></li>
+<li><label><input type="checkbox">Conservare i pixel come <code>Matrix&lt;int&gt;</code> grezzi, non normalizzati</label></li>
+<li><label><input type="checkbox">Implementare <code>load_csv()</code> saltando l’intestazione, con doppio <code>getline</code></label></li>
+<li><label><input type="checkbox">Usare <code>maxelem</code> per lavorare su 1.000 righe durante lo sviluppo</label></li>
+<li><label><input type="checkbox">Normalizzare in <code>[0.01, 0.99]</code> (attenzione a <code>.template cast&lt;ntype&gt;()</code>)</label></li>
+<li><label><input type="checkbox">Costruire i target con <code>0.01</code> / <code>0.99</code> (non 0 e 1)</label></li>
+<li><label><input type="checkbox">Implementare <code>reset_and_shuffle()</code> con Fisher-Yates <strong>sugli indici</strong></label></li>
+<li><label><input type="checkbox">Implementare <code>get_next_batch()</code>, <code>has_next_batch()</code>, <code>get_num_batches()</code></label></li>
+<li><label><input type="checkbox">Aggiungere <code>opencv_wrap.hpp</code> e incollare il codice fornito dell’appendice (<code>show</code>, <code>show_elem</code>, <code>save_elem</code>, <code>getelem</code>, PNG)</label></li>
+<li><label><input type="checkbox">Verificare l’immagine-croce</label></li>
+<li><label><input type="checkbox">Visualizzare 3 cifre reali e confrontarle con la label</label></li>
+<li><label><input type="checkbox">Fare un forward pass su un’immagine vera</label></li>
+<li><label><input type="checkbox"><strong>Domanda</strong>: perché lo shuffle permuta gli indici e non le immagini?</label></li>
 </ul>
+<p><strong>La soluzione di riferimento verrà discussa all’inizio della prossima lezione.</strong></p>
 <p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
 <div class="footer footer-default">
-
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
 </div>
 </div></div>
 
@@ -175,6 +591,7 @@ Docente
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -196,7 +613,8 @@ Docente
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -217,7 +635,7 @@ Docente
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -322,14 +740,14 @@ Docente
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'convex',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: 'fade',
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
@@ -367,7 +785,7 @@ Docente
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
           RevealNotes,

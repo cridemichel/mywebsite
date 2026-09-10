@@ -202,7 +202,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 19</h1>
-  <p class="subtitle">Programmazione Scientifica++: Lezione 19</p>
+  <p class="subtitle">Gestione degli Errori — Eccezioni (Parte 1)</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -213,7 +213,7 @@ Docente
 </div>
 
 </section>
-<section id="argomenti-di-oggi" class="slide level2">
+<section id="argomenti-di-oggi" class="slide level2 smaller">
 <h2>Argomenti di Oggi</h2>
 <ul>
 <li><strong>Il Crollo del Codice “Felice”</strong>
@@ -278,9 +278,19 @@ Docente
 </section>
 <section id="il-paradosso-dei-costruttori" class="slide level2 smaller">
 <h2>Il Paradosso dei Costruttori</h2>
-<blockquote>
-<p>[!WARNING] IL PROBLEMA FATALE DELLA PROGRAMMAZIONE AD OGGETTI</p>
-</blockquote>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>IL PROBLEMA FATALE DELLA PROGRAMMAZIONE AD OGGETTI</p>
+</div>
+</div>
+</div>
 <p>Come si segnala un errore in un Costruttore? Un Costruttore, per definizione, <strong>NON HA un tipo di ritorno</strong>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="kw">class</span> DenseLayer <span class="op">{</span></span>
 <span id="cb3-2"><a aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
@@ -295,6 +305,7 @@ Docente
 </section>
 <section id="la-soluzione-le-eccezioni" class="slide level2 smaller">
 <h2>La Soluzione: Le Eccezioni</h2>
+<p><code>throw</code> lo usate dal Laboratorio 05 (Lezione 10) per proteggere <code>Matrix</code>. Oggi apriamo il cofano: cosa succede davvero fra il <code>throw</code> e il <code>catch</code>.</p>
 <p>Il C++ ha risolto questo problema ideando le <strong>Eccezioni (Exceptions)</strong>. Un’Eccezione è un evento anomalo che <em>interrompe</em> istantaneamente la normale esecuzione sequenziale del codice, per trasferire il controllo a un blocco speciale (scritto da noi) in grado di gestire il disastro.</p>
 <p>Pensate a una banale operazione matematica: l’estrazione di radice quadrata di un numero negativo. Nessun numero reale può essere restituito. Si lancia un’eccezione.</p>
 </section>
@@ -319,7 +330,7 @@ Docente
 </section>
 <section id="sintassi-base-lanciare-un-errore" class="slide level2 smaller">
 <h2>Sintassi Base: Lanciare un Errore</h2>
-<p>Nella Lezione 12 abbiamo visto l’orribile bug della <code>std::map</code> quando si cerca una chiave inesistente. Scriviamo una nostra funzione sicura per leggere gli iperparametri:</p>
+<p>Nella Lezione 18 abbiamo visto l’orribile bug della <code>std::map</code> quando si cerca una chiave inesistente. Scriviamo una nostra funzione sicura per leggere gli iperparametri:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-4"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
 <span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-label="3"></a></span>
@@ -419,7 +430,7 @@ Docente
 </section>
 <section id="unwinding-e-puntatori-raw-memory-leak" class="slide level2 smaller">
 <h2>Unwinding e Puntatori Raw (Memory Leak!)</h2>
-<p>Nella Lezione 11 vi ho fatto una predica feroce contro l’uso del vecchissimo <code>delete</code> manuale. Vi avevo detto che un <code>return</code> prematuro causava leak distruttivi. Con le eccezioni, il problema è immensamente peggiore:</p>
+<p>Nella Lezione 17 vi ho fatto una predica feroce contro l’uso del vecchissimo <code>delete</code> manuale. Vi avevo detto che un <code>return</code> prematuro causava leak distruttivi. Con le eccezioni, il problema è immensamente peggiore:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="dt">void</span> disastroTotale<span class="op">()</span> <span class="op">{</span></span>
 <span id="cb6-2"><a aria-label="2"></a>    <span class="co">// 1. Alloco GIGABYTE di pesi nello Heap. </span></span>
 <span id="cb6-3"><a aria-label="3"></a>    <span class="co">// dl è solo un puntatore nello Stack, ma i dati sono nello Heap.</span></span>

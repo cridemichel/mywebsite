@@ -202,7 +202,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 17</h1>
-  <p class="subtitle">Programmazione Scientifica++: Lezione 17</p>
+  <p class="subtitle">Template negli Header e Smart Pointers</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -215,9 +215,19 @@ Docente
 </section>
 <section id="lerrore-fatale-del-.cpp-bug-del-linking" class="slide level2 smaller">
 <h2>L’Errore Fatale del <code>.cpp</code> (Bug del Linking)</h2>
-<blockquote>
-<p>[!WARNING] IL PIÙ GRANDE ERRORE CHE POTETE FARE CON I TEMPLATE!</p>
-</blockquote>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>IL PIÙ GRANDE ERRORE CHE POTETE FARE CON I TEMPLATE!</p>
+</div>
+</div>
+</div>
 <p>Fin dalla prima lezione vi abbiamo fatto il lavaggio del cervello: <em>“Separate l’interfaccia nel file <code>.hpp</code> e l’implementazione nel file <code>.cpp</code>!”</em>.</p>
 <p><strong>I Template VIOLANO questa regola assoluta.</strong></p>
 <p>Se provate a dichiarare <code>template &lt;typename T&gt; class Scatola;</code> nel <code>.hpp</code> e scrivete l’implementazione dei suoi metodi nel <code>.cpp</code>… avrete l’errore di Linker peggiore della vostra carriera: <em>Undefined Reference to Scatola<int></int></em>. Perché?</p>
@@ -351,11 +361,11 @@ Docente
 </section>
 <section id="aggiorniamo-la-rete-neurale" class="slide level2 smaller">
 <h2>Aggiorniamo la Rete Neurale!</h2>
-<p>Adesso abbiamo tutti i tasselli del puzzle. Nella Lezione 9 avevamo costruito la classe <code>Sequential</code> usando l’obsoleto <code>std::vector&lt;Layer*&gt;</code>.</p>
+<p>Adesso abbiamo tutti i tasselli del puzzle. Nella Lezione 12 avevamo costruito la rete come un <code>std::vector&lt;Layer*&gt;</code> di puntatori grezzi — la stessa idea del vostro <code>Sequential</code> attuale: puntatori nudi e un distruttore scritto a mano.</p>
 <p>Eravamo costretti a scrivere a mano un pericoloso Distruttore della Rete Neurale, per iterare in un loop il vettore e fare <code>delete</code> di ogni singolo Layer uno ad uno, pregando che nessuno avesse scordato un distruttore <code>virtual</code>.</p>
 <p><strong>Cancelliamo tutto</strong>. Usiamo il C++ Moderno.</p>
 </section>
-<section id="dal-vecchio-al-nuovo-raw-vs-smart" class="slide level2 smaller">
+<section id="dal-vecchio-al-nuovo-raw-vs-smart" class="slide level2 smaller scrollable">
 <h2>Dal Vecchio al Nuovo (Raw vs Smart)</h2>
 <p>Ecco la rivoluzione, affiancata in stile colonne:</p>
 <div class="columns">

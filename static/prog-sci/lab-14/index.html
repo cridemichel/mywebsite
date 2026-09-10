@@ -6,7 +6,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Docente">
@@ -34,11 +34,79 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -51,6 +119,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -134,7 +203,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Laboratorio 14</h1>
-  <p class="subtitle">Metriche, Validazione e Persistenza Pesi</p>
+  <p class="subtitle">Il Trainer e le Metriche — Addestrare su MNIST</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -145,26 +214,377 @@ Docente
 </div>
 
 </section>
-<section id="obiettivo-del-laboratorio" class="slide level2">
-<h2>Obiettivo del Laboratorio</h2>
-<p>La rete ora impara. Ma è intelligente o sta solo memorizzando a memoria (Overfitting)? E come salviamo l’intelligenza su disco?</p>
+<section id="soluzione-del-laboratorio-13" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 13</h2>
+<p>Le due formule della backpropagation nel <code>DenseLayer</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a>Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> backward<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> del_l<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb1-2"><a aria-label="2"></a>    dWt <span class="op">=</span> del_l <span class="op">*</span> <span class="op">(*</span>inputs_ptr<span class="op">).</span>transpose<span class="op">();</span>   <span class="co">// colonna x riga = MATRICE</span></span>
+<span id="cb1-3"><a aria-label="3"></a>    delta_l <span class="op">=</span> Wt<span class="op">.</span>transpose<span class="op">()</span> <span class="op">*</span> del_l<span class="op">;</span>          <span class="co">// il delta per il layer precedente</span></span>
+<span id="cb1-4"><a aria-label="4"></a>    <span class="cf">return</span> delta_l<span class="op">;</span></span>
+<span id="cb1-5"><a aria-label="5"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>La derivata della sigmoide che riusa <code>outputs</code> invece di ricalcolare l’esponenziale:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a>delta_l <span class="op">=</span> del_l<span class="op">.</span>array<span class="op">()</span> <span class="op">*</span> outputs<span class="op">.</span>array<span class="op">();</span></span>
+<span id="cb2-2"><a aria-label="2"></a>delta_l <span class="op">=</span> delta_l<span class="op">.</span>array<span class="op">()</span> <span class="op">*</span> <span class="op">(</span><span class="kw">static_cast</span><span class="op">&lt;</span>ntype<span class="op">&gt;(</span><span class="fl">1.0</span><span class="op">)</span> <span class="op">-</span> outputs<span class="op">.</span>array<span class="op">());</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>E il collegamento fra layer e ottimizzatore, una riga che non sa quale ottimizzatore c’è dietro:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="dt">void</span> update_parameters<span class="op">(</span>Optimizer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> optimizer<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb3-2"><a aria-label="2"></a>    optimizer<span class="op">-&gt;</span>update<span class="op">(</span>Wt<span class="op">,</span> dWt<span class="op">);</span></span>
+<span id="cb3-3"><a aria-label="3"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Chi ha superato il gradient check ha la certezza matematica che i gradienti sono corretti. Chi ha visto la Loss salire aveva <code>+=</code> invece di <code>-=</code>.</p>
 </section>
-<section id="task-da-completare" class="slide level2">
+<section id="obiettivo-di-oggi" class="slide level2">
+<h2>Obiettivo di Oggi</h2>
+<p>Il Lab 13 ha dimostrato che la rete impara — su <strong>un</strong> campione, per <strong>cinque</strong> passi, con il codice sparso nel <code>main</code>.</p>
+<p>Oggi costruiamo l’infrastruttura per addestrare davvero:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>file</th>
+<th>responsabilità</th>
+<th>stato</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>metric.hpp</code></td>
+<td>come si misura la qualità</td>
+<td>da scrivere</td>
+</tr>
+<tr class="even">
+<td><code>mnist_metric.hpp</code></td>
+<td>l’accuratezza su MNIST</td>
+<td>da scrivere</td>
+</tr>
+<tr class="odd">
+<td><code>trainer.hpp</code></td>
+<td>il ciclo di addestramento</td>
+<td>da scrivere</td>
+</tr>
+<tr class="even">
+<td><code>schedulers.hpp</code></td>
+<td>come varia il learning rate</td>
+<td><strong>già scritto</strong> nel Lab 10</td>
+</tr>
+</tbody>
+</table>
+<p>Tre file nuovi, una responsabilità ciascuno; il quarto collaboratore del <code>Trainer</code>, lo scheduler, è pronto dal Lab 10. Alla fine addestreremo su MNIST vero.</p>
+<p>La barra di avanzamento è <strong>codice fornito</strong>: non insegna nulla di C++ che non sappiate già, e il tempo di oggi serve al <code>Trainer</code>.</p>
+</section>
+<section id="task-1-metric.hpp-linterfaccia" class="slide level2 smaller">
+<h2>Task 1: <code>metric.hpp</code> — l’interfaccia</h2>
+<p>Perché una metrica non è “una funzione che calcola l’accuratezza”? Perché l’accuratezza si <strong>accumula</strong> su molti batch: serve uno stato.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">&gt;</span></span>
+<span id="cb4-2"><a aria-label="2"></a><span class="kw">class</span> Metric <span class="op">{</span></span>
+<span id="cb4-3"><a aria-label="3"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb4-4"><a aria-label="4"></a>    <span class="kw">virtual</span> <span class="op">~</span>Metric<span class="op">()</span> <span class="op">=</span> <span class="cf">default</span><span class="op">;</span></span>
+<span id="cb4-5"><a aria-label="5"></a></span>
+<span id="cb4-6"><a aria-label="6"></a>    <span class="co">// Azzera i contatori all'inizio di una fase di test</span></span>
+<span id="cb4-7"><a aria-label="7"></a>    <span class="kw">virtual</span> <span class="dt">void</span> reset<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-8"><a aria-label="8"></a></span>
+<span id="cb4-9"><a aria-label="9"></a>    <span class="co">// Accumula i risultati del batch corrente</span></span>
+<span id="cb4-10"><a aria-label="10"></a>    <span class="kw">virtual</span> <span class="dt">void</span> update<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> preds<span class="op">,</span> <span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> targets<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-11"><a aria-label="11"></a></span>
+<span id="cb4-12"><a aria-label="12"></a>    <span class="co">// Il valore finale (es. 0.982)</span></span>
+<span id="cb4-13"><a aria-label="13"></a>    <span class="kw">virtual</span> ntype get_result<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-14"><a aria-label="14"></a></span>
+<span id="cb4-15"><a aria-label="15"></a>    <span class="co">// Il nome per i log (es. "Performance")</span></span>
+<span id="cb4-16"><a aria-label="16"></a>    <span class="kw">virtual</span> <span class="bu">std::</span>string get_name<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-17"><a aria-label="17"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il ciclo di vita è sempre <code>reset()</code> → tanti <code>update()</code> → <code>get_result()</code>. Domani una <code>F1Score</code> o una <code>ConfusionMatrix</code> si inseriranno senza toccare il <code>Trainer</code>.</p>
+</section>
+<section id="task-2-mnistmetric-largmax-con-eigen" class="slide level2 smaller">
+<h2>Task 2: <code>MnistMetric</code> — l’argmax con Eigen</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">&gt;</span></span>
+<span id="cb5-2"><a aria-label="2"></a><span class="kw">class</span> MnistMetric <span class="op">:</span> <span class="kw">public</span> Metric<span class="op">&lt;</span>ntype<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb5-3"><a aria-label="3"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb5-4"><a aria-label="4"></a>    <span class="dt">int</span> correct_predictions <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-5"><a aria-label="5"></a>    <span class="dt">int</span> total_samples <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-6"><a aria-label="6"></a></span>
+<span id="cb5-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb5-8"><a aria-label="8"></a>    MnistMetric<span class="op">()</span> <span class="op">{</span> reset<span class="op">();</span> <span class="op">}</span></span>
+<span id="cb5-9"><a aria-label="9"></a></span>
+<span id="cb5-10"><a aria-label="10"></a>    <span class="dt">void</span> reset<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb5-11"><a aria-label="11"></a>        correct_predictions <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-12"><a aria-label="12"></a>        total_samples <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-13"><a aria-label="13"></a>    <span class="op">}</span></span>
+<span id="cb5-14"><a aria-label="14"></a></span>
+<span id="cb5-15"><a aria-label="15"></a>    <span class="dt">void</span> update<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> preds<span class="op">,</span> <span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> targets<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb5-16"><a aria-label="16"></a>        total_samples <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-17"><a aria-label="17"></a>        <span class="kw">typename</span> Eigen<span class="op">::</span>Index pred_class<span class="op">,</span> dummy<span class="op">,</span> target_class<span class="op">;</span></span>
+<span id="cb5-18"><a aria-label="18"></a></span>
+<span id="cb5-19"><a aria-label="19"></a>        <span class="co">// maxCoeff scrive negli argomenti l'indice del massimo</span></span>
+<span id="cb5-20"><a aria-label="20"></a>        preds<span class="op">.</span>array<span class="op">().</span>maxCoeff<span class="op">(&amp;</span>pred_class<span class="op">,</span> <span class="op">&amp;</span>dummy<span class="op">);</span></span>
+<span id="cb5-21"><a aria-label="21"></a>        targets<span class="op">.</span>array<span class="op">().</span>maxCoeff<span class="op">(&amp;</span>target_class<span class="op">,</span> <span class="op">&amp;</span>dummy<span class="op">);</span></span>
+<span id="cb5-22"><a aria-label="22"></a></span>
+<span id="cb5-23"><a aria-label="23"></a>        <span class="cf">if</span> <span class="op">(</span>pred_class <span class="op">==</span> target_class<span class="op">)</span> correct_predictions<span class="op">++;</span></span>
+<span id="cb5-24"><a aria-label="24"></a>    <span class="op">}</span></span>
+<span id="cb5-25"><a aria-label="25"></a></span>
+<span id="cb5-26"><a aria-label="26"></a>    ntype get_result<span class="op">()</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb5-27"><a aria-label="27"></a>        <span class="cf">if</span> <span class="op">(</span>total_samples <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb5-28"><a aria-label="28"></a>        <span class="cf">return</span> <span class="kw">static_cast</span><span class="op">&lt;</span>ntype<span class="op">&gt;(</span>correct_predictions<span class="op">)</span> <span class="op">/</span> total_samples<span class="op">;</span></span>
+<span id="cb5-29"><a aria-label="29"></a>    <span class="op">}</span></span>
+<span id="cb5-30"><a aria-label="30"></a></span>
+<span id="cb5-31"><a aria-label="31"></a>    <span class="bu">std::</span>string get_name<span class="op">()</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span> <span class="cf">return</span> <span class="st">"Performance"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb5-32"><a aria-label="32"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>maxCoeff(&amp;riga, &amp;colonna)</code> è l’argmax di Eigen: restituisce il valore e <strong>scrive</strong> negli argomenti la posizione. <code>dummy</code> sarà sempre 0 perché lavoriamo con vettori colonna 10×1.</p>
+<p>Gli indici devono essere di tipo <code>Eigen::Index</code> — l’intero (con segno, a 64 bit) con cui Eigen conta righe e colonne. Passare un <code>int*</code> <strong>non compila</strong>: è l’errore che tutti fanno la prima volta. Il <code>typename</code> davanti è facoltativo, perché <code>Eigen::Index</code> non dipende da <code>ntype</code>, ma è innocuo e lo troverete così nel framework.</p>
+<p>Notate che si confrontano due argmax: la classe predetta e quella del target. Non serve sapere che il target vale <code>0.99</code>: basta che sia il massimo.</p>
+</section>
+<section id="lo-scheduler-già-scritto-nel-lab-10" class="slide level2 smaller">
+<h2>Lo Scheduler: già scritto nel Lab 10</h2>
+<p>Il learning rate non deve necessariamente restare costante. Lo scheduler decide come varia, e per farlo parla con l’ottimizzatore — ecco perché <code>set_lr</code>/<code>get_lr</code> erano puri virtuali. Il <code>fixedScheduler</code> che avete scritto nel Lab 10 non fa nulla: tiene il learning rate costante e lo stampa a ogni epoca.</p>
+<p>Perché averlo, se non fa nulla? Perché serve come <strong>base concreta</strong>: avere sempre uno scheduler, anche banale, evita di disseminare il <code>Trainer</code> di <code>if (scheduler != nullptr)</code>. Oggi il <code>Trainer</code> lo chiamerà una volta per epoca, <strong>prima</strong> di iniziare i batch: <code>scheduler-&gt;step(ep)</code>.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Scheduler più interessanti — Cosine Annealing, ReduceLROnPlateau — sono la <strong>traccia 2</strong> dei progetti finali. La struttura è già pronta: basta reimplementare <code>step()</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="task-3-trainer.hpp-i-quattro-collaboratori" class="slide level2 smaller">
+<h2>Task 3: <code>trainer.hpp</code> — i quattro collaboratori</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">&gt;</span></span>
+<span id="cb6-2"><a aria-label="2"></a><span class="kw">class</span> Trainer <span class="op">{</span></span>
+<span id="cb6-3"><a aria-label="3"></a>    layer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> model<span class="op">;</span>          <span class="co">// per ora può essere solo Sequential</span></span>
+<span id="cb6-4"><a aria-label="4"></a>    Optimizer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> optimizer<span class="op">;</span></span>
+<span id="cb6-5"><a aria-label="5"></a>    Loss<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> lossfunc<span class="op">;</span></span>
+<span id="cb6-6"><a aria-label="6"></a>    Scheduler<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> scheduler<span class="op">;</span>  <span class="co">// può essere nullptr</span></span>
+<span id="cb6-7"><a aria-label="7"></a></span>
+<span id="cb6-8"><a aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb6-9"><a aria-label="9"></a>    Trainer<span class="op">(</span>layer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> m<span class="op">,</span> Loss<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> crit<span class="op">,</span></span>
+<span id="cb6-10"><a aria-label="10"></a>            Optimizer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> opt <span class="op">=</span> <span class="kw">nullptr</span><span class="op">,</span></span>
+<span id="cb6-11"><a aria-label="11"></a>            Scheduler<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> sch <span class="op">=</span> <span class="kw">nullptr</span><span class="op">)</span></span>
+<span id="cb6-12"><a aria-label="12"></a>        <span class="op">:</span> model<span class="op">(</span>m<span class="op">),</span> optimizer<span class="op">(</span>opt<span class="op">),</span> lossfunc<span class="op">(</span>crit<span class="op">),</span> scheduler<span class="op">(</span>sch<span class="op">)</span> <span class="op">{}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Notate il tipo del primo membro: <code>layer&lt;ntype&gt;*</code>, non <code>Sequential&lt;ntype&gt;*</code>. Il <code>Trainer</code> non sa di stare addestrando una rete sequenziale — conosce solo l’interfaccia <code>layer</code>. È il motivo per cui nel Lab 09 abbiamo fatto derivare <code>Sequential</code> da <code>layer</code>.</p>
+<p>Tutti puntatori crudi, e qui è corretto: il <code>Trainer</code> <strong>non possiede</strong> nulla, usa oggetti che vivono nel <code>main</code>. <code>unique_ptr</code> esprimerebbe una proprietà che non ha.</p>
+</section>
+<section id="task-4-il-metodo-test" class="slide level2 smaller">
+<h2>Task 4: Il metodo <code>test()</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a>ntype test<span class="op">(</span>BaseDataset<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> test_dataset<span class="op">,</span> Metric<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> metric<span class="op">,</span></span>
+<span id="cb7-2"><a aria-label="2"></a>           <span class="dt">int</span> maxelem <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dt">bool</span> info <span class="op">=</span> <span class="kw">true</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-3"><a aria-label="3"></a>    model<span class="op">-&gt;</span>eval<span class="op">();</span>                             <span class="co">// modalità inferenza</span></span>
+<span id="cb7-4"><a aria-label="4"></a>    test_dataset<span class="op">.</span>reset_and_shuffle<span class="op">(</span><span class="kw">false</span><span class="op">);</span>     <span class="co">// sul test NON si mescola</span></span>
+<span id="cb7-5"><a aria-label="5"></a>    metric<span class="op">.</span>reset<span class="op">();</span></span>
+<span id="cb7-6"><a aria-label="6"></a></span>
+<span id="cb7-7"><a aria-label="7"></a>    ntype total_loss <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb7-8"><a aria-label="8"></a>    <span class="dt">int</span> num_batches <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-9"><a aria-label="9"></a>    <span class="dt">int</span> tmax <span class="op">=</span> <span class="op">(</span>maxelem <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb7-10"><a aria-label="10"></a>             <span class="op">?</span> <span class="bu">std::</span>min<span class="op">(</span>test_dataset<span class="op">.</span>get_num_batches<span class="op">(),</span> maxelem<span class="op">)</span></span>
+<span id="cb7-11"><a aria-label="11"></a>             <span class="op">:</span> test_dataset<span class="op">.</span>get_num_batches<span class="op">();</span></span>
+<span id="cb7-12"><a aria-label="12"></a></span>
+<span id="cb7-13"><a aria-label="13"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> t <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> t <span class="op">&lt;</span> tmax<span class="op">;</span> t<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb7-14"><a aria-label="14"></a>        Batch<span class="op">&lt;</span>ntype<span class="op">&gt;</span> batch <span class="op">=</span> test_dataset<span class="op">.</span>get_next_batch<span class="op">();</span></span>
+<span id="cb7-15"><a aria-label="15"></a></span>
+<span id="cb7-16"><a aria-label="16"></a>        Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> preds <span class="op">=</span> model<span class="op">-&gt;</span>forward<span class="op">(</span>batch<span class="op">.</span>inputs<span class="op">);</span>   <span class="co">// SOLO forward</span></span>
+<span id="cb7-17"><a aria-label="17"></a>        total_loss <span class="op">+=</span> lossfunc<span class="op">-&gt;</span>forward<span class="op">(</span>preds<span class="op">,</span> batch<span class="op">.</span>targets<span class="op">);</span></span>
+<span id="cb7-18"><a aria-label="18"></a></span>
+<span id="cb7-19"><a aria-label="19"></a>        metric<span class="op">.</span>update<span class="op">(</span>preds<span class="op">,</span> batch<span class="op">.</span>targets<span class="op">);</span>   <span class="co">// il calcolo è tutto nella metrica</span></span>
+<span id="cb7-20"><a aria-label="20"></a>        num_batches<span class="op">++;</span></span>
+<span id="cb7-21"><a aria-label="21"></a>    <span class="op">}</span></span>
+<span id="cb7-22"><a aria-label="22"></a></span>
+<span id="cb7-23"><a aria-label="23"></a>    ntype avg_loss <span class="op">=</span> total_loss <span class="op">/</span> num_batches<span class="op">;</span></span>
+<span id="cb7-24"><a aria-label="24"></a>    ntype metric_result <span class="op">=</span> metric<span class="op">.</span>get_result<span class="op">();</span></span>
+<span id="cb7-25"><a aria-label="25"></a></span>
+<span id="cb7-26"><a aria-label="26"></a>    <span class="cf">if</span> <span class="op">(</span>info<span class="op">)</span></span>
+<span id="cb7-27"><a aria-label="27"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="bu">std::</span>setprecision<span class="op">(</span><span class="dv">8</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"---&gt; Loss Media: "</span> <span class="op">&lt;&lt;</span> avg_loss</span>
+<span id="cb7-28"><a aria-label="28"></a>                  <span class="op">&lt;&lt;</span> <span class="st">" | "</span> <span class="op">&lt;&lt;</span> metric<span class="op">.</span>get_name<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">": "</span></span>
+<span id="cb7-29"><a aria-label="29"></a>                  <span class="op">&lt;&lt;</span> metric_result <span class="op">*</span> <span class="fl">100.0</span> <span class="op">&lt;&lt;</span> <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb7-30"><a aria-label="30"></a></span>
+<span id="cb7-31"><a aria-label="31"></a>    <span class="cf">return</span> metric_result<span class="op">;</span></span>
+<span id="cb7-32"><a aria-label="32"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Tre cose che distinguono il test dal training: <code>model-&gt;eval()</code>, <strong>nessun</strong> <code>backward()</code>, <strong>nessun</strong> <code>update_parameters()</code>. E lo shuffle è disattivato: mescolare il test set non cambia il risultato, e non mescolarlo rende i log confrontabili fra epoche.</p>
+</section>
+<section id="perché-train-e-eval" class="slide level2 smaller">
+<h2>Perché <code>train()</code> e <code>eval()</code></h2>
+<p>Il membro <code>is_training</code> sta in <code>layer&lt;ntype&gt;</code> fin dal Lab 09, e finora non serviva a nulla. Serve ora.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="kw">virtual</span> <span class="dt">void</span> train<span class="op">()</span> <span class="op">{</span> is_training <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb8-2"><a aria-label="2"></a><span class="kw">virtual</span> <span class="dt">void</span> eval<span class="op">()</span>  <span class="op">{</span> is_training <span class="op">=</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Alcuni layer devono comportarsi <strong>diversamente</strong> in addestramento e in inferenza. Il caso classico è il Dropout: durante il training spegne neuroni casuali, in inferenza deve lasciarli tutti accesi — altrimenti la stessa immagine darebbe predizioni diverse a ogni chiamata.</p>
+<p>Nessuno dei nostri layer attuali usa <code>is_training</code>, ma l’infrastruttura c’è, ed è quello che rende possibile la <strong>traccia 3</strong> dei progetti (augmentation e regolarizzazione).</p>
+</section>
+<section id="task-5-il-metodo-train" class="slide level2 smaller">
+<h2>Task 5: Il metodo <code>train()</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a><span class="dt">void</span> train<span class="op">(</span>BaseDataset<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> train_dataset<span class="op">,</span> BaseDataset<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> val_dataset<span class="op">,</span></span>
+<span id="cb9-2"><a aria-label="2"></a>           Metric<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> metric<span class="op">,</span> <span class="dt">int</span> epochs<span class="op">,</span></span>
+<span id="cb9-3"><a aria-label="3"></a>           <span class="dt">int</span> maxelem <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dt">bool</span> running_test <span class="op">=</span> <span class="kw">true</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-4"><a aria-label="4"></a>    <span class="kw">using</span> cl <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock<span class="op">;</span></span>
+<span id="cb9-5"><a aria-label="5"></a>    ntype performance<span class="op">;</span></span>
+<span id="cb9-6"><a aria-label="6"></a>    <span class="dt">int</span> tmax <span class="op">=</span> <span class="op">(</span>maxelem <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb9-7"><a aria-label="7"></a>             <span class="op">?</span> <span class="bu">std::</span>min<span class="op">(</span>train_dataset<span class="op">.</span>get_num_batches<span class="op">(),</span> maxelem<span class="op">)</span></span>
+<span id="cb9-8"><a aria-label="8"></a>             <span class="op">:</span> train_dataset<span class="op">.</span>get_num_batches<span class="op">();</span></span>
+<span id="cb9-9"><a aria-label="9"></a></span>
+<span id="cb9-10"><a aria-label="10"></a>    <span class="kw">auto</span> tini <span class="op">=</span> cl<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb9-11"><a aria-label="11"></a></span>
+<span id="cb9-12"><a aria-label="12"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> ep <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> ep <span class="op">&lt;</span> epochs<span class="op">;</span> <span class="op">++</span>ep<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-13"><a aria-label="13"></a>        <span class="kw">auto</span> ep_time <span class="op">=</span> cl<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb9-14"><a aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"&gt;&gt;&gt; Epoch "</span> <span class="op">&lt;&lt;</span> ep <span class="op">+</span> <span class="dv">1</span> <span class="op">&lt;&lt;</span> <span class="st">"/"</span> <span class="op">&lt;&lt;</span> epochs <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb9-15"><a aria-label="15"></a></span>
+<span id="cb9-16"><a aria-label="16"></a>        <span class="cf">if</span> <span class="op">(</span>scheduler<span class="op">)</span> scheduler<span class="op">-&gt;</span>step<span class="op">(</span>ep<span class="op">);</span>    <span class="co">// il lr PRIMA di usarlo</span></span>
+<span id="cb9-17"><a aria-label="17"></a></span>
+<span id="cb9-18"><a aria-label="18"></a>        model<span class="op">-&gt;</span>train<span class="op">();</span>                        <span class="co">// modalità addestramento</span></span>
+<span id="cb9-19"><a aria-label="19"></a>        train_dataset<span class="op">.</span>reset_and_shuffle<span class="op">();</span>     <span class="co">// sul training SI mescola</span></span>
+<span id="cb9-20"><a aria-label="20"></a></span>
+<span id="cb9-21"><a aria-label="21"></a>        ntype loss <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb9-22"><a aria-label="22"></a>        <span class="dt">int</span> t <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-23"><a aria-label="23"></a>        <span class="cf">while</span> <span class="op">(</span>t <span class="op">&lt;</span> tmax <span class="op">&amp;&amp;</span> train_dataset<span class="op">.</span>has_next_batch<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb9-24"><a aria-label="24"></a>            Batch<span class="op">&lt;</span>ntype<span class="op">&gt;</span> batch <span class="op">=</span> train_dataset<span class="op">.</span>get_next_batch<span class="op">();</span></span>
+<span id="cb9-25"><a aria-label="25"></a></span>
+<span id="cb9-26"><a aria-label="26"></a>            <span class="co">// 1A. Forward</span></span>
+<span id="cb9-27"><a aria-label="27"></a>            Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> preds <span class="op">=</span> model<span class="op">-&gt;</span>forward<span class="op">(</span>batch<span class="op">.</span>inputs<span class="op">);</span></span>
+<span id="cb9-28"><a aria-label="28"></a>            <span class="co">// 1B. Loss</span></span>
+<span id="cb9-29"><a aria-label="29"></a>            loss <span class="op">+=</span> lossfunc<span class="op">-&gt;</span>forward<span class="op">(</span>preds<span class="op">,</span> batch<span class="op">.</span>targets<span class="op">);</span></span>
+<span id="cb9-30"><a aria-label="30"></a>            <span class="co">// 2A. Backward</span></span>
+<span id="cb9-31"><a aria-label="31"></a>            model<span class="op">-&gt;</span>backward<span class="op">(</span>lossfunc<span class="op">-&gt;</span>backward<span class="op">(</span>preds<span class="op">,</span> batch<span class="op">.</span>targets<span class="op">));</span></span>
+<span id="cb9-32"><a aria-label="32"></a>            <span class="co">// 2B. Update</span></span>
+<span id="cb9-33"><a aria-label="33"></a>            model<span class="op">-&gt;</span>update_parameters<span class="op">(</span>optimizer<span class="op">);</span></span>
+<span id="cb9-34"><a aria-label="34"></a></span>
+<span id="cb9-35"><a aria-label="35"></a>            <span class="cf">if</span> <span class="op">(</span>t <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> t <span class="op">==</span> tmax <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> progress_bar<span class="op">(</span>ntype<span class="op">(</span>t <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">/</span> tmax<span class="op">);</span></span>
+<span id="cb9-36"><a aria-label="36"></a>            t<span class="op">++;</span></span>
+<span id="cb9-37"><a aria-label="37"></a>        <span class="op">}</span></span>
+<span id="cb9-38"><a aria-label="38"></a></span>
+<span id="cb9-39"><a aria-label="39"></a>        <span class="kw">auto</span> ep_delt <span class="op">=</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span><span class="bu">std::</span>chrono::microseconds<span class="op">&gt;(</span></span>
+<span id="cb9-40"><a aria-label="40"></a>                           cl<span class="op">::</span>now<span class="op">()</span> <span class="op">-</span> ep_time<span class="op">).</span>count<span class="op">();</span></span>
+<span id="cb9-41"><a aria-label="41"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Time: "</span> <span class="op">&lt;&lt;</span> ep_delt <span class="op">/</span> <span class="fl">1e6</span> <span class="op">&lt;&lt;</span> <span class="st">" s  | Train Loss: "</span></span>
+<span id="cb9-42"><a aria-label="42"></a>                  <span class="op">&lt;&lt;</span> <span class="bu">std::</span>setprecision<span class="op">(</span><span class="dv">6</span><span class="op">)</span> <span class="op">&lt;&lt;</span> loss <span class="op">/</span> tmax <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb9-43"><a aria-label="43"></a></span>
+<span id="cb9-44"><a aria-label="44"></a>        <span class="cf">if</span> <span class="op">(</span>running_test<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-45"><a aria-label="45"></a>            model<span class="op">-&gt;</span>eval<span class="op">();</span></span>
+<span id="cb9-46"><a aria-label="46"></a>            performance <span class="op">=</span> test<span class="op">(</span>val_dataset<span class="op">,</span> metric<span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="kw">true</span><span class="op">);</span></span>
+<span id="cb9-47"><a aria-label="47"></a>        <span class="op">}</span></span>
+<span id="cb9-48"><a aria-label="48"></a>    <span class="op">}</span></span>
+<span id="cb9-49"><a aria-label="49"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"[INFO] final performance="</span> <span class="op">&lt;&lt;</span> performance <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb9-50"><a aria-label="50"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le quattro righe numerate sono l’intero machine learning. Tutto il resto — timer, barra di avanzamento, shuffle, scheduler — è contorno.</p>
+</section>
+<section id="la-barra-di-avanzamento-codice-fornito" class="slide level2 smaller">
+<h2>La barra di avanzamento (codice fornito)</h2>
+<p>Un addestramento che stampa nulla per due minuti sembra bloccato. Una barra costa dieci righe e cambia l’esperienza. Non c’è nulla da imparare a scriverla: <strong>copiatela</strong> in <code>trainer.hpp</code> così com’è e chiamatela in <code>train()</code> ogni 100 batch con <code>progress_bar(ntype(t + 1) / tmax)</code>, come nel codice di <code>train()</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="dt">void</span> progress_bar<span class="op">(</span><span class="dt">double</span> progresso<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a aria-label="2"></a>    <span class="dt">int</span> len_barra <span class="op">=</span> <span class="dv">50</span><span class="op">;</span></span>
+<span id="cb10-3"><a aria-label="3"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"["</span><span class="op">;</span></span>
+<span id="cb10-4"><a aria-label="4"></a>    <span class="dt">int</span> pos <span class="op">=</span> len_barra <span class="op">*</span> progresso<span class="op">;</span></span>
+<span id="cb10-5"><a aria-label="5"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\033</span><span class="st">[32m"</span><span class="op">;</span>                       <span class="co">// verde</span></span>
+<span id="cb10-6"><a aria-label="6"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> len_barra<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-7"><a aria-label="7"></a>        <span class="cf">if</span>      <span class="op">(</span>i <span class="op">&lt;</span> pos<span class="op">)</span>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"="</span><span class="op">;</span></span>
+<span id="cb10-8"><a aria-label="8"></a>        <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>i <span class="op">==</span> pos<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"&gt;"</span><span class="op">;</span></span>
+<span id="cb10-9"><a aria-label="9"></a>        <span class="cf">else</span>               <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb10-10"><a aria-label="10"></a>    <span class="op">}</span></span>
+<span id="cb10-11"><a aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\033</span><span class="st">[0m"</span><span class="op">;</span>                        <span class="co">// reset colore</span></span>
+<span id="cb10-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"] "</span> <span class="op">&lt;&lt;</span> <span class="dt">int</span><span class="op">(</span>progresso <span class="op">*</span> <span class="fl">100.0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">" %</span><span class="sc">\r</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb10-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout<span class="op">.</span>flush<span class="op">();</span></span>
+<span id="cb10-14"><a aria-label="14"></a>    <span class="cf">if</span> <span class="op">(</span>pos <span class="op">==</span> len_barra<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb10-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Due dettagli: <code>\r</code> (carriage return) riporta il cursore a inizio riga senza andare a capo, così la barra si sovrascrive; <code>std::cout.flush()</code> è obbligatorio, perché senza <code>\n</code> il buffer non viene svuotato e non vedreste nulla fino alla fine.</p>
+<p><code>\033[32m</code> è una sequenza di escape ANSI per il colore verde.</p>
+</section>
+<section id="task-6-laddestramento-vero" class="slide level2 smaller">
+<h2>Task 6: L’addestramento vero</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-2"><a aria-label="2"></a>    rng<span class="op">.</span>seed<span class="op">(</span><span class="dv">42</span><span class="op">);</span></span>
+<span id="cb11-3"><a aria-label="3"></a></span>
+<span id="cb11-4"><a aria-label="4"></a>    <span class="co">// il secondo argomento è il numero MASSIMO di elementi da caricare</span></span>
+<span id="cb11-5"><a aria-label="5"></a>    MnistDataset<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> train_dataset<span class="op">(</span><span class="st">"mnist_train.csv"</span><span class="op">,</span> <span class="dv">10000</span><span class="op">);</span></span>
+<span id="cb11-6"><a aria-label="6"></a>    MnistDataset<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> test_dataset<span class="op">(</span><span class="st">"mnist_test.csv"</span><span class="op">,</span>   <span class="dv">2000</span><span class="op">);</span></span>
+<span id="cb11-7"><a aria-label="7"></a></span>
+<span id="cb11-8"><a aria-label="8"></a>    Sequential<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> net<span class="op">;</span></span>
+<span id="cb11-9"><a aria-label="9"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">));</span>  <span class="co">// Xavier</span></span>
+<span id="cb11-10"><a aria-label="10"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>SigmoidLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;());</span></span>
+<span id="cb11-11"><a aria-label="11"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">128</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">));</span></span>
+<span id="cb11-12"><a aria-label="12"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>SigmoidLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;());</span></span>
+<span id="cb11-13"><a aria-label="13"></a></span>
+<span id="cb11-14"><a aria-label="14"></a>    MSELoss<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span>     loss<span class="op">;</span></span>
+<span id="cb11-15"><a aria-label="15"></a>    SDOptimizer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> opt<span class="op">(</span><span class="fl">0.1</span><span class="op">);</span></span>
+<span id="cb11-16"><a aria-label="16"></a>    MnistMetric<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> metric<span class="op">;</span></span>
+<span id="cb11-17"><a aria-label="17"></a>    fixedScheduler<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> sched<span class="op">(&amp;</span>opt<span class="op">,</span> <span class="fl">0.1</span><span class="op">);</span></span>
+<span id="cb11-18"><a aria-label="18"></a></span>
+<span id="cb11-19"><a aria-label="19"></a>    Trainer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> trainer<span class="op">(&amp;</span>net<span class="op">,</span> <span class="op">&amp;</span>loss<span class="op">,</span> <span class="op">&amp;</span>opt<span class="op">,</span> <span class="op">&amp;</span>sched<span class="op">);</span></span>
+<span id="cb11-20"><a aria-label="20"></a></span>
+<span id="cb11-21"><a aria-label="21"></a>    trainer<span class="op">.</span>train<span class="op">(</span>train_dataset<span class="op">,</span> test_dataset<span class="op">,</span> metric<span class="op">,</span> <span class="co">/*epochs=*/</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb11-22"><a aria-label="22"></a></span>
+<span id="cb11-23"><a aria-label="23"></a>    net<span class="op">.</span>save_model<span class="op">(</span><span class="st">"mlp.model"</span><span class="op">);</span></span>
+<span id="cb11-24"><a aria-label="24"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Cosa aspettarsi</strong>, con learning rate 0.1 e una rete 784→128→10:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>epoca</th>
+<th>Train Loss</th>
+<th>Performance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>~0.9</td>
+<td>85–90%</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>~0.4</td>
+<td>92–94%</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>~0.3</td>
+<td>94–95%</td>
+</tr>
+</tbody>
+</table>
+<p>Se la performance resta intorno al <strong>10%</strong>, la rete tira a caso su dieci classi: <code>update_parameters</code> non viene chiamato, o il learning rate è azzerato. Se la Loss diventa <code>nan</code>, il learning rate è troppo alto — provate 0.01.</p>
+<p>Cominciate con <code>maxelem</code> piccolo (50 batch) per verificare che tutto girri, poi togliete il limite.</p>
+</section>
+<section id="accenno-altre-loss-e-altri-ottimizzatori" class="slide level2 smaller">
+<h2>Accenno: altre Loss e altri ottimizzatori</h2>
+<p>Il framework usa <code>MSELoss</code> con sigmoide finale, che su MNIST arriva tranquillamente sopra il 95%. Esistono però scelte più moderne, e sono due delle tracce per il progetto finale.</p>
+<p><strong>Softmax + Cross-Entropy.</strong> Il softmax normalizza le uscite in una distribuzione di probabilità:</p>
+<p><span class="math display">\[ \text{softmax}(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}
+   \qquad
+   L = -\sum_k t_k \log(p_k) \]</span></p>
+<p>Il fatto notevole è che, componendo i due, il gradiente si semplifica a <span class="math inline">\(\delta = p - t\)</span>: nessuna derivata da propagare attraverso l’esponenziale. Con MSE + sigmoide, invece, il gradiente porta il fattore <span class="math inline">\(\sigma(1-\sigma)\)</span> che si annulla quando la rete sbaglia con grande sicurezza — proprio quando servirebbe correggere di più.</p>
+<p><strong>Adam.</strong> Invece di un learning rate unico, ne adatta uno per ogni parametro usando le medie mobili del gradiente (<span class="math inline">\(m\)</span>) e del suo quadrato (<span class="math inline">\(v\)</span>):</p>
+<p><span class="math display">\[ m_t = \beta_1 m_{t-1} + (1-\beta_1)\, g_t
+   \qquad
+   v_t = \beta_2 v_{t-1} + (1-\beta_2)\, g_t^2 \]</span></p>
+<p><span class="math display">\[ \theta_t = \theta_{t-1} - \eta \, \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \varepsilon} \]</span></p>
+<p>dove <span class="math inline">\(\hat{m}\)</span> e <span class="math inline">\(\hat{v}\)</span> sono corretti per il bias iniziale. La divisione per <span class="math inline">\(\sqrt{v}\)</span> è il punto: i parametri con gradienti storicamente grandi vengono aggiornati più cautamente.</p>
+<p>Implementarli è materia da progetto: <code>Optimizer</code> e <code>Loss</code> sono già le interfacce giuste, non serve toccare nient’altro. Attenzione a un dettaglio di design — Adam ha uno <strong>stato per parametro</strong>, quindi un singolo oggetto condiviso fra layer diversi non basta: è il problema che il metodo <code>step()</code> e una mappa indicizzata sul tensore risolvono.</p>
+</section>
+<section id="task-da-completare" class="slide level2 smaller scrollable">
 <h2>Task da Completare</h2>
 <ul class="task-list">
-<li><label><input type="checkbox">Calcolare la Test Accuracy passando per il Test Set (immagini mai viste dalla rete)</label></li>
-<li><label><input type="checkbox">Implementare metodi di Serializzazione: <code>save_weights(filepath)</code></label></li>
-<li><label><input type="checkbox">Implementare la Deserializzazione: <code>load_weights(filepath)</code></label></li>
-<li><label><input type="checkbox">Usare la classe <code>std::ofstream</code> per dumpare l’andamento del training in un file <code>loss_history.csv</code></label></li>
+<li><label><input type="checkbox">Creare <code>metric.hpp</code> con <code>Metric&lt;ntype&gt;</code> astratta (<code>reset</code>/<code>update</code>/<code>get_result</code>/<code>get_name</code>)</label></li>
+<li><label><input type="checkbox">Creare <code>mnist_metric.hpp</code> con l’argmax via <code>maxCoeff(&amp;idx, &amp;dummy)</code></label></li>
+<li><label><input type="checkbox">Creare <code>trainer.hpp</code> con i quattro puntatori ai collaboratori</label></li>
+<li><label><input type="checkbox">Implementare <code>test()</code>: <code>eval()</code>, nessun backward, shuffle disattivato</label></li>
+<li><label><input type="checkbox">Implementare <code>train()</code> con le quattro fasi (forward, loss, backward, update)</label></li>
+<li><label><input type="checkbox">Chiamare <code>scheduler-&gt;step(ep)</code> <strong>prima</strong> dell’epoca</label></li>
+<li><label><input type="checkbox">Incollare <code>progress_bar()</code> (fornita) e chiamarla da <code>train()</code> ogni 100 batch</label></li>
+<li><label><input type="checkbox">Addestrare su MNIST vero: prima 50 batch, poi tutto il dataset</label></li>
+<li><label><input type="checkbox">Verificare che la performance superi il 90% dopo 3 epoche</label></li>
+<li><label><input type="checkbox">Salvare il modello con <code>save_model("mlp.model")</code> e ricaricarlo</label></li>
+<li><label><input type="checkbox"><strong>Diagnostica</strong>: cosa vedete se azzerate il learning rate? E se lo mettete a 10?</label></li>
 </ul>
+<p><strong>La soluzione di riferimento verrà discussa all’inizio della prossima lezione.</strong></p>
 <p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
 <div class="footer footer-default">
-
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
 </div>
 </div></div>
 
@@ -175,6 +595,7 @@ Docente
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -196,7 +617,8 @@ Docente
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -217,7 +639,7 @@ Docente
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -322,14 +744,14 @@ Docente
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'convex',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: 'fade',
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
@@ -367,7 +789,7 @@ Docente
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
           RevealNotes,

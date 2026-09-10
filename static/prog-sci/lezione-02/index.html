@@ -205,7 +205,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 2</h1>
-  <p class="subtitle">Teoria Deep Learning: Neurone, MLP e Vettorizzazione</p>
+  <p class="subtitle">Deep Learning — Neurone, MLP e Vettorizzazione</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -216,21 +216,21 @@ Docente
 </div>
 
 </section>
-<section id="argomenti-di-oggi" class="slide level2">
+<section id="argomenti-di-oggi" class="slide level2 smaller">
 <h2>Argomenti di Oggi</h2>
 <ul>
 <li>Il Neurone Biologico e Matematico</li>
 <li>Il Problema della Linearità</li>
-<li>Funzioni di Attivazione (ReLU)</li>
+<li>Funzioni di Attivazione: gradino, sigmoide, ReLU</li>
 <li>Multi-Layer Perceptron (MLP)</li>
 <li>La Vettorizzazione e le Matrici</li>
 </ul>
 </section>
-<section id="oltre-il-c-introduzione" class="slide level2 smaller">
-<h2>Oltre il C++ (Introduzione)</h2>
-<p>Nelle ultime 13 lezioni vi abbiamo fornito tutti gli strumenti software e architetturali del C++ (Oggetti, Puntatori Intelligenti, Vettori, Polimorfismo, Eccezioni). Siete ora programmatori capaci di costruire un software robusto.</p>
-<p>Ma un software robusto che calcola equazioni sbagliate è un software inutile.</p>
-<p>In questa lezione abbandoniamo momentaneamente la programmazione e ci tuffiamo nella <strong>Teoria Matematica</strong> alla base del Machine Learning. Scopriremo <em>cosa</em> dovete effettivamente calcolare dentro i vostri Layer e <em>perché</em> l’algebra lineare vi salverà la vita.</p>
+<section id="prima-del-c-la-matematica" class="slide level2 smaller">
+<h2>Prima del C++: la Matematica</h2>
+<p>In questa lezione non scriveremo una riga di C++, e non è un rinvio: prima di costruire un software bisogna sapere <strong>quali equazioni</strong> deve calcolare. Un programma robusto che calcola l’equazione sbagliata è un programma inutile.</p>
+<p>Oggi e nella prossima lezione ci occupiamo della <strong>teoria matematica</strong> alla base del Machine Learning: scopriremo <em>cosa</em> dovrà calcolare ogni <code>Layer</code> del vostro framework, e <em>perché</em> l’algebra lineare vi salverà la vita.</p>
+<p>Gli strumenti del C++ — oggetti, puntatori, polimorfismo, template, eccezioni — arrivano dalla Lezione 4 in poi, e li costruirete addosso a queste equazioni.</p>
 </section>
 <section id="il-neurone-biologico" class="slide level2 smaller">
 <h2>Il Neurone Biologico</h2>
@@ -240,7 +240,7 @@ Docente
 </section>
 <section id="il-modello-matematico-perceptron" class="slide level2 smaller">
 <h2>Il Modello Matematico (Perceptron)</h2>
-<p>L’unità fondamentale di una Rete Neurale Artificiale si chiama <strong>Percettrone</strong>. Prende una serie di input numerici <span class="math inline">\(x_i\)</span>, li moltiplica per dei “pesi” <span class="math inline">\(w_i\)</span> (che simulano l’importanza del collegamento biologico), e li somma tutti assieme.</p>
+<p>L’unità fondamentale di una Rete Neurale Artificiale si chiama <strong>Percettrone</strong> — è il singolo neurone artificiale, quello che Rashid nel libro chiama semplicemente <em>neurone</em> o <em>nodo</em>: stessa cosa, nome storico (Rosenblatt, 1958). Prende una serie di input numerici <span class="math inline">\(x_i\)</span>, li moltiplica per dei “pesi” <span class="math inline">\(w_i\)</span> (che simulano l’importanza del collegamento biologico), e li somma tutti assieme.</p>
 <p>L’equazione fondamentale del singolo neurone è:</p>
 <p><span class="math display">\[ z = \sum_{i=1}^{n} (w_i \cdot x_i) + b \]</span></p>
 <ul>
@@ -248,6 +248,53 @@ Docente
 <li><span class="math inline">\(w_i\)</span>: Il Peso (Weight).</li>
 <li><span class="math inline">\(b\)</span>: Il <strong>Bias</strong>, un numero che “sposta” artificialmente la soglia di scatto del neurone.</li>
 </ul>
+</section>
+<section id="cosa-chiediamo-a-un-neurone" class="slide level2 smaller">
+<h2>Cosa Chiediamo a un Neurone</h2>
+<p>Un neurone deve prendere una <strong>decisione</strong>: uscita 1 (“sì”) o 0 (“no”). Il banco di prova più piccolo è <strong>due ingressi binari</strong> <span class="math inline">\(A, B \in \{0,1\}\)</span> e una <strong>porta logica</strong> da realizzare.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(A\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(B\)</span></th>
+<th style="text-align: center;">AND</th>
+<th style="text-align: center;">OR</th>
+<th style="text-align: center;">XOR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><strong>1</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><strong>1</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>Lo <strong>XOR</strong> (<em>OR esclusivo</em>) vale 1 quando i due ingressi sono <strong>diversi</strong>.</p>
+<p>Geometricamente ogni porta è un problema di <strong>classificazione</strong>: i quattro ingressi sono i vertici di un quadrato nel piano <span class="math inline">\((A, B)\)</span>, e la porta colora ogni vertice con la sua uscita. Il neurone deve separare i vertici “1” dagli “0” — vediamo con che strumento.</p>
 </section>
 <section id="la-combinazione-lineare" class="slide level2 smaller">
 <h2>La Combinazione Lineare</h2>
@@ -257,14 +304,27 @@ Docente
 </section>
 <section id="un-mondo-troppo-semplice-linearità" class="slide level2 smaller">
 <h2>Un mondo troppo semplice (Linearità)</h2>
-<p>Se un singolo neurone traccia una retta, significa che può risolvere solo problemi “Linearmente Separabili”. Pensate alla classificazione di pazienti sani e malati in base al colesterolo. Se basta tirare una riga in un grafico per separarli, il percettrone vince.</p>
+<p>Se un singolo neurone traccia una retta, significa che può risolvere solo problemi <strong>linearmente separabili</strong>: quelli in cui una retta (in generale un iperpiano) lascia tutti i “sì” da una parte e tutti i “no” dall’altra.</p>
+<p>Per AND e OR la retta esiste: c’è un solo vertice del quadrato da isolare. Anche fuori dalle porte logiche: pensate alla classificazione di pazienti sani e malati in base al colesterolo. Se basta tirare una riga in un grafico per separarli, il percettrone vince.</p>
 <p>Ma se i pazienti sani sono “circondati” dai pazienti malati (es. valori troppo alti o troppo bassi sono letali)? Una singola retta dritta non può chiudersi a cerchio. Il percettrone fallisce.</p>
 </section>
 <section id="il-problema-dello-xor" class="slide level2 smaller">
 <h2>Il Problema dello XOR</h2>
-<p>Nel 1969, Minsky e Papert pubblicarono un libro che quasi uccise l’Intelligenza Artificiale. Dimostrarono matematicamente che un Percettrone (lineare) non è in grado di risolvere nemmeno la basilare funzione logica dello <strong>XOR</strong> (OR Esclusivo).</p>
-<p>Perché? Perché nel grafico dello XOR, i punti “Veri” e i punti “Falsi” sono disposti a scacchiera. È geometricamente impossibile separare una scacchiera tirando una sola riga dritta.</p>
-<p>La ricerca si fermò per anni. Finché non arrivò la cura: la Non-Linearità.</p>
+<p>Per lo XOR i vertici da separare sono <strong>opposti</strong>: <span class="math inline">\((0,1)\)</span> e <span class="math inline">\((1,0)\)</span> contro <span class="math inline">\((0,0)\)</span> e <span class="math inline">\((1,1)\)</span>. Nessuna retta li divide. Nel 1969 Minsky e Papert lo dimostrarono, e la ricerca sulle reti neurali si fermò per anni. La cura è uno <strong>strato nascosto</strong>: due rette, cioè due neuroni, e una non-linearità fra i due strati. Perché uno strato nascosto basti — non solo per lo XOR, ma per <em>qualunque</em> funzione — lo dice il <strong>teorema di approssimazione universale</strong>, fra poche slide.</p>
+
+<img data-src="images/xor_problem.png" class="quarto-figure quarto-figure-center r-stretch" style="width:66.0%"><aside class="notes">
+<p>Dimostrazione in tre righe, se serve alla lavagna: con <span class="math inline">\(y = \Theta(w_1 A + w_2 B + b)\)</span> servono <span class="math inline">\(b&lt;0\)</span> (per <span class="math inline">\(A=B=0\)</span>), <span class="math inline">\(w_1+w_2+b&lt;0\)</span> (per <span class="math inline">\(A=B=1\)</span>), <span class="math inline">\(w_1+b\ge 0\)</span> e <span class="math inline">\(w_2+b\ge 0\)</span> (per i due casi misti). Sommando le ultime due: <span class="math inline">\(w_1+w_2+2b \ge 0\)</span>; sottraendo la seconda: <span class="math inline">\(b &gt; 0\)</span>. Contraddizione con la prima. Nessuna scelta di pesi funziona, e aggiungere uscite in parallelo non aiuta: ognuna vede lo stesso problema. Nel pannello di destra le due rette tratteggiate, <span class="math inline">\(A+B=0.5\)</span> e <span class="math inline">\(A+B=1.5\)</span>, sono esattamente i due neuroni nascosti che risolvono il problema: il neurone d’uscita deve solo accendersi nella fascia fra le due.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="la-funzione-di-attivazione" class="slide level2 smaller">
 <h2>La Funzione di Attivazione</h2>
@@ -276,10 +336,20 @@ Docente
 </section>
 <section id="la-curvatura-dello-spazio" class="slide level2 smaller">
 <h2>La “Curvatura” dello Spazio</h2>
-<blockquote>
-<p>[!WARNING] IL SEGRETO DEL DEEP LEARNING</p>
-</blockquote>
-<p>Se collegate tra loro 100 layer di neuroni puramente lineari (senza funzione di attivazione), per le leggi dell’algebra lineare l’intera gigantesca rete da milioni di parametri collassa matematicamente in un singolo e misero neurone lineare. È tempo sprecato.</p>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>IL SEGRETO DEL DEEP LEARNING</p>
+</div>
+</div>
+</div>
+<p>Se collegate tra loro 100 layer di neuroni puramente lineari (senza funzione di attivazione), per le leggi dell’algebra lineare l’intera gigantesca rete da milioni di parametri collassa in <strong>un solo layer lineare</strong>, cioè in una sola matrice: il prodotto delle cento. È tempo sprecato.</p>
 <p>Solo l’aggiunta di Funzioni di Attivazione Non-Lineari permette a layer consecutivi di “Piegare lo spazio” in dimensioni superiori, risolvendo problemi complessissimi.</p>
 </section>
 <section id="la-step-function-obsoleta" class="slide level2 smaller">
@@ -297,7 +367,7 @@ Docente
 </section>
 <section id="lera-del-deep-learning-relu" class="slide level2 smaller">
 <h2>L’Era del Deep Learning: ReLU</h2>
-<p>Oggi, il 90% delle Reti Neurali al mondo usa una funzione apparentemente banale: la <strong>ReLU</strong> (Rectified Linear Unit).</p>
+<p>Oggi la grande maggioranza delle reti neurali usa una funzione apparentemente banale: la <strong>ReLU</strong> (Rectified Linear Unit).</p>
 <p><span class="math display">\[ f(z) = \max(0, z) \]</span></p>
 <ul>
 <li>Se il numero è negativo, esce Zero.</li>
@@ -309,8 +379,12 @@ Docente
 <h2>Perché ReLU funziona?</h2>
 <p>La ReLU è non-lineare grazie al suo taglio brutale sotto lo zero. Ma il suo vero superpotere è che per tutti i numeri positivi, la sua pendenza (derivata) è costante e vale 1.</p>
 <p>Il segnale non si spegne mai. Il gradiente fluisce perfetto attraverso centinaia di layer senza mai svanire. È la funzione che ha permesso alle reti di diventare “Deep” (Profonde).</p>
-<p>Inoltre, calcolare <span class="math inline">\(\max(0, x)\)</span> su una CPU costa un decimo di ciclo di clock rispetto a calcolare gli Esponenziali <span class="math inline">\(e^{-x}\)</span> della Sigmoide! Prestazioni estreme.</p>
+<p>Inoltre <span class="math inline">\(\max(0, x)\)</span> è un confronto: <strong>un ciclo di clock</strong>. Un esponenziale <span class="math inline">\(e^{-x}\)</span> ne costa alcune decine. Su miliardi di attivazioni la differenza si sente.</p>
 </section>
+<section id="confronto-step-vs-sigmoid-vs-relu" class="slide level2">
+<h2>Confronto: Step vs Sigmoid vs ReLU</h2>
+
+<img data-src="images/activation_functions.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"></section>
 <section id="uniamo-i-puntini-multi-layer-perceptron" class="slide level2 smaller">
 <h2>Uniamo i Puntini: Multi-Layer Perceptron</h2>
 <p>Ora che abbiamo un singolo neurone intelligente (con ReLU), ne prendiamo migliaia e li impiliamo in “Strati” (Layer).</p>
@@ -357,23 +431,53 @@ Docente
 </div>
 <p>Il groviglio di frecce è letteralmente l’insieme dei Pesi (Weights) della rete. Un livello denso si chiama Fully Connected perché non manca nemmeno una freccia.</p>
 </section>
+<section id="la-nostra-architettura-mnist" class="slide level2 smaller">
+<h2>La Nostra Architettura: MNIST</h2>
+<p>Per MNIST: <strong>784 → 200 → 10</strong>, un solo strato nascosto, sigmoide su entrambi. Ingressi in <span class="math inline">\([0.01,\,0.99]\)</span>, la cifra è il neurone più acceso. Basta a superare il 90%; ReLU e softmax sono varianti da progetto.</p>
+
+<img data-src="images/nn_architecture.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section>
 <section id="forward-propagation-londa-in-avanti" class="slide level2 smaller">
 <h2>Forward Propagation (L’onda in avanti)</h2>
 <p>Il processo con cui i dati entrano dall’Input Layer, vengono moltiplicati per i pesi, sommati, passati nelle funzioni di attivazione livello dopo livello fino ad uscire come risultato finale, si chiama <strong>Forward Propagation</strong>.</p>
 <p>L’onda procede inesorabile solo in avanti (Feed-forward).</p>
 <p>La domanda sorge spontanea: <em>Costruire una rete del genere serve davvero a qualcosa o è solo un esercizio di stile informatico?</em></p>
 </section>
+<section id="tutto-è-un-vettore" class="slide level2 smaller">
+<h2>Tutto è un Vettore</h2>
+<p>Prima del teorema, un cambio di prospettiva che vale per tutto il corso.</p>
+<p>Un’immagine MNIST è <span class="math inline">\(28\times 28\)</span> pixel: <strong>784 numeri</strong>, un vettore <span class="math inline">\(\mathbf{x}\in\mathbb{R}^{784}\)</span>. Un suono è una sequenza di campioni. Un testo diventa numeri (codici, o <em>embedding</em>). Un video è una pila di immagini. Qualunque oggetto, una volta digitalizzato, <strong>è un vettore</strong>.</p>
+<p>E allora <em>classificare</em> — “questa immagine è un 7” — non è altro che una <strong>funzione</strong> <span class="math inline">\(f:\mathbb{R}^{784}\to\mathbb{R}^{10}\)</span>, che al vettore dei pixel associa le dieci uscite, una per cifra. Tradurre una frase, prevedere la parola successiva, diagnosticare da una radiografia: sempre una funzione che manda vettori in vettori. “Ragionare”, in questo senso, è calcolare <span class="math inline">\(f\)</span>.</p>
+<p>Le domande diventano due, e la seconda è tutto il corso:</p>
+<ol type="1">
+<li><strong>Esiste</strong> una rete neurale che calcola <span class="math inline">\(f\)</span>?</li>
+<li>Come si <strong>trovano</strong> i suoi pesi?</li>
+</ol>
+</section>
 <section id="il-teorema-di-approssimazione-universale" class="slide level2 smaller">
 <h2>Il Teorema di Approssimazione Universale</h2>
-<p>La risposta è in uno dei teoremi più strabilianti della matematica moderna, dimostrato da George Cybenko nel 1989.</p>
+<p>Alla prima domanda risponde uno dei teoremi più belli della matematica applicata (Cybenko 1989; Hornik 1991; Leshno et al.&nbsp;1993).</p>
 <blockquote>
-<p><strong>Teorema di Approssimazione Universale:</strong> Una rete neurale feed-forward con <em>un singolo</em> layer nascosto contenente un numero sufficientemente alto di neuroni (con funzione di attivazione non-lineare) può approssimare <em>qualsiasi funzione continua</em> con un grado di precisione arbitrario.</p>
+<p><strong>Teorema.</strong> Sia <span class="math inline">\(f:K\to\mathbb{R}^M\)</span> continua su un compatto <span class="math inline">\(K\subset\mathbb{R}^N\)</span>, e sia <span class="math inline">\(\varphi\)</span> una funzione continua <strong>non polinomiale</strong> (sigmoide, tanh, ReLU…). Per ogni <span class="math inline">\(\varepsilon&gt;0\)</span> esistono un numero <span class="math inline">\(H\)</span> di neuroni nascosti e pesi <span class="math inline">\(\mathbf{W}^{(1)}, \mathbf{b}^{(1)}, \mathbf{W}^{(2)}\)</span> tali che <span class="math display">\[ F(\mathbf{x}) = \mathbf{W}^{(2)}\,\varphi\!\left(\mathbf{W}^{(1)}\mathbf{x}+\mathbf{b}^{(1)}\right) \qquad\text{soddisfi}\qquad \max_{\mathbf{x}\in K}\|F(\mathbf{x})-f(\mathbf{x})\| &lt; \varepsilon . \]</span></p>
 </blockquote>
+<p>Cioè: <strong>un solo strato nascosto</strong>, abbastanza largo, approssima qualunque funzione continua con la precisione che si vuole. La funzione che classifica le cifre, quella che traduce, quella che diagnostica: esistono tutte, dentro questa forma.</p>
 </section>
-<section id="il-potere-dei-dati" class="slide level2 smaller">
-<h2>Il Potere dei Dati</h2>
-<p>Traduciamo il teorema dal matematichese: Se avete un problema logico o fisico governato da regole (riconoscere una voce, guidare un’auto, diagnosticare un tumore), <strong>esiste matematicamente</strong> una configurazione di Pesi in una Rete Neurale in grado di emulare e risolvere quel problema alla perfezione.</p>
-<p>La rete neurale ha la potenza assoluta. Il vostro unico problema è scrivere un algoritmo per “addestrarla” a trovare quei pesi esatti (Backpropagation, che vedremo nelle lezioni finali).</p>
+<section id="lipotesi-che-conta-la-non-linearità" class="slide level2 smaller">
+<h2>L’Ipotesi che Conta: la Non-Linearità</h2>
+<p>Nel teorema c’è un’ipotesi che non si può togliere: <span class="math inline">\(\varphi\)</span> <strong>non polinomiale</strong>, in particolare non lineare.</p>
+<p>Provate a toglierla. Se <span class="math inline">\(\varphi\)</span> fosse lineare, <span class="math inline">\(\varphi(\mathbf{z}) = \mathbf{z}\)</span>, la rete a due strati sarebbe</p>
+<p><span class="math display">\[ F(\mathbf{x}) = \mathbf{W}^{(2)}\left(\mathbf{W}^{(1)}\mathbf{x} + \mathbf{b}^{(1)}\right) = \underbrace{\mathbf{W}^{(2)}\mathbf{W}^{(1)}}_{\text{una sola matrice}}\,\mathbf{x} + \mathbf{W}^{(2)}\mathbf{b}^{(1)} , \]</span></p>
+<p>cioè <strong>un percettrone a singolo strato</strong>: la composizione di due mappe lineari è lineare, e con mille strati lineari si otterrebbe sempre e solo una matrice. Saremmo di nuovo fermi allo XOR.</p>
+<p>È la non-linearità fra gli strati a dare alla composizione più potere dei suoi pezzi, ed è per questo che nel Lab 07 ogni <code>DenseLayer</code> sarà seguito da un layer di attivazione. Le <span class="math inline">\(\varphi\)</span> viste poche slide fa — sigmoide, tanh, ReLU — non erano un dettaglio: erano la condizione perché tutto questo funzioni.</p>
+</section>
+<section id="cosa-il-teorema-non-dice" class="slide level2 smaller">
+<h2>Cosa il Teorema Non Dice</h2>
+<p>Traduciamo dal matematichese. Se avete un problema governato da regole — riconoscere una voce, guidare un’auto, leggere una radiografia — <strong>esiste</strong> una configurazione di pesi che lo risolve con la precisione voluta. La rete neurale, come famiglia di funzioni, non ha limiti di espressività.</p>
+<p>Ma il teorema è di <strong>esistenza</strong>, non di costruzione, e tace su tre cose:</p>
+<ul>
+<li><strong>quanti</strong> neuroni nascosti servono: <span class="math inline">\(H\)</span> può essere enorme, e in pratica conviene <em>più strati</em> stretti che uno solo larghissimo (è il “deep” di Deep Learning);</li>
+<li><strong>come trovare</strong> i pesi: il teorema non dà nessun algoritmo. Questo è il lavoro della <strong>Backpropagation</strong>, la prossima lezione;</li>
+<li><strong>come si comporta</strong> la rete sui dati che non ha visto: approssimare <span class="math inline">\(f\)</span> sui dati di addestramento non garantisce nulla altrove. È il problema della <em>generalizzazione</em>, che incontrerete nel Lab 14 misurando la performance su un <em>test set</em> separato.</li>
+</ul>
 </section>
 <section id="il-problema-computazionale-i-cicli-for" class="slide level2 smaller">
 <h2>Il Problema Computazionale (I Cicli For)</h2>
@@ -412,6 +516,11 @@ Docente
 \mathbf{b} = \begin{bmatrix} 0.1 \\ -0.2 \end{bmatrix}
 \]</span></p>
 </section>
+<section id="lo-schema-della-rete" class="slide level2 smaller">
+<h2>Lo Schema della Rete</h2>
+
+<img data-src="images/mlp_scheme.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>Lo stesso esempio di prima — tre ingressi, due neuroni — visto come circuito: <strong>sei pesi</strong>, uno per freccia. <span class="math inline">\(\omega_{i,j}\)</span> collega il nodo <span class="math inline">\(i\)</span> del layer #1 al nodo <span class="math inline">\(j\)</span> del layer #2: <strong>primo indice la partenza, secondo l’arrivo</strong>, come nel libro di Rashid. E appartengono al <strong>layer #2</strong>, quello che li riceve: nel codice sarà così anche per <code>DenseLayer</code>.</p>
+</section>
 <section id="la-matrice-dei-pesi-w" class="slide level2 smaller">
 <h2>La Matrice dei Pesi (W)</h2>
 <p>Ora il pezzo grosso: I Pesi. Ogni neurone del nostro layer ha 3 frecce in entrata (provenienti da <span class="math inline">\(\mathbf{x}\)</span>). Dato che abbiamo 2 neuroni, in totale ci sono 6 pesi.</p>
@@ -421,7 +530,20 @@ Docente
 w_{11} &amp; w_{12} &amp; w_{13} \\
 w_{21} &amp; w_{22} &amp; w_{23}
 \end{bmatrix}
-\]</span> Ogni <em>riga</em> di questa matrice rappresenta tutti i pesi appartenenti a un singolo neurone del nostro strato.</p>
+\]</span> Ogni <em>riga</em> di questa matrice rappresenta tutti i pesi appartenenti a un singolo neurone del nostro strato: <span class="math inline">\(w_{jk}\)</span> è il peso con cui il neurone <span class="math inline">\(j\)</span> legge l’ingresso <span class="math inline">\(k\)</span>.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Attenzione all’ordine degli indici. Nello schema di prima (e nel libro di Rashid) <span class="math inline">\(\omega_{i,j}\)</span> va <strong>dalla</strong> partenza <span class="math inline">\(i\)</span> <strong>all’</strong>arrivo <span class="math inline">\(j\)</span>; qui invece la <strong>riga</strong> è il neurone d’arrivo, quindi questa <span class="math inline">\(\mathbf{W}\)</span> è la <strong>trasposta</strong> di quella tabella. È lei che serve per moltiplicare, ed è per questo che nel codice si chiamerà <code>Wt</code>.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="lequazione-sacra-del-machine-learning" class="slide level2 smaller">
 <h2>L’Equazione Sacra del Machine Learning</h2>
@@ -458,13 +580,11 @@ w_{21} &amp; w_{22} &amp; w_{23}
 <h2>L’Equazione Ricorsiva Finale</h2>
 <p>L’ultimo passo per ottenere i valori da inviare al livello successivo è applicare la funzione di attivazione a tutto il Vettore Colonna.</p>
 <p><span class="math display">\[ \mathbf{a}^{(L)} = f\left( \mathbf{W}^{(L)} \mathbf{a}^{(L-1)} + \mathbf{b}^{(L)} \right) \]</span></p>
-<p>Questa maestosa equazione racchiude l’intera logica di inferenza (Forward Pass) del Deep Learning moderno.</p>
+<p>Questa equazione racchiude l’intera logica di inferenza (Forward Pass) del Deep Learning moderno.</p>
 <ul>
-<li>Prendi l’Input (<span class="math inline">\(\mathbf{a}^{(L-1)}\)</span>).</li>
-<li>Moltiplica per i Pesi (<span class="math inline">\(\mathbf{W}\)</span>).</li>
-<li>Somma il Bias (<span class="math inline">\(\mathbf{b}\)</span>).</li>
-<li>Schiaccia col Relu (<span class="math inline">\(f\)</span>).</li>
-<li>Invia al prossimo Layer. Ripeti per 100 Layer.</li>
+<li>Prendi l’input (<span class="math inline">\(\mathbf{a}^{(L-1)}\)</span>), moltiplica per i pesi (<span class="math inline">\(\mathbf{W}\)</span>), somma il bias (<span class="math inline">\(\mathbf{b}\)</span>).</li>
+<li>Schiaccia con la funzione di attivazione (<span class="math inline">\(f\)</span> — per noi la sigmoide).</li>
+<li>Invia al prossimo layer, e ripeti.</li>
 </ul>
 <p><a href="../index.html">Torna all’indice</a></p>
 

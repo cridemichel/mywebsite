@@ -6,7 +6,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Docente">
@@ -34,11 +34,79 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -51,6 +119,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -134,7 +203,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Laboratorio 08</h1>
-  <p class="subtitle">Generalizzazione del Framework con i Template</p>
+  <p class="subtitle">Tipi Enumerati, Inizializzazione dei Pesi e Gerarchia delle Attivazioni</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -145,50 +214,205 @@ Docente
 </div>
 
 </section>
-<section id="obiettivo-di-oggi" class="slide level2">
+<section id="soluzione-del-laboratorio-07" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 07</h2>
+<p>Il <code>SigmoidLayer</code>, primo layer senza pesi:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a>Eigen<span class="op">::</span>MatrixXd SigmoidLayer<span class="op">::</span>forward<span class="op">(</span><span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> input<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a aria-label="2"></a>    <span class="cf">return</span> input<span class="op">.</span>array<span class="op">()</span></span>
+<span id="cb1-3"><a aria-label="3"></a>                <span class="op">.</span>unaryExpr<span class="op">([](</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>x<span class="op">));</span> <span class="op">})</span></span>
+<span id="cb1-4"><a aria-label="4"></a>                <span class="op">.</span>matrix<span class="op">();</span></span>
+<span id="cb1-5"><a aria-label="5"></a><span class="op">}</span></span>
+<span id="cb1-6"><a aria-label="6"></a></span>
+<span id="cb1-7"><a aria-label="7"></a>ILayer<span class="op">*</span> SigmoidLayer<span class="op">::</span>clone<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">new</span> SigmoidLayer<span class="op">(*</span><span class="kw">this</span><span class="op">);</span> <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>E il benchmark che ha mostrato l’effetto di <code>-O3</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="kw">auto</span> start <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb2-2"><a aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">10000</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> net<span class="op">.</span>forward<span class="op">(</span>X<span class="op">);</span></span>
+<span id="cb2-3"><a aria-label="3"></a><span class="kw">auto</span> end <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb2-4"><a aria-label="4"></a><span class="kw">auto</span> ms <span class="op">=</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span><span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">).</span>count<span class="op">();</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il tempo dovrebbe essere crollato di un fattore fra 5 e 20: con <code>-O3</code> il compilatore fonde i cicli, elimina le temporanee e usa le istruzioni vettoriali (AVX). Senza, Eigen è più lenta di un <code>for</code> scritto a mano.</p>
+</section>
+<section id="obiettivo-di-oggi" class="slide level2 scrollable">
 <h2>Obiettivo di Oggi</h2>
-<p>Fino ad ora il nostro framework <code>BASIC_NEURAL++</code> ha lavorato esclusivamente in “doppia precisione” usando <code>Eigen::MatrixXd</code> (che equivale a una matrice di <code>double</code>). Oggi implementeremo i <strong>Template C++</strong> (visti a lezione) per permettere all’utente di scegliere: - <code>double</code>: per calcoli ad alta precisione. - <code>float</code>: per dimezzare l’uso della RAM e accelerare l’addestramento.</p>
-</section>
-<section id="task-1-riscrivere-linterfaccia-base" class="slide level2">
-<h2>Task 1: Riscrivere l’interfaccia Base</h2>
-<p>Abbandoniamo <code>ilayer.hpp</code> per creare <code>layer.hpp</code>. Questa non sarà più una semplice interfaccia, ma una classe template astratta che definisce i comportamenti base, avvicinandoci all’architettura finale del framework.</p>
+<p>Finora i pesi erano <code>MatrixXd::Random</code>, cioè uniformi in <span class="math inline">\([-1, 1]\)</span>. È una scelta pessima: con 784 input, la somma di 784 prodotti finisce nell’ordine delle decine, la sigmoide satura e la rete non impara più (Lezione 2).</p>
+<p>Oggi:</p>
 <ol type="1">
-<li>Crea il file <code>layer.hpp</code> e definisci <code>template &lt;typename ntype&gt; class layer</code>.</li>
-<li>Aggiungi le variabili protette <code>Matrix&lt;ntype&gt; outputs;</code> e <code>Matrix&lt;ntype&gt; delta_l;</code>. <em>(Nota: useremo un file alias <code>eigen_wrap.hpp</code> per facilitare il codice)</em>.</li>
-<li>Definisci i metodi virtuali puri <code>forward()</code>, <code>get_type()</code>.</li>
+<li>Un generatore di numeri casuali serio (<code>randnumgen.hpp</code>).</li>
+<li>Inizializzazioni <strong>He</strong> e <strong>Xavier</strong>, selezionate con <code>enum class</code>.</li>
+<li>Una gerarchia per le attivazioni, con <code>TanhLayer</code> accanto a <code>SigmoidLayer</code>.</li>
 </ol>
 </section>
-<section id="task-2-parametriclayer-e-denselayer" class="slide level2">
-<h2>Task 2: ParametricLayer e DenseLayer</h2>
-<p>Per preparare il framework a supportare futuri layer complessi (come i convoluzionali), i layer con pesi derivano da una classe intermedia.</p>
-<ol type="1">
-<li>Crea <code>parametricLayer.hpp</code>.</li>
-<li>Definisci <code>template &lt;typename ntype&gt; class ParametricLayer : public layer&lt;ntype&gt;</code>. Questa classe conterrà il metodo <code>gauss()</code> per il Box-Muller.</li>
-<li>Sposta il codice del tuo vecchio <code>dense_layer.cpp</code> direttamente nell’header <code>parametricLayer.hpp</code> sotto forma di <code>template &lt;typename ntype&gt; class DenseLayer : public ParametricLayer&lt;ntype&gt;</code>. <em>(Ricorda: le classi template vanno implementate interamente nell’header file!)</em></li>
-</ol>
+<section id="perché-linizializzazione-conta" class="slide level2 smaller">
+<h2>Perché l’inizializzazione conta</h2>
+<p>La regola è mantenere la <strong>varianza del segnale</strong> costante attraversando i layer. Se cresce, le attivazioni saturano; se decresce, il segnale si spegne.</p>
+<p>Due ricette, ognuna tarata su una famiglia di attivazioni:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>pensata per</th>
+<th>scala <span class="math inline">\(s\)</span> (gaussiana)</th>
+<th>scala <span class="math inline">\(s\)</span> (uniforme)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>He</strong> (Kaiming)</td>
+<td>ReLU e varianti</td>
+<td><span class="math inline">\(\sqrt{2 / N_{in}}\)</span></td>
+<td><span class="math inline">\(\sqrt{6 / N_{in}}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Xavier</strong> (Glorot)</td>
+<td>sigmoide, tanh</td>
+<td><span class="math inline">\(\sqrt{2/(N_{in}+N_{out})}\)</span></td>
+<td><span class="math inline">\(\sqrt{6/(N_{in}+N_{out})}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Nel caso gaussiano si estrae da una normale di deviazione standard <span class="math inline">\(s\)</span>; nel caso uniforme da <span class="math inline">\([-s, +s]\)</span>.</p>
 </section>
-<section id="task-3-le-attivazioni-header-only" class="slide level2">
-<h2>Task 3: Le Attivazioni Header-Only</h2>
-<ol type="1">
-<li>Crea <code>activation_layers.hpp</code>.</li>
-<li>Riscrivi <code>ActivationLayer</code>, <code>SigmoidLayer</code> e <code>tanhLayer</code> (tutti template su <code>ntype</code>).</li>
-<li>Fai ereditare <code>ActivationLayer&lt;ntype&gt;</code> direttamente da <code>layer&lt;ntype&gt;</code>.</li>
-<li>Nel <code>forward()</code>, usa i metodi nativi di Eigen in versione “Type Safe”: es. per la sigmoide: <code>static_cast&lt;ntype&gt;(1.0) / (static_cast&lt;ntype&gt;(1.0) + ((-inp.array()).exp()))</code>.</li>
-</ol>
+<section id="task-1-il-generatore-randnumgen" class="slide level2 smaller">
+<h2>Task 1: Il generatore <code>randnumgen</code></h2>
+<p>Aggiungete al progetto <code>randnumgen.hpp</code> (fornito dal docente). Espone un oggetto globale <code>rng</code> basato su Mersenne Twister a 64 bit:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a>rng<span class="op">.</span>seed<span class="op">(</span><span class="dv">42</span><span class="op">);</span>     <span class="co">// seme fisso: esperimenti riproducibili</span></span>
+<span id="cb3-2"><a aria-label="2"></a>rng<span class="op">.</span>rseed<span class="op">();</span>      <span class="co">// seme casuale da std::random_device</span></span>
+<span id="cb3-3"><a aria-label="3"></a>rng<span class="op">.</span>ranf<span class="op">();</span>       <span class="co">// un double in [0.0, 1.0)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Durante lo sviluppo usate <strong>sempre</strong> <code>rng.seed(42)</code>: se i pesi iniziali cambiano a ogni esecuzione non potete distinguere un bug da una fluttuazione statistica.</p>
+</div>
+</div>
+</div>
 </section>
-<section id="task-4-aggiornare-il-container-e-testare" class="slide level2">
-<h2>Task 4: Aggiornare il Container e Testare</h2>
-<ol type="1">
-<li>Rinominare <code>sequential_network</code> in <code>sequential.hpp</code>.</li>
-<li>Trasforma la classe in <code>template &lt;typename ntype&gt; class Sequential : public layer&lt;ntype&gt;</code>.</li>
-<li>L’array dinamico diventerà <code>layer&lt;ntype&gt;** layers;</code>. Mantieni per ora la gestione della memoria manuale (Regola del 3).</li>
-<li>Nel <code>main.cpp</code>, prova a instanziare due reti:
-<ul>
-<li><code>Sequential&lt;double&gt; net64;</code></li>
-<li><code>Sequential&lt;float&gt; net32;</code></li>
-</ul></li>
-<li>Verifica che compilino entrambe senza errori.</li>
-</ol>
+<section id="task-2-gli-enum-class" class="slide level2 smaller">
+<h2>Task 2: Gli <code>enum class</code></h2>
+<p>In <code>dense_layer.hpp</code>, <strong>fuori</strong> dalla classe:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="co">// Gli enum class evitano i "magic numbers" sparsi nel codice</span></span>
+<span id="cb4-2"><a aria-label="2"></a><span class="kw">enum</span> <span class="kw">class</span> InitType   <span class="op">{</span> HE<span class="op">,</span> XAVIER <span class="op">};</span></span>
+<span id="cb4-3"><a aria-label="3"></a><span class="kw">enum</span> <span class="kw">class</span> DistroType <span class="op">{</span> UNIFORM<span class="op">,</span> GAUSSIAN <span class="op">};</span></span>
+<span id="cb4-4"><a aria-label="4"></a></span>
+<span id="cb4-5"><a aria-label="5"></a><span class="kw">class</span> DenseLayer <span class="op">:</span> <span class="kw">public</span> ILayer <span class="op">{</span></span>
+<span id="cb4-6"><a aria-label="6"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb4-7"><a aria-label="7"></a>    Eigen<span class="op">::</span>MatrixXd weights<span class="op">;</span></span>
+<span id="cb4-8"><a aria-label="8"></a>    Eigen<span class="op">::</span>MatrixXd biases<span class="op">;</span></span>
+<span id="cb4-9"><a aria-label="9"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb4-10"><a aria-label="10"></a>    DenseLayer<span class="op">(</span><span class="dt">int</span> input_size<span class="op">,</span> <span class="dt">int</span> output_size<span class="op">,</span></span>
+<span id="cb4-11"><a aria-label="11"></a>               InitType   init   <span class="op">=</span> InitType<span class="op">::</span>HE<span class="op">,</span></span>
+<span id="cb4-12"><a aria-label="12"></a>               DistroType distro <span class="op">=</span> DistroType<span class="op">::</span>UNIFORM<span class="op">);</span></span>
+<span id="cb4-13"><a aria-label="13"></a>    <span class="co">// ...</span></span>
+<span id="cb4-14"><a aria-label="14"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Con <code>int type, int distro</code> nessuno vi impedirebbe di passare <code>3</code>, o di invertire i due argomenti. Con <code>enum class</code> il compilatore rifiuta entrambi gli errori: è questo il significato di <em>type safe</em>.</p>
+</section>
+<section id="task-3-box-muller-e-il-costruttore" class="slide level2 smaller">
+<h2>Task 3: Box-Muller e il costruttore</h2>
+<p><code>rng.ranf()</code> genera numeri <strong>uniformi</strong>. Per averli gaussiani serve la trasformazione di Box-Muller:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="at">static</span> <span class="dt">double</span> gauss<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb5-2"><a aria-label="2"></a>    <span class="dt">double</span> x1<span class="op">,</span> x2<span class="op">;</span></span>
+<span id="cb5-3"><a aria-label="3"></a>    <span class="cf">do</span> <span class="op">{</span> x1 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span> x2 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span> <span class="op">}</span> <span class="cf">while</span> <span class="op">(</span>x1 <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> x2 <span class="op">==</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb5-4"><a aria-label="4"></a>    <span class="cf">return</span> <span class="bu">std::</span>cos<span class="op">(</span><span class="dv">2</span> <span class="op">*</span> M_PI <span class="op">*</span> x2<span class="op">)</span> <span class="op">*</span> <span class="bu">std::</span>sqrt<span class="op">(-</span><span class="fl">2.0</span> <span class="op">*</span> <span class="bu">std::</span>log<span class="op">(</span>x1<span class="op">));</span></span>
+<span id="cb5-5"><a aria-label="5"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il <code>do/while</code> esclude lo zero: <code>std::log(0)</code> è <span class="math inline">\(-\infty\)</span>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a>DenseLayer<span class="op">::</span>DenseLayer<span class="op">(</span><span class="dt">int</span> input_size<span class="op">,</span> <span class="dt">int</span> output_size<span class="op">,</span></span>
+<span id="cb6-2"><a aria-label="2"></a>                       InitType init<span class="op">,</span> DistroType distro<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-3"><a aria-label="3"></a>    weights <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Zero<span class="op">(</span>output_size<span class="op">,</span> input_size<span class="op">);</span></span>
+<span id="cb6-4"><a aria-label="4"></a>    biases  <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Zero<span class="op">(</span>output_size<span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb6-5"><a aria-label="5"></a>    rng<span class="op">.</span>rseed<span class="op">();</span></span>
+<span id="cb6-6"><a aria-label="6"></a></span>
+<span id="cb6-7"><a aria-label="7"></a>    <span class="dt">double</span> s <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb6-8"><a aria-label="8"></a>    <span class="cf">switch</span> <span class="op">(</span>init<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-9"><a aria-label="9"></a>        <span class="cf">case</span> InitType<span class="op">::</span>HE<span class="op">:</span></span>
+<span id="cb6-10"><a aria-label="10"></a>            s <span class="op">=</span> <span class="op">(</span>distro <span class="op">==</span> DistroType<span class="op">::</span>UNIFORM<span class="op">)</span> <span class="op">?</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">6.0</span> <span class="op">/</span> input_size<span class="op">)</span></span>
+<span id="cb6-11"><a aria-label="11"></a>                                                <span class="op">:</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">2.0</span> <span class="op">/</span> input_size<span class="op">);</span></span>
+<span id="cb6-12"><a aria-label="12"></a>            <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb6-13"><a aria-label="13"></a>        <span class="cf">case</span> InitType<span class="op">::</span>XAVIER<span class="op">:</span></span>
+<span id="cb6-14"><a aria-label="14"></a>            s <span class="op">=</span> <span class="op">(</span>distro <span class="op">==</span> DistroType<span class="op">::</span>UNIFORM<span class="op">)</span></span>
+<span id="cb6-15"><a aria-label="15"></a>                    <span class="op">?</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">6.0</span> <span class="op">/</span> <span class="op">(</span>input_size <span class="op">+</span> output_size<span class="op">))</span></span>
+<span id="cb6-16"><a aria-label="16"></a>                    <span class="op">:</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">2.0</span> <span class="op">/</span> <span class="op">(</span>input_size <span class="op">+</span> output_size<span class="op">));</span></span>
+<span id="cb6-17"><a aria-label="17"></a>            <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb6-18"><a aria-label="18"></a>    <span class="op">}</span></span>
+<span id="cb6-19"><a aria-label="19"></a></span>
+<span id="cb6-20"><a aria-label="20"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> weights<span class="op">.</span>rows<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb6-21"><a aria-label="21"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> weights<span class="op">.</span>cols<span class="op">();</span> <span class="op">++</span>j<span class="op">)</span></span>
+<span id="cb6-22"><a aria-label="22"></a>            weights<span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">=</span> <span class="op">(</span>distro <span class="op">==</span> DistroType<span class="op">::</span>UNIFORM<span class="op">)</span></span>
+<span id="cb6-23"><a aria-label="23"></a>                <span class="op">?</span> <span class="fl">2.0</span> <span class="op">*</span> s <span class="op">*</span> <span class="op">(</span>rng<span class="op">.</span>ranf<span class="op">()</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span>   <span class="co">// [0,1) -&gt; [-s, +s)</span></span>
+<span id="cb6-24"><a aria-label="24"></a>                <span class="op">:</span> s <span class="op">*</span> gauss<span class="op">();</span></span>
+<span id="cb6-25"><a aria-label="25"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il vantaggio dello <code>switch</code> su <code>enum class</code>: se domani aggiungete <code>InitType::LECUN</code>, il compilatore vi avverte che manca un caso.</p>
+</section>
+<section id="task-4-la-gerarchia-delle-attivazioni" class="slide level2 smaller">
+<h2>Task 4: La gerarchia delle attivazioni</h2>
+<p>In <code>activation_layer.hpp</code>, inseriamo una classe intermedia fra <code>ILayer</code> e i layer concreti:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="co">// Classe base astratta per raggruppare tutte le attivazioni</span></span>
+<span id="cb7-2"><a aria-label="2"></a><span class="kw">class</span> ActivationLayer <span class="op">:</span> <span class="kw">public</span> ILayer <span class="op">{</span></span>
+<span id="cb7-3"><a aria-label="3"></a>    <span class="co">// Per ora vuota: diventerà utile con i template</span></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="op">};</span></span>
+<span id="cb7-5"><a aria-label="5"></a></span>
+<span id="cb7-6"><a aria-label="6"></a><span class="kw">class</span> SigmoidLayer <span class="op">:</span> <span class="kw">public</span> ActivationLayer <span class="op">{</span></span>
+<span id="cb7-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb7-8"><a aria-label="8"></a>    SigmoidLayer<span class="op">()</span> <span class="op">=</span> <span class="cf">default</span><span class="op">;</span></span>
+<span id="cb7-9"><a aria-label="9"></a>    Eigen<span class="op">::</span>MatrixXd forward<span class="op">(</span><span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> input<span class="op">)</span> <span class="kw">override</span><span class="op">;</span></span>
+<span id="cb7-10"><a aria-label="10"></a>    ILayer<span class="op">*</span> clone<span class="op">()</span> <span class="at">const</span> <span class="kw">override</span><span class="op">;</span></span>
+<span id="cb7-11"><a aria-label="11"></a><span class="op">};</span></span>
+<span id="cb7-12"><a aria-label="12"></a></span>
+<span id="cb7-13"><a aria-label="13"></a><span class="kw">class</span> TanhLayer <span class="op">:</span> <span class="kw">public</span> ActivationLayer <span class="op">{</span></span>
+<span id="cb7-14"><a aria-label="14"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb7-15"><a aria-label="15"></a>    TanhLayer<span class="op">()</span> <span class="op">=</span> <span class="cf">default</span><span class="op">;</span></span>
+<span id="cb7-16"><a aria-label="16"></a>    Eigen<span class="op">::</span>MatrixXd forward<span class="op">(</span><span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> input<span class="op">)</span> <span class="kw">override</span><span class="op">;</span></span>
+<span id="cb7-17"><a aria-label="17"></a>    ILayer<span class="op">*</span> clone<span class="op">()</span> <span class="at">const</span> <span class="kw">override</span><span class="op">;</span></span>
+<span id="cb7-18"><a aria-label="18"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sembra inutile una classe vuota, ma serve a <strong>distinguere una categoria</strong>: fra poco vorremo salvare il modello su file e chiedere “questo layer ha pesi da salvare?”. La risposta sarà data dal ramo della gerarchia, non da un <code>if</code>.</p>
+<p>La <code>tanh</code> in Eigen è diretta:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>Eigen<span class="op">::</span>MatrixXd TanhLayer<span class="op">::</span>forward<span class="op">(</span><span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> input<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-2"><a aria-label="2"></a>    <span class="cf">return</span> input<span class="op">.</span>array<span class="op">().</span>tanh<span class="op">().</span>matrix<span class="op">();</span></span>
+<span id="cb8-3"><a aria-label="3"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="task-5-il-test" class="slide level2 smaller">
+<h2>Task 5: Il Test</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a>SequentialNetwork net<span class="op">(</span><span class="dv">4</span><span class="op">);</span></span>
+<span id="cb9-2"><a aria-label="2"></a></span>
+<span id="cb9-3"><a aria-label="3"></a><span class="co">// Niente numeri magici: la sintassi dice cosa sta accadendo</span></span>
+<span id="cb9-4"><a aria-label="4"></a>net<span class="op">.</span>add<span class="op">(</span><span class="kw">new</span> DenseLayer<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">128</span><span class="op">,</span> InitType<span class="op">::</span>HE<span class="op">,</span>     DistroType<span class="op">::</span>GAUSSIAN<span class="op">));</span></span>
+<span id="cb9-5"><a aria-label="5"></a>net<span class="op">.</span>add<span class="op">(</span><span class="kw">new</span> SigmoidLayer<span class="op">());</span></span>
+<span id="cb9-6"><a aria-label="6"></a>net<span class="op">.</span>add<span class="op">(</span><span class="kw">new</span> DenseLayer<span class="op">(</span><span class="dv">128</span><span class="op">,</span>  <span class="dv">10</span><span class="op">,</span> InitType<span class="op">::</span>XAVIER<span class="op">,</span> DistroType<span class="op">::</span>UNIFORM<span class="op">));</span></span>
+<span id="cb9-7"><a aria-label="7"></a>net<span class="op">.</span>add<span class="op">(</span><span class="kw">new</span> TanhLayer<span class="op">());</span></span>
+<span id="cb9-8"><a aria-label="8"></a></span>
+<span id="cb9-9"><a aria-label="9"></a>Eigen<span class="op">::</span>MatrixXd X <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb9-10"><a aria-label="10"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> net<span class="op">.</span>forward<span class="op">(</span>X<span class="op">).</span>transpose<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Verifica quantitativa</strong>: stampate la deviazione standard dei pesi del primo layer con <code>net</code>… ovvero, dal <code>DenseLayer</code> direttamente:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a>DenseLayer l<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">128</span><span class="op">,</span> InitType<span class="op">::</span>HE<span class="op">,</span> DistroType<span class="op">::</span>GAUSSIAN<span class="op">);</span></span>
+<span id="cb10-2"><a aria-label="2"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"std dei pesi: "</span></span>
+<span id="cb10-3"><a aria-label="3"></a>          <span class="op">&lt;&lt;</span> <span class="bu">std::</span>sqrt<span class="op">((</span>l<span class="op">.</span>getWeights<span class="op">().</span>array<span class="op">()</span> <span class="op">-</span> l<span class="op">.</span>getWeights<span class="op">().</span>mean<span class="op">())</span></span>
+<span id="cb10-4"><a aria-label="4"></a>                       <span class="op">.</span>square<span class="op">().</span>sum<span class="op">()</span> <span class="op">/</span> l<span class="op">.</span>getWeights<span class="op">().</span>size<span class="op">())</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb10-5"><a aria-label="5"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"attesa: "</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">2.0</span> <span class="op">/</span> <span class="dv">784</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I due numeri devono coincidere a meno del 5%: è la prova che l’inizializzazione fa quello che dice.</p>
+<p>Notate anche che l’output finale ora sta in <span class="math inline">\((-1, 1)\)</span> e non in <span class="math inline">\((0, 1)\)</span>: l’ultimo layer è una <code>tanh</code>.</p>
+</section>
+<section id="task-da-completare" class="slide level2 smaller scrollable">
+<h2>Task da Completare</h2>
+<ul class="task-list">
+<li><label><input type="checkbox">Aggiungere <code>randnumgen.hpp</code> e usare <code>rng.seed(42)</code> per la riproducibilità</label></li>
+<li><label><input type="checkbox">Dichiarare <code>enum class InitType</code> e <code>enum class DistroType</code></label></li>
+<li><label><input type="checkbox">Modificare il costruttore di <code>DenseLayer</code> per accettarli come argomenti di default</label></li>
+<li><label><input type="checkbox">Implementare <code>gauss()</code> con Box-Muller (attenzione al <code>do/while</code> sullo zero)</label></li>
+<li><label><input type="checkbox">Calcolare la scala <span class="math inline">\(s\)</span> con uno <code>switch</code> su <code>InitType</code></label></li>
+<li><label><input type="checkbox">Creare <code>ActivationLayer</code> come base astratta e farne derivare <code>SigmoidLayer</code></label></li>
+<li><label><input type="checkbox">Aggiungere <code>TanhLayer</code> con <code>.array().tanh().matrix()</code></label></li>
+<li><label><input type="checkbox">Verificare che la deviazione standard dei pesi coincida con <span class="math inline">\(\sqrt{2/N_{in}}\)</span></label></li>
+<li><label><input type="checkbox"><strong>Esperimento</strong>: inizializzate con <code>MatrixXd::Random</code> e confrontate quanti neuroni saturano</label></li>
+</ul>
 <p><strong>La soluzione di riferimento verrà discussa all’inizio della prossima lezione.</strong></p>
 <p><a href="../index.html">Torna all’indice</a></p>
 
@@ -196,8 +420,9 @@ Docente
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
 <div class="footer footer-default">
-
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
 </div>
 </div></div>
 
@@ -208,6 +433,7 @@ Docente
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -229,7 +455,8 @@ Docente
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -250,7 +477,7 @@ Docente
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -355,14 +582,14 @@ Docente
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'convex',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: 'fade',
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
@@ -400,7 +627,7 @@ Docente
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
           RevealNotes,

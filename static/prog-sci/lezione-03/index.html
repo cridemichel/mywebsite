@@ -136,7 +136,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 3</h1>
-  <p class="subtitle">Teoria Deep Learning: Loss, Backpropagation e Ottimizzatori</p>
+  <p class="subtitle">Deep Learning — Loss, Backpropagation e Ottimizzatori</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -147,14 +147,14 @@ Docente
 </div>
 
 </section>
-<section id="argomenti-di-oggi" class="slide level2">
+<section id="argomenti-di-oggi" class="slide level2 smaller">
 <h2>Argomenti di Oggi</h2>
 <ul>
 <li>La Funzione Costo (MSE)</li>
 <li>Gradient Descent</li>
-<li>Backpropagation e Regola della Catena</li>
+<li>Backpropagation: la regola della catena, i <span class="math inline">\(\boldsymbol{\delta}\)</span> e le due formule</li>
 <li>Il Batching</li>
-<li>Ottimizzatori: Momentum e Adam</li>
+<li>Ottimizzatori: dalla discesa semplice ad Adam</li>
 </ul>
 </section>
 <section id="minimizzare-lerrore-loss-function" class="slide level2 smaller">
@@ -171,8 +171,8 @@ Docente
 </section>
 <section id="lobiettivo-matematico" class="slide level2 smaller">
 <h2>L’Obiettivo Matematico</h2>
-<p>Il nostro obiettivo supremo diventa: <strong>Trovare i valori della Matrice dei Pesi <span class="math inline">\(\mathbf{W}\)</span> e del Bias <span class="math inline">\(\mathbf{b}\)</span> in modo tale che il valore <span class="math inline">\(E\)</span> diventi zero.</strong></p>
-<p>La nostra Rete Neurale potrebbe avere 100 Layer e <span class="math inline">\(10.000.000\)</span> di pesi. L’equazione <span class="math inline">\(E = f(\mathbf{W}_{1..100})\)</span> è un grafico a 10 Milioni di dimensioni.</p>
+<p>Il nostro obiettivo diventa: <strong>trovare i pesi <span class="math inline">\(\mathbf{W}^{(\ell)}\)</span> e i bias <span class="math inline">\(\mathbf{b}^{(\ell)}\)</span> che rendono <span class="math inline">\(E\)</span> il più piccolo possibile.</strong> (Non zero: una rete che azzera l’errore sui dati di addestramento di solito ha solo imparato a memoria — ne riparleremo col <em>test set</em>.)</p>
+<p>Una rete con 100 strati può avere <span class="math inline">\(10^7\)</span> pesi, e <span class="math display">\[ E = E\!\left(\mathbf{W}^{(1)}, \dots, \mathbf{W}^{(100)}\right) \]</span> è una superficie in uno spazio a dieci milioni di dimensioni.</p>
 <p>Come troviamo il punto più basso di questa immensa vallata?</p>
 </section>
 <section id="lescursionista-bendato" class="slide level2 smaller">
@@ -187,40 +187,105 @@ Docente
 <p><span class="math display">\[ \mathbf{W}_{new} = \mathbf{W}_{old} - \eta \frac{\partial E}{\partial \mathbf{W}} \]</span></p>
 <p>Dove <span class="math inline">\(\eta\)</span> è il <strong>Learning Rate</strong> (quanto è lungo il passo dell’escursionista bendato). Se il passo è troppo lungo, cadrete in un burrone. Se è troppo corto, ci metterete secoli ad arrivare a valle.</p>
 </section>
+<section id="gradient-descent-visualizzazione" class="slide level2">
+<h2>Gradient Descent — Visualizzazione</h2>
+
+<img data-src="images/gradient_descent.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"></section>
 <section id="il-paradosso-della-rete-profonda" class="slide level2 smaller">
 <h2>Il Paradosso della Rete Profonda</h2>
-<p>Calcolare il gradiente <span class="math inline">\(\frac{\partial E}{\partial \mathbf{W}}\)</span> per il Layer finale (Output) è facile: basta calcolare la derivata della MSE!</p>
-<p>Ma come facciamo a calcolare l’errore del peso numero <code>W_732</code> situato nel <strong>Layer 2</strong>, nascosto nel profondo della Rete Neurale? La funzione Costo <span class="math inline">\(E\)</span> si calcola solo all’uscita del Layer 100!</p>
-<p>È qui che entra in gioco l’algoritmo che ha reso possibile il Deep Learning: la <strong>Backpropagation</strong> (Retro-propagazione dell’Errore).</p>
-</section>
-<section id="la-backpropagation-regola-della-catena" class="slide level2 smaller">
-<h2>La Backpropagation (Regola della Catena)</h2>
-<p>La soluzione si basa sul Teorema della Funzione Composta (Regola della Catena) di Leibniz.</p>
+<p>Calcolare il gradiente <span class="math inline">\(\partial E/\partial \mathbf{W}\)</span> per l’<strong>ultimo</strong> strato è facile: basta la derivata della MSE. Ma prendete un peso del <strong>primo</strong> strato — per esempio <span class="math inline">\(W^{(1)}_{57,\,432}\)</span>, quello con cui il neurone nascosto 57 legge il pixel 432. Quanto vale <span class="math inline">\(\partial E / \partial W^{(1)}_{57,\,432}\)</span>, se <span class="math inline">\(E\)</span> si misura solo all’uscita, uno strato più in là? E in una rete di cento strati, cento strati più in là?</p>
+<p>La soluzione è il Teorema della Funzione Composta (Regola della Catena) di Leibniz.</p>
 <blockquote>
 <p>L’errore finale è causato dall’output del Layer 100. Ma l’output del Layer 100 è causato dal Layer 99. A sua volta causato dal 98… giù fino al Layer 1.</p>
 </blockquote>
-<p>La <strong>Backpropagation</strong> prende il Delta dell’errore finale e lo <em>Propaga all’indietro</em>, strato per strato, calcolando quanta percentuale di colpa ha avuto ogni singolo neurone.</p>
+<p>La <strong>Backpropagation</strong> prende il Delta dell’errore finale e lo <em>Propaga all’indietro</em>, strato per strato, calcolando quanta colpa ha avuto ogni singolo neurone. È l’algoritmo che ha reso possibile il Deep Learning: ora lo deriviamo.</p>
+</section>
+<section id="backpropagation-computation-graph" class="slide level2">
+<h2>Backpropagation — Computation Graph</h2>
+
+<img data-src="images/backprop.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section>
+<section id="notazione-tre-vettori-per-ogni-strato" class="slide level2 smaller">
+<h2>Notazione: tre vettori per ogni strato</h2>
+<p>Numeriamo gli strati <span class="math inline">\(\ell = 1, \dots, L\)</span> e chiamiamo <span class="math inline">\(\mathbf{a}^{(0)} = \mathbf{x}\)</span> l’ingresso. Ogni strato produce due vettori:</p>
+<p><span class="math display">\[ \mathbf{z}^{(\ell)} = \mathbf{W}^{(\ell)}\mathbf{a}^{(\ell-1)} + \mathbf{b}^{(\ell)}, \qquad \mathbf{a}^{(\ell)} = \sigma\!\left(\mathbf{z}^{(\ell)}\right) \]</span></p>
+<p><span class="math inline">\(\mathbf{z}\)</span> è la <strong>pre-attivazione</strong>, <span class="math inline">\(\mathbf{a}\)</span> l’<strong>attivazione</strong>; per componenti, con la convenzione della Lezione 2 (<span class="math inline">\(j\)</span> = arrivo, <span class="math inline">\(k\)</span> = ingresso), <span class="math inline">\(z^{(\ell)}_j = \sum_k W^{(\ell)}_{jk}\, a^{(\ell-1)}_k + b^{(\ell)}_j\)</span>. Il terzo vettore è la definizione su cui poggia tutto:</p>
+<p><span class="math display">\[ \delta^{(\ell)}_j \;\equiv\; \frac{\partial E}{\partial z^{(\ell)}_j} \]</span></p>
+<p>cioè <em>quanto cambia l’errore se sposto di poco la pre-attivazione del neurone <span class="math inline">\(j\)</span></em>: la sua <strong>colpa</strong>. La backpropagation è un modo efficiente di calcolare tutti i <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span>. (Nel framework <span class="math inline">\(\mathbf{b} = 0\)</span>: le formule valgono togliendolo.)</p>
+</section>
+<section id="passo-1-il-gradiente-dei-pesi" class="slide level2 smaller">
+<h2>Passo 1: il gradiente dei pesi</h2>
+<p>Il peso <span class="math inline">\(W^{(\ell)}_{jk}\)</span> influenza <span class="math inline">\(E\)</span> <strong>solo</strong> attraverso <span class="math inline">\(z^{(\ell)}_j\)</span>: è l’unica pre-attivazione in cui compare. Regola della catena:</p>
+<p><span class="math display">\[ \frac{\partial E}{\partial W^{(\ell)}_{jk}} = \frac{\partial E}{\partial z^{(\ell)}_j}\,\frac{\partial z^{(\ell)}_j}{\partial W^{(\ell)}_{jk}} = \delta^{(\ell)}_j\, a^{(\ell-1)}_k , \]</span></p>
+<p>perché nella somma <span class="math inline">\(z^{(\ell)}_j = \sum_k W^{(\ell)}_{jk} a^{(\ell-1)}_k\)</span> il peso <span class="math inline">\(W_{jk}\)</span> moltiplica solo <span class="math inline">\(a_k\)</span>. In forma matriciale è un <strong>prodotto colonna per riga</strong>:</p>
+<p><span class="math display">\[ \frac{\partial E}{\partial \mathbf{W}^{(\ell)}} = \boldsymbol{\delta}^{(\ell)} \left(\mathbf{a}^{(\ell-1)}\right)^{T}, \qquad \frac{\partial E}{\partial \mathbf{b}^{(\ell)}} = \boldsymbol{\delta}^{(\ell)} . \]</span></p>
+<p>Le dimensioni tornano: <span class="math inline">\((N_\ell \times 1)(1 \times N_{\ell-1})\)</span>, la forma di <span class="math inline">\(\mathbf{W}^{(\ell)}\)</span>. Ogni elemento <span class="math inline">\((j,k)\)</span> è “colpa del neurone <span class="math inline">\(j\)</span>” per “quanto era acceso l’ingresso <span class="math inline">\(k\)</span>”: un ingresso spento non può far cambiare il suo peso. Il problema si è ridotto a <strong>calcolare i <span class="math inline">\(\boldsymbol{\delta}\)</span></strong>, uno strato alla volta.</p>
+</section>
+<section id="passo-2-lultimo-strato" class="slide level2 smaller">
+<h2>Passo 2: l’ultimo strato</h2>
+<p>All’uscita <span class="math inline">\(E\)</span> dipende da <span class="math inline">\(z^{(L)}_j\)</span> solo attraverso <span class="math inline">\(a^{(L)}_j = \sigma(z^{(L)}_j)\)</span>:</p>
+<p><span class="math display">\[ \delta^{(L)}_j = \frac{\partial E}{\partial a^{(L)}_j}\,\sigma'\!\left(z^{(L)}_j\right)
+\qquad\Longrightarrow\qquad
+\boldsymbol{\delta}^{(L)} = \nabla_{\mathbf{a}} E \odot \sigma'\!\left(\mathbf{z}^{(L)}\right) \]</span></p>
+<p>dove <span class="math inline">\(\odot\)</span> è il prodotto <strong>componente per componente</strong>. Con la MSE, <span class="math inline">\(E = \sum_j (a^{(L)}_j - y_j)^2\)</span>, il primo fattore è <span class="math inline">\(2\,(\mathbf{a}^{(L)} - \mathbf{y})\)</span>: l’errore, con il segno che dice in che verso correggere.</p>
+<p>Questo è il punto di partenza. È anche l’unico posto in cui la <em>loss</em> entra nel calcolo: da qui in giù la backpropagation non sa più quale loss stiamo usando — ed è per questo che nel framework la loss è una classe separata, con il suo <code>backward</code> che restituisce proprio <span class="math inline">\(\nabla_{\mathbf{a}} E\)</span>.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>La slide sulla MSE aveva un fattore <span class="math inline">\(1/n\)</span>; il framework lo omette. Un fattore costante moltiplica tutto il gradiente e si riassorbe nel learning rate <span class="math inline">\(\eta\)</span>.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="il-problema-dellinversione" class="slide level2 smaller">
 <h2>Il Problema dell’Inversione</h2>
-<p>Nel <em>Forward Pass</em>, viaggiavamo in avanti usando l’Algebra Lineare: <span class="math display">\[ \mathbf{z} = \mathbf{W} \cdot \mathbf{x} + \mathbf{b} \]</span></p>
-<p>Ora l’errore fluisce <strong>al contrario</strong>. Dobbiamo rimandare indietro l’errore attraversando la Matrice <span class="math inline">\(\mathbf{W}\)</span>. L’istinto (sbagliato) di un informatico sarebbe usare l’Inversa della Matrice (<span class="math inline">\(\mathbf{W}^{-1}\)</span>).</p>
-<p><strong>Questo distruggerebbe il mondo.</strong> Le matrici inverse sono lentissime da calcolare e matematicamente impossibili se la matrice non è quadrata perfetta!</p>
+<p>Abbiamo <span class="math inline">\(\boldsymbol{\delta}^{(L)}\)</span>. Ci serve <span class="math inline">\(\boldsymbol{\delta}^{(L-1)}\)</span>, poi <span class="math inline">\(\boldsymbol{\delta}^{(L-2)}\)</span>, fino al primo strato. Nel <em>forward pass</em> l’informazione ha attraversato <span class="math inline">\(\mathbf{W}\)</span> in avanti: <span class="math display">\[ \mathbf{z} = \mathbf{W} \cdot \mathbf{x} + \mathbf{b} \]</span></p>
+<p>Ora l’errore deve fluire <strong>al contrario</strong>, attraversando la stessa matrice. L’istinto (sbagliato) sarebbe usare l’inversa <span class="math inline">\(\mathbf{W}^{-1}\)</span>.</p>
+<p><strong>Sarebbe un disastro.</strong> Le inverse sono lentissime da calcolare, numericamente instabili, e semplicemente non esistono se <span class="math inline">\(\mathbf{W}\)</span> non è quadrata — e <span class="math inline">\(\mathbf{W}\)</span> quasi mai lo è: <span class="math inline">\(784 \to 200\)</span> non si inverte.</p>
+<p>Per fortuna non serve invertire nulla: basta fare il conto.</p>
 </section>
-<section id="la-magia-della-matrice-trasposta" class="slide level2 smaller">
-<h2>La Magia della Matrice Trasposta</h2>
-<blockquote>
-<p>[!TIP] IL SEGRETO DELL’ALGEBRA LINEARE</p>
-</blockquote>
-<p>La matematica superiore ci dice che per invertire la direzione del flusso in un grafo bipartito non serve l’inversa, serve solo scambiare le righe con le colonne. <strong>Serve la Matrice Trasposta <span class="math inline">\(\mathbf{W}^T\)</span> !</strong></p>
-<p>La formula magica per propagare il vettore dell’Errore <span class="math inline">\(\boldsymbol{\delta}\)</span> al layer precedente è elegantissima:</p>
-<p><span class="math display">\[ \boldsymbol{\delta}^{(L-1)} = \left( (\mathbf{W}^{(L)})^T \boldsymbol{\delta}^{(L)} \right) \odot f'(\mathbf{z}^{(L-1)}) \]</span></p>
-<p>È istantanea. Scalabile. Parallela.</p>
+<section id="passo-3-il-passo-ricorsivo" class="slide level2 smaller">
+<h2>Passo 3: il passo ricorsivo</h2>
+<p><span class="math inline">\(z^{(\ell)}_j\)</span> influenza <span class="math inline">\(E\)</span> attraverso <strong>tutte</strong> le pre-attivazioni dello strato successivo, <span class="math inline">\(z^{(\ell+1)}_k\)</span>. Regola della catena con una somma:</p>
+<p><span class="math display">\[ \delta^{(\ell)}_j = \sum_k \frac{\partial E}{\partial z^{(\ell+1)}_k}\,\frac{\partial z^{(\ell+1)}_k}{\partial z^{(\ell)}_j} = \sum_k \delta^{(\ell+1)}_k\,\frac{\partial z^{(\ell+1)}_k}{\partial z^{(\ell)}_j} . \]</span></p>
+<p>Da <span class="math inline">\(z^{(\ell+1)}_k = \sum_m W^{(\ell+1)}_{km}\,\sigma(z^{(\ell)}_m) + b^{(\ell+1)}_k\)</span>, derivando rispetto a <span class="math inline">\(z^{(\ell)}_j\)</span> sopravvive solo <span class="math inline">\(m = j\)</span>: resta <span class="math inline">\(\partial z^{(\ell+1)}_k/\partial z^{(\ell)}_j = W^{(\ell+1)}_{kj}\,\sigma'(z^{(\ell)}_j)\)</span>, e quindi <span class="math inline">\(\delta^{(\ell)}_j = \sigma'(z^{(\ell)}_j)\sum_k W^{(\ell+1)}_{kj}\,\delta^{(\ell+1)}_k\)</span>. Si somma sul <strong>primo</strong> indice di <span class="math inline">\(W\)</span>, e sommare sul primo indice è moltiplicare per la <strong>trasposta</strong>:</p>
+<p><span class="math display">\[ \boxed{\;\boldsymbol{\delta}^{(\ell)} = \left(\left(\mathbf{W}^{(\ell+1)}\right)^{T}\boldsymbol{\delta}^{(\ell+1)}\right) \odot \sigma'\!\left(\mathbf{z}^{(\ell)}\right)\;} \]</span></p>
+<p>Nessuna inversa: la trasposta riporta le colpe dei neuroni d’arrivo al neurone di partenza, con lo stesso peso che aveva portato il segnale in avanti.</p>
+</section>
+<section id="lalgoritmo-completo" class="slide level2 smaller">
+<h2>L’algoritmo completo</h2>
+<ol type="1">
+<li><strong>Forward</strong>: calcola e <strong>conserva</strong> <span class="math inline">\(\mathbf{z}^{(\ell)}\)</span> e <span class="math inline">\(\mathbf{a}^{(\ell)}\)</span>, per <span class="math inline">\(\ell = 1 \dots L\)</span>.</li>
+<li><strong>Ultimo strato</strong>: <span class="math inline">\(\;\boldsymbol{\delta}^{(L)} = \nabla_{\mathbf{a}}E \odot \sigma'(\mathbf{z}^{(L)})\)</span>.</li>
+<li><strong>Backward</strong>, per <span class="math inline">\(\ell = L, L-1, \dots, 1\)</span>: prima il gradiente dello strato, poi la colpa da consegnare a quello prima:</li>
+</ol>
+<p><span class="math display">\[ \begin{aligned}
+\partial E/\partial\mathbf{W}^{(\ell)} &amp;= \boldsymbol{\delta}^{(\ell)}\left(\mathbf{a}^{(\ell-1)}\right)^T \\[2pt]
+\boldsymbol{\delta}^{(\ell-1)} &amp;= \big((\mathbf{W}^{(\ell)})^T\boldsymbol{\delta}^{(\ell)}\big)\odot\sigma'\!\left(\mathbf{z}^{(\ell-1)}\right) \qquad (\ell &gt; 1)
+\end{aligned} \]</span></p>
+<ol start="4" type="1">
+<li><strong>Aggiornamento</strong>: <span class="math inline">\(\;\mathbf{W}^{(\ell)} \leftarrow \mathbf{W}^{(\ell)} - \eta\,\partial E/\partial\mathbf{W}^{(\ell)}\)</span>, per ogni <span class="math inline">\(\ell\)</span>.</li>
+</ol>
+<p>Costo: <strong>due prodotti matrice-vettore per strato</strong>, lo stesso ordine del forward. Perturbare un peso alla volta costerebbe un forward <em>per ogni peso</em>: con <span class="math inline">\(10^5\)</span> pesi, <span class="math inline">\(10^5\)</span> volte tanto.</p>
+</section>
+<section id="attenzione-al-libro" class="slide level2 smaller">
+<h2>Attenzione al libro</h2>
+<p>Nel libro di Rashid il passo 3 è <strong>semplificato</strong>: per riportare l’errore dallo strato di uscita (2) a quello nascosto (1) usa l’errore grezzo <span class="math inline">\(\mathbf{e} = \mathbf{y} - \mathbf{a}^{(2)}\)</span>,</p>
+<p><span class="math display">\[ \begin{aligned}
+\text{libro:}\quad &amp; \left(\mathbf{W}^{(2)T}\,\mathbf{e}\right)\odot\sigma'\!\left(\mathbf{z}^{(1)}\right) \\[2pt]
+\text{esatto:}\quad &amp; \left(\mathbf{W}^{(2)T}\big[\,\mathbf{e}\odot\sigma'\!\left(\mathbf{z}^{(2)}\right)\big]\right)\odot\sigma'\!\left(\mathbf{z}^{(1)}\right)
+\end{aligned} \]</span></p>
+<p>Manca il fattore <span class="math inline">\(\sigma'(\mathbf{z}^{(2)})\)</span> dello strato di uscita — cioè il passaggio da <span class="math inline">\(\mathbf{e}\)</span> a <span class="math inline">\(\boldsymbol{\delta}^{(2)}\)</span> (segno e fattore 2 si riassorbono in <span class="math inline">\(\eta\)</span>). La rete del libro impara comunque, perché <span class="math inline">\(\sigma' &gt; 0\)</span> e ogni componente dell’errore conserva il verso, ma <strong>quello che scende non è il gradiente di <span class="math inline">\(E\)</span></strong>: è una direzione vicina, con i pesi delle colpe alterati. Il framework del corso implementa la formula esatta — il layer sigmoide di uscita applica il suo <span class="math inline">\(\sigma'\)</span> prima di passare il vettore indietro — e nel Lab 13 il <em>gradient check</em> numerico lo verificherà alla sesta cifra.</p>
 </section>
 <section id="vettorizzazione-il-batching" class="slide level2 smaller">
 <h2>Vettorizzazione: Il Batching</h2>
 <p>Nelle lezioni precedenti abbiamo detto che la Rete “impara” elaborando un’immagine alla volta (Vettore Colonna <span class="math inline">\(\mathbf{x}\)</span>). Calcola la predizione, calcola l’errore, aggiorna i pesi (SGD).</p>
-<p>Ma processare e addestrare <span class="math inline">\(60.000\)</span> foto del dataset MNIST una per una vi richiederà giorni, sprecando l’80% della potenza della vostra CPU.</p>
+<p>Ma elaborare <span class="math inline">\(60.000\)</span> immagini una per una lascia inutilizzata gran parte della potenza della CPU: ogni prodotto matrice-vettore è troppo piccolo per riempire le unità vettoriali.</p>
 <p>Possiamo mandare 64 immagini <strong>contemporaneamente</strong> alla rete neurale per l’addestramento?</p>
 </section>
 <section id="passare-le-matrici-invece-dei-vettori" class="slide level2 smaller">
@@ -228,38 +293,41 @@ Docente
 <p>La risposta è l’ennesimo miracolo dell’Algebra Lineare, chiamato <strong>Batching</strong>.</p>
 <p>Invece di passare alla Forward Pass un vettore colonna singolo <span class="math inline">\(\mathbf{x}\)</span> (dimensione: 784 pixel <span class="math inline">\(\times\)</span> 1 immagine), passiamo una <strong>Gigantesca Matrice</strong> <span class="math inline">\(\mathbf{X}\)</span> (dimensione: 784 pixel <span class="math inline">\(\times\)</span> 64 immagini)!</p>
 <p>Le equazioni <strong>rimangono identiche!</strong> <span class="math display">\[ \mathbf{Z} = \mathbf{W} \mathbf{X} + \mathbf{B} \]</span></p>
-<p>Librerie come <strong>Eigen</strong> macineranno 64 immagini parallele usando le estensioni vettoriali (AVX), abbattendo il tempo di addestramento da 5 ore a 5 minuti!</p>
+<p>Librerie come <strong>Eigen</strong> macinano le 64 colonne con le estensioni vettoriali (AVX), riducendo di molto il tempo per epoca.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Nel nostro framework il batch avrà <strong>una sola colonna</strong>: aggiorniamo i pesi dopo ogni immagine, come fa Rashid nel libro. È lo <em>Stochastic Gradient Descent</em> puro, e su MNIST basta per superare il 90% in tre epoche. Scriveremo comunque tutto in forma matriciale: le equazioni sono già quelle giuste, e passare al mini-batch richiederebbe di adattare solo il dataset e le metriche.</p>
+</div>
+</div>
+</div>
 </section>
-<section id="limiti-del-gradient-descent" class="slide level2 smaller">
-<h2>Limiti del Gradient Descent</h2>
-<p>Lo Stochastic Gradient Descent (SGD) nudo e crudo ha un grande difetto. Tornando all’analogia della montagna: se finisce in una vallata “secondaria” (Minimo Locale), rimarrà bloccato lì per l’eternità, pensando di aver risolto il problema quando in realtà il minimo globale è a 10 km di distanza.</p>
-<p>Inoltre, se la vallata è molto stretta, l’escursionista rimbalzerà a destra e sinistra sulle pareti (Oscillazione) invece di scendere rapidamente.</p>
-<p>Come risolviamo questi problemi di ottimizzazione?</p>
-</section>
-<section id="inerzia-fisica-momentum" class="slide level2 smaller">
-<h2>Inerzia Fisica: Momentum</h2>
-<p>Un trucco brillante è imitare la <strong>Fisica Classica</strong>. Immaginiamo che il nostro escursionista sia una palla da bowling pesante.</p>
-<p>L’algoritmo <strong>SGD con Momentum</strong> aggiunge l’inerzia al Gradient Descent. Se stiamo scendendo velocemente in una direzione, il Momentum memorizza questa “velocità”.</p>
-<p>Se troviamo un piccolo dosso (minimo locale), l’inerzia fisica accumulata ci farà “scavalcare” il dosso, salvandoci dal blocco. Rende l’addestramento enormemente più veloce e fluido.</p>
+<section id="limiti-dellsgd-e-linerzia" class="slide level2 smaller">
+<h2>Limiti dell’SGD, e l’Inerzia</h2>
+<p>Lo Stochastic Gradient Descent nudo e crudo ha due difetti. Tornando all’analogia della montagna: se finisce in una vallata “secondaria” (<strong>minimo locale</strong>) resta bloccato lì, pensando di aver risolto il problema quando il minimo globale è a 10 km. E se la vallata è stretta, rimbalza fra le due pareti (<strong>oscillazione</strong>) invece di scendere.</p>
+<p>Il trucco è imitare la <strong>fisica classica</strong>: immaginiamo l’escursionista come una palla da bowling pesante. L’<strong>SGD con Momentum</strong> aggiunge l’inerzia: se stiamo scendendo velocemente in una direzione, memorizza questa “velocità”. Davanti a un piccolo dosso, l’inerzia accumulata lo fa scavalcare — e l’addestramento diventa più veloce e più fluido.</p>
 </section>
 <section id="il-re-dellindustria-adam" class="slide level2 smaller">
 <h2>Il Re dell’Industria: ADAM</h2>
 <p>Oggi, praticamente chiunque (da OpenAI a Google) usa l’algoritmo <strong>Adam</strong> (<em>Adaptive Moment Estimation</em>).</p>
 <p>A differenza di SGD, che usa un solo Learning Rate <span class="math inline">\(\eta\)</span> per tutta l’immensa matrice dei pesi, Adam è furbo. Tiene in memoria la media dei gradienti passati (Momentum) e adatta <strong>un Learning Rate personalizzato per ogni singolo peso della rete!</strong>.</p>
 <p>Se un peso viene aggiornato poco, Adam accelera il suo Learning Rate. Se sbalza troppo, lo frena. È un ottimizzatore <em>plug-and-play</em> che non necessita quasi mai di calibrazione.</p>
+<p>Nel Laboratorio 10 implementerete <code>SDOptimizer</code>, la discesa più semplice — una riga, <code>param -= lr * grad</code>. Momentum e Adam sono la <strong>traccia 1</strong> dei progetti finali: l’interfaccia <code>Optimizer</code> è fatta perché si possano aggiungere senza toccare né i layer né la rete.</p>
 </section>
-<section id="i-learning-rate-schedulers" class="slide level2 smaller">
-<h2>I Learning Rate Schedulers</h2>
-<p>Anche usando Adam, tenere lo stesso “passo” dall’inizio alla fine dell’addestramento è sconsigliato. Verso la fine, quando siete in fondo alla vallata (Minimo Globale), se fate passi troppo grandi (Learning Rate alto) continuerete a “scavalcare” il centro perfetto, rimbalzando.</p>
-<p>Vi serve un <strong>Learning Rate Scheduler</strong>, ovvero un oggetto che modifichi e diminuisca dinamicamente il valore di <span class="math inline">\(\eta\)</span> al passare del tempo.</p>
-</section>
-<section id="cosine-annealing-step-decay" class="slide level2 smaller">
-<h2>Cosine Annealing &amp; Step Decay</h2>
+<section id="i-learning-rate-scheduler" class="slide level2 smaller">
+<h2>I Learning Rate Scheduler</h2>
+<p>Anche con Adam, tenere lo stesso passo dall’inizio alla fine è sconsigliato: in fondo alla vallata, passi troppo lunghi scavalcano il centro. Serve un <strong>Learning Rate Scheduler</strong>, che diminuisca <span class="math inline">\(\eta\)</span> col tempo. Due politiche classiche:</p>
 <ul>
-<li><strong>ReduceLROnPlateau:</strong> Un approccio reattivo. Controlla la Loss. Se smette di scendere per 5 epoche, divide il Learning Rate per 10. Funziona benissimo per “spremere” l’ultimo grammo di precisione.</li>
-<li><strong>Cosine Annealing:</strong> Un approccio proattivo. Segue la curva del coseno. Inizia velocissimo, e rallenta dolcemente verso la fine dell’addestramento. Evita gli scalini improvvisi del Plateu.</li>
+<li><strong>ReduceLROnPlateau</strong> — reattivo: se la Loss smette di scendere per 5 epoche, divide <span class="math inline">\(\eta\)</span> per 10. Ottimo per spremere l’ultimo grammo di precisione.</li>
+<li><strong>Cosine Annealing</strong> — proattivo: segue la curva del coseno, veloce all’inizio e dolce verso la fine, senza gli scalini del plateau.</li>
 </ul>
-<p>Ma come uniamo Layer, Ottimizzatori, Scheduler e Backpropagation nello stesso software C++ senza impazzire?</p>
+<p>Nel Laboratorio 10 scriverete l’interfaccia <code>Scheduler</code> a <span class="math inline">\(\eta\)</span> costante; queste due sono la <strong>traccia 2</strong> dei progetti. Ma come uniamo Layer, Ottimizzatori, Scheduler e Backpropagation nello stesso software C++ senza impazzire?</p>
 <p><a href="../index.html">Torna all’indice</a></p>
 
 

@@ -6,7 +6,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Docente">
@@ -34,11 +34,79 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -51,6 +119,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -134,7 +203,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Laboratorio 13</h1>
-  <p class="subtitle">Il Loop di Addestramento e l’Ottimizzatore</p>
+  <p class="subtitle">Backpropagation — la Rete Impara</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -145,26 +214,284 @@ Docente
 </div>
 
 </section>
-<section id="obiettivo-del-laboratorio" class="slide level2">
-<h2>Obiettivo del Laboratorio</h2>
-<p>Assembliamo tutti i pezzi per permettere alla Rete Neurale di imparare autonomamente sfogliando il dataset e aggiornando i pesi.</p>
+<section id="soluzione-del-laboratorio-12" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 12</h2>
+<p>Il parsing del CSV con il doppio <code>getline</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> linea<span class="op">);</span>                    <span class="co">// salta l'intestazione</span></span>
+<span id="cb1-2"><a aria-label="2"></a><span class="cf">while</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> linea<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb1-3"><a aria-label="3"></a>    <span class="bu">std::</span>stringstream ss<span class="op">(</span>linea<span class="op">);</span></span>
+<span id="cb1-4"><a aria-label="4"></a>    <span class="bu">std::</span>string valore<span class="op">;</span></span>
+<span id="cb1-5"><a aria-label="5"></a>    <span class="bu">std::</span>getline<span class="op">(</span>ss<span class="op">,</span> valore<span class="op">,</span> <span class="ch">','</span><span class="op">);</span>         <span class="co">// il primo campo è la label</span></span>
+<span id="cb1-6"><a aria-label="6"></a>    val <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>valore<span class="op">);</span></span>
+<span id="cb1-7"><a aria-label="7"></a>    np <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-8"><a aria-label="8"></a>    <span class="cf">while</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>ss<span class="op">,</span> valore<span class="op">,</span> <span class="ch">','</span><span class="op">))</span>  <span class="co">// i restanti sono pixel</span></span>
+<span id="cb1-9"><a aria-label="9"></a>        pixs<span class="op">(</span>np<span class="op">++,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>valore<span class="op">);</span></span>
+<span id="cb1-10"><a aria-label="10"></a>    add_element<span class="op">(</span>pixs<span class="op">,</span> val<span class="op">);</span></span>
+<span id="cb1-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>E le due normalizzazioni “alla Rashid”, che evitano gli estremi della sigmoide:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a>b<span class="op">.</span>inputs <span class="op">=</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;((</span>dse<span class="op">.</span>pixels<span class="op">.</span><span class="kw">template</span> cast<span class="op">&lt;</span>ntype<span class="op">&gt;()</span> <span class="op">/</span> <span class="fl">255.0</span> <span class="op">*</span> <span class="fl">0.99</span><span class="op">)</span></span>
+<span id="cb2-2"><a aria-label="2"></a>                             <span class="op">.</span>array<span class="op">()</span> <span class="op">+</span> <span class="fl">0.01</span><span class="op">);</span>           <span class="co">// pixel in [0.01, 0.99]</span></span>
+<span id="cb2-3"><a aria-label="3"></a>b<span class="op">.</span>targets<span class="op">.</span>setConstant<span class="op">(</span><span class="kw">static_cast</span><span class="op">&lt;</span>ntype<span class="op">&gt;(</span><span class="fl">0.01</span><span class="op">));</span></span>
+<span id="cb2-4"><a aria-label="4"></a>b<span class="op">.</span>targets<span class="op">(</span>dse<span class="op">.</span>val<span class="op">,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> <span class="kw">static_cast</span><span class="op">&lt;</span>ntype<span class="op">&gt;(</span><span class="fl">0.99</span><span class="op">);</span>        <span class="co">// target 0.01 / 0.99</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Lo shuffle permuta gli <strong>indici</strong> perché permutare 60.000 immagini significherebbe copiare 188 MB a ogni epoca.</p>
 </section>
-<section id="task-da-completare" class="slide level2">
+<section id="obiettivo-di-oggi" class="slide level2">
+<h2>Obiettivo di Oggi</h2>
+<p>Questo è il cuore del corso. La rete sa prevedere e sa leggere i dati, ma non sa ancora <strong>imparare</strong>. Oggi chiudiamo il cerchio: <code>backward()</code> in ogni layer — la backpropagation — e <code>update_parameters()</code>, che consegna i gradienti all’ottimizzatore.</p>
+<p><code>Loss</code> e <code>Optimizer</code> li avete già scritti nel Lab 10, come Strategy isolate. Oggi entrano in gioco: la rete le userà attraverso l’interfaccia, senza sapere quale implementazione ha davanti. Le derivate delle attivazioni le avete verificate numericamente nel Lab 03: oggi si capisce perché.</p>
+<p>Alla fine vedremo la Loss scendere: la prova che tutto funziona.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Sul tempo.</strong> È il laboratorio più denso del corso, anche dopo aver spostato Loss e Optimizer nel Lab 10: quattro <code>backward()</code> e la catena in <code>Sequential</code>. I due <code>backward()</code> delle attivazioni sono tre righe ciascuno e quasi identici: scrivete la sigmoide con cura, la tanh segue. Se il gradient check finale resta a casa, va bene: è raccomandato, non richiesto.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="il-flusso-completo" class="slide level2 smaller">
+<h2>Il flusso completo</h2>
+<pre><code>                        forward
+   inputs ──▶ Dense ──▶ Sigmoid ──▶ Dense ──▶ tanh ──▶ predizione
+                                                          │
+                                                      Loss(pred, target)
+                                                          │
+   dWt  ◀── Dense ◀── Sigmoid ◀── Dense ◀── tanh ◀── d_loss
+                        backward                            
+                            │
+                    update_parameters(opt)</code></pre>
+<p>Ogni layer riceve il delta da destra, calcola il <strong>proprio</strong> gradiente e passa a sinistra il delta per il layer precedente.</p>
+</section>
+<section id="backpropagation-computation-graph" class="slide level2">
+<h2>Backpropagation — Computation Graph</h2>
+
+<img data-src="images/backprop.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section>
+<section id="task-1-backward-diventa-puro-virtuale" class="slide level2 smaller">
+<h2>Task 1: <code>backward</code> diventa puro virtuale</h2>
+<p>Nel Lab 09 avevamo messo un corpo di default. Ora ogni layer <strong>deve</strong> implementarlo, e in <code>layer.hpp</code> diventa:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="kw">virtual</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> forward<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> inp<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-2"><a aria-label="2"></a><span class="kw">virtual</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> backward<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> out<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>   <span class="co">// ora = 0</span></span>
+<span id="cb4-3"><a aria-label="3"></a></span>
+<span id="cb4-4"><a aria-label="4"></a><span class="co">// Metodo per l'aggiornamento, sovrascritto solo dai layer parametrici</span></span>
+<span id="cb4-5"><a aria-label="5"></a><span class="kw">virtual</span> <span class="dt">void</span> update_parameters<span class="op">(</span>Optimizer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> opt<span class="op">)</span> <span class="op">{}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Aggiungete anche <code>#include "./optimizers.hpp"</code> in testa a <code>layer.hpp</code>.</p>
+<p><code>update_parameters</code> ha un corpo <strong>vuoto</strong> di default, non <code>= 0</code>: una sigmoide non ha pesi da aggiornare e non deve essere costretta a dichiararlo. È il polimorfismo che risolve quello che un <code>dynamic_cast</code> risolverebbe male (Lezione 16).</p>
+</section>
+<section id="task-2-le-due-formule-del-denselayer" class="slide level2 smaller">
+<h2>Task 2: Le due formule del <code>DenseLayer</code></h2>
+<p>Con la notazione della Lezione 3, per il layer <span class="math inline">\(l\)</span>:</p>
+<p><span class="math display">\[ \frac{\partial L}{\partial W_t} = \delta^{(l)} \cdot \left(a^{(l-1)}\right)^{T}
+   \qquad
+   \delta^{(l-1)} = W_t^{T} \cdot \delta^{(l)} \]</span></p>
+<p>dove <span class="math inline">\(a^{(l-1)}\)</span> è l’input di questo layer — cioè esattamente ciò che <code>inputs_ptr</code> sta puntando.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a>Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> backward<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> del_l<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb5-2"><a aria-label="2"></a>    <span class="co">// del_l è un vettore colonna, (*inputs_ptr).transpose() è un vettore riga:</span></span>
+<span id="cb5-3"><a aria-label="3"></a>    <span class="co">// il loro prodotto è una MATRICE, delle stesse dimensioni di Wt</span></span>
+<span id="cb5-4"><a aria-label="4"></a>    dWt <span class="op">=</span> del_l <span class="op">*</span> <span class="op">(*</span>inputs_ptr<span class="op">).</span>transpose<span class="op">();</span></span>
+<span id="cb5-5"><a aria-label="5"></a></span>
+<span id="cb5-6"><a aria-label="6"></a>    <span class="co">// il delta da passare al layer precedente</span></span>
+<span id="cb5-7"><a aria-label="7"></a>    delta_l <span class="op">=</span> Wt<span class="op">.</span>transpose<span class="op">()</span> <span class="op">*</span> del_l<span class="op">;</span></span>
+<span id="cb5-8"><a aria-label="8"></a></span>
+<span id="cb5-9"><a aria-label="9"></a>    <span class="cf">return</span> delta_l<span class="op">;</span></span>
+<span id="cb5-10"><a aria-label="10"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Due righe. Ecco perché il framework ha rinunciato al bias e al batching: la formula del gradiente è tutta qui.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Nessuna divisione per <span class="math inline">\(N\)</span>: il batch ha dimensione 1 (Lab 12), quindi non c’è alcuna media da fare. Se un giorno introdurrete i mini-batch, è qui che andrà il <code>/ N</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="perché-la-trasposta-e-non-linversa" class="slide level2 smaller">
+<h2>Perché la trasposta e non l’inversa</h2>
+<p><code>Wt.transpose()</code> è la “magia” della Lezione 3. L’istinto sarebbe invertire <span class="math inline">\(W_t\)</span> per tornare indietro, ma:</p>
+<ul>
+<li>l’inversa esiste solo per matrici quadrate, e <code>Wt</code> è <span class="math inline">\([N_{nodes} \times N_{in}]\)</span></li>
+<li>calcolarla costa <span class="math inline">\(O(n^3)\)</span>, contro <span class="math inline">\(O(1)\)</span> della trasposta (che in Eigen non copia nemmeno nulla: è una <em>vista</em>)</li>
+</ul>
+<p>La trasposta funziona perché non stiamo invertendo la trasformazione, stiamo <strong>ridistribuendo la colpa</strong>: ogni peso riceve una quota di errore proporzionale al suo contributo in avanti.</p>
+</section>
+<section id="task-3-backward-delle-attivazioni" class="slide level2 smaller">
+<h2>Task 3: <code>backward</code> delle attivazioni</h2>
+<p>Un layer di attivazione non ha pesi: moltiplica il delta per la derivata locale, <strong>elemento per elemento</strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="co">// SigmoidLayer:  f'(z) = f(z) * (1 - f(z))</span></span>
+<span id="cb6-2"><a aria-label="2"></a>Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> backward<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> del_l<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb6-3"><a aria-label="3"></a>    delta_l <span class="op">=</span> del_l<span class="op">.</span>array<span class="op">()</span> <span class="op">*</span> outputs<span class="op">.</span>array<span class="op">();</span></span>
+<span id="cb6-4"><a aria-label="4"></a>    delta_l <span class="op">=</span> delta_l<span class="op">.</span>array<span class="op">()</span> <span class="op">*</span> <span class="op">(</span><span class="kw">static_cast</span><span class="op">&lt;</span>ntype<span class="op">&gt;(</span><span class="fl">1.0</span><span class="op">)</span> <span class="op">-</span> outputs<span class="op">.</span>array<span class="op">());</span></span>
+<span id="cb6-5"><a aria-label="5"></a>    <span class="cf">return</span> delta_l<span class="op">;</span></span>
+<span id="cb6-6"><a aria-label="6"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="co">// tanhLayer:  f'(z) = 1 - f(z)^2</span></span>
+<span id="cb7-2"><a aria-label="2"></a>Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> backward<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> del_l<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb7-3"><a aria-label="3"></a>    delta_l <span class="op">=</span> del_l<span class="op">.</span>array<span class="op">()</span> <span class="op">*</span> <span class="op">(</span><span class="kw">static_cast</span><span class="op">&lt;</span>ntype<span class="op">&gt;(</span><span class="fl">1.0</span><span class="op">)</span> <span class="op">-</span> outputs<span class="op">.</span>array<span class="op">().</span>square<span class="op">());</span></span>
+<span id="cb7-4"><a aria-label="4"></a>    <span class="cf">return</span> delta_l<span class="op">;</span></span>
+<span id="cb7-5"><a aria-label="5"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Notate l’eleganza: <strong>nessuna delle due ricalcola la funzione</strong>. Entrambe riusano <code>outputs</code>, che il <code>forward()</code> ha già scritto. La derivata della sigmoide si esprime in funzione del suo stesso valore, e questo risparmia un esponenziale per ogni neurone per ogni immagine.</p>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p><code>.array()</code> è obbligatorio. Con <code>*</code> su <code>Matrix</code> avreste un prodotto matriciale: compila, gira, e dà numeri sbagliati senza dire nulla.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="task-4-sequentialbackward" class="slide level2 smaller">
+<h2>Task 4: <code>Sequential::backward</code></h2>
+<p>Il ciclo del forward, letto al contrario:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> backward<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> d_loss<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb8-2"><a aria-label="2"></a>    <span class="cf">if</span> <span class="op">(</span>layers<span class="op">.</span>empty<span class="op">())</span></span>
+<span id="cb8-3"><a aria-label="3"></a>        <span class="cf">throw</span> <span class="bu">std::</span>runtime_error<span class="op">(</span><span class="st">"[ERROR] backward pass su una rete vuota."</span><span class="op">);</span></span>
+<span id="cb8-4"><a aria-label="4"></a></span>
+<span id="cb8-5"><a aria-label="5"></a>    <span class="co">// si parte dall'ultimo layer</span></span>
+<span id="cb8-6"><a aria-label="6"></a>    Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> current_grad <span class="op">=</span> <span class="op">&amp;(</span>layers<span class="op">.</span>back<span class="op">()-&gt;</span>backward<span class="op">(</span>d_loss<span class="op">));</span></span>
+<span id="cb8-7"><a aria-label="7"></a></span>
+<span id="cb8-8"><a aria-label="8"></a>    <span class="co">// e si risale fino al primo</span></span>
+<span id="cb8-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;(</span>layers<span class="op">.</span>size<span class="op">())</span> <span class="op">-</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&gt;=</span> <span class="dv">0</span><span class="op">;</span> <span class="op">--</span>i<span class="op">)</span></span>
+<span id="cb8-10"><a aria-label="10"></a>        current_grad <span class="op">=</span> <span class="op">&amp;(</span>layers<span class="op">[</span>i<span class="op">]-&gt;</span>backward<span class="op">(*</span>current_grad<span class="op">));</span></span>
+<span id="cb8-11"><a aria-label="11"></a></span>
+<span id="cb8-12"><a aria-label="12"></a>    <span class="cf">return</span> <span class="op">*</span>current_grad<span class="op">;</span></span>
+<span id="cb8-13"><a aria-label="13"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a><span class="dt">void</span> update_parameters<span class="op">(</span>Optimizer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> opt<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb9-2"><a aria-label="2"></a>    <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span><span class="op">&amp;</span> l <span class="op">:</span> layers<span class="op">)</span></span>
+<span id="cb9-3"><a aria-label="3"></a>        l<span class="op">-&gt;</span>update_parameters<span class="op">(</span>opt<span class="op">);</span></span>
+<span id="cb9-4"><a aria-label="4"></a>    opt<span class="op">-&gt;</span>step<span class="op">();</span>          <span class="co">// una sola volta per batch: serve ad Adam</span></span>
+<span id="cb9-5"><a aria-label="5"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>L’indice del ciclo è <code>int</code>, <strong>non</strong> <code>size_t</code>. Con un tipo senza segno la condizione <code>i &gt;= 0</code> è sempre vera e il ciclo non termina mai. È il bug classico dei cicli a scendere.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="loss-e-optimizer-già-pronti-dal-lab-10" class="slide level2 smaller">
+<h2>Loss e Optimizer: già pronti dal Lab 10</h2>
+<p>Nel Lab 10 avete scritto <code>loss.hpp</code> e <code>optimizers.hpp</code> e li avete testati da soli. Oggi li <strong>includete</strong>, non li riscrivete. Rileggeteli un momento, perché adesso il loro disegno diventa chiaro:</p>
+<ul>
+<li><code>MSELoss::backward</code> restituisce <span class="math inline">\(\partial L/\partial p = 2(p - t)\)</span> come <code>const&amp;</code> a un membro: è la <strong>prima</strong> <span class="math inline">\(\delta\)</span> che entra in <code>Sequential::backward</code>.</li>
+<li><code>SDOptimizer::update(param, grad)</code> prende <strong>un tensore alla volta</strong>, non “pesi e bias”. Così lo stesso ottimizzatore serve un <code>DenseLayer</code> oggi e, domani, un layer convoluzionale con quattro tensori diversi, senza modifiche.</li>
+<li><code>set_lr</code>/<code>get_lr</code> sono puri virtuali perché servono allo scheduler, che avete già scritto anch’esso e che il <code>Trainer</code> del Lab 14 chiamerà a ogni epoca.</li>
+</ul>
+<p>Il <strong>Pattern Strategy</strong> (Lezione 20) si vede tutto qui: il layer non sa se sta usando Steepest Descent o Adam. Conosce solo l’interfaccia.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"optimizers.hpp"</span><span class="pp">      </span><span class="co">// in layer.hpp: update_parameters ne ha bisogno</span></span>
+<span id="cb10-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">"loss.hpp"</span><span class="pp">            </span><span class="co">// nel main</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="task-5-collegare-il-layer-allottimizzatore" class="slide level2 smaller">
+<h2>Task 5: Collegare il layer all’ottimizzatore</h2>
+<p>Una riga, in <code>DenseLayer</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="dt">void</span> update_parameters<span class="op">(</span>Optimizer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> optimizer<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb11-2"><a aria-label="2"></a>    optimizer<span class="op">-&gt;</span>update<span class="op">(</span>Wt<span class="op">,</span> dWt<span class="op">);</span></span>
+<span id="cb11-3"><a aria-label="3"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il layer non sa se sta usando Steepest Descent, Adam o RMSProp. Conosce solo l’interfaccia.</p>
+</section>
+<section id="task-6-la-verifica-la-loss-deve-scendere" class="slide level2 smaller">
+<h2>Task 6: La verifica — la Loss deve scendere</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-2"><a aria-label="2"></a>    rng<span class="op">.</span>seed<span class="op">(</span><span class="dv">42</span><span class="op">);</span></span>
+<span id="cb12-3"><a aria-label="3"></a></span>
+<span id="cb12-4"><a aria-label="4"></a>    Sequential<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> net<span class="op">;</span></span>
+<span id="cb12-5"><a aria-label="5"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">));</span></span>
+<span id="cb12-6"><a aria-label="6"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>SigmoidLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;());</span></span>
+<span id="cb12-7"><a aria-label="7"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">128</span><span class="op">));</span></span>
+<span id="cb12-8"><a aria-label="8"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>tanhLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;());</span></span>
+<span id="cb12-9"><a aria-label="9"></a></span>
+<span id="cb12-10"><a aria-label="10"></a>    Matrix<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> X <span class="op">=</span> Matrix<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;::</span>Random<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb12-11"><a aria-label="11"></a>    Matrix<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> Y <span class="op">=</span> Matrix<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;::</span>Zero<span class="op">(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb12-12"><a aria-label="12"></a>    Y<span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb12-13"><a aria-label="13"></a></span>
+<span id="cb12-14"><a aria-label="14"></a>    Matrix<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> Z <span class="op">=</span> net<span class="op">.</span>forward<span class="op">(</span>X<span class="op">);</span></span>
+<span id="cb12-15"><a aria-label="15"></a></span>
+<span id="cb12-16"><a aria-label="16"></a>    MSELoss<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> loss<span class="op">;</span></span>
+<span id="cb12-17"><a aria-label="17"></a>    SDOptimizer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> opt<span class="op">(</span><span class="fl">0.01</span><span class="op">);</span></span>
+<span id="cb12-18"><a aria-label="18"></a></span>
+<span id="cb12-19"><a aria-label="19"></a>    <span class="dt">double</span> initial_loss <span class="op">=</span> loss<span class="op">.</span>forward<span class="op">(</span>Z<span class="op">,</span> Y<span class="op">);</span></span>
+<span id="cb12-20"><a aria-label="20"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Loss iniziale: "</span> <span class="op">&lt;&lt;</span> initial_loss <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb12-21"><a aria-label="21"></a></span>
+<span id="cb12-22"><a aria-label="22"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">5</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb12-23"><a aria-label="23"></a>        <span class="at">const</span> Matrix<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&amp;</span> d_loss <span class="op">=</span> loss<span class="op">.</span>backward<span class="op">(</span>Z<span class="op">,</span> Y<span class="op">);</span></span>
+<span id="cb12-24"><a aria-label="24"></a>        net<span class="op">.</span>backward<span class="op">(</span>d_loss<span class="op">);</span></span>
+<span id="cb12-25"><a aria-label="25"></a>        net<span class="op">.</span>update_parameters<span class="op">(&amp;</span>opt<span class="op">);</span></span>
+<span id="cb12-26"><a aria-label="26"></a>        Z <span class="op">=</span> net<span class="op">.</span>forward<span class="op">(</span>X<span class="op">);</span>                  <span class="co">// ricalcolo per il giro successivo</span></span>
+<span id="cb12-27"><a aria-label="27"></a>    <span class="op">}</span></span>
+<span id="cb12-28"><a aria-label="28"></a></span>
+<span id="cb12-29"><a aria-label="29"></a>    <span class="dt">double</span> final_loss <span class="op">=</span> loss<span class="op">.</span>forward<span class="op">(</span>Z<span class="op">,</span> Y<span class="op">);</span></span>
+<span id="cb12-30"><a aria-label="30"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Loss finale:   "</span> <span class="op">&lt;&lt;</span> final_loss <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb12-31"><a aria-label="31"></a></span>
+<span id="cb12-32"><a aria-label="32"></a>    <span class="cf">if</span> <span class="op">(</span>final_loss <span class="op">&lt;</span> initial_loss<span class="op">)</span></span>
+<span id="cb12-33"><a aria-label="33"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"[SUCCESS] La rete sta imparando!"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb12-34"><a aria-label="34"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Il criterio</strong>: la Loss finale deve essere minore di quella iniziale. Con un solo campione e cinque passi non è “apprendimento” — è la prova che i segni dei gradienti sono giusti e che la catena forward → loss → backward → update è collegata correttamente.</p>
+<p>Se la Loss <strong>sale</strong>, il segno è invertito: controllate <code>param -= lr * grad</code>. Se resta identica, <code>update_parameters</code> non viene chiamato.</p>
+</section>
+<section id="il-gradient-check-raccomandato" class="slide level2 smaller">
+<h2>Il Gradient Check (raccomandato)</h2>
+<p>Il test definitivo per un <code>backward()</code>: confrontarlo con la definizione numerica di derivata.</p>
+<p><span class="math display">\[ \frac{\partial L}{\partial w} \approx
+   \frac{L(w + \varepsilon) - L(w - \varepsilon)}{2\varepsilon} \]</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a aria-label="1"></a><span class="at">const</span> <span class="dt">double</span> eps <span class="op">=</span> <span class="fl">1e-5</span><span class="op">;</span></span>
+<span id="cb13-2"><a aria-label="2"></a><span class="kw">auto</span><span class="op">*</span> dl <span class="op">=</span> <span class="kw">dynamic_cast</span><span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;*&gt;(</span>net<span class="op">.</span>get_layer<span class="op">(</span><span class="dv">0</span><span class="op">));</span></span>
+<span id="cb13-3"><a aria-label="3"></a></span>
+<span id="cb13-4"><a aria-label="4"></a>net<span class="op">.</span>forward<span class="op">(</span>X<span class="op">);</span></span>
+<span id="cb13-5"><a aria-label="5"></a>net<span class="op">.</span>backward<span class="op">(</span>loss<span class="op">.</span>backward<span class="op">(</span>net<span class="op">.</span>forward<span class="op">(</span>X<span class="op">),</span> Y<span class="op">));</span></span>
+<span id="cb13-6"><a aria-label="6"></a><span class="dt">double</span> analitico <span class="op">=</span> dl<span class="op">-&gt;</span>dWt<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb13-7"><a aria-label="7"></a></span>
+<span id="cb13-8"><a aria-label="8"></a><span class="dt">double</span> w0 <span class="op">=</span> dl<span class="op">-&gt;</span>Wt<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb13-9"><a aria-label="9"></a>dl<span class="op">-&gt;</span>Wt<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> w0 <span class="op">+</span> eps<span class="op">;</span>  <span class="dt">double</span> L_piu  <span class="op">=</span> loss<span class="op">.</span>forward<span class="op">(</span>net<span class="op">.</span>forward<span class="op">(</span>X<span class="op">),</span> Y<span class="op">);</span></span>
+<span id="cb13-10"><a aria-label="10"></a>dl<span class="op">-&gt;</span>Wt<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> w0 <span class="op">-</span> eps<span class="op">;</span>  <span class="dt">double</span> L_meno <span class="op">=</span> loss<span class="op">.</span>forward<span class="op">(</span>net<span class="op">.</span>forward<span class="op">(</span>X<span class="op">),</span> Y<span class="op">);</span></span>
+<span id="cb13-11"><a aria-label="11"></a>dl<span class="op">-&gt;</span>Wt<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">)</span> <span class="op">=</span> w0<span class="op">;</span>                                   <span class="co">// ripristinare!</span></span>
+<span id="cb13-12"><a aria-label="12"></a></span>
+<span id="cb13-13"><a aria-label="13"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"analitico: "</span> <span class="op">&lt;&lt;</span> analitico</span>
+<span id="cb13-14"><a aria-label="14"></a>          <span class="op">&lt;&lt;</span> <span class="st">"  numerico: "</span> <span class="op">&lt;&lt;</span> <span class="op">(</span>L_piu <span class="op">-</span> L_meno<span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="dv">2</span> <span class="op">*</span> eps<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I due numeri devono coincidere entro <code>1e-6</code>. Fatelo con <code>ntype = double</code>: in <code>float</code> l’errore di arrotondamento maschera il confronto.</p>
+</section>
+<section id="task-da-completare" class="slide level2 smaller scrollable">
 <h2>Task da Completare</h2>
 <ul class="task-list">
-<li><label><input type="checkbox">Implementare lo Stochastic Gradient Descent (SGD) ereditando da <code>IOptimizer</code></label></li>
-<li><label><input type="checkbox">Introdurre il concetto di Epoche e Batching</label></li>
-<li><label><input type="checkbox">Scrivere il Training Loop: <code>forward</code> -&gt; calcolo Loss -&gt; <code>backward</code> -&gt; <code>optimizer-&gt;step()</code></label></li>
-<li><label><input type="checkbox">Visualizzare su terminale la funzione di Loss che scende!</label></li>
+<li><label><input type="checkbox">Rendere <code>backward()</code> puro virtuale in <code>layer.hpp</code> e aggiungere <code>update_parameters</code></label></li>
+<li><label><input type="checkbox">Includere <code>optimizers.hpp</code> in <code>layer.hpp</code></label></li>
+<li><label><input type="checkbox">Implementare <code>DenseLayer::backward()</code> con le due formule (<code>dWt</code> e <code>delta_l</code>)</label></li>
+<li><label><input type="checkbox">Implementare <code>backward()</code> di <code>SigmoidLayer</code> e <code>tanhLayer</code> riusando <code>outputs</code></label></li>
+<li><label><input type="checkbox">Verificare di aver usato <code>.array()</code> in tutte le moltiplicazioni elementwise</label></li>
+<li><label><input type="checkbox">Implementare <code>Sequential::backward()</code> con l’indice <code>int</code> (non <code>size_t</code>)</label></li>
+<li><label><input type="checkbox">Implementare <code>Sequential::update_parameters()</code> con <code>opt-&gt;step()</code> alla fine</label></li>
+<li><label><input type="checkbox">Includere <code>loss.hpp</code> e <code>optimizers.hpp</code> scritti nel Lab 10 (non riscriverli)</label></li>
+<li><label><input type="checkbox">Aggiungere <code>update_parameters</code> a <code>DenseLayer</code> (una riga)</label></li>
+<li><label><input type="checkbox">Verificare che la Loss scenda in 5 passi su un campione fittizio</label></li>
+<li><label><input type="checkbox"><strong>Raccomandato</strong>: superare il gradient check con ε = 1e-5</label></li>
 </ul>
+<p><strong>La soluzione di riferimento verrà discussa all’inizio della prossima lezione.</strong></p>
 <p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
 <div class="footer footer-default">
-
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
 </div>
 </div></div>
 
@@ -175,6 +502,7 @@ Docente
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -196,7 +524,8 @@ Docente
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -217,7 +546,7 @@ Docente
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -322,14 +651,14 @@ Docente
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'convex',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: 'fade',
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
@@ -367,7 +696,7 @@ Docente
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
           RevealNotes,

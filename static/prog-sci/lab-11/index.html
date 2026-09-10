@@ -6,7 +6,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Docente">
@@ -34,11 +34,79 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -51,6 +119,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -134,7 +203,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Laboratorio 11</h1>
-  <p class="subtitle">Caricare il Dataset MNIST (I/O su File)</p>
+  <p class="subtitle">Serializzazione del Modello e Factory Method</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -145,26 +214,271 @@ Docente
 </div>
 
 </section>
-<section id="obiettivo-del-laboratorio" class="slide level2">
-<h2>Obiettivo del Laboratorio</h2>
-<p>Finito di costruire le fondamenta in C++, passiamo all’Ingegneria del Machine Learning. Dobbiamo dare ‘da mangiare’ alla rete.</p>
+<section id="soluzione-del-laboratorio-10" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 10</h2>
+<p>Il contenitore che ha fatto sparire la Regola del Tre:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>layer<span class="op">&lt;</span>ntype<span class="op">&gt;&gt;&gt;</span> layers<span class="op">;</span></span>
+<span id="cb1-2"><a aria-label="2"></a></span>
+<span id="cb1-3"><a aria-label="3"></a>Sequential<span class="op">()</span> <span class="op">=</span> <span class="cf">default</span><span class="op">;</span>      <span class="co">// e nessun distruttore: Rule of Zero</span></span>
+<span id="cb1-4"><a aria-label="4"></a></span>
+<span id="cb1-5"><a aria-label="5"></a><span class="dt">void</span> add<span class="op">(</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>layer<span class="op">&lt;</span>ntype<span class="op">&gt;&gt;</span> l<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-6"><a aria-label="6"></a>    <span class="cf">if</span> <span class="op">(</span>l <span class="op">==</span> <span class="kw">nullptr</span><span class="op">)</span></span>
+<span id="cb1-7"><a aria-label="7"></a>        <span class="cf">throw</span> <span class="bu">std::</span>invalid_argument<span class="op">(</span><span class="st">"[ERROR] Impossibile aggiungere un layer nullo."</span><span class="op">);</span></span>
+<span id="cb1-8"><a aria-label="8"></a>    layers<span class="op">.</span>push_back<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>l<span class="op">));</span>    <span class="co">// trasferimento di proprietà</span></span>
+<span id="cb1-9"><a aria-label="9"></a><span class="op">}</span></span>
+<span id="cb1-10"><a aria-label="10"></a></span>
+<span id="cb1-11"><a aria-label="11"></a>Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> forward<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> input<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb1-12"><a aria-label="12"></a>    <span class="cf">if</span> <span class="op">(</span>layers<span class="op">.</span>empty<span class="op">())</span></span>
+<span id="cb1-13"><a aria-label="13"></a>        <span class="cf">throw</span> <span class="bu">std::</span>runtime_error<span class="op">(</span><span class="st">"[ERROR] forward pass su una rete vuota."</span><span class="op">);</span></span>
+<span id="cb1-14"><a aria-label="14"></a>    Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> current_out <span class="op">=</span> <span class="op">&amp;</span>layers<span class="op">[</span><span class="dv">0</span><span class="op">]-&gt;</span>forward<span class="op">(</span>input<span class="op">);</span></span>
+<span id="cb1-15"><a aria-label="15"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> layers<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb1-16"><a aria-label="16"></a>        current_out <span class="op">=</span> <span class="op">&amp;</span>layers<span class="op">[</span>i<span class="op">]-&gt;</span>forward<span class="op">(*</span>current_out<span class="op">);</span></span>
+<span id="cb1-17"><a aria-label="17"></a>    <span class="cf">return</span> <span class="op">*</span>current_out<span class="op">;</span></span>
+<span id="cb1-18"><a aria-label="18"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Chi ha fatto <code>grep -rn "delete"</code> sul progetto non ha trovato nulla. È il segno che la memoria è gestita dai tipi, non da noi.</p>
 </section>
-<section id="task-da-completare" class="slide level2">
+<section id="soluzione-del-laboratorio-10-le-tre-strategy" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 10: le tre Strategy</h2>
+<p>Tre interfacce, tre implementazioni, e il test che le usa <strong>solo attraverso il puntatore alla base</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="co">// loss.hpp — MSELoss</span></span>
+<span id="cb2-2"><a aria-label="2"></a>ntype forward<span class="op">(</span><span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> predictions<span class="op">,</span> <span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> targets<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb2-3"><a aria-label="3"></a>    <span class="cf">return</span> <span class="op">(</span>predictions <span class="op">-</span> targets<span class="op">).</span>array<span class="op">().</span>square<span class="op">().</span>sum<span class="op">();</span></span>
+<span id="cb2-4"><a aria-label="4"></a><span class="op">}</span></span>
+<span id="cb2-5"><a aria-label="5"></a><span class="co">// optimizers.hpp — SDOptimizer: un tensore alla volta, non "pesi e bias"</span></span>
+<span id="cb2-6"><a aria-label="6"></a><span class="dt">void</span> update<span class="op">(</span>Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> param<span class="op">,</span> <span class="at">const</span> Matrix<span class="op">&lt;</span>ntype<span class="op">&gt;&amp;</span> grad<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb2-7"><a aria-label="7"></a>    param <span class="op">-=</span> lr <span class="op">*</span> grad<span class="op">;</span></span>
+<span id="cb2-8"><a aria-label="8"></a><span class="op">}</span></span>
+<span id="cb2-9"><a aria-label="9"></a><span class="co">// schedulers.hpp — fixedScheduler: il costruttore impone subito il lr all'optimizer</span></span>
+<span id="cb2-10"><a aria-label="10"></a>fixedScheduler<span class="op">(</span>Optimizer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> opt<span class="op">,</span> ntype lr <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-11"><a aria-label="11"></a>    current_lr <span class="op">=</span> lr<span class="op">;</span>  optimizer <span class="op">=</span> opt<span class="op">;</span>  optimizer<span class="op">-&gt;</span>set_lr<span class="op">(</span>current_lr<span class="op">);</span></span>
+<span id="cb2-12"><a aria-label="12"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>L’errore più comune: <code>backward</code> della loss che restituisce <code>Matrix&lt;ntype&gt;</code> per valore invece di <code>const Matrix&lt;ntype&gt;&amp;</code> a un membro. Compila, funziona, e alloca una matrice a ogni chiamata: nel Lab 13 sarebbero milioni.</p>
+<p>Da oggi questi tre header restano nel progetto, intatti, fino alla fine del corso. Il <code>Sequential</code> li incontrerà nel Lab 13, il <code>Trainer</code> nel Lab 14.</p>
+</section>
+<section id="obiettivo-di-oggi" class="slide level2">
+<h2>Obiettivo di Oggi</h2>
+<p>Addestrare una rete costa minuti o ore. Se alla fine del programma i pesi svaniscono, tutto quel lavoro è perso.</p>
+<p>Oggi rendiamo il modello <strong>persistente</strong>, e per farlo dobbiamo risolvere un problema non banale: ricaricare da file una rete di cui non sappiamo, a priori, di quali layer sia composta. La soluzione è il pattern <strong>Factory Method</strong> (Lezione 20).</p>
+</section>
+<section id="il-problema-del-caricamento" class="slide level2 smaller">
+<h2>Il problema del caricamento</h2>
+<p>Salvare è facile: scorro i layer e scrivo i pesi.</p>
+<p>Ricaricare no. Il file contiene una sequenza di numeri, ma per costruire gli oggetti bisogna sapere <strong>quale tipo</strong> istanziare, e in che ordine:</p>
+<pre><code>DenseLayer          &lt;- il tipo
+128 784             &lt;- la sua configurazione
+0.0231  -0.0117 ... &lt;- i suoi pesi
+SigmoidLayer        &lt;- il tipo
+                    &lt;- (nessuna configurazione)
+DenseLayer
+10 128
+...</code></pre>
+<p>Serve quindi che ogni layer sappia dichiarare tre cose: <strong>come si chiama</strong>, <strong>come si configura</strong>, e <strong>quali pesi ha</strong>.</p>
+</section>
+<section id="task-1-i-tre-metodi-nellinterfaccia" class="slide level2 smaller">
+<h2>Task 1: I tre metodi nell’interfaccia</h2>
+<p>In <code>layer.hpp</code> questi metodi esistono già dal Lab 09, con corpo vuoto di default — ed è la scelta giusta: un layer di attivazione non ha nulla da salvare, e non deve essere costretto a dichiararlo.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="kw">virtual</span> <span class="bu">std::</span>string <span class="dt">get_type</span><span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>                 <span class="co">// il nome</span></span>
+<span id="cb4-2"><a aria-label="2"></a><span class="kw">virtual</span> <span class="dt">void</span> save_config<span class="op">(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">)</span> <span class="at">const</span> <span class="op">{}</span>       <span class="co">// gli iperparametri</span></span>
+<span id="cb4-3"><a aria-label="3"></a><span class="kw">virtual</span> <span class="dt">void</span> save_weights<span class="op">(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">)</span> <span class="at">const</span> <span class="op">{}</span>      <span class="co">// i pesi</span></span>
+<span id="cb4-4"><a aria-label="4"></a><span class="kw">virtual</span> <span class="dt">void</span> load_weights<span class="op">(</span><span class="bu">std::</span>istream<span class="op">&amp;</span> is<span class="op">)</span> <span class="op">{}</span>            <span class="co">// rilettura pesi</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Le firme usano <code>std::ostream</code> e <code>std::istream</code>, non <code>std::ofstream</code>. Così lo stesso codice scrive su file, su <code>std::cout</code> per il debug, o su uno <code>std::stringstream</code> nei test. È il consiglio della Lezione 11.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="task-2-implementarli-in-denselayer" class="slide level2 smaller">
+<h2>Task 2: Implementarli in <code>DenseLayer</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="dt">void</span> save_config<span class="op">(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">)</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb5-2"><a aria-label="2"></a>    <span class="co">// Gli stessi argomenti richiesti dal costruttore, nello stesso ordine</span></span>
+<span id="cb5-3"><a aria-label="3"></a>    os <span class="op">&lt;&lt;</span> Nnodes <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> Nin <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb5-4"><a aria-label="4"></a><span class="op">}</span></span>
+<span id="cb5-5"><a aria-label="5"></a></span>
+<span id="cb5-6"><a aria-label="6"></a><span class="dt">void</span> save_weights<span class="op">(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">)</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb5-7"><a aria-label="7"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> Wt<span class="op">.</span>rows<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb5-8"><a aria-label="8"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> Wt<span class="op">.</span>cols<span class="op">();</span> <span class="op">++</span>j<span class="op">)</span></span>
+<span id="cb5-9"><a aria-label="9"></a>            os <span class="op">&lt;&lt;</span> Wt<span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb5-10"><a aria-label="10"></a><span class="op">}</span></span>
+<span id="cb5-11"><a aria-label="11"></a></span>
+<span id="cb5-12"><a aria-label="12"></a><span class="dt">void</span> load_weights<span class="op">(</span><span class="bu">std::</span>istream<span class="op">&amp;</span> is<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb5-13"><a aria-label="13"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> Wt<span class="op">.</span>rows<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb5-14"><a aria-label="14"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> Wt<span class="op">.</span>cols<span class="op">();</span> <span class="op">++</span>j<span class="op">)</span></span>
+<span id="cb5-15"><a aria-label="15"></a>            is <span class="op">&gt;&gt;</span> Wt<span class="op">(</span>i<span class="op">,</span> j<span class="op">);</span></span>
+<span id="cb5-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il commento su <code>save_config</code> è la regola d’oro della serializzazione: <strong>scrivere esattamente ciò che il costruttore chiede, nell’ordine in cui lo chiede</strong>. Chi rilegge farà l’operazione simmetrica, e se i due ordini divergono il file si disallinea silenziosamente.</p>
+</section>
+<section id="task-3-il-factory-method" class="slide level2 smaller">
+<h2>Task 3: Il Factory Method</h2>
+<p>Ogni layer concreto espone un metodo <strong>statico</strong> che costruisce un’istanza leggendo la propria configurazione dallo stream:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="co">// in DenseLayer</span></span>
+<span id="cb6-2"><a aria-label="2"></a><span class="at">static</span> DenseLayer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> create_from_stream<span class="op">(</span><span class="bu">std::</span>istream<span class="op">&amp;</span> is<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-3"><a aria-label="3"></a>    <span class="dt">int</span> nodes<span class="op">,</span> in_features<span class="op">;</span></span>
+<span id="cb6-4"><a aria-label="4"></a></span>
+<span id="cb6-5"><a aria-label="5"></a>    <span class="co">// Lettura con lo stesso identico ordine di save_config</span></span>
+<span id="cb6-6"><a aria-label="6"></a>    is <span class="op">&gt;&gt;</span> nodes <span class="op">&gt;&gt;</span> in_features<span class="op">;</span></span>
+<span id="cb6-7"><a aria-label="7"></a></span>
+<span id="cb6-8"><a aria-label="8"></a>    <span class="co">// type = -1 evita di generare pesi casuali: subito dopo li carichiamo</span></span>
+<span id="cb6-9"><a aria-label="9"></a>    <span class="cf">return</span> <span class="kw">new</span> DenseLayer<span class="op">&lt;</span>ntype<span class="op">&gt;(</span>nodes<span class="op">,</span> in_features<span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb6-10"><a aria-label="10"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="co">// in SigmoidLayer e tanhLayer: nessuna configurazione da leggere</span></span>
+<span id="cb7-2"><a aria-label="2"></a><span class="at">static</span> SigmoidLayer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> create_from_stream<span class="op">(</span><span class="bu">std::</span>istream<span class="op">&amp;</span> is<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-3"><a aria-label="3"></a>    <span class="cf">return</span> <span class="kw">new</span> SigmoidLayer<span class="op">&lt;</span>ntype<span class="op">&gt;();</span></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il <code>-1</code> come <code>type</code> è un dettaglio elegante: nel costruttore la condizione è <code>if (type &gt;= 0) init_weights(...)</code>, quindi un valore negativo salta l’inizializzazione casuale. Su una rete con milioni di pesi, generarli per poi sovrascriverli tutti sarebbe puro spreco.</p>
+<p>Il metodo è <code>static</code> perché deve poter essere chiamato <strong>senza avere un oggetto</strong>: serve proprio a crearlo.</p>
+</section>
+<section id="task-4-il-dispatcher-in-sequential" class="slide level2 smaller">
+<h2>Task 4: Il dispatcher in <code>Sequential</code></h2>
+<p>Nella sezione <code>protected</code> di <code>sequential.hpp</code>, la funzione che traduce una stringa in un oggetto:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>layer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> create_layer<span class="op">(</span><span class="bu">std::</span>istream<span class="op">&amp;</span> is<span class="op">,</span> <span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> type<span class="op">,</span></span>
+<span id="cb8-2"><a aria-label="2"></a>                           <span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> msg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-3"><a aria-label="3"></a>    layer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> l <span class="op">=</span> <span class="kw">nullptr</span><span class="op">;</span></span>
+<span id="cb8-4"><a aria-label="4"></a></span>
+<span id="cb8-5"><a aria-label="5"></a>    <span class="cf">if</span>      <span class="op">(</span>type <span class="op">==</span> <span class="st">"DenseLayer"</span><span class="op">)</span>   l <span class="op">=</span> DenseLayer<span class="op">&lt;</span>ntype<span class="op">&gt;::</span>create_from_stream<span class="op">(</span>is<span class="op">);</span></span>
+<span id="cb8-6"><a aria-label="6"></a>    <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>type <span class="op">==</span> <span class="st">"SigmoidLayer"</span><span class="op">)</span> l <span class="op">=</span> SigmoidLayer<span class="op">&lt;</span>ntype<span class="op">&gt;::</span>create_from_stream<span class="op">(</span>is<span class="op">);</span></span>
+<span id="cb8-7"><a aria-label="7"></a>    <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>type <span class="op">==</span> <span class="st">"tanhLayer"</span><span class="op">)</span>    l <span class="op">=</span> tanhLayer<span class="op">&lt;</span>ntype<span class="op">&gt;::</span>create_from_stream<span class="op">(</span>is<span class="op">);</span></span>
+<span id="cb8-8"><a aria-label="8"></a>    <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb8-9"><a aria-label="9"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> msg <span class="op">&lt;&lt;</span> <span class="st">" -&gt; Tipo sconosciuto: "</span> <span class="op">&lt;&lt;</span> type <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb8-10"><a aria-label="10"></a>        exit<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb8-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb8-12"><a aria-label="12"></a>    <span class="cf">return</span> l<span class="op">;</span></span>
+<span id="cb8-13"><a aria-label="13"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Questa è l’unica catena di <code>if</code> che ci concediamo, e non è l’anti-pattern denunciato nella Lezione 16: là il problema era usare <code>dynamic_cast</code> per chiedere a un oggetto <em>che tipo sei</em>. Qui il tipo non esiste ancora — stiamo decidendo quale creare. È esattamente il compito di una factory.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Il costo di questo design: aggiungere un nuovo layer richiede di toccare <code>create_layer</code>. I framework industriali lo evitano con un registro auto-popolato (<code>std::map&lt;std::string, funzione&gt;</code>), ma la catena di <code>if</code> è più leggibile e per tre tipi va benissimo.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="task-5-save_model-e-load_model" class="slide level2 smaller">
+<h2>Task 5: <code>save_model</code> e <code>load_model</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a><span class="dt">void</span> save_model<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> filename<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb9-2"><a aria-label="2"></a>    <span class="bu">std::</span>ofstream os<span class="op">(</span>filename<span class="op">);</span></span>
+<span id="cb9-3"><a aria-label="3"></a>    <span class="cf">if</span> <span class="op">(!</span>os<span class="op">.</span>is_open<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb9-4"><a aria-label="4"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"[ERROR] Cannot open file "</span> <span class="op">&lt;&lt;</span> filename <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb9-5"><a aria-label="5"></a>        exit<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb9-6"><a aria-label="6"></a>    <span class="op">}</span></span>
+<span id="cb9-7"><a aria-label="7"></a>    <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> l <span class="op">:</span> <span class="kw">this</span><span class="op">-&gt;</span>layers<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-8"><a aria-label="8"></a>        os <span class="op">&lt;&lt;</span> l<span class="op">-&gt;</span><span class="dt">get_type</span><span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>   <span class="co">// 1. il nome del tipo</span></span>
+<span id="cb9-9"><a aria-label="9"></a>        l<span class="op">-&gt;</span>save_config<span class="op">(</span>os<span class="op">);</span>            <span class="co">// 2. i suoi iperparametri</span></span>
+<span id="cb9-10"><a aria-label="10"></a>        l<span class="op">-&gt;</span>save_weights<span class="op">(</span>os<span class="op">);</span>           <span class="co">// 3. i suoi pesi</span></span>
+<span id="cb9-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb9-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"[INFO] Model saved successfully to "</span> <span class="op">&lt;&lt;</span> filename <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb9-13"><a aria-label="13"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="dt">void</span> load_model<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> filename<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a aria-label="2"></a>    <span class="bu">std::</span>ifstream is<span class="op">(</span>filename<span class="op">);</span></span>
+<span id="cb10-3"><a aria-label="3"></a>    <span class="cf">if</span> <span class="op">(!</span>is<span class="op">.</span>is_open<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb10-4"><a aria-label="4"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"[ERROR] Cannot open file "</span> <span class="op">&lt;&lt;</span> filename <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb10-5"><a aria-label="5"></a>        exit<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb10-6"><a aria-label="6"></a>    <span class="op">}</span></span>
+<span id="cb10-7"><a aria-label="7"></a>    <span class="kw">this</span><span class="op">-&gt;</span>layers<span class="op">.</span>clear<span class="op">();</span>              <span class="co">// cancella un eventuale modello esistente</span></span>
+<span id="cb10-8"><a aria-label="8"></a></span>
+<span id="cb10-9"><a aria-label="9"></a>    <span class="bu">std::</span>string type<span class="op">;</span></span>
+<span id="cb10-10"><a aria-label="10"></a>    <span class="cf">while</span> <span class="op">(</span>is <span class="op">&gt;&gt;</span> type<span class="op">)</span> <span class="op">{</span>               <span class="co">// finché c'è un tipo da leggere</span></span>
+<span id="cb10-11"><a aria-label="11"></a>        layer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> raw_l <span class="op">=</span> <span class="kw">this</span><span class="op">-&gt;</span>create_layer<span class="op">(</span>is<span class="op">,</span> type<span class="op">,</span></span>
+<span id="cb10-12"><a aria-label="12"></a>                                     <span class="st">"[load_model] Wrong layer name"</span><span class="op">);</span></span>
+<span id="cb10-13"><a aria-label="13"></a>        <span class="cf">if</span> <span class="op">(</span>raw_l <span class="op">!=</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-14"><a aria-label="14"></a>            <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>layer<span class="op">&lt;</span>ntype<span class="op">&gt;&gt;</span> l<span class="op">(</span>raw_l<span class="op">);</span>   <span class="co">// subito in un unique_ptr</span></span>
+<span id="cb10-15"><a aria-label="15"></a>            l<span class="op">-&gt;</span>load_weights<span class="op">(</span>is<span class="op">);</span></span>
+<span id="cb10-16"><a aria-label="16"></a>            <span class="kw">this</span><span class="op">-&gt;</span>add<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>l<span class="op">));</span></span>
+<span id="cb10-17"><a aria-label="17"></a>        <span class="op">}</span></span>
+<span id="cb10-18"><a aria-label="18"></a>    <span class="op">}</span></span>
+<span id="cb10-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"[INFO] Model loaded successfully from "</span> <span class="op">&lt;&lt;</span> filename <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb10-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Notate il punto in cui il puntatore crudo restituito dalla factory viene avvolto in un <code>unique_ptr</code>: <strong>immediatamente</strong>. Se <code>load_weights</code> lanciasse un’eccezione due righe più sotto, la memoria sarebbe già protetta dallo stack unwinding (Lezione 19).</p>
+</section>
+<section id="task-6-gli-accessori-pubblici" class="slide level2 smaller">
+<h2>Task 6: Gli accessori pubblici</h2>
+<p><code>save_model</code> itera su <code>this-&gt;layers</code>, che è <code>protected</code>. Dall’esterno serve un modo per ispezionare la rete — per i test, per la diagnostica, per il gradient check del Lab 13:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a>    <span class="co">// restituisce tutto il vettore dei layer</span></span>
+<span id="cb11-2"><a aria-label="2"></a>    <span class="at">const</span> <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>layer<span class="op">&lt;</span>ntype<span class="op">&gt;&gt;&gt;&amp;</span> get_layers<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb11-3"><a aria-label="3"></a>        <span class="cf">return</span> layers<span class="op">;</span></span>
+<span id="cb11-4"><a aria-label="4"></a>    <span class="op">}</span></span>
+<span id="cb11-5"><a aria-label="5"></a></span>
+<span id="cb11-6"><a aria-label="6"></a>    <span class="co">// restituisce un layer specifico</span></span>
+<span id="cb11-7"><a aria-label="7"></a>    layer<span class="op">&lt;</span>ntype<span class="op">&gt;*</span> get_layer<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb11-8"><a aria-label="8"></a>        <span class="cf">return</span> layers<span class="op">[</span>i<span class="op">].</span>get<span class="op">();</span></span>
+<span id="cb11-9"><a aria-label="9"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Due dettagli di design:</p>
+<ul>
+<li><code>get_layers()</code> restituisce un <strong>riferimento costante</strong>: chi lo riceve può leggere il vettore e contarlo, ma non può aggiungere o rimuovere layer né rubarne la proprietà. Restituirlo per valore sarebbe impossibile, perché <code>unique_ptr</code> non è copiabile.</li>
+<li><code>get_layer(i)</code> restituisce un puntatore <strong>crudo</strong> via <code>.get()</code>. È corretto: il chiamante ottiene un accesso, non la proprietà — che resta della rete. Restituire un <code>unique_ptr</code> significherebbe cedere il layer.</li>
+</ul>
+</section>
+<section id="task-6-la-verifica-del-round-trip" class="slide level2 smaller">
+<h2>Task 6: La verifica del round-trip</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-2"><a aria-label="2"></a>    rng<span class="op">.</span>seed<span class="op">(</span><span class="dv">42</span><span class="op">);</span></span>
+<span id="cb12-3"><a aria-label="3"></a></span>
+<span id="cb12-4"><a aria-label="4"></a>    Sequential<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> net<span class="op">;</span></span>
+<span id="cb12-5"><a aria-label="5"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">));</span></span>
+<span id="cb12-6"><a aria-label="6"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>SigmoidLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;());</span></span>
+<span id="cb12-7"><a aria-label="7"></a>    net<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">128</span><span class="op">));</span></span>
+<span id="cb12-8"><a aria-label="8"></a></span>
+<span id="cb12-9"><a aria-label="9"></a>    Matrix<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> X <span class="op">=</span> Matrix<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;::</span>Random<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb12-10"><a aria-label="10"></a>    Matrix<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> Z1 <span class="op">=</span> net<span class="op">.</span>forward<span class="op">(</span>X<span class="op">);</span></span>
+<span id="cb12-11"><a aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Rete originale:</span><span class="sc">\n</span><span class="st">"</span> <span class="op">&lt;&lt;</span> Z1<span class="op">.</span>transpose<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb12-12"><a aria-label="12"></a></span>
+<span id="cb12-13"><a aria-label="13"></a>    net<span class="op">.</span>save_model<span class="op">(</span><span class="st">"modello_test.txt"</span><span class="op">);</span></span>
+<span id="cb12-14"><a aria-label="14"></a></span>
+<span id="cb12-15"><a aria-label="15"></a>    Sequential<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> net_loaded<span class="op">;</span>      <span class="co">// vuota: non sa nulla dell'architettura</span></span>
+<span id="cb12-16"><a aria-label="16"></a>    net_loaded<span class="op">.</span>load_model<span class="op">(</span><span class="st">"modello_test.txt"</span><span class="op">);</span></span>
+<span id="cb12-17"><a aria-label="17"></a></span>
+<span id="cb12-18"><a aria-label="18"></a>    Matrix<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> Z2 <span class="op">=</span> net_loaded<span class="op">.</span>forward<span class="op">(</span>X<span class="op">);</span></span>
+<span id="cb12-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Rete ricaricata:</span><span class="sc">\n</span><span class="st">"</span> <span class="op">&lt;&lt;</span> Z2<span class="op">.</span>transpose<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb12-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Il criterio</strong>: <code>Z1</code> e <code>Z2</code> devono coincidere. E notate quanto è forte questo test: <code>net_loaded</code> viene costruita <strong>vuota</strong>, senza che il codice dichiari mai l’architettura. Se l’output è identico, la factory ha ricostruito da sola tre layer del tipo giusto, con le dimensioni giuste, con i pesi giusti.</p>
+<p>Aprite poi <code>modello_test.txt</code> con un editor: è leggibile, e le prime righe dicono <code>DenseLayer</code>, <code>128 784</code>, poi i pesi. Un formato testuale si ispeziona a occhio, e questo vale più della compattezza di un formato binario.</p>
+</section>
+<section id="un-dettaglio-che-vi-salverà" class="slide level2 smaller">
+<h2>Un dettaglio che vi salverà</h2>
+<p>Se il round-trip dà numeri <strong>vicini ma non identici</strong>, non cercate il bug nella factory: è la precisione di stampa.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a aria-label="1"></a>os<span class="op">.</span>precision<span class="op">(</span><span class="dv">17</span><span class="op">);</span>   <span class="co">// per un double; 9 cifre bastano per un float</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Per default <code>ostream</code> scrive 6 cifre significative, e un peso <code>0.023147829</code> diventa <code>0.0231478</code>. Con centinaia di migliaia di pesi troncati, l’accuratezza della rete ricaricata scende in modo misurabile.</p>
+<p>È l’errore della Lezione 11, e si manifesta esattamente qui.</p>
+</section>
+<section id="task-da-completare" class="slide level2 smaller scrollable">
 <h2>Task da Completare</h2>
 <ul class="task-list">
-<li><label><input type="checkbox">Scaricare il dataset MNIST (formato binario o CSV)</label></li>
-<li><label><input type="checkbox">Scrivere una classe <code>MNISTLoader</code> usando <code>&lt;fstream&gt;</code></label></li>
-<li><label><input type="checkbox">Deserializzare i pixel 28x28 in un <code>Eigen::VectorXd</code> o <code>MatrixXd</code></label></li>
-<li><label><input type="checkbox">Normalizzare l’intensità dei pixel (0-255) in un range (0.0-1.0)</label></li>
+<li><label><input type="checkbox">Implementare <code>save_config</code>, <code>save_weights</code>, <code>load_weights</code> in <code>DenseLayer</code></label></li>
+<li><label><input type="checkbox">Verificare che le firme usino <code>std::ostream&amp;</code> / <code>std::istream&amp;</code></label></li>
+<li><label><input type="checkbox">Aggiungere <code>create_from_stream</code> statico a <code>DenseLayer</code>, <code>SigmoidLayer</code>, <code>tanhLayer</code></label></li>
+<li><label><input type="checkbox">Usare <code>type = -1</code> per saltare l’inizializzazione casuale nel caricamento</label></li>
+<li><label><input type="checkbox">Scrivere <code>create_layer()</code> nella sezione <code>protected</code> di <code>Sequential</code></label></li>
+<li><label><input type="checkbox">Implementare <code>save_model()</code> e <code>load_model()</code></label></li>
+<li><label><input type="checkbox">Aggiungere gli accessori <code>get_layers()</code> (const ref) e <code>get_layer(i)</code> (<code>.get()</code>)</label></li>
+<li><label><input type="checkbox">Avvolgere il puntatore della factory in un <code>unique_ptr</code> <strong>subito</strong></label></li>
+<li><label><input type="checkbox">Verificare il round-trip: <code>Z1</code> e <code>Z2</code> identici partendo da una rete vuota</label></li>
+<li><label><input type="checkbox">Ispezionare il file salvato con un editor di testo</label></li>
+<li><label><input type="checkbox">Impostare <code>precision(17)</code> e osservare la differenza sui pesi salvati</label></li>
+<li><label><input type="checkbox"><strong>Esperimento</strong>: corrompete a mano un numero nel file e osservate cosa accade</label></li>
 </ul>
+<p><strong>La soluzione di riferimento verrà discussa all’inizio della prossima lezione.</strong></p>
 <p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
 <div class="footer footer-default">
-
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
 </div>
 </div></div>
 
@@ -175,6 +489,7 @@ Docente
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -196,7 +511,8 @@ Docente
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -217,7 +533,7 @@ Docente
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -322,14 +638,14 @@ Docente
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'convex',
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: 'fast',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: 'fade',
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
@@ -367,7 +683,7 @@ Docente
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
           RevealNotes,

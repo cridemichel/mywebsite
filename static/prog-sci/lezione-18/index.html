@@ -202,7 +202,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 18</h1>
-  <p class="subtitle">Programmazione Scientifica++: Lezione 18</p>
+  <p class="subtitle">La Standard Template Library (STL)</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -213,7 +213,7 @@ Docente
 </div>
 
 </section>
-<section id="argomenti-di-oggi" class="slide level2">
+<section id="argomenti-di-oggi" class="slide level2 smaller">
 <h2>Argomenti di Oggi</h2>
 <ul>
 <li><strong>La Standard Template Library (STL)</strong>
@@ -246,7 +246,7 @@ Docente
 <h2>La Standard Template Library (STL)</h2>
 <p>Il cuore pulsante dell’ecosistema C++ è la <strong>STL</strong> (Standard Template Library).</p>
 <p>Creata originariamente da Alexander Stepanov, è una gigantesca collezione di codice già pronto, iper-ottimizzato da decenni, che si installa automaticamente assieme al compilatore <code>g++</code>.</p>
-<p>Come suggerisce il nome, è pesantemente basata sui <strong>Template</strong> (Lezione 11). Questo significa che la STL vi fornisce lo “stampo” vuoto, e voi ci inserite dentro il tipo che volete (<code>int</code>, <code>double</code>, <code>Layer</code>, <code>std::unique_ptr&lt;Layer&gt;</code>).</p>
+<p>Come suggerisce il nome, è pesantemente basata sui <strong>Template</strong> (Lezione 16). Questo significa che la STL vi fornisce lo “stampo” vuoto, e voi ci inserite dentro il tipo che volete (<code>int</code>, <code>double</code>, <code>Layer</code>, <code>std::unique_ptr&lt;Layer&gt;</code>).</p>
 </section>
 <section id="i-tre-pilastri-della-stl" class="slide level2 smaller">
 <h2>I Tre Pilastri della STL</h2>
@@ -361,7 +361,7 @@ Docente
 </section>
 <section id="il-vettore-nella-rete-neurale" class="slide level2 smaller">
 <h2>Il Vettore nella Rete Neurale</h2>
-<p>Eravamo rimasti alla Lezione 11 con la necessità di inglobare questo concetto nell’architettura della nostra Rete.</p>
+<p>Eravamo rimasti alla Lezione 16 con la necessità di inglobare questo concetto nell’architettura della nostra Rete.</p>
 <p>Uniamo il Potere dei Vettori con il C++11 (<code>unique_ptr</code> e <code>move</code>):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
 <span id="cb2-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
@@ -430,9 +430,19 @@ Docente
 </section>
 <section id="linconveniente-silenzioso-delloperatore" class="slide level2 smaller">
 <h2>L’Inconveniente Silenzioso dell’operatore <code>[]</code></h2>
-<blockquote>
-<p>[!WARNING] IL BUG PIÙ INSIDIOSO DEL C++ SULLE MAPPE</p>
-</blockquote>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>IL BUG PIÙ INSIDIOSO DEL C++ SULLE MAPPE</p>
+</div>
+</div>
+</div>
 <p>Cosa succede se, per un errore di battitura, cercate di leggere una chiave che non esiste?</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Learning Rate: "</span> <span class="op">&lt;&lt;</span> config<span class="op">[</span><span class="st">"LearningRat"</span><span class="op">];</span> <span class="co">// Sbagliato il nome!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Il C++ non andrà in crash. E non vi darà Errore!</strong> Invece, secernerà silenziosamente una nuova chiave <code>"LearningRat"</code> nella mappa, e la inizializzerà al valore di default (zero). La stampa dirà <code>Learning Rate: 0</code>, sfalsando tutti i vostri calcoli matematici senza che ve ne accorgiate!</p>

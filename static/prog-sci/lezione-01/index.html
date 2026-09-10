@@ -136,6 +136,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 1</h1>
+  <p class="subtitle">Introduzione al Corso, Obiettivi e Testi di Riferimento</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -159,11 +160,11 @@ Docente
 </ul></li>
 </ul>
 </section>
-<section id="perché-studiare-il-c" class="slide level2">
+<section id="perché-studiare-il-c" class="slide level2 smaller">
 <h2>Perché studiare il C++?</h2>
 <ul>
 <li>Negli ultimi decenni, il C++ ha sostituito il Fortran come standard.</li>
-<li>Grossi esperimenti (es. al CERN) hanno adottato C++ già nei primi anni 90.</li>
+<li>Grossi esperimenti (es. al CERN) hanno adottato C++ dalla metà degli anni 90 (ROOT nasce nel 1995).</li>
 <li>Molti strumenti di analisi dati e metodi numerici sono scritti in C++.</li>
 <li><strong>Moltissimi package per fare simulazioni usano il C++</strong>:
 <ul>
@@ -198,7 +199,7 @@ Docente
 </ul></li>
 </ul>
 </section>
-<section id="esempi-di-uso-di-c-in-fisica-e-non-solo" class="slide level2">
+<section id="esempi-di-uso-di-c-in-fisica-e-non-solo" class="slide level2 smaller">
 <h2>Esempi di Uso di C++ in Fisica (e non solo)</h2>
 <ul>
 <li>ROOT Data Analysis Framework (particelle elementari)</li>
@@ -271,7 +272,7 @@ Docente
 </ul></li>
 </ul>
 </section>
-<section id="alcuni-testi-da-consultare-per-iniziare" class="slide level2 smaller">
+<section id="alcuni-testi-da-consultare-per-iniziare" class="slide level2 smaller scrollable">
 <h2>Alcuni Testi da Consultare per Iniziare</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -321,7 +322,7 @@ Docente
 </ul>
 </div></div>
 </section>
-<section id="testo-di-riferimento-reti-neurali" class="slide level2">
+<section id="testo-di-riferimento-reti-neurali" class="slide level2 smaller scrollable">
 <h2>Testo di Riferimento: Reti Neurali</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
@@ -354,17 +355,15 @@ Docente
 <li><strong>Progetto:</strong> Sviluppo e addestramento di una rete neurale MLP!</li>
 </ul>
 </section>
-<section id="moltissime-risorse-in-rete" class="slide level2">
+<section id="moltissime-risorse-in-rete" class="slide level2 smaller">
 <h2>Moltissime Risorse in Rete</h2>
-
-<img data-src="images/img-054.jpg" class="quarto-figure quarto-figure-center r-stretch"><ul>
-<li>Alcuni ottimi siti:
 <ul>
-<li><code>www.cplusplus.com</code> (Tutorial, lezioni, manuali di riferimento, FAQ)</li>
-<li><code>www.cppreference.com</code> (Un vero e proprio manuale online)</li>
-<li>StackOverflow</li>
-</ul></li>
-<li>Moltissimi corsi di C++ nelle università sono disponibili in rete comprese lezioni e tantissimi esempi!</li>
+<li><a href="https://en.cppreference.com">cppreference.com</a> — il manuale di riferimento, da tenere sempre aperto.</li>
+<li><a href="https://cplusplus.com">cplusplus.com</a> — tutorial introduttivi, più discorsivo.</li>
+<li><a href="https://isocpp.org">isocpp.org</a> — il comitato di standardizzazione: <em>Core Guidelines</em> e FAQ.</li>
+<li><a href="https://stackoverflow.com/questions/tagged/c%2B%2B">StackOverflow</a> — quasi ogni errore che incontrerete è già stato risolto lì.</li>
+<li><a href="https://eigen.tuxfamily.org/dox/">Documentazione di Eigen</a> — la libreria che useremo dal Lab 05.</li>
+<li>In rete si trovano interi corsi universitari di C++, con lezioni ed esempi.</li>
 </ul>
 </section>
 <section id="compilato-vs-interpretato-13" class="slide level2">
@@ -380,7 +379,7 @@ Docente
 <h2>Compilato vs Interpretato (2/3)</h2>
 <ul>
 <li>C e C++ sono linguaggi <strong>compilati</strong>.</li>
-<li>Il codice sorgente viene tradotto in <em>linguaggio macchina</em> (binario) prima dellesecuzione da un programma chiamato <strong>compilatore</strong> (es. <code>g++</code>).</li>
+<li>Il codice sorgente viene tradotto in <em>linguaggio macchina</em> (binario) prima dell’esecuzione da un programma chiamato <strong>compilatore</strong> (es. <code>g++</code>).</li>
 <li>Il computer esegue direttamente le istruzioni binarie.</li>
 <li><strong>Svantaggi:</strong> Tempi di compilazione, gestione manuale dei tipi e della memoria.</li>
 <li><strong>Vantaggi:</strong> Prestazioni assolute. Sei a diretto contatto con l’hardware (CPU/GPU).</li>
@@ -413,16 +412,11 @@ Docente
 <li>Le immagini sono in scala di grigi, di dimensione 28x28 pixel.</li>
 </ul>
 </section>
-<section id="la-sfida-informatica-di-mnist" class="slide level2">
+<section id="la-sfida-informatica-di-mnist" class="slide level2 smaller">
 <h2>La Sfida Informatica di MNIST</h2>
 <ul>
-<li>Le immagini MNIST non sono salvate in comodi file <code>.png</code> o <code>.jpg</code>.</li>
-<li>Sono archiviate in un formato binario specifico (<code>.idx</code>).</li>
-<li>Questa sarà la nostra prima grande sfida pratica in C++:
-<ul>
-<li>Leggere byte puri da un file binario su disco.</li>
-<li>Convertirli in interi e poi in matrici matematiche (double/float).</li>
-</ul></li>
+<li>Le immagini non sono in comodi file <code>.png</code> o <code>.jpg</code>: le useremo in formato <strong>CSV</strong>, una riga per immagine — la prima colonna è la cifra, le altre 784 sono i pixel da 0 a 255.</li>
+<li>Sarà una delle sfide pratiche del Laboratorio 12: leggere 60.000 righe senza far esplodere la memoria, convertirle in matrici, e riscalare i pixel nell’intervallo giusto (sbagliare qui rende la rete inutile).</li>
 <li>Capirete che “leggere un file” non è mai una banalità in HPC!</li>
 </ul>
 </section>
@@ -430,7 +424,7 @@ Docente
 <h2>La Filosofia di <code>BASIC_NEURAL++</code></h2>
 <ul>
 <li>Durante il corso costruiremo <code>BASIC_NEURAL++</code>.</li>
-<li><strong>Regola doro:</strong> Niente librerie magiche per il Machine Learning (Niente PyTorch, niente TensorFlow).</li>
+<li><strong>Regola d’oro:</strong> Niente librerie magiche per il Machine Learning (Niente PyTorch, niente TensorFlow).</li>
 <li><strong>Cosa useremo?</strong>
 <ul>
 <li>Solo la Standard Library del C++.</li>
@@ -442,23 +436,23 @@ Docente
 <section id="capire-la-scatola-nera" class="slide level2">
 <h2>Capire la scatola nera</h2>
 <ul>
-<li>Sviluppando tutto da zero, “apriremo la scatola nera” dellIntelligenza Artificiale.</li>
+<li>Sviluppando tutto da zero, “apriremo la scatola nera” dell’Intelligenza Artificiale.</li>
 <li>Capirete esattamente cos’è un <em>gradiente</em>.</li>
 <li>Vedrete con i vostri occhi come i pesi sinaptici (che sono solo numeri in una matrice) cambiano valore passo dopo passo.</li>
-<li>Imparerete cosa significa il temuto “Overfitting” o l”Esplosione del Gradiente”, perché li vedrete accadere nel vostro codice!</li>
+<li>Imparerete cosa significa il temuto “Overfitting” o l’“Esplosione del Gradiente”, perché li vedrete accadere nel vostro codice!</li>
 </ul>
 </section>
 <section id="la-struttura-di-una-rete-multi-layer-perceptron" class="slide level2">
 <h2>La Struttura di una Rete (Multi-Layer Perceptron)</h2>
 <ul>
 <li>La nostra rete sarà composta da <em>Strati</em> (Layers).</li>
-<li><strong>Strato di Input:</strong> 784 neuroni (i 28x28 pixel dellimmagine MNIST).</li>
-<li><strong>Strati Nascosti (Hidden):</strong> Deciderete voi quanti neuroni usare per estrarre i concetti (linee, curve, anelli).</li>
-<li><strong>Strato di Output:</strong> 10 neuroni (le probabilità che l’immagine sia la cifra 0, 1, …, 9).</li>
+<li><strong>Strato di Input:</strong> 784 neuroni (i 28x28 pixel dell’immagine MNIST).</li>
+<li><strong>Strato Nascosto (Hidden):</strong> deciderete voi quanti neuroni usare per estrarre i concetti (linee, curve, anelli). Nel corso ne useremo uno.</li>
+<li><strong>Strato di Output:</strong> 10 neuroni, uno per cifra. Il più acceso dà la risposta.</li>
 </ul>
 </section>
 <section id="lambiente-di-lavoro-cmake" class="slide level2">
-<h2>LAmbiente di Lavoro: CMake</h2>
+<h2>L’Ambiente di Lavoro: CMake</h2>
 <ul>
 <li>Avere un buon codice sorgente non basta. Bisogna saperlo “costruire” (build).</li>
 <li>Nei laboratori impareremo ad usare <strong>CMake</strong>.</li>
@@ -467,7 +461,7 @@ Docente
 </ul>
 </section>
 <section id="lambiente-di-lavoro-gli-ide" class="slide level2">
-<h2>LAmbiente di Lavoro: Gli IDE</h2>
+<h2>L’Ambiente di Lavoro: Gli IDE</h2>
 <ul>
 <li>Dimenticate i vecchi editor di testo nudi e crudi (o il vecchio Dev-C++).</li>
 <li>Oggi si usano IDE (Integrated Development Environments) potenti.</li>
@@ -513,8 +507,8 @@ Docente
 <li><strong>Noi faremo sul serio.</strong> Gli oggetti sono dati dotati di comportamento (attributi + metodi).</li>
 <li>Nel nostro framework neurale:
 <ul>
-<li>Una <code>Matrice</code> non è solo una griglia di numeri, ma un oggetto che “sa” come calcolare il prodotto punto con un’altra matrice.</li>
-<li>Un <code>Layer</code> non è solo un array di pesi, ma un oggetto che espone un metodo <code>forward()</code> per propagare il segnale e un metodo <code>backward()</code> per calcolare il suo gradiente.</li>
+<li>Una <code>Matrice</code> non è solo una griglia di numeri: è un oggetto che “sa” moltiplicarsi per un’altra matrice.</li>
+<li>Un <code>Layer</code> non è un array di pesi: espone <code>forward()</code> per propagare il segnale e <code>backward()</code> per calcolare il gradiente.</li>
 </ul></li>
 </ul>
 <p>Siete pronti a costruire la vostra IA?</p>
