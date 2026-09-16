@@ -102,6 +102,7 @@
     code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../annotazioni.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,6 +196,58 @@
       margin-right: 0; 
     }
   </style>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -244,14 +297,14 @@ Docente
 <p>Nelle scorse lezioni abbiamo visto come una classe possa usare l’Heap per gestire una quantità di dati non nota a priori. Queste classi “pesanti” avranno al loro interno dei <strong>Puntatori</strong> come attributi.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-label="1"></a><span class="kw">class</span> SequentialNetwork <span class="op">{</span></span>
 <span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-3" class="code-annotation-target"><a href="#annotated-cell-1-3" aria-label="3"></a>    Layer<span class="op">**</span> <span class="va">layers_</span><span class="op">;</span> <span class="co">// Un array di puntatori a Layer</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-3" class="code-annotation-target"><a href="#annotated-cell-1-3" aria-label="3"></a>    Layer<span class="op">**</span> <span class="va">layers_</span><span class="op">;</span> <span class="co">// Un array di puntatori a Layer</span></span>
 <span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-label="4"></a>    <span class="dt">int</span> <span class="va">num_layers_</span><span class="op">;</span></span>
 <span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-label="5"></a></span>
 <span id="annotated-cell-1-6"><a href="#annotated-cell-1-6" aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
 <span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-label="7"></a>    SequentialNetwork<span class="op">(</span><span class="dt">int</span> n<span class="op">);</span></span>
 <span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-label="8"></a>    <span class="op">~</span>SequentialNetwork<span class="op">();</span></span>
 <span id="annotated-cell-1-9"><a href="#annotated-cell-1-9" aria-label="9"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-1" data-code-lines="3" data-code-annotation="1">La dimensione esatta dell’array non è nota a tempo di compilazione.</span>
@@ -268,9 +321,9 @@ Docente
 <span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-label="2"></a>    <span class="va">num_layers_</span> <span class="op">=</span> n<span class="op">;</span></span>
 <span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-label="3"></a>    </span>
 <span id="annotated-cell-18-4"><a href="#annotated-cell-18-4" aria-label="4"></a>    <span class="co">// Alloco dinamicamente la memoria</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1">1</button><span id="annotated-cell-18-5" class="code-annotation-target"><a href="#annotated-cell-18-5" aria-label="5"></a>    <span class="va">layers_</span> <span class="op">=</span> <span class="kw">new</span> Layer<span class="op">*[</span><span class="va">num_layers_</span><span class="op">];</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-18-5" class="code-annotation-target"><a href="#annotated-cell-18-5" aria-label="5"></a>    <span class="va">layers_</span> <span class="op">=</span> <span class="kw">new</span> Layer<span class="op">*[</span><span class="va">num_layers_</span><span class="op">];</span></span>
 <span id="annotated-cell-18-6"><a href="#annotated-cell-18-6" aria-label="6"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-18" data-code-lines="5" data-code-annotation="1">Acquisizione.</span>
@@ -281,9 +334,9 @@ Docente
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-19"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-label="1"></a>SequentialNetwork<span class="op">::~</span>SequentialNetwork<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-19-2"><a href="#annotated-cell-19-2" aria-label="2"></a>    </span>
 <span id="annotated-cell-19-3"><a href="#annotated-cell-19-3" aria-label="3"></a>    <span class="co">// Libero tutta la memoria dell'Heap</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2">2</button><span id="annotated-cell-19-4" class="code-annotation-target"><a href="#annotated-cell-19-4" aria-label="4"></a>    <span class="kw">delete</span><span class="op">[]</span> <span class="va">layers_</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-19-4" class="code-annotation-target"><a href="#annotated-cell-19-4" aria-label="4"></a>    <span class="kw">delete</span><span class="op">[]</span> <span class="va">layers_</span><span class="op">;</span></span>
 <span id="annotated-cell-19-5"><a href="#annotated-cell-19-5" aria-label="5"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
 <dd>
 <span data-code-cell="annotated-cell-19" data-code-lines="4" data-code-annotation="2">Rilascio. Se non lo facessi, la RAM esploderebbe in pochi minuti!</span>
@@ -315,11 +368,11 @@ Docente
 <span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-label="7"></a>    Particella p2<span class="op">;</span></span>
 <span id="annotated-cell-3-8"><a href="#annotated-cell-3-8" aria-label="8"></a>    </span>
 <span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-label="9"></a>    <span class="co">// 3. Le copio!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-10" class="code-annotation-target"><a href="#annotated-cell-3-10" aria-label="10"></a>    p2 <span class="op">=</span> p1<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-10" class="code-annotation-target"><a href="#annotated-cell-3-10" aria-label="10"></a>    p2 <span class="op">=</span> p1<span class="op">;</span></span>
 <span id="annotated-cell-3-11"><a href="#annotated-cell-3-11" aria-label="11"></a>    </span>
 <span id="annotated-cell-3-12"><a href="#annotated-cell-3-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-3-13"><a href="#annotated-cell-3-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-3" data-code-lines="10" data-code-annotation="1">Il compilatore, dietro le quinte, copia bit-per-bit i valori di <code>p1</code> dentro <code>p2</code>. Essendo formati solo da numeri (es. <code>double</code>), questa copia funziona perfettamente!</span>
@@ -334,11 +387,11 @@ Docente
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-label="3"></a>    SequentialNetwork net2<span class="op">(</span><span class="dv">10</span><span class="op">);</span> <span class="co">// Crea una rete con 10 layer</span></span>
 <span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-label="4"></a>    </span>
 <span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-label="5"></a>    <span class="co">// Copiamo la rete 1 nella rete 2</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6" aria-label="6"></a>    net2 <span class="op">=</span> net1<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6" aria-label="6"></a>    net2 <span class="op">=</span> net1<span class="op">;</span></span>
 <span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-label="7"></a>    </span>
 <span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-label="8"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-label="9"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-4" data-code-lines="6" data-code-annotation="1">L’operatore gratuito <code>=</code> interviene di nuovo. Fa la sua copia bit-per-bit di tutti gli attributi di <code>net1</code> dentro <code>net2</code>. Ma cosa sta copiando esattamente?</span>
@@ -371,9 +424,9 @@ Docente
 <span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-label="3"></a>    SequentialNetwork net2<span class="op">(</span><span class="dv">10</span><span class="op">);</span></span>
 <span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-label="4"></a>    net2 <span class="op">=</span> net1<span class="op">;</span> <span class="co">// Errore invisibile (Shallow Copy)</span></span>
 <span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-label="5"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-label="6"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-label="6"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-label="7"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="1">L’ordine di distruzione è LIFO (Last-In, First-Out).</span>
@@ -426,9 +479,9 @@ Docente
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="kw">class</span> SequentialNetwork <span class="op">{</span></span>
 <span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
 <span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-label="3"></a>    <span class="co">// Questa è la firma obbligatoria!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4" aria-label="4"></a>    <span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> rhs<span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4" aria-label="4"></a>    <span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> rhs<span class="op">);</span></span>
 <span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-label="5"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="1"><code>rhs</code> sta per <em>Right Hand Side</em> (il lato destro dell’uguaglianza). Quando scrivi <code>net2 = net1</code>, il C++ invoca il metodo <code>operator=</code> <strong>sull’oggetto <code>net2</code></strong>, passandogli <code>net1</code> come parametro (il lato destro).</span>
@@ -444,10 +497,10 @@ Docente
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a>    <span class="dt">int</span> <span class="va">x_</span><span class="op">;</span></span>
 <span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
 <span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-label="5"></a>    <span class="dt">void</span> stampaIndirizzo<span class="op">()</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-6" class="code-annotation-target"><a href="#annotated-cell-7-6" aria-label="6"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Il mio indirizzo in RAM è: "</span> <span class="op">&lt;&lt;</span> <span class="kw">this</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-6" class="code-annotation-target"><a href="#annotated-cell-7-6" aria-label="6"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Il mio indirizzo in RAM è: "</span> <span class="op">&lt;&lt;</span> <span class="kw">this</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-7" data-code-lines="6" data-code-annotation="1">L’oggetto conosce il proprio posto nel mondo.</span>
@@ -465,10 +518,10 @@ Docente
 <span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-label="6"></a>    <span class="dt">void</span> setParametro<span class="op">(</span><span class="dt">int</span> parametro<span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-label="7"></a>        <span class="co">// parametro = parametro; // NON HA SENSO!</span></span>
 <span id="annotated-cell-8-8"><a href="#annotated-cell-8-8" aria-label="8"></a>        </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1">1</button><span id="annotated-cell-8-9" class="code-annotation-target"><a href="#annotated-cell-8-9" aria-label="9"></a>        <span class="kw">this</span><span class="op">-&gt;</span>parametro <span class="op">=</span> parametro<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-9" class="code-annotation-target"><a href="#annotated-cell-8-9" aria-label="9"></a>        <span class="kw">this</span><span class="op">-&gt;</span>parametro <span class="op">=</span> parametro<span class="op">;</span></span>
 <span id="annotated-cell-8-10"><a href="#annotated-cell-8-10" aria-label="10"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-8-11"><a href="#annotated-cell-8-11" aria-label="11"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-8" data-code-lines="9" data-code-annotation="1">Usando <code>this-&gt;</code> (l’operatore freccia perché <code>this</code> è un puntatore), specifichiamo inequivocabilmente: “La variabile dell’oggetto = la variabile della funzione”.</span>
@@ -482,7 +535,7 @@ Docente
 <p>Se la prima cosa che fa il nostro operatore <code>=</code> per fare spazio ai nuovi dati è un <code>delete</code> della propria memoria… ci distruggeremmo i dati prima ancora di averli potuti fotocopiare!</p>
 <p>Dobbiamo inserire una clausola di salvaguardia usando <code>this</code>.</p>
 </section>
-<section id="deep-copy-implementazione-completa" class="slide level2 smaller">
+<section id="deep-copy-implementazione-completa" class="slide level2 smaller scrollable">
 <h2>Deep Copy: Implementazione completa</h2>
 <p>Ecco finalmente il codice salvavita per le classi pesanti!</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-10"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-label="1"></a><span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> SequentialNetwork<span class="op">::</span><span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> SequentialNetwork<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
@@ -524,8 +577,8 @@ Docente
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-label="1"></a>Vettore2D v1<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
 <span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-label="2"></a>Vettore2D v2<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
 <span id="annotated-cell-20-3"><a href="#annotated-cell-20-3" aria-label="3"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1">1</button><span id="annotated-cell-20-4" class="code-annotation-target"><a href="#annotated-cell-20-4" aria-label="4"></a>Vettore2D v3 <span class="op">=</span> v1<span class="op">.</span>somma<span class="op">(</span>v2<span class="op">);</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-4" class="code-annotation-target"><a href="#annotated-cell-20-4" aria-label="4"></a>Vettore2D v3 <span class="op">=</span> v1<span class="op">.</span>somma<span class="op">(</span>v2<span class="op">);</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-20" data-code-lines="4" data-code-annotation="1">Brutto da leggere. E se volessi sommare tre vettori? <code>v1.somma(v2.somma(v3))</code>! Orribile.</span>
@@ -536,8 +589,8 @@ Docente
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-21"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-21-1"><a href="#annotated-cell-21-1" aria-label="1"></a>Vettore2D v1<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
 <span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-label="2"></a>Vettore2D v2<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
 <span id="annotated-cell-21-3"><a href="#annotated-cell-21-3" aria-label="3"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="2">2</button><span id="annotated-cell-21-4" class="code-annotation-target"><a href="#annotated-cell-21-4" aria-label="4"></a>Vettore2D v3 <span class="op">=</span> v1 <span class="op">+</span> v2<span class="op">;</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-21-4" class="code-annotation-target"><a href="#annotated-cell-21-4" aria-label="4"></a>Vettore2D v3 <span class="op">=</span> v1 <span class="op">+</span> v2<span class="op">;</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-21" data-target-annotation="2">2</dt>
 <dd>
 <span data-code-cell="annotated-cell-21" data-code-lines="4" data-code-annotation="2">Elegante, compatto, intuitivo! E <code>v1 + v2 + v3</code> funziona perfettamente!</span>
@@ -551,9 +604,9 @@ Docente
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
 <span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
 <span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-label="3"></a>    <span class="co">// Questa funzione definisce cosa fa il simbolo "+"</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1">1</button><span id="annotated-cell-11-4" class="code-annotation-target"><a href="#annotated-cell-11-4" aria-label="4"></a>    Vettore2D <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-4" class="code-annotation-target"><a href="#annotated-cell-11-4" aria-label="4"></a>    Vettore2D <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
 <span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-11" data-code-lines="4" data-code-annotation="1">Notare il <code>const</code> finale! Sommare due vettori genera un <em>nuovo</em> vettore, ma NON altera i due vettori originali (principio di minor privilegio!). L’operatore <code>=</code> invece alterava l’oggetto, per cui non era marcato <code>const</code> alla fine.</span>
@@ -587,16 +640,16 @@ Docente
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-13"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-label="1"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
 <span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-label="2"></a></span>
 <span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-label="3"></a><span class="co">// Restituisco un nuovo Vettore2D</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1">1</button><span id="annotated-cell-13-4" class="code-annotation-target"><a href="#annotated-cell-13-4" aria-label="4"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-13-4" class="code-annotation-target"><a href="#annotated-cell-13-4" aria-label="4"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
 <span id="annotated-cell-13-5"><a href="#annotated-cell-13-5" aria-label="5"></a>    </span>
 <span id="annotated-cell-13-6"><a href="#annotated-cell-13-6" aria-label="6"></a>    <span class="co">// Sommo le componenti X e Y separatamente (regola del parallelogramma)</span></span>
 <span id="annotated-cell-13-7"><a href="#annotated-cell-13-7" aria-label="7"></a>    <span class="dt">double</span> nuovo_x <span class="op">=</span> <span class="kw">this</span><span class="op">-&gt;</span><span class="va">x_</span> <span class="op">+</span> rhs<span class="op">.</span><span class="va">x_</span><span class="op">;</span></span>
 <span id="annotated-cell-13-8"><a href="#annotated-cell-13-8" aria-label="8"></a>    <span class="dt">double</span> nuovo_y <span class="op">=</span> <span class="kw">this</span><span class="op">-&gt;</span><span class="va">y_</span> <span class="op">+</span> rhs<span class="op">.</span><span class="va">y_</span><span class="op">;</span></span>
 <span id="annotated-cell-13-9"><a href="#annotated-cell-13-9" aria-label="9"></a>    </span>
 <span id="annotated-cell-13-10"><a href="#annotated-cell-13-10" aria-label="10"></a>    <span class="co">// Restituisco un nuovissimo oggetto nato da questi valori!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="2">2</button><span id="annotated-cell-13-11" class="code-annotation-target"><a href="#annotated-cell-13-11" aria-label="11"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span>nuovo_x<span class="op">,</span> nuovo_y<span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-13-11" class="code-annotation-target"><a href="#annotated-cell-13-11" aria-label="11"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span>nuovo_x<span class="op">,</span> nuovo_y<span class="op">);</span></span>
 <span id="annotated-cell-13-12"><a href="#annotated-cell-13-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-13" data-code-lines="4" data-code-annotation="1">Firma complessa ma logica.</span>
@@ -611,17 +664,17 @@ Docente
 <h2>E se le Dimensioni non Tornano?</h2>
 <p><code>operator+</code> deve <strong>restituire una <code>Matrix</code></strong>. Ma se <code>a</code> è 3×3 e <code>b</code> è 2×2, quale matrice restituiamo? In C si sarebbe restituito un codice d’errore, o stampato un messaggio e chiamato <code>exit()</code>. Nessuna delle due cose è possibile qui: il tipo di ritorno è già deciso, e uccidere il programma da dentro una libreria è inaccettabile.</p>
 <p>C++ ha un meccanismo apposta: <strong>lanciare un’eccezione</strong>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1">1</button><span id="annotated-cell-14-1" class="code-annotation-target"><a href="#annotated-cell-14-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-14-1" class="code-annotation-target"><a href="#annotated-cell-14-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
 <span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-label="2"></a></span>
 <span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-label="3"></a>Matrix Matrix<span class="op">::</span><span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Matrix<span class="op">&amp;</span> other<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
 <span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-label="4"></a>    <span class="cf">if</span> <span class="op">(</span><span class="va">rows_</span> <span class="op">!=</span> other<span class="op">.</span><span class="va">rows_</span> <span class="op">||</span> <span class="va">cols_</span> <span class="op">!=</span> other<span class="op">.</span><span class="va">cols_</span><span class="op">)</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="2">2</button><span id="annotated-cell-14-5" class="code-annotation-target"><a href="#annotated-cell-14-5" aria-label="5"></a>        <span class="cf">throw</span> <span class="bu">std::</span>invalid_argument<span class="op">(</span><span class="st">"Matrix::operator+: dimensioni incompatibili"</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-14-5" class="code-annotation-target"><a href="#annotated-cell-14-5" aria-label="5"></a>        <span class="cf">throw</span> <span class="bu">std::</span>invalid_argument<span class="op">(</span><span class="st">"Matrix::operator+: dimensioni incompatibili"</span><span class="op">);</span></span>
 <span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-label="6"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-label="7"></a>    Matrix result<span class="op">(</span><span class="va">rows_</span><span class="op">,</span> <span class="va">cols_</span><span class="op">);</span></span>
 <span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-label="8"></a>    <span class="co">// ... somma elemento per elemento ...</span></span>
 <span id="annotated-cell-14-9"><a href="#annotated-cell-14-9" aria-label="9"></a>    <span class="cf">return</span> result<span class="op">;</span></span>
 <span id="annotated-cell-14-10"><a href="#annotated-cell-14-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-14" data-code-lines="1" data-code-annotation="1">Qui vivono i tipi di errore standard: <code>std::invalid_argument</code>, <code>std::out_of_range</code>, <code>std::runtime_error</code>.</span>
@@ -638,14 +691,14 @@ Docente
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-15"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-label="2"></a>    Matrix a<span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dv">3</span><span class="op">),</span> b<span class="op">(</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span><span class="op">);</span></span>
 <span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-label="3"></a>    <span class="cf">try</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1">1</button><span id="annotated-cell-15-4" class="code-annotation-target"><a href="#annotated-cell-15-4" aria-label="4"></a>        Matrix c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-15-4" class="code-annotation-target"><a href="#annotated-cell-15-4" aria-label="4"></a>        Matrix c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span></span>
 <span id="annotated-cell-15-5"><a href="#annotated-cell-15-5" aria-label="5"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Somma calcolata</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>       <span class="co">// mai raggiunto</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="2">2</button><span id="annotated-cell-15-6" class="code-annotation-target"><a href="#annotated-cell-15-6" aria-label="6"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>invalid_argument<span class="op">&amp;</span> e<span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-15-6" class="code-annotation-target"><a href="#annotated-cell-15-6" aria-label="6"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>invalid_argument<span class="op">&amp;</span> e<span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-15-7"><a href="#annotated-cell-15-7" aria-label="7"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore: "</span> <span class="op">&lt;&lt;</span> e<span class="op">.</span>what<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
 <span id="annotated-cell-15-8"><a href="#annotated-cell-15-8" aria-label="8"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-15-9"><a href="#annotated-cell-15-9" aria-label="9"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-15-10"><a href="#annotated-cell-15-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-15" data-code-lines="4" data-code-annotation="1">Il <code>throw</code> dentro <code>operator+</code> fa saltare <strong>tutto</strong> il resto del blocco <code>try</code>.</span>
@@ -708,9 +761,9 @@ Docente
 <span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-label="2"></a>    <span class="co">// ... codice precedente ...</span></span>
 <span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-label="3"></a>    </span>
 <span id="annotated-cell-16-4"><a href="#annotated-cell-16-4" aria-label="4"></a>    <span class="co">// Moltiplicazione per uno scalare!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1">1</button><span id="annotated-cell-16-5" class="code-annotation-target"><a href="#annotated-cell-16-5" aria-label="5"></a>    Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> rhs<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-16-5" class="code-annotation-target"><a href="#annotated-cell-16-5" aria-label="5"></a>    Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> rhs<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
 <span id="annotated-cell-16-6"><a href="#annotated-cell-16-6" aria-label="6"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-16" data-code-lines="5" data-code-annotation="1">L’argomento non è un riferimento a una classe, ma è solo un banale numero!</span>
@@ -725,7 +778,6 @@ Docente
 <span id="cb4-6"><a aria-label="6"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span>nuovo_x<span class="op">,</span> nuovo_y<span class="op">);</span></span>
 <span id="cb4-7"><a aria-label="7"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Tutto molto logico ed elegante! (Nota: questo funzionerà per <code>v1 * 5.0</code>, ma NON funzionerà per <code>5.0 * v1</code>. Lo vedremo in futuro con le funzioni Friend).</em></p>
-<p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
@@ -1169,64 +1221,25 @@ Docente
               }
             };
           }
-            const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
-            for (let i=0; i<annoteTargets.length; i++) {
-              const annoteTarget = annoteTargets[i];
-              const targetCell = annoteTarget.getAttribute("data-target-cell");
-              const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
-              const contentFn = () => {
-                const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-                if (content) {
-                  const tipContent = content.cloneNode(true);
-                  tipContent.classList.add("code-annotation-tip-content");
-                  return tipContent.outerHTML;
-                }
-              }
-              const config = {
-                allowHTML: true,
-                content: contentFn,
-                onShow: (instance) => {
-                  selectCodeLines(instance.reference);
-                  instance.reference.classList.add('code-annotation-active');
-                  window.tippy.hideAll();
-                },
-                onHide: (instance) => {
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
                   unselectCodeLines();
-                  instance.reference.classList.remove('code-annotation-active');
-                },
-                maxWidth: 300,
-                delay: [50, 0],
-                duration: [200, 0],
-                offset: [5, 10],
-                arrow: true,
-                appendTo: function(el) {
-                  return el.parentElement.parentElement.parentElement;
-                },
-                interactive: true,
-                interactiveBorder: 10,
-                theme: 'light-border',
-                placement: 'right',
-                popperOptions: {
-                  modifiers: [
-                  {
-                    name: 'flip',
-                    options: {
-                      flipVariations: false, // true by default
-                      allowedAutoPlacements: ['right'],
-                      fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
-                    },
-                  },
-                  {
-                    name: 'preventOverflow',
-                    options: {
-                      mainAxis: false,
-                      altAxis: false
-                    }
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
                   }
-                  ]        
-                }      
-              };
-              window.tippy(annoteTarget, config); 
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
             }
         const findCites = (el) => {
           const parentEl = el.parentElement;

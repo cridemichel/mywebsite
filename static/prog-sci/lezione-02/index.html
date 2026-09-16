@@ -102,6 +102,7 @@
     code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../annotazioni.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -198,6 +199,58 @@
   <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
   <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
   <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -586,7 +639,17 @@ w_{21} &amp; w_{22} &amp; w_{23}
 <li>Schiaccia con la funzione di attivazione (<span class="math inline">\(f\)</span> — per noi la sigmoide).</li>
 <li>Invia al prossimo layer, e ripeti.</li>
 </ul>
-<p><a href="../index.html">Torna all’indice</a></p>
+</section>
+<section id="quesiti-finali" class="slide level2 smaller">
+<h2>Quesiti finali</h2>
+<p><strong>1. Dieci strati per niente.</strong> Immaginate una rete di dieci strati densi, ciascuno con la sua matrice di pesi, e <strong>nessuna</strong> funzione di attivazione fra uno e l’altro. Quanti strati servono per calcolare esattamente la stessa funzione?</p>
+<p><strong>2. (aperta) Perchè “deep” e non “wide”?</strong> Il teorema di approssimazione universale dice che <strong>uno</strong> strato nascosto basta per qualunque funzione. E allora perchè il campo si chiama <em>deep</em> learning? Provate a rendere quantitativo l’argomento della slide “Cosa il Teorema Non Dice”: confrontate <strong>784 → 200 → 10</strong> con <strong>784 → 100 → 100 → 10</strong>, contate i pesi dell’una e dell’altra, e chiedetevi quante “pieghe” sa fare ciascuna.</p>
+</section>
+<section id="quesiti-finali-le-risposte" class="slide level2 smaller">
+<h2>Quesiti finali: le risposte</h2>
+<p><strong>1.</strong> Uno. <span class="math inline">\(\mathbf{W}_{10}(\mathbf{W}_9(\cdots \mathbf{W}_1 \mathbf{x})) =
+(\mathbf{W}_{10} \cdots \mathbf{W}_1)\,\mathbf{x} = \mathbf{W}\mathbf{x}\)</span>: il prodotto di dieci matrici è una matrice. Dieci strati lineari non sono più espressivi di uno — sono lo stesso identico modello, scritto peggio e calcolato dieci volte più lentamente. La non-linearità non è un abbellimento: senza, la profondità non esiste proprio.</p>
+<p><strong>2.</strong> Traccia: <span class="math inline">\(784 \times 200 + 200 \times 10 = 158.800\)</span> pesi contro <span class="math inline">\(784 \times 100 + 100 \times 100 + 100 \times 10 = 89.400\)</span>. La rete profonda costa poco più della <strong>metà</strong> ed è quella che in pratica funziona meglio: ogni strato ripiega lo spazio già ripiegato dal precedente, e le regioni che sa distinguere crescono come un prodotto, non come una somma. Il teorema garantisce che la rete larga <em>esiste</em>; non dice che sia quella conveniente, né che la troviate.</p>
 
 
 </section>
@@ -1030,64 +1093,25 @@ w_{21} &amp; w_{22} &amp; w_{23}
               }
             };
           }
-            const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
-            for (let i=0; i<annoteTargets.length; i++) {
-              const annoteTarget = annoteTargets[i];
-              const targetCell = annoteTarget.getAttribute("data-target-cell");
-              const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
-              const contentFn = () => {
-                const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-                if (content) {
-                  const tipContent = content.cloneNode(true);
-                  tipContent.classList.add("code-annotation-tip-content");
-                  return tipContent.outerHTML;
-                }
-              }
-              const config = {
-                allowHTML: true,
-                content: contentFn,
-                onShow: (instance) => {
-                  selectCodeLines(instance.reference);
-                  instance.reference.classList.add('code-annotation-active');
-                  window.tippy.hideAll();
-                },
-                onHide: (instance) => {
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
                   unselectCodeLines();
-                  instance.reference.classList.remove('code-annotation-active');
-                },
-                maxWidth: 300,
-                delay: [50, 0],
-                duration: [200, 0],
-                offset: [5, 10],
-                arrow: true,
-                appendTo: function(el) {
-                  return el.parentElement.parentElement.parentElement;
-                },
-                interactive: true,
-                interactiveBorder: 10,
-                theme: 'light-border',
-                placement: 'right',
-                popperOptions: {
-                  modifiers: [
-                  {
-                    name: 'flip',
-                    options: {
-                      flipVariations: false, // true by default
-                      allowedAutoPlacements: ['right'],
-                      fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
-                    },
-                  },
-                  {
-                    name: 'preventOverflow',
-                    options: {
-                      mainAxis: false,
-                      altAxis: false
-                    }
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
                   }
-                  ]        
-                }      
-              };
-              window.tippy(annoteTarget, config); 
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
             }
         const findCites = (el) => {
           const parentEl = el.parentElement;

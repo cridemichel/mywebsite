@@ -102,6 +102,7 @@
     code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../annotazioni.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,6 +196,58 @@
       margin-right: 0; 
     }
   </style>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -282,7 +335,7 @@ Docente
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a></span>
 <span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-label="4"></a><span class="co">// LA CLASSE BASE (PADRE)</span></span>
 <span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-label="5"></a><span class="kw">class</span> Layer <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-6" class="code-annotation-target"><a href="#annotated-cell-2-6" aria-label="6"></a><span class="kw">protected</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-6" class="code-annotation-target"><a href="#annotated-cell-2-6" aria-label="6"></a><span class="kw">protected</span><span class="op">:</span></span>
 <span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-label="7"></a>    <span class="bu">std::</span>string <span class="va">name_</span><span class="op">;</span></span>
 <span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-label="8"></a></span>
 <span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-label="9"></a><span class="kw">public</span><span class="op">:</span></span>
@@ -292,7 +345,7 @@ Docente
 <span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-label="13"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Layer: "</span> <span class="op">&lt;&lt;</span> <span class="va">name_</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> </span>
 <span id="annotated-cell-2-14"><a href="#annotated-cell-2-14" aria-label="14"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-2-15"><a href="#annotated-cell-2-15" aria-label="15"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-2" data-code-lines="6" data-code-annotation="1">Notate qualcosa di nuovo? La parola chiave <code>protected</code>! A cosa serve?</span>
@@ -308,7 +361,7 @@ Docente
 <h2>Anatomia della Classe Derivata</h2>
 <p>Creiamo un Figlio. Notate la sintassi <code>: public Layer</code> vicino al nome della classe. Significa: <em>“Eredita pubblicamente tutto ciò che c’è in Layer”</em>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-label="1"></a><span class="co">// LA CLASSE DERIVATA (FIGLIA)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-2" class="code-annotation-target"><a href="#annotated-cell-3-2" aria-label="2"></a><span class="kw">class</span> DenseLayer <span class="op">:</span> <span class="kw">public</span> Layer <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-2" class="code-annotation-target"><a href="#annotated-cell-3-2" aria-label="2"></a><span class="kw">class</span> DenseLayer <span class="op">:</span> <span class="kw">public</span> Layer <span class="op">{</span></span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-label="3"></a><span class="kw">private</span><span class="op">:</span></span>
 <span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-label="4"></a>    <span class="dt">int</span> <span class="va">num_neurons_</span><span class="op">;</span></span>
 <span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-label="5"></a></span>
@@ -318,10 +371,10 @@ Docente
 <span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-label="9"></a></span>
 <span id="annotated-cell-3-10"><a href="#annotated-cell-3-10" aria-label="10"></a>    <span class="dt">void</span> showDetails<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
 <span id="annotated-cell-3-11"><a href="#annotated-cell-3-11" aria-label="11"></a>        <span class="co">// POSSO LEGGERE name_ PERCHE' E' PROTECTED NEL PADRE!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-12" class="code-annotation-target"><a href="#annotated-cell-3-12" aria-label="12"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Il layer "</span> <span class="op">&lt;&lt;</span> <span class="va">name_</span> <span class="op">&lt;&lt;</span> <span class="st">" ha "</span> <span class="op">&lt;&lt;</span> <span class="va">num_neurons_</span> <span class="op">&lt;&lt;</span> <span class="st">" neuroni.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-3-12" class="code-annotation-target"><a href="#annotated-cell-3-12" aria-label="12"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Il layer "</span> <span class="op">&lt;&lt;</span> <span class="va">name_</span> <span class="op">&lt;&lt;</span> <span class="st">" ha "</span> <span class="op">&lt;&lt;</span> <span class="va">num_neurons_</span> <span class="op">&lt;&lt;</span> <span class="st">" neuroni.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-3-13"><a href="#annotated-cell-3-13" aria-label="13"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-3-14"><a href="#annotated-cell-3-14" aria-label="14"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-3" data-code-lines="2" data-code-annotation="1">L’ereditarietà <code>public</code> significa che le funzioni pubbliche del padre resteranno pubbliche nel figlio.</span>
@@ -342,11 +395,11 @@ Docente
 <span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-label="5"></a>    den<span class="op">.</span>showDetails<span class="op">();</span> </span>
 <span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-label="6"></a>    </span>
 <span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-label="7"></a>    <span class="co">// 2. Chiamo un metodo scritto dentro Layer!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-8" class="code-annotation-target"><a href="#annotated-cell-4-8" aria-label="8"></a>    den<span class="op">.</span>printName<span class="op">();</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-8" class="code-annotation-target"><a href="#annotated-cell-4-8" aria-label="8"></a>    den<span class="op">.</span>printName<span class="op">();</span></span>
 <span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-label="9"></a>    </span>
 <span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-label="10"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-4" data-code-lines="8" data-code-annotation="1">La classe <code>DenseLayer</code> non contiene nessuna funzione chiamata <code>printName()</code>. Eppure compila e funziona, perché l’ha “ereditata gratis” dal Padre!</span>
@@ -359,11 +412,11 @@ Docente
 <p>Come fa? Usando la magica <em>Initialization List</em> (<code>:</code>):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-label="1"></a><span class="co">// Implementazione del costruttore di DenseLayer</span></span>
 <span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-label="2"></a>DenseLayer<span class="op">::</span>DenseLayer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> name<span class="op">,</span> <span class="dt">int</span> neurons<span class="op">)</span> </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-label="3"></a>    <span class="op">:</span> Layer<span class="op">(</span>name<span class="op">),</span> <span class="va">num_neurons_</span><span class="op">(</span>neurons<span class="op">)</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-label="3"></a>    <span class="op">:</span> Layer<span class="op">(</span>name<span class="op">),</span> <span class="va">num_neurons_</span><span class="op">(</span>neurons<span class="op">)</span></span>
 <span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-label="4"></a><span class="op">{</span></span>
 <span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-label="5"></a>    <span class="co">// Il corpo del costruttore figlio (spesso vuoto)</span></span>
 <span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-label="6"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="1">Prima di far qualsiasi cosa, invoco il costruttore del Padre <code>Layer(name)</code>, delegando a lui il lavoro di settare il nome!</span>
@@ -396,13 +449,13 @@ Docente
 <span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-label="3"></a>    DenseLayer<span class="op">*</span> dense_ptr <span class="op">=</span> <span class="kw">new</span> DenseLayer<span class="op">(</span><span class="st">"Hidden1"</span><span class="op">,</span> <span class="dv">128</span><span class="op">);</span></span>
 <span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-label="4"></a>    </span>
 <span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-label="5"></a>    <span class="co">// 2. "UPCASTING": Uso un puntatore della classe base!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-6" class="code-annotation-target"><a href="#annotated-cell-6-6" aria-label="6"></a>    Layer<span class="op">*</span> generic_ptr <span class="op">=</span> dense_ptr<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-6" class="code-annotation-target"><a href="#annotated-cell-6-6" aria-label="6"></a>    Layer<span class="op">*</span> generic_ptr <span class="op">=</span> dense_ptr<span class="op">;</span></span>
 <span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-label="7"></a>    </span>
 <span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-label="8"></a>    generic_ptr<span class="op">-&gt;</span>printName<span class="op">();</span> <span class="co">// Funziona! Stampa "Hidden1"</span></span>
 <span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-label="9"></a>    </span>
 <span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-label="10"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-6" data-code-lines="6" data-code-annotation="1">Questa operazione (<code>Layer* = DenseLayer*</code>) è lecita, silenziosa e automatica. Non richiede alcun Cast, perché un Figlio è sempre compatibile col ruolo del Padre.</span>
@@ -422,7 +475,7 @@ Docente
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a></span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-label="4"></a>    <span class="co">// Un Array Eterogeneo! (Puntatori alla Classe Base)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-5" class="code-annotation-target"><a href="#annotated-cell-7-5" aria-label="5"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span>Layer<span class="op">*&gt;</span> network<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-5" class="code-annotation-target"><a href="#annotated-cell-7-5" aria-label="5"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span>Layer<span class="op">*&gt;</span> network<span class="op">;</span></span>
 <span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-label="6"></a>    </span>
 <span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a>    <span class="co">// Inseriamo oggetti diversissimi tra loro</span></span>
 <span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a>    network<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> DenseLayer<span class="op">(</span><span class="st">"Dense_In"</span><span class="op">,</span> <span class="dv">128</span><span class="op">));</span></span>
@@ -431,7 +484,7 @@ Docente
 <span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-label="11"></a>    </span>
 <span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-label="12"></a>    <span class="co">// ...</span></span>
 <span id="annotated-cell-7-13"><a href="#annotated-cell-7-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-7" data-code-lines="5" data-code-annotation="1">Il vettore non sa cosa ci sia veramente dentro quegli indirizzi di RAM. Vede solo puntatori generici a <code>Layer</code>. È bellissimo.</span>
@@ -443,9 +496,9 @@ Docente
 <p>Ora possiamo propagare il segnale lungo l’intera Rete Neurale con tre righe di codice elegantissime!</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="co">// Pseudo-codice del Forward Pass</span></span>
 <span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> network<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1">1</button><span id="annotated-cell-8-3" class="code-annotation-target"><a href="#annotated-cell-8-3" aria-label="3"></a>    network<span class="op">[</span>i<span class="op">]-&gt;</span>forward<span class="op">();</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-3" class="code-annotation-target"><a href="#annotated-cell-8-3" aria-label="3"></a>    network<span class="op">[</span>i<span class="op">]-&gt;</span>forward<span class="op">();</span></span>
 <span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-label="4"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-8" data-code-lines="3" data-code-annotation="1">Semplice, pulito. Che sia un DenseLayer o un ActivationLayer, ognuno calcolerà la propria matematica in totale autonomia. Giusto?</span>
@@ -474,11 +527,11 @@ Docente
 <span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-label="5"></a>    Layer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> n<span class="op">)</span> <span class="op">:</span> <span class="va">name_</span><span class="op">(</span>n<span class="op">)</span> <span class="op">{}</span></span>
 <span id="annotated-cell-9-6"><a href="#annotated-cell-9-6" aria-label="6"></a></span>
 <span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-label="7"></a>    <span class="co">// MAGIA: Questa funzione sarà risolta a Run-Time!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1">1</button><span id="annotated-cell-9-8" class="code-annotation-target"><a href="#annotated-cell-9-8" aria-label="8"></a>    <span class="kw">virtual</span> <span class="dt">void</span> forward<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-8" class="code-annotation-target"><a href="#annotated-cell-9-8" aria-label="8"></a>    <span class="kw">virtual</span> <span class="dt">void</span> forward<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-label="9"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Forward Base (non fa nulla)</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-label="10"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-9-11"><a href="#annotated-cell-9-11" aria-label="11"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-9" data-code-lines="8" data-code-annotation="1">La parola <code>virtual</code> informa il C++ che i Figli potrebbero voler <em>sovrascrivere</em> questo comportamento.</span>
@@ -493,11 +546,11 @@ Docente
 <span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-label="3"></a>    DenseLayer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> n<span class="op">)</span> <span class="op">:</span> Layer<span class="op">(</span>n<span class="op">)</span> <span class="op">{}</span></span>
 <span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-label="4"></a></span>
 <span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-label="5"></a>    <span class="co">// SOVRASCRITTURA!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1">1</button><span id="annotated-cell-10-6" class="code-annotation-target"><a href="#annotated-cell-10-6" aria-label="6"></a>    <span class="kw">virtual</span> <span class="dt">void</span> forward<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-6" class="code-annotation-target"><a href="#annotated-cell-10-6" aria-label="6"></a>    <span class="kw">virtual</span> <span class="dt">void</span> forward<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span></span>
 <span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-label="7"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"DenseLayer: Moltiplico Matrice Pesi * Input</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-label="8"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-label="9"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-10" data-code-lines="6" data-code-annotation="1"><code>override</code> non è obbligatorio, ma se fate un errore di battitura (es. scrivete <code>fowrard()</code>), il compilatore vi bloccherà dicendovi: <em>“Ehi, volevi fare un override ma nel padre non esiste nessuna funzione fowrard!”</em>.</span>
@@ -512,9 +565,9 @@ Docente
 <span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-label="3"></a>network<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> ActivationLayer<span class="op">(</span><span class="st">"L2"</span><span class="op">));</span></span>
 <span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-label="4"></a></span>
 <span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> network<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1">1</button><span id="annotated-cell-11-6" class="code-annotation-target"><a href="#annotated-cell-11-6" aria-label="6"></a>    network<span class="op">[</span>i<span class="op">]-&gt;</span>forward<span class="op">();</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-6" class="code-annotation-target"><a href="#annotated-cell-11-6" aria-label="6"></a>    network<span class="op">[</span>i<span class="op">]-&gt;</span>forward<span class="op">();</span></span>
 <span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-label="7"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-11" data-code-lines="6" data-code-annotation="1">Quando l’indice è 0, il C++ “scende” in RAM, scopre che c’è un <code>DenseLayer</code> e stampa <em>“Moltiplico Matrice”</em>. Quando l’indice è 1, scopre un <code>ActivationLayer</code> e chiama la sua logica. Abbiamo una singola istruzione che assume <strong>molte forme</strong>!</span>
@@ -527,9 +580,9 @@ Docente
 <p>Immaginate che il programma sia finito, ed eseguiamo il <code>delete</code> del nostro vettore:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="co">// Svuoto il vettore eliminando gli oggetti dalla RAM Heap</span></span>
 <span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> network<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1">1</button><span id="annotated-cell-12-3" class="code-annotation-target"><a href="#annotated-cell-12-3" aria-label="3"></a>    <span class="kw">delete</span> network<span class="op">[</span>i<span class="op">];</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-3" class="code-annotation-target"><a href="#annotated-cell-12-3" aria-label="3"></a>    <span class="kw">delete</span> network<span class="op">[</span>i<span class="op">];</span></span>
 <span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-label="4"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-12" data-code-lines="3" data-code-annotation="1">Sappiamo che <code>delete</code> fa due cose: dealloca i byte e <strong>chiama il Distruttore</strong>.</span>
@@ -551,11 +604,11 @@ Docente
 <span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-label="3"></a>    Layer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> n<span class="op">)</span> <span class="op">:</span> <span class="va">name_</span><span class="op">(</span>n<span class="op">)</span> <span class="op">{}</span></span>
 <span id="annotated-cell-13-4"><a href="#annotated-cell-13-4" aria-label="4"></a></span>
 <span id="annotated-cell-13-5"><a href="#annotated-cell-13-5" aria-label="5"></a>    <span class="co">// SALVA LA VITA AI VOSTRI PROGRAMMI</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1">1</button><span id="annotated-cell-13-6" class="code-annotation-target"><a href="#annotated-cell-13-6" aria-label="6"></a>    <span class="kw">virtual</span> <span class="op">~</span>Layer<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-13-6" class="code-annotation-target"><a href="#annotated-cell-13-6" aria-label="6"></a>    <span class="kw">virtual</span> <span class="op">~</span>Layer<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-13-7"><a href="#annotated-cell-13-7" aria-label="7"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Distruggo Base</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-13-8"><a href="#annotated-cell-13-8" aria-label="8"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-13-9"><a href="#annotated-cell-13-9" aria-label="9"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-13" data-code-lines="6" data-code-annotation="1">Ora <code>delete network[i];</code> chiamerà prima il distruttore reale del figlio (<code>~DenseLayer()</code>), e poi (automaticamente) risalirà l’albero per chiamare il distruttore del padre <code>~Layer()</code>. Pulizia perfetta!</span>
@@ -596,9 +649,9 @@ Docente
 <span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-label="6"></a>    <span class="kw">virtual</span> <span class="op">~</span>Layer<span class="op">()</span> <span class="op">{}</span></span>
 <span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-label="7"></a></span>
 <span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-label="8"></a>    <span class="co">// FUNZIONE PURA VIRTUALE</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1">1</button><span id="annotated-cell-14-9" class="code-annotation-target"><a href="#annotated-cell-14-9" aria-label="9"></a>    <span class="kw">virtual</span> <span class="dt">void</span> forward<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-14-9" class="code-annotation-target"><a href="#annotated-cell-14-9" aria-label="9"></a>    <span class="kw">virtual</span> <span class="dt">void</span> forward<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-14-10"><a href="#annotated-cell-14-10" aria-label="10"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-14" data-code-lines="9" data-code-annotation="1">Stiamo dicendo al compilatore: <em>“Questo metodo NON HA IMPLEMENTAZIONE. Esiste solo di nome.”</em></span>
@@ -626,7 +679,6 @@ Docente
 <li>Crea un’altra classe derivata <code>AbsoluteError</code> che calcola <span class="math inline">\(|y_{pred} - y_{true}|\)</span> (usa <code>std::abs</code>).</li>
 <li>Nel <code>main</code>, crea un <code>std::vector&lt;LossFunction*&gt;</code> e inseriscili entrambi. Usa un ciclo per stampare l’errore per i valori (true=1.0, pred=0.5). Svuota la RAM a fine programma!</li>
 </ol>
-<p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
@@ -1070,64 +1122,25 @@ Docente
               }
             };
           }
-            const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
-            for (let i=0; i<annoteTargets.length; i++) {
-              const annoteTarget = annoteTargets[i];
-              const targetCell = annoteTarget.getAttribute("data-target-cell");
-              const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
-              const contentFn = () => {
-                const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-                if (content) {
-                  const tipContent = content.cloneNode(true);
-                  tipContent.classList.add("code-annotation-tip-content");
-                  return tipContent.outerHTML;
-                }
-              }
-              const config = {
-                allowHTML: true,
-                content: contentFn,
-                onShow: (instance) => {
-                  selectCodeLines(instance.reference);
-                  instance.reference.classList.add('code-annotation-active');
-                  window.tippy.hideAll();
-                },
-                onHide: (instance) => {
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
                   unselectCodeLines();
-                  instance.reference.classList.remove('code-annotation-active');
-                },
-                maxWidth: 300,
-                delay: [50, 0],
-                duration: [200, 0],
-                offset: [5, 10],
-                arrow: true,
-                appendTo: function(el) {
-                  return el.parentElement.parentElement.parentElement;
-                },
-                interactive: true,
-                interactiveBorder: 10,
-                theme: 'light-border',
-                placement: 'right',
-                popperOptions: {
-                  modifiers: [
-                  {
-                    name: 'flip',
-                    options: {
-                      flipVariations: false, // true by default
-                      allowedAutoPlacements: ['right'],
-                      fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
-                    },
-                  },
-                  {
-                    name: 'preventOverflow',
-                    options: {
-                      mainAxis: false,
-                      altAxis: false
-                    }
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
                   }
-                  ]        
-                }      
-              };
-              window.tippy(annoteTarget, config); 
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
             }
         const findCites = (el) => {
           const parentEl = el.parentElement;

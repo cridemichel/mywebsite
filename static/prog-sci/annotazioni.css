@@ -1,0 +1,12 @@
+/* Evidenziazione reciproca fra una riga di codice annotata e la sua
+   spiegazione: passandoci sopra (o toccandole, su tablet) si accendono
+   insieme. Le spiegazioni restano SEMPRE visibili sotto il codice.        */
+.reveal .code-annotation-container-grid dt,
+.reveal .code-annotation-container-grid dd { cursor: pointer; }
+
+.reveal .ann-on            { background: rgba(42, 120, 214, 0.14); border-radius: 4px; }
+.reveal dd.ann-on          { box-shadow: -0.35em 0 0 rgba(42, 120, 214, 0.55); }
+.reveal span.ann-on        { display: inline-block; width: 100%; }
+.reveal .code-annotation-anchor.ann-on {
+  background: #2a78d6 !important; color: #fff !important; border-color: #2a78d6 !important;
+}

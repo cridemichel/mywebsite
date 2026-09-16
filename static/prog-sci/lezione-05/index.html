@@ -102,6 +102,7 @@
     code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../annotazioni.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,6 +196,58 @@
       margin-right: 0; 
     }
   </style>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -221,24 +274,26 @@ Docente
 </ul>
 <div class="columns">
 <div class="column" style="width:55%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-13"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-label="2"></a>    <span class="dt">float</span> v1<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">0.4</span><span class="op">,</span> <span class="fl">1.34</span><span class="op">,</span> <span class="fl">56.156</span><span class="op">};</span> </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1">1</button><span id="annotated-cell-13-3" class="code-annotation-target"><a href="#annotated-cell-13-3" aria-label="3"></a>    <span class="dt">float</span> v2<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="2">2</button><span id="annotated-cell-13-4" class="code-annotation-target"><a href="#annotated-cell-13-4" aria-label="4"></a>    <span class="dt">float</span> v3<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">0.9</span><span class="op">,</span> <span class="op">-</span><span class="fl">0.1</span><span class="op">,</span> <span class="op">-</span><span class="fl">0.65</span><span class="op">};</span></span>
-<span id="annotated-cell-13-5"><a href="#annotated-cell-13-5" aria-label="5"></a>    </span>
-<span id="annotated-cell-13-6"><a href="#annotated-cell-13-6" aria-label="6"></a>    <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-13-7"><a href="#annotated-cell-13-7" aria-label="7"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"v1["</span> <span class="op">&lt;&lt;</span> i <span class="op">&lt;&lt;</span> <span class="st">"]: "</span> <span class="op">&lt;&lt;</span> v1<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="annotated-cell-13-8"><a href="#annotated-cell-13-8" aria-label="8"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-13-9"><a href="#annotated-cell-13-9" aria-label="9"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-13-10"><a href="#annotated-cell-13-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-13"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-label="2"></a></span>
+<span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-13-4"><a href="#annotated-cell-13-4" aria-label="4"></a>    <span class="dt">float</span> v1<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">0.4</span><span class="op">,</span> <span class="fl">1.34</span><span class="op">,</span> <span class="fl">56.156</span><span class="op">};</span> </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-13-5" class="code-annotation-target"><a href="#annotated-cell-13-5" aria-label="5"></a>    <span class="dt">float</span> v2<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-13-6" class="code-annotation-target"><a href="#annotated-cell-13-6" aria-label="6"></a>    <span class="dt">float</span> v3<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">0.9</span><span class="op">,</span> <span class="op">-</span><span class="fl">0.1</span><span class="op">,</span> <span class="op">-</span><span class="fl">0.65</span><span class="op">};</span></span>
+<span id="annotated-cell-13-7"><a href="#annotated-cell-13-7" aria-label="7"></a>    </span>
+<span id="annotated-cell-13-8"><a href="#annotated-cell-13-8" aria-label="8"></a>    <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-13-9"><a href="#annotated-cell-13-9" aria-label="9"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"v1["</span> <span class="op">&lt;&lt;</span> i <span class="op">&lt;&lt;</span> <span class="st">"]: "</span> <span class="op">&lt;&lt;</span> v1<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="annotated-cell-13-10"><a href="#annotated-cell-13-10" aria-label="10"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-13-11"><a href="#annotated-cell-13-11" aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-13-12"><a href="#annotated-cell-13-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-13" data-code-lines="3" data-code-annotation="1">NON INIZIALIZZATO: contiene spazzatura di memoria!</span>
+<span data-code-cell="annotated-cell-13" data-code-lines="5" data-code-annotation="1">NON INIZIALIZZATO: contiene spazzatura di memoria!</span>
 </dd>
 <dt data-target-cell="annotated-cell-13" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-13" data-code-lines="4" data-code-annotation="2">Dimensione calcolata in automatico dal compilatore (3).</span>
+<span data-code-cell="annotated-cell-13" data-code-lines="6" data-code-annotation="2">Dimensione calcolata in automatico dal compilatore (3).</span>
 </dd>
 </dl>
 </div><div class="column" style="width:45%;">
@@ -260,18 +315,20 @@ Docente
 <section id="il-pericolo-nessun-controllo-sui-limiti" class="slide level2 smaller">
 <h2>Il pericolo: Nessun controllo sui limiti</h2>
 <p>In C++, non c’è <strong>nessun controllo sui limiti dell’array</strong> a runtime per massimizzare le performance.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-label="2"></a>    <span class="dt">float</span> vect<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">0.4</span><span class="op">,</span> <span class="fl">1.34</span><span class="op">,</span> <span class="fl">56.156</span><span class="op">};</span> </span>
-<span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-label="3"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-4" class="code-annotation-target"><a href="#annotated-cell-1-4" aria-label="4"></a>    <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">5</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-label="5"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"vect["</span> <span class="op">&lt;&lt;</span> i <span class="op">&lt;&lt;</span> <span class="st">"]: "</span> <span class="op">&lt;&lt;</span> vect<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="annotated-cell-1-6"><a href="#annotated-cell-1-6" aria-label="6"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-label="7"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-label="8"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-label="2"></a></span>
+<span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-label="4"></a>    <span class="dt">float</span> vect<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">0.4</span><span class="op">,</span> <span class="fl">1.34</span><span class="op">,</span> <span class="fl">56.156</span><span class="op">};</span> </span>
+<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-label="5"></a>    </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-6" class="code-annotation-target"><a href="#annotated-cell-1-6" aria-label="6"></a>    <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">5</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-label="7"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"vect["</span> <span class="op">&lt;&lt;</span> i <span class="op">&lt;&lt;</span> <span class="st">"]: "</span> <span class="op">&lt;&lt;</span> vect<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-label="8"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-1-9"><a href="#annotated-cell-1-9" aria-label="9"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-1-10"><a href="#annotated-cell-1-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-1" data-code-lines="4" data-code-annotation="1">PERICOLO: iteriamo fino a <code>i=4</code> ma l’array arriva solo a <code>i=2</code>.</span>
+<span data-code-cell="annotated-cell-1" data-code-lines="6" data-code-annotation="1">PERICOLO: iteriamo fino a <code>i=4</code> ma l’array arriva solo a <code>i=2</code>.</span>
 </dd>
 </dl>
 <div class="callout callout-warning callout-titled callout-style-default">
@@ -291,32 +348,34 @@ Docente
 <section id="array-multidimensionali-matrici" class="slide level2 smaller">
 <h2>Array Multidimensionali (Matrici)</h2>
 <p>Possiamo definire array a più dimensioni. In memoria, la matrice 2D è comunque immagazzinata come un singolo blocco 1D contiguo (“Row-major order”).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2" aria-label="2"></a>    <span class="dt">double</span> matrix<span class="op">[</span><span class="dv">2</span><span class="op">][</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
-<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a>        <span class="op">{</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">,</span> <span class="fl">3.0</span><span class="op">},</span> <span class="co">// Riga 0</span></span>
-<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-label="4"></a>        <span class="op">{</span><span class="fl">4.0</span><span class="op">,</span> <span class="fl">5.0</span><span class="op">,</span> <span class="fl">6.0</span><span class="op">}</span>  <span class="co">// Riga 1</span></span>
-<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-label="5"></a>    <span class="op">};</span></span>
-<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-label="6"></a>    </span>
-<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-label="7"></a>    <span class="co">// Accesso agli elementi: matrix[riga][colonna]</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2">2</button><span id="annotated-cell-2-8" class="code-annotation-target"><a href="#annotated-cell-2-8" aria-label="8"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Elemento (1, 2): "</span> <span class="op">&lt;&lt;</span> matrix<span class="op">[</span><span class="dv">1</span><span class="op">][</span><span class="dv">2</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-label="9"></a>    </span>
-<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10" aria-label="10"></a>    <span class="co">// Somma di tutti gli elementi</span></span>
-<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-label="11"></a>    <span class="dt">double</span> sum <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="annotated-cell-2-12"><a href="#annotated-cell-2-12" aria-label="12"></a>    <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">2</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-label="13"></a>        <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> <span class="op">++</span>j<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-2-14"><a href="#annotated-cell-2-14" aria-label="14"></a>            sum <span class="op">+=</span> matrix<span class="op">[</span>i<span class="op">][</span>j<span class="op">];</span></span>
-<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15" aria-label="15"></a>        <span class="op">}</span></span>
-<span id="annotated-cell-2-16"><a href="#annotated-cell-2-16" aria-label="16"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-2-17"><a href="#annotated-cell-2-17" aria-label="17"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-2-18"><a href="#annotated-cell-2-18" aria-label="18"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-label="2"></a></span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-4" class="code-annotation-target"><a href="#annotated-cell-2-4" aria-label="4"></a>    <span class="dt">double</span> matrix<span class="op">[</span><span class="dv">2</span><span class="op">][</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-label="5"></a>        <span class="op">{</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">,</span> <span class="fl">3.0</span><span class="op">},</span> <span class="co">// Riga 0</span></span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-label="6"></a>        <span class="op">{</span><span class="fl">4.0</span><span class="op">,</span> <span class="fl">5.0</span><span class="op">,</span> <span class="fl">6.0</span><span class="op">}</span>  <span class="co">// Riga 1</span></span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-label="7"></a>    <span class="op">};</span></span>
+<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-label="8"></a>    </span>
+<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-label="9"></a>    <span class="co">// Accesso agli elementi: matrix[riga][colonna]</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-10" class="code-annotation-target"><a href="#annotated-cell-2-10" aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Elemento (1, 2): "</span> <span class="op">&lt;&lt;</span> matrix<span class="op">[</span><span class="dv">1</span><span class="op">][</span><span class="dv">2</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-label="11"></a>    </span>
+<span id="annotated-cell-2-12"><a href="#annotated-cell-2-12" aria-label="12"></a>    <span class="co">// Somma di tutti gli elementi</span></span>
+<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-label="13"></a>    <span class="dt">double</span> sum <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="annotated-cell-2-14"><a href="#annotated-cell-2-14" aria-label="14"></a>    <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">2</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15" aria-label="15"></a>        <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> <span class="op">++</span>j<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-2-16"><a href="#annotated-cell-2-16" aria-label="16"></a>            sum <span class="op">+=</span> matrix<span class="op">[</span>i<span class="op">][</span>j<span class="op">];</span></span>
+<span id="annotated-cell-2-17"><a href="#annotated-cell-2-17" aria-label="17"></a>        <span class="op">}</span></span>
+<span id="annotated-cell-2-18"><a href="#annotated-cell-2-18" aria-label="18"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-2-19"><a href="#annotated-cell-2-19" aria-label="19"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-2-20"><a href="#annotated-cell-2-20" aria-label="20"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="2" data-code-annotation="1">Matrice 2x3 (2 righe, 3 colonne).</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="4" data-code-annotation="1">Matrice 2x3 (2 righe, 3 colonne).</span>
 </dd>
 <dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="8" data-code-annotation="2">Stampa <code>6.0</code>.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="10" data-code-annotation="2">Stampa <code>6</code>: <code>cout</code> non mostra gli zeri finali di un <code>double</code> (per cambiare formato serve <code>&lt;iomanip&gt;</code>).</span>
 </dd>
 </dl>
 </section>
@@ -329,12 +388,12 @@ Docente
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-label="1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-label="2"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-3" class="code-annotation-target"><a href="#annotated-cell-3-3" aria-label="3"></a><span class="dt">int</span><span class="op">*</span> b <span class="op">=</span> <span class="op">&amp;</span>a<span class="op">;</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-4" class="code-annotation-target"><a href="#annotated-cell-3-4" aria-label="4"></a><span class="dt">int</span><span class="op">&amp;</span> x <span class="op">=</span> a<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-3" class="code-annotation-target"><a href="#annotated-cell-3-3" aria-label="3"></a><span class="dt">int</span><span class="op">*</span> b <span class="op">=</span> <span class="op">&amp;</span>a<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-3-4" class="code-annotation-target"><a href="#annotated-cell-3-4" aria-label="4"></a><span class="dt">int</span><span class="op">&amp;</span> x <span class="op">=</span> a<span class="op">;</span></span>
 <span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-label="5"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3">3</button><span id="annotated-cell-3-6" class="code-annotation-target"><a href="#annotated-cell-3-6" aria-label="6"></a><span class="op">*</span>b <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="4">4</button><span id="annotated-cell-3-7" class="code-annotation-target"><a href="#annotated-cell-3-7" aria-label="7"></a>x <span class="op">=</span> <span class="dv">45</span><span class="op">;</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-3-6" class="code-annotation-target"><a href="#annotated-cell-3-6" aria-label="6"></a><span class="op">*</span>b <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-3-7" class="code-annotation-target"><a href="#annotated-cell-3-7" aria-label="7"></a>x <span class="op">=</span> <span class="dv">45</span><span class="op">;</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-3" data-code-lines="3" data-code-annotation="1"><code>b</code> è un puntatore. Contiene l’indirizzo di <code>a</code>.</span>
@@ -353,71 +412,75 @@ Docente
 </dd>
 </dl>
 </section>
-<section id="modificare-valori-tramite-puntatori" class="slide level2 smaller scrollable">
+<section id="modificare-valori-tramite-puntatori" class="slide level2 smaller">
 <h2>Modificare valori tramite puntatori</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-label="2"></a>    <span class="dt">int</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-label="3"></a>    <span class="dt">int</span><span class="op">*</span> b <span class="op">=</span> <span class="op">&amp;</span>a<span class="op">;</span> </span>
-<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-label="4"></a>    <span class="dt">int</span><span class="op">&amp;</span> x <span class="op">=</span> a<span class="op">;</span></span>
-<span id="annotated-cell-14-5"><a href="#annotated-cell-14-5" aria-label="5"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1">1</button><span id="annotated-cell-14-6" class="code-annotation-target"><a href="#annotated-cell-14-6" aria-label="6"></a>    <span class="op">*</span>b <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
-<span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-label="7"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"valore di a: "</span> <span class="op">&lt;&lt;</span> a <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-label="8"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="2">2</button><span id="annotated-cell-14-9" class="code-annotation-target"><a href="#annotated-cell-14-9" aria-label="9"></a>    x <span class="op">=</span> <span class="dv">45</span><span class="op">;</span></span>
-<span id="annotated-cell-14-10"><a href="#annotated-cell-14-10" aria-label="10"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"valore di a: "</span> <span class="op">&lt;&lt;</span> a <span class="op">&lt;&lt;</span> endl<span class="op">;</span> </span>
-<span id="annotated-cell-14-11"><a href="#annotated-cell-14-11" aria-label="11"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="3">3</button><span id="annotated-cell-14-12" class="code-annotation-target"><a href="#annotated-cell-14-12" aria-label="12"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Indirizzo di a: "</span> <span class="op">&lt;&lt;</span> <span class="op">&amp;</span>a <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="annotated-cell-14-13"><a href="#annotated-cell-14-13" aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-14-14"><a href="#annotated-cell-14-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-label="2"></a></span>
+<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-label="4"></a>    <span class="dt">int</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="annotated-cell-14-5"><a href="#annotated-cell-14-5" aria-label="5"></a>    <span class="dt">int</span><span class="op">*</span> b <span class="op">=</span> <span class="op">&amp;</span>a<span class="op">;</span> </span>
+<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-label="6"></a>    <span class="dt">int</span><span class="op">&amp;</span> x <span class="op">=</span> a<span class="op">;</span></span>
+<span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-label="7"></a>    </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-14-8" class="code-annotation-target"><a href="#annotated-cell-14-8" aria-label="8"></a>    <span class="op">*</span>b <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="annotated-cell-14-9"><a href="#annotated-cell-14-9" aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"valore di a: "</span> <span class="op">&lt;&lt;</span> a <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="annotated-cell-14-10"><a href="#annotated-cell-14-10" aria-label="10"></a>    </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-14-11" class="code-annotation-target"><a href="#annotated-cell-14-11" aria-label="11"></a>    x <span class="op">=</span> <span class="dv">45</span><span class="op">;</span></span>
+<span id="annotated-cell-14-12"><a href="#annotated-cell-14-12" aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"valore di a: "</span> <span class="op">&lt;&lt;</span> a <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span> </span>
+<span id="annotated-cell-14-13"><a href="#annotated-cell-14-13" aria-label="13"></a>    </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-14-14" class="code-annotation-target"><a href="#annotated-cell-14-14" aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Indirizzo di a: "</span> <span class="op">&lt;&lt;</span> <span class="op">&amp;</span>a <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="annotated-cell-14-15"><a href="#annotated-cell-14-15" aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-14-16"><a href="#annotated-cell-14-16" aria-label="16"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-14" data-code-lines="6" data-code-annotation="1">Cambiamo il valore <strong>deferenziando</strong> il puntatore (<code>*</code>).</span>
+<span data-code-cell="annotated-cell-14" data-code-lines="8" data-code-annotation="1">Cambiamo il valore <strong>dereferenziando</strong> il puntatore (<code>*</code>).</span>
 </dd>
 <dt data-target-cell="annotated-cell-14" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-14" data-code-lines="9" data-code-annotation="2">Cambiamo il valore tramite il reference (non serve <code>*</code>).</span>
+<span data-code-cell="annotated-cell-14" data-code-lines="11" data-code-annotation="2">Cambiamo il valore tramite il reference (non serve <code>*</code>).</span>
 </dd>
 <dt data-target-cell="annotated-cell-14" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-14" data-code-lines="12" data-code-annotation="3">Stampiamo l’indirizzo fisico in memoria.</span>
+<span data-code-cell="annotated-cell-14" data-code-lines="14" data-code-annotation="3">Stampiamo l’indirizzo fisico in memoria.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:40%;">
 <p><strong>Terminale:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a aria-label="1"></a><span class="ex">valore</span> di a: 3</span>
 <span id="cb1-2"><a aria-label="2"></a><span class="ex">valore</span> di a: 45</span>
-<span id="cb1-3"><a aria-label="3"></a><span class="ex">Indirizzo</span> di a: 0x23ef14</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a aria-label="3"></a><span class="ex">Indirizzo</span> di a: 0x7ffc3a5b1e4c</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </section>
 <section id="bad-pointers-e-null-pointers" class="slide level2 smaller">
 <h2>Bad Pointers e Null Pointers</h2>
 <p>I puntatori possono puntare a locazioni di memoria <strong>invalide</strong>, causando disastri:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-4"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-2" class="code-annotation-target"><a href="#annotated-cell-4-2" aria-label="2"></a>    <span class="dt">int</span><span class="op">*</span> c<span class="op">;</span></span>
-<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-label="3"></a>    </span>
-<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-label="4"></a>    <span class="co">// cout &lt;&lt; *c &lt;&lt; endl; // PERICOLO: Stampa "spazzatura" o va in crash!</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-4"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-label="2"></a></span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-4" class="code-annotation-target"><a href="#annotated-cell-4-4" aria-label="4"></a>    <span class="dt">int</span><span class="op">*</span> c<span class="op">;</span></span>
 <span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-label="5"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6" aria-label="6"></a>    c <span class="op">=</span> <span class="kw">nullptr</span><span class="op">;</span></span>
+<span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-label="6"></a>    <span class="co">// std::cout &lt;&lt; *c &lt;&lt; std::endl; // PERICOLO: Stampa "spazzatura" o va in crash!</span></span>
 <span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-label="7"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3">3</button><span id="annotated-cell-4-8" class="code-annotation-target"><a href="#annotated-cell-4-8" aria-label="8"></a>    <span class="co">// cout &lt;&lt; *c &lt;&lt; endl;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-8" class="code-annotation-target"><a href="#annotated-cell-4-8" aria-label="8"></a>    c <span class="op">=</span> <span class="kw">nullptr</span><span class="op">;</span></span>
 <span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-label="9"></a>    </span>
-<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-label="10"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-4-10" class="code-annotation-target"><a href="#annotated-cell-4-10" aria-label="10"></a>    <span class="co">// std::cout &lt;&lt; *c &lt;&lt; std::endl;</span></span>
+<span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-label="11"></a>    </span>
+<span id="annotated-cell-4-12"><a href="#annotated-cell-4-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-4-13"><a href="#annotated-cell-4-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="2" data-code-annotation="1">Puntatore non inizializzato, punta in un’area casuale!</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="4" data-code-annotation="1">Puntatore non inizializzato, punta in un’area casuale!</span>
 </dd>
 <dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="6" data-code-annotation="2">Puntatore nullo in C++11 (molto meglio di <code>0</code> o <code>NULL</code>).</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="8" data-code-annotation="2">Puntatore nullo in C++11 (molto meglio di <code>0</code> o <code>NULL</code>).</span>
 </dd>
 <dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="8" data-code-annotation="3">Deferenziare (leggere o scrivere) un puntatore nullo causa <strong>SEMPRE IL CRASH</strong>. <em>Errore a runtime: <code>Segmentation fault (core dumped)</code></em></span>
+<span data-code-cell="annotated-cell-4" data-code-lines="10" data-code-annotation="3">Dereferenziare (leggere o scrivere) un puntatore nullo è <em>undefined behaviour</em>: su Linux e macOS in pratica il programma muore con <code>Segmentation fault (core dumped)</code>, ma non è garantito dallo standard — il compilatore, sapendo che non può accadere, è autorizzato a ottimizzare via il codice che lo circonda.</span>
 </dd>
 </dl>
 </section>
@@ -451,11 +514,11 @@ Docente
 <tr class="odd">
 <td><strong>Sintassi</strong></td>
 <td>Usato come una normale variabile</td>
-<td>Richiede deferenziazione (<code>*a = 5;</code>)</td>
+<td>Richiede dereferenziazione (<code>*a = 5;</code>)</td>
 </tr>
 <tr class="even">
 <td><strong>Sicurezza</strong></td>
-<td>Molto sicuro, non può essere nullo</td>
+<td>Non può essere nullo</td>
 <td>Rischio di Memory Leak e Crash</td>
 </tr>
 </tbody>
@@ -469,7 +532,7 @@ Docente
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p><strong>Quando usare un puntatore?</strong> Quando avete bisogno che l’oggetto “possa non esistere” (<code>nullptr</code>) oppure quando si gestiscono array dinamici del C.</p>
+<p><strong>Quando usare un puntatore?</strong> Quando l’oggetto “può non esistere” (<code>nullptr</code>), o per gli array dinamici del C.</p>
 </div>
 </div>
 </div>
@@ -480,42 +543,46 @@ Docente
 <li>Hanno <strong>Input</strong> (argomenti/parametri) e <strong>Output</strong> (valore di ritorno).</li>
 <li>Le funzioni che non restituiscono nulla usano il tipo speciale <code>void</code>.</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="dt">double</span> calcola_energia_cinetica<span class="op">(</span><span class="dt">double</span> massa<span class="op">,</span> <span class="dt">double</span> velocita<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-2"><a aria-label="2"></a>    <span class="cf">return</span> <span class="fl">0.5</span> <span class="op">*</span> massa <span class="op">*</span> velocita <span class="op">*</span> velocita<span class="op">;</span></span>
-<span id="cb2-3"><a aria-label="3"></a><span class="op">}</span></span>
-<span id="cb2-4"><a aria-label="4"></a></span>
-<span id="cb2-5"><a aria-label="5"></a><span class="dt">void</span> print_risultato<span class="op">(</span><span class="dt">double</span> res<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-6"><a aria-label="6"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Risultato: "</span> <span class="op">&lt;&lt;</span> res <span class="op">&lt;&lt;</span> <span class="st">" J</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb2-7"><a aria-label="7"></a><span class="op">}</span></span>
-<span id="cb2-8"><a aria-label="8"></a></span>
-<span id="cb2-9"><a aria-label="9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb2-10"><a aria-label="10"></a>    <span class="dt">double</span> E <span class="op">=</span> calcola_energia_cinetica<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">10.0</span><span class="op">);</span></span>
-<span id="cb2-11"><a aria-label="11"></a>    print_risultato<span class="op">(</span>E<span class="op">);</span></span>
-<span id="cb2-12"><a aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-13"><a aria-label="13"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb2-2"><a aria-label="2"></a></span>
+<span id="cb2-3"><a aria-label="3"></a><span class="dt">double</span> calcola_energia_cinetica<span class="op">(</span><span class="dt">double</span> massa<span class="op">,</span> <span class="dt">double</span> velocita<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-4"><a aria-label="4"></a>    <span class="cf">return</span> <span class="fl">0.5</span> <span class="op">*</span> massa <span class="op">*</span> velocita <span class="op">*</span> velocita<span class="op">;</span></span>
+<span id="cb2-5"><a aria-label="5"></a><span class="op">}</span></span>
+<span id="cb2-6"><a aria-label="6"></a></span>
+<span id="cb2-7"><a aria-label="7"></a><span class="dt">void</span> print_risultato<span class="op">(</span><span class="dt">double</span> res<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-8"><a aria-label="8"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Risultato: "</span> <span class="op">&lt;&lt;</span> res <span class="op">&lt;&lt;</span> <span class="st">" J</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb2-9"><a aria-label="9"></a><span class="op">}</span></span>
+<span id="cb2-10"><a aria-label="10"></a></span>
+<span id="cb2-11"><a aria-label="11"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-12"><a aria-label="12"></a>    <span class="dt">double</span> E <span class="op">=</span> calcola_energia_cinetica<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">10.0</span><span class="op">);</span></span>
+<span id="cb2-13"><a aria-label="13"></a>    print_risultato<span class="op">(</span>E<span class="op">);</span></span>
+<span id="cb2-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="pass-by-value-passaggio-per-valore" class="slide level2 smaller">
 <h2>Pass-by-Value (Passaggio per Valore)</h2>
 <p>Di default in C++, i parametri vengono passati <strong>Per Valore</strong>. Ciò significa che la funzione riceve una <strong>copia</strong> della variabile. Le modifiche fatte dentro la funzione non hanno alcun effetto sulla variabile esterna.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="dt">void</span> raddoppia<span class="op">(</span><span class="dt">int</span> numero<span class="op">)</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-2" class="code-annotation-target"><a href="#annotated-cell-6-2" aria-label="2"></a>    numero <span class="op">=</span> numero <span class="op">*</span> <span class="dv">2</span><span class="op">;</span></span>
-<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-label="3"></a><span class="op">}</span></span>
-<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-label="4"></a></span>
-<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-label="6"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
-<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-label="7"></a>    raddoppia<span class="op">(</span>x<span class="op">);</span></span>
-<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-label="8"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2">2</button><span id="annotated-cell-6-9" class="code-annotation-target"><a href="#annotated-cell-6-9" aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"x vale: "</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-label="10"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-label="2"></a></span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-label="3"></a><span class="dt">void</span> raddoppia<span class="op">(</span><span class="dt">int</span> numero<span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4" aria-label="4"></a>    numero <span class="op">=</span> numero <span class="op">*</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-label="5"></a><span class="op">}</span></span>
+<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-label="6"></a></span>
+<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-label="7"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-label="8"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-label="9"></a>    raddoppia<span class="op">(</span>x<span class="op">);</span></span>
+<span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-label="10"></a>    </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-6-11" class="code-annotation-target"><a href="#annotated-cell-6-11" aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"x vale: "</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="annotated-cell-6-12"><a href="#annotated-cell-6-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-6-13"><a href="#annotated-cell-6-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="2" data-code-annotation="1">Modifichiamo solo la copia locale.</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="1">Modifichiamo solo la copia locale.</span>
 </dd>
 <dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="9" data-code-annotation="2">Stampa ancora <code>10</code>!</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="11" data-code-annotation="2">Stampa ancora <code>10</code>!</span>
 </dd>
 </dl>
 <div class="callout callout-warning callout-titled callout-style-default">
@@ -535,25 +602,27 @@ Docente
 <section id="pass-by-reference" class="slide level2 smaller">
 <h2>Pass-by-Reference</h2>
 <p>Se usiamo un Reference (<code>&amp;</code>), passiamo un <em>alias</em> della variabile originale. Non viene fatta alcuna copia, e possiamo <strong>modificare</strong> la variabile originale.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-1" class="code-annotation-target"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="dt">void</span> raddoppia<span class="op">(</span><span class="dt">int</span><span class="op">&amp;</span> numero<span class="op">)</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2">2</button><span id="annotated-cell-7-2" class="code-annotation-target"><a href="#annotated-cell-7-2" aria-label="2"></a>    numero <span class="op">=</span> numero <span class="op">*</span> <span class="dv">2</span><span class="op">;</span></span>
-<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a><span class="op">}</span></span>
-<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-label="4"></a></span>
-<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-label="6"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
-<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a>    raddoppia<span class="op">(</span>x<span class="op">);</span></span>
-<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a>    </span>
-<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"x vale: "</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span> <span class="co">// Stampa 20!</span></span>
-<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-label="10"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-3" class="code-annotation-target"><a href="#annotated-cell-7-3" aria-label="3"></a><span class="dt">void</span> raddoppia<span class="op">(</span><span class="dt">int</span><span class="op">&amp;</span> numero<span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-7-4" class="code-annotation-target"><a href="#annotated-cell-7-4" aria-label="4"></a>    numero <span class="op">=</span> numero <span class="op">*</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-label="5"></a><span class="op">}</span></span>
+<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-label="6"></a></span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-label="9"></a>    raddoppia<span class="op">(</span>x<span class="op">);</span></span>
+<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-label="10"></a>    </span>
+<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"x vale: "</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span> <span class="co">// Stampa 20!</span></span>
+<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-7-13"><a href="#annotated-cell-7-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="1" data-code-annotation="1">Notare l’aggiunta dell’e-commerciale <code>&amp;</code>!</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="3" data-code-annotation="1">Notare l’aggiunta dell’e-commerciale <code>&amp;</code>!</span>
 </dd>
 <dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="2" data-code-annotation="2">Stiamo modificando la variabile originale.</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="4" data-code-annotation="2">Stiamo modificando la variabile originale.</span>
 </dd>
 </dl>
 <p><em>Questo approccio è utile per restituire “più di un risultato” da una funzione.</em></p>
@@ -561,94 +630,104 @@ Docente
 <section id="il-santo-graal-pass-by-const-reference" class="slide level2 smaller">
 <h2>Il Santo Graal: Pass-by-Const-Reference</h2>
 <p>Quando vogliamo passare un oggetto “pesante” (come una Rete Neurale o una Matrice) ma NON vogliamo modificarlo, il Pass-by-Value è lentissimo. La soluzione universale è il <strong>Pass-by-Const-Reference</strong>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><button class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1">1</button><span id="annotated-cell-8-1" class="code-annotation-target"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="dt">void</span> analizza_testo<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> testo_molto_lungo<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Lunghezza: "</span> <span class="op">&lt;&lt;</span> testo_molto_lungo<span class="op">.</span>size<span class="op">();</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2">2</button><span id="annotated-cell-8-3" class="code-annotation-target"><a href="#annotated-cell-8-3" aria-label="3"></a>    <span class="co">// testo_molto_lungo += "a";</span></span>
-<span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-label="4"></a><span class="op">}</span></span>
-<span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-label="5"></a></span>
-<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-label="7"></a>    <span class="bu">std::</span>string testo <span class="op">=</span> <span class="st">"..."</span><span class="op">;</span> <span class="co">// Molti MB di dati</span></span>
-<span id="annotated-cell-8-8"><a href="#annotated-cell-8-8" aria-label="8"></a>    analizza_testo<span class="op">(</span>testo<span class="op">);</span> <span class="co">// Zero copie, zero rischi!</span></span>
-<span id="annotated-cell-8-9"><a href="#annotated-cell-8-9" aria-label="9"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-8-10"><a href="#annotated-cell-8-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-label="3"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-4" class="code-annotation-target"><a href="#annotated-cell-8-4" aria-label="4"></a><span class="dt">void</span> analizza_testo<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> testo_molto_lungo<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-label="5"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Lunghezza: "</span> <span class="op">&lt;&lt;</span> testo_molto_lungo<span class="op">.</span>size<span class="op">();</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-6" class="code-annotation-target"><a href="#annotated-cell-8-6" aria-label="6"></a>    <span class="co">// testo_molto_lungo += "a";</span></span>
+<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-label="7"></a><span class="op">}</span></span>
+<span id="annotated-cell-8-8"><a href="#annotated-cell-8-8" aria-label="8"></a></span>
+<span id="annotated-cell-8-9"><a href="#annotated-cell-8-9" aria-label="9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-8-10"><a href="#annotated-cell-8-10" aria-label="10"></a>    <span class="bu">std::</span>string testo <span class="op">=</span> <span class="st">"..."</span><span class="op">;</span> <span class="co">// Molti MB di dati</span></span>
+<span id="annotated-cell-8-11"><a href="#annotated-cell-8-11" aria-label="11"></a>    analizza_testo<span class="op">(</span>testo<span class="op">);</span> <span class="co">// Zero copie, zero rischi!</span></span>
+<span id="annotated-cell-8-12"><a href="#annotated-cell-8-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-8-13"><a href="#annotated-cell-8-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="1" data-code-annotation="1"><code>const</code> vieta le modifiche, <code>&amp;</code> evita la copia in memoria!</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="4" data-code-annotation="1"><code>const</code> vieta le modifiche, <code>&amp;</code> evita la copia in memoria!</span>
 </dd>
 <dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="3" data-code-annotation="2">ERRORE DI COMPILAZIONE (è <code>const</code>).</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="6" data-code-annotation="2">ERRORE DI COMPILAZIONE (è <code>const</code>).</span>
 </dd>
 </dl>
+<p><em>Arrivano dopo: la sintassi completa di <code>const</code> nella Lezione 6, <code>std::string</code> nella Lezione 11.</em></p>
 </section>
 <section id="passaggio-di-array-alle-funzioni" class="slide level2 smaller">
 <h2>Passaggio di Array alle Funzioni</h2>
 <p>In C++ <strong>non si può passare un array nativo per valore</strong>. Gli array decadono (<em>decay</em>) sempre a un <strong>Puntatore</strong> al loro primo elemento.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-9"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-label="1"></a><span class="co">// Sembra che chiediamo un array, ma il compilatore lo traduce in: </span></span>
 <span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-label="2"></a><span class="co">// void stampa_array(int* array, int lunghezza)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1">1</button><span id="annotated-cell-9-3" class="code-annotation-target"><a href="#annotated-cell-9-3" aria-label="3"></a><span class="dt">void</span> stampa_array<span class="op">(</span><span class="dt">int</span> array<span class="op">[],</span> <span class="dt">int</span> lunghezza<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-label="4"></a>    <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>lunghezza<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-label="5"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> array<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
-<span id="annotated-cell-9-6"><a href="#annotated-cell-9-6" aria-label="6"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-label="7"></a><span class="op">}</span></span>
-<span id="annotated-cell-9-8"><a href="#annotated-cell-9-8" aria-label="8"></a></span>
-<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-label="9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-label="10"></a>    <span class="dt">int</span> dati<span class="op">[</span><span class="dv">5</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">};</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="2">2</button><span id="annotated-cell-9-11" class="code-annotation-target"><a href="#annotated-cell-9-11" aria-label="11"></a>    stampa_array<span class="op">(</span>dati<span class="op">,</span> <span class="dv">5</span><span class="op">);</span></span>
-<span id="annotated-cell-9-12"><a href="#annotated-cell-9-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-9-13"><a href="#annotated-cell-9-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-label="4"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-5" class="code-annotation-target"><a href="#annotated-cell-9-5" aria-label="5"></a><span class="dt">void</span> stampa_array<span class="op">(</span><span class="dt">int</span> array<span class="op">[],</span> <span class="dt">int</span> lunghezza<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-9-6"><a href="#annotated-cell-9-6" aria-label="6"></a>    <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>lunghezza<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-label="7"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> array<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="annotated-cell-9-8"><a href="#annotated-cell-9-8" aria-label="8"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-label="9"></a><span class="op">}</span></span>
+<span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-label="10"></a></span>
+<span id="annotated-cell-9-11"><a href="#annotated-cell-9-11" aria-label="11"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-9-12"><a href="#annotated-cell-9-12" aria-label="12"></a>    <span class="dt">int</span> dati<span class="op">[</span><span class="dv">5</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">};</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-9-13" class="code-annotation-target"><a href="#annotated-cell-9-13" aria-label="13"></a>    stampa_array<span class="op">(</span>dati<span class="op">,</span> <span class="dv">5</span><span class="op">);</span></span>
+<span id="annotated-cell-9-14"><a href="#annotated-cell-9-14" aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-9-15"><a href="#annotated-cell-9-15" aria-label="15"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-9" data-code-lines="3" data-code-annotation="1">Questo parametro è in realtà un <code>int* array</code>.</span>
+<span data-code-cell="annotated-cell-9" data-code-lines="5" data-code-annotation="1">Questo parametro è in realtà un <code>int* array</code>.</span>
 </dd>
 <dt data-target-cell="annotated-cell-9" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-9" data-code-lines="11" data-code-annotation="2">Passa in realtà l’indirizzo <code>&amp;dati[0]</code>.</span>
+<span data-code-cell="annotated-cell-9" data-code-lines="13" data-code-annotation="2">Passa in realtà l’indirizzo <code>&amp;dati[0]</code>.</span>
 </dd>
 </dl>
 </section>
-<section id="dichiarazione-prima-delluso" class="slide level2 smaller scrollable">
+<section id="dichiarazione-prima-delluso" class="slide level2 smaller">
 <h2>Dichiarazione prima dell’Uso</h2>
 <p>In C++, il compilatore legge il file dall’alto verso il basso. Non può usare una funzione di cui non conosce l’esistenza!</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Sbagliato:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-16"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1">1</button><span id="annotated-cell-16-2" class="code-annotation-target"><a href="#annotated-cell-16-2" aria-label="2"></a>    print<span class="op">();</span></span>
-<span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-label="3"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-16-4"><a href="#annotated-cell-16-4" aria-label="4"></a><span class="op">}</span></span>
-<span id="annotated-cell-16-5"><a href="#annotated-cell-16-5" aria-label="5"></a></span>
-<span id="annotated-cell-16-6"><a href="#annotated-cell-16-6" aria-label="6"></a><span class="dt">void</span> print<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-16-7"><a href="#annotated-cell-16-7" aria-label="7"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Ciao"</span><span class="op">;</span></span>
-<span id="annotated-cell-16-8"><a href="#annotated-cell-16-8" aria-label="8"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-16"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-label="2"></a></span>
+<span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-16-4" class="code-annotation-target"><a href="#annotated-cell-16-4" aria-label="4"></a>    print<span class="op">();</span></span>
+<span id="annotated-cell-16-5"><a href="#annotated-cell-16-5" aria-label="5"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-16-6"><a href="#annotated-cell-16-6" aria-label="6"></a><span class="op">}</span></span>
+<span id="annotated-cell-16-7"><a href="#annotated-cell-16-7" aria-label="7"></a></span>
+<span id="annotated-cell-16-8"><a href="#annotated-cell-16-8" aria-label="8"></a><span class="dt">void</span> print<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-16-9"><a href="#annotated-cell-16-9" aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Ciao"</span><span class="op">;</span></span>
+<span id="annotated-cell-16-10"><a href="#annotated-cell-16-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-16" data-code-lines="2" data-code-annotation="1">Il compilatore non sa cosa sia “print()”.</span>
+<span data-code-cell="annotated-cell-16" data-code-lines="4" data-code-annotation="1">Il compilatore non sa cosa sia “print()”.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:50%;">
 <p><strong>Corretto:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-17"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><button class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="1">1</button><span id="annotated-cell-17-1" class="code-annotation-target"><a href="#annotated-cell-17-1" aria-label="1"></a><span class="dt">void</span> print<span class="op">();</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-17"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-17-2"><a href="#annotated-cell-17-2" aria-label="2"></a></span>
-<span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-17-4"><a href="#annotated-cell-17-4" aria-label="4"></a>    print<span class="op">();</span> <span class="co">// OK!</span></span>
-<span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-label="5"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-17-6"><a href="#annotated-cell-17-6" aria-label="6"></a><span class="op">}</span></span>
-<span id="annotated-cell-17-7"><a href="#annotated-cell-17-7" aria-label="7"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="2">2</button><span id="annotated-cell-17-8" class="code-annotation-target"><a href="#annotated-cell-17-8" aria-label="8"></a><span class="dt">void</span> print<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-17-9"><a href="#annotated-cell-17-9" aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Ciao"</span><span class="op">;</span></span>
-<span id="annotated-cell-17-10"><a href="#annotated-cell-17-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-17-3" class="code-annotation-target"><a href="#annotated-cell-17-3" aria-label="3"></a><span class="dt">void</span> print<span class="op">();</span></span>
+<span id="annotated-cell-17-4"><a href="#annotated-cell-17-4" aria-label="4"></a></span>
+<span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-17-6"><a href="#annotated-cell-17-6" aria-label="6"></a>    print<span class="op">();</span> <span class="co">// OK!</span></span>
+<span id="annotated-cell-17-7"><a href="#annotated-cell-17-7" aria-label="7"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-17-8"><a href="#annotated-cell-17-8" aria-label="8"></a><span class="op">}</span></span>
+<span id="annotated-cell-17-9"><a href="#annotated-cell-17-9" aria-label="9"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-17-10" class="code-annotation-target"><a href="#annotated-cell-17-10" aria-label="10"></a><span class="dt">void</span> print<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-17-11"><a href="#annotated-cell-17-11" aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Ciao"</span><span class="op">;</span></span>
+<span id="annotated-cell-17-12"><a href="#annotated-cell-17-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-17" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-17" data-code-lines="1" data-code-annotation="1"><strong>Prototipo</strong> (Dichiarazione).</span>
+<span data-code-cell="annotated-cell-17" data-code-lines="3" data-code-annotation="1"><strong>Prototipo</strong> (Dichiarazione).</span>
 </dd>
 <dt data-target-cell="annotated-cell-17" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-17" data-code-lines="8" data-code-annotation="2"><strong>Implementazione</strong> (Definizione).</span>
+<span data-code-cell="annotated-cell-17" data-code-lines="10" data-code-annotation="2"><strong>Implementazione</strong> (Definizione).</span>
 </dd>
 </dl>
 </div></div>
@@ -657,45 +736,47 @@ Docente
 <h2>Overloading delle Funzioni</h2>
 <p>In C++ possiamo avere <strong>più funzioni con lo stesso nome</strong>, a patto che abbiano una <strong>firma (signature)</strong> diversa (cioè parametri diversi in numero o tipo).</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="co">// Funzione 1</span></span>
-<span id="cb3-2"><a aria-label="2"></a><span class="dt">void</span> stampa<span class="op">(</span><span class="dt">int</span> x<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-3"><a aria-label="3"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Intero: "</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb3-4"><a aria-label="4"></a><span class="op">}</span></span>
-<span id="cb3-5"><a aria-label="5"></a></span>
-<span id="cb3-6"><a aria-label="6"></a><span class="co">// Funzione 2</span></span>
-<span id="cb3-7"><a aria-label="7"></a><span class="dt">void</span> stampa<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-8"><a aria-label="8"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Reale: "</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb3-9"><a aria-label="9"></a><span class="op">}</span></span>
-<span id="cb3-10"><a aria-label="10"></a></span>
-<span id="cb3-11"><a aria-label="11"></a><span class="co">// Funzione 3</span></span>
-<span id="cb3-12"><a aria-label="12"></a><span class="dt">void</span> stampa<span class="op">(</span><span class="dt">int</span> x<span class="op">,</span> <span class="dt">int</span> y<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Coordinate: ("</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">", "</span> <span class="op">&lt;&lt;</span> y <span class="op">&lt;&lt;</span> <span class="st">")"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb3-14"><a aria-label="14"></a><span class="op">}</span></span>
-<span id="cb3-15"><a aria-label="15"></a></span>
-<span id="cb3-16"><a aria-label="16"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb3-17"><a aria-label="17"></a>    stampa<span class="op">(</span><span class="dv">5</span><span class="op">);</span>        <span class="co">// Chiama Funzione 1</span></span>
-<span id="cb3-18"><a aria-label="18"></a>    stampa<span class="op">(</span><span class="fl">3.14</span><span class="op">);</span>     <span class="co">// Chiama Funzione 2</span></span>
-<span id="cb3-19"><a aria-label="19"></a>    stampa<span class="op">(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">20</span><span class="op">);</span>   <span class="co">// Chiama Funzione 3</span></span>
-<span id="cb3-20"><a aria-label="20"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb3-21"><a aria-label="21"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb3-3"><a aria-label="3"></a></span>
+<span id="cb3-4"><a aria-label="4"></a><span class="dt">void</span> stampa<span class="op">(</span><span class="dt">int</span> x<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-5"><a aria-label="5"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Intero: "</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb3-6"><a aria-label="6"></a><span class="op">}</span></span>
+<span id="cb3-7"><a aria-label="7"></a></span>
+<span id="cb3-8"><a aria-label="8"></a><span class="co">// Funzione 2</span></span>
+<span id="cb3-9"><a aria-label="9"></a><span class="dt">void</span> stampa<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Reale: "</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb3-11"><a aria-label="11"></a><span class="op">}</span></span>
+<span id="cb3-12"><a aria-label="12"></a></span>
+<span id="cb3-13"><a aria-label="13"></a><span class="co">// Funzione 3</span></span>
+<span id="cb3-14"><a aria-label="14"></a><span class="dt">void</span> stampa<span class="op">(</span><span class="dt">int</span> x<span class="op">,</span> <span class="dt">int</span> y<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-15"><a aria-label="15"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Coordinate: ("</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">", "</span> <span class="op">&lt;&lt;</span> y <span class="op">&lt;&lt;</span> <span class="st">")"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb3-16"><a aria-label="16"></a><span class="op">}</span></span>
+<span id="cb3-17"><a aria-label="17"></a></span>
+<span id="cb3-18"><a aria-label="18"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-19"><a aria-label="19"></a>    stampa<span class="op">(</span><span class="dv">5</span><span class="op">);</span>        <span class="co">// Chiama Funzione 1</span></span>
+<span id="cb3-20"><a aria-label="20"></a>    stampa<span class="op">(</span><span class="fl">3.14</span><span class="op">);</span>     <span class="co">// Chiama Funzione 2</span></span>
+<span id="cb3-21"><a aria-label="21"></a>    stampa<span class="op">(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">20</span><span class="op">);</span>   <span class="co">// Chiama Funzione 3</span></span>
+<span id="cb3-22"><a aria-label="22"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-23"><a aria-label="23"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="argomenti-di-default" class="slide level2 smaller">
 <h2>Argomenti di Default</h2>
 <p>Le funzioni possono avere valori predefiniti per gli ultimi argomenti della lista. Se l’utente non li fornisce, usa quelli di default.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
 <span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1">1</button><span id="annotated-cell-11-3" class="code-annotation-target"><a href="#annotated-cell-11-3" aria-label="3"></a><span class="dt">double</span> calcola_distanza<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">,</span> <span class="dt">double</span> z <span class="op">=</span> <span class="fl">0.0</span><span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-3" class="code-annotation-target"><a href="#annotated-cell-11-3" aria-label="3"></a><span class="dt">double</span> calcola_distanza<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">,</span> <span class="dt">double</span> z <span class="op">=</span> <span class="fl">0.0</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-label="4"></a>    <span class="cf">return</span> <span class="bu">std::</span>sqrt<span class="op">(</span>x<span class="op">*</span>x <span class="op">+</span> y<span class="op">*</span>y <span class="op">+</span> z<span class="op">*</span>z<span class="op">);</span></span>
 <span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a><span class="op">}</span></span>
 <span id="annotated-cell-11-6"><a href="#annotated-cell-11-6" aria-label="6"></a></span>
 <span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-label="7"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-11-8"><a href="#annotated-cell-11-8" aria-label="8"></a>    <span class="co">// Distanza nel piano 2D (non passiamo z)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="2">2</button><span id="annotated-cell-11-9" class="code-annotation-target"><a href="#annotated-cell-11-9" aria-label="9"></a>    <span class="dt">double</span> d2 <span class="op">=</span> calcola_distanza<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-11-9" class="code-annotation-target"><a href="#annotated-cell-11-9" aria-label="9"></a>    <span class="dt">double</span> d2 <span class="op">=</span> calcola_distanza<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
 <span id="annotated-cell-11-10"><a href="#annotated-cell-11-10" aria-label="10"></a>    </span>
 <span id="annotated-cell-11-11"><a href="#annotated-cell-11-11" aria-label="11"></a>    <span class="co">// Distanza nello spazio 3D</span></span>
 <span id="annotated-cell-11-12"><a href="#annotated-cell-11-12" aria-label="12"></a>    <span class="dt">double</span> d3 <span class="op">=</span> calcola_distanza<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">,</span> <span class="fl">5.0</span><span class="op">);</span> </span>
 <span id="annotated-cell-11-13"><a href="#annotated-cell-11-13" aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-11-14"><a href="#annotated-cell-11-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-11" data-code-lines="3" data-code-annotation="1">L’argomento <code>z</code> è opzionale. Se omesso, varrà <code>0.0</code>.</span>
@@ -714,7 +795,7 @@ Docente
 <p><strong>Warning</strong></p>
 </div>
 <div class="callout-content">
-<p>Regola ferrea: i parametri di default devono sempre stare <strong>in fondo</strong> alla lista! (<code>void f(int a=1, int b)</code> è un errore di sintassi).</p>
+<p>Regola ferrea: i parametri di default devono sempre stare <strong>in fondo</strong> alla lista. Con <code>void f(int a=1, int b);</code> il compilatore risponde <em><code>error: default argument missing for parameter 2 of 'void f(int, int)'</code></em>.</p>
 </div>
 </div>
 </div>
@@ -737,7 +818,7 @@ Docente
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
 <span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-label="3"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1">1</button><span id="annotated-cell-12-4" class="code-annotation-target"><a href="#annotated-cell-12-4" aria-label="4"></a><span class="dt">void</span> normalizza<span class="op">(</span><span class="dt">double</span><span class="op">&amp;</span> x<span class="op">,</span> <span class="dt">double</span><span class="op">&amp;</span> y<span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-4" class="code-annotation-target"><a href="#annotated-cell-12-4" aria-label="4"></a><span class="dt">void</span> normalizza<span class="op">(</span><span class="dt">double</span><span class="op">&amp;</span> x<span class="op">,</span> <span class="dt">double</span><span class="op">&amp;</span> y<span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-12-5"><a href="#annotated-cell-12-5" aria-label="5"></a>    <span class="dt">double</span> norma <span class="op">=</span> <span class="bu">std::</span>sqrt<span class="op">(</span>x<span class="op">*</span>x <span class="op">+</span> y<span class="op">*</span>y<span class="op">);</span></span>
 <span id="annotated-cell-12-6"><a href="#annotated-cell-12-6" aria-label="6"></a>    <span class="cf">if</span><span class="op">(</span>norma <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-12-7"><a href="#annotated-cell-12-7" aria-label="7"></a>        x <span class="op">=</span> x <span class="op">/</span> norma<span class="op">;</span></span>
@@ -751,12 +832,12 @@ Docente
 <span id="annotated-cell-12-15"><a href="#annotated-cell-12-15" aria-label="15"></a>    </span>
 <span id="annotated-cell-12-16"><a href="#annotated-cell-12-16" aria-label="16"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Prima: ("</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">", "</span> <span class="op">&lt;&lt;</span> y <span class="op">&lt;&lt;</span> <span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-12-17"><a href="#annotated-cell-12-17" aria-label="17"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="2">2</button><span id="annotated-cell-12-18" class="code-annotation-target"><a href="#annotated-cell-12-18" aria-label="18"></a>    normalizza<span class="op">(</span>x<span class="op">,</span> y<span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-12-18" class="code-annotation-target"><a href="#annotated-cell-12-18" aria-label="18"></a>    normalizza<span class="op">(</span>x<span class="op">,</span> y<span class="op">);</span></span>
 <span id="annotated-cell-12-19"><a href="#annotated-cell-12-19" aria-label="19"></a>    </span>
 <span id="annotated-cell-12-20"><a href="#annotated-cell-12-20" aria-label="20"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Dopo : ("</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">", "</span> <span class="op">&lt;&lt;</span> y <span class="op">&lt;&lt;</span> <span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-12-21"><a href="#annotated-cell-12-21" aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-12-22"><a href="#annotated-cell-12-22" aria-label="22"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-12" data-code-lines="4" data-code-annotation="1">Abbiamo usato <code>&amp;</code> (reference) perché vogliamo modificare le variabili del <code>main</code>.</span>
@@ -766,7 +847,6 @@ Docente
 <span data-code-cell="annotated-cell-12" data-code-lines="18" data-code-annotation="2">Stampa finale: <code>Dopo : (0.6, 0.8)</code></span>
 </dd>
 </dl>
-<p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
@@ -1210,64 +1290,25 @@ Docente
               }
             };
           }
-            const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
-            for (let i=0; i<annoteTargets.length; i++) {
-              const annoteTarget = annoteTargets[i];
-              const targetCell = annoteTarget.getAttribute("data-target-cell");
-              const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
-              const contentFn = () => {
-                const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-                if (content) {
-                  const tipContent = content.cloneNode(true);
-                  tipContent.classList.add("code-annotation-tip-content");
-                  return tipContent.outerHTML;
-                }
-              }
-              const config = {
-                allowHTML: true,
-                content: contentFn,
-                onShow: (instance) => {
-                  selectCodeLines(instance.reference);
-                  instance.reference.classList.add('code-annotation-active');
-                  window.tippy.hideAll();
-                },
-                onHide: (instance) => {
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
                   unselectCodeLines();
-                  instance.reference.classList.remove('code-annotation-active');
-                },
-                maxWidth: 300,
-                delay: [50, 0],
-                duration: [200, 0],
-                offset: [5, 10],
-                arrow: true,
-                appendTo: function(el) {
-                  return el.parentElement.parentElement.parentElement;
-                },
-                interactive: true,
-                interactiveBorder: 10,
-                theme: 'light-border',
-                placement: 'right',
-                popperOptions: {
-                  modifiers: [
-                  {
-                    name: 'flip',
-                    options: {
-                      flipVariations: false, // true by default
-                      allowedAutoPlacements: ['right'],
-                      fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
-                    },
-                  },
-                  {
-                    name: 'preventOverflow',
-                    options: {
-                      mainAxis: false,
-                      altAxis: false
-                    }
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
                   }
-                  ]        
-                }      
-              };
-              window.tippy(annoteTarget, config); 
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
             }
         const findCites = (el) => {
           const parentEl = el.parentElement;

@@ -102,6 +102,7 @@
     code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../annotazioni.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,6 +196,58 @@
       margin-right: 0; 
     }
   </style>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -237,9 +290,9 @@ Docente
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a>    </span>
 <span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-label="4"></a>    Vettore2D v2 <span class="op">=</span> v1 <span class="op">*</span> <span class="fl">5.0</span><span class="op">;</span> <span class="co">// OK! Chiama v1.operator*(5.0)</span></span>
 <span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-label="5"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-6" class="code-annotation-target"><a href="#annotated-cell-2-6" aria-label="6"></a>    Vettore2D v3 <span class="op">=</span> <span class="fl">5.0</span> <span class="op">*</span> v1<span class="op">;</span> <span class="co">// ERRORE DI COMPILAZIONE FATALE!</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-6" class="code-annotation-target"><a href="#annotated-cell-2-6" aria-label="6"></a>    Vettore2D v3 <span class="op">=</span> <span class="fl">5.0</span> <span class="op">*</span> v1<span class="op">;</span> <span class="co">// ERRORE DI COMPILAZIONE FATALE!</span></span>
 <span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-label="7"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-2" data-code-lines="6" data-code-annotation="1"><code>error: no match for 'operator*' in '5.0 * v1'</code></span>
@@ -269,10 +322,10 @@ Docente
 <span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-label="5"></a><span class="op">};</span></span>
 <span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-label="6"></a></span>
 <span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-label="7"></a><span class="co">// FUNZIONE GLOBALE (Fuori dalla classe!)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-8" class="code-annotation-target"><a href="#annotated-cell-3-8" aria-label="8"></a>Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> lhs<span class="op">,</span> <span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-8" class="code-annotation-target"><a href="#annotated-cell-3-8" aria-label="8"></a>Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> lhs<span class="op">,</span> <span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-label="9"></a>    <span class="co">// Come si implementa?</span></span>
 <span id="annotated-cell-3-10"><a href="#annotated-cell-3-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-3" data-code-lines="8" data-code-annotation="1">Questa funzione catturerà automaticamente qualsiasi calcolo nella forma <code>5.0 * v1</code> ! Il lato sinistro è <code>lhs</code>, il destro è <code>rhs</code>.</span>
@@ -290,12 +343,12 @@ Docente
 <span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-label="6"></a><span class="op">};</span></span>
 <span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-label="7"></a></span>
 <span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-label="8"></a>Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> lhs<span class="op">,</span> <span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-9" class="code-annotation-target"><a href="#annotated-cell-4-9" aria-label="9"></a>    <span class="co">// ERRORE DI COMPILAZIONE! x_ e y_ sono privati!</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-9" class="code-annotation-target"><a href="#annotated-cell-4-9" aria-label="9"></a>    <span class="co">// ERRORE DI COMPILAZIONE! x_ e y_ sono privati!</span></span>
 <span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-label="10"></a>    <span class="dt">double</span> nuovo_x <span class="op">=</span> lhs <span class="op">*</span> rhs<span class="op">.</span><span class="va">x_</span><span class="op">;</span> </span>
 <span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-label="11"></a>    <span class="dt">double</span> nuovo_y <span class="op">=</span> lhs <span class="op">*</span> rhs<span class="op">.</span><span class="va">y_</span><span class="op">;</span></span>
 <span id="annotated-cell-4-12"><a href="#annotated-cell-4-12" aria-label="12"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span>nuovo_x<span class="op">,</span> nuovo_y<span class="op">);</span></span>
 <span id="annotated-cell-4-13"><a href="#annotated-cell-4-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-4" data-code-lines="9" data-code-annotation="1">Essendo una funzione esterna, la classe Vettore la vede come un’estranea. Non ha il permesso di accedere alle variabili in cassaforte!</span>
@@ -337,9 +390,9 @@ Docente
 <span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-label="6"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">{</span> <span class="va">x_</span><span class="op">=</span>x<span class="op">;</span> <span class="va">y_</span><span class="op">=</span>y<span class="op">;</span> <span class="op">}</span></span>
 <span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-label="7"></a>    </span>
 <span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-label="8"></a>    <span class="co">// Concedo a QUESTA SPECIFICA funzione globale l'accesso ai miei dati</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-9" class="code-annotation-target"><a href="#annotated-cell-5-9" aria-label="9"></a>    <span class="kw">friend</span> Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> lhs<span class="op">,</span> <span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-9" class="code-annotation-target"><a href="#annotated-cell-5-9" aria-label="9"></a>    <span class="kw">friend</span> Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> lhs<span class="op">,</span> <span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">);</span></span>
 <span id="annotated-cell-5-10"><a href="#annotated-cell-5-10" aria-label="10"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-5" data-code-lines="9" data-code-annotation="1">Avendo concesso l’amicizia qui dentro, ora l’implementazione della funzione globale compilerà perfettamente.</span>
@@ -364,11 +417,11 @@ Docente
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-17"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-label="1"></a><span class="co">// Vettore2D.cpp</span></span>
 <span id="annotated-cell-17-2"><a href="#annotated-cell-17-2" aria-label="2"></a>Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> lhs<span class="op">,</span> <span class="at">const</span> Vettore2D<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-label="3"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="1">1</button><span id="annotated-cell-17-4" class="code-annotation-target"><a href="#annotated-cell-17-4" aria-label="4"></a>        lhs <span class="op">*</span> rhs<span class="op">.</span><span class="va">x_</span><span class="op">,</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-17-4" class="code-annotation-target"><a href="#annotated-cell-17-4" aria-label="4"></a>        lhs <span class="op">*</span> rhs<span class="op">.</span><span class="va">x_</span><span class="op">,</span></span>
 <span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-label="5"></a>        lhs <span class="op">*</span> rhs<span class="op">.</span><span class="va">y_</span></span>
 <span id="annotated-cell-17-6"><a href="#annotated-cell-17-6" aria-label="6"></a>    <span class="op">);</span></span>
 <span id="annotated-cell-17-7"><a href="#annotated-cell-17-7" aria-label="7"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-17" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-17" data-code-lines="4" data-code-annotation="1"><code>rhs.x_</code> funziona tranquillamente pur essendo privato, grazie all’amicizia.</span>
@@ -403,9 +456,9 @@ Docente
 <span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-label="10"></a>    Complex<span class="op">(</span><span class="dt">double</span> r<span class="op">,</span> <span class="dt">double</span> i<span class="op">)</span> <span class="op">{</span> <span class="va">real_</span> <span class="op">=</span> r<span class="op">;</span> <span class="va">imag_</span> <span class="op">=</span> i<span class="op">;</span> <span class="op">}</span></span>
 <span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-label="11"></a>    </span>
 <span id="annotated-cell-6-12"><a href="#annotated-cell-6-12" aria-label="12"></a>    <span class="co">// Concedo l'accesso alla funzione di output (std::cout)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-13" class="code-annotation-target"><a href="#annotated-cell-6-13" aria-label="13"></a>    <span class="kw">friend</span> <span class="bu">std::</span>ostream<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&lt;&lt;(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">,</span> <span class="at">const</span> Complex<span class="op">&amp;</span> rhs<span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-13" class="code-annotation-target"><a href="#annotated-cell-6-13" aria-label="13"></a>    <span class="kw">friend</span> <span class="bu">std::</span>ostream<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&lt;&lt;(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">,</span> <span class="at">const</span> Complex<span class="op">&amp;</span> rhs<span class="op">);</span></span>
 <span id="annotated-cell-6-14"><a href="#annotated-cell-6-14" aria-label="14"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-6" data-code-lines="13" data-code-annotation="1">È lo standard C++ per sovraccaricare <code>cout</code> per i propri oggetti!</span>
@@ -418,15 +471,15 @@ Docente
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="pp">#include </span><span class="im">"Complex.hpp"</span></span>
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a></span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a><span class="co">// Implementazione Globale (nessun "Complex::" davanti!)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1">1</button><span id="annotated-cell-7-4" class="code-annotation-target"><a href="#annotated-cell-7-4" aria-label="4"></a><span class="bu">std::</span>ostream<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&lt;&lt;(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">,</span> <span class="at">const</span> Complex<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-4" class="code-annotation-target"><a href="#annotated-cell-7-4" aria-label="4"></a><span class="bu">std::</span>ostream<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&lt;&lt;(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">,</span> <span class="at">const</span> Complex<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-label="5"></a>    </span>
 <span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-label="6"></a>    <span class="co">// Stampo usando i dati PRIVATI dell'oggetto rhs</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2">2</button><span id="annotated-cell-7-7" class="code-annotation-target"><a href="#annotated-cell-7-7" aria-label="7"></a>    os <span class="op">&lt;&lt;</span> <span class="st">"("</span> <span class="op">&lt;&lt;</span> rhs<span class="op">.</span><span class="va">real_</span> <span class="op">&lt;&lt;</span> <span class="st">" + i*"</span> <span class="op">&lt;&lt;</span> rhs<span class="op">.</span><span class="va">imag_</span> <span class="op">&lt;&lt;</span> <span class="st">")"</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-7-7" class="code-annotation-target"><a href="#annotated-cell-7-7" aria-label="7"></a>    os <span class="op">&lt;&lt;</span> <span class="st">"("</span> <span class="op">&lt;&lt;</span> rhs<span class="op">.</span><span class="va">real_</span> <span class="op">&lt;&lt;</span> <span class="st">" + i*"</span> <span class="op">&lt;&lt;</span> rhs<span class="op">.</span><span class="va">imag_</span> <span class="op">&lt;&lt;</span> <span class="st">")"</span><span class="op">;</span></span>
 <span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a>    </span>
 <span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-label="9"></a>    <span class="co">// Restituisco lo stream per poter concatenare (cout &lt;&lt; a &lt;&lt; b;)</span></span>
 <span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-label="10"></a>    <span class="cf">return</span> os<span class="op">;</span> </span>
 <span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-7" data-code-lines="4" data-code-annotation="1">Non dimenticate di includere gli Header corretti.</span>
@@ -486,7 +539,7 @@ Docente
 </section>
 <section id="misurare-il-tempo-chrono" class="slide level2 smaller">
 <h2>Misurare il Tempo: <code>&lt;chrono&gt;</code></h2>
-<p>Non si ottimizza quello che non si misura. La libreria standard <code>&lt;chrono&gt;</code> fornisce un cronometro a precisione di nanosecondi.</p>
+<p>Non si ottimizza quello che non si misura: <code>&lt;chrono&gt;</code> è il cronometro standard.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
 <span id="cb4-2"><a aria-label="2"></a></span>
 <span id="cb4-3"><a aria-label="3"></a><span class="kw">using</span> cl <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock<span class="op">;</span></span>
@@ -498,7 +551,7 @@ Docente
 <span id="cb4-9"><a aria-label="9"></a></span>
 <span id="cb4-10"><a aria-label="10"></a><span class="kw">auto</span> us <span class="op">=</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span><span class="bu">std::</span>chrono::microseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">).</span>count<span class="op">();</span></span>
 <span id="cb4-11"><a aria-label="11"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Tempo: "</span> <span class="op">&lt;&lt;</span> us <span class="op">/</span> <span class="fl">1000.0</span> <span class="op">&lt;&lt;</span> <span class="st">" ms</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>duration_cast</code> converte la durata nell’unità che volete (<code>microseconds</code>, <code>milliseconds</code>, <code>seconds</code>).</p>
+<p><code>duration_cast</code> converte nell’unità che volete (<code>microseconds</code>, <code>seconds</code>, …).</p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -508,11 +561,11 @@ Docente
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p><strong>Una parola su <code>auto</code>.</strong> Il tipo restituito da <code>cl::now()</code> si scriverebbe <code>std::chrono::time_point&lt;std::chrono::high_resolution_clock&gt;</code>. La parola chiave <code>auto</code> dice al compilatore di dedurlo da sé: il tipo resta statico e controllato, semplicemente non lo scriviamo noi. La useremo per i tipi verbosi delle librerie; la tratteremo per esteso, con le sue regole e le sue trappole, nella Lezione 18.</p>
+<p><strong>Una parola su <code>auto</code>.</strong> Il tipo di <code>cl::now()</code> si scriverebbe <code>std::chrono::time_point&lt;std::chrono::high_resolution_clock&gt;</code>: <code>auto</code> dice al compilatore di dedurlo da sé — il tipo resta statico e controllato, solo non lo scriviamo noi. Per esteso nella Lezione 18.</p>
 </div>
 </div>
 </div>
-<p>Lo useremo in laboratorio per verificare l’effetto del flag <code>-O3</code>, e lo ritroverete nel <code>Trainer</code> del framework per cronometrare le epoche.</p>
+<p>Lo useremo in laboratorio per il flag <code>-O3</code>, e lo ritroverete nel <code>Trainer</code>.</p>
 </section>
 <section id="librerie-esterne-per-la-rete-neurale" class="slide level2 smaller">
 <h2>Librerie Esterne per la Rete Neurale</h2>
@@ -544,13 +597,13 @@ Docente
 <section id="la-firma-estesa-del-main" class="slide level2 smaller">
 <h2>La firma estesa del <code>main()</code></h2>
 <p>Per ricevere i dati dal Terminale, dobbiamo sostituire il banale <code>int main()</code> con la sua firma completa:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><button class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1">1</button><span id="annotated-cell-12-1" class="code-annotation-target"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-1" class="code-annotation-target"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
 <span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-label="2"></a>    </span>
 <span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-label="3"></a>    <span class="co">// Il nostro codice...</span></span>
 <span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-label="4"></a>    </span>
 <span id="annotated-cell-12-5"><a href="#annotated-cell-12-5" aria-label="5"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-12-6"><a href="#annotated-cell-12-6" aria-label="6"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-12" data-code-lines="1" data-code-annotation="1">Spieghiamo i parametri:</span>
@@ -565,7 +618,7 @@ Docente
 <span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-label="2"></a>    <span class="co">// Attenzione: Il NOME DEL PROGRAMMA stesso è il primo argomento (argv[0])!</span></span>
 <span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-label="3"></a>    <span class="co">// Quindi se vogliamo 2 iperparametri, ci aspettiamo che argc sia ALMENO 3.</span></span>
 <span id="annotated-cell-13-4"><a href="#annotated-cell-13-4" aria-label="4"></a>    </span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1">1</button><span id="annotated-cell-13-5" class="code-annotation-target"><a href="#annotated-cell-13-5" aria-label="5"></a>    <span class="cf">if</span> <span class="op">(</span>argc <span class="op">&lt;</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-13-5" class="code-annotation-target"><a href="#annotated-cell-13-5" aria-label="5"></a>    <span class="cf">if</span> <span class="op">(</span>argc <span class="op">&lt;</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-13-6"><a href="#annotated-cell-13-6" aria-label="6"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore: Uso scorretto del comando.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-13-7"><a href="#annotated-cell-13-7" aria-label="7"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Sintassi: "</span> <span class="op">&lt;&lt;</span> argv<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">" &lt;epoche&gt; &lt;learning_rate&gt;</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-13-8"><a href="#annotated-cell-13-8" aria-label="8"></a>        <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span> <span class="co">// Esco con un codice di errore</span></span>
@@ -573,7 +626,7 @@ Docente
 <span id="annotated-cell-13-10"><a href="#annotated-cell-13-10" aria-label="10"></a>    </span>
 <span id="annotated-cell-13-11"><a href="#annotated-cell-13-11" aria-label="11"></a>    <span class="co">// ...</span></span>
 <span id="annotated-cell-13-12"><a href="#annotated-cell-13-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-13" data-code-lines="5" data-code-annotation="1">Controlliamo se <code>argc</code> è minore di 3 (<code>./train_network</code> è 1, <code>100</code> è 2, <code>0.01</code> è 3).</span>
@@ -613,10 +666,10 @@ Docente
 <span id="annotated-cell-15-14"><a href="#annotated-cell-15-14" aria-label="14"></a>              <span class="op">&lt;&lt;</span> <span class="st">" - Epoche impostate: "</span> <span class="op">&lt;&lt;</span> epochs <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
 <span id="annotated-cell-15-15"><a href="#annotated-cell-15-15" aria-label="15"></a>              <span class="op">&lt;&lt;</span> <span class="st">" - Learning Rate impostato: "</span> <span class="op">&lt;&lt;</span> learning_rate <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-15-16"><a href="#annotated-cell-15-16" aria-label="16"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1">1</button><span id="annotated-cell-15-17" class="code-annotation-target"><a href="#annotated-cell-15-17" aria-label="17"></a>    <span class="co">// network.train(epochs, learning_rate);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-15-17" class="code-annotation-target"><a href="#annotated-cell-15-17" aria-label="17"></a>    <span class="co">// network.train(epochs, learning_rate);</span></span>
 <span id="annotated-cell-15-18"><a href="#annotated-cell-15-18" aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-15-19"><a href="#annotated-cell-15-19" aria-label="19"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-15" data-code-lines="17" data-code-annotation="1">Una riga di codice pulitissima e indipendente!</span>
@@ -633,7 +686,6 @@ Docente
 <li>Se è tutto ok, stampa a schermo: <code>"Training sul dataset: NOME. Batch: X, LR: Y"</code>.</li>
 </ol>
 <p><em>(Prova a compilarlo ed eseguirlo passando volutamente argomenti mancanti!)</em></p>
-<p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
@@ -1077,64 +1129,25 @@ Docente
               }
             };
           }
-            const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
-            for (let i=0; i<annoteTargets.length; i++) {
-              const annoteTarget = annoteTargets[i];
-              const targetCell = annoteTarget.getAttribute("data-target-cell");
-              const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
-              const contentFn = () => {
-                const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-                if (content) {
-                  const tipContent = content.cloneNode(true);
-                  tipContent.classList.add("code-annotation-tip-content");
-                  return tipContent.outerHTML;
-                }
-              }
-              const config = {
-                allowHTML: true,
-                content: contentFn,
-                onShow: (instance) => {
-                  selectCodeLines(instance.reference);
-                  instance.reference.classList.add('code-annotation-active');
-                  window.tippy.hideAll();
-                },
-                onHide: (instance) => {
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
                   unselectCodeLines();
-                  instance.reference.classList.remove('code-annotation-active');
-                },
-                maxWidth: 300,
-                delay: [50, 0],
-                duration: [200, 0],
-                offset: [5, 10],
-                arrow: true,
-                appendTo: function(el) {
-                  return el.parentElement.parentElement.parentElement;
-                },
-                interactive: true,
-                interactiveBorder: 10,
-                theme: 'light-border',
-                placement: 'right',
-                popperOptions: {
-                  modifiers: [
-                  {
-                    name: 'flip',
-                    options: {
-                      flipVariations: false, // true by default
-                      allowedAutoPlacements: ['right'],
-                      fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
-                    },
-                  },
-                  {
-                    name: 'preventOverflow',
-                    options: {
-                      mainAxis: false,
-                      altAxis: false
-                    }
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
                   }
-                  ]        
-                }      
-              };
-              window.tippy(annoteTarget, config); 
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
             }
         const findCites = (el) => {
           const parentEl = el.parentElement;

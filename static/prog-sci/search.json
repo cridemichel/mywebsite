@@ -102,7 +102,7 @@
     "href": "lezione-19/index.html#unwinding-e-smart-pointers-raii-ti-salva",
     "title": "Programmazione Scientifica++: Lezione 19",
     "section": "Unwinding e Smart Pointers (RAII ti salva)",
-    "text": "Unwinding e Smart Pointers (RAII ti salva)\nCome si risolve? Semplicemente usando il C++11! Se usate i concetti appresi finora (std::unique_ptr e RAII), il vostro codice è Exception-Safe (A prova di eccezione) in automatico, gratis, senza alcuno sforzo.\n#include &lt;memory&gt;\n\nvoid codicePerfetto() {\n    // Il Layer è avvolto nel custode unico intelligente\n    std::unique_ptr&lt;DenseLayer&gt; dl = std::make_unique&lt;DenseLayer&gt;(1000000);\n    \n    // Lancio dell'eccezione! Scatta l'allarme antincendio!\n    calcolaMatrice(dl.get()); \n    \n    // Non serve delete.\n}\nDurante la fuga, lo Stack Unwinding distrugge la variabile dl. Dato che dl è un oggetto intelligente con un suo Distruttore ben codificato, prima di morire farà delete dei Gigabyte di pesi per voi. Niente Leak.\nTorna all’indice"
+    "text": "Unwinding e Smart Pointers (RAII ti salva)\nCome si risolve? Semplicemente usando il C++11! Se usate i concetti appresi finora (std::unique_ptr e RAII), il vostro codice è Exception-Safe (A prova di eccezione) in automatico, gratis, senza alcuno sforzo.\n#include &lt;memory&gt;\n\nvoid codicePerfetto() {\n    // Il Layer è avvolto nel custode unico intelligente\n    std::unique_ptr&lt;DenseLayer&gt; dl = std::make_unique&lt;DenseLayer&gt;(1000000);\n    \n    // Lancio dell'eccezione! Scatta l'allarme antincendio!\n    calcolaMatrice(dl.get()); \n    \n    // Non serve delete.\n}\nDurante la fuga, lo Stack Unwinding distrugge la variabile dl. Dato che dl è un oggetto intelligente con un suo Distruttore ben codificato, prima di morire farà delete dei Gigabyte di pesi per voi. Niente Leak."
   },
   {
     "objectID": "lezione-17/index.html#lerrore-fatale-del-.cpp-bug-del-linking",
@@ -214,7 +214,7 @@
     "href": "lezione-17/index.html#esercizio-il-vettore-intelligente-10-min",
     "title": "Programmazione Scientifica++: Lezione 17",
     "section": "Esercizio: Il Vettore Intelligente (10 min)",
-    "text": "Esercizio: Il Vettore Intelligente (10 min)\nMettiamo in pratica questo concetto supremo.\n\nCrea un file SmartNet.cpp. Ricordati l’include &lt;memory&gt;.\nDichiara una classe vuota Base Layer e un figlio DenseLayer. Metti dei distruttori rumorosi (cout &lt;&lt; \"Morto!\\n\";). Ricordati il Distruttore Virtuale!!!\nNel main, crea un std::vector&lt;std::unique_ptr&lt;Layer&gt;&gt; rete;.\nInserisci tre DenseLayer nella rete usando il magico std::make_unique&lt;DenseLayer&gt;() abbinato a std::move().\nNon scrivere nessun delete nel main! Esegui il programma e goditi i cout che confermano che tutti e tre i Layer sono stati magicamente distrutti e le perdite di memoria azzerate.\n\nTorna all’indice"
+    "text": "Esercizio: Il Vettore Intelligente (10 min)\nMettiamo in pratica questo concetto supremo.\n\nCrea un file SmartNet.cpp. Ricordati l’include &lt;memory&gt;.\nDichiara una classe vuota Base Layer e un figlio DenseLayer. Metti dei distruttori rumorosi (cout &lt;&lt; \"Morto!\\n\";). Ricordati il Distruttore Virtuale!!!\nNel main, crea un std::vector&lt;std::unique_ptr&lt;Layer&gt;&gt; rete;.\nInserisci tre DenseLayer nella rete usando il magico std::make_unique&lt;DenseLayer&gt;() abbinato a std::move().\nNon scrivere nessun delete nel main! Esegui il programma e goditi i cout che confermano che tutti e tre i Layer sono stati magicamente distrutti e le perdite di memoria azzerate."
   },
   {
     "objectID": "lezione-11/index.html#leggere-il-dataset-i-file-in-c",
@@ -340,7 +340,7 @@
     "href": "lezione-11/index.html#usare-bene-i-namespace",
     "title": "Programmazione Scientifica++: Lezione 11",
     "section": "Usare bene i Namespace",
-    "text": "Usare bene i Namespace\nLa regola professionale:\n\nNei file Header (.hpp): Digita sempre il nome per esteso (es. std::vector, std::string). Proteggi l’ecosistema.\nNei file Sorgente (.cpp): Puoi usare liberamente using namespace std; perché gli effetti resteranno confinati esclusivamente a quel singolo file isolato, e non contageranno nessuno in giro per il progetto!\n\nRisparmiarsi 5 caratteri in un Header non vale le ore di debugging di un Namespace Clash in librerie da un milione di righe di codice.\nTorna all’indice"
+    "text": "Usare bene i Namespace\nLa regola professionale:\n\nNei file Header (.hpp): Digita sempre il nome per esteso (es. std::vector, std::string). Proteggi l’ecosistema.\nNei file Sorgente (.cpp): Puoi usare liberamente using namespace std; perché gli effetti resteranno confinati esclusivamente a quel singolo file isolato, e non contageranno nessuno in giro per il progetto!\n\nRisparmiarsi 5 caratteri in un Header non vale le ore di debugging di un Namespace Clash in librerie da un milione di righe di codice."
   },
   {
     "objectID": "lezione-20/index.html#argomenti-di-oggi",
@@ -501,7 +501,7 @@
     "href": "lezione-20/index.html#conclusione-del-corso-teorico-pratico",
     "title": "Programmazione Scientifica++: Lezione 20",
     "section": "Conclusione del Corso Teorico-Pratico",
-    "text": "Conclusione del Corso Teorico-Pratico\nCongratulazioni! Avete completato l’intero percorso.\nOra possedete: 1. Le basi solide e avanzate del C++ Moderno. 2. La comprensione della teoria del Deep Learning. 3. I principi dell’Ingegneria del Software (Design Patterns).\nSiete pronti per costruire, espandere e dominare il vostro framework BASIC_NEURAL++.\nTorna all’indice"
+    "text": "Conclusione del Corso Teorico-Pratico\nCongratulazioni! Avete completato l’intero percorso.\nOra possedete: 1. Le basi solide e avanzate del C++ Moderno. 2. La comprensione della teoria del Deep Learning. 3. I principi dell’Ingegneria del Software (Design Patterns).\nSiete pronti per costruire, espandere e dominare il vostro framework BASIC_NEURAL++."
   },
   {
     "objectID": "lab-16/index.html#soluzione-del-laboratorio-15",
@@ -648,7 +648,7 @@
     "href": "lab-16/index.html#il-percorso-completo",
     "title": "Laboratorio 16",
     "section": "Il percorso completo",
-    "text": "Il percorso completo\nSedici laboratori, da std::cout &lt;&lt; \"Hello\" a una rete neurale che riconosce cifre scritte a mano al 95%, scritta interamente da voi:\nLab 02-04  le basi: tipi, funzioni, memoria cruda\nLab 05-06  incapsulamento e Regola del Tre\nLab 07-08  Eigen, attivazioni, inizializzazione dei pesi\nLab 09     il grande refactor: template e Matrix&lt;ntype&gt;\nLab 10     Rule of Zero: vector e unique_ptr\nLab 11     serializzazione e Factory Method\nLab 12     il dataset MNIST\nLab 13     backpropagation, loss, ottimizzatore\nLab 14     il Trainer e le metriche\nLab 15     studi di performance\nLab 16     inferenza e visualizzazione\nNessuna libreria di deep learning: solo C++, Eigen per l’algebra e OpenCV per le immagini. Quello che avete costruito è, nella struttura, la stessa cosa che fa PyTorch — con qualche ordine di grandezza in meno di ottimizzazioni.\nTorna all’indice"
+    "text": "Il percorso completo\nSedici laboratori, da std::cout &lt;&lt; \"Hello\" a una rete neurale che riconosce cifre scritte a mano al 95%, scritta interamente da voi:\nLab 02-04  le basi: tipi, funzioni, memoria cruda\nLab 05-06  incapsulamento e Regola del Tre\nLab 07-08  Eigen, attivazioni, inizializzazione dei pesi\nLab 09     il grande refactor: template e Matrix&lt;ntype&gt;\nLab 10     Rule of Zero: vector e unique_ptr\nLab 11     serializzazione e Factory Method\nLab 12     il dataset MNIST\nLab 13     backpropagation, loss, ottimizzatore\nLab 14     il Trainer e le metriche\nLab 15     studi di performance\nLab 16     inferenza e visualizzazione\nNessuna libreria di deep learning: solo C++, Eigen per l’algebra e OpenCV per le immagini. Quello che avete costruito è, nella struttura, la stessa cosa che fa PyTorch — con qualche ordine di grandezza in meno di ottimizzazioni."
   },
   {
     "objectID": "lab-02/index.html#soluzione-del-laboratorio-01",
@@ -690,7 +690,7 @@
     "href": "lab-02/index.html#task-4-esplorazione-tipi-base",
     "title": "Laboratorio 02",
     "section": "Task 4: Esplorazione Tipi Base",
-    "text": "Task 4: Esplorazione Tipi Base\nNel tuo main.cpp, prova a dichiarare, stampare e combinare alcune variabili fondamentali per il Machine Learning:\n\nUn int (es. numero di epoche)\nUn double (es. learning rate o peso)\nProva a moltiplicarli e stamparli. Cosa succede se dividi un int per un altro int (es. 5 / 2)? E se ne casti uno a double?\n\nBuon lavoro! La soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task 4: Esplorazione Tipi Base\nNel tuo main.cpp, prova a dichiarare, stampare e combinare alcune variabili fondamentali per il Machine Learning:\n\nUn int (es. numero di epoche)\nUn double (es. learning rate o peso)\nProva a moltiplicarli e stamparli. Cosa succede se dividi un int per un altro int (es. 5 / 2)? E se ne casti uno a double?\n\nBuon lavoro! La soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lab-04/index.html#soluzione-del-laboratorio-03",
@@ -760,7 +760,7 @@
     "href": "lab-04/index.html#task-7-il-conto-domanda-non-codice",
     "title": "Laboratorio 04",
     "section": "Task 7: Il Conto (domanda, non codice)",
-    "text": "Task 7: Il Conto (domanda, non codice)\nGuardate il main: quattro new, quattro delete, tre numeri da passare a ogni funzione. E ora due domande a cui rispondere prima di venire al Laboratorio 05:\n\nChe succede con CMatrix W2 = W; seguito da cmat_free(W); cmat_free(W2);? (Suggerimento: cosa copia l’assegnamento di una struct che contiene un puntatore?)\nChi garantisce che x abbia davvero W.cols elementi quando lo passate a layer_forward? Nessuno. Il compilatore non può saperlo.\n\nLe risposte sono il motivo per cui esistono le classi. Il Laboratorio 05 prende CMatrix e le sue quattro funzioni e le trasforma in class Matrix: i tre dati diventano private, cmat_alloc diventa il costruttore, cmat_get/cmat_set diventano metodi.\nLa soluzione (con i commenti sui pericoli di questo approccio) verrà discussa all’inizio della prossima lezione!\nTorna all’indice"
+    "text": "Task 7: Il Conto (domanda, non codice)\nGuardate il main: quattro new, quattro delete, tre numeri da passare a ogni funzione. E ora due domande a cui rispondere prima di venire al Laboratorio 05:\n\nChe succede con CMatrix W2 = W; seguito da cmat_free(W); cmat_free(W2);? (Suggerimento: cosa copia l’assegnamento di una struct che contiene un puntatore?)\nChi garantisce che x abbia davvero W.cols elementi quando lo passate a layer_forward? Nessuno. Il compilatore non può saperlo.\n\nLe risposte sono il motivo per cui esistono le classi. Il Laboratorio 05 prende CMatrix e le sue quattro funzioni e le trasforma in class Matrix: i tre dati diventano private, cmat_alloc diventa il costruttore, cmat_get/cmat_set diventano metodi.\nLa soluzione (con i commenti sui pericoli di questo approccio) verrà discussa all’inizio della prossima lezione!"
   },
   {
     "objectID": "lezione-02/index.html#argomenti-di-oggi",
@@ -991,7 +991,21 @@
     "href": "lezione-02/index.html#lequazione-ricorsiva-finale",
     "title": "Programmazione Scientifica++: Lezione 2",
     "section": "L’Equazione Ricorsiva Finale",
-    "text": "L’Equazione Ricorsiva Finale\nL’ultimo passo per ottenere i valori da inviare al livello successivo è applicare la funzione di attivazione a tutto il Vettore Colonna.\n\\[ \\mathbf{a}^{(L)} = f\\left( \\mathbf{W}^{(L)} \\mathbf{a}^{(L-1)} + \\mathbf{b}^{(L)} \\right) \\]\nQuesta equazione racchiude l’intera logica di inferenza (Forward Pass) del Deep Learning moderno.\n\nPrendi l’input (\\(\\mathbf{a}^{(L-1)}\\)), moltiplica per i pesi (\\(\\mathbf{W}\\)), somma il bias (\\(\\mathbf{b}\\)).\nSchiaccia con la funzione di attivazione (\\(f\\) — per noi la sigmoide).\nInvia al prossimo layer, e ripeti.\n\nTorna all’indice"
+    "text": "L’Equazione Ricorsiva Finale\nL’ultimo passo per ottenere i valori da inviare al livello successivo è applicare la funzione di attivazione a tutto il Vettore Colonna.\n\\[ \\mathbf{a}^{(L)} = f\\left( \\mathbf{W}^{(L)} \\mathbf{a}^{(L-1)} + \\mathbf{b}^{(L)} \\right) \\]\nQuesta equazione racchiude l’intera logica di inferenza (Forward Pass) del Deep Learning moderno.\n\nPrendi l’input (\\(\\mathbf{a}^{(L-1)}\\)), moltiplica per i pesi (\\(\\mathbf{W}\\)), somma il bias (\\(\\mathbf{b}\\)).\nSchiaccia con la funzione di attivazione (\\(f\\) — per noi la sigmoide).\nInvia al prossimo layer, e ripeti."
+  },
+  {
+    "objectID": "lezione-02/index.html#quesiti-finali",
+    "href": "lezione-02/index.html#quesiti-finali",
+    "title": "Programmazione Scientifica++: Lezione 2",
+    "section": "Quesiti finali",
+    "text": "Quesiti finali\n1. Dieci strati per niente. Immaginate una rete di dieci strati densi, ciascuno con la sua matrice di pesi, e nessuna funzione di attivazione fra uno e l’altro. Quanti strati servono per calcolare esattamente la stessa funzione?\n2. (aperta) Perchè “deep” e non “wide”? Il teorema di approssimazione universale dice che uno strato nascosto basta per qualunque funzione. E allora perchè il campo si chiama deep learning? Provate a rendere quantitativo l’argomento della slide “Cosa il Teorema Non Dice”: confrontate 784 → 200 → 10 con 784 → 100 → 100 → 10, contate i pesi dell’una e dell’altra, e chiedetevi quante “pieghe” sa fare ciascuna."
+  },
+  {
+    "objectID": "lezione-02/index.html#quesiti-finali-le-risposte",
+    "href": "lezione-02/index.html#quesiti-finali-le-risposte",
+    "title": "Programmazione Scientifica++: Lezione 2",
+    "section": "Quesiti finali: le risposte",
+    "text": "Quesiti finali: le risposte\n1. Uno. \\(\\mathbf{W}_{10}(\\mathbf{W}_9(\\cdots \\mathbf{W}_1 \\mathbf{x})) =\n(\\mathbf{W}_{10} \\cdots \\mathbf{W}_1)\\,\\mathbf{x} = \\mathbf{W}\\mathbf{x}\\): il prodotto di dieci matrici è una matrice. Dieci strati lineari non sono più espressivi di uno — sono lo stesso identico modello, scritto peggio e calcolato dieci volte più lentamente. La non-linearità non è un abbellimento: senza, la profondità non esiste proprio.\n2. Traccia: \\(784 \\times 200 + 200 \\times 10 = 158.800\\) pesi contro \\(784 \\times 100 + 100 \\times 100 + 100 \\times 10 = 89.400\\). La rete profonda costa poco più della metà ed è quella che in pratica funziona meglio: ogni strato ripiega lo spazio già ripiegato dal precedente, e le regioni che sa distinguere crescono come un prodotto, non come una somma. Il teorema garantisce che la rete larga esiste; non dice che sia quella conveniente, né che la troviate."
   },
   {
     "objectID": "lezione-04/index.html#di-cosa-hai-bisogno-per-compilare-il-tuo-programma-c",
@@ -1103,14 +1117,14 @@
     "href": "lezione-04/index.html#problemi-con-cin",
     "title": "Programmazione Scientifica++: Lezione 4",
     "section": "Problemi con cin",
-    "text": "Problemi con cin\n\n\n// tinput_bad.cc\n#include &lt;iostream&gt;\nusing namespace std;\n\nint main() {\n    cout &lt;&lt; \"iterazioni? \";\n    int iters;\n    cin &gt;&gt; iters;\n    \n    cout &lt;&lt; \"richieste \" &lt;&lt; iters &lt;&lt; \" iterazioni\\n\";\n    return 0;\n}\n\nTerminale:\n$ g++ -Wall -o tinput_bad tinput_bad.cc\n$ ./tinput_bad\niterazioni? 23\nrichieste 23 iterazioni\n\n$ ./tinput_bad\niterazioni? dfed\nrichieste 134514793 iterazioni\n\n\n\n\n\n\n\nWarning\n\n\nCosa succede se inseriamo una stringa invece di un numero? La variabile non viene letta e la memoria contiene “spazzatura”!"
+    "text": "Problemi con cin\n\n\n// tinput_bad.cc\n#include &lt;iostream&gt;\nusing namespace std;\n\nint main() {\n    cout &lt;&lt; \"iterazioni? \";\n    int iters;\n    cin &gt;&gt; iters;\n    \n    cout &lt;&lt; \"richieste \" &lt;&lt; iters &lt;&lt; \" iterazioni\\n\";\n    return 0;\n}\n\nTerminale:\n$ g++ -Wall -o tinput_bad tinput_bad.cc\n$ ./tinput_bad\niterazioni? 23\nrichieste 23 iterazioni\n\n$ ./tinput_bad\niterazioni? dfed\nrichieste 0 iterazioni\n\n\n\n\n\n\n\nWarning\n\n\nCosa succede se inseriamo una stringa invece di un numero? Dal C++11 &gt;&gt; azzera la variabile e alza un flag di errore. Il programma non si accorge di niente e prosegue con iters = 0: nessun avviso, nessun crash, un numero plausibile. È peggio di un valore assurdo, che almeno si nota."
   },
   {
     "objectID": "lezione-04/index.html#errore-variabili-non-inizializzate",
     "href": "lezione-04/index.html#errore-variabili-non-inizializzate",
     "title": "Programmazione Scientifica++: Lezione 4",
     "section": "1° Errore: Variabili non inizializzate",
-    "text": "1° Errore: Variabili non inizializzate\n\n\nint main() {\n1    int iters;\n    cout &lt;&lt; \"iters prima: \" &lt;&lt; iters &lt;&lt; endl;\n    \n    cout &lt;&lt; \"iterazioni? \";\n    cin &gt;&gt; iters;\n    \n    cout &lt;&lt; \"richieste \" &lt;&lt; iters &lt;&lt; endl;\n    return 0;\n}\n\n1\n\nValore random (spazzatura) poiché la memoria non è stata inizializzata!\n\n\n\nTerminale:\n$ ./tinput_bad2\niters prima: 134514841\niterazioni? er\nrichieste 134514841"
+    "text": "1° Errore: Variabili non inizializzate\n\n\nint main() {\n1    int iters;\n    cout &lt;&lt; \"iters prima: \" &lt;&lt; iters &lt;&lt; endl;\n    \n    cout &lt;&lt; \"iterazioni? \";\n    cin &gt;&gt; iters;\n    \n    cout &lt;&lt; \"richieste \" &lt;&lt; iters &lt;&lt; endl;\n    return 0;\n}\n\n1\n\nValore random (spazzatura) poiché la memoria non è stata inizializzata: questa riga è undefined behaviour, può stampare qualsiasi cosa. La lettura fallita che segue invece azzera iters, e la spazzatura sparisce.\n\n\n\nTerminale:\n$ ./tinput_bad2\niters prima: 134514841\niterazioni? er\nrichieste 0"
   },
   {
     "objectID": "lezione-04/index.html#verificare-lo-stato-di-cin",
@@ -1152,21 +1166,35 @@
     "href": "lezione-04/index.html#usare-i-namespace-loperatore",
     "title": "Programmazione Scientifica++: Lezione 4",
     "section": "Usare i namespace: l’operatore ::",
-    "text": "Usare i namespace: l’operatore ::\n\n\nnamespace neural {\n    double activate(double x) { return x &gt; 0 ? x : 0; }\n}\n\nnamespace math {\n    double activate(double x) { return 1.0 / (1.0 + x); }\n}\n\nint main() {\n    // Usa \"::\" (Operatore di Risoluzione di Scope)\n1    double out1 = neural::activate(-2.5);\n    \n2    double out2 = math::activate(-2.5);\n    return 0;\n}\n\n1\n\nRichiama esplicitamente la funzione activate dal namespace neural.\n\n2\n\nRichiama la funzione omonima dal namespace math. Nessuna collisione!\n\n\n\n\n\n\n\n\n\nNote\n\n\nL’operatore :: si chiama Scope Resolution Operator. Lo vediamo sempre in std::cout, perché cout appartiene al namespace std."
+    "text": "Usare i namespace: l’operatore ::\n\n\n#include &lt;cmath&gt;\n\nnamespace neural {\n    // la sigmoide: quella che useremo davvero nella rete\n    double activate(double x) { return 1.0 / (1.0 + std::exp(-x)); }\n}\n\nnamespace math {\n    // la tangente iperbolica: un'altra scelta possibile\n    double activate(double x) { return std::tanh(x); }\n}\n\nint main() {\n    // Usa \"::\" (Operatore di Risoluzione di Scope)\n1    double out1 = neural::activate(-2.5);\n    \n2    double out2 = math::activate(-2.5);\n    return 0;\n}\n\n1\n\nRichiama esplicitamente la activate del namespace neural: vale 0.076.\n\n2\n\nRichiama l’omonima di math: vale −0.987. Stesso nome, funzioni diverse, nessuna collisione.\n\n\n\n\n\n\n\n\n\nNote\n\n\nL’operatore :: si chiama Scope Resolution Operator. Lo vediamo sempre in std::cout, perché cout appartiene al namespace std."
   },
   {
     "objectID": "lezione-04/index.html#direttiva-using-namespace",
     "href": "lezione-04/index.html#direttiva-using-namespace",
     "title": "Programmazione Scientifica++: Lezione 4",
     "section": "Direttiva using namespace",
-    "text": "Direttiva using namespace\nnamespace neural {\n    double activate(double x) { return x &gt; 0 ? x : 0; }\n}\n\n1using namespace std;\n\nint main() {\n    double out1 = neural::activate(3.5);\n    \n2    cout &lt;&lt; \"neural::activate = \" &lt;&lt; out1 &lt;&lt; endl;\n    return 0;\n}\n\n1\n\nRende tutti i nomi del namespace std disponibili senza dover scrivere std::.\n\n2\n\nIl compilatore ora sa che cout ed endl fanno parte di std."
+    "text": "Direttiva using namespace\n#include &lt;iostream&gt;\n#include &lt;cmath&gt;\n\nnamespace neural {\n    double activate(double x) { return 1.0 / (1.0 + std::exp(-x)); }\n}\n\n1using namespace std;\n\nint main() {\n    double out1 = neural::activate(3.5);\n    \n2    cout &lt;&lt; \"neural::activate = \" &lt;&lt; out1 &lt;&lt; endl;\n    return 0;\n}\n\n1\n\nRende tutti i nomi del namespace std disponibili senza dover scrivere std::.\n\n2\n\nIl compilatore ora sa che cout ed endl fanno parte di std."
   },
   {
     "objectID": "lezione-04/index.html#attenzione-a-using-multipli",
     "href": "lezione-04/index.html#attenzione-a-using-multipli",
     "title": "Programmazione Scientifica++: Lezione 4",
     "section": "Attenzione a using multipli!",
-    "text": "Attenzione a using multipli!\nCreare ambiguità è facilissimo:\nusing namespace math;\nusing namespace neural;\nusing namespace std;\n\nint main() {\n    double input = 3.5;\n    \n    // Ambiguo! Di quale metodo activate() stiamo parlando?\n1    double out1 = activate(input);\n    \n    return 0;\n}\n\n1\n\nErrore del compilatore: call of overloaded 'activate(double)' is ambiguous\n\n\n\n\n\n\n\n\nImportant\n\n\nRegola d’oro: Mai inserire using namespace std; in un file header (.h o .hpp). Potreste inquinare i file di chi usa la vostra libreria!\n\n\n\nTorna all’indice"
+    "text": "Attenzione a using multipli!\nCreare ambiguità è facilissimo:\nusing namespace math;\nusing namespace neural;\nusing namespace std;\n\nint main() {\n    double input = 3.5;\n    \n    // Ambiguo! Di quale metodo activate() stiamo parlando?\n1    double out1 = activate(input);\n    \n    return 0;\n}\n\n1\n\nErrore del compilatore: call of overloaded 'activate(double&)' is ambiguous — con la reference, perché input è una variabile e non una costante.\n\n\n\n\n\n\n\n\nImportant\n\n\nRegola d’oro: Mai inserire using namespace std; in un file header (.h o .hpp). Potreste inquinare i file di chi usa la vostra libreria!"
+  },
+  {
+    "objectID": "lezione-04/index.html#esercizi-lampo-cosa-stampa",
+    "href": "lezione-04/index.html#esercizi-lampo-cosa-stampa",
+    "title": "Programmazione Scientifica++: Lezione 4",
+    "section": "Esercizi lampo: cosa stampa?",
+    "text": "Esercizi lampo: cosa stampa?\nTre frammenti, un minuto ciascuno. Rispondete prima di girare la slide: in tutti e tre la risposta istintiva è sbagliata.\n1. L’utente digita ciao, non un numero.\nint n = 42;\nstd::cin &gt;&gt; n;\nstd::cout &lt;&lt; n &lt;&lt; \"\\n\";\n2.\nint a = 5, b = 2;\nstd::cout &lt;&lt; static_cast&lt;double&gt;(a / b) &lt;&lt; \"  \"\n          &lt;&lt; static_cast&lt;double&gt;(a) / b &lt;&lt; \"\\n\";\n3.\nint i = 0;\nfor (int i = 0; i &lt; 3; ++i) { /* ... */ }\nstd::cout &lt;&lt; i &lt;&lt; \"\\n\";"
+  },
+  {
+    "objectID": "lezione-04/index.html#esercizi-lampo-le-risposte",
+    "href": "lezione-04/index.html#esercizi-lampo-le-risposte",
+    "title": "Programmazione Scientifica++: Lezione 4",
+    "section": "Esercizi lampo: le risposte",
+    "text": "Esercizi lampo: le risposte\n1. Stampa 0, non 42. Dal C++11 una lettura fallita azzera la variabile: il valore che c’era prima è perso. Se vi serve, controllate cin.fail() prima di usare n.\n2. Stampa 2  2.5. Nel primo caso a / b è già stato calcolato fra interi: il cast arriva troppo tardi e promuove un 2 in cui non c’è più niente da recuperare. Il cast va messo su un operando, mai sul risultato.\n3. Stampa 0, non 3. L’i dichiarato nella testa del for vive solo dentro il ciclo e ombreggia quello esterno, che nessuno ha mai toccato. È per questo che esiste l’opzione -Wshadow: -Wall da sola non dice niente."
   },
   {
     "objectID": "lezione-14/index.html#il-problema-dellasimmetria",
@@ -1292,7 +1320,7 @@
     "href": "lezione-14/index.html#misurare-il-tempo-chrono",
     "title": "Programmazione Scientifica++: Lezione 14",
     "section": "Misurare il Tempo: <chrono>",
-    "text": "Misurare il Tempo: &lt;chrono&gt;\nNon si ottimizza quello che non si misura. La libreria standard &lt;chrono&gt; fornisce un cronometro a precisione di nanosecondi.\n#include &lt;chrono&gt;\n\nusing cl = std::chrono::high_resolution_clock;\n\nauto start = cl::now();\nfor (int i = 0; i &lt; 10000; ++i)   // ripetere: una singola forward è troppo veloce\n    rete.forward(X);\nauto end = cl::now();\n\nauto us = std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(end - start).count();\nstd::cout &lt;&lt; \"Tempo: \" &lt;&lt; us / 1000.0 &lt;&lt; \" ms\\n\";\nduration_cast converte la durata nell’unità che volete (microseconds, milliseconds, seconds).\n\n\n\n\n\n\nNote\n\n\nUna parola su auto. Il tipo restituito da cl::now() si scriverebbe std::chrono::time_point&lt;std::chrono::high_resolution_clock&gt;. La parola chiave auto dice al compilatore di dedurlo da sé: il tipo resta statico e controllato, semplicemente non lo scriviamo noi. La useremo per i tipi verbosi delle librerie; la tratteremo per esteso, con le sue regole e le sue trappole, nella Lezione 18.\n\n\n\nLo useremo in laboratorio per verificare l’effetto del flag -O3, e lo ritroverete nel Trainer del framework per cronometrare le epoche."
+    "text": "Misurare il Tempo: &lt;chrono&gt;\nNon si ottimizza quello che non si misura: &lt;chrono&gt; è il cronometro standard.\n#include &lt;chrono&gt;\n\nusing cl = std::chrono::high_resolution_clock;\n\nauto start = cl::now();\nfor (int i = 0; i &lt; 10000; ++i)   // ripetere: una singola forward è troppo veloce\n    rete.forward(X);\nauto end = cl::now();\n\nauto us = std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(end - start).count();\nstd::cout &lt;&lt; \"Tempo: \" &lt;&lt; us / 1000.0 &lt;&lt; \" ms\\n\";\nduration_cast converte nell’unità che volete (microseconds, seconds, …).\n\n\n\n\n\n\nNote\n\n\nUna parola su auto. Il tipo di cl::now() si scriverebbe std::chrono::time_point&lt;std::chrono::high_resolution_clock&gt;: auto dice al compilatore di dedurlo da sé — il tipo resta statico e controllato, solo non lo scriviamo noi. Per esteso nella Lezione 18.\n\n\n\nLo useremo in laboratorio per il flag -O3, e lo ritroverete nel Trainer."
   },
   {
     "objectID": "lezione-14/index.html#librerie-esterne-per-la-rete-neurale",
@@ -1355,7 +1383,7 @@
     "href": "lezione-14/index.html#esercizio-leggere-iperparametri-5-min",
     "title": "Programmazione Scientifica++: Lezione 14",
     "section": "Esercizio: Leggere Iperparametri (5 min)",
-    "text": "Esercizio: Leggere Iperparametri (5 min)\nPrendi dimestichezza con la linea di comando!\n\nCrea un file config.cpp.\nScrivi un main che accetti da terminale 3 argomenti: un Batch Size (int), un Learning Rate (double), e il Nome del Dataset (stringa normale, non va convertita!).\nSe l’utente digita meno argomenti del dovuto, stampa un errore chiaro.\nSe è tutto ok, stampa a schermo: \"Training sul dataset: NOME. Batch: X, LR: Y\".\n\n(Prova a compilarlo ed eseguirlo passando volutamente argomenti mancanti!)\nTorna all’indice"
+    "text": "Esercizio: Leggere Iperparametri (5 min)\nPrendi dimestichezza con la linea di comando!\n\nCrea un file config.cpp.\nScrivi un main che accetti da terminale 3 argomenti: un Batch Size (int), un Learning Rate (double), e il Nome del Dataset (stringa normale, non va convertita!).\nSe l’utente digita meno argomenti del dovuto, stampa un errore chiaro.\nSe è tutto ok, stampa a schermo: \"Training sul dataset: NOME. Batch: X, LR: Y\".\n\n(Prova a compilarlo ed eseguirlo passando volutamente argomenti mancanti!)"
   },
   {
     "objectID": "index.html",
@@ -1488,7 +1516,7 @@
     "href": "lezione-15/index.html#costruire-larray-eterogeneo",
     "title": "Programmazione Scientifica++: Lezione 15",
     "section": "Costruire l’Array Eterogeneo",
-    "text": "Costruire l’Array Eterogeneo\nL’Upcasting è il trucco che ci permette di costruire il Vettore Polimorfico.\nstd::vector&lt;Layer*&gt; net;\n\n// UPCASTING SILENZIOSO in ogni push_back!\nnet.push_back( new DenseLayer(\"L1\") ); \nnet.push_back( new DropoutLayer(\"L2\") );\nGrazie a questo, la nostra Rete Neurale vive felice, e con il Late Binding (virtual) sa eseguire le funzioni giuste.\nMa cosa succede quando dobbiamo fare l’operazione inversa?\nTorna all’indice"
+    "text": "Costruire l’Array Eterogeneo\nL’Upcasting è il trucco che ci permette di costruire il Vettore Polimorfico.\nstd::vector&lt;Layer*&gt; net;\n\n// UPCASTING SILENZIOSO in ogni push_back!\nnet.push_back( new DenseLayer(\"L1\") ); \nnet.push_back( new DropoutLayer(\"L2\") );\nGrazie a questo, la nostra Rete Neurale vive felice, e con il Late Binding (virtual) sa eseguire le funzioni giuste.\nMa cosa succede quando dobbiamo fare l’operazione inversa?"
   },
   {
     "objectID": "lab-13/index.html#soluzione-del-laboratorio-12",
@@ -1586,7 +1614,7 @@
     "href": "lab-13/index.html#task-da-completare",
     "title": "Laboratorio 13",
     "section": "Task da Completare",
-    "text": "Task da Completare\n\nRendere backward() puro virtuale in layer.hpp e aggiungere update_parameters\nIncludere optimizers.hpp in layer.hpp\nImplementare DenseLayer::backward() con le due formule (dWt e delta_l)\nImplementare backward() di SigmoidLayer e tanhLayer riusando outputs\nVerificare di aver usato .array() in tutte le moltiplicazioni elementwise\nImplementare Sequential::backward() con l’indice int (non size_t)\nImplementare Sequential::update_parameters() con opt-&gt;step() alla fine\nIncludere loss.hpp e optimizers.hpp scritti nel Lab 10 (non riscriverli)\nAggiungere update_parameters a DenseLayer (una riga)\nVerificare che la Loss scenda in 5 passi su un campione fittizio\nRaccomandato: superare il gradient check con ε = 1e-5\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task da Completare\n\nRendere backward() puro virtuale in layer.hpp e aggiungere update_parameters\nIncludere optimizers.hpp in layer.hpp\nImplementare DenseLayer::backward() con le due formule (dWt e delta_l)\nImplementare backward() di SigmoidLayer e tanhLayer riusando outputs\nVerificare di aver usato .array() in tutte le moltiplicazioni elementwise\nImplementare Sequential::backward() con l’indice int (non size_t)\nImplementare Sequential::update_parameters() con opt-&gt;step() alla fine\nIncludere loss.hpp e optimizers.hpp scritti nel Lab 10 (non riscriverli)\nAggiungere update_parameters a DenseLayer (una riga)\nVerificare che la Loss scenda in 5 passi su un campione fittizio\nRaccomandato: superare il gradient check con ε = 1e-5\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lab-15/index.html#soluzione-del-laboratorio-14",
@@ -1600,7 +1628,7 @@
     "href": "lab-15/index.html#obiettivo-di-oggi",
     "title": "Laboratorio 15",
     "section": "Obiettivo di Oggi",
-    "text": "Obiettivo di Oggi\nUna rete che funziona non è una rete che si capisce. Sappiamo che con lr = 0.1 e 128 nodi si arriva al 94%, ma non sappiamo perché quei numeri, né cosa accade cambiandoli.\nOggi facciamo scienza sperimentale sul nostro modello: tre studi sistematici che producono file di dati, e che nel Lab 16 diventeranno grafici. Il primo programma lo scrivete per intero; il secondo e il terzo sono lo stesso programma con un ciclo diverso: copiate, adattate, e usate il tempo risparmiato per un quarto studio opzionale sull’augmentation.\nNella seconda parte: le tracce dei progetti finali."
+    "text": "Obiettivo di Oggi\nUna rete che funziona non è una rete che si capisce. Sappiamo che con lr = 0.1 e 128 nodi si arriva al 94%, ma non sappiamo perché quei numeri, né cosa accade cambiandoli.\nOggi facciamo scienza sperimentale sul nostro modello: tre studi sistematici che producono file di dati, e che nel Lab 16 diventeranno grafici. Il primo programma lo scrivete per intero; il secondo e il terzo sono lo stesso programma con un ciclo diverso: copiate, adattate, e usate il tempo risparmiato per il quarto studio, quello in cui si fabbrica l’overfitting per poterlo vedere.\nNella seconda parte: le tracce dei progetti finali."
   },
   {
     "objectID": "lab-15/index.html#il-metodo-un-parametro-alla-volta",
@@ -1628,21 +1656,63 @@
     "href": "lab-15/index.html#task-3-perf_vs_epochs.cpp",
     "title": "Laboratorio 15",
     "section": "Task 3: perf_vs_epochs.cpp",
-    "text": "Task 3: perf_vs_epochs.cpp\nstd::vector&lt;int&gt; eps = {1, 2, 3, 5};\nf.open(\"perf_vs_epochs.dat\", std::ios::trunc | std::ios::out);\n\nfor (auto ep : eps) {\n    mlp(100, model);\n    trainer.train(train_dataset, val_dataset, performance, ep, max_batches);\n    f &lt;&lt; ep &lt;&lt; \" \" &lt;&lt; performance.get_result() &lt;&lt; \"\\n\";\n    model.clear();\n}\n\n\n\n\n\n\nNote\n\n\nQui c’è una scelta di metodo: con model.clear() ogni punto è un addestramento indipendente da zero. Senza clear(), train() continuerebbe ad addestrare la stessa rete, e i punti sarebbero cumulativi. Sono due esperimenti diversi — decidete quale volete misurare, e siate coerenti."
+    "text": "Task 3: perf_vs_epochs.cpp\nstd::vector&lt;int&gt; eps = {1, 2, 3, 5};\nf.open(\"perf_vs_epochs.dat\", std::ios::trunc | std::ios::out);\n\nfor (auto ep : eps) {\n    mlp(100, model);\n    trainer.train(train_dataset, val_dataset, performance, ep, max_batches);\n    f &lt;&lt; ep &lt;&lt; \" \" &lt;&lt; performance.get_result() &lt;&lt; \"\\n\";\n    model.clear();\n}\n\n\n\n\n\n\nNote\n\n\nQui c’è una scelta di metodo: con model.clear() ogni punto è un addestramento indipendente da zero, ed ep è davvero il numero di epoche di quel punto. Senza clear(), train() continuerebbe ad addestrare la stessa rete: i punti sarebbero cumulativi e allora su file dovete scrivere il totale progressivo (1, 3, 6, 11), non ep. Sono due esperimenti diversi: decidete quale volete misurare, e fate in modo che l’ascissa dica la verità."
   },
   {
-    "objectID": "lab-15/index.html#studio-4-opzionale-laugmentation-aiuta",
-    "href": "lab-15/index.html#studio-4-opzionale-laugmentation-aiuta",
+    "objectID": "lab-15/index.html#studio-4-fabbricare-loverfitting",
+    "href": "lab-15/index.html#studio-4-fabbricare-loverfitting",
     "title": "Laboratorio 15",
-    "section": "Studio 4 (opzionale): l’augmentation aiuta?",
-    "text": "Studio 4 (opzionale): l’augmentation aiuta?\nIl mnist_dataset.hpp di riferimento del Lab 12 contiene il codice di augmentation: a ogni batch, con probabilità aug_prob, l’immagine viene ruotata di un angolo casuale entro ±maxAngle gradi e riscalata fra minscale e maxscale. La rete non vede mai due volte la stessa cifra.\nPrendete quel codice (augmentation(), random_augment(), i membri e i rami aug_mode in get_next_batch) e misurate se serve davvero:\n// una sola riga in più, dopo aver costruito il dataset di training\ntrain_dataset.augmentation(1, 0.72, 12.0);   // modalità 1: augmentation con probabilità 0.72\n\nStessa rete (mlp(100, model)), stesso seed, stesso lr, 3 epoche, con e senza quella riga. Due numeri: la performance sul validation set.\nRipetete a 10 epoche. L’augmentation è un regolarizzatore: a poche epoche di solito costa qualcosa, a molte epoche impedisce alla rete di imparare a memoria i 60.000 esempi. Il guadagno atteso è di qualche decimo di punto percentuale — piccolo, ma con seed fisso è un confronto pulito.\nProvate aug_prob = 1.0 e maxAngle = 30: troppa augmentation distrugge l’informazione. Dove sta il massimo?\n\n\n\n\n\n\n\nNote\n\n\nÈ l’antipasto della traccia 3. Chi la sceglierà dovrà anche capire i modi 2 e 3 (num_batches_fact), che invece di modificare le immagini triplicano il dataset con copie ruotate, come nel libro di Rashid."
+    "section": "Studio 4: fabbricare l’overfitting",
+    "text": "Studio 4: fabbricare l’overfitting\nNei Task 1-3 l’overfitting non si vede: con 79.400 parametri e 60.000 esempi la rete non ha modo di impararli a memoria. Per vederlo bisogna rovesciare il rapporto, e basta un argomento del costruttore:\n// 500 esempi invece di 60.000: 160 parametri per esempio\nMnistDataset&lt;float&gt; train_dataset(\"../../MNIST_DATASETS/mnist_train.csv\", 500);\nPoi si misura la performance su entrambi gli insiemi. Trainer::test è pubblico e restituisce la metrica, quindi non serve altro:\ntrainer.train(train_dataset, val_dataset, performance, ep, -1, false);\nfloat p_train = trainer.test(train_dataset, performance, -1, false);\nfloat p_val   = trainer.test(val_dataset,   performance, -1, false);\nScrivete overfitting.cpp con le epoche in {1,2,5,10,20,50,100} e lanciatelo con 300, 500 e 1000 esempi. Costa pochi secondi: 500 esempi per 100 epoche sono meno di un’epoca sul dataset intero."
+  },
+  {
+    "objectID": "lab-15/index.html#studio-4-cosa-aspettarsi",
+    "href": "lab-15/index.html#studio-4-cosa-aspettarsi",
+    "title": "Laboratorio 15",
+    "section": "Studio 4: cosa aspettarsi",
+    "text": "Studio 4: cosa aspettarsi\n\nA sinistra, 500 esempi: 99.2% su ciò che la rete ha già visto, 84.8% su ciò che non ha mai visto. Quei 14.4 punti sono l’overfitting — la definizione operativa di “imparare a memoria invece di generalizzare”.\n\n\n\n\n\n\n\n“Con 500 esempi invece di 60.000, ci credo”\n\n\nÈ l’obiezione giusta, ed è il motivo del pannello di destra: lì c’è anche il vostro caso reale. A 60.000 esempi il divario non è zero, è di 1.8 punti — la rete fa 99.5% sul training e 97.7% sul validation, e il divario cresce con le epoche (0.2 punti alla prima, 1.8 alla ventesima). I 500 esempi non creano un fenomeno che altrimenti non esisterebbe: lo ingrandiscono di dieci volte perché diventi leggibile. È il motivo per cui nei Task 1-3 non l’avete visto, non il motivo per cui non c’era."
+  },
+  {
+    "objectID": "lab-15/index.html#studio-4-la-loss-non-laccuracy",
+    "href": "lab-15/index.html#studio-4-la-loss-non-laccuracy",
+    "title": "Laboratorio 15",
+    "section": "Studio 4: la loss, non l’accuracy",
+    "text": "Studio 4: la loss, non l’accuracy\n\nStessa rete, stesse epoche, due strumenti. La loss di validation ha un minimo a 20 epoche e poi risale del 2%: è la firma canonica dell’overfitting. La performance della stessa rete passa da 85.05 a 85.18 fra la decima e la millesima epoca — cioè non dice assolutamente niente.\n\n\n\n\n\n\n\nPerché l’accuracy è cieca\n\n\nL’accuracy passa da un argmax, che è una soglia: finché la classe giusta resta la più alta il numero non si muove, anche se la rete diventa sempre più sicura delle sue risposte sbagliate. La loss guarda i valori delle uscite, non solo quale sia la maggiore. L’overfitting si diagnostica sulla loss, e chi guarda solo l’accuracy conclude che va tutto bene."
+  },
+  {
+    "objectID": "lab-15/index.html#studio-4-quanto-costa-insistere",
+    "href": "lab-15/index.html#studio-4-quanto-costa-insistere",
+    "title": "Laboratorio 15",
+    "section": "Studio 4: quanto costa insistere?",
+    "text": "Studio 4: quanto costa insistere?\nPoco, e il perché è istruttivo. Portando lo stesso addestramento a 1000 epoche, cinquanta volte oltre il minimo:\n\n\n\nepoche\nloss training\nloss validation\nperf. val.\n\n\n\n\n20\n0.01629\n0.23172 ← minimo\n84.96\n\n\n100\n0.00882\n0.23601\n84.81\n\n\n500\n0.00465\n0.23678 ← massimo\n85.05\n\n\n1000\n0.00457\n0.23529\n85.18\n\n\n\nLa validation loss si assesta invece di andare alla deriva, e negli ultimi 500 giri la training loss passa da 0.004650 a 0.004570: la rete è ferma.\n\n\n\n\n\n\n\nLa rete si parcheggia — e non è un caso\n\n\n\\(\\boldsymbol{\\delta} = 2(\\mathbf{p}-\\mathbf{t})\\odot\\mathbf{o}\\odot(1-\\mathbf{o})\\): quando le uscite si avvicinano ai target entrambi i fattori tendono a zero — l’errore perché è piccolo, la derivata della sigmoide perché satura. Con MSE e sigmoide il gradiente si spegne da sé. Con la cross-entropy quel secondo fattore si cancella, i pesi continuano a crescere, e il degrado diventa ripido: è allora che l’early stopping serve davvero."
+  },
+  {
+    "objectID": "lab-15/index.html#studio-4-cosa-portarsi-via",
+    "href": "lab-15/index.html#studio-4-cosa-portarsi-via",
+    "title": "Laboratorio 15",
+    "section": "Studio 4: cosa portarsi via",
+    "text": "Studio 4: cosa portarsi via\nTre affermazioni, in ordine di quanto sono solide:\nIl divario è grande e permanente. 99.6% su ciò che la rete ha visto, 85.2% su ciò che non ha visto: 14.4 punti, aperti nelle prime dieci epoche e mai più chiusi. Questo è l’overfitting, e su questo non c’è ambiguità.\nIl minimo della loss di validation è reale ma poco profondo. 2% a 500 esempi, 2.6% col dataset intero. Si misura, e va misurato sulla loss perché l’accuracy non lo vede.\nIl degrado successivo non è robusto. A \\(lr = 0.6\\) sparisce: la loss finale coincide col minimo, e la validation è perfino migliore (85.3% contro 84.8%). Un passo più grande rende lo SGD più rumoroso, e il rumore impedisce di infilarsi nei minimi stretti che memorizzano — funziona da regolarizzatore.\n\n\n\n\n\n\n\nIl metodo, non il numero\n\n\nPer arrivare a queste tre frasi sono servite tre cose che nessuna singola misura conteneva: il pavimento di rumore, per sapere quali differenze non significano niente; il divario train/validation, per sapere se c’è memorizzazione; e la loss invece dell’accuracy, per non usare uno strumento cieco. Nessuna delle tre è un dettaglio tecnico: sono ciò che distingue una misura da un’impressione."
+  },
+  {
+    "objectID": "lab-15/index.html#studio-5-curare-loverfitting",
+    "href": "lab-15/index.html#studio-5-curare-loverfitting",
+    "title": "Laboratorio 15",
+    "section": "Studio 5: curare l’overfitting",
+    "text": "Studio 5: curare l’overfitting\nOpzionale. Il mnist_dataset.hpp del Lab 12 ha il codice di augmentation: a ogni batch l’immagine viene ruotata e riscalata, con probabilità aug_prob. Si fabbricano dati che non ci sono — ciò che manca a 500 esempi.\ntrain_dataset.augmentation(1, 0.72, 12.0);   // modalità 1, probabilità 0.72\n\nCon 500 esempi, 100 epoche, con e senza quella riga: partite dai 14.4 punti di divario e guardate quanto si chiude — sulla loss, non solo sull’accuracy. È il regime in cui l’effetto si vede.\nRipetete sui 60.000: il guadagno è di qualche decimo di punto, dentro il rumore. Col seed fisso il confronto resta appaiato e leggibile, ma sappiate quanto poco state misurando.\naug_prob = 1.0 e maxAngle = 30: troppa augmentation distrugge l’informazione. Dove sta il massimo?\n\n\n\n\n\n\n\nNote\n\n\nÈ l’antipasto della traccia 3. Chi la sceglierà dovrà anche capire i modi 2 e 3 (num_batches_fact), che invece di modificare le immagini triplicano il dataset con copie ruotate, come nel libro di Rashid."
   },
   {
     "objectID": "lab-15/index.html#cosa-aspettarsi-dai-dati",
     "href": "lab-15/index.html#cosa-aspettarsi-dai-dati",
     "title": "Laboratorio 15",
     "section": "Cosa aspettarsi dai dati",
-    "text": "Cosa aspettarsi dai dati\nI risultati di riferimento sul framework completo:\n\n\n\nnodi\nperformance\n\nlearning rate\nperformance\n\n\n\n\n10\n0.921\n\n0.01\n0.911\n\n\n20\n0.948\n\n0.1\n0.952\n\n\n50\n0.966\n\n0.2\n0.957\n\n\n100\n0.972\n\n0.3\n0.963\n\n\n200\n0.975\n\n0.6\n0.947\n\n\n\nDue andamenti da leggere, e sono qualitativamente diversi:\nI nodi danno rendimenti decrescenti. Da 10 a 50 nodi si guadagnano 4.5 punti; da 100 a 200 se ne guadagnano 0.3, raddoppiando i parametri e il tempo di calcolo. È il momento in cui la capacità del modello smette di essere il collo di bottiglia.\nIl learning rate ha un massimo. Cresce fino a ~0.3 e poi peggiora: oltre un certo passo l’ottimizzatore scavalca il minimo invece di scendervi (la figura della Lezione 3). Esiste un valore ottimale, e va trovato sperimentalmente."
+    "text": "Cosa aspettarsi dai dati\nI risultati di riferimento sul framework completo. Attenzione agli assi: la colonna dei nodi è a 7 epoche e \\(lr = 0.05\\), quella del learning rate a 1 epoca e 100 nodi. Non sono confrontabili fra loro.\n\n\n\nnodi (7 ep.)\nperf.\n\n\\(lr\\) (1 ep.)\nperf.\n\n\n\n\n10\n0.921\n\n0.01\n0.916\n\n\n20\n0.948\n\n0.1\n0.947\n\n\n50\n0.966\n\n0.2\n0.961\n\n\n100\n0.972\n\n0.3\n0.957\n\n\n200\n0.975\n\n0.6\n0.946\n\n\n\nI nodi danno rendimenti decrescenti. Da 10 a 50 nodi si guadagnano 4.5 punti; da 100 a 200 se ne guadagnano 0.3, raddoppiando i parametri e il tempo di calcolo. È il momento in cui la capacità del modello smette di essere il collo di bottiglia."
+  },
+  {
+    "objectID": "lab-15/index.html#come-si-leggono-quei-numeri",
+    "href": "lab-15/index.html#come-si-leggono-quei-numeri",
+    "title": "Laboratorio 15",
+    "section": "Come si leggono quei numeri",
+    "text": "Come si leggono quei numeri\n\n\n\n\n\n\n\nQuanto rumore hanno le vostre misure\n\n\nTre programmi si sovrappongono in due punti, e il confronto dà la scala dell’incertezza. A 100 nodi e 7 epoche: perf_vs_nodes dà 0.9718, perf_vs_epochs 0.9741 — 0.23 punti. A \\(lr=0.2\\) e 1 epoca: perf_vs_learning_rate dà 0.9605, perf_vs_epochs 0.9619 — 0.14 punti. Sotto i due decimi di punto non state misurando niente: è per questo che il calo a 6 epoche, nelle curve del Task 3, non va interpretato.\n\n\n\n\nIl learning rate ha un massimo, ed è a 0.2. Oltre quel passo l’ottimizzatore scavalca il minimo invece di scendervi (la figura della Lezione 3). Rashid, per tentativi, chiama 0.2 “a sweet spot for the MNIST data set”: la nostra misura, fatta con un altro codice in un altro linguaggio, cade sullo stesso valore."
   },
   {
     "objectID": "lab-15/index.html#leffetto-del-learning-rate",
@@ -1652,11 +1722,11 @@
     "text": "L’effetto del learning rate\n\nIl pannello di destra è esattamente ciò che il vostro perf_vs_learning_rate.dat misura: passo piccolo significa convergenza lenta, passo grande significa oscillare intorno al minimo senza raggiungerlo."
   },
   {
-    "objectID": "lab-15/index.html#le-due-facce-della-convergenza",
-    "href": "lab-15/index.html#le-due-facce-della-convergenza",
+    "objectID": "lab-15/index.html#task-3-cosa-aspettarsi",
+    "href": "lab-15/index.html#task-3-cosa-aspettarsi",
     "title": "Laboratorio 15",
-    "section": "Le due facce della convergenza",
-    "text": "Le due facce della convergenza\n\nTrainer::train stampa a ogni epoca la Train Loss, e con running_test=true anche la performance: sono i due pannelli. Il Task 3 misura quello di destra, il sinistro scorre sul terminale.\n\n\n\n\n\n\n\nCurve qualitative, non misure\n\n\nServono a dirvi che forma aspettarsi. L’unico numero ancorato al dato reale è il plateau (0.9718 a 100 nodi). La zona arancione è il motivo dello Studio 4: se la loss scende ma la performance no, la rete impara a memoria."
+    "section": "Task 3: cosa aspettarsi",
+    "text": "Task 3: cosa aspettarsi\n\nIl learning rate compra velocità, non destinazione: alla prima epoca 0.2 vale 2.1 punti più di 0.05, alla ventesima le due curve si ritrovano a 0.04 punti. Il libro invece scende dopo la settima epoca, e noi non lo riproduciamo a nessuno dei due passi: il learning rate non è il colpevole.\n\n\n\n\n\n\n\nUn disaccordo aperto — e la riga che lo chiude\n\n\nTrainer::train rimescola il training set a ogni epoca; il codice del libro lo scorre sempre nello stesso ordine, e ripetere sempre la stessa sequenza è proprio ciò che permette alla rete di adattarsi ai dati che ha già visto. È l’ipotesi più probabile, e si prova con una riga: reset_and_shuffle(false). Se avete tempo, misuratela — vale più di qualunque spiegazione a parole."
   },
   {
     "objectID": "lab-15/index.html#progetti-finali-le-tracce",
@@ -1677,7 +1747,7 @@
     "href": "lab-15/index.html#task-da-completare",
     "title": "Laboratorio 15",
     "section": "Task da Completare",
-    "text": "Task da Completare\n\nEstrarre la costruzione della rete in una funzione mlp(Nnodes, model)\nScrivere perf_vs_nodes.cpp con il ciclo su {10, 20, 50, 100, 200}\nScrivere perf_vs_learning_rate.cpp usando fixedlr.set_lr(lr)\nScrivere perf_vs_epochs.cpp e decidere se i punti sono cumulativi o indipendenti\nOpzionale: misurare la performance con e senza train_dataset.augmentation(1, 0.72, 12.0) a 3 e a 10 epoche\nChiamare rng.seed(12345) prima del ciclo per la riproducibilità\nChiamare model.clear() alla fine di ogni iterazione\nVerificare che i .dat abbiano due colonne separate da spazio\nConfrontare i vostri numeri con quelli di riferimento\nIndividuare il learning rate ottimale dai vostri dati\nScegliere una traccia per il progetto finale\nDomanda: perché aumentare i nodi da 100 a 200 rende così poco?\n\nNel prossimo laboratorio trasformeremo questi .dat in grafici.\nTorna all’indice"
+    "text": "Task da Completare\n\nEstrarre la costruzione della rete in una funzione mlp(Nnodes, model)\nScrivere perf_vs_nodes.cpp con il ciclo su {10, 20, 50, 100, 200}\nScrivere perf_vs_learning_rate.cpp usando fixedlr.set_lr(lr)\nScrivere perf_vs_epochs.cpp e decidere se i punti sono cumulativi o indipendenti\nScrivere overfitting.cpp: training set troncato a 300/500/1000 esempi, e trainer.test() su entrambi gli insiemi\nMisurare il divario training/validation e vederlo chiudersi al crescere dei dati\nMisurare la loss oltre all’accuracy, e trovare l’epoca del minimo della validation loss\nOpzionale: train_dataset.augmentation(1, 0.72, 12.0) a 500 esempi, dove l’effetto è grande\nChiamare rng.seed(12345) prima del ciclo per la riproducibilità\nChiamare model.clear() alla fine di ogni iterazione\nVerificare che i .dat abbiano le colonne separate da spazio (tre, per overfitting.cpp)\nConfrontare i vostri numeri con quelli di riferimento\nIndividuare il learning rate ottimale dai vostri dati\nScegliere una traccia per il progetto finale\nDomanda: perché aumentare i nodi da 100 a 200 rende così poco?\nDomanda: perché con 60.000 esempi il divario è di 1.8 punti e con 500 di 14?\nDomanda: perché l’accuracy non vede l’overfitting che la loss vede?\n\nNel prossimo laboratorio trasformeremo questi .dat in grafici."
   },
   {
     "objectID": "lab-06/index.html#soluzione-del-laboratorio-05",
@@ -1740,7 +1810,7 @@
     "href": "lab-06/index.html#task-da-completare",
     "title": "Laboratorio 06",
     "section": "Task da Completare",
-    "text": "Task da Completare\n\nAggiungere distruttore, copy constructor e operator= a Matrix\nVerificare l’auto-assegnazione: m1 = m1 non deve corrompere i dati\nCreare ilayer.hpp con distruttore virtuale, forward puro virtuale e clone()\nFar derivare DenseLayer da ILayer e implementare clone()\nCreare SequentialNetwork con ILayer** layers, capacity, size\nApplicare la Regola del Tre a SequentialNetwork usando clone() per la deep copy\nVerificare che Z1 e Z2 coincidano\nEsperimento: commentare il copy constructor e osservare il Double Free\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task da Completare\n\nAggiungere distruttore, copy constructor e operator= a Matrix\nVerificare l’auto-assegnazione: m1 = m1 non deve corrompere i dati\nCreare ilayer.hpp con distruttore virtuale, forward puro virtuale e clone()\nFar derivare DenseLayer da ILayer e implementare clone()\nCreare SequentialNetwork con ILayer** layers, capacity, size\nApplicare la Regola del Tre a SequentialNetwork usando clone() per la deep copy\nVerificare che Z1 e Z2 coincidano\nEsperimento: commentare il copy constructor e osservare il Double Free\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lab-07/index.html#soluzione-del-laboratorio-06",
@@ -1810,7 +1880,7 @@
     "href": "lab-07/index.html#se-avete-finito-tre-misure-in-più",
     "title": "Laboratorio 07",
     "section": "Se Avete Finito: Tre Misure in Più",
-    "text": "Se Avete Finito: Tre Misure in Più\nIl lab di oggi è corto apposta: il tempo va nelle compilazioni e nelle misure. Chi arriva in fondo ha tre esperimenti pronti, in ordine di difficoltà. Nessuno è obbligatorio; tutti insegnano qualcosa che userete nel Lab 15.\n\nOrdine di grandezza. Ripetete la misura con -O0, -O1, -O2, -O3. Il salto grosso è fra -O0 e -O1 o fra -O2 e -O3? Annotatevi i quattro tempi: il Lab 15 chiederà misure di questo tipo su tutto il training.\nEigen contro il ciclo for. Scrivete la sigmoide con due cicli annidati su (i, j) invece di .array().unaryExpr(...), e cronometrate entrambe le versioni a -O3. Chi vince, e di quanto? Poi rifatelo a -O0: la risposta cambia, e il perché è nella slide precedente.\nfloat contro double. Sostituite Eigen::MatrixXd con Eigen::MatrixXf nel solo test di velocità. Il tempo si dimezza? Quasi mai esattamente: ragionate su cosa limita davvero il calcolo, la CPU o la memoria. Fra due laboratori il framework diventerà template sul tipo numerico proprio per poter fare questa scelta a piacere.\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Se Avete Finito: Tre Misure in Più\nIl lab di oggi è corto apposta: il tempo va nelle compilazioni e nelle misure. Chi arriva in fondo ha tre esperimenti pronti, in ordine di difficoltà. Nessuno è obbligatorio; tutti insegnano qualcosa che userete nel Lab 15.\n\nOrdine di grandezza. Ripetete la misura con -O0, -O1, -O2, -O3. Il salto grosso è fra -O0 e -O1 o fra -O2 e -O3? Annotatevi i quattro tempi: il Lab 15 chiederà misure di questo tipo su tutto il training.\nEigen contro il ciclo for. Scrivete la sigmoide con due cicli annidati su (i, j) invece di .array().unaryExpr(...), e cronometrate entrambe le versioni a -O3. Chi vince, e di quanto? Poi rifatelo a -O0: la risposta cambia, e il perché è nella slide precedente.\nfloat contro double. Sostituite Eigen::MatrixXd con Eigen::MatrixXf nel solo test di velocità. Il tempo si dimezza? Quasi mai esattamente: ragionate su cosa limita davvero il calcolo, la CPU o la memoria. Fra due laboratori il framework diventerà template sul tipo numerico proprio per poter fare questa scelta a piacere.\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lezione-06/index.html#argomenti-di-oggi",
@@ -1859,49 +1929,49 @@
     "href": "lezione-06/index.html#array-e-puntatori",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Array e Puntatori",
-    "text": "Array e Puntatori\nIn C++, il nome di un array è letteralmente un puntatore al suo primo elemento!\nint main() {\n    int v3[] = { 10, 20, 30, 40, 50 }; \n    \n1    int* d = v3;\n    \n2    std::cout &lt;&lt; \"d punta a: \" &lt;&lt; *d &lt;&lt; \"\\n\";\n    \n    return 0;\n}\n\n1\n\nAssegniamo l’array v3 al puntatore d. Non serve usare & perché v3 è GIÀ l’indirizzo del primo elemento!\n\n2\n\nStampa 10."
+    "text": "Array e Puntatori\nIn C++ il nome di un array decade (decay) a un puntatore al suo primo elemento appena lo si usa in un’espressione. Non è un puntatore — la slide sul sizeof(), fra due, mostra la differenza — ma quasi sempre si comporta come tale.\n#include &lt;iostream&gt;\n\nint main() {\n    int v3[] = { 10, 20, 30, 40, 50 }; \n    \n1    int* d = v3;\n    \n2    std::cout &lt;&lt; \"d punta a: \" &lt;&lt; *d &lt;&lt; \"\\n\";\n    \n    return 0;\n}\n\n1\n\nAssegniamo l’array v3 al puntatore d. Non serve usare & perché v3 è GIÀ l’indirizzo del primo elemento!\n\n2\n\nStampa 10."
   },
   {
     "objectID": "lezione-06/index.html#aritmetica-dei-puntatori",
     "href": "lezione-06/index.html#aritmetica-dei-puntatori",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Aritmetica dei Puntatori",
-    "text": "Aritmetica dei Puntatori\nCosa succede se aggiungiamo o sottraiamo numeri a un puntatore? Il puntatore si sposta lungo la memoria RAM!\nint main() {\n    int v3[] = { 10, 20, 30, 40, 50 }; \n    int* d = v3;\n    \n1    d++;\n2    std::cout &lt;&lt; \"*d: \" &lt;&lt; *d &lt;&lt; \"\\n\";\n    \n3    d = d + 2;\n4    std::cout &lt;&lt; \"*d: \" &lt;&lt; *d &lt;&lt; \"\\n\";\n    \n    return 0;\n}\n\n1\n\nAvanza di 1 “posizione”.\n\n2\n\nStampa 20.\n\n3\n\nSalta in avanti di altre 2 posizioni.\n\n4\n\nStampa 40."
+    "text": "Aritmetica dei Puntatori\nCosa succede se aggiungiamo o sottraiamo numeri a un puntatore? Il puntatore si sposta lungo la memoria RAM!\n#include &lt;iostream&gt;\n\nint main() {\n    int v3[] = { 10, 20, 30, 40, 50 }; \n    int* d = v3;\n    \n1    d++;\n2    std::cout &lt;&lt; \"*d: \" &lt;&lt; *d &lt;&lt; \"\\n\";\n    \n3    d = d + 2;\n4    std::cout &lt;&lt; \"*d: \" &lt;&lt; *d &lt;&lt; \"\\n\";\n    \n    return 0;\n}\n\n1\n\nAvanza di 1 “posizione”.\n\n2\n\nStampa 20.\n\n3\n\nSalta in avanti di altre 2 posizioni.\n\n4\n\nStampa 40."
   },
   {
     "objectID": "lezione-06/index.html#salti-in-memoria-e-sizeof",
     "href": "lezione-06/index.html#salti-in-memoria-e-sizeof",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Salti in Memoria e sizeof()",
-    "text": "Salti in Memoria e sizeof()\nSe avanzo un puntatore a int di 1 (d++), di quanti byte si sposta fisicamente nella RAM? Dipende dal tipo di dato!\n\n\n\nTipo\nMemoria (Tipica)\nSalto in RAM per ptr++\n\n\n\n\nchar\n1 byte\nSalta 1 byte\n\n\nshort\n2 bytes\nSalta 2 bytes\n\n\nint / float\n4 bytes\nSalta 4 bytes\n\n\ndouble\n8 bytes\nSalta 8 bytes\n\n\n\nSe d contiene l’indirizzo esadecimale 0x23eef0, fare d++ lo farà puntare a 0x23eef4 (perché un int pesa 4 byte). L’aritmetica dei puntatori gestisce questa matematica automaticamente!\n\n\n\n\n\n\nNote\n\n\nLa funzione sizeof(tipo) restituisce esattamente quanti byte occupa un tipo sulla tua macchina!"
+    "text": "Salti in Memoria e sizeof()\nSe avanzo un puntatore a int di 1 (d++), di quanti byte si sposta fisicamente nella RAM? Dipende dal tipo di dato!\n\n\n\nTipo\nMemoria (Tipica)\nSalto in RAM per ptr++\n\n\n\n\nchar\n1 byte\nSalta 1 byte\n\n\nshort\n2 bytes\nSalta 2 bytes\n\n\nint / float\n4 bytes\nSalta 4 bytes\n\n\ndouble\n8 bytes\nSalta 8 bytes\n\n\n\nSe d contiene l’indirizzo 0x7ffc3a5b1e40, fare d++ lo farà puntare a 0x7ffc3a5b1e44 (perché un int pesa 4 byte). L’aritmetica dei puntatori gestisce questa matematica automaticamente!\n\n\n\n\n\n\nNote\n\n\nLa funzione sizeof(tipo) restituisce esattamente quanti byte occupa un tipo sulla tua macchina!"
   },
   {
     "objectID": "lezione-06/index.html#il-pericolo-dellaritmetica",
     "href": "lezione-06/index.html#il-pericolo-dellaritmetica",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Il Pericolo dell’Aritmetica",
-    "text": "Il Pericolo dell’Aritmetica\nL’aritmetica non ha confini. Il C++ ti permette allegramente di superare la fine dell’array ed esplorare l’ignoto!\nint main() {\n    int v3[] = { 10, 20, 30 }; // Array di 3 elementi\n    int* d = v3;\n    \n1    d = d + 100;\n    \n2    std::cout &lt;&lt; \"Dato ignoto: \" &lt;&lt; *d &lt;&lt; \"\\n\";\n    \n    return 0;\n}\n\n1\n\nSaltiamo di 100 posizioni oltre il limite dell’array. Al compilatore non interessa!\n\n2\n\nRisultato? O stampa un valore spazzatura appartenente a un altro programma in memoria, oppure, se l’OS se ne accorge, il programma esplode in un Segmentation Fault (Core Dumped)."
+    "text": "Il Pericolo dell’Aritmetica\nL’aritmetica non ha confini. Il C++ ti permette allegramente di superare la fine dell’array ed esplorare l’ignoto!\n#include &lt;iostream&gt;\n\nint main() {\n    int v3[] = { 10, 20, 30 }; // Array di 3 elementi\n    int* d = v3;\n    \n1    d = d + 100;\n    \n2    std::cout &lt;&lt; \"Dato ignoto: \" &lt;&lt; *d &lt;&lt; \"\\n\";\n    \n    return 0;\n}\n\n1\n\nSaltiamo di 100 posizioni oltre il limite dell’array. Al compilatore non interessa!\n\n2\n\nRisultato? O stampa spazzatura presa da un’altra zona della memoria del vostro stesso processo (di un altro programma no: il sistema operativo non ve lo permette), oppure, se l’indirizzo esce dalle pagine assegnate, il programma esplode in un Segmentation Fault (Core Dumped). È undefined behaviour: non è detto che ve ne accorgiate subito."
   },
   {
     "objectID": "lezione-06/index.html#operazioni-tra-puntatori",
     "href": "lezione-06/index.html#operazioni-tra-puntatori",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Operazioni tra Puntatori",
-    "text": "Operazioni tra Puntatori\nPuoi anche sottrarre due puntatori che guardano allo stesso array per calcolare la loro “distanza” in termini di elementi.\nint main() {\n    int v[] = { 1, 2, 3, 4, 5, 6, 7 };\n    \n    int* inizio = &v[0]; // Oppure solo: inizio = v;\n    int* fine   = &v[4]; // Punta al quinto elemento (5)\n    \n1    int distanza = fine - inizio;\n    \n    std::cout &lt;&lt; \"Distanza: \" &lt;&lt; distanza &lt;&lt; \" elementi\\n\";\n    \n    return 0;\n}\n\n1\n\nSottraendo i puntatori, il risultato è un intero che rappresenta quanti “elementi” ci sono di mezzo (in questo caso 4)."
+    "text": "Operazioni tra Puntatori\nPuoi anche sottrarre due puntatori che guardano allo stesso array per calcolare la loro “distanza” in termini di elementi.\n#include &lt;iostream&gt;\n\nint main() {\n    int v[] = { 1, 2, 3, 4, 5, 6, 7 };\n    \n    int* inizio = &v[0]; // Oppure solo: inizio = v;\n    int* fine   = &v[4]; // Punta al quinto elemento (5)\n    \n1    int distanza = fine - inizio;\n    \n    std::cout &lt;&lt; \"Distanza: \" &lt;&lt; distanza &lt;&lt; \" elementi\\n\";\n    \n    return 0;\n}\n\n1\n\nSottraendo i puntatori, il risultato è un intero che rappresenta quanti “elementi” ci sono di mezzo (in questo caso 4)."
   },
   {
     "objectID": "lezione-06/index.html#interfacce-delle-funzioni-ripasso",
     "href": "lezione-06/index.html#interfacce-delle-funzioni-ripasso",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Interfacce delle Funzioni: Ripasso",
-    "text": "Interfacce delle Funzioni: Ripasso\nLe funzioni passano parametri per Valore (copia totale).\n1void raddoppia_valore(double x) {\n    x = x * 2.0;\n}\n\nint main() {\n    double a = 1.0;\n    raddoppia_valore(a);\n2    std::cout &lt;&lt; \"a = \" &lt;&lt; a &lt;&lt; \"\\n\";\n    return 0;\n}\n\n1\n\nRiceve una copia indipendente in RAM.\n\n2\n\nStampa ancora 1.0."
+    "text": "Interfacce delle Funzioni: Ripasso\nIl meccanismo è quello della Lezione 5; qui lo rivediamo su un caso che vi servirà davvero. Uno scheduler dimezza il learning rate a fine epoca:\n#include &lt;iostream&gt;\n\n1void decay(double eta) {\n    eta = eta * 0.5;\n}\n\nint main() {\n    double learning_rate = 0.2;\n    decay(learning_rate);\n2    std::cout &lt;&lt; \"eta = \" &lt;&lt; learning_rate &lt;&lt; \"\\n\";\n    return 0;\n}\n\n1\n\nPassaggio per valore: decay riceve una copia indipendente in RAM.\n\n2\n\nStampa ancora 0.2. Lo scheduler ha dimezzato la sua copia, e l’ha buttata uscendo dalla funzione: il learning rate vero non si è mosso di un ε."
   },
   {
     "objectID": "lezione-06/index.html#passaggio-per-reference",
     "href": "lezione-06/index.html#passaggio-per-reference",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Passaggio per Reference",
-    "text": "Passaggio per Reference\nUsiamo & per passare un “Alias” senza copiare la memoria.\n1void raddoppia_ref(double& x) {\n    x = x * 2.0;\n}\n\nint main() {\n    double a = 1.0;\n    raddoppia_ref(a);\n2    std::cout &lt;&lt; \"a = \" &lt;&lt; a &lt;&lt; \"\\n\";\n    return 0;\n}\n\n1\n\nRiceve l’accesso diretto alla variabile originaria.\n\n2\n\nStampa 2.0. La funzione ha modificato a!"
+    "text": "Passaggio per Reference\nBasta una & perché eta sia un alias del learning rate vero, senza copie.\n#include &lt;iostream&gt;\n\n1void decay(double& eta) {\n    eta = eta * 0.5;\n}\n\nint main() {\n    double learning_rate = 0.2;\n    decay(learning_rate);\n2    std::cout &lt;&lt; \"eta = \" &lt;&lt; learning_rate &lt;&lt; \"\\n\";\n    return 0;\n}\n\n1\n\nUna sola &, e cambia tutto.\n\n2\n\nStampa 0.1: adesso lo scheduler ha davvero schedulato.\n\n\n\n\n\n\n\n\nNote\n\n\nNel Laboratorio 10 scriverete l’interfaccia Scheduler per davvero. Il fixedScheduler del framework tiene un puntatore all’Optimizer proprio per questo motivo: per poter mettere le mani sul learning rate di qualcun altro."
   },
   {
     "objectID": "lezione-06/index.html#gestire-array-nelle-funzioni",
@@ -1929,14 +1999,14 @@
     "href": "lezione-06/index.html#le-classi-in-c",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Le Classi in C++",
-    "text": "Le Classi in C++\nLa Programmazione Orientata agli Oggetti (OOP) ci permette di unire dati e funzioni all’interno di “Oggetti”. Una classe è il progetto (il “blueprint”) per creare questi oggetti.\n\n\n\nAttributi (Dati): Le caratteristiche dell’oggetto.\nMetodi (Comportamento): Cosa l’oggetto sa fare con i propri dati.\n\n\nEsempio: Classe: Auto Attributi: Velocità, Colore. Metodi: Accelera(), Frena()."
+    "text": "Le Classi in C++\nLa Programmazione Orientata agli Oggetti (OOP) ci permette di unire dati e funzioni all’interno di “Oggetti”. Una classe è il progetto (il “blueprint”) per creare questi oggetti.\n\n\n\nAttributi (Dati): Le caratteristiche dell’oggetto.\nMetodi (Comportamento): Cosa l’oggetto sa fare con i propri dati.\n\n\nEsempio (il nostro): Classe: DenseLayer Attributi: la matrice dei pesi, il numero di neuroni. Metodi: forward(), backward()."
   },
   {
     "objectID": "lezione-06/index.html#sintassi-di-una-classe",
     "href": "lezione-06/index.html#sintassi-di-una-classe",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Sintassi di una Classe",
-    "text": "Sintassi di una Classe\nclass Result {\n1public:\n    double loss;\n    double accuracy;\n    \n2    void print() {\n        std::cout &lt;&lt; \"Loss: \" &lt;&lt; loss &lt;&lt; \" Acc: \" &lt;&lt; accuracy &lt;&lt; \"%\\n\";\n    }\n3};\n\nint main() {\n4    Result r1;\n    r1.loss = 1.2;\n    r1.accuracy = 85.5;\n    r1.print();\n    \n    return 0;\n}\n\n1\n\npublic: significa che i membri successivi sono accessibili dal main.\n\n2\n\nUna funzione che vive dentro l’oggetto! Ha accesso automatico agli attributi.\n\n3\n\nIMPORTANTISSIMO: Ricordati sempre il ; alla fine della definizione della classe!\n\n4\n\nStiamo creando un’istanza (oggetto) della classe."
+    "text": "Sintassi di una Classe\n#include &lt;iostream&gt;\n\nclass Result {\n1public:\n    double loss;\n    double accuracy;\n    \n2    void print() {\n        std::cout &lt;&lt; \"Loss: \" &lt;&lt; loss &lt;&lt; \" Acc: \" &lt;&lt; accuracy &lt;&lt; \"%\\n\";\n    }\n3};\n\nint main() {\n4    Result r1;\n    r1.loss = 1.2;\n    r1.accuracy = 85.5;\n    r1.print();\n    \n    return 0;\n}\n\n1\n\npublic: significa che i membri successivi sono accessibili dal main.\n\n2\n\nUna funzione che vive dentro l’oggetto! Ha accesso automatico agli attributi.\n\n3\n\nIMPORTANTISSIMO: Ricordati sempre il ; alla fine della definizione della classe!\n\n4\n\nStiamo creando un’istanza (oggetto) della classe."
   },
   {
     "objectID": "lezione-06/index.html#incapsulamento-public-vs-private",
@@ -1950,14 +2020,14 @@
     "href": "lezione-06/index.html#costruttori-constructors",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Costruttori (Constructors)",
-    "text": "Costruttori (Constructors)\nCome facciamo ad assicurarci che la variabile saldo inizi esattamente a zero alla nascita dell’oggetto, senza “spazzatura” di memoria? Con i Costruttori!\n\nIl costruttore è una funzione speciale con lo stesso nome della classe.\nNon ha tipo di ritorno (neanche void).\nViene eseguito automaticamente all’istante in cui l’oggetto viene creato.\n\nclass ContoBancario {\nprivate:\n    double saldo;\n\npublic:\n1    ContoBancario() {\n        saldo = 0.0;\n        std::cout &lt;&lt; \"Conto creato con successo!\\n\";\n    }\n};\n\n1\n\nCostruttore di default. Azzera la memoria."
+    "text": "Costruttori (Constructors)\nCome facciamo ad assicurarci che la variabile saldo inizi esattamente a zero alla nascita dell’oggetto, senza “spazzatura” di memoria? Con i Costruttori!\n\nIl costruttore è una funzione speciale con lo stesso nome della classe.\nNon ha tipo di ritorno (neanche void).\nViene eseguito automaticamente all’istante in cui l’oggetto viene creato.\n\nclass ContoBancario {\nprivate:\n    double saldo;\n\npublic:\n1    ContoBancario() {\n        saldo = 0.0;\n        std::cout &lt;&lt; \"Conto creato con successo!\\n\";\n    }\n};\n\n1\n\nCostruttore di default: viene chiamato quando si scrive ContoBancario c; e mette saldo a zero. Senza, saldo conterrebbe spazzatura."
   },
   {
     "objectID": "lezione-06/index.html#costruttori-con-parametri",
     "href": "lezione-06/index.html#costruttori-con-parametri",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Costruttori con Parametri",
-    "text": "Costruttori con Parametri\nPossiamo passare argomenti al costruttore nel momento in cui creiamo l’oggetto.\nclass Result {\nprivate:\n1    double loss_;\n    double accuracy_;\n\npublic:\n    // Costruttore con parametri\n2    Result(const double& l, const double& a) {\n        loss_ = l;\n        accuracy_ = a;\n    }\n    \n    double getLoss() { return loss_; }\n};\n\nint main() {\n3    // Result r1;\n    \n4    Result r2(1.1, 0.95);\n    return 0;\n}\n\n1\n\nConvenzione molto usata: aggiungere un underscore _ alla fine dei nomi delle variabili private.\n\n2\n\nInizializziamo l’oggetto con dati forniti dall’esterno.\n\n3\n\nERRORE! Non abbiamo fornito i parametri previsti.\n\n4\n\nOk! Chiamiamo il costruttore passando i dati necessari per la “nascita” dell’oggetto."
+    "text": "Costruttori con Parametri\nPossiamo passare argomenti al costruttore nel momento in cui creiamo l’oggetto.\nclass Result {\nprivate:\n1    double loss_;\n    double accuracy_;\n\npublic:\n    // Costruttore con parametri\n2    Result(double l, double a) {\n        loss_ = l;\n        accuracy_ = a;\n    }\n    \n    double getLoss() { return loss_; }\n};\n\nint main() {\n3    // Result r1;\n    \n4    Result r2(1.1, 0.95);\n    return 0;\n}\n\n1\n\nConvenzione molto usata: aggiungere un underscore _ alla fine dei nomi delle variabili private.\n\n2\n\nInizializziamo l’oggetto con dati forniti dall’esterno. Nota i double passati per valore: il const-reference della Lezione 5 serve per gli oggetti pesanti, su un double costerebbe più di quanto risparmia.\n\n3\n\nERRORE! Non abbiamo fornito i parametri previsti.\n\n4\n\nOk! Chiamiamo il costruttore passando i dati necessari per la “nascita” dell’oggetto."
   },
   {
     "objectID": "lezione-06/index.html#class-vs-struct",
@@ -1985,7 +2055,21 @@
     "href": "lezione-06/index.html#soluzione-dellesercizio-il-main",
     "title": "Programmazione Scientifica++: Lezione 6",
     "section": "Soluzione dell’Esercizio: Il Main",
-    "text": "Soluzione dell’Esercizio: Il Main\nE ora mettiamola all’opera!\nint main() {\n    // 1. Creazione (Istanziazione) dell'Oggetto\n1    Particella protone(2.0, 10.0);\n    \n2    // std::cout &lt;&lt; protone.massa_;\n    \n    // 2. Chiamata al metodo tramite l'operatore punto (.)\n3    double e = protone.calcola_energia();\n    \n    std::cout &lt;&lt; \"Energia della Particella: \" &lt;&lt; e &lt;&lt; \" Joule\\n\";\n    \n    return 0;\n}\n\n1\n\nL’oggetto “nasce” sano ed integro.\n\n2\n\nERRORE DI COMPILAZIONE! massa_ è privata, il main non può sbirciarci dentro.\n\n3\n\nUsiamo la “dot notation” (operatore .) per far agire l’oggetto. Restituisce 100.0.\n\n\nTorna all’indice"
+    "text": "Soluzione dell’Esercizio: Il Main\nE ora mettiamola all’opera!\nint main() {\n    // 1. Creazione (Istanziazione) dell'Oggetto\n1    Particella protone(2.0, 10.0);\n    \n2    // std::cout &lt;&lt; protone.massa_;\n    \n    // 2. Chiamata al metodo tramite l'operatore punto (.)\n3    double e = protone.calcola_energia();\n    \n    std::cout &lt;&lt; \"Energia della Particella: \" &lt;&lt; e &lt;&lt; \" Joule\\n\";\n    \n    return 0;\n}\n\n1\n\nL’oggetto “nasce” sano ed integro.\n\n2\n\nERRORE DI COMPILAZIONE! massa_ è privata, il main non può sbirciarci dentro.\n\n3\n\nUsiamo la “dot notation” (operatore .) per far agire l’oggetto. Restituisce 100.0."
+  },
+  {
+    "objectID": "lezione-06/index.html#esercizi-lampo-cosa-stampa",
+    "href": "lezione-06/index.html#esercizi-lampo-cosa-stampa",
+    "title": "Programmazione Scientifica++: Lezione 6",
+    "section": "Esercizi lampo: cosa stampa?",
+    "text": "Esercizi lampo: cosa stampa?\nDue minuti, senza portatile. In entrambi la risposta istintiva è sbagliata.\n1.\n#include &lt;iostream&gt;\n\nvoid f(int v[]) { std::cout &lt;&lt; sizeof(v) &lt;&lt; \"\\n\"; }\n\nint main() {\n    int v[5];\n    std::cout &lt;&lt; sizeof(v) &lt;&lt; \"\\n\";\n    f(v);\n}\n2.\nint v[] = {10, 20, 30, 40, 50};\nint* p = v + 3;\nstd::cout &lt;&lt; p - v &lt;&lt; \" \" &lt;&lt; *(v + 1) &lt;&lt; \" \" &lt;&lt; 2[v] &lt;&lt; \"\\n\";"
+  },
+  {
+    "objectID": "lezione-06/index.html#esercizi-lampo-le-risposte",
+    "href": "lezione-06/index.html#esercizi-lampo-le-risposte",
+    "title": "Programmazione Scientifica++: Lezione 6",
+    "section": "Esercizi lampo: le risposte",
+    "text": "Esercizi lampo: le risposte\n1. Stampa 20 e poi 8. Nel main v è un array di 5 interi e sizeof lo sa: 20 byte. Passato a f, l’array decade a int* e sizeof misura il puntatore: 8 byte su una macchina a 64 bit. È la dimostrazione che un array non è un puntatore — lo diventa attraversando la chiamata, e la lunghezza si perde per strada. Per questo computeLoss riceve anche nData. Buona notizia: g++ -Wall in questo caso vi avvisa, con 'sizeof' on array function parameter 'v' will return size of 'int*'.\n2. Stampa 3 20 30. I primi due sono aritmetica dei puntatori normale. Il terzo è 2[v]: sembra un errore di battitura e invece compila, perché a[i] in C++ è definito come *(a + i) — e la somma è commutativa, quindi 2[v] è *(2 + v), cioè v[2]. Non scrivetelo mai, ma sapere perché funziona vuol dire aver capito cosa sono davvero le parentesi quadre."
   },
   {
     "objectID": "lezione-08/index.html#problematiche-di-un-singolo-file-.cpp",
@@ -2153,14 +2237,14 @@
     "href": "lezione-08/index.html#come-si-trovano-questi-errori-addresssanitizer",
     "title": "Programmazione Scientifica++: Lezione 8",
     "section": "Come si trovano questi errori? (AddressSanitizer)",
-    "text": "Come si trovano questi errori? (AddressSanitizer)\nIndividuare un memory leak in 10.000 righe di codice a occhio nudo è impossibile. I programmatori professionisti usano i Sanitizers.\nIl compilatore C++ moderno (g++ o clang++) ha uno strumento magico chiamato AddressSanitizer. Basta compilare con un flag speciale:\ng++ -fsanitize=address -g main.cpp -o main\nSe c’è un Memory Leak o un Dangling Pointer, il programma si bloccherà dicendovi l’esatta riga di codice .cpp in cui avete fatto il new dimenticando il delete!\n\n\n\n\n\n\nTip\n\n\nUsate -fsanitize=address durante tutto lo sviluppo. Toglietelo solo alla fine quando generate la versione “Release” per la massima velocità.\n\n\n\nTorna all’indice"
+    "text": "Come si trovano questi errori? (AddressSanitizer)\nIndividuare un memory leak in 10.000 righe di codice a occhio nudo è impossibile. I programmatori professionisti usano i Sanitizers.\nIl compilatore C++ moderno (g++ o clang++) ha uno strumento magico chiamato AddressSanitizer. Basta compilare con un flag speciale:\ng++ -fsanitize=address -g main.cpp -o main\nSe c’è un Memory Leak o un Dangling Pointer, il programma si bloccherà dicendovi l’esatta riga di codice .cpp in cui avete fatto il new dimenticando il delete!\n\n\n\n\n\n\nTip\n\n\nUsate -fsanitize=address durante tutto lo sviluppo. Toglietelo solo alla fine quando generate la versione “Release” per la massima velocità."
   },
   {
     "objectID": "lezione-07/index.html#argomenti-di-oggi",
     "href": "lezione-07/index.html#argomenti-di-oggi",
     "title": "Programmazione Scientifica++: Lezione 7",
     "section": "Argomenti di Oggi",
-    "text": "Argomenti di Oggi\n\nAnatomia di una Classe: Dati e Comportamenti\nIl Principio del Minor Privilegio\n\nRegole dell’Incapsulamento (public vs private)\nGetters e Setters\n\nI Costruttori\n\nDefault, Parametrizzati e di Copia\n\nSeparare Interfaccia e Implementazione\n\nHeader Files (.hpp) vs Source Files (.cpp)\nInclusion Guards (#ifndef o #pragma once)\n\nCompilazione e Linking"
+    "text": "Argomenti di Oggi\n\nAnatomia di una Classe: Dati e Comportamenti\nIl Principio del Minor Privilegio\n\nRegole dell’Incapsulamento (public vs private)\nGetters e Setters\n\nI Costruttori\n\nDefault, Parametrizzati e di Copia\nCosa il compilatore vi regala, e quando smette di farlo\nCostruttori privati: il Singleton\n\n\nHeader, compilazione e linking sono la Lezione 8, insieme a stack e heap."
   },
   {
     "objectID": "lezione-07/index.html#ripasso-le-classi-in-c",
@@ -2223,14 +2307,28 @@
     "href": "lezione-07/index.html#e-se-non-scrivo-nessun-costruttore",
     "title": "Programmazione Scientifica++: Lezione 7",
     "section": "E se non scrivo nessun costruttore?",
-    "text": "E se non scrivo nessun costruttore?\nSe ti dimentichi di scrivere i costruttori, il compilatore genera un Costruttore di Default gratuito che non fa assolutamente nulla (lascia i dati non inizializzati, con valori spazzatura).\nMA ATTENZIONE:\nclass Datum {\npublic:\n    Datum(double v) { value_ = v; } // Ho scritto SOLO il parametrizzato!\nprivate:\n    double value_;\n};\n\nint main() {\n1    // ERRORE DI COMPILAZIONE!\n    Datum d1; \n    return 0;\n}\n\n1\n\nSe scrivi un costruttore personalizzato, il C++ si rifiuta di regalarti quello di default. Se provi a creare l’oggetto senza argomenti, il programma non compila. Devi scrivere esplicitamente Datum() { ... }."
+    "text": "E se non scrivo nessun costruttore?\nSe non scrivete nessun costruttore, il compilatore ve ne regala uno di default. Sui tipi base (double, int, i puntatori) non fa nulla: i dati restano non inizializzati, con valori spazzatura.\nMA ATTENZIONE:\nclass Datum {\npublic:\n    Datum(double v) { value_ = v; } // Ho scritto SOLO il parametrizzato!\nprivate:\n    double value_;\n};\n\nint main() {\n1    // ERRORE DI COMPILAZIONE!\n    Datum d1; \n    return 0;\n}\n\n1\n\nSe scrivi un costruttore personalizzato, il C++ si rifiuta di regalarti quello di default. Se provi a creare l’oggetto senza argomenti, il programma non compila. Devi scrivere esplicitamente Datum() { ... }."
   },
   {
     "objectID": "lezione-07/index.html#costruttori-privati",
     "href": "lezione-07/index.html#costruttori-privati",
     "title": "Programmazione Scientifica++: Lezione 7",
     "section": "Costruttori Privati?",
-    "text": "Costruttori Privati?\nPossiamo mettere un costruttore nella sezione private? Certo! È un trucco avanzato.\nclass DatabaseConnection {\nprivate:\n1    DatabaseConnection() { }\n\npublic:\n2    static DatabaseConnection& getInstance() {\n        static DatabaseConnection instance;\n        return instance;\n    }\n};\n\nint main() {\n    // DatabaseConnection db; // ERRORE! Non posso instanziarlo!\n    DatabaseConnection& db = DatabaseConnection::getInstance();\n    return 0;\n}\n\n1\n\nNessuno da fuori può creare questo oggetto con il comando classico.\n\n2\n\nEspongo un metodo per ottenere l’unica copia esistente (Design Pattern: Singleton).\n\n\nTorna all’indice"
+    "text": "Costruttori Privati?\nPossiamo mettere un costruttore in private? Certo, ed è il modo per imporre che un oggetto esista una volta sola — un generatore di numeri casuali, per dire: due generatori con lo stesso seme danno la stessa sequenza.\nclass Generatore {\nprivate:\n1    Generatore() { }\n\npublic:\n2    static Generatore& get() {\n        static Generatore unico;\n        return unico;\n    }\n};\n\nint main() {\n    // Generatore g; // ERRORE! Il costruttore è privato.\n3    Generatore& g = Generatore::get();\n    return 0;\n}\n\n1\n\nNessuno da fuori può costruirlo con Generatore g;.\n\n2\n\nL’unico modo per ottenerlo. Qui static vuol dire due cose diverse — metodo che non appartiene a un oggetto, variabile che nasce una volta sola — e sono materia della Lezione 13: per ora è una ricetta.\n\n3\n\nDesign Pattern Singleton: una sola istanza, garantita dal linguaggio.\n\n\n\n\n\n\n\n\nNote\n\n\nIl randnumgen.hpp che vi daremo fa la stessa cosa più alla svelta, con un unico rng globale. Il Singleton serve quando volete anche impedire il secondo."
+  },
+  {
+    "objectID": "lezione-07/index.html#esercizi-lampo-cosa-stampa",
+    "href": "lezione-07/index.html#esercizi-lampo-cosa-stampa",
+    "title": "Programmazione Scientifica++: Lezione 7",
+    "section": "Esercizi lampo: cosa stampa?",
+    "text": "Esercizi lampo: cosa stampa?\nDue minuti, senza portatile. Compilate mentalmente con -std=c++17.\n1. Quante righe escono, e quali?\n#include &lt;iostream&gt;\n\nclass D {\npublic:\n    D()          { std::cout &lt;&lt; \"default\\n\"; }\n    D(double)    { std::cout &lt;&lt; \"param\\n\"; }\n    D(const D&)  { std::cout &lt;&lt; \"copia\\n\"; }\n};\n\nint main() {\n    D a;\n    D b(1.0);\n    D c = b;\n    D d = D(2.0);\n}\n2. La classe Persona della slide sui setter non ha costruttori.\nPersona p;\np.setEta(200);          // l'età non passa il controllo\nstd::cout &lt;&lt; p.getEta();"
+  },
+  {
+    "objectID": "lezione-07/index.html#esercizi-lampo-le-risposte",
+    "href": "lezione-07/index.html#esercizi-lampo-le-risposte",
+    "title": "Programmazione Scientifica++: Lezione 7",
+    "section": "Esercizi lampo: le risposte",
+    "text": "Esercizi lampo: le risposte\n1. Quattro righe: default, param, copia, param. L’ultima riga è la sorpresa: D d = D(2.0); sembra costruire un temporaneo e poi copiarlo, e fino al C++14 faceva esattamente questo — cinque righe. Dal C++17 l’eliminazione della copia in questo caso non è un’ottimizzazione concessa al compilatore, è obbligatoria: il temporaneo non esiste proprio, d viene costruito sul posto. Provate a rimettere -std=c++11 -fno-elide-constructors e la quinta riga ricompare.\n2. Non si sa. setEta(200) rifiuta il valore — il setter fa il suo mestiere — ma eta_ non è mai stato inizializzato da nessuno, quindi getEta() legge spazzatura: è undefined behaviour, può stampare qualunque cosa. Ed è esattamente il motivo per cui la slide dopo parla di costruttori: validare gli ingressi non serve a niente se l’oggetto nasce già in uno stato invalido. Incapsulamento e costruttori sono due metà dello stesso problema."
   },
   {
     "objectID": "lezione-09/index.html#i-distruttori-classe",
@@ -2335,7 +2433,7 @@
     "href": "lezione-09/index.html#soluzione-il-source-.cpp",
     "title": "Programmazione Scientifica++: Lezione 9",
     "section": "Soluzione: Il Source .cpp",
-    "text": "Soluzione: Il Source .cpp\nDynamicArray.cpp\n#include \"DynamicArray.hpp\"\n#include &lt;iostream&gt;\n\nDynamicArray::DynamicArray(int size) {\n    size_ = size;\n1    data_ = new double[size_];\n    std::cout &lt;&lt; \"Allocati \" &lt;&lt; size_ &lt;&lt; \" elementi.\\n\";\n}\n\nDynamicArray::~DynamicArray() {\n2    delete[] data_;\n    std::cout &lt;&lt; \"Memoria liberata correttamente!\\n\";\n}\n\nvoid DynamicArray::imposta(int index, double value) {\n    if (index &gt;= 0 && index &lt; size_) { // Protezione boundaries\n        data_[index] = value;\n    }\n}\n\ndouble DynamicArray::leggi(int index) const {\n    if (index &gt;= 0 && index &lt; size_) return data_[index];\n    return 0.0;\n}\n\n1\n\nL’acquisizione della memoria avviene alla nascita dell’oggetto.\n\n2\n\nIl rilascio avviene alla morte. Zero Memory Leaks! RAII in azione.\n\n\nTorna all’indice"
+    "text": "Soluzione: Il Source .cpp\nDynamicArray.cpp\n#include \"DynamicArray.hpp\"\n#include &lt;iostream&gt;\n\nDynamicArray::DynamicArray(int size) {\n    size_ = size;\n1    data_ = new double[size_];\n    std::cout &lt;&lt; \"Allocati \" &lt;&lt; size_ &lt;&lt; \" elementi.\\n\";\n}\n\nDynamicArray::~DynamicArray() {\n2    delete[] data_;\n    std::cout &lt;&lt; \"Memoria liberata correttamente!\\n\";\n}\n\nvoid DynamicArray::imposta(int index, double value) {\n    if (index &gt;= 0 && index &lt; size_) { // Protezione boundaries\n        data_[index] = value;\n    }\n}\n\ndouble DynamicArray::leggi(int index) const {\n    if (index &gt;= 0 && index &lt; size_) return data_[index];\n    return 0.0;\n}\n\n1\n\nL’acquisizione della memoria avviene alla nascita dell’oggetto.\n\n2\n\nIl rilascio avviene alla morte. Zero Memory Leaks! RAII in azione."
   },
   {
     "objectID": "lezione-01/index.html#introduzione",
@@ -2552,7 +2650,21 @@
     "href": "lezione-01/index.html#cosè-la-programmazione-orientata-agli-oggetti",
     "title": "Programmazione Scientifica++: Lezione 1",
     "section": "Cos’è la Programmazione Orientata agli Oggetti?",
-    "text": "Cos’è la Programmazione Orientata agli Oggetti?\n\nIn passato (es. vecchi corsi) vi avrebbero fatto l’esempio dell’oggetto Automobile che può essere guidata, o della Porta che può essere aperta…\nNoi faremo sul serio. Gli oggetti sono dati dotati di comportamento (attributi + metodi).\nNel nostro framework neurale:\n\nUna Matrice non è solo una griglia di numeri: è un oggetto che “sa” moltiplicarsi per un’altra matrice.\nUn Layer non è un array di pesi: espone forward() per propagare il segnale e backward() per calcolare il gradiente.\n\n\nSiete pronti a costruire la vostra IA?\nTorna all’indice"
+    "text": "Cos’è la Programmazione Orientata agli Oggetti?\n\nIn passato (es. vecchi corsi) vi avrebbero fatto l’esempio dell’oggetto Automobile che può essere guidata, o della Porta che può essere aperta…\nNoi faremo sul serio. Gli oggetti sono dati dotati di comportamento (attributi + metodi).\nNel nostro framework neurale:\n\nUna Matrice non è solo una griglia di numeri: è un oggetto che “sa” moltiplicarsi per un’altra matrice.\nUn Layer non è un array di pesi: espone forward() per propagare il segnale e backward() per calcolare il gradiente.\n\n\nSiete pronti a costruire la vostra IA?"
+  },
+  {
+    "objectID": "lezione-01/index.html#quesiti-finali",
+    "href": "lezione-01/index.html#quesiti-finali",
+    "title": "Programmazione Scientifica++: Lezione 1",
+    "section": "Quesiti finali",
+    "text": "Quesiti finali\nDue domande da portarsi a casa. La prima ha una risposta numerica, la seconda no: le slide restano sul sito, ragionateci con calma.\n1. Quanto costa riconoscere una cifra? La rete che costruiremo ha 784 ingressi, 200 neuroni nascosti e 10 uscite. Quante moltiplicazioni servono per classificare una immagine? E per una sola epoca, cioè un passaggio su tutte le 60.000 immagini di addestramento?\n2. (aperta) Quanto pesa un numero scritto in chiaro? Un pixel di MNIST è un byte: un intero fra 0 e 255. Nel file CSV lo stesso pixel è scritto in cifre decimali, seguito da una virgola. Quanti caratteri costa? Stimate di quanto il file è più grosso dell’informazione che contiene, e chiedetevi chi paga il conto quando il programma lo legge."
+  },
+  {
+    "objectID": "lezione-01/index.html#quesiti-finali-le-risposte",
+    "href": "lezione-01/index.html#quesiti-finali-le-risposte",
+    "title": "Programmazione Scientifica++: Lezione 1",
+    "section": "Quesiti finali: le risposte",
+    "text": "Quesiti finali: le risposte\n1. I pesi sono \\(784 \\times 200 + 200 \\times 10 = 158.800\\), dunque circa \\(1{,}6 \\cdot 10^5\\) moltiplicazioni per immagine. Un’epoca su 60.000 immagini ne chiede \\(\\approx 10^{10}\\); dieci epoche, tenendo conto che il passaggio all’indietro costa all’incirca il doppio di quello in avanti, arrivano a \\(\\approx 3 \\cdot 10^{11}\\).\nTrecento miliardi di moltiplicazioni per il “Hello World” del machine learning. È il motivo per cui tre slide di questa lezione parlano di linguaggi compilati: non è una questione di gusto. In laboratorio misurerete il tempo vero del vostro codice — tenete da parte questo numero e confrontatelo.\n2. Traccia: 0, sono due caratteri, 255, sono quattro, per un solo byte di informazione. E ogni carattere va letto, riconosciuto come cifra e ricomposto in un numero: 60.000 righe per 785 valori fanno 47 milioni di numeri da ricostruire, a ogni lettura del dataset. È esattamente il lavoro del Laboratorio 12, dove scoprirete che “leggere un file” non è mai una banalità."
   },
   {
     "objectID": "lab-09/index.html#soluzione-del-laboratorio-08",
@@ -2657,7 +2769,7 @@
     "href": "lab-09/index.html#task-da-completare",
     "title": "Laboratorio 09",
     "section": "Task da Completare",
-    "text": "Task da Completare\n\nCreare eigen_wrap.hpp con l’alias Matrix&lt;ntype&gt;\nCreare layer.hpp con is_training, outputs, delta_l, inputs_ptr\nEliminare ilayer.hpp, dense_layer.*, activation_layer.*, sequential_network.*\nCreare parametricLayer.hpp con ParametricLayer (che ha gauss() e set_weights puro virtuale) e DenseLayer\nImplementare resize_weights() e set_weights() in DenseLayer\nRinominare i pesi in Wt, aggiungere dWt, eliminare i bias\nPassare a int type, int distro e al costruttore (Nnodes, Nin)\nCreare activation_layers.hpp con match_shape, SigmoidLayer, tanhLayer\nRiscrivere sequential.hpp come Sequential&lt;ntype&gt; : layer&lt;ntype&gt;\nFar ritornare a forward() un Matrix&lt;ntype&gt;& e usare inputs_ptr\nVerificare che Sequential&lt;float&gt; e Sequential&lt;double&gt; compilino entrambi\nTrappola: provate a scrivere DenseLayer&lt;float&gt;(784, 128) e leggete l’eccezione\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task da Completare\n\nCreare eigen_wrap.hpp con l’alias Matrix&lt;ntype&gt;\nCreare layer.hpp con is_training, outputs, delta_l, inputs_ptr\nEliminare ilayer.hpp, dense_layer.*, activation_layer.*, sequential_network.*\nCreare parametricLayer.hpp con ParametricLayer (che ha gauss() e set_weights puro virtuale) e DenseLayer\nImplementare resize_weights() e set_weights() in DenseLayer\nRinominare i pesi in Wt, aggiungere dWt, eliminare i bias\nPassare a int type, int distro e al costruttore (Nnodes, Nin)\nCreare activation_layers.hpp con match_shape, SigmoidLayer, tanhLayer\nRiscrivere sequential.hpp come Sequential&lt;ntype&gt; : layer&lt;ntype&gt;\nFar ritornare a forward() un Matrix&lt;ntype&gt;& e usare inputs_ptr\nVerificare che Sequential&lt;float&gt; e Sequential&lt;double&gt; compilino entrambi\nTrappola: provate a scrivere DenseLayer&lt;float&gt;(784, 128) e leggete l’eccezione\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lab-01/index.html#obiettivo-di-oggi",
@@ -2720,7 +2832,7 @@
     "href": "lab-01/index.html#task-hello-eigen-opencv",
     "title": "Laboratorio 01",
     "section": "Task: Hello Eigen + OpenCV",
-    "text": "Task: Hello Eigen + OpenCV\nVerificate che tutto funzioni scrivendo un main.cpp che:\n\nCrea una matrice W (\\(3 \\times 4\\), valori casuali) e un vettore x (\\(4 \\times 1\\)).\nCalcola \\(z = W \\cdot x\\) e lo stampa — le dimensioni devono essere \\(3 \\times 1\\).\nCalcola z_relu = z.array().max(0.0) e lo stampa: è il vostro primo forward pass!\nCrea un’immagine vuota OpenCV \\(28 \\times 28\\) (scala di grigi) e la visualizza:\n\n#include &lt;opencv2/opencv.hpp&gt;\ncv::Mat img(28, 28, CV_8UC1, cv::Scalar(128)); // grigio medio\ncv::imshow(\"Test MNIST size\", img);\ncv::waitKey(0);\nSe Eigen stampa e OpenCV apre la finestra, l’ambiente è pronto per tutto il corso.\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task: Hello Eigen + OpenCV\nVerificate che tutto funzioni scrivendo un main.cpp che:\n\nCrea una matrice W (\\(3 \\times 4\\), valori casuali) e un vettore x (\\(4 \\times 1\\)).\nCalcola \\(z = W \\cdot x\\) e lo stampa — le dimensioni devono essere \\(3 \\times 1\\).\nCalcola z_relu = z.array().max(0.0) e lo stampa: è il vostro primo forward pass!\nCrea un’immagine vuota OpenCV \\(28 \\times 28\\) (scala di grigi) e la visualizza:\n\n#include &lt;opencv2/opencv.hpp&gt;\ncv::Mat img(28, 28, CV_8UC1, cv::Scalar(128)); // grigio medio\ncv::imshow(\"Test MNIST size\", img);\ncv::waitKey(0);\nSe Eigen stampa e OpenCV apre la finestra, l’ambiente è pronto per tutto il corso.\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lab-08/index.html#soluzione-del-laboratorio-07",
@@ -2783,7 +2895,7 @@
     "href": "lab-08/index.html#task-da-completare",
     "title": "Laboratorio 08",
     "section": "Task da Completare",
-    "text": "Task da Completare\n\nAggiungere randnumgen.hpp e usare rng.seed(42) per la riproducibilità\nDichiarare enum class InitType e enum class DistroType\nModificare il costruttore di DenseLayer per accettarli come argomenti di default\nImplementare gauss() con Box-Muller (attenzione al do/while sullo zero)\nCalcolare la scala \\(s\\) con uno switch su InitType\nCreare ActivationLayer come base astratta e farne derivare SigmoidLayer\nAggiungere TanhLayer con .array().tanh().matrix()\nVerificare che la deviazione standard dei pesi coincida con \\(\\sqrt{2/N_{in}}\\)\nEsperimento: inizializzate con MatrixXd::Random e confrontate quanti neuroni saturano\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task da Completare\n\nAggiungere randnumgen.hpp e usare rng.seed(42) per la riproducibilità\nDichiarare enum class InitType e enum class DistroType\nModificare il costruttore di DenseLayer per accettarli come argomenti di default\nImplementare gauss() con Box-Muller (attenzione al do/while sullo zero)\nCalcolare la scala \\(s\\) con uno switch su InitType\nCreare ActivationLayer come base astratta e farne derivare SigmoidLayer\nAggiungere TanhLayer con .array().tanh().matrix()\nVerificare che la deviazione standard dei pesi coincida con \\(\\sqrt{2/N_{in}}\\)\nEsperimento: inizializzate con MatrixXd::Random e confrontate quanti neuroni saturano\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lab-12/index.html#soluzione-del-laboratorio-11",
@@ -2895,7 +3007,7 @@
     "href": "lab-12/index.html#task-da-completare",
     "title": "Laboratorio 12",
     "section": "Task da Completare",
-    "text": "Task da Completare\n\nCreare dataset.hpp con struct Batch e BaseDataset&lt;ntype&gt; astratta\nIncludere l’hook isLabelsmoothingEnabled() con default false\nCreare mnist_dataset.hpp con MnistDataset&lt;ntype&gt; : BaseDataset&lt;ntype&gt;\nConservare i pixel come Matrix&lt;int&gt; grezzi, non normalizzati\nImplementare load_csv() saltando l’intestazione, con doppio getline\nUsare maxelem per lavorare su 1.000 righe durante lo sviluppo\nNormalizzare in [0.01, 0.99] (attenzione a .template cast&lt;ntype&gt;())\nCostruire i target con 0.01 / 0.99 (non 0 e 1)\nImplementare reset_and_shuffle() con Fisher-Yates sugli indici\nImplementare get_next_batch(), has_next_batch(), get_num_batches()\nAggiungere opencv_wrap.hpp e incollare il codice fornito dell’appendice (show, show_elem, save_elem, getelem, PNG)\nVerificare l’immagine-croce\nVisualizzare 3 cifre reali e confrontarle con la label\nFare un forward pass su un’immagine vera\nDomanda: perché lo shuffle permuta gli indici e non le immagini?\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task da Completare\n\nCreare dataset.hpp con struct Batch e BaseDataset&lt;ntype&gt; astratta\nIncludere l’hook isLabelsmoothingEnabled() con default false\nCreare mnist_dataset.hpp con MnistDataset&lt;ntype&gt; : BaseDataset&lt;ntype&gt;\nConservare i pixel come Matrix&lt;int&gt; grezzi, non normalizzati\nImplementare load_csv() saltando l’intestazione, con doppio getline\nUsare maxelem per lavorare su 1.000 righe durante lo sviluppo\nNormalizzare in [0.01, 0.99] (attenzione a .template cast&lt;ntype&gt;())\nCostruire i target con 0.01 / 0.99 (non 0 e 1)\nImplementare reset_and_shuffle() con Fisher-Yates sugli indici\nImplementare get_next_batch(), has_next_batch(), get_num_batches()\nAggiungere opencv_wrap.hpp e incollare il codice fornito dell’appendice (show, show_elem, save_elem, getelem, PNG)\nVerificare l’immagine-croce\nVisualizzare 3 cifre reali e confrontarle con la label\nFare un forward pass su un’immagine vera\nDomanda: perché lo shuffle permuta gli indici e non le immagini?\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lab-14/index.html#soluzione-del-laboratorio-13",
@@ -2986,7 +3098,7 @@
     "href": "lab-14/index.html#task-da-completare",
     "title": "Laboratorio 14",
     "section": "Task da Completare",
-    "text": "Task da Completare\n\nCreare metric.hpp con Metric&lt;ntype&gt; astratta (reset/update/get_result/get_name)\nCreare mnist_metric.hpp con l’argmax via maxCoeff(&idx, &dummy)\nCreare trainer.hpp con i quattro puntatori ai collaboratori\nImplementare test(): eval(), nessun backward, shuffle disattivato\nImplementare train() con le quattro fasi (forward, loss, backward, update)\nChiamare scheduler-&gt;step(ep) prima dell’epoca\nIncollare progress_bar() (fornita) e chiamarla da train() ogni 100 batch\nAddestrare su MNIST vero: prima 50 batch, poi tutto il dataset\nVerificare che la performance superi il 90% dopo 3 epoche\nSalvare il modello con save_model(\"mlp.model\") e ricaricarlo\nDiagnostica: cosa vedete se azzerate il learning rate? E se lo mettete a 10?\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task da Completare\n\nCreare metric.hpp con Metric&lt;ntype&gt; astratta (reset/update/get_result/get_name)\nCreare mnist_metric.hpp con l’argmax via maxCoeff(&idx, &dummy)\nCreare trainer.hpp con i quattro puntatori ai collaboratori\nImplementare test(): eval(), nessun backward, shuffle disattivato\nImplementare train() con le quattro fasi (forward, loss, backward, update)\nChiamare scheduler-&gt;step(ep) prima dell’epoca\nIncollare progress_bar() (fornita) e chiamarla da train() ogni 100 batch\nAddestrare su MNIST vero: prima 50 batch, poi tutto il dataset\nVerificare che la performance superi il 90% dopo 3 epoche\nSalvare il modello con save_model(\"mlp.model\") e ricaricarlo\nDiagnostica: cosa vedete se azzerate il learning rate? E se lo mettete a 10?\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lezione-12/index.html#argomenti-di-oggi",
@@ -3182,7 +3294,7 @@
     "href": "lezione-12/index.html#esercizio-il-contratto-della-loss-15-min",
     "title": "Programmazione Scientifica++: Lezione 12",
     "section": "Esercizio: Il Contratto della Loss (15 min)",
-    "text": "Esercizio: Il Contratto della Loss (15 min)\nMettiamo in pratica questi concetti cruciali!\n\nCrea un file Loss.cpp. Definisci una Classe Astratta Base LossFunction.\nAl suo interno crea un Distruttore Virtuale.\nCrea un metodo Puro Virtuale virtual double compute(double y_true, double y_pred) = 0;.\nCrea una classe derivata MSE (Mean Squared Error).\nSe non ricordi, il MSE per due numeri è semplicemente \\((y_{pred} - y_{true})^2\\).\nCrea un’altra classe derivata AbsoluteError che calcola \\(|y_{pred} - y_{true}|\\) (usa std::abs).\nNel main, crea un std::vector&lt;LossFunction*&gt; e inseriscili entrambi. Usa un ciclo per stampare l’errore per i valori (true=1.0, pred=0.5). Svuota la RAM a fine programma!\n\nTorna all’indice"
+    "text": "Esercizio: Il Contratto della Loss (15 min)\nMettiamo in pratica questi concetti cruciali!\n\nCrea un file Loss.cpp. Definisci una Classe Astratta Base LossFunction.\nAl suo interno crea un Distruttore Virtuale.\nCrea un metodo Puro Virtuale virtual double compute(double y_true, double y_pred) = 0;.\nCrea una classe derivata MSE (Mean Squared Error).\nSe non ricordi, il MSE per due numeri è semplicemente \\((y_{pred} - y_{true})^2\\).\nCrea un’altra classe derivata AbsoluteError che calcola \\(|y_{pred} - y_{true}|\\) (usa std::abs).\nNel main, crea un std::vector&lt;LossFunction*&gt; e inseriscili entrambi. Usa un ciclo per stampare l’errore per i valori (true=1.0, pred=0.5). Svuota la RAM a fine programma!"
   },
   {
     "objectID": "lezione-13/index.html#argomenti-di-oggi",
@@ -3287,7 +3399,7 @@
     "href": "lezione-13/index.html#utility-classes-nel-machine-learning",
     "title": "Programmazione Scientifica++: Lezione 13",
     "section": "Utility Classes nel Machine Learning",
-    "text": "Utility Classes nel Machine Learning\nRaggruppiamo tutte le funzioni matematiche in una Classe che contiene SOLO metodi statici!\n#include &lt;cmath&gt;\n\nclass MathUtils {\npublic:\n    static double relu(double x) {\n        return (x &gt; 0) ? x : 0.0;\n    }\n    \n    static double sigmoid(double x) {\n        return 1.0 / (1.0 + std::exp(-x));\n    }\n};\n\nint main() {\n    // Uso le funzioni come fossero una libreria matematica!\n1    double y = MathUtils::relu(-5.0);\n}\n\n1\n\nQuesta è la base su cui sono costruite gran parte delle librerie professionali C++.\n\n\nTorna all’indice"
+    "text": "Utility Classes nel Machine Learning\nRaggruppiamo tutte le funzioni matematiche in una Classe che contiene SOLO metodi statici!\n#include &lt;cmath&gt;\n\nclass MathUtils {\npublic:\n    static double relu(double x) {\n        return (x &gt; 0) ? x : 0.0;\n    }\n    \n    static double sigmoid(double x) {\n        return 1.0 / (1.0 + std::exp(-x));\n    }\n};\n\nint main() {\n    // Uso le funzioni come fossero una libreria matematica!\n1    double y = MathUtils::relu(-5.0);\n}\n\n1\n\nQuesta è la base su cui sono costruite gran parte delle librerie professionali C++."
   },
   {
     "objectID": "lezione-03/index.html#argomenti-di-oggi",
@@ -3434,28 +3546,42 @@
     "href": "lezione-03/index.html#i-learning-rate-scheduler",
     "title": "Programmazione Scientifica++: Lezione 3",
     "section": "I Learning Rate Scheduler",
-    "text": "I Learning Rate Scheduler\nAnche con Adam, tenere lo stesso passo dall’inizio alla fine è sconsigliato: in fondo alla vallata, passi troppo lunghi scavalcano il centro. Serve un Learning Rate Scheduler, che diminuisca \\(\\eta\\) col tempo. Due politiche classiche:\n\nReduceLROnPlateau — reattivo: se la Loss smette di scendere per 5 epoche, divide \\(\\eta\\) per 10. Ottimo per spremere l’ultimo grammo di precisione.\nCosine Annealing — proattivo: segue la curva del coseno, veloce all’inizio e dolce verso la fine, senza gli scalini del plateau.\n\nNel Laboratorio 10 scriverete l’interfaccia Scheduler a \\(\\eta\\) costante; queste due sono la traccia 2 dei progetti. Ma come uniamo Layer, Ottimizzatori, Scheduler e Backpropagation nello stesso software C++ senza impazzire?\nTorna all’indice"
+    "text": "I Learning Rate Scheduler\nAnche con Adam, tenere lo stesso passo dall’inizio alla fine è sconsigliato: in fondo alla vallata, passi troppo lunghi scavalcano il centro. Serve un Learning Rate Scheduler, che diminuisca \\(\\eta\\) col tempo. Due politiche classiche:\n\nReduceLROnPlateau — reattivo: se la Loss smette di scendere per 5 epoche, divide \\(\\eta\\) per 10. Ottimo per spremere l’ultimo grammo di precisione.\nCosine Annealing — proattivo: segue la curva del coseno, veloce all’inizio e dolce verso la fine, senza gli scalini del plateau.\n\nNel Laboratorio 10 scriverete l’interfaccia Scheduler a \\(\\eta\\) costante; queste due sono la traccia 2 dei progetti. Ma come uniamo Layer, Ottimizzatori, Scheduler e Backpropagation nello stesso software C++ senza impazzire?"
+  },
+  {
+    "objectID": "lezione-03/index.html#quesiti-finali",
+    "href": "lezione-03/index.html#quesiti-finali",
+    "title": "Programmazione Scientifica++: Lezione 3",
+    "section": "Quesiti finali",
+    "text": "Quesiti finali\n1. Un passo troppo lungo. Loss \\(L(x) = x^2\\), partenza \\(x_0 = 1\\), learning rate \\(\\eta = 1\\). Dove siete dopo un passo? E dopo due? Per quali \\(\\eta\\) il metodo converge, e qual è il valore che centra il minimo in un solo passo?\n2. (aperta) Il tetto della sigmoide. La derivata della sigmoide è \\(\\sigma' = \\sigma(1-\\sigma)\\). Qual è il suo valore massimo? La backpropagation moltiplica questo fattore una volta per strato: cosa arriva al primo strato di una rete di dieci? E allora come fanno ad addestrarsi le reti da cinquanta strati di cui leggete sui giornali?"
+  },
+  {
+    "objectID": "lezione-03/index.html#quesiti-finali-le-risposte",
+    "href": "lezione-03/index.html#quesiti-finali-le-risposte",
+    "title": "Programmazione Scientifica++: Lezione 3",
+    "section": "Quesiti finali: le risposte",
+    "text": "Quesiti finali: le risposte\n1. \\(L'(x) = 2x\\), quindi il passo è \\(x \\leftarrow x - \\eta\\,2x = (1 - 2\\eta)\\,x\\). Con \\(\\eta = 1\\) il fattore vale \\(-1\\): \\(x_1 = -1\\), \\(x_2 = +1\\), e si rimbalza fra i due per sempre senza che la loss cali di un millesimo. Si converge per \\(|1 - 2\\eta| &lt; 1\\), cioè \\(0 &lt; \\eta &lt; 1\\); e \\(\\eta = 0{,}5\\) annulla il fattore e centra il minimo al primo passo. Un learning rate grande non è “la stessa discesa, più veloce”: è un metodo diverso, che puo’ non convergere affatto.\n2. Traccia: \\(\\sigma(1-\\sigma)\\) è massima dove \\(\\sigma = 1/2\\) e vale \\(0{,}25\\). Dieci strati la moltiplicano dieci volte: \\(0{,}25^{10} \\approx\n10^{-6}\\), e siamo nel caso migliore. Il primo strato riceve un gradiente un milione di volte più piccolo dell’ultimo e di fatto non impara: è il vanishing gradient, già incontrato nella Lezione 02. Le reti profonde di oggi lo aggirano cambiando i tre ingredienti che qui diamo per scontati: la funzione di attivazione (ReLU, Lezione 02), l’inizializzazione dei pesi (He e Xavier, Laboratorio 08) e il percorso che l’errore fa per tornare indietro."
   },
   {
     "objectID": "lezione-05/index.html#array-vettori-statici-in-c",
     "href": "lezione-05/index.html#array-vettori-statici-in-c",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Array (Vettori Statici) in C++",
-    "text": "Array (Vettori Statici) in C++\n\nGli Array allocano blocchi di memoria contigui.\nLa dimensione deve essere nota a tempo di compilazione.\n\n\n\nint main() {\n    float v1[3] = {0.4, 1.34, 56.156}; \n1    float v2[3];\n2    float v3[] = {0.9, -0.1, -0.65};\n    \n    for(int i = 0; i &lt; 3; ++i) {\n        cout &lt;&lt; \"v1[\" &lt;&lt; i &lt;&lt; \"]: \" &lt;&lt; v1[i] &lt;&lt; endl;\n    }\n    return 0;\n}\n\n1\n\nNON INIZIALIZZATO: contiene spazzatura di memoria!\n\n2\n\nDimensione calcolata in automatico dal compilatore (3).\n\n\n\n\n\n\n\n\n\nImportant\n\n\nL’indice degli array in C++ parte sempre da 0! (v1[0], v1[1], v1[2])."
+    "text": "Array (Vettori Statici) in C++\n\nGli Array allocano blocchi di memoria contigui.\nLa dimensione deve essere nota a tempo di compilazione.\n\n\n\n#include &lt;iostream&gt;\n\nint main() {\n    float v1[3] = {0.4, 1.34, 56.156}; \n1    float v2[3];\n2    float v3[] = {0.9, -0.1, -0.65};\n    \n    for(int i = 0; i &lt; 3; ++i) {\n        std::cout &lt;&lt; \"v1[\" &lt;&lt; i &lt;&lt; \"]: \" &lt;&lt; v1[i] &lt;&lt; std::endl;\n    }\n    return 0;\n}\n\n1\n\nNON INIZIALIZZATO: contiene spazzatura di memoria!\n\n2\n\nDimensione calcolata in automatico dal compilatore (3).\n\n\n\n\n\n\n\n\n\nImportant\n\n\nL’indice degli array in C++ parte sempre da 0! (v1[0], v1[1], v1[2])."
   },
   {
     "objectID": "lezione-05/index.html#il-pericolo-nessun-controllo-sui-limiti",
     "href": "lezione-05/index.html#il-pericolo-nessun-controllo-sui-limiti",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Il pericolo: Nessun controllo sui limiti",
-    "text": "Il pericolo: Nessun controllo sui limiti\nIn C++, non c’è nessun controllo sui limiti dell’array a runtime per massimizzare le performance.\nint main() {\n    float vect[3] = {0.4, 1.34, 56.156}; \n    \n1    for(int i = 0; i &lt; 5; ++i) {\n        cout &lt;&lt; \"vect[\" &lt;&lt; i &lt;&lt; \"]: \" &lt;&lt; vect[i] &lt;&lt; endl;\n    }\n    return 0;\n}\n\n1\n\nPERICOLO: iteriamo fino a i=4 ma l’array arriva solo a i=2.\n\n\n\n\n\n\n\n\nWarning\n\n\nSi accede a porzioni di memoria adiacenti (Buffer Over-read/Over-write). Può stampare valori casuali o causare un crash critico (Segmentation Fault)."
+    "text": "Il pericolo: Nessun controllo sui limiti\nIn C++, non c’è nessun controllo sui limiti dell’array a runtime per massimizzare le performance.\n#include &lt;iostream&gt;\n\nint main() {\n    float vect[3] = {0.4, 1.34, 56.156}; \n    \n1    for(int i = 0; i &lt; 5; ++i) {\n        std::cout &lt;&lt; \"vect[\" &lt;&lt; i &lt;&lt; \"]: \" &lt;&lt; vect[i] &lt;&lt; std::endl;\n    }\n    return 0;\n}\n\n1\n\nPERICOLO: iteriamo fino a i=4 ma l’array arriva solo a i=2.\n\n\n\n\n\n\n\n\nWarning\n\n\nSi accede a porzioni di memoria adiacenti (Buffer Over-read/Over-write). Può stampare valori casuali o causare un crash critico (Segmentation Fault)."
   },
   {
     "objectID": "lezione-05/index.html#array-multidimensionali-matrici",
     "href": "lezione-05/index.html#array-multidimensionali-matrici",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Array Multidimensionali (Matrici)",
-    "text": "Array Multidimensionali (Matrici)\nPossiamo definire array a più dimensioni. In memoria, la matrice 2D è comunque immagazzinata come un singolo blocco 1D contiguo (“Row-major order”).\nint main() {\n1    double matrix[2][3] = {\n        {1.0, 2.0, 3.0}, // Riga 0\n        {4.0, 5.0, 6.0}  // Riga 1\n    };\n    \n    // Accesso agli elementi: matrix[riga][colonna]\n2    std::cout &lt;&lt; \"Elemento (1, 2): \" &lt;&lt; matrix[1][2] &lt;&lt; std::endl;\n    \n    // Somma di tutti gli elementi\n    double sum = 0.0;\n    for(int i = 0; i &lt; 2; ++i) {\n        for(int j = 0; j &lt; 3; ++j) {\n            sum += matrix[i][j];\n        }\n    }\n    return 0;\n}\n\n1\n\nMatrice 2x3 (2 righe, 3 colonne).\n\n2\n\nStampa 6.0."
+    "text": "Array Multidimensionali (Matrici)\nPossiamo definire array a più dimensioni. In memoria, la matrice 2D è comunque immagazzinata come un singolo blocco 1D contiguo (“Row-major order”).\n#include &lt;iostream&gt;\n\nint main() {\n1    double matrix[2][3] = {\n        {1.0, 2.0, 3.0}, // Riga 0\n        {4.0, 5.0, 6.0}  // Riga 1\n    };\n    \n    // Accesso agli elementi: matrix[riga][colonna]\n2    std::cout &lt;&lt; \"Elemento (1, 2): \" &lt;&lt; matrix[1][2] &lt;&lt; std::endl;\n    \n    // Somma di tutti gli elementi\n    double sum = 0.0;\n    for(int i = 0; i &lt; 2; ++i) {\n        for(int j = 0; j &lt; 3; ++j) {\n            sum += matrix[i][j];\n        }\n    }\n    return 0;\n}\n\n1\n\nMatrice 2x3 (2 righe, 3 colonne).\n\n2\n\nStampa 6: cout non mostra gli zeri finali di un double (per cambiare formato serve &lt;iomanip&gt;)."
   },
   {
     "objectID": "lezione-05/index.html#puntatori-e-reference",
@@ -3469,77 +3595,77 @@
     "href": "lezione-05/index.html#modificare-valori-tramite-puntatori",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Modificare valori tramite puntatori",
-    "text": "Modificare valori tramite puntatori\n\n\nint main() {\n    int a = 1;\n    int* b = &a; \n    int& x = a;\n    \n1    *b = 3;\n    cout &lt;&lt; \"valore di a: \" &lt;&lt; a &lt;&lt; endl;\n    \n2    x = 45;\n    cout &lt;&lt; \"valore di a: \" &lt;&lt; a &lt;&lt; endl; \n    \n3    cout &lt;&lt; \"Indirizzo di a: \" &lt;&lt; &a &lt;&lt; endl;\n    return 0;\n}\n\n1\n\nCambiamo il valore deferenziando il puntatore (*).\n\n2\n\nCambiamo il valore tramite il reference (non serve *).\n\n3\n\nStampiamo l’indirizzo fisico in memoria.\n\n\n\nTerminale:\nvalore di a: 3\nvalore di a: 45\nIndirizzo di a: 0x23ef14"
+    "text": "Modificare valori tramite puntatori\n\n\n#include &lt;iostream&gt;\n\nint main() {\n    int a = 1;\n    int* b = &a; \n    int& x = a;\n    \n1    *b = 3;\n    std::cout &lt;&lt; \"valore di a: \" &lt;&lt; a &lt;&lt; std::endl;\n    \n2    x = 45;\n    std::cout &lt;&lt; \"valore di a: \" &lt;&lt; a &lt;&lt; std::endl; \n    \n3    std::cout &lt;&lt; \"Indirizzo di a: \" &lt;&lt; &a &lt;&lt; std::endl;\n    return 0;\n}\n\n1\n\nCambiamo il valore dereferenziando il puntatore (*).\n\n2\n\nCambiamo il valore tramite il reference (non serve *).\n\n3\n\nStampiamo l’indirizzo fisico in memoria.\n\n\n\nTerminale:\nvalore di a: 3\nvalore di a: 45\nIndirizzo di a: 0x7ffc3a5b1e4c"
   },
   {
     "objectID": "lezione-05/index.html#bad-pointers-e-null-pointers",
     "href": "lezione-05/index.html#bad-pointers-e-null-pointers",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Bad Pointers e Null Pointers",
-    "text": "Bad Pointers e Null Pointers\nI puntatori possono puntare a locazioni di memoria invalide, causando disastri:\nint main() {\n1    int* c;\n    \n    // cout &lt;&lt; *c &lt;&lt; endl; // PERICOLO: Stampa \"spazzatura\" o va in crash!\n    \n2    c = nullptr;\n    \n3    // cout &lt;&lt; *c &lt;&lt; endl;\n    \n    return 0;\n}\n\n1\n\nPuntatore non inizializzato, punta in un’area casuale!\n\n2\n\nPuntatore nullo in C++11 (molto meglio di 0 o NULL).\n\n3\n\nDeferenziare (leggere o scrivere) un puntatore nullo causa SEMPRE IL CRASH. Errore a runtime: Segmentation fault (core dumped)"
+    "text": "Bad Pointers e Null Pointers\nI puntatori possono puntare a locazioni di memoria invalide, causando disastri:\n#include &lt;iostream&gt;\n\nint main() {\n1    int* c;\n    \n    // std::cout &lt;&lt; *c &lt;&lt; std::endl; // PERICOLO: Stampa \"spazzatura\" o va in crash!\n    \n2    c = nullptr;\n    \n3    // std::cout &lt;&lt; *c &lt;&lt; std::endl;\n    \n    return 0;\n}\n\n1\n\nPuntatore non inizializzato, punta in un’area casuale!\n\n2\n\nPuntatore nullo in C++11 (molto meglio di 0 o NULL).\n\n3\n\nDereferenziare (leggere o scrivere) un puntatore nullo è undefined behaviour: su Linux e macOS in pratica il programma muore con Segmentation fault (core dumped), ma non è garantito dallo standard — il compilatore, sapendo che non può accadere, è autorizzato a ottimizzare via il codice che lo circonda."
   },
   {
     "objectID": "lezione-05/index.html#reference-vs-puntatori-le-regole",
     "href": "lezione-05/index.html#reference-vs-puntatori-le-regole",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Reference vs Puntatori: Le Regole",
-    "text": "Reference vs Puntatori: Le Regole\nIn C++ moderno si preferiscono sempre i Reference, usando i Puntatori solo se strettamente necessario.\n\n\n\n\n\n\n\n\nCaratteristica\nReference (&)\nPuntatore (*)\n\n\n\n\nInizializzazione\nDeve essere assegnato subito\nPuò essere dichiarato vuoto (nullptr)\n\n\nRiassegnazione\nNON può cambiare bersaglio\nPuò essere riassegnato\n\n\nSintassi\nUsato come una normale variabile\nRichiede deferenziazione (*a = 5;)\n\n\nSicurezza\nMolto sicuro, non può essere nullo\nRischio di Memory Leak e Crash\n\n\n\n\n\n\n\n\n\nNote\n\n\nQuando usare un puntatore? Quando avete bisogno che l’oggetto “possa non esistere” (nullptr) oppure quando si gestiscono array dinamici del C."
+    "text": "Reference vs Puntatori: Le Regole\nIn C++ moderno si preferiscono sempre i Reference, usando i Puntatori solo se strettamente necessario.\n\n\n\n\n\n\n\n\nCaratteristica\nReference (&)\nPuntatore (*)\n\n\n\n\nInizializzazione\nDeve essere assegnato subito\nPuò essere dichiarato vuoto (nullptr)\n\n\nRiassegnazione\nNON può cambiare bersaglio\nPuò essere riassegnato\n\n\nSintassi\nUsato come una normale variabile\nRichiede dereferenziazione (*a = 5;)\n\n\nSicurezza\nNon può essere nullo\nRischio di Memory Leak e Crash\n\n\n\n\n\n\n\n\n\nNote\n\n\nQuando usare un puntatore? Quando l’oggetto “può non esistere” (nullptr), o per gli array dinamici del C."
   },
   {
     "objectID": "lezione-05/index.html#funzioni-e-metodi",
     "href": "lezione-05/index.html#funzioni-e-metodi",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Funzioni e Metodi",
-    "text": "Funzioni e Metodi\n\nHanno Input (argomenti/parametri) e Output (valore di ritorno).\nLe funzioni che non restituiscono nulla usano il tipo speciale void.\n\ndouble calcola_energia_cinetica(double massa, double velocita) {\n    return 0.5 * massa * velocita * velocita;\n}\n\nvoid print_risultato(double res) {\n    std::cout &lt;&lt; \"Risultato: \" &lt;&lt; res &lt;&lt; \" J\\n\";\n}\n\nint main() {\n    double E = calcola_energia_cinetica(2.0, 10.0);\n    print_risultato(E);\n    return 0;\n}"
+    "text": "Funzioni e Metodi\n\nHanno Input (argomenti/parametri) e Output (valore di ritorno).\nLe funzioni che non restituiscono nulla usano il tipo speciale void.\n\n#include &lt;iostream&gt;\n\ndouble calcola_energia_cinetica(double massa, double velocita) {\n    return 0.5 * massa * velocita * velocita;\n}\n\nvoid print_risultato(double res) {\n    std::cout &lt;&lt; \"Risultato: \" &lt;&lt; res &lt;&lt; \" J\\n\";\n}\n\nint main() {\n    double E = calcola_energia_cinetica(2.0, 10.0);\n    print_risultato(E);\n    return 0;\n}"
   },
   {
     "objectID": "lezione-05/index.html#pass-by-value-passaggio-per-valore",
     "href": "lezione-05/index.html#pass-by-value-passaggio-per-valore",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Pass-by-Value (Passaggio per Valore)",
-    "text": "Pass-by-Value (Passaggio per Valore)\nDi default in C++, i parametri vengono passati Per Valore. Ciò significa che la funzione riceve una copia della variabile. Le modifiche fatte dentro la funzione non hanno alcun effetto sulla variabile esterna.\nvoid raddoppia(int numero) {\n1    numero = numero * 2;\n}\n\nint main() {\n    int x = 10;\n    raddoppia(x);\n    \n2    std::cout &lt;&lt; \"x vale: \" &lt;&lt; x &lt;&lt; std::endl;\n    return 0;\n}\n\n1\n\nModifichiamo solo la copia locale.\n\n2\n\nStampa ancora 10!\n\n\n\n\n\n\n\n\nWarning\n\n\nContro: Copiare oggetti di grandi dimensioni (es. Matrici 1000x1000) devasta le performance!"
+    "text": "Pass-by-Value (Passaggio per Valore)\nDi default in C++, i parametri vengono passati Per Valore. Ciò significa che la funzione riceve una copia della variabile. Le modifiche fatte dentro la funzione non hanno alcun effetto sulla variabile esterna.\n#include &lt;iostream&gt;\n\nvoid raddoppia(int numero) {\n1    numero = numero * 2;\n}\n\nint main() {\n    int x = 10;\n    raddoppia(x);\n    \n2    std::cout &lt;&lt; \"x vale: \" &lt;&lt; x &lt;&lt; std::endl;\n    return 0;\n}\n\n1\n\nModifichiamo solo la copia locale.\n\n2\n\nStampa ancora 10!\n\n\n\n\n\n\n\n\nWarning\n\n\nContro: Copiare oggetti di grandi dimensioni (es. Matrici 1000x1000) devasta le performance!"
   },
   {
     "objectID": "lezione-05/index.html#pass-by-reference",
     "href": "lezione-05/index.html#pass-by-reference",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Pass-by-Reference",
-    "text": "Pass-by-Reference\nSe usiamo un Reference (&), passiamo un alias della variabile originale. Non viene fatta alcuna copia, e possiamo modificare la variabile originale.\n1void raddoppia(int& numero) {\n2    numero = numero * 2;\n}\n\nint main() {\n    int x = 10;\n    raddoppia(x);\n    \n    std::cout &lt;&lt; \"x vale: \" &lt;&lt; x &lt;&lt; std::endl; // Stampa 20!\n    return 0;\n}\n\n1\n\nNotare l’aggiunta dell’e-commerciale &!\n\n2\n\nStiamo modificando la variabile originale.\n\n\nQuesto approccio è utile per restituire “più di un risultato” da una funzione."
+    "text": "Pass-by-Reference\nSe usiamo un Reference (&), passiamo un alias della variabile originale. Non viene fatta alcuna copia, e possiamo modificare la variabile originale.\n#include &lt;iostream&gt;\n\n1void raddoppia(int& numero) {\n2    numero = numero * 2;\n}\n\nint main() {\n    int x = 10;\n    raddoppia(x);\n    \n    std::cout &lt;&lt; \"x vale: \" &lt;&lt; x &lt;&lt; std::endl; // Stampa 20!\n    return 0;\n}\n\n1\n\nNotare l’aggiunta dell’e-commerciale &!\n\n2\n\nStiamo modificando la variabile originale.\n\n\nQuesto approccio è utile per restituire “più di un risultato” da una funzione."
   },
   {
     "objectID": "lezione-05/index.html#il-santo-graal-pass-by-const-reference",
     "href": "lezione-05/index.html#il-santo-graal-pass-by-const-reference",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Il Santo Graal: Pass-by-Const-Reference",
-    "text": "Il Santo Graal: Pass-by-Const-Reference\nQuando vogliamo passare un oggetto “pesante” (come una Rete Neurale o una Matrice) ma NON vogliamo modificarlo, il Pass-by-Value è lentissimo. La soluzione universale è il Pass-by-Const-Reference.\n1void analizza_testo(const std::string& testo_molto_lungo) {\n    std::cout &lt;&lt; \"Lunghezza: \" &lt;&lt; testo_molto_lungo.size();\n2    // testo_molto_lungo += \"a\";\n}\n\nint main() {\n    std::string testo = \"...\"; // Molti MB di dati\n    analizza_testo(testo); // Zero copie, zero rischi!\n    return 0;\n}\n\n1\n\nconst vieta le modifiche, & evita la copia in memoria!\n\n2\n\nERRORE DI COMPILAZIONE (è const)."
+    "text": "Il Santo Graal: Pass-by-Const-Reference\nQuando vogliamo passare un oggetto “pesante” (come una Rete Neurale o una Matrice) ma NON vogliamo modificarlo, il Pass-by-Value è lentissimo. La soluzione universale è il Pass-by-Const-Reference.\n#include &lt;iostream&gt;\n#include &lt;string&gt;\n\n1void analizza_testo(const std::string& testo_molto_lungo) {\n    std::cout &lt;&lt; \"Lunghezza: \" &lt;&lt; testo_molto_lungo.size();\n2    // testo_molto_lungo += \"a\";\n}\n\nint main() {\n    std::string testo = \"...\"; // Molti MB di dati\n    analizza_testo(testo); // Zero copie, zero rischi!\n    return 0;\n}\n\n1\n\nconst vieta le modifiche, & evita la copia in memoria!\n\n2\n\nERRORE DI COMPILAZIONE (è const).\n\n\nArrivano dopo: la sintassi completa di const nella Lezione 6, std::string nella Lezione 11."
   },
   {
     "objectID": "lezione-05/index.html#passaggio-di-array-alle-funzioni",
     "href": "lezione-05/index.html#passaggio-di-array-alle-funzioni",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Passaggio di Array alle Funzioni",
-    "text": "Passaggio di Array alle Funzioni\nIn C++ non si può passare un array nativo per valore. Gli array decadono (decay) sempre a un Puntatore al loro primo elemento.\n// Sembra che chiediamo un array, ma il compilatore lo traduce in: \n// void stampa_array(int* array, int lunghezza)\n1void stampa_array(int array[], int lunghezza) {\n    for(int i=0; i&lt;lunghezza; ++i) {\n        std::cout &lt;&lt; array[i] &lt;&lt; \" \";\n    }\n}\n\nint main() {\n    int dati[5] = {1, 2, 3, 4, 5};\n2    stampa_array(dati, 5);\n    return 0;\n}\n\n1\n\nQuesto parametro è in realtà un int* array.\n\n2\n\nPassa in realtà l’indirizzo &dati[0]."
+    "text": "Passaggio di Array alle Funzioni\nIn C++ non si può passare un array nativo per valore. Gli array decadono (decay) sempre a un Puntatore al loro primo elemento.\n// Sembra che chiediamo un array, ma il compilatore lo traduce in: \n// void stampa_array(int* array, int lunghezza)\n#include &lt;iostream&gt;\n\n1void stampa_array(int array[], int lunghezza) {\n    for(int i=0; i&lt;lunghezza; ++i) {\n        std::cout &lt;&lt; array[i] &lt;&lt; \" \";\n    }\n}\n\nint main() {\n    int dati[5] = {1, 2, 3, 4, 5};\n2    stampa_array(dati, 5);\n    return 0;\n}\n\n1\n\nQuesto parametro è in realtà un int* array.\n\n2\n\nPassa in realtà l’indirizzo &dati[0]."
   },
   {
     "objectID": "lezione-05/index.html#dichiarazione-prima-delluso",
     "href": "lezione-05/index.html#dichiarazione-prima-delluso",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Dichiarazione prima dell’Uso",
-    "text": "Dichiarazione prima dell’Uso\nIn C++, il compilatore legge il file dall’alto verso il basso. Non può usare una funzione di cui non conosce l’esistenza!\n\n\nSbagliato:\nint main() {\n1    print();\n    return 0;\n}\n\nvoid print() {\n    std::cout &lt;&lt; \"Ciao\";\n}\n\n1\n\nIl compilatore non sa cosa sia “print()”.\n\n\n\nCorretto:\n1void print();\n\nint main() {\n    print(); // OK!\n    return 0;\n}\n\n2void print() {\n    std::cout &lt;&lt; \"Ciao\";\n}\n\n1\n\nPrototipo (Dichiarazione).\n\n2\n\nImplementazione (Definizione)."
+    "text": "Dichiarazione prima dell’Uso\nIn C++, il compilatore legge il file dall’alto verso il basso. Non può usare una funzione di cui non conosce l’esistenza!\n\n\nSbagliato:\n#include &lt;iostream&gt;\n\nint main() {\n1    print();\n    return 0;\n}\n\nvoid print() {\n    std::cout &lt;&lt; \"Ciao\";\n}\n\n1\n\nIl compilatore non sa cosa sia “print()”.\n\n\n\nCorretto:\n#include &lt;iostream&gt;\n\n1void print();\n\nint main() {\n    print(); // OK!\n    return 0;\n}\n\n2void print() {\n    std::cout &lt;&lt; \"Ciao\";\n}\n\n1\n\nPrototipo (Dichiarazione).\n\n2\n\nImplementazione (Definizione)."
   },
   {
     "objectID": "lezione-05/index.html#overloading-delle-funzioni",
     "href": "lezione-05/index.html#overloading-delle-funzioni",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Overloading delle Funzioni",
-    "text": "Overloading delle Funzioni\nIn C++ possiamo avere più funzioni con lo stesso nome, a patto che abbiano una firma (signature) diversa (cioè parametri diversi in numero o tipo).\n// Funzione 1\nvoid stampa(int x) {\n    std::cout &lt;&lt; \"Intero: \" &lt;&lt; x &lt;&lt; std::endl;\n}\n\n// Funzione 2\nvoid stampa(double x) {\n    std::cout &lt;&lt; \"Reale: \" &lt;&lt; x &lt;&lt; std::endl;\n}\n\n// Funzione 3\nvoid stampa(int x, int y) {\n    std::cout &lt;&lt; \"Coordinate: (\" &lt;&lt; x &lt;&lt; \", \" &lt;&lt; y &lt;&lt; \")\" &lt;&lt; std::endl;\n}\n\nint main() {\n    stampa(5);        // Chiama Funzione 1\n    stampa(3.14);     // Chiama Funzione 2\n    stampa(10, 20);   // Chiama Funzione 3\n    return 0;\n}"
+    "text": "Overloading delle Funzioni\nIn C++ possiamo avere più funzioni con lo stesso nome, a patto che abbiano una firma (signature) diversa (cioè parametri diversi in numero o tipo).\n// Funzione 1\n#include &lt;iostream&gt;\n\nvoid stampa(int x) {\n    std::cout &lt;&lt; \"Intero: \" &lt;&lt; x &lt;&lt; std::endl;\n}\n\n// Funzione 2\nvoid stampa(double x) {\n    std::cout &lt;&lt; \"Reale: \" &lt;&lt; x &lt;&lt; std::endl;\n}\n\n// Funzione 3\nvoid stampa(int x, int y) {\n    std::cout &lt;&lt; \"Coordinate: (\" &lt;&lt; x &lt;&lt; \", \" &lt;&lt; y &lt;&lt; \")\" &lt;&lt; std::endl;\n}\n\nint main() {\n    stampa(5);        // Chiama Funzione 1\n    stampa(3.14);     // Chiama Funzione 2\n    stampa(10, 20);   // Chiama Funzione 3\n    return 0;\n}"
   },
   {
     "objectID": "lezione-05/index.html#argomenti-di-default",
     "href": "lezione-05/index.html#argomenti-di-default",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Argomenti di Default",
-    "text": "Argomenti di Default\nLe funzioni possono avere valori predefiniti per gli ultimi argomenti della lista. Se l’utente non li fornisce, usa quelli di default.\n#include &lt;cmath&gt;\n\n1double calcola_distanza(double x, double y, double z = 0.0) {\n    return std::sqrt(x*x + y*y + z*z);\n}\n\nint main() {\n    // Distanza nel piano 2D (non passiamo z)\n2    double d2 = calcola_distanza(3.0, 4.0);\n    \n    // Distanza nello spazio 3D\n    double d3 = calcola_distanza(3.0, 4.0, 5.0); \n    return 0;\n}\n\n1\n\nL’argomento z è opzionale. Se omesso, varrà 0.0.\n\n2\n\nUsa automaticamente z=0.0.\n\n\n\n\n\n\n\n\nWarning\n\n\nRegola ferrea: i parametri di default devono sempre stare in fondo alla lista! (void f(int a=1, int b) è un errore di sintassi)."
+    "text": "Argomenti di Default\nLe funzioni possono avere valori predefiniti per gli ultimi argomenti della lista. Se l’utente non li fornisce, usa quelli di default.\n#include &lt;cmath&gt;\n\n1double calcola_distanza(double x, double y, double z = 0.0) {\n    return std::sqrt(x*x + y*y + z*z);\n}\n\nint main() {\n    // Distanza nel piano 2D (non passiamo z)\n2    double d2 = calcola_distanza(3.0, 4.0);\n    \n    // Distanza nello spazio 3D\n    double d3 = calcola_distanza(3.0, 4.0, 5.0); \n    return 0;\n}\n\n1\n\nL’argomento z è opzionale. Se omesso, varrà 0.0.\n\n2\n\nUsa automaticamente z=0.0.\n\n\n\n\n\n\n\n\nWarning\n\n\nRegola ferrea: i parametri di default devono sempre stare in fondo alla lista. Con void f(int a=1, int b); il compilatore risponde error: default argument missing for parameter 2 of 'void f(int, int)'."
   },
   {
     "objectID": "lezione-05/index.html#esercizio-in-classe-10-min",
@@ -3553,7 +3679,7 @@
     "href": "lezione-05/index.html#soluzione-dellesercizio",
     "title": "Programmazione Scientifica++: Lezione 5",
     "section": "Soluzione dell’Esercizio",
-    "text": "Soluzione dell’Esercizio\n#include &lt;iostream&gt;\n#include &lt;cmath&gt;\n\n1void normalizza(double& x, double& y) {\n    double norma = std::sqrt(x*x + y*y);\n    if(norma &gt; 0) {\n        x = x / norma;\n        y = y / norma;\n    }\n}\n\nint main() {\n    double x = 3.0;\n    double y = 4.0;\n    \n    std::cout &lt;&lt; \"Prima: (\" &lt;&lt; x &lt;&lt; \", \" &lt;&lt; y &lt;&lt; \")\\n\";\n    \n2    normalizza(x, y);\n    \n    std::cout &lt;&lt; \"Dopo : (\" &lt;&lt; x &lt;&lt; \", \" &lt;&lt; y &lt;&lt; \")\\n\";\n    return 0;\n}\n\n1\n\nAbbiamo usato & (reference) perché vogliamo modificare le variabili del main.\n\n2\n\nStampa finale: Dopo : (0.6, 0.8)\n\n\nTorna all’indice"
+    "text": "Soluzione dell’Esercizio\n#include &lt;iostream&gt;\n#include &lt;cmath&gt;\n\n1void normalizza(double& x, double& y) {\n    double norma = std::sqrt(x*x + y*y);\n    if(norma &gt; 0) {\n        x = x / norma;\n        y = y / norma;\n    }\n}\n\nint main() {\n    double x = 3.0;\n    double y = 4.0;\n    \n    std::cout &lt;&lt; \"Prima: (\" &lt;&lt; x &lt;&lt; \", \" &lt;&lt; y &lt;&lt; \")\\n\";\n    \n2    normalizza(x, y);\n    \n    std::cout &lt;&lt; \"Dopo : (\" &lt;&lt; x &lt;&lt; \", \" &lt;&lt; y &lt;&lt; \")\\n\";\n    return 0;\n}\n\n1\n\nAbbiamo usato & (reference) perché vogliamo modificare le variabili del main.\n\n2\n\nStampa finale: Dopo : (0.6, 0.8)"
   },
   {
     "objectID": "lab-03/index.html#soluzione-del-laboratorio-02",
@@ -3609,7 +3735,7 @@
     "href": "lab-03/index.html#task-6-le-derivate-sono-giuste-verifica-numerica",
     "title": "Laboratorio 03",
     "section": "Task 6: Le Derivate sono Giuste? Verifica Numerica",
-    "text": "Task 6: Le Derivate sono Giuste? Verifica Numerica\nUna derivata analitica sbagliata di un segno o di un fattore 2 non produce nessun errore di compilazione: produce una rete che non impara. Il fisico ha un’arma: la derivata numerica con le differenze centrali, \\(f'(x) \\approx \\dfrac{f(x+h) - f(x-h)}{2h}\\).\n\nScrivi double sigmoid_numerical_derivative(double x, double h) e l’analoga per la tanh. (Una funzione per attivazione: passare una funzione come argomento lo vedremo più avanti.)\nNel main, con h = 1e-5, scorri x da \\(-5\\) a \\(5\\) a passi di \\(0.5\\) e tieni il massimo errore assoluto std::fabs(analitica - numerica) per ciascuna funzione.\nStampa i due massimi (in notazione scientifica: std::scientific) e un [PASS] se entrambi sono sotto 1e-6, [FAIL] altrimenti.\nPerché proprio 1e-5? Ripeti il confronto in x = 1 per h = \\(10^{-1}, 10^{-3}, \\dots, 10^{-13}\\) e stampa l’errore. Scende, poi risale: troncamento da una parte, cancellazione numerica fra f(x+h) e f(x-h) dall’altra. È il primo incontro con i limiti del double, e non sarà l’ultimo.\n\nBuon lavoro! La soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task 6: Le Derivate sono Giuste? Verifica Numerica\nUna derivata analitica sbagliata di un segno o di un fattore 2 non produce nessun errore di compilazione: produce una rete che non impara. Il fisico ha un’arma: la derivata numerica con le differenze centrali, \\(f'(x) \\approx \\dfrac{f(x+h) - f(x-h)}{2h}\\).\n\nScrivi double sigmoid_numerical_derivative(double x, double h) e l’analoga per la tanh. (Una funzione per attivazione: passare una funzione come argomento lo vedremo più avanti.)\nNel main, con h = 1e-5, scorri x da \\(-5\\) a \\(5\\) a passi di \\(0.5\\) e tieni il massimo errore assoluto std::fabs(analitica - numerica) per ciascuna funzione.\nStampa i due massimi (in notazione scientifica: std::scientific) e un [PASS] se entrambi sono sotto 1e-6, [FAIL] altrimenti.\nPerché proprio 1e-5? Ripeti il confronto in x = 1 per h = \\(10^{-1}, 10^{-3}, \\dots, 10^{-13}\\) e stampa l’errore. Scende, poi risale: troncamento da una parte, cancellazione numerica fra f(x+h) e f(x-h) dall’altra. È il primo incontro con i limiti del double, e non sarà l’ultimo.\n\nBuon lavoro! La soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lab-05/index.html#soluzione-del-laboratorio-04",
@@ -3679,7 +3805,7 @@
     "href": "lab-05/index.html#task-da-completare",
     "title": "Laboratorio 05",
     "section": "Task da Completare",
-    "text": "Task da Completare\n\nScrivere matrix.hpp / matrix.cpp con dati private e indicizzazione row-major\nLanciare std::invalid_argument su dimensioni ≤ 0 e std::out_of_range su indici fuori limite\nVerificare che get/set funzionino e che un indice sbagliato lanci l’eccezione\nScrivere dense_layer.hpp / dense_layer.cpp con Eigen::MatrixXd weights, biases\nforward() con .colwise() + biases.col(0)\nTestare 784 → 128 su un campione singolo e su un batch da 32\nAggiornare il CMakeLists.txt con i nuovi .cpp\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task da Completare\n\nScrivere matrix.hpp / matrix.cpp con dati private e indicizzazione row-major\nLanciare std::invalid_argument su dimensioni ≤ 0 e std::out_of_range su indici fuori limite\nVerificare che get/set funzionino e che un indice sbagliato lanci l’eccezione\nScrivere dense_layer.hpp / dense_layer.cpp con Eigen::MatrixXd weights, biases\nforward() con .colwise() + biases.col(0)\nTestare 784 → 128 su un campione singolo e su un batch da 32\nAggiornare il CMakeLists.txt con i nuovi .cpp\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lab-11/index.html#soluzione-del-laboratorio-10",
@@ -3770,7 +3896,7 @@
     "href": "lab-11/index.html#task-da-completare",
     "title": "Laboratorio 11",
     "section": "Task da Completare",
-    "text": "Task da Completare\n\nImplementare save_config, save_weights, load_weights in DenseLayer\nVerificare che le firme usino std::ostream& / std::istream&\nAggiungere create_from_stream statico a DenseLayer, SigmoidLayer, tanhLayer\nUsare type = -1 per saltare l’inizializzazione casuale nel caricamento\nScrivere create_layer() nella sezione protected di Sequential\nImplementare save_model() e load_model()\nAggiungere gli accessori get_layers() (const ref) e get_layer(i) (.get())\nAvvolgere il puntatore della factory in un unique_ptr subito\nVerificare il round-trip: Z1 e Z2 identici partendo da una rete vuota\nIspezionare il file salvato con un editor di testo\nImpostare precision(17) e osservare la differenza sui pesi salvati\nEsperimento: corrompete a mano un numero nel file e osservate cosa accade\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task da Completare\n\nImplementare save_config, save_weights, load_weights in DenseLayer\nVerificare che le firme usino std::ostream& / std::istream&\nAggiungere create_from_stream statico a DenseLayer, SigmoidLayer, tanhLayer\nUsare type = -1 per saltare l’inizializzazione casuale nel caricamento\nScrivere create_layer() nella sezione protected di Sequential\nImplementare save_model() e load_model()\nAggiungere gli accessori get_layers() (const ref) e get_layer(i) (.get())\nAvvolgere il puntatore della factory in un unique_ptr subito\nVerificare il round-trip: Z1 e Z2 identici partendo da una rete vuota\nIspezionare il file salvato con un editor di testo\nImpostare precision(17) e osservare la differenza sui pesi salvati\nEsperimento: corrompete a mano un numero nel file e osservate cosa accade\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lab-10/index.html#soluzione-del-laboratorio-09",
@@ -3875,7 +4001,7 @@
     "href": "lab-10/index.html#task-da-completare",
     "title": "Laboratorio 10",
     "section": "Task da Completare",
-    "text": "Task da Completare\n\nIncludere &lt;vector&gt; e &lt;memory&gt; in sequential.hpp\nSostituire layer&lt;ntype&gt;** layers + capacity + size con std::vector&lt;std::unique_ptr&lt;layer&lt;ntype&gt;&gt;&gt;\nCancellare il distruttore scritto a mano (Rule of Zero)\nSostituire il costruttore con Sequential() = default\nAggiungere clear() e size() come metodi che delegano al vettore\nRiscrivere add() per accettare std::unique_ptr e usare std::move\nAggiornare forward() con layers.empty() e indice size_t\nUsare std::make_unique nel main.cpp\nVerificare con grep che non resti nessun delete nel progetto\nAggiungere 50 layer e verificare che il vettore cresca senza errori\nOpzionale: compilare con -fsanitize=address e confermare zero leak\nloss.hpp: interfaccia Loss + MSELoss con d_loss membro e backward che restituisce const&\noptimizers.hpp: interfaccia Optimizer + SDOptimizer con update di una riga\nschedulers.hpp: interfaccia Scheduler + fixedScheduler che impone il lr all’optimizer\nTestare le tre Strategy nel main: P(0,0) == 0.9, opt.get_lr() == 0.05, chiamate via puntatore all’interfaccia\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione.\nTorna all’indice"
+    "text": "Task da Completare\n\nIncludere &lt;vector&gt; e &lt;memory&gt; in sequential.hpp\nSostituire layer&lt;ntype&gt;** layers + capacity + size con std::vector&lt;std::unique_ptr&lt;layer&lt;ntype&gt;&gt;&gt;\nCancellare il distruttore scritto a mano (Rule of Zero)\nSostituire il costruttore con Sequential() = default\nAggiungere clear() e size() come metodi che delegano al vettore\nRiscrivere add() per accettare std::unique_ptr e usare std::move\nAggiornare forward() con layers.empty() e indice size_t\nUsare std::make_unique nel main.cpp\nVerificare con grep che non resti nessun delete nel progetto\nAggiungere 50 layer e verificare che il vettore cresca senza errori\nOpzionale: compilare con -fsanitize=address e confermare zero leak\nloss.hpp: interfaccia Loss + MSELoss con d_loss membro e backward che restituisce const&\noptimizers.hpp: interfaccia Optimizer + SDOptimizer con update di una riga\nschedulers.hpp: interfaccia Scheduler + fixedScheduler che impone il lr all’optimizer\nTestare le tre Strategy nel main: P(0,0) == 0.9, opt.get_lr() == 0.05, chiamate via puntatore all’interfaccia\n\nLa soluzione di riferimento verrà discussa all’inizio della prossima lezione."
   },
   {
     "objectID": "lezione-18/index.html#argomenti-di-oggi",
@@ -4078,7 +4204,7 @@
     "href": "lezione-18/index.html#esercizio-pratico-dizionario-dei-pesi-10-min",
     "title": "Programmazione Scientifica++: Lezione 18",
     "section": "Esercizio Pratico: Dizionario dei Pesi (10 min)",
-    "text": "Esercizio Pratico: Dizionario dei Pesi (10 min)\nUsiamo l’incredibile potenza della STL.\n\nCrea un file StlTest.cpp e includi &lt;iostream&gt;, &lt;vector&gt;, &lt;map&gt;, &lt;string&gt; e &lt;algorithm&gt;.\nNel main, istanzia una std::map&lt;std::string, double&gt; Pesi.\nInserisci tre neuroni con pesi arbitrari (es. Pesi[\"N1\"] = 0.5; Pesi[\"N2\"] = -1.2; ...).\nProva a stampare il valore di un neurone inesistente \"N99\" con la quadra []. Guarda cosa succede.\nInvece, usa .find() per cercare \"N99\" e verifica che prevenga la creazione.\nFai un Range-Based For Loop (const auto& x : Pesi) e stampa tutte le coppie nome-peso (Noti che sono ordinate alfabeticamente?).\n\nTorna all’indice"
+    "text": "Esercizio Pratico: Dizionario dei Pesi (10 min)\nUsiamo l’incredibile potenza della STL.\n\nCrea StlTest.cpp; includi &lt;iostream&gt;, &lt;map&gt;, &lt;string&gt;.\nNel main, istanzia una std::map&lt;std::string, double&gt; Pesi.\nInserisci tre neuroni con pesi arbitrari (es. Pesi[\"N1\"] = 0.5; Pesi[\"N2\"] = -1.2; ...).\nProva a stampare il valore di un neurone inesistente \"N99\" con la quadra []. Guarda cosa succede.\nUsa invece .find(): verifica che non crei la chiave.\nCon un Range-Based For Loop (const auto& x : Pesi) stampa tutte le coppie: nota che sono ordinate alfabeticamente."
   },
   {
     "objectID": "lezione-16/index.html#il-problema-inverso-lesigenza-del-downcasting",
@@ -4253,7 +4379,7 @@
     "href": "lezione-16/index.html#listanziazione-della-classe",
     "title": "Programmazione Scientifica++: Lezione 16",
     "section": "L’Istanziazione della Classe",
-    "text": "L’Istanziazione della Classe\nCome si usa nel main? Per le classi, le parentesi angolari sono Obbligatorie al momento della dichiarazione:\nint main() {\n    // Una scatola che contiene interi\n    Scatola&lt;int&gt; scatolaNumeri(42); \n    \n    // Una scatola che contiene stringhe!\n    Scatola&lt;std::string&gt; scatolaParole(\"Ciao Rete Neurale\");\n    \n    // Una scatola che contiene oggetti Custom!\n    Scatola&lt;DenseLayer&gt; scatolaLayer( DenseLayer(\"Hidden\") );\n    \n    return 0;\n}\nUn solo frammento di codice, infinite possibilità!\nTorna all’indice"
+    "text": "L’Istanziazione della Classe\nCome si usa nel main? Per le classi, le parentesi angolari sono Obbligatorie al momento della dichiarazione:\nint main() {\n    // Una scatola che contiene interi\n    Scatola&lt;int&gt; scatolaNumeri(42); \n    \n    // Una scatola che contiene stringhe!\n    Scatola&lt;std::string&gt; scatolaParole(\"Ciao Rete Neurale\");\n    \n    // Una scatola che contiene oggetti Custom!\n    Scatola&lt;DenseLayer&gt; scatolaLayer( DenseLayer(\"Hidden\") );\n    \n    return 0;\n}\nUn solo frammento di codice, infinite possibilità!"
   },
   {
     "objectID": "lezione-10/index.html#argomenti-di-oggi",
@@ -4449,6 +4575,6 @@
     "href": "lezione-10/index.html#esercizio-soluzione",
     "title": "Programmazione Scientifica++: Lezione 10",
     "section": "Esercizio: Soluzione",
-    "text": "Esercizio: Soluzione\nVettore2D.hpp\nclass Vettore2D {\n    // ... codice precedente ...\n    \n    // Moltiplicazione per uno scalare!\n1    Vettore2D operator*(double rhs) const;\n};\n\n1\n\nL’argomento non è un riferimento a una classe, ma è solo un banale numero!\n\n\nVettore2D.cpp\n// Implementazione\nVettore2D Vettore2D::operator*(double scalare) const {\n    double nuovo_x = this-&gt;x_ * scalare;\n    double nuovo_y = this-&gt;y_ * scalare;\n    \n    return Vettore2D(nuovo_x, nuovo_y);\n}\nTutto molto logico ed elegante! (Nota: questo funzionerà per v1 * 5.0, ma NON funzionerà per 5.0 * v1. Lo vedremo in futuro con le funzioni Friend).\nTorna all’indice"
+    "text": "Esercizio: Soluzione\nVettore2D.hpp\nclass Vettore2D {\n    // ... codice precedente ...\n    \n    // Moltiplicazione per uno scalare!\n1    Vettore2D operator*(double rhs) const;\n};\n\n1\n\nL’argomento non è un riferimento a una classe, ma è solo un banale numero!\n\n\nVettore2D.cpp\n// Implementazione\nVettore2D Vettore2D::operator*(double scalare) const {\n    double nuovo_x = this-&gt;x_ * scalare;\n    double nuovo_y = this-&gt;y_ * scalare;\n    \n    return Vettore2D(nuovo_x, nuovo_y);\n}\nTutto molto logico ed elegante! (Nota: questo funzionerà per v1 * 5.0, ma NON funzionerà per 5.0 * v1. Lo vedremo in futuro con le funzioni Friend)."
   }
 ]

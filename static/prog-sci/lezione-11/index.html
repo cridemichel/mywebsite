@@ -102,6 +102,7 @@
     code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../annotazioni.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,6 +196,58 @@
       margin-right: 0; 
     }
   </style>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -227,16 +280,16 @@ Docente
 <span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-label="3"></a></span>
 <span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-label="5"></a>    <span class="co">// 1. Creo l'oggetto e gli dico quale file aprire</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-6" class="code-annotation-target"><a href="#annotated-cell-1-6" aria-label="6"></a>    <span class="bu">std::</span>ifstream dataset<span class="op">(</span><span class="st">"mnist_test.csv"</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-6" class="code-annotation-target"><a href="#annotated-cell-1-6" aria-label="6"></a>    <span class="bu">std::</span>ifstream dataset<span class="op">(</span><span class="st">"mnist_test.csv"</span><span class="op">);</span></span>
 <span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-label="7"></a>    </span>
 <span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-label="8"></a>    <span class="co">// ... leggo i dati ...</span></span>
 <span id="annotated-cell-1-9"><a href="#annotated-cell-1-9" aria-label="9"></a>    </span>
 <span id="annotated-cell-1-10"><a href="#annotated-cell-1-10" aria-label="10"></a>    <span class="co">// 2. Chiudo la connessione al disco! Fondamentale!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2">2</button><span id="annotated-cell-1-11" class="code-annotation-target"><a href="#annotated-cell-1-11" aria-label="11"></a>    dataset<span class="op">.</span>close<span class="op">();</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-1-11" class="code-annotation-target"><a href="#annotated-cell-1-11" aria-label="11"></a>    dataset<span class="op">.</span>close<span class="op">();</span></span>
 <span id="annotated-cell-1-12"><a href="#annotated-cell-1-12" aria-label="12"></a>    </span>
 <span id="annotated-cell-1-13"><a href="#annotated-cell-1-13" aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-1-14"><a href="#annotated-cell-1-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-1" data-code-lines="6" data-code-annotation="1">Come per <code>std::cin</code> per la tastiera, <code>ifstream</code> funge da “tubo” verso il file.</span>
@@ -254,7 +307,7 @@ Docente
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-label="2"></a>    <span class="bu">std::</span>ifstream dataset<span class="op">(</span><span class="st">"mnist_test.csv"</span><span class="op">);</span></span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a>    </span>
 <span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-label="4"></a>    <span class="co">// Controllo di sicurezza</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-5" class="code-annotation-target"><a href="#annotated-cell-2-5" aria-label="5"></a>    <span class="cf">if</span> <span class="op">(!</span>dataset<span class="op">.</span>is_open<span class="op">())</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-5" class="code-annotation-target"><a href="#annotated-cell-2-5" aria-label="5"></a>    <span class="cf">if</span> <span class="op">(!</span>dataset<span class="op">.</span>is_open<span class="op">())</span> <span class="op">{</span></span>
 <span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-label="6"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore CRITICO: Impossibile trovare il file CSV!</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-label="7"></a>        <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
 <span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-label="8"></a>    <span class="op">}</span></span>
@@ -263,7 +316,7 @@ Docente
 <span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-label="11"></a>    dataset<span class="op">.</span>close<span class="op">();</span></span>
 <span id="annotated-cell-2-12"><a href="#annotated-cell-2-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-2" data-code-lines="5" data-code-annotation="1"><code>is_open()</code> restituisce <code>true</code> solo se il file esiste e abbiamo i permessi di lettura.</span>
@@ -285,12 +338,12 @@ Docente
 <span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-label="4"></a><span class="bu">std::</span>string riga<span class="op">;</span></span>
 <span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-label="5"></a></span>
 <span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-label="6"></a><span class="co">// Finché c'è una riga da leggere nel dataset, mettila nella variabile "riga"</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-7" class="code-annotation-target"><a href="#annotated-cell-3-7" aria-label="7"></a><span class="cf">while</span> <span class="op">(</span> <span class="bu">std::</span>getline<span class="op">(</span>dataset<span class="op">,</span> riga<span class="op">)</span> <span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-7" class="code-annotation-target"><a href="#annotated-cell-3-7" aria-label="7"></a><span class="cf">while</span> <span class="op">(</span> <span class="bu">std::</span>getline<span class="op">(</span>dataset<span class="op">,</span> riga<span class="op">)</span> <span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-3-8"><a href="#annotated-cell-3-8" aria-label="8"></a>    </span>
 <span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Letta una nuova riga dal dataset!</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-3-10"><a href="#annotated-cell-3-10" aria-label="10"></a>    </span>
 <span id="annotated-cell-3-11"><a href="#annotated-cell-3-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-3" data-code-lines="7" data-code-annotation="1">Fantastico per iterare sull’intero dataset! Ora in <code>riga</code> abbiamo <code>"5, 0, 0, 128, ..."</code> come unica enorme stringa.</span>
@@ -312,15 +365,15 @@ Docente
 <span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-label="4"></a><span class="co">// ... abbiamo appena letto la "riga" dal file ...</span></span>
 <span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-label="5"></a></span>
 <span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-label="6"></a><span class="co">// 1. Infilo la mia stringa in un mini-file virtuale</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-7" class="code-annotation-target"><a href="#annotated-cell-4-7" aria-label="7"></a><span class="bu">std::</span>stringstream ss<span class="op">(</span>riga<span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-7" class="code-annotation-target"><a href="#annotated-cell-4-7" aria-label="7"></a><span class="bu">std::</span>stringstream ss<span class="op">(</span>riga<span class="op">);</span></span>
 <span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-label="8"></a></span>
 <span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-label="9"></a><span class="bu">std::</span>string pixel_stringa<span class="op">;</span></span>
 <span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-label="10"></a></span>
 <span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-label="11"></a><span class="co">// 2. Chiamo getline sul mini-file, e gli dico di FERMARSI ALLE VIRGOLE!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-12" class="code-annotation-target"><a href="#annotated-cell-4-12" aria-label="12"></a><span class="cf">while</span> <span class="op">(</span> <span class="bu">std::</span>getline<span class="op">(</span>ss<span class="op">,</span> pixel_stringa<span class="op">,</span> <span class="ch">','</span><span class="op">)</span> <span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-12" class="code-annotation-target"><a href="#annotated-cell-4-12" aria-label="12"></a><span class="cf">while</span> <span class="op">(</span> <span class="bu">std::</span>getline<span class="op">(</span>ss<span class="op">,</span> pixel_stringa<span class="op">,</span> <span class="ch">','</span><span class="op">)</span> <span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-4-13"><a href="#annotated-cell-4-13" aria-label="13"></a>    <span class="co">// Faccio cose con i pezzi separati!</span></span>
 <span id="annotated-cell-4-14"><a href="#annotated-cell-4-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-4" data-code-lines="7" data-code-annotation="1"><code>ss</code> è ora un tubo che pompa la nostra stringa.</span>
@@ -344,7 +397,7 @@ Docente
 <span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-label="8"></a><span class="cf">while</span> <span class="op">(</span> <span class="bu">std::</span>getline<span class="op">(</span>ss<span class="op">,</span> token<span class="op">,</span> <span class="ch">','</span><span class="op">)</span> <span class="op">)</span> <span class="op">{</span> </span>
 <span id="annotated-cell-5-9"><a href="#annotated-cell-5-9" aria-label="9"></a>    </span>
 <span id="annotated-cell-5-10"><a href="#annotated-cell-5-10" aria-label="10"></a>    <span class="co">// Converto il singolo testo "128" nell'intero 128!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-11" class="code-annotation-target"><a href="#annotated-cell-5-11" aria-label="11"></a>    <span class="dt">int</span> valore <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>token<span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-11" class="code-annotation-target"><a href="#annotated-cell-5-11" aria-label="11"></a>    <span class="dt">int</span> valore <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>token<span class="op">);</span></span>
 <span id="annotated-cell-5-12"><a href="#annotated-cell-5-12" aria-label="12"></a>    </span>
 <span id="annotated-cell-5-13"><a href="#annotated-cell-5-13" aria-label="13"></a>    <span class="cf">if</span> <span class="op">(</span>colonna <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-5-14"><a href="#annotated-cell-5-14" aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"L'etichetta del numero è: "</span> <span class="op">&lt;&lt;</span> valore <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
@@ -353,7 +406,7 @@ Docente
 <span id="annotated-cell-5-17"><a href="#annotated-cell-5-17" aria-label="17"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-5-18"><a href="#annotated-cell-5-18" aria-label="18"></a>    colonna<span class="op">++;</span></span>
 <span id="annotated-cell-5-19"><a href="#annotated-cell-5-19" aria-label="19"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-5" data-code-lines="11" data-code-annotation="1">Ora avete il vero e proprio intero!</span>
@@ -421,14 +474,14 @@ Docente
 <span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-label="3"></a></span>
 <span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-label="5"></a>    <span class="co">// Istanzio l'Istogramma (Nome interno, Titolo Esterno, Bins, Min, Max)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1">1</button><span id="annotated-cell-9-6" class="code-annotation-target"><a href="#annotated-cell-9-6" aria-label="6"></a>    TH1F h1<span class="op">(</span><span class="st">"h1"</span><span class="op">,</span> <span class="st">"Distribuzione Pesi Iniziali"</span><span class="op">,</span> <span class="dv">100</span><span class="op">,</span> <span class="op">-</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">3.0</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-6" class="code-annotation-target"><a href="#annotated-cell-9-6" aria-label="6"></a>    TH1F h1<span class="op">(</span><span class="st">"h1"</span><span class="op">,</span> <span class="st">"Distribuzione Pesi Iniziali"</span><span class="op">,</span> <span class="dv">100</span><span class="op">,</span> <span class="op">-</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">3.0</span><span class="op">);</span></span>
 <span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-label="7"></a>    </span>
 <span id="annotated-cell-9-8"><a href="#annotated-cell-9-8" aria-label="8"></a>    <span class="co">// ROOT ha un metodo già pronto per iniettare numeri casuali (Gaussiani)!</span></span>
 <span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-label="9"></a>    h1<span class="op">.</span>FillRandom<span class="op">(</span><span class="st">"gaus"</span><span class="op">,</span> <span class="dv">10000</span><span class="op">);</span> </span>
 <span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-label="10"></a>    </span>
 <span id="annotated-cell-9-11"><a href="#annotated-cell-9-11" aria-label="11"></a>    <span class="co">// ...</span></span>
 <span id="annotated-cell-9-12"><a href="#annotated-cell-9-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-9" data-code-lines="6" data-code-annotation="1">Notate come la conoscenza profonda dei Costruttori in C++ renda immediata la lettura di questo codice professionale.</span>
@@ -441,17 +494,17 @@ Docente
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-10"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-label="1"></a>    <span class="co">// ... codice precedente ...</span></span>
 <span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-label="2"></a></span>
 <span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-label="3"></a>    <span class="co">// Istanzio la Tela (Nome, Titolo, Larghezza px, Altezza px)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1">1</button><span id="annotated-cell-10-4" class="code-annotation-target"><a href="#annotated-cell-10-4" aria-label="4"></a>    TCanvas c1<span class="op">(</span><span class="st">"c1"</span><span class="op">,</span> <span class="st">"La mia Finestra"</span><span class="op">,</span> <span class="dv">800</span><span class="op">,</span> <span class="dv">600</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-4" class="code-annotation-target"><a href="#annotated-cell-10-4" aria-label="4"></a>    TCanvas c1<span class="op">(</span><span class="st">"c1"</span><span class="op">,</span> <span class="st">"La mia Finestra"</span><span class="op">,</span> <span class="dv">800</span><span class="op">,</span> <span class="dv">600</span><span class="op">);</span></span>
 <span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-label="5"></a>    </span>
 <span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-label="6"></a>    <span class="co">// Dico all'istogramma di disegnarsi (di base cerca la Tela attiva)</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="2">2</button><span id="annotated-cell-10-7" class="code-annotation-target"><a href="#annotated-cell-10-7" aria-label="7"></a>    h1<span class="op">.</span>Draw<span class="op">();</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-10-7" class="code-annotation-target"><a href="#annotated-cell-10-7" aria-label="7"></a>    h1<span class="op">.</span>Draw<span class="op">();</span></span>
 <span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-label="8"></a>    </span>
 <span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-label="9"></a>    <span class="co">// Dico alla Tela di salvare il capolavoro sul mio Hard Disk!</span></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="3">3</button><span id="annotated-cell-10-10" class="code-annotation-target"><a href="#annotated-cell-10-10" aria-label="10"></a>    c1<span class="op">.</span>SaveAs<span class="op">(</span><span class="st">"distribuzione_pesi.pdf"</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-10-10" class="code-annotation-target"><a href="#annotated-cell-10-10" aria-label="10"></a>    c1<span class="op">.</span>SaveAs<span class="op">(</span><span class="st">"distribuzione_pesi.pdf"</span><span class="op">);</span></span>
 <span id="annotated-cell-10-11"><a href="#annotated-cell-10-11" aria-label="11"></a>    </span>
 <span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-10" data-code-lines="4" data-code-annotation="1">Costruttore della classe <code>TCanvas</code>.</span>
@@ -499,7 +552,6 @@ Docente
 <li><strong>Nei file Sorgente (<code>.cpp</code>)</strong>: Puoi usare liberamente <code>using namespace std;</code> perché gli effetti resteranno confinati esclusivamente a quel singolo file isolato, e non contageranno nessuno in giro per il progetto!</li>
 </ol>
 <p>Risparmiarsi 5 caratteri in un Header non vale le ore di debugging di un Namespace Clash in librerie da un milione di righe di codice.</p>
-<p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
@@ -943,64 +995,25 @@ Docente
               }
             };
           }
-            const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
-            for (let i=0; i<annoteTargets.length; i++) {
-              const annoteTarget = annoteTargets[i];
-              const targetCell = annoteTarget.getAttribute("data-target-cell");
-              const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
-              const contentFn = () => {
-                const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-                if (content) {
-                  const tipContent = content.cloneNode(true);
-                  tipContent.classList.add("code-annotation-tip-content");
-                  return tipContent.outerHTML;
-                }
-              }
-              const config = {
-                allowHTML: true,
-                content: contentFn,
-                onShow: (instance) => {
-                  selectCodeLines(instance.reference);
-                  instance.reference.classList.add('code-annotation-active');
-                  window.tippy.hideAll();
-                },
-                onHide: (instance) => {
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
                   unselectCodeLines();
-                  instance.reference.classList.remove('code-annotation-active');
-                },
-                maxWidth: 300,
-                delay: [50, 0],
-                duration: [200, 0],
-                offset: [5, 10],
-                arrow: true,
-                appendTo: function(el) {
-                  return el.parentElement.parentElement.parentElement;
-                },
-                interactive: true,
-                interactiveBorder: 10,
-                theme: 'light-border',
-                placement: 'right',
-                popperOptions: {
-                  modifiers: [
-                  {
-                    name: 'flip',
-                    options: {
-                      flipVariations: false, // true by default
-                      allowedAutoPlacements: ['right'],
-                      fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
-                    },
-                  },
-                  {
-                    name: 'preventOverflow',
-                    options: {
-                      mainAxis: false,
-                      altAxis: false
-                    }
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
                   }
-                  ]        
-                }      
-              };
-              window.tippy(annoteTarget, config); 
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
             }
         const findCites = (el) => {
           const parentEl = el.parentElement;

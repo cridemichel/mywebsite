@@ -36,6 +36,7 @@
     }
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../annotazioni.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -129,6 +130,58 @@
       margin-right: 0; 
     }
   </style>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -328,7 +381,17 @@ Docente
 <li><strong>Cosine Annealing</strong> — proattivo: segue la curva del coseno, veloce all’inizio e dolce verso la fine, senza gli scalini del plateau.</li>
 </ul>
 <p>Nel Laboratorio 10 scriverete l’interfaccia <code>Scheduler</code> a <span class="math inline">\(\eta\)</span> costante; queste due sono la <strong>traccia 2</strong> dei progetti. Ma come uniamo Layer, Ottimizzatori, Scheduler e Backpropagation nello stesso software C++ senza impazzire?</p>
-<p><a href="../index.html">Torna all’indice</a></p>
+</section>
+<section id="quesiti-finali" class="slide level2 smaller">
+<h2>Quesiti finali</h2>
+<p><strong>1. Un passo troppo lungo.</strong> Loss <span class="math inline">\(L(x) = x^2\)</span>, partenza <span class="math inline">\(x_0 = 1\)</span>, learning rate <span class="math inline">\(\eta = 1\)</span>. Dove siete dopo un passo? E dopo due? Per quali <span class="math inline">\(\eta\)</span> il metodo converge, e qual è il valore che centra il minimo in <strong>un solo</strong> passo?</p>
+<p><strong>2. (aperta) Il tetto della sigmoide.</strong> La derivata della sigmoide è <span class="math inline">\(\sigma' = \sigma(1-\sigma)\)</span>. Qual è il suo valore massimo? La backpropagation moltiplica questo fattore una volta per strato: cosa arriva al primo strato di una rete di dieci? E allora come fanno ad addestrarsi le reti da cinquanta strati di cui leggete sui giornali?</p>
+</section>
+<section id="quesiti-finali-le-risposte" class="slide level2 smaller">
+<h2>Quesiti finali: le risposte</h2>
+<p><strong>1.</strong> <span class="math inline">\(L'(x) = 2x\)</span>, quindi il passo è <span class="math inline">\(x \leftarrow x - \eta\,2x = (1 - 2\eta)\,x\)</span>. Con <span class="math inline">\(\eta = 1\)</span> il fattore vale <span class="math inline">\(-1\)</span>: <span class="math inline">\(x_1 = -1\)</span>, <span class="math inline">\(x_2 = +1\)</span>, e si rimbalza fra i due per sempre senza che la loss cali di un millesimo. Si converge per <span class="math inline">\(|1 - 2\eta| &lt; 1\)</span>, cioè <span class="math inline">\(0 &lt; \eta &lt; 1\)</span>; e <span class="math inline">\(\eta = 0{,}5\)</span> annulla il fattore e centra il minimo al primo passo. Un learning rate grande non è “la stessa discesa, più veloce”: è un metodo diverso, che puo’ non convergere affatto.</p>
+<p><strong>2.</strong> Traccia: <span class="math inline">\(\sigma(1-\sigma)\)</span> è massima dove <span class="math inline">\(\sigma = 1/2\)</span> e vale <span class="math inline">\(0{,}25\)</span>. Dieci strati la moltiplicano dieci volte: <span class="math inline">\(0{,}25^{10} \approx
+10^{-6}\)</span>, e siamo nel caso <strong>migliore</strong>. Il primo strato riceve un gradiente un milione di volte più piccolo dell’ultimo e di fatto non impara: è il <em>vanishing gradient</em>, già incontrato nella Lezione 02. Le reti profonde di oggi lo aggirano cambiando i tre ingredienti che qui diamo per scontati: la funzione di attivazione (ReLU, Lezione 02), l’inizializzazione dei pesi (He e Xavier, Laboratorio 08) e il percorso che l’errore fa per tornare indietro.</p>
 
 
 </section>
@@ -772,64 +835,25 @@ Docente
               }
             };
           }
-            const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
-            for (let i=0; i<annoteTargets.length; i++) {
-              const annoteTarget = annoteTargets[i];
-              const targetCell = annoteTarget.getAttribute("data-target-cell");
-              const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
-              const contentFn = () => {
-                const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-                if (content) {
-                  const tipContent = content.cloneNode(true);
-                  tipContent.classList.add("code-annotation-tip-content");
-                  return tipContent.outerHTML;
-                }
-              }
-              const config = {
-                allowHTML: true,
-                content: contentFn,
-                onShow: (instance) => {
-                  selectCodeLines(instance.reference);
-                  instance.reference.classList.add('code-annotation-active');
-                  window.tippy.hideAll();
-                },
-                onHide: (instance) => {
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
                   unselectCodeLines();
-                  instance.reference.classList.remove('code-annotation-active');
-                },
-                maxWidth: 300,
-                delay: [50, 0],
-                duration: [200, 0],
-                offset: [5, 10],
-                arrow: true,
-                appendTo: function(el) {
-                  return el.parentElement.parentElement.parentElement;
-                },
-                interactive: true,
-                interactiveBorder: 10,
-                theme: 'light-border',
-                placement: 'right',
-                popperOptions: {
-                  modifiers: [
-                  {
-                    name: 'flip',
-                    options: {
-                      flipVariations: false, // true by default
-                      allowedAutoPlacements: ['right'],
-                      fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
-                    },
-                  },
-                  {
-                    name: 'preventOverflow',
-                    options: {
-                      mainAxis: false,
-                      altAxis: false
-                    }
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
                   }
-                  ]        
-                }      
-              };
-              window.tippy(annoteTarget, config); 
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
             }
         const findCites = (el) => {
           const parentEl = el.parentElement;

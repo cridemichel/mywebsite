@@ -102,6 +102,7 @@
     code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../annotazioni.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -196,6 +197,58 @@
       margin-right: 0; 
     }
   </style>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -235,7 +288,7 @@ Docente
 <section id="obiettivo-di-oggi" class="slide level2">
 <h2>Obiettivo di Oggi</h2>
 <p>Una rete che funziona non è una rete che si capisce. Sappiamo che con <code>lr = 0.1</code> e 128 nodi si arriva al 94%, ma non sappiamo <strong>perché quei numeri</strong>, né cosa accade cambiandoli.</p>
-<p>Oggi facciamo scienza sperimentale sul nostro modello: tre studi sistematici che producono file di dati, e che nel Lab 16 diventeranno grafici. Il primo programma lo scrivete per intero; il secondo e il terzo sono <strong>lo stesso programma con un ciclo diverso</strong>: copiate, adattate, e usate il tempo risparmiato per un quarto studio opzionale sull’augmentation.</p>
+<p>Oggi facciamo scienza sperimentale sul nostro modello: tre studi sistematici che producono file di dati, e che nel Lab 16 diventeranno grafici. Il primo programma lo scrivete per intero; il secondo e il terzo sono <strong>lo stesso programma con un ciclo diverso</strong>: copiate, adattate, e usate il tempo risparmiato per il quarto studio, quello in cui si fabbrica l’overfitting per poterlo vedere.</p>
 <p>Nella seconda parte: le <strong>tracce dei progetti finali</strong>.</p>
 </section>
 <section id="il-metodo-un-parametro-alla-volta" class="slide level2 smaller">
@@ -340,21 +393,148 @@ Docente
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>Qui c’è una scelta di metodo: con <code>model.clear()</code> ogni punto è un addestramento indipendente da zero. Senza <code>clear()</code>, <code>train()</code> continuerebbe ad addestrare la stessa rete, e i punti sarebbero cumulativi. Sono due esperimenti diversi — decidete quale volete misurare, e siate coerenti.</p>
+<p>Qui c’è una scelta di metodo: con <code>model.clear()</code> ogni punto è un addestramento indipendente da zero, ed <code>ep</code> è davvero il numero di epoche di quel punto. Senza <code>clear()</code>, <code>train()</code> continuerebbe ad addestrare la stessa rete: i punti sarebbero cumulativi e allora <strong>su file dovete scrivere il totale progressivo</strong> (1, 3, 6, 11), non <code>ep</code>. Sono due esperimenti diversi: decidete quale volete misurare, e fate in modo che l’ascissa dica la verità.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="studio-4-opzionale-laugmentation-aiuta" class="slide level2 smaller scrollable">
-<h2>Studio 4 (opzionale): l’augmentation aiuta?</h2>
-<p>Il <code>mnist_dataset.hpp</code> di riferimento del Lab 12 contiene il codice di <strong>augmentation</strong>: a ogni batch, con probabilità <code>aug_prob</code>, l’immagine viene ruotata di un angolo casuale entro <code>±maxAngle</code> gradi e riscalata fra <code>minscale</code> e <code>maxscale</code>. La rete non vede mai due volte la stessa cifra.</p>
-<p>Prendete quel codice (<code>augmentation()</code>, <code>random_augment()</code>, i membri e i rami <code>aug_mode</code> in <code>get_next_batch</code>) e misurate se serve davvero:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="co">// una sola riga in più, dopo aver costruito il dataset di training</span></span>
-<span id="cb8-2"><a aria-label="2"></a>train_dataset<span class="op">.</span>augmentation<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="fl">0.72</span><span class="op">,</span> <span class="fl">12.0</span><span class="op">);</span>   <span class="co">// modalità 1: augmentation con probabilità 0.72</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="studio-4-fabbricare-loverfitting" class="slide level2 smaller">
+<h2>Studio 4: fabbricare l’overfitting</h2>
+<p>Nei Task 1-3 l’overfitting <strong>non si vede</strong>: con 79.400 parametri e 60.000 esempi la rete non ha modo di impararli a memoria. Per vederlo bisogna rovesciare il rapporto, e basta un argomento del costruttore:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="co">// 500 esempi invece di 60.000: 160 parametri per esempio</span></span>
+<span id="cb8-2"><a aria-label="2"></a>MnistDataset<span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;</span> train_dataset<span class="op">(</span><span class="st">"../../MNIST_DATASETS/mnist_train.csv"</span><span class="op">,</span> <span class="dv">500</span><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Poi si misura la performance su <strong>entrambi</strong> gli insiemi. <code>Trainer::test</code> è pubblico e restituisce la metrica, quindi non serve altro:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a>trainer<span class="op">.</span>train<span class="op">(</span>train_dataset<span class="op">,</span> val_dataset<span class="op">,</span> performance<span class="op">,</span> ep<span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
+<span id="cb9-2"><a aria-label="2"></a><span class="dt">float</span> p_train <span class="op">=</span> trainer<span class="op">.</span>test<span class="op">(</span>train_dataset<span class="op">,</span> performance<span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
+<span id="cb9-3"><a aria-label="3"></a><span class="dt">float</span> p_val   <span class="op">=</span> trainer<span class="op">.</span>test<span class="op">(</span>val_dataset<span class="op">,</span>   performance<span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Scrivete <code>overfitting.cpp</code> con le epoche in <code>{1,2,5,10,20,50,100}</code> e lanciatelo con 300, 500 e 1000 esempi. Costa pochi secondi: 500 esempi per 100 epoche sono meno di un’epoca sul dataset intero.</p>
+</section>
+<section id="studio-4-cosa-aspettarsi" class="slide level2 smaller">
+<h2>Studio 4: cosa aspettarsi</h2>
+
+<img data-src="images/overfitting.png" class="quarto-figure quarto-figure-center r-stretch" style="width:97.0%"><p>A sinistra, 500 esempi: <strong>99.2% su ciò che la rete ha già visto, 84.8% su ciò che non ha mai visto</strong>. Quei 14.4 punti sono l’overfitting — la definizione operativa di “imparare a memoria invece di generalizzare”.</p>
+<div title="&quot;Con 500 esempi invece di 60.000, ci credo&quot;">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>“Con 500 esempi invece di 60.000, ci credo”</strong></p>
+</div>
+<div class="callout-content">
+<p>È l’obiezione giusta, ed è il motivo del pannello di destra: lì c’è anche il vostro caso reale. A 60.000 esempi il divario <strong>non è zero</strong>, è di 1.8 punti — la rete fa 99.5% sul training e 97.7% sul validation, e il divario <em>cresce</em> con le epoche (0.2 punti alla prima, 1.8 alla ventesima). I 500 esempi non creano un fenomeno che altrimenti non esisterebbe: lo <strong>ingrandiscono</strong> di dieci volte perché diventi leggibile. È il motivo per cui nei Task 1-3 non l’avete visto, non il motivo per cui non c’era.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="studio-4-la-loss-non-laccuracy" class="slide level2 smaller">
+<h2>Studio 4: la loss, non l’accuracy</h2>
+
+<img data-src="images/overfitting_loss.png" class="quarto-figure quarto-figure-center r-stretch" style="width:97.0%"><p>Stessa rete, stesse epoche, due strumenti. La <strong>loss di validation</strong> ha un minimo a 20 epoche e poi risale del 2%: è la firma canonica dell’overfitting. La <strong>performance</strong> della stessa rete passa da 85.05 a 85.18 fra la decima e la millesima epoca — cioè non dice assolutamente niente.</p>
+<div title="Perché l'accuracy è cieca">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Perché l’accuracy è cieca</strong></p>
+</div>
+<div class="callout-content">
+<p>L’accuracy passa da un <code>argmax</code>, che è una <strong>soglia</strong>: finché la classe giusta resta la più alta il numero non si muove, anche se la rete diventa sempre più sicura delle sue risposte sbagliate. La loss guarda i valori delle uscite, non solo quale sia la maggiore. <strong>L’overfitting si diagnostica sulla loss</strong>, e chi guarda solo l’accuracy conclude che va tutto bene.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="studio-4-quanto-costa-insistere" class="slide level2 smaller">
+<h2>Studio 4: quanto costa insistere?</h2>
+<p>Poco, e il perché è istruttivo. Portando lo stesso addestramento a <strong>1000</strong> epoche, cinquanta volte oltre il minimo:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>epoche</th>
+<th>loss training</th>
+<th>loss validation</th>
+<th>perf. val.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>20</td>
+<td>0.01629</td>
+<td><strong>0.23172</strong> ← minimo</td>
+<td>84.96</td>
+</tr>
+<tr class="even">
+<td>100</td>
+<td>0.00882</td>
+<td>0.23601</td>
+<td>84.81</td>
+</tr>
+<tr class="odd">
+<td>500</td>
+<td>0.00465</td>
+<td>0.23678 ← massimo</td>
+<td>85.05</td>
+</tr>
+<tr class="even">
+<td>1000</td>
+<td>0.00457</td>
+<td>0.23529</td>
+<td>85.18</td>
+</tr>
+</tbody>
+</table>
+<p>La validation loss <strong>si assesta</strong> invece di andare alla deriva, e negli ultimi 500 giri la training loss passa da 0.004650 a 0.004570: la rete è ferma.</p>
+<div title="La rete si parcheggia — e non è un caso">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>La rete si parcheggia — e non è un caso</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">\(\boldsymbol{\delta} = 2(\mathbf{p}-\mathbf{t})\odot\mathbf{o}\odot(1-\mathbf{o})\)</span>: quando le uscite si avvicinano ai target <strong>entrambi</strong> i fattori tendono a zero — l’errore perché è piccolo, la derivata della sigmoide perché satura. Con MSE e sigmoide il gradiente si spegne da sé. Con la cross-entropy quel secondo fattore si cancella, i pesi continuano a crescere, e il degrado diventa ripido: è allora che l’<em>early stopping</em> serve davvero.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="studio-4-cosa-portarsi-via" class="slide level2 smaller">
+<h2>Studio 4: cosa portarsi via</h2>
+<p>Tre affermazioni, in ordine di quanto sono solide:</p>
+<p><strong>Il divario è grande e permanente.</strong> 99.6% su ciò che la rete ha visto, 85.2% su ciò che non ha visto: 14.4 punti, aperti nelle prime dieci epoche e mai più chiusi. Questo è l’overfitting, e su questo non c’è ambiguità.</p>
+<p><strong>Il minimo della loss di validation è reale ma poco profondo.</strong> 2% a 500 esempi, 2.6% col dataset intero. Si misura, e va misurato sulla loss perché l’accuracy non lo vede.</p>
+<p><strong>Il degrado successivo non è robusto.</strong> A <span class="math inline">\(lr = 0.6\)</span> sparisce: la loss finale coincide col minimo, e la validation è perfino migliore (85.3% contro 84.8%). Un passo più grande rende lo SGD più rumoroso, e il rumore impedisce di infilarsi nei minimi stretti che memorizzano — funziona da regolarizzatore.</p>
+<div title="Il metodo, non il numero">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Il metodo, non il numero</strong></p>
+</div>
+<div class="callout-content">
+<p>Per arrivare a queste tre frasi sono servite tre cose che nessuna singola misura conteneva: il <strong>pavimento di rumore</strong>, per sapere quali differenze non significano niente; il <strong>divario</strong> train/validation, per sapere se c’è memorizzazione; e la <strong>loss</strong> invece dell’accuracy, per non usare uno strumento cieco. Nessuna delle tre è un dettaglio tecnico: sono ciò che distingue una misura da un’impressione.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="studio-5-curare-loverfitting" class="slide level2 smaller scrollable">
+<h2>Studio 5: curare l’overfitting</h2>
+<p><em>Opzionale.</em> Il <code>mnist_dataset.hpp</code> del Lab 12 ha il codice di <strong>augmentation</strong>: a ogni batch l’immagine viene ruotata e riscalata, con probabilità <code>aug_prob</code>. Si fabbricano dati che non ci sono — ciò che manca a 500 esempi.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a>train_dataset<span class="op">.</span>augmentation<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="fl">0.72</span><span class="op">,</span> <span class="fl">12.0</span><span class="op">);</span>   <span class="co">// modalità 1, probabilità 0.72</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ol type="1">
-<li>Stessa rete (<code>mlp(100, model)</code>), stesso seed, stesso <code>lr</code>, <strong>3 epoche</strong>, con e senza quella riga. Due numeri: la performance sul validation set.</li>
-<li>Ripetete a 10 epoche. L’augmentation è un <strong>regolarizzatore</strong>: a poche epoche di solito costa qualcosa, a molte epoche impedisce alla rete di imparare a memoria i 60.000 esempi. Il guadagno atteso è di qualche decimo di punto percentuale — piccolo, ma con seed fisso è un confronto pulito.</li>
-<li>Provate <code>aug_prob = 1.0</code> e <code>maxAngle = 30</code>: troppa augmentation distrugge l’informazione. Dove sta il massimo?</li>
+<li><strong>Con 500 esempi</strong>, 100 epoche, con e senza quella riga: partite dai 14.4 punti di divario e guardate quanto si chiude — sulla loss, non solo sull’accuracy. È il regime in cui l’effetto si vede.</li>
+<li>Ripetete sui 60.000: il guadagno è di qualche decimo di punto, <strong>dentro il rumore</strong>. Col seed fisso il confronto resta appaiato e leggibile, ma sappiate quanto poco state misurando.</li>
+<li><code>aug_prob = 1.0</code> e <code>maxAngle = 30</code>: troppa augmentation distrugge l’informazione. Dove sta il massimo?</li>
 </ol>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -372,15 +552,15 @@ Docente
 </section>
 <section id="cosa-aspettarsi-dai-dati" class="slide level2 smaller">
 <h2>Cosa aspettarsi dai dati</h2>
-<p>I risultati di riferimento sul framework completo:</p>
+<p>I risultati di riferimento sul framework completo. Attenzione agli assi: la colonna dei nodi è a <strong>7 epoche</strong> e <span class="math inline">\(lr = 0.05\)</span>, quella del learning rate a <strong>1 epoca</strong> e 100 nodi. Non sono confrontabili fra loro.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>nodi</th>
-<th>performance</th>
+<th>nodi (7 ep.)</th>
+<th>perf.</th>
 <th></th>
-<th>learning rate</th>
-<th>performance</th>
+<th><span class="math inline">\(lr\)</span> (1 ep.)</th>
+<th>perf.</th>
 </tr>
 </thead>
 <tbody>
@@ -389,62 +569,79 @@ Docente
 <td>0.921</td>
 <td></td>
 <td>0.01</td>
-<td>0.911</td>
+<td>0.916</td>
 </tr>
 <tr class="even">
 <td>20</td>
 <td>0.948</td>
 <td></td>
 <td>0.1</td>
-<td>0.952</td>
+<td>0.947</td>
 </tr>
 <tr class="odd">
 <td>50</td>
 <td>0.966</td>
 <td></td>
-<td>0.2</td>
-<td>0.957</td>
+<td><strong>0.2</strong></td>
+<td><strong>0.961</strong></td>
 </tr>
 <tr class="even">
 <td>100</td>
 <td>0.972</td>
 <td></td>
 <td>0.3</td>
-<td>0.963</td>
+<td>0.957</td>
 </tr>
 <tr class="odd">
 <td>200</td>
 <td>0.975</td>
 <td></td>
 <td>0.6</td>
-<td>0.947</td>
+<td>0.946</td>
 </tr>
 </tbody>
 </table>
-<p>Due andamenti da leggere, e sono qualitativamente diversi:</p>
 <p><strong>I nodi danno rendimenti decrescenti.</strong> Da 10 a 50 nodi si guadagnano 4.5 punti; da 100 a 200 se ne guadagnano 0.3, raddoppiando i parametri e il tempo di calcolo. È il momento in cui la capacità del modello smette di essere il collo di bottiglia.</p>
-<p><strong>Il learning rate ha un massimo.</strong> Cresce fino a ~0.3 e poi <strong>peggiora</strong>: oltre un certo passo l’ottimizzatore scavalca il minimo invece di scendervi (la figura della Lezione 3). Esiste un valore ottimale, e va trovato sperimentalmente.</p>
+</section>
+<section id="come-si-leggono-quei-numeri" class="slide level2 smaller">
+<h2>Come si leggono quei numeri</h2>
+<div title="Quanto rumore hanno le vostre misure">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Quanto rumore hanno le vostre misure</strong></p>
+</div>
+<div class="callout-content">
+<p>Tre programmi si sovrappongono in due punti, e il confronto dà la scala dell’incertezza. A 100 nodi e 7 epoche: <code>perf_vs_nodes</code> dà 0.9718, <code>perf_vs_epochs</code> 0.9741 — <strong>0.23 punti</strong>. A <span class="math inline">\(lr=0.2\)</span> e 1 epoca: <code>perf_vs_learning_rate</code> dà 0.9605, <code>perf_vs_epochs</code> 0.9619 — <strong>0.14 punti</strong>. Sotto i due decimi di punto non state misurando niente: è per questo che il calo a 6 epoche, nelle curve del Task 3, non va interpretato.</p>
+</div>
+</div>
+</div>
+</div>
+<p><strong>Il learning rate ha un massimo, ed è a 0.2.</strong> Oltre quel passo l’ottimizzatore scavalca il minimo invece di scendervi (la figura della Lezione 3). Rashid, per tentativi, chiama 0.2 <em>“a sweet spot for the MNIST data set”</em>: la nostra misura, fatta con un altro codice in un altro linguaggio, cade sullo stesso valore.</p>
 </section>
 <section id="leffetto-del-learning-rate" class="slide level2">
 <h2>L’effetto del learning rate</h2>
 
 <img data-src="images/gradient_descent.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><p>Il pannello di destra è esattamente ciò che il vostro <code>perf_vs_learning_rate.dat</code> misura: passo piccolo significa convergenza lenta, passo grande significa oscillare intorno al minimo senza raggiungerlo.</p>
 </section>
-<section id="le-due-facce-della-convergenza" class="slide level2 smaller">
-<h2>Le due facce della convergenza</h2>
+<section id="task-3-cosa-aspettarsi" class="slide level2 smaller">
+<h2>Task 3: cosa aspettarsi</h2>
 
-<img data-src="images/loss_curve.png" class="quarto-figure quarto-figure-center r-stretch" style="width:94.0%"><p><code>Trainer::train</code> stampa a ogni epoca la <strong>Train Loss</strong>, e con <code>running_test=true</code> anche la performance: sono i due pannelli. Il Task 3 misura quello di destra, il sinistro scorre sul terminale.</p>
-<div title="Curve qualitative, non misure">
+<img data-src="images/perf_vs_epochs.png" class="quarto-figure quarto-figure-center r-stretch" style="width:97.0%"><p>Il learning rate compra <strong>velocità, non destinazione</strong>: alla prima epoca 0.2 vale 2.1 punti più di 0.05, alla ventesima le due curve si ritrovano a 0.04 punti. Il libro invece <strong>scende</strong> dopo la settima epoca, e noi non lo riproduciamo a nessuno dei due passi: il learning rate non è il colpevole.</p>
+<div title="Un disaccordo aperto — e la riga che lo chiude">
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Curve qualitative, non misure</strong></p>
+<p><strong>Un disaccordo aperto — e la riga che lo chiude</strong></p>
 </div>
 <div class="callout-content">
-<p>Servono a dirvi che <strong>forma</strong> aspettarsi. L’unico numero ancorato al dato reale è il plateau (0.9718 a 100 nodi). La zona arancione è il motivo dello <strong>Studio 4</strong>: se la loss scende ma la performance no, la rete impara a memoria.</p>
+<p><code>Trainer::train</code> rimescola il training set a ogni epoca; il codice del libro lo scorre sempre nello stesso ordine, e ripetere sempre la stessa sequenza è proprio ciò che permette alla rete di adattarsi ai dati che ha già visto. È l’ipotesi più probabile, e si prova con una riga: <code>reset_and_shuffle(false)</code>. Se avete tempo, misuratela — vale più di qualunque spiegazione a parole.</p>
 </div>
 </div>
 </div>
@@ -489,17 +686,21 @@ Un’interfaccia grafica (OpenCV UI, Qt) dove disegnare una cifra col mouse, che
 <li><label><input type="checkbox">Scrivere <code>perf_vs_nodes.cpp</code> con il ciclo su <code>{10, 20, 50, 100, 200}</code></label></li>
 <li><label><input type="checkbox">Scrivere <code>perf_vs_learning_rate.cpp</code> usando <code>fixedlr.set_lr(lr)</code></label></li>
 <li><label><input type="checkbox">Scrivere <code>perf_vs_epochs.cpp</code> e decidere se i punti sono cumulativi o indipendenti</label></li>
-<li><label><input type="checkbox"><strong>Opzionale</strong>: misurare la performance con e senza <code>train_dataset.augmentation(1, 0.72, 12.0)</code> a 3 e a 10 epoche</label></li>
+<li><label><input type="checkbox">Scrivere <code>overfitting.cpp</code>: training set troncato a 300/500/1000 esempi, e <code>trainer.test()</code> su <strong>entrambi</strong> gli insiemi</label></li>
+<li><label><input type="checkbox">Misurare il divario training/validation e vederlo chiudersi al crescere dei dati</label></li>
+<li><label><input type="checkbox">Misurare la <strong>loss</strong> oltre all’accuracy, e trovare l’epoca del minimo della validation loss</label></li>
+<li><label><input type="checkbox"><strong>Opzionale</strong>: <code>train_dataset.augmentation(1, 0.72, 12.0)</code> a 500 esempi, dove l’effetto è grande</label></li>
 <li><label><input type="checkbox">Chiamare <code>rng.seed(12345)</code> <strong>prima</strong> del ciclo per la riproducibilità</label></li>
 <li><label><input type="checkbox">Chiamare <code>model.clear()</code> alla fine di ogni iterazione</label></li>
-<li><label><input type="checkbox">Verificare che i <code>.dat</code> abbiano due colonne separate da spazio</label></li>
+<li><label><input type="checkbox">Verificare che i <code>.dat</code> abbiano le colonne separate da spazio (tre, per <code>overfitting.cpp</code>)</label></li>
 <li><label><input type="checkbox">Confrontare i vostri numeri con quelli di riferimento</label></li>
 <li><label><input type="checkbox">Individuare il learning rate ottimale dai vostri dati</label></li>
 <li><label><input type="checkbox">Scegliere una traccia per il progetto finale</label></li>
 <li><label><input type="checkbox"><strong>Domanda</strong>: perché aumentare i nodi da 100 a 200 rende così poco?</label></li>
+<li><label><input type="checkbox"><strong>Domanda</strong>: perché con 60.000 esempi il divario è di 1.8 punti e con 500 di 14?</label></li>
+<li><label><input type="checkbox"><strong>Domanda</strong>: perché l’accuracy non vede l’overfitting che la loss vede?</label></li>
 </ul>
 <p><strong>Nel prossimo laboratorio trasformeremo questi <code>.dat</code> in grafici.</strong></p>
-<p><a href="../index.html">Torna all’indice</a></p>
 
 
 </section>
@@ -850,6 +1051,119 @@ Un’interfaccia grafica (OpenCV UI, Qt) dove disegnare una cifra col mouse, che
             }
           });
         }
+            let selectedAnnoteEl;
+            const selectorForAnnotation = ( cell, annotation) => {
+              let cellAttr = 'data-code-cell="' + cell + '"';
+              let lineAttr = 'data-code-annotation="' +  annotation + '"';
+              const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+              return selector;
+            }
+            const selectCodeLines = (annoteEl) => {
+              const doc = window.document;
+              const targetCell = annoteEl.getAttribute("data-target-cell");
+              const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+              const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+              const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+              const lineIds = lines.map((line) => {
+                return targetCell + "-" + line;
+              })
+              let top = null;
+              let height = null;
+              let parent = null;
+              if (lineIds.length > 0) {
+                  //compute the position of the single el (top and bottom and make a div)
+                  const el = window.document.getElementById(lineIds[0]);
+                  top = el.offsetTop;
+                  height = el.offsetHeight;
+                  parent = el.parentElement.parentElement;
+                if (lineIds.length > 1) {
+                  const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+                  const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+                  height = bottom - top;
+                }
+                if (top !== null && height !== null && parent !== null) {
+                  // cook up a div (if necessary) and position it 
+                  let div = window.document.getElementById("code-annotation-line-highlight");
+                  if (div === null) {
+                    div = window.document.createElement("div");
+                    div.setAttribute("id", "code-annotation-line-highlight");
+                    div.style.position = 'absolute';
+                    parent.appendChild(div);
+                  }
+                  div.style.top = top - 2 + "px";
+                  div.style.height = height + 4 + "px";
+                  div.style.left = 0;
+                  let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+                  if (gutterDiv === null) {
+                    gutterDiv = window.document.createElement("div");
+                    gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                    gutterDiv.style.position = 'absolute';
+                    const codeCell = window.document.getElementById(targetCell);
+                    const gutter = codeCell.querySelector('.code-annotation-gutter');
+                    gutter.appendChild(gutterDiv);
+                  }
+                  gutterDiv.style.top = top - 2 + "px";
+                  gutterDiv.style.height = height + 4 + "px";
+                }
+                selectedAnnoteEl = annoteEl;
+              }
+            };
+            const unselectCodeLines = () => {
+              const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+              elementsIds.forEach((elId) => {
+                const div = window.document.getElementById(elId);
+                if (div) {
+                  div.remove();
+                }
+              });
+              selectedAnnoteEl = undefined;
+            };
+              // Handle positioning of the toggle
+          window.addEventListener(
+            "resize",
+            throttle(() => {
+              elRect = undefined;
+              if (selectedAnnoteEl) {
+                selectCodeLines(selectedAnnoteEl);
+              }
+            }, 10)
+          );
+          function throttle(fn, ms) {
+          let throttle = false;
+          let timer;
+            return (...args) => {
+              if(!throttle) { // first call gets through
+                  fn.apply(this, args);
+                  throttle = true;
+              } else { // all the others get throttled
+                  if(timer) clearTimeout(timer); // cancel #2
+                  timer = setTimeout(() => {
+                    fn.apply(this, args);
+                    timer = throttle = false;
+                  }, ms);
+              }
+            };
+          }
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
+                  unselectCodeLines();
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
+                  }
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
+            }
         const findCites = (el) => {
           const parentEl = el.parentElement;
           if (parentEl) {
