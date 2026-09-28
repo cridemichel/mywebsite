@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
-  <meta name="author" content="Docente">
+  <meta name="author" content="Cristiano De Michele">
   <title>Programmazione Scientifica++ – Programmazione Scientifica++: Lezione 1</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -194,11 +194,30 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Docente
+Cristiano De Michele
 </div>
 </div>
 </div>
 
+</section>
+<section id="argomenti-di-oggi" class="slide level2 smaller">
+<h2>Argomenti di Oggi</h2>
+<ul>
+<li><strong>Il corso</strong>: obiettivi, prerequisiti, organizzazione, come lavoreremo</li>
+<li><strong>I materiali</strong>: testi di riferimento e risorse in rete</li>
+<li><strong>Perché proprio il C++</strong>
+<ul>
+<li>Compilato contro interpretato</li>
+<li>Il C++ moderno (C++11, 14, 17)</li>
+</ul></li>
+<li><strong>Dove andiamo a parare</strong>
+<ul>
+<li>Il dataset MNIST e la struttura di una rete neurale</li>
+<li>La filosofia di <code>BASIC_NEURAL++</code>: niente librerie magiche</li>
+</ul></li>
+<li><strong>Gli strumenti</strong>: CMake e gli IDE</li>
+<li><strong>Dal procedurale (C) all’orientato agli oggetti (C++)</strong></li>
+</ul>
 </section>
 <section id="introduzione" class="slide level2">
 <h2>Introduzione</h2>
@@ -227,7 +246,7 @@ Docente
 </ul></li>
 </ul>
 </section>
-<section id="prerequisiti-del-corso" class="slide level2">
+<section id="prerequisiti-del-corso" class="slide level2 smaller">
 <h2>Prerequisiti del Corso</h2>
 <ul>
 <li>Tutti voi avete già seguito corsi di programmazione di base (in C).</li>
@@ -239,7 +258,7 @@ Docente
 </ul></li>
 </ul>
 </section>
-<section id="obiettivi-principali-del-corso" class="slide level2">
+<section id="obiettivi-principali-del-corso" class="slide level2 smaller">
 <h2>Obiettivi Principali del Corso</h2>
 <ul>
 <li>Capire l’importanza della programmazione ad oggetti e del C++ moderno.</li>
@@ -265,17 +284,17 @@ Docente
 </ul></li>
 </ul>
 </section>
-<section id="informazioni-di-servizio" class="slide level2">
+<section id="informazioni-di-servizio" class="slide level2 smaller">
 <h2>Informazioni di Servizio</h2>
 <ul>
 <li><strong>Sito web del corso:</strong><br><a href="https://cristiano-de-michele.netlify.app/prog-sci/">cristiano-de-michele.netlify.app/prog-sci</a></li>
 <li><strong>Orario di ricevimento:</strong> <code>Martedì 12-13</code></li>
-<li>Tutte le comunicazioni ufficiali avverranno tramite la piattaforma di ateneo: <a href="https://elearning.uniroma1.it">elearning.uniroma1.it</a></li>
 <li>Utilizzerò anche il seguente google classroom: <code>iguoftb2</code></li>
+<li>Tutte le comunicazioni ufficiali avverranno tramite google classroom.</li>
 <li>Il materiale didattico, le slide e i codici di partenza dei laboratori verranno caricati sul sito web/repository del corso.</li>
 </ul>
 </section>
-<section id="organizzazione-delle-lezioni" class="slide level2">
+<section id="organizzazione-delle-lezioni" class="slide level2 smaller">
 <h2>Organizzazione delle Lezioni</h2>
 <ul>
 <li>Lezioni teoriche e pratiche</li>
@@ -283,6 +302,22 @@ Docente
 <li>Applicazione ed implementazione di esempi degli argomenti trattati</li>
 <li>Sincronia totale: la teoria serve a fornirvi gli strumenti per costruire il framework.</li>
 <li>Progetto pratico: Sviluppo rete neurale in C++ (ispirata al libro “Make your own neural network” di Tariq Rashid)</li>
+</ul>
+</section>
+<section id="calendario-del-corso" class="slide level2 smaller">
+<h2>Calendario del Corso</h2>
+<ul>
+<li><strong>Ogni settimana:</strong>
+<ul>
+<li><strong>Martedì 14–15</strong>, Aula 4: teoria (1 ora)</li>
+<li><strong>Giovedì 12–14</strong>, Aula III (Chimica): teoria (2 ore)</li>
+<li><strong>Venerdì 17–19</strong>, Aula III (Chimica): laboratorio (2 ore)</li>
+</ul></li>
+<li><strong>Fine della teoria (prevista):</strong> giovedì 3 dicembre</li>
+<li><strong>Da giovedì 10 dicembre</strong> anche il giovedì è laboratorio (Aula III): due laboratori a settimana</li>
+<li>I martedì di dicembre e gennaio restano di riserva (recuperi, domande sui progetti)</li>
+<li><strong>Ultima lezione:</strong> venerdì 15 gennaio 2027</li>
+<li>Festività e pausa natalizia secondo il calendario di Ateneo</li>
 </ul>
 </section>
 <section id="come-funzionerà-il-corso" class="slide level2 smaller">
@@ -313,7 +348,7 @@ Docente
 <li>Ripetendo alcuni passi base farete meno errori e vi concentrerete sugli aspetti più sofisticati del linguaggio.</li>
 </ul>
 </section>
-<section id="lingua-del-corso" class="slide level2">
+<section id="lingua-del-corso" class="slide level2 smaller">
 <h2>Lingua del Corso</h2>
 <ul>
 <li>Le lezioni saranno in italiano ma alcune risorse potrebbero essere in inglese</li>
@@ -417,6 +452,7 @@ Docente
 <li><a href="https://stackoverflow.com/questions/tagged/c%2B%2B">StackOverflow</a> — quasi ogni errore che incontrerete è già stato risolto lì.</li>
 <li><a href="https://eigen.tuxfamily.org/dox/">Documentazione di Eigen</a> — la libreria che useremo dal Lab 05.</li>
 <li>In rete si trovano interi corsi universitari di C++, con lezioni ed esempi.</li>
+<li>E ovviamente anche le AI (gemini, claude, chatGPT) molto utili per imparare e non solo.</li>
 </ul>
 </section>
 <section id="compilato-vs-interpretato-13" class="slide level2">
@@ -428,7 +464,7 @@ Docente
 <li><strong>Svantaggi:</strong> Sono lenti. Molto, molto lenti per operazioni matematiche su larga scala.</li>
 </ul>
 </section>
-<section id="compilato-vs-interpretato-23" class="slide level2">
+<section id="compilato-vs-interpretato-23" class="slide level2 smaller">
 <h2>Compilato vs Interpretato (2/3)</h2>
 <ul>
 <li>C e C++ sono linguaggi <strong>compilati</strong>.</li>
@@ -442,7 +478,7 @@ Docente
 <h2>Compilato vs Interpretato (3/3)</h2>
 <ul>
 <li>L’industria ha trovato un compromesso per l’Intelligenza Artificiale.</li>
-<li>Si usano i linguaggi interpretati (Python) come “colla” o “telecomando”.</li>
+<li>Si usano i linguaggi interpretati (Python) come interfaccia.</li>
 <li>Si usano i linguaggi compilati (C++) per il motore reale che esegue i calcoli (es. moltiplicazioni di matrici gigantesche).</li>
 <li>Noi in questo corso scriveremo il <em>motore</em>.</li>
 </ul>
@@ -456,7 +492,7 @@ Docente
 <li>Il C++ moderno è molto più sicuro, pulito e per certi versi simile a Python grazie a strumenti come la <em>deduzione dei tipi</em> (<code>auto</code>) e gli <em>Smart Pointers</em>.</li>
 </ul>
 </section>
-<section id="il-dataset-mnist-il-hello-world-del-ml" class="slide level2">
+<section id="il-dataset-mnist-il-hello-world-del-ml" class="slide level2 smaller">
 <h2>Il Dataset MNIST: Il “Hello World” del ML</h2>
 <ul>
 <li>Il nostro obiettivo finale è far riconoscere cifre scritte a mano alla nostra rete neurale.</li>
@@ -495,7 +531,7 @@ Docente
 <li>Imparerete cosa significa il temuto “Overfitting” o l’“Esplosione del Gradiente”, perché li vedrete accadere nel vostro codice!</li>
 </ul>
 </section>
-<section id="la-struttura-di-una-rete-multi-layer-perceptron" class="slide level2">
+<section id="la-struttura-di-una-rete-multi-layer-perceptron" class="slide level2 smaller">
 <h2>La Struttura di una Rete (Multi-Layer Perceptron)</h2>
 <ul>
 <li>La nostra rete sarà composta da <em>Strati</em> (Layers).</li>
@@ -516,7 +552,7 @@ Docente
 <section id="lambiente-di-lavoro-gli-ide" class="slide level2">
 <h2>L’Ambiente di Lavoro: Gli IDE</h2>
 <ul>
-<li>Dimenticate i vecchi editor di testo nudi e crudi (o il vecchio Dev-C++).</li>
+<li>Io uso macvim/vim ma il file di configurazione è costituito da più di 3000 righe!</li>
 <li>Oggi si usano IDE (Integrated Development Environments) potenti.</li>
 <li>Vi consiglio caldamente <strong>Visual Studio Code</strong> o <strong>CLion</strong>.</li>
 <li>Avere un buon editor vi aiuterà ad individuare gli errori di sintassi prima ancora di compilare!</li>
@@ -533,13 +569,13 @@ Docente
 <section id="consigli-per-il-successo-22" class="slide level2">
 <h2>Consigli per il Successo (2/2)</h2>
 <ul>
-<li><strong>Giocate a rompere il codice.</strong></li>
+<li><strong>Fate esperimenti con i vostri codici, il computer non esploderà!</strong></li>
 <li>Avete scritto una matrice 3x3? Provate a moltiplicarla per una 4x4 e vedete che tipo di errore vi sputa il compilatore.</li>
 <li>Imparare a riconoscere un errore in un codice piccolo (10 righe) vi salverà la vita quando dovrete cercarlo in un codice di 10.000 righe.</li>
 <li>Fate domande! Il C++ è immenso, non si finisce mai di imparare.</li>
 </ul>
 </section>
-<section id="dal-procedurale-c-allobject-oriented-c" class="slide level2">
+<section id="dal-procedurale-c-allobject-oriented-c" class="slide level2 smaller">
 <h2>Dal Procedurale (C) all’Object-Oriented (C++)</h2>
 <ul>
 <li>Il C (anni 70) è un linguaggio <strong>procedurale</strong>.

@@ -10,3 +10,62 @@
 .reveal .code-annotation-anchor.ann-on {
   background: #2a78d6 !important; color: #fff !important; border-color: #2a78d6 !important;
 }
+
+/* Con "code-annotations: below" le spiegazioni restano sotto il codice e
+   costano parecchia altezza: su una slide con 3 annotazioni sono ~220px,
+   quasi quanto il blocco di codice. Le rendiamo piu' compatte — restano
+   testo secondario, e a 0.8em su un canvas da 1050px sono ampiamente
+   leggibili da proiettore.                                              */
+.reveal .code-annotation-container-grid {
+  font-size: 0.8em;
+  line-height: 1.3;
+  margin-top: 0.3em;
+}
+.reveal .code-annotation-container-grid dd { margin-bottom: 0.25em; }
+.reveal .code-annotation-container-grid dt { padding-top: 0; }
+
+/* Il codice usa interlinea 1.3: su un blocco da 15 righe visive sono ~45px
+   buttati. 1.2 resta comodissimo da leggere (e' l'interlinea tipica di un
+   editor) e restituisce spazio a ogni slide con codice.                  */
+.reveal pre code { line-height: 1.2; }
+
+/* Il pulsante "copia negli appunti" di Quarto sta a top:0 right:0 dentro il
+   blocco di codice — cioe' esattamente dove finisce il cerchietto numerato
+   quando l'annotazione e' sulla PRIMA riga. Sovrapposizione garantita (10
+   slide su 20 lezioni). Lo spostiamo a sinistra della colonnina dei
+   cerchietti: resta visibile e cliccabile, e non si pestano piu' i piedi. */
+.reveal .code-copy-button { right: 2.6em; }
+
+/* I lab hanno `scrollable: true` nel _metadata.yml, quindi una slide che non
+   entra scorre invece di essere tagliata. Il problema e' che NIENTE lo segnala:
+   le overlay scrollbar di macOS compaiono solo mentre si scorre, e a riposo
+   offsetWidth - clientWidth vale 0. Uno studente che vede 6 voci di checklist
+   su 9 non ha modo di sospettare che ce ne siano 9.
+   Qui la barra viene resa PERMANENTE. Compare solo dove serve davvero (con
+   overflow:auto il browser la disegna solo se c'e' eccedenza), e definire
+   ::-webkit-scrollbar fa passare Chrome e Safari dalle overlay alle barre
+   classiche, che occupano spazio e quindi si vedono sempre.               */
+.reveal .slides section {
+  scrollbar-width: thin;                              /* Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.30) transparent;
+}
+.reveal .slides section::-webkit-scrollbar        { width: 10px; }
+.reveal .slides section::-webkit-scrollbar-track  { background: transparent; }
+.reveal .slides section::-webkit-scrollbar-thumb  {
+  background: rgba(0, 0, 0, 0.30);
+  border-radius: 5px;
+}
+.reveal .slides section::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* Le "Task da Completare" sono il contratto di cosa lo studente deve
+   consegnare e devono entrare INTERE (criterio A del 13/9). Quelle da 10 voci
+   non ci stavano per poche decine di pixel — ma non per colpa del testo:
+   ogni voce porta 11,2px di margine sopra e 5,6px sotto, cioe' ~168px di
+   spazio morto su una lista di 10, contro 330px di testo vero. Qui si stringe
+   solo quello spazio: il corpo del testo resta identico.                  */
+.reveal .slides section ul.task-list > li {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
