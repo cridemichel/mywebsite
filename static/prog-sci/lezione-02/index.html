@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="it"><head>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-html/tabby.min.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -500,7 +500,7 @@ Cristiano De Michele
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Warning</strong></p>
+<p><strong>Avviso</strong></p>
 </div>
 <div class="callout-content">
 <p>IL SEGRETO DEL DEEP LEARNING</p>
@@ -697,7 +697,7 @@ Cristiano De Michele
 <span id="cb1-5"><a aria-label="5"></a>        z <span class="op">+=</span> peso<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">*</span> input<span class="op">[</span>j<span class="op">];</span></span>
 <span id="cb1-6"><a aria-label="6"></a>    <span class="op">}</span></span>
 <span id="cb1-7"><a aria-label="7"></a>    attivazione<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> relu<span class="op">(</span>z<span class="op">);</span></span>
-<span id="cb1-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Vi sembra un buon codice?</p>
 </section>
 <section id="il-codice-naif-lento-e-mortale" class="slide level2 smaller">
@@ -744,7 +744,7 @@ w_{21} &amp; w_{22} &amp; w_{23}
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Note</strong></p>
+<p><strong>Nota</strong></p>
 </div>
 <div class="callout-content">
 <p>Attenzione all’ordine degli indici. Nello schema di prima (e nel libro di Rashid) <span class="math inline">\(\omega_{i,j}\)</span> va <strong>dalla</strong> partenza <span class="math inline">\(i\)</span> <strong>all’</strong>arrivo <span class="math inline">\(j\)</span>; qui invece la <strong>riga</strong> è il neurone d’arrivo, quindi questa <span class="math inline">\(\mathbf{W}\)</span> è la <strong>trasposta</strong> di quella tabella. È lei che serve per moltiplicare, ed è per questo che nel codice si chiamerà <code>Wt</code>.</p>
@@ -780,7 +780,7 @@ w_{21} &amp; w_{22} &amp; w_{23}
 <p>In C++, non dovrete (e non dovreste mai) scrivervi a mano la moltiplicazione tra matrici.</p>
 <p>Nel vostro progetto, userete una libreria di algebra lineare di livello industriale come <strong>Eigen</strong> (o BLAS/LAPACK). Basterà definire due oggetti <code>Eigen::Matrix</code> e moltiplicarli con il banale operatore <code>*</code>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="co">// Eigen usa istruzioni Assembly SIMD sotto il cofano!</span></span>
-<span id="cb2-2"><a aria-label="2"></a>Eigen<span class="op">::</span>VectorXd z <span class="op">=</span> W <span class="op">*</span> x <span class="op">+</span> b<span class="op">;</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a aria-label="2"></a>Eigen<span class="op">::</span>VectorXd z <span class="op">=</span> W <span class="op">*</span> x <span class="op">+</span> b<span class="op">;</span> </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Il vostro codice risulterà 100 volte più pulito da leggere e 1000 volte più veloce in esecuzione.</p>
 </section>
 <section id="lequazione-ricorsiva-finale" class="slide level2 smaller">
@@ -851,7 +851,7 @@ w_{21} &amp; w_{22} &amp; w_{23}
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Important</strong></p>
+<p><strong>Importante</strong></p>
 </div>
 <div class="callout-content">
 <p>Nove moltiplicazioni le avete fatte a mano in un minuto. Nove <strong>miliardi</strong> sono un’epoca, e le epoche sono decine. Ecco perche’ il ciclo <code>for</code> ingenuo non basta, e perche’ la prossima volta parleremo di come si scrive quel prodotto in una riga sola.</p>
@@ -1064,7 +1064,7 @@ w_{21} &amp; w_{22} &amp; w_{23}
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          mathjax: '../mathjax/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -1112,12 +1112,12 @@ w_{21} &amp; w_{22} &amp; w_{23}
           // flash "checked"
           button.classList.add('code-copy-button-checked');
           var currentTitle = button.getAttribute("title");
-          button.setAttribute("title", "Copied!");
+          button.setAttribute("title", "Copiato!");
           let tooltip;
           if (window.bootstrap) {
             button.setAttribute("data-bs-toggle", "tooltip");
             button.setAttribute("data-bs-placement", "left");
-            button.setAttribute("data-bs-title", "Copied!");
+            button.setAttribute("data-bs-title", "Copiato!");
             tooltip = new bootstrap.Tooltip(button, 
               { trigger: "manual", 
                 customClass: "code-copy-button-tooltip",

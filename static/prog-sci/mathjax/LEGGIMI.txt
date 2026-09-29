@@ -1,0 +1,14 @@
+MathJax 2.7.9 (Apache License 2.0, vedi LICENSE), copia ridotta per il corso.
+
+La stessa versione che Quarto caricava da https://cdn.jsdelivr.net/npm/mathjax@2.7.9/
+(e' l'ultima della serie 2, agosto 2020): servita dal sito invece che dal CDN,
+cosi' le slide mostrano le formule anche SENZA RETE (Materiale_Corso.zip,
+portatile di riserva). La usa _quarto.yml (html-math-method, format revealjs).
+
+Dentro c'e' solo cio' che serve all'uscita HTML-CSS con i font TeX:
+MathJax.js, config/TeX-AMS_HTML-full.js, jax/element, jax/input/TeX,
+jax/output/HTML-CSS (senza i font STIX), extensions (tutte le TeX), i font
+TeX in woff e la localizzazione italiana. Circa 2 MB invece di 73.
+
+Non va aggiornata. Da ricontrollare solo dopo un aggiornamento di Quarto:
+./publish_week.sh N --tutto e un'occhiata a una slide con formule.
