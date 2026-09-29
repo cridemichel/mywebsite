@@ -413,6 +413,30 @@ Cristiano De Michele
           display:block!important;
       }</style></aside>
 </section>
+<section id="coccinelle-cimici-e-bruchi" class="slide level2 smaller">
+<h2>Coccinelle, cimici e bruchi</h2>
+<div class="columns">
+<div class="column" style="width:54%;">
+<p>Aggiungiamo un terzo insetto, la <strong>cimice</strong>: più allungata di una coccinella, molto meno di un bruco. E cambiamo domanda: «cimice?».</p>
+<p>Le cimici stanno <strong>in mezzo</strong>, fra le coccinelle da una parte e i bruchi dall’altra: nessuna retta le lascia da sole su un lato. Due rette sì, una fascia: il problema non è linearmente separabile.</p>
+<p>È la finestra della glicemia, in due dimensioni: lungo <span class="math inline">\(x_2 - x_1\)</span> vengono prima le coccinelle, poi le cimici, poi i bruchi.</p>
+</div><div class="column" style="width:46%;">
+<p><img data-src="images/coccinelle_cimici_bruchi.png"></p>
+</div></div>
+<aside class="notes">
+<p>Misure inventate come nella slide prima (stesse coccinelle, stessi bruchi); l’ordine per allungamento è quello vero: una cimice è più allungata di una coccinella, molto meno di un bruco. «Nessuna retta» lo verifica lo script della figura: su 7200 direzioni le proiezioni delle cimici e degli altri insetti si sovrappongono sempre. La fascia <span class="math inline">\(|x_2 - x_1| &lt; 0.35\)</span> sono due neuroni con la stessa direzione e bias diversi, più un terzo che li combina: è la costruzione dello XOR con lo strato nascosto, dove le due rette parallele saranno l’OR e l’AND.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="cosa-chiediamo-a-un-neurone" class="slide level2 smaller">
 <h2>Cosa Chiediamo a un Neurone</h2>
 <p>Un neurone deve prendere una <strong>decisione</strong>: uscita 1 (“sì”) o 0 (“no”). Il banco di prova classico è <strong>due ingressi binari</strong> <span class="math inline">\(A, B \in \{0,1\}\)</span> e una <strong>porta logica</strong> da realizzare.</p>
