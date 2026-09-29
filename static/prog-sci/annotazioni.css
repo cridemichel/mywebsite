@@ -69,3 +69,12 @@
   margin-top: 0.2em;
   margin-bottom: 0.2em;
 }
+
+/* Frecce di reveal.js ai bordi dello schermo (controls: true in _quarto.yml,
+   29/9/2026). Sul tablet la slide occupa tutta la larghezza e le frecce
+   finiscono sopra il margine destro/sinistro del testo: su ~120 slide sfiorano
+   la fine di una riga. Semitrasparenti si vedono e si toccano, ma il testo
+   sotto resta leggibile. */
+.reveal > .controls {
+  opacity: 0.6;
+}
