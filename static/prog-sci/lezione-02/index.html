@@ -299,6 +299,66 @@
     })();
   });
   </script>
+  <script>
+  // Swipe a DUE dita per cambiare slide (29/9/2026). Lo swipe a un dito resta
+  // quello di reveal.js, che pero' non funziona se il dito parte su qualcosa che
+  // scorre (slide .scrollable, blocchi di codice): li' il browser si prende il
+  // gesto per lo scorrimento. Con due dita si cambia slide ovunque, anche con la
+  // matita attiva. Un pinch (dita che si allontanano) resta uno zoom.
+  (function () {
+    var SOGLIA = 60;            // px di spostamento del punto medio delle due dita
+    var g = null;               // gesto a due dita in corso
+    var tocchi = new Set();     // pointer "touch" attivi
+    var muto = false;           // da quando posi il secondo dito a quando li togli tutti
+
+    function medio(t) {
+      return { x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2,
+               d: Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) };
+    }
+    document.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) { var m = medio(e.touches); g = { x: m.x, y: m.y, d: m.d, fatto: false }; }
+      else if (e.touches.length > 2) g = null;
+    }, { capture: true, passive: true });
+
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches.length < 2) return;
+      e.stopPropagation();                      // la lavagna non disegna col secondo dito
+      if (!g || e.touches.length !== 2) return;
+      if (g.fatto) { if (e.cancelable) e.preventDefault(); return; }
+      var m = medio(e.touches), dx = m.x - g.x, dy = m.y - g.y;
+      if (Math.abs(m.d - g.d) > 0.35 * g.d) { g = null; return; }      // pinch: al browser
+      if (Math.abs(dx) > SOGLIA && Math.abs(dx) > 1.5 * Math.abs(dy)) {
+        g.fatto = true;
+        if (e.cancelable) e.preventDefault();
+        if (dx < 0) Reveal.next(); else Reveal.prev();
+      } else if (Math.abs(dy) > SOGLIA && Math.abs(dy) > 1.5 * Math.abs(dx)) {
+        g = null;                                // due dita in verticale: scorrimento
+      }
+    }, { capture: true, passive: false });
+
+    document.addEventListener('touchend', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+    document.addEventListener('touchcancel', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+
+    // reveal.js legge lo swipe dai pointer events, dito per dito: con due dita
+    // vedrebbe anche uno swipe a un dito e salterebbe due slide. Dal secondo dito
+    // in poi, e finche' non si alzano tutti, i suoi pointermove non gli arrivano.
+    function conta(e) {
+      if (e.pointerType !== 'touch') return;
+      if (e.type === 'pointerdown') { tocchi.add(e.pointerId); if (tocchi.size >= 2) muto = true; }
+      else { tocchi.delete(e.pointerId); if (tocchi.size === 0) muto = false; }
+    }
+    ['pointerdown', 'pointerup', 'pointercancel'].forEach(function (t) {
+      document.addEventListener(t, conta, true);
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch' && muto) e.stopPropagation();
+    }, true);
+  })();
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">

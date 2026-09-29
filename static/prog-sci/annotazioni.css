@@ -69,16 +69,3 @@
   margin-top: 0.2em;
   margin-bottom: 0.2em;
 }
-
-/* Swipe dal tablet (29/9/2026). Le slide .scrollable e i blocchi di codice
-   sono contenitori scorrevoli: toccandoli, il browser si prende il gesto
-   (pointercancel) e reveal.js non vede mai lo swipe, quindi la slide non
-   cambia. Con pan-y il browser gestisce solo lo scorrimento verticale e lo
-   swipe orizzontale torna a reveal.js. Costo: le righe di codice troppo
-   lunghe non si scorrono piu' col dito in orizzontale. */
-.reveal .slides section.scrollable,
-.reveal pre,
-.reveal div.sourceCode,
-.reveal pre code {
-  touch-action: pan-y;
-}
