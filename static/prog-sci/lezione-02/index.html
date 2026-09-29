@@ -248,6 +248,57 @@
     });
   });
   </script>
+  <style>
+  /* pulsanti "gomma" e "schermo intero" accanto a lavagna e notes canvas (29/9/2026) */
+  .reveal .slide-chalkboard-buttons .fa-eraser::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-schermo-intero::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-esci-schermo::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/></svg>')}
+  </style>
+  <script>
+  // Due pulsanti in piu' in basso a sinistra, per chi presenta dal tablet
+  // senza tastiera:
+  //  - la gomma cancella in un colpo i disegni della slide corrente, nel modo
+  //    attivo (la lavagna se e' aperta, altrimenti il notes canvas): e' il
+  //    tasto Canc. Le altre slide non si toccano;
+  //  - schermo intero, entra ed esce (il tasto F); l'icona segue lo stato.
+  window.addEventListener('load', function () {
+    var tentativi = 0;
+    (function aggiungi() {
+      var div = document.querySelector('.reveal .slide-chalkboard-buttons');
+      if (!div || typeof RevealChalkboard === 'undefined') {
+        if (++tentativi < 50) setTimeout(aggiungi, 100);
+        return;
+      }
+      if (div.querySelector('.fa-eraser')) return;
+      var span = document.createElement('span');
+      span.title = 'Cancella i disegni di questa slide (Canc)';
+      var icona = document.createElement('i');
+      icona.className = 'fas fa-eraser';
+      span.appendChild(icona);
+      span.onclick = function (ev) { ev.preventDefault(); RevealChalkboard.clear(); };
+      div.appendChild(span);
+
+      var doc = document.documentElement;
+      if (!doc.requestFullscreen) return;       // browser senza schermo intero
+      var fs = document.createElement('span');
+      var ifs = document.createElement('i');
+      fs.appendChild(ifs);
+      function aggiorna() {
+        var dentro = !!document.fullscreenElement;
+        ifs.className = 'fas ' + (dentro ? 'fa-esci-schermo' : 'fa-schermo-intero');
+        fs.title = dentro ? 'Esci dallo schermo intero (F)' : 'Schermo intero (F)';
+      }
+      fs.onclick = function (ev) {
+        ev.preventDefault();
+        if (document.fullscreenElement) document.exitFullscreen();
+        else doc.requestFullscreen().catch(function () {});
+      };
+      document.addEventListener('fullscreenchange', aggiorna);
+      aggiorna();
+      div.appendChild(fs);
+    })();
+  });
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
