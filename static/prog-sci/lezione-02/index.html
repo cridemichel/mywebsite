@@ -764,7 +764,29 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 
 <img data-src="images/mlp_schema.png" class="quarto-figure quarto-figure-center r-stretch"><p>Il groviglio di frecce è l’insieme dei pesi (<em>weights</em>) della rete. Uno strato denso si chiama <em>fully connected</em> perché non manca nemmeno una freccia. Gli strati nascosti possono essere quanti si vuole: il loro numero <span class="math inline">\(N\)</span> è la <strong>profondità</strong> della rete.</p>
 <aside class="notes">
-<p>Figura ridisegnata e semplificata da T. Rashid, Make Your Own Neural Network, p.&nbsp;58 (lì c’è un solo strato nascosto). Qui ogni cerchio è un neurone <strong>intero</strong>: nelle reti degli esempi il cerchio era <span class="math inline">\(z\)</span> e il riquadro la decisione, qui c’è un cerchio solo e il nome scritto dentro è la sua uscita, <span class="math inline">\(h = f(z)\)</span> o <span class="math inline">\(y = f(z)\)</span>. Ogni colonna di cerchi è un riquadro <span class="math inline">\([\mathbf{W}, \mathbf{b}]\)</span> seguito da <span class="math inline">\(f\)</span> nello schema della slide dopo. Gli ingressi sono quadrati: sono i dati e non calcolano niente. Nel libro anche il primo strato è disegnato con i “neurons”.</p>
+<p>Figura ridisegnata e semplificata da T. Rashid, Make Your Own Neural Network, p.&nbsp;58 (lì c’è un solo strato nascosto). Qui ogni cerchio è un neurone <strong>intero</strong>: nelle reti degli esempi il cerchio era <span class="math inline">\(z\)</span> e il riquadro la decisione, qui c’è un cerchio solo e il nome scritto dentro è la sua uscita, <span class="math inline">\(h = f(z)\)</span> o <span class="math inline">\(y = f(z)\)</span>. Ogni colonna di cerchi è un riquadro <span class="math inline">\([\mathbf{W}, \mathbf{b}]\)</span> seguito da <span class="math inline">\(f\)</span> nello schema di «Piegare lo spazio». Gli ingressi sono quadrati: sono i dati e non calcolano niente. Nel libro anche il primo strato è disegnato con i “neurons”.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="uno-strato-è-una-matrice" class="slide level2 smaller">
+<h2>Uno strato è una matrice</h2>
+<p>Nello schema ogni neurone di uno strato legge <strong>tutti</strong> gli ingressi dello strato prima. Con <span class="math inline">\(m\)</span> neuroni e <span class="math inline">\(n\)</span> ingressi sono <span class="math inline">\(m\)</span> somme pesate, <span class="math inline">\(z_j = \sum_{k=1}^{n} w_{jk}\, x_k + b_j\)</span> con <span class="math inline">\(j = 1, \dots, m\)</span>: le righe di <strong>un solo prodotto matrice per vettore</strong>, <span class="math display">\[
+\underbrace{\begin{bmatrix} z_1 \\ \vdots \\ z_m \end{bmatrix}}_{\mathbf{z}} =
+\underbrace{\begin{bmatrix} w_{11} &amp; \cdots &amp; w_{1n} \\ \vdots &amp; &amp; \vdots \\ w_{m1} &amp; \cdots &amp; w_{mn} \end{bmatrix}}_{\mathbf{W}\ (m \times n)}
+\underbrace{\begin{bmatrix} x_1 \\ \vdots \\ x_n \end{bmatrix}}_{\mathbf{x}} +
+\underbrace{\begin{bmatrix} b_1 \\ \vdots \\ b_m \end{bmatrix}}_{\mathbf{b}}
+\]</span> La riga <span class="math inline">\(j\)</span> di <span class="math inline">\(\mathbf{W}\)</span> sono i pesi del neurone <span class="math inline">\(j\)</span>. Lo strato intero è la mappa <span class="math inline">\(\mathbf{x} \mapsto f(\mathbf{W}\mathbf{x} + \mathbf{b})\)</span> da <span class="math inline">\(\mathbb{R}^n\)</span> a <span class="math inline">\(\mathbb{R}^m\)</span>, con <span class="math inline">\(f\)</span> applicata componente per componente (per lo strato <span class="math inline">\(\ell\)</span>: <span class="math inline">\(\mathbf{W}^{(\ell)}, \mathbf{b}^{(\ell)}\)</span>). Una rete è una <strong>composizione</strong> di queste mappe: da qui in poi la si studia con l’<strong>algebra lineare</strong>.</p>
+<aside class="notes">
+<p>È il passaggio chiave della lezione: dai neuroni uno per uno agli oggetti dell’algebra lineare. Indici: <span class="math inline">\(w_{jk}\)</span> è il peso con cui il neurone <span class="math inline">\(j\)</span> legge l’ingresso <span class="math inline">\(k\)</span>, la stessa convenzione di «La matrice dei pesi (W)» più avanti; nel libro di Rashid il primo indice è la partenza, quindi la sua matrice è la trasposta di questa (nel codice <code>Wt</code>). Dove serve l’algebra lineare: subito dopo, in «Piegare lo spazio», il collasso degli strati lineari è un prodotto di matrici; nella seconda parte della lezione lo stesso passaggio torna su un esempio 3 → 2, dal lato del calcolo: i due cicli <code>for</code> annidati diventano un prodotto matrice per vettore.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -780,12 +802,12 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 <section id="piegare-lo-spazio" class="slide level2 smaller">
 <h2>Piegare lo spazio</h2>
 <p>Senza funzione di attivazione, anche 100 strati lineari, con milioni di parametri, collassano in <strong>un solo strato lineare</strong>: il prodotto delle cento matrici, più un vettore di bias.</p>
-<p>Uno strato lineare è <span class="math inline">\(\mathbf{x} \mapsto \mathbf{W}\mathbf{x} + \mathbf{b}\)</span>, con una riga di <span class="math inline">\(\mathbf{W}\)</span> per neurone. Due strati:</p>
+<p>Senza <span class="math inline">\(f\)</span> uno strato è la mappa affine <span class="math inline">\(\mathbf{x} \mapsto \mathbf{W}\mathbf{x} + \mathbf{b}\)</span>. Due strati:</p>
 <p><span class="math display">\[ \mathbf{W}^{(2)}\left(\mathbf{W}^{(1)}\mathbf{x} + \mathbf{b}^{(1)}\right) + \mathbf{b}^{(2)} = \underbrace{\mathbf{W}^{(2)}\mathbf{W}^{(1)}}_{\mathbf{W}'}\,\mathbf{x} + \underbrace{\mathbf{W}^{(2)}\mathbf{b}^{(1)} + \mathbf{b}^{(2)}}_{\mathbf{b}'} \]</span></p>
 <p>Solo una funzione di attivazione non lineare fra uno strato e l’altro impedisce il collasso: ogni strato <strong>deforma</strong> lo spazio degli ingressi, come un cambio di coordinate non lineare, finché basta un confine dritto.</p>
 
 <img data-src="images/strati_collasso.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><aside class="notes">
-<p>“Piegare” e non “curvare”: con la ReLU (fra poche slide) la rete è una funzione lineare a tratti, con curvatura nulla ovunque tranne lungo le pieghe, che stanno su iperpiani. Con la sigmoide la deformazione è liscia, ma il punto resta lo stesso: un cambio di coordinate non lineare dopo il quale basta un confine dritto. Non serve salire di dimensione: nello XOR lo strato nascosto ha due neuroni, quanti gli ingressi. Salire di dimensione è l’idea dei metodi a kernel, non il motivo per cui una rete funziona. Lo si è visto sullo XOR (slide «Cosa vede il neurone d’uscita»): i due neuroni nascosti mandano <span class="math inline">\((0,1)\)</span> e <span class="math inline">\((1,0)\)</span> nello stesso punto, e nel piano <span class="math inline">\((h_1, h_2)\)</span> una retta basta. Lo schema a blocchi è l’MLP della slide prima: ogni colonna di cerchi è un riquadro <span class="math inline">\([\mathbf{W}, \mathbf{b}]\)</span> seguito da <span class="math inline">\(f\)</span>.</p>
+<p>“Piegare” e non “curvare”: con la ReLU (fra poche slide) la rete è una funzione lineare a tratti, con curvatura nulla ovunque tranne lungo le pieghe, che stanno su iperpiani. Con la sigmoide la deformazione è liscia, ma il punto resta lo stesso: un cambio di coordinate non lineare dopo il quale basta un confine dritto. Non serve salire di dimensione: nello XOR lo strato nascosto ha due neuroni, quanti gli ingressi. Salire di dimensione è l’idea dei metodi a kernel, non il motivo per cui una rete funziona. Lo si è visto sullo XOR (slide «Cosa vede il neurone d’uscita»): i due neuroni nascosti mandano <span class="math inline">\((0,1)\)</span> e <span class="math inline">\((1,0)\)</span> nello stesso punto, e nel piano <span class="math inline">\((h_1, h_2)\)</span> una retta basta. Lo schema a blocchi è l’MLP di «Architettura di base»: ogni colonna di cerchi è un riquadro <span class="math inline">\([\mathbf{W}, \mathbf{b}]\)</span> seguito da <span class="math inline">\(f\)</span>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
