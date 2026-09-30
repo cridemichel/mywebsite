@@ -130,6 +130,13 @@
       margin-right: 0; 
     }
   </style>
+  <script type="text/x-mathjax-config">
+  // Solo i font TeX serviti dal sito (mathjax/, 30/9/2026). Sul Mac sono installati
+  // i font STIX: MathJax li preferiva, chiedeva fonts/STIX/fontdata.js, che la copia
+  // ridotta non ha, e mostrava "Math Processing Error" (slide "Piegare lo spazio").
+  MathJax.Hub.Config({"HTML-CSS": {availableFonts: ["TeX"], preferredFont: "TeX",
+                                   webFont: "TeX", imageFont: null}});
+  </script>
   <script>
   // Collega ogni spiegazione alla sua riga di codice e viceversa.
   //   - col mouse: passandoci sopra si accendono entrambe;

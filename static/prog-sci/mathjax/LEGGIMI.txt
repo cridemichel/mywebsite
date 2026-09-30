@@ -12,3 +12,10 @@ TeX in woff e la localizzazione italiana. Circa 2 MB invece di 73.
 
 Non va aggiornata. Da ricontrollare solo dopo un aggiornamento di Quarto:
 ./publish_week.sh N --tutto e un'occhiata a una slide con formule.
+
+ATTENZIONE (30/9/2026): i font STIX qui NON ci sono, quindi MathJax non deve mai
+usarli. Sul Mac gli STIX sono installati e MathJax li preferiva: chiedeva
+jax/output/HTML-CSS/fonts/STIX/fontdata.js (assente) e mostrava "Math Processing
+Error" (lezione-02, slide 17, 20, 21). Per questo _quarto.yml ha, in
+include-in-header, un blocco text/x-mathjax-config con availableFonts: ["TeX"].
+Non toglierlo.
