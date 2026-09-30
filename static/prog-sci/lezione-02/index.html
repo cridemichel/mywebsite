@@ -381,7 +381,7 @@ Cristiano De Michele
 <h2>Argomenti di oggi</h2>
 <ul>
 <li>Il neurone biologico e matematico</li>
-<li>Il problema della linearità</li>
+<li>I limiti di un neurone solo</li>
 <li>Funzioni di attivazione: gradino, sigmoide, ReLU</li>
 <li>Multi-layer perceptron (MLP)</li>
 <li>La vettorizzazione e le matrici</li>
@@ -409,26 +409,39 @@ Cristiano De Michele
 </section>
 <section id="il-modello-matematico-perceptron" class="slide level2 smaller">
 <h2>Il modello matematico (perceptron)</h2>
-<p>L’unità fondamentale di una Rete Neurale Artificiale si chiama <strong>Percettrone</strong> — è il singolo neurone artificiale, quello che Rashid nel libro chiama semplicemente <em>neurone</em> o <em>nodo</em>: stessa cosa, nome storico (Rosenblatt, 1958). Prende una serie di input numerici <span class="math inline">\(x_i\)</span>, li moltiplica per dei “pesi” <span class="math inline">\(w_i\)</span> (che simulano l’importanza del collegamento biologico), e li somma tutti assieme.</p>
-<p>L’equazione fondamentale del singolo neurone è:</p>
+<p>L’unità di base di una rete neurale artificiale è il <strong>percettrone</strong> (Rosenblatt, 1958): il singolo neurone artificiale, quello che Rashid chiama semplicemente <em>neurone</em> o <em>nodo</em>. Per prima cosa calcola la somma pesata dei suoi ingressi, più il bias:</p>
 <p><span class="math display">\[ z = \sum_{i=1}^{n} (w_i \cdot x_i) + b \]</span></p>
 <ul>
 <li><span class="math inline">\(x_i\)</span>: il segnale in ingresso.</li>
-<li><span class="math inline">\(w_i\)</span>: il peso (<em>weight</em>).</li>
+<li><span class="math inline">\(w_i\)</span>: il peso (<em>weight</em>), cioè l’importanza del collegamento.</li>
 <li><span class="math inline">\(b\)</span>: il <strong>bias</strong>, un numero che “sposta” artificialmente la soglia di scatto del neurone.</li>
 </ul>
+<p>Poi decide in base a <span class="math inline">\(z\)</span>: nel percettrone di Rosenblatt l’uscita è <span class="math inline">\(y = \Theta(z)\)</span>, la funzione di Heaviside, cioè <span class="math inline">\(1\)</span> se <span class="math inline">\(z &gt; 0\)</span> e <span class="math inline">\(0\)</span> altrimenti (qui <span class="math inline">\(\Theta(0) = 0\)</span>).</p>
 </section>
 <section id="la-combinazione-lineare" class="slide level2 smaller">
 <h2>La combinazione lineare</h2>
-<p>Con un solo ingresso <span class="math inline">\(x\)</span> l’equazione del neurone diventa: <span class="math display">\[ z = w \cdot x + b \]</span></p>
-<p>Questa è l’equazione di una <strong>retta</strong> (<span class="math inline">\(y = mx + q\)</span>). Il neurone calcola una funzione <strong>affine</strong> dei suoi ingressi: una combinazione lineare più una costante, il bias.</p>
+<p>Con un solo ingresso <span class="math inline">\(x\)</span> la somma diventa: <span class="math display">\[ z = w \cdot x + b \]</span></p>
+<p>Questa è l’equazione di una <strong>retta</strong> (<span class="math inline">\(y = mx + q\)</span>). La somma <span class="math inline">\(z\)</span> è una funzione <strong>affine</strong> degli ingressi, una combinazione lineare più una costante (il bias). L’uscita del percettrone, che confronta <span class="math inline">\(z\)</span> con zero, non è né lineare né affine.</p>
 </section>
-<section id="un-mondo-troppo-semplice-linearità" class="slide level2 smaller">
-<h2>Un mondo troppo semplice (linearità)</h2>
+<section id="un-mondo-troppo-semplice-confini-lineari" class="slide level2 smaller">
+<h2>Un mondo troppo semplice: confini lineari</h2>
 <p>Il neurone dice “sì” quando <span class="math inline">\(z &gt; 0\)</span> e “no” altrimenti: il confine fra le due risposte è <span class="math inline">\(z = 0\)</span>. Con un ingresso solo, se <span class="math inline">\(w \neq 0\)</span>, la retta <span class="math inline">\(z = w\,x + b\)</span> taglia lo zero in un punto: il confine è quel punto, una <strong>soglia</strong>. Con due ingressi il confine è una <strong>retta</strong> nel piano degli ingressi; con <span class="math inline">\(n\)</span> ingressi, un iperpiano.</p>
 <p>Quindi un singolo neurone può risolvere solo problemi <strong>linearmente separabili</strong>: quelli per cui esiste un confine che lascia tutti i “sì” da una parte e tutti i “no” dall’altra.</p>
 <p>Ma se i “sì” stanno in mezzo ai “no”? Una soglia sola non chiude una finestra, e una retta sola non racchiude né una fascia né un cerchio. Il percettrone fallisce.</p>
 <p>Lo vediamo prima con un ingresso, poi con due.</p>
+<aside class="notes">
+<p>Chi legge Rashid trova “linear classifier” (capitolo sulle coccinelle): è questo stesso oggetto. “Lineare” si riferisce al confine <span class="math inline">\(w \cdot x + b = 0\)</span>, non alla mappa ingresso → etichetta, che contiene la soglia <span class="math inline">\(\Theta\)</span> e non è lineare (un’uscita in <span class="math inline">\(\{0,1\}\)</span> non può esserlo). Nel libro la soglia è implicita: la retta classifica secondo che il punto stia sopra o sotto. Sono classificatori lineari anche la regressione logistica (<span class="math inline">\(\sigma(z) = 1/2\)</span> equivale a <span class="math inline">\(z = 0\)</span>) e la SVM lineare.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="stessi-pazienti-due-domande" class="slide level2 smaller">
 <h2>Stessi pazienti, due domande</h2>
@@ -620,11 +633,24 @@ Cristiano De Michele
 </section>
 <section id="la-funzione-di-attivazione" class="slide level2 smaller">
 <h2>La funzione di attivazione</h2>
-<p>Per uscire dal mondo lineare, l’uscita del neurone passa per una funzione <strong>non lineare</strong>.</p>
-<p>Chiamiamo questa funzione <strong>funzione di attivazione</strong> <span class="math inline">\(f(z)\)</span>.</p>
+<p>La <span class="math inline">\(\Theta\)</span> del percettrone è il primo esempio di <strong>funzione di attivazione</strong> <span class="math inline">\(f(z)\)</span>: la funzione non lineare che il neurone applica alla somma pesata.</p>
 <p>La formula del neurone diventa quindi:</p>
 <p><span class="math display">\[ a = f(z) = f\left(\sum_{i=1}^{n} (w_i x_i) + b\right) \]</span></p>
 <p>L’output finale è <span class="math inline">\(a\)</span> (attivazione), ed è quello che verrà passato al livello successivo.</p>
+<p>Da sola, però, <span class="math inline">\(f\)</span> non basta. Con un neurone solo e una <span class="math inline">\(f\)</span> monotona (gradino, sigmoide, ReLU), il confine fra le due risposte è ancora un insieme <span class="math inline">\(z = \text{costante}\)</span>, cioè un iperpiano. La non linearità serve <strong>fra uno strato e l’altro</strong>, come mostra la slide successiva.</p>
+<aside class="notes">
+<p>Se uno studente chiede: con una <span class="math inline">\(f\)</span> non monotona un neurone solo fa lo XOR. Per esempio <span class="math inline">\(f(z) = e^{-z^2}\)</span> con <span class="math inline">\(z = A + B - 1\)</span> vale <span class="math inline">\(1\)</span> sui due casi misti (<span class="math inline">\(z = 0\)</span>) ed <span class="math inline">\(e^{-1} \approx 0.37\)</span> su <span class="math inline">\((0,0)\)</span> e <span class="math inline">\((1,1)\)</span> (<span class="math inline">\(z = \mp 1\)</span>): la soglia <span class="math inline">\(0.5\)</span> li separa. Le funzioni di attivazione usate in pratica sono monotone, e allora vale l’argomento della slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="piegare-lo-spazio" class="slide level2 smaller">
 <h2>Piegare lo spazio</h2>
@@ -652,7 +678,7 @@ Cristiano De Michele
 <img data-src="images/xor_rete.png" class="quarto-figure quarto-figure-center r-stretch"><p>È il neurone di «Un neurone, due ingressi», tre volte. Due copie leggono <span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span>, regolate come l’OR e come l’AND: non sono né ingressi né uscita, e formano uno <strong>strato nascosto</strong>. La terza, <span class="math inline">\(y\)</span>, legge le loro uscite e calcola “<span class="math inline">\(h_1\)</span> e non <span class="math inline">\(h_2\)</span>”: lo XOR.</p>
 <p>La non linearità sta nei riquadri <span class="math inline">\(z &gt; 0\)</span> dei neuroni nascosti. Toglieteli, e <span class="math inline">\(y\)</span> riceverebbe <span class="math inline">\((A+B-0.5)-(A+B-1.5)\)</span>: il suo <span class="math inline">\(z\)</span> varrebbe <span class="math inline">\(0.5\)</span> per qualunque ingresso.</p>
 <aside class="notes">
-<p>Sono le due rette della slide dello XOR più un neurone d’uscita, con la regola <span class="math inline">\(z &gt; 0\)</span> di sempre. Il riquadro <span class="math inline">\(z &gt; 0\)</span> è la step function della slide dopo: qui fa da funzione di attivazione. Pesi e bias di <span class="math inline">\(h_1\)</span> e <span class="math inline">\(h_2\)</span> sono le righe OR e AND della tabella di «Un neurone, due ingressi». La non linearità che serve è la decisione <span class="math inline">\(z &gt; 0\)</span> dei neuroni nascosti: senza, <span class="math inline">\(h_1\)</span> e <span class="math inline">\(h_2\)</span> sarebbero lineari in <span class="math inline">\(A, B\)</span>, e per «Piegare lo spazio» tutto collasserebbe in una retta sola.</p>
+<p>Sono le due rette della slide dello XOR più un neurone d’uscita, con la regola <span class="math inline">\(z &gt; 0\)</span> di sempre. Il riquadro <span class="math inline">\(z &gt; 0\)</span> è la funzione a gradino (slide «La funzione a gradino»): qui fa da funzione di attivazione. Pesi e bias di <span class="math inline">\(h_1\)</span> e <span class="math inline">\(h_2\)</span> sono le righe OR e AND della tabella di «Un neurone, due ingressi». La non linearità che serve è la decisione <span class="math inline">\(z &gt; 0\)</span> dei neuroni nascosti: senza, <span class="math inline">\(h_1\)</span> e <span class="math inline">\(h_2\)</span> sarebbero lineari in <span class="math inline">\(A, B\)</span>, e per «Piegare lo spazio» tutto collasserebbe in una retta sola.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -686,12 +712,12 @@ Cristiano De Michele
 <section id="la-funzione-a-gradino" class="slide level2 smaller">
 <h2>La funzione a gradino</h2>
 <p>Quale funzione <span class="math inline">\(f(z)\)</span> usare?</p>
-<p>Negli anni ’60 si usava la <strong>funzione a gradino</strong> (<em>step function</em>).</p>
+<p>Nei primi percettroni (anni ’50 e ’60) si usava la <strong>funzione a gradino</strong> (<em>step function</em>), cioè la <span class="math inline">\(\Theta(z)\)</span> di Heaviside:</p>
 <ul>
 <li>Se <span class="math inline">\(z &gt; 0\)</span>, l’output è <span class="math inline">\(1\)</span> (neurone acceso).</li>
 <li>Se <span class="math inline">\(z \le 0\)</span>, l’output è <span class="math inline">\(0\)</span> (neurone spento).</li>
 </ul>
-<p>È concettualmente semplice (come un interruttore), ma ha un limite decisivo: è costante ovunque tranne in zero, dove salta. L’apprendimento usa le <em>derivate</em> per correggere gli errori, e la derivata del gradino è nulla quasi ovunque: un metodo basato sul gradiente non riceve alcun segnale per correggere i pesi.</p>
+<p>È concettualmente semplice (come un interruttore), ma ha un limite decisivo: è costante ovunque tranne in zero, dove salta. L’apprendimento usa le <em>derivate</em> per correggere gli errori, e la derivata del gradino è nulla quasi ovunque: in senso distribuzionale <span class="math inline">\(\Theta'(z) = \delta(z)\)</span>, tutta concentrata in <span class="math inline">\(z = 0\)</span>. Un metodo basato sul gradiente non riceve alcun segnale per correggere i pesi.</p>
 </section>
 <section id="la-funzione-sigmoide" class="slide level2 smaller">
 <h2>La funzione sigmoide</h2>
