@@ -312,111 +312,101 @@ Cristiano De Michele
 
 </section>
 <section id="argomenti-di-oggi" class="slide level2 smaller">
-<h2>Argomenti di Oggi</h2>
+<h2>Argomenti di oggi</h2>
 <ul>
-<li><strong>Il corso</strong>: obiettivi, prerequisiti, organizzazione, come lavoreremo</li>
+<li><strong>Il corso</strong>: obiettivi, prerequisiti, organizzazione, metodo di lavoro</li>
 <li><strong>I materiali</strong>: testi di riferimento e risorse in rete</li>
-<li><strong>Perché proprio il C++</strong>
+<li><strong>Perché il C++</strong>
 <ul>
-<li>Compilato contro interpretato</li>
+<li>Compilato o interpretato</li>
 <li>Il C++ moderno (C++11, 14, 17)</li>
 </ul></li>
-<li><strong>Dove andiamo a parare</strong>
+<li><strong>L’obiettivo del corso</strong>
 <ul>
-<li>Il dataset MNIST e la struttura di una rete neurale</li>
-<li>La filosofia di <code>BASIC_NEURAL++</code>: niente librerie magiche</li>
+<li>Il dataset MNIST</li>
+<li>La filosofia di <code>BASIC_NEURAL++</code>: nessuna libreria di machine learning</li>
 </ul></li>
-<li><strong>Gli strumenti</strong>: CMake e gli IDE</li>
-<li><strong>Dal procedurale (C) all’orientato agli oggetti (C++)</strong></li>
+<li><strong>Dal C procedurale al C++ a oggetti</strong></li>
 </ul>
 </section>
 <section id="introduzione" class="slide level2">
 <h2>Introduzione</h2>
 <ul>
-<li>Io sono un fisico computazionale e mi occupo di fisica della materia soffice e biofisica</li>
-<li>Non sono un programmatore né un guru di C++!</li>
-<li>E allora perché insegno questo corso?</li>
-<li>Io utilizzo C++ dal 1999 quando ero dottorando!
+<li>Sono un fisico computazionale: mi occupo di fisica della materia soffice e di biofisica.</li>
+<li>Non sono un programmatore di professione, né un esperto di C++.</li>
+<li>Perché allora tengo questo corso?</li>
+<li>Uso il C++ dal 1999, dal dottorato, per:
 <ul>
-<li>Simulazioni MC e MD</li>
-<li>Analisi dati</li>
+<li>simulazioni Monte Carlo e di dinamica molecolare;</li>
+<li>analisi dei dati.</li>
 </ul></li>
 </ul>
 </section>
 <section id="perché-studiare-il-c" class="slide level2 smaller">
 <h2>Perché studiare il C++?</h2>
 <ul>
-<li>Negli ultimi decenni, il C++ ha sostituito il Fortran come standard.</li>
-<li>Grossi esperimenti (es. al CERN) hanno adottato C++ dalla metà degli anni 90 (ROOT nasce nel 1995).</li>
-<li>Molti strumenti di analisi dati e metodi numerici sono scritti in C++.</li>
-<li><strong>Moltissimi package per fare simulazioni usano il C++</strong>:
-<ul>
-<li>LAMMPS</li>
-<li>ESPResSo</li>
-<li>HOOMD-blue</li>
-</ul></li>
+<li>Negli ultimi decenni il C++ ha affiancato il Fortran nel calcolo scientifico, e in molti campi lo ha sostituito.</li>
+<li>I grandi esperimenti (per esempio al CERN) lo usano dalla metà degli anni ’90.</li>
+<li>Sono scritti in C++ molti strumenti di analisi dei dati e di calcolo numerico, e molti codici di simulazione.</li>
 </ul>
 </section>
 <section id="prerequisiti-del-corso" class="slide level2 smaller">
-<h2>Prerequisiti del Corso</h2>
+<h2>Prerequisiti del corso</h2>
 <ul>
-<li>Tutti voi avete già seguito corsi di programmazione di base (in C).</li>
-<li>Sapete perché scriviamo programmi ed applicazioni nei vari campi della Fisica.</li>
+<li>Avete già seguito un corso di programmazione di base in C.</li>
+<li>Sapete a cosa servono i programmi nei vari campi della fisica.</li>
 <li>Sapete cosa vuol dire compilare ed eseguire un programma.</li>
-<li><strong>Se siete nuovi alla Programmazione Orientata agli Oggetti (OOP):</strong>
+<li><strong>Se la programmazione orientata agli oggetti (OOP) è nuova per voi:</strong>
 <ul>
-<li>Non preoccupatevi, questo corso vi guiderà passo dopo passo partendo da zero.</li>
+<li>il corso la introduce da zero, un passo alla volta.</li>
 </ul></li>
 </ul>
 </section>
 <section id="obiettivi-principali-del-corso" class="slide level2 smaller">
-<h2>Obiettivi Principali del Corso</h2>
+<h2>Obiettivi principali del corso</h2>
 <ul>
-<li>Capire l’importanza della programmazione ad oggetti e del C++ moderno.</li>
-<li>Saper scrivere programmi usando classi appropriate per risolvere problemi.</li>
-<li>Capire come usare e integrare librerie esterne (es. Eigen).</li>
-<li><strong>Progetto Finale:</strong>
+<li>Capire a cosa servono la programmazione a oggetti e il C++ moderno.</li>
+<li>Saper progettare classi adatte a risolvere un problema.</li>
+<li>Saper usare e integrare librerie esterne (per esempio Eigen).</li>
+<li><strong>Progetto finale:</strong>
 <ul>
-<li>Sviluppare una vera rete neurale (Multi-Layer Perceptron) in C++.</li>
-<li>Riconoscere numeri scritti a mano dal dataset MNIST.</li>
+<li>sviluppare in C++ una rete neurale (<em>multi-layer perceptron</em>);</li>
+<li>addestrarla a riconoscere le cifre scritte a mano del dataset MNIST.</li>
 </ul></li>
 </ul>
 </section>
-<section id="esempi-di-uso-di-c-in-fisica-e-non-solo" class="slide level2 smaller">
-<h2>Esempi di Uso di C++ in Fisica (e non solo)</h2>
+<section id="esempi-duso-del-c-in-fisica-e-non-solo" class="slide level2 smaller">
+<h2>Esempi d’uso del C++ in fisica (e non solo)</h2>
 <ul>
-<li>ROOT Data Analysis Framework (particelle elementari)</li>
-<li>Simulazioni numeriche di sistemi complessi (LAMMPS, ESPResSO, HOOMD)</li>
-<li>Numerical Recipes in C++</li>
-<li><strong>E oggi, l’Intelligenza Artificiale:</strong>
+<li>ROOT, il framework di analisi dei dati della fisica delle particelle, nato al CERN nel 1995</li>
+<li>Codici di simulazione di sistemi complessi: LAMMPS, ESPResSo, HOOMD-blue</li>
+<li>Numerical Recipes, nell’edizione in C++</li>
+<li><strong>L’intelligenza artificiale:</strong>
 <ul>
-<li>I colossi dell’IA usano interfacce in Python per comodità…</li>
-<li>…ma i <em>motori tensoriali</em> sotto il cofano di PyTorch e TensorFlow sono scritti rigorosamente in <strong>C++ e CUDA</strong>!</li>
+<li>PyTorch e TensorFlow si usano da Python…</li>
+<li>…ma il loro nucleo di calcolo è scritto in <strong>C++ e CUDA</strong>.</li>
 </ul></li>
 </ul>
 </section>
 <section id="informazioni-di-servizio" class="slide level2 smaller">
-<h2>Informazioni di Servizio</h2>
+<h2>Informazioni di servizio</h2>
 <ul>
 <li><strong>Sito web del corso:</strong><br><a href="https://cristiano-de-michele.netlify.app/prog-sci/">cristiano-de-michele.netlify.app/prog-sci</a></li>
-<li><strong>Orario di ricevimento:</strong> <code>Martedì 12-13</code></li>
-<li>Utilizzerò anche il seguente google classroom: <code>iguoftb2</code></li>
-<li>Tutte le comunicazioni ufficiali avverranno tramite google classroom.</li>
-<li>Il materiale didattico, le slide e i codici di partenza dei laboratori verranno caricati sul sito web/repository del corso.</li>
+<li><strong>Orario di ricevimento:</strong> martedì 12–13</li>
+<li><strong>Google Classroom:</strong> codice <code>iguoftb2</code>. Tutte le comunicazioni ufficiali passano da lì.</li>
+<li>Slide, materiale didattico e codici di partenza dei laboratori sono pubblicati sul sito del corso.</li>
 </ul>
 </section>
 <section id="organizzazione-delle-lezioni" class="slide level2 smaller">
-<h2>Organizzazione delle Lezioni</h2>
+<h2>Organizzazione delle lezioni</h2>
 <ul>
-<li>Lezioni teoriche (comunque con coding)</li>
-<li>Sessioni di laboratorio (sviluppo del progetto)</li>
-<li>Applicazione ed implementazione di esempi degli argomenti trattati</li>
-<li>Sincronia totale: la teoria serve a fornirvi gli strumenti per costruire il framework.</li>
-<li>Progetto pratico: Sviluppo rete neurale in C++ (ispirata al libro “Make your own neural network” di Tariq Rashid)</li>
+<li>Lezioni di teoria, sempre con esempi di codice.</li>
+<li>Laboratori, in cui si applicano gli argomenti delle lezioni e si sviluppa il progetto.</li>
+<li>Teoria e laboratorio procedono insieme: la teoria fornisce gli strumenti per costruire il framework.</li>
 </ul>
 </section>
 <section id="calendario-del-corso" class="slide level2 smaller">
-<h2>Calendario del Corso</h2>
+<h2>Calendario del corso</h2>
 <ul>
 <li><strong>Ogni settimana:</strong>
 <ul>
@@ -432,56 +422,71 @@ Cristiano De Michele
 </ul>
 </section>
 <section id="come-funzionerà-il-corso" class="slide level2 smaller">
-<h2>Come Funzionerà il Corso?</h2>
+<h2>Come funzionerà il corso?</h2>
 <ul>
-<li>Non discuterò in dettaglio tutti i possibili operatori, comandi e sintassi di C++
+<li>Non vedremo nel dettaglio tutti gli operatori, i comandi e la sintassi del C++:
 <ul>
-<li>Ci sono ottimi libri e siti web (e le intelligenze artificiali!) che illustrano tutto</li>
-<li>Cercare di ripetere questo livello di dettaglio a lezione è dispersivo ed inutile</li>
+<li>li descrivono bene libri e siti web (le risorse sono elencate più avanti);</li>
+<li>ripeterli a lezione sarebbe dispersivo.</li>
 </ul></li>
-<li>Le lezioni si focalizzeranno su aspetti importanti che rendono C++ superiore a C</li>
-<li>Fornirò esempi specifici per illustrarvi l’utilizzo di C++ e possibili problemi tecnici</li>
-<li>L’intero corso è <strong>Project-Based</strong>: il codice sviluppato a laboratorio andrà a comporre l’architettura del vostro framework <code>BASIC_NEURAL++</code>.</li>
+<li>Le lezioni si concentrano sugli aspetti che il C++ aggiunge al C.</li>
+<li>Gli esempi mostreranno come si usa il C++ e quali problemi tecnici si incontrano.</li>
+<li>Il corso è costruito attorno a un progetto: il codice scritto in laboratorio compone il vostro framework, <code>BASIC_NEURAL++</code>.</li>
 </ul>
 </section>
 <section id="imparare-un-linguaggio-come-una-lingua" class="slide level2 smaller">
-<h2>Imparare un Linguaggio come una Lingua</h2>
+<h2>Imparare un linguaggio come una lingua</h2>
 <ul>
-<li>Come con una lingua umana, un nuovo linguaggio si impara solo attraverso esempi e sbagliando la sintassi
-<ul>
-<li>La teoria è inutile se poi il programma non compila oppure compila ma non gira!</li>
-</ul></li>
-<li>Scrivere programmi semplici per capire un aspetto di C++ è fondamentale perché:
-<ul>
-<li>Imparerete a decifrare e risolvere i (temuti) errori di compilazione.</li>
-<li>Svilupperete una sensibilità fondamentale per grandi progetti.</li>
-</ul></li>
-<li>Ripetendo alcuni passi base farete meno errori e vi concentrerete sugli aspetti più sofisticati del linguaggio.</li>
+<li>Come una lingua, un linguaggio si impara con gli esempi e con gli errori: la teoria serve a poco se il programma non compila, o compila ma non fa quello che deve.</li>
+<li>Scrivete programmi piccoli, uno per ogni aspetto del C++: imparerete a leggere gli errori di compilazione, e un errore che sapete riconoscere in 10 righe lo ritroverete in 10.000.</li>
+<li>Scrivete il codice invece di copiarlo, e prima di eseguire una riga provate a prevedere cosa farà.</li>
+<li>Provocate gli errori di proposito e leggete cosa risponde il compilatore.</li>
+<li>Fate domande: il C++ è molto vasto.</li>
 </ul>
 </section>
 <section id="lingua-del-corso" class="slide level2 smaller">
-<h2>Lingua del Corso</h2>
+<h2>Lingua del corso</h2>
 <ul>
-<li>Le lezioni saranno in italiano ma alcune risorse potrebbero essere in inglese</li>
+<li>Le lezioni sono in italiano, ma alcune risorse sono in inglese.</li>
 <li>Perché?
 <ul>
-<li>Molti termini tecnici non sono nemmeno tradotti in italiano (es. “template” o “design pattern”)</li>
-<li>Sarà più facile per voi cercare referenze e materiale aggiuntivo</li>
-<li>Vi abituerete ai testi in inglese che nei corsi futuri saranno sempre più comuni</li>
+<li>Molti termini tecnici non si traducono (per esempio <em>template</em> o <em>design pattern</em>).</li>
+<li>Vi sarà più facile cercare riferimenti e materiale aggiuntivo.</li>
+<li>Vi abituerete ai testi in inglese, sempre più comuni nei corsi successivi.</li>
 </ul></li>
 </ul>
 </section>
-<section id="alcuni-testi-da-consultare-per-iniziare" class="slide level2 smaller scrollable">
-<h2>Alcuni Testi da Consultare per Iniziare</h2>
+<section id="alcuni-testi-per-iniziare" class="slide level2 smaller scrollable">
+<h2>Alcuni testi per iniziare</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><img data-src="images/img-036.jpg" class="quarto-figure quarto-figure-center" style="width:45.0%"> - <strong>Deitel, C++ How To Program</strong> - Buono se non conoscete C++ e vi serve un testo passo-passo.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/img-036.jpg" class="quarto-figure quarto-figure-center" style="width:45.0%"></p>
+</figure>
+</div>
+<ul>
+<li><strong>Deitel, C++ How To Program</strong>
+<ul>
+<li>Adatto a chi non conosce il C++ e cerca un testo che proceda passo passo.</li>
+</ul></li>
+</ul>
 </div><div class="column" style="width:50%;">
-<p><img data-src="images/img-ppp-cpp.jpg" class="quarto-figure quarto-figure-center" style="width:45.0%"> - <strong>Stroustrup, Programming: Principles and Practice</strong> - (3^ Ed. 2024, C++20). Il manuale didattico introduttivo ufficiale del creatore del C++. Perfetto per iniziare.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/img-ppp-cpp.jpg" class="quarto-figure quarto-figure-center" style="width:45.0%"></p>
+</figure>
+</div>
+<ul>
+<li><strong>Stroustrup, Programming: Principles and Practice</strong>
+<ul>
+<li>3ª ed., 2024 (C++20). Il testo introduttivo dell’autore del C++, adatto a chi inizia.</li>
+</ul></li>
+</ul>
 </div></div>
 </section>
 <section id="altri-testi-di-riferimento" class="slide level2 smaller scrollable">
-<h2>Altri Testi di Riferimento</h2>
+<h2>Altri testi di riferimento</h2>
 <div class="columns">
 <div class="column" style="width:33%;">
 <div class="quarto-figure quarto-figure-center">
@@ -492,7 +497,7 @@ Cristiano De Michele
 <ul>
 <li><strong>Stroustrup, C++ Programming Language</strong>
 <ul>
-<li>La “bibbia” storica (ferma al C++11). Ottimo punto di riferimento per le basi.</li>
+<li>Il riferimento classico (fermo al C++11), utile per le basi.</li>
 </ul></li>
 </ul>
 </div><div class="column" style="width:33%;">
@@ -502,9 +507,9 @@ Cristiano De Michele
 </figure>
 </div>
 <ul>
-<li><strong>Stroustrup, A Tour of C++ (3^ Ed.)</strong>
+<li><strong>Stroustrup, A Tour of C++ (3ª ed.)</strong>
 <ul>
-<li>Moderno e rapido (C++20). Non per principianti, ma ideale per chi sa già programmare.</li>
+<li>Moderno e sintetico (C++20): non per principianti, adatto a chi sa già programmare.</li>
 </ul></li>
 </ul>
 </div><div class="column" style="width:33%;">
@@ -516,13 +521,13 @@ Cristiano De Michele
 <ul>
 <li><strong>Lippman, C++ Primer</strong>
 <ul>
-<li>Testo didattico completo (anche questo fermo al C++11), forse un po’ meno “pesante”.</li>
+<li>Testo didattico completo (anche questo fermo al C++11), più discorsivo.</li>
 </ul></li>
 </ul>
 </div></div>
 </section>
 <section id="testo-di-riferimento-reti-neurali" class="slide level2 smaller scrollable">
-<h2>Testo di Riferimento: Reti Neurali</h2>
+<h2>Testo di riferimento: reti neurali</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
 <div class="quarto-figure quarto-figure-center">
@@ -531,199 +536,142 @@ Cristiano De Michele
 </figure>
 </div>
 </div><div class="column" style="width:60%;">
-<p><br> - <strong>Tariq Rashid, Make Your Own Neural Network</strong> - Il libro su cui si baserà il nostro progetto finale. - Non usa librerie esterne, spiega la matematica alla base del Deep Learning passo dopo passo. - Ottimo per capire <em>davvero</em> come funziona una rete neurale prima di scriverla in C++.</p>
+<p><br></p>
+<ul>
+<li><strong>Tariq Rashid, Make Your Own Neural Network</strong>
+<ul>
+<li>Il libro su cui si basa il progetto del corso.</li>
+<li>Non usa librerie esterne e spiega passo passo la matematica delle reti neurali.</li>
+<li>Serve a capire come funziona una rete neurale prima di scriverla in C++.</li>
+</ul></li>
+</ul>
 </div></div>
 </section>
-<section id="tematiche-la-base-e-larchitettura" class="slide level2">
-<h2>Tematiche: La Base e l’Architettura</h2>
+<section id="tematiche-le-basi-e-larchitettura" class="slide level2">
+<h2>Tematiche: le basi e l’architettura</h2>
 <ul>
-<li>Gestione della memoria C++ (Puntatori, Heap).</li>
-<li>Ciclo di vita degli oggetti (Costruttori, Distruttori).</li>
-<li>Introduzione all’Object-Oriented Programming (OOP).</li>
-<li>Polimorfismo, ereditarietà ed incapsulamento.</li>
-<li>Astrazione: interfacce e classi virtuali pure.</li>
+<li>Gestione della memoria in C++ (puntatori, heap).</li>
+<li>Ciclo di vita degli oggetti (costruttori, distruttori).</li>
+<li>Introduzione alla programmazione orientata agli oggetti (OOP).</li>
+<li>Incapsulamento, ereditarietà e polimorfismo.</li>
+<li>Astrazione: interfacce e classi astratte (funzioni virtuali pure).</li>
 </ul>
 </section>
-<section id="tematiche-strumenti-e-deep-learning" class="slide level2">
-<h2>Tematiche: Strumenti e Deep Learning</h2>
+<section id="tematiche-gli-strumenti" class="slide level2">
+<h2>Tematiche: gli strumenti</h2>
 <ul>
-<li>Compilatori, CMake ed organizzazione del codice.</li>
-<li>Programmazione generica (Templates).</li>
-<li>Utilizzo di librerie matematiche avanzate (Eigen).</li>
-<li>Gestione degli errori (Eccezioni).</li>
-<li><strong>Progetto:</strong> Sviluppo e addestramento di una rete neurale MLP!</li>
+<li>Compilatori, CMake e organizzazione del codice.</li>
+<li>Programmazione generica (template).</li>
+<li>La Standard Template Library (STL) e gli smart pointer.</li>
+<li>Librerie matematiche (Eigen).</li>
+<li>Gestione degli errori (eccezioni).</li>
 </ul>
 </section>
-<section id="moltissime-risorse-in-rete" class="slide level2 smaller">
-<h2>Moltissime Risorse in Rete</h2>
+<section id="risorse-in-rete" class="slide level2 smaller">
+<h2>Risorse in rete</h2>
 <ul>
 <li><a href="https://en.cppreference.com">cppreference.com</a> — il manuale di riferimento, da tenere sempre aperto.</li>
-<li><a href="https://cplusplus.com">cplusplus.com</a> — tutorial introduttivi, più discorsivo.</li>
-<li><a href="https://isocpp.org">isocpp.org</a> — il comitato di standardizzazione: <em>Core Guidelines</em> e FAQ.</li>
-<li><a href="https://stackoverflow.com/questions/tagged/c%2B%2B">StackOverflow</a> — quasi ogni errore che incontrerete è già stato risolto lì.</li>
+<li><a href="https://cplusplus.com">cplusplus.com</a> — tutorial introduttivi, più discorsivi.</li>
+<li><a href="https://isocpp.org">isocpp.org</a> — il sito della Standard C++ Foundation, con le <em>Core Guidelines</em> e le FAQ.</li>
+<li><a href="https://stackoverflow.com/questions/tagged/c%2B%2B">StackOverflow</a> — quasi ogni errore che incontrerete ha già una risposta lì.</li>
 <li><a href="https://eigen.tuxfamily.org/dox/">Documentazione di Eigen</a> — la libreria che useremo dal Lab 05.</li>
 <li>In rete si trovano interi corsi universitari di C++, con lezioni ed esempi.</li>
-<li>E ovviamente anche le AI (gemini, claude, chatGPT) molto utili per imparare e non solo.</li>
+<li>Gli assistenti basati sull’IA (Gemini, Claude, ChatGPT) sono utili per imparare, a patto di verificare quello che propongono.</li>
 </ul>
 </section>
 <section id="compilato-vs-interpretato-13" class="slide level2">
-<h2>Compilato vs Interpretato (1/3)</h2>
+<h2>Compilato vs interpretato (1/3)</h2>
 <ul>
 <li>Python, MATLAB e R sono linguaggi <strong>interpretati</strong>.</li>
-<li>Il codice viene letto riga per riga da un “interprete” durante l’esecuzione.</li>
-<li><strong>Vantaggi:</strong> Facilissimi da usare, non serve compilare, typing dinamico.</li>
-<li><strong>Svantaggi:</strong> Sono lenti. Molto, molto lenti per operazioni matematiche su larga scala.</li>
+<li>Il codice è eseguito da un <em>interprete</em>, che legge e traduce le istruzioni mentre il programma gira.</li>
+<li><strong>Vantaggi:</strong> facili da usare, nessuna compilazione, tipizzazione dinamica.</li>
+<li><strong>Svantaggi:</strong> lenti, soprattutto nei cicli numerici su grandi quantità di dati.</li>
 </ul>
 </section>
 <section id="compilato-vs-interpretato-23" class="slide level2 smaller">
-<h2>Compilato vs Interpretato (2/3)</h2>
+<h2>Compilato vs interpretato (2/3)</h2>
 <ul>
 <li>C e C++ sono linguaggi <strong>compilati</strong>.</li>
-<li>Il codice sorgente viene tradotto in <em>linguaggio macchina</em> (binario) prima dell’esecuzione da un programma chiamato <strong>compilatore</strong> (es. <code>g++</code>).</li>
-<li>Il computer esegue direttamente le istruzioni binarie.</li>
-<li><strong>Svantaggi:</strong> Tempi di compilazione, gestione manuale dei tipi e della memoria.</li>
-<li><strong>Vantaggi:</strong> Prestazioni assolute. Sei a diretto contatto con l’hardware (CPU/GPU).</li>
+<li>Prima dell’esecuzione un programma, il <strong>compilatore</strong> (per esempio <code>g++</code>), traduce il codice sorgente in <em>linguaggio macchina</em> (binario).</li>
+<li>Il processore esegue direttamente le istruzioni binarie.</li>
+<li><strong>Svantaggi:</strong> tempi di compilazione, gestione esplicita dei tipi e della memoria.</li>
+<li><strong>Vantaggi:</strong> prestazioni elevate e controllo diretto della memoria e dell’hardware.</li>
 </ul>
 </section>
 <section id="compilato-vs-interpretato-33" class="slide level2">
-<h2>Compilato vs Interpretato (3/3)</h2>
+<h2>Compilato vs interpretato (3/3)</h2>
 <ul>
-<li>L’industria ha trovato un compromesso per l’Intelligenza Artificiale.</li>
-<li>Si usano i linguaggi interpretati (Python) come interfaccia.</li>
-<li>Si usano i linguaggi compilati (C++) per il motore reale che esegue i calcoli (es. moltiplicazioni di matrici gigantesche).</li>
-<li>Noi in questo corso scriveremo il <em>motore</em>.</li>
+<li>Per l’intelligenza artificiale l’industria ha trovato un compromesso:
+<ul>
+<li>Python come interfaccia;</li>
+<li>C++ per il motore che esegue i calcoli, per esempio i prodotti tra grandi matrici.</li>
+</ul></li>
+<li>Anche NumPy funziona così: le sue funzioni sono codice compilato.</li>
+<li>In questo corso scriveremo il <em>motore</em>.</li>
 </ul>
 </section>
 <section id="il-c-moderno-c11-14-17" class="slide level2">
-<h2>Il C++ Moderno (C++11, 14, 17)</h2>
+<h2>Il C++ moderno (C++11, 14, 17)</h2>
 <ul>
-<li>Il C++ ha una reputazione temibile a causa del vecchio standard (C++98).</li>
-<li>Gestire la memoria “a mano” causava continui crash (Segmentation Fault).</li>
-<li>Oggi scriveremo in <strong>C++ Moderno</strong> (sfrutteremo lo standard C++17).</li>
-<li>Il C++ moderno è molto più sicuro, pulito e per certi versi simile a Python grazie a strumenti come la <em>deduzione dei tipi</em> (<code>auto</code>) e gli <em>Smart Pointers</em>.</li>
+<li>Il C++ ha fama di linguaggio difficile, per via del vecchio standard (C++98).</li>
+<li>La gestione manuale della memoria era una fonte frequente di errori (<em>segmentation fault</em>, <em>memory leak</em>).</li>
+<li>Nel corso useremo il <strong>C++ moderno</strong>, con lo standard C++17.</li>
+<li>Il C++ moderno è più sicuro, più conciso e per certi versi più vicino a Python, grazie a strumenti come la <em>deduzione dei tipi</em> (<code>auto</code>) e gli <em>smart pointer</em>.</li>
 </ul>
 </section>
 <section id="il-dataset-mnist-il-hello-world-del-ml" class="slide level2 smaller">
-<h2>Il Dataset MNIST: Il “Hello World” del ML</h2>
+<h2>Il dataset MNIST: il “Hello World” del ML</h2>
 <ul>
-<li>Il nostro obiettivo finale è far riconoscere cifre scritte a mano alla nostra rete neurale.</li>
-<li>Utilizzeremo il dataset <strong>MNIST</strong> (Modified National Institute of Standards and Technology).</li>
+<li>L’obiettivo finale del corso è una rete neurale che riconosce cifre scritte a mano.</li>
+<li>Useremo il dataset <strong>MNIST</strong> (<em>Modified National Institute of Standards and Technology</em>).</li>
 <li>Contiene 60.000 immagini di addestramento e 10.000 immagini di test.</li>
-<li>Le immagini sono in scala di grigi, di dimensione 28x28 pixel.</li>
+<li>Le immagini sono in scala di grigi, di 28×28 pixel.</li>
 </ul>
 </section>
 <section id="la-sfida-informatica-di-mnist" class="slide level2 smaller">
-<h2>La Sfida Informatica di MNIST</h2>
+<h2>La sfida informatica di MNIST</h2>
 <ul>
-<li>Le immagini non sono in comodi file <code>.png</code> o <code>.jpg</code>: le useremo in formato <strong>CSV</strong>, una riga per immagine — la prima colonna è la cifra, le altre 784 sono i pixel da 0 a 255.</li>
-<li>Sarà una delle sfide pratiche del Laboratorio 12: leggere 60.000 righe senza far esplodere la memoria, convertirle in matrici, e riscalare i pixel nell’intervallo giusto (sbagliare qui rende la rete inutile).</li>
-<li>Capirete che “leggere un file” non è mai una banalità in HPC!</li>
+<li>Le immagini non sono file <code>.png</code> o <code>.jpg</code>: le useremo in formato <strong>CSV</strong>, una riga per immagine; la prima colonna è la cifra, le altre 784 sono i pixel, da 0 a 255.</li>
+<li>Leggerle sarà una delle sfide pratiche del Laboratorio 12: 60.000 righe da leggere senza sprecare memoria, da convertire in matrici e da riscalare nell’intervallo giusto (se si sbaglia qui, la rete non impara).</li>
+<li>Vedrete che anche “leggere un file” richiede attenzione, quando i dati sono tanti.</li>
 </ul>
 </section>
 <section id="la-filosofia-di-basic_neural" class="slide level2">
-<h2>La Filosofia di <code>BASIC_NEURAL++</code></h2>
+<h2>La filosofia di <code>BASIC_NEURAL++</code></h2>
 <ul>
 <li>Durante il corso costruiremo <code>BASIC_NEURAL++</code>.</li>
-<li><strong>Regola d’oro:</strong> Niente librerie magiche per il Machine Learning (Niente PyTorch, niente TensorFlow).</li>
-<li><strong>Cosa useremo?</strong>
+<li><strong>Regola:</strong> nessuna libreria di machine learning (niente PyTorch, niente TensorFlow).</li>
+<li><strong>Cosa useremo:</strong>
 <ul>
-<li>Solo la Standard Library del C++.</li>
-<li><strong>Eigen:</strong> per l’algebra lineare veloce.</li>
-<li><strong>OpenCV:</strong> solo alla fine, per leggere le immagini che disegnerete voi a mano!</li>
+<li>la Standard Library del C++;</li>
+<li><strong>Eigen</strong>, per l’algebra lineare;</li>
+<li><strong>OpenCV</strong>, nella parte finale, per leggere le immagini delle cifre che scriverete a mano.</li>
 </ul></li>
 </ul>
 </section>
-<section id="capire-la-scatola-nera" class="slide level2">
-<h2>Capire la scatola nera</h2>
+<section id="dal-c-procedurale-al-c-a-oggetti" class="slide level2 smaller">
+<h2>Dal C procedurale al C++ a oggetti</h2>
 <ul>
-<li>Sviluppando tutto da zero, “apriremo la scatola nera” dell’Intelligenza Artificiale.</li>
-<li>Capirete esattamente cos’è un <em>gradiente</em>.</li>
-<li>Vedrete con i vostri occhi come i pesi sinaptici (che sono solo numeri in una matrice) cambiano valore passo dopo passo.</li>
-<li>Imparerete cosa significa il temuto “Overfitting” o l’“Esplosione del Gradiente”, perché li vedrete accadere nel vostro codice!</li>
-</ul>
-</section>
-<section id="la-struttura-di-una-rete-multi-layer-perceptron" class="slide level2 smaller">
-<h2>La Struttura di una Rete (Multi-Layer Perceptron)</h2>
+<li>Il C (anni ’70) è un linguaggio <strong>procedurale</strong>: il programma è organizzato in funzioni che agiscono su strutture dati passive.</li>
+<li>Negli anni ’80 Bjarne Stroustrup sviluppa il <strong>C++</strong>, che introduce la <strong>programmazione orientata agli oggetti</strong> (OOP): un oggetto riunisce i dati (attributi) e le operazioni su quei dati (metodi).</li>
+<li>Nel nostro framework:
 <ul>
-<li>La nostra rete sarà composta da <em>Strati</em> (Layers).</li>
-<li><strong>Strato di Input:</strong> 784 neuroni (i 28x28 pixel dell’immagine MNIST).</li>
-<li><strong>Strato Nascosto (Hidden):</strong> deciderete voi quanti neuroni usare per estrarre i concetti (linee, curve, anelli). Nel corso ne useremo uno.</li>
-<li><strong>Strato di Output:</strong> 10 neuroni, uno per cifra. Il più acceso dà la risposta.</li>
-</ul>
-</section>
-<section id="lambiente-di-lavoro-cmake" class="slide level2">
-<h2>L’Ambiente di Lavoro: CMake</h2>
-<ul>
-<li>Avere un buon codice sorgente non basta. Bisogna saperlo “costruire” (build).</li>
-<li>Nei laboratori impareremo ad usare <strong>CMake</strong>.</li>
-<li>CMake è lo standard industriale per la compilazione di progetti C++.</li>
-<li>Permette di gestire librerie esterne (come Eigen) e generare gli eseguibili in modo ordinato e indipendente dal sistema operativo (Mac, Linux, Windows).</li>
-</ul>
-</section>
-<section id="lambiente-di-lavoro-gli-ide" class="slide level2">
-<h2>L’Ambiente di Lavoro: Gli IDE</h2>
-<ul>
-<li>Io uso macvim/vim ma il file di configurazione è costituito da più di 3000 righe!</li>
-<li>Oggi si usano IDE (Integrated Development Environments) potenti.</li>
-<li>Vi consiglio caldamente <strong>Visual Studio Code</strong> o <strong>CLion</strong>.</li>
-<li>Avere un buon editor vi aiuterà ad individuare gli errori di sintassi prima ancora di compilare!</li>
-</ul>
-</section>
-<section id="consigli-per-il-successo-12" class="slide level2">
-<h2>Consigli per il Successo (1/2)</h2>
-<ul>
-<li><strong>Non fate Copia-Incolla.</strong></li>
-<li>Scrivere il codice tasto per tasto attiva la memoria muscolare e vi costringe a leggere quello che state scrivendo.</li>
-<li>Provate sempre a indovinare cosa fa una riga di codice prima di eseguirla.</li>
-</ul>
-</section>
-<section id="consigli-per-il-successo-22" class="slide level2">
-<h2>Consigli per il Successo (2/2)</h2>
-<ul>
-<li><strong>Fate esperimenti con i vostri codici, il computer non esploderà!</strong></li>
-<li>Avete scritto una matrice 3x3? Provate a moltiplicarla per una 4x4 e vedete che tipo di errore vi sputa il compilatore.</li>
-<li>Imparare a riconoscere un errore in un codice piccolo (10 righe) vi salverà la vita quando dovrete cercarlo in un codice di 10.000 righe.</li>
-<li>Fate domande! Il C++ è immenso, non si finisce mai di imparare.</li>
-</ul>
-</section>
-<section id="dal-procedurale-c-allobject-oriented-c" class="slide level2 smaller">
-<h2>Dal Procedurale (C) all’Object-Oriented (C++)</h2>
-<ul>
-<li>Il C (anni 70) è un linguaggio <strong>procedurale</strong>.
-<ul>
-<li>Incentrato sulle azioni da compiere sulle strutture dati (istruzioni o blocchi di istruzioni detti funzioni/procedure).</li>
-<li>I dati sono strutture passive passate alle funzioni.</li>
-</ul></li>
-<li>Negli anni 80, Bjarne Stroustrup ha sviluppato il <strong>C++</strong>, introducendo il paradigma <strong>Object-Oriented (OOP)</strong>.
-<ul>
-<li>L’esecuzione del programma diventa un’interazione tra “oggetti” intelligenti.</li>
+<li>una <code>Matrix</code> non è solo una griglia di numeri: è un oggetto che conosce le proprie dimensioni e sa moltiplicarsi per un’altra matrice;</li>
+<li>anche la rete neurale sarà fatta di oggetti. Come è fatta una rete lo vedremo dalla prossima lezione.</li>
 </ul></li>
 </ul>
-</section>
-<section id="cosè-la-programmazione-orientata-agli-oggetti" class="slide level2 smaller">
-<h2>Cos’è la Programmazione Orientata agli Oggetti?</h2>
-<ul>
-<li>In passato (es. vecchi corsi) vi avrebbero fatto l’esempio dell’oggetto <code>Automobile</code> che può essere <code>guidata</code>, o della <code>Porta</code> che può essere <code>aperta</code>…</li>
-<li><strong>Noi faremo sul serio.</strong> Gli oggetti sono dati dotati di comportamento (attributi + metodi).</li>
-<li>Nel nostro framework neurale:
-<ul>
-<li>Una <code>Matrice</code> non è solo una griglia di numeri: è un oggetto che “sa” moltiplicarsi per un’altra matrice.</li>
-<li>Un <code>Layer</code> non è un array di pesi: espone <code>forward()</code> per propagare il segnale e <code>backward()</code> per calcolare il gradiente.</li>
-</ul></li>
-</ul>
-<p>Siete pronti a costruire la vostra IA?</p>
 </section>
 <section id="quesiti-finali" class="slide level2 smaller">
 <h2>Quesiti finali</h2>
 <p>Due domande da portarsi a casa. La prima ha una risposta numerica, la seconda no: le slide restano sul sito, ragionateci con calma.</p>
-<p><strong>1. Quanto costa riconoscere una cifra?</strong> La rete che costruiremo ha 784 ingressi, 200 neuroni nascosti e 10 uscite. Quante moltiplicazioni servono per classificare <strong>una</strong> immagine? E per una sola epoca, cioè un passaggio su tutte le 60.000 immagini di addestramento?</p>
+<p><strong>1. Interpretato o compilato: quanto cambia?</strong> Addestrare la rete del corso, con dieci passaggi su tutte le 60.000 immagini di MNIST, richiede circa <span class="math inline">\(3 \cdot 10^{11}\)</span> moltiplicazioni (da dove venga il numero lo vedremo nelle prossime lezioni). Un ciclo in Python puro esegue circa <span class="math inline">\(10^7\)</span> moltiplicazioni al secondo, lo stesso ciclo in C++ compilato circa <span class="math inline">\(10^9\)</span>. Quanto dura l’addestramento nei due casi?</p>
 <p><strong>2. Quanto pesa un numero scritto in chiaro?</strong> Un pixel di MNIST è un byte: un intero fra 0 e 255. Nel file CSV lo stesso pixel è scritto in cifre decimali, seguito da una virgola. Quanti caratteri costa? Stimate di quanto il file è più grosso dell’informazione che contiene, e chiedetevi chi paga il conto quando il programma lo legge.</p>
 </section>
 <section id="quesiti-finali-le-risposte" class="slide level2 smaller">
 <h2>Quesiti finali: le risposte</h2>
-<p><strong>1.</strong> I pesi sono <span class="math inline">\(784 \times 200 + 200 \times 10 = 158.800\)</span>, dunque circa <span class="math inline">\(1{,}6 \cdot 10^5\)</span> moltiplicazioni per immagine. Un’epoca su 60.000 immagini ne chiede <span class="math inline">\(\approx 10^{10}\)</span>; dieci epoche, tenendo conto che il passaggio all’indietro costa all’incirca il doppio di quello in avanti, arrivano a <span class="math inline">\(\approx 3 \cdot 10^{11}\)</span>.</p>
-<p>Trecento miliardi di moltiplicazioni per il “Hello World” del machine learning. È il motivo per cui tre slide di questa lezione parlano di linguaggi compilati: non è una questione di gusto. In laboratorio misurerete il tempo vero del vostro codice — tenete da parte questo numero e confrontatelo.</p>
-<p><strong>2.</strong> Traccia: <code>0,</code> sono due caratteri, <code>255,</code> sono quattro, per un solo byte di informazione. E ogni carattere va letto, riconosciuto come cifra e ricomposto in un numero: 60.000 righe per 785 valori fanno 47 milioni di numeri da ricostruire, a ogni lettura del dataset. È esattamente il lavoro del Laboratorio 12, dove scoprirete che “leggere un file” non è mai una banalità.</p>
+<p><strong>1.</strong> In Python puro servono <span class="math inline">\(3 \cdot 10^{11} / 10^7 = 3 \cdot 10^4\)</span> s, più di otto ore; in C++ <span class="math inline">\(3 \cdot 10^{11} / 10^9 = 300\)</span> s, cinque minuti. NumPy si avvicinerebbe al C++, perché le sue funzioni sono codice compilato.</p>
+<p>Un fattore 100 separa una prova che sta dentro un laboratorio da una che occupa una notte: è il motivo per cui tre slide di questa lezione parlano di linguaggi compilati. In laboratorio misurerete il tempo vero del vostro codice: tenete da parte questi numeri e confrontateli.</p>
+<p><strong>2.</strong> Traccia: <code>0,</code> sono due caratteri, <code>255,</code> sono quattro, per un solo byte di informazione. E ogni carattere va letto, riconosciuto come cifra e ricomposto in un numero: 60.000 righe per 785 valori fanno 47 milioni di numeri da ricostruire, a ogni lettura del dataset. È esattamente il lavoro del Laboratorio 12.</p>
 
 
 </section>
