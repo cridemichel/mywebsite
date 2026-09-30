@@ -949,12 +949,12 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 <section id="lo-schema-della-rete" class="slide level2 smaller">
 <h2>Lo schema della rete</h2>
 
-<img data-src="images/mlp_scheme.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>Lo stesso esempio di prima — tre ingressi, due neuroni — visto come circuito: <strong>sei pesi</strong>, uno per freccia. <span class="math inline">\(\omega_{i,j}\)</span> collega il nodo <span class="math inline">\(i\)</span> del layer #1 al nodo <span class="math inline">\(j\)</span> del layer #2: <strong>primo indice la partenza, secondo l’arrivo</strong>, come nel libro di Rashid. E appartengono al <strong>layer #2</strong>, quello che li riceve: nel codice sarà così anche per <code>DenseLayer</code>.</p>
+<img data-src="images/mlp_scheme.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>Lo stesso esempio di prima — tre ingressi, due neuroni — visto come circuito: <strong>sei pesi</strong>, uno per freccia. <span class="math inline">\(\omega_{i,j}\)</span> collega l’ingresso <span class="math inline">\(i\)</span> al neurone <span class="math inline">\(j\)</span>: <strong>primo indice la partenza, secondo l’arrivo</strong>, come nel libro di Rashid. Pesi e bias appartengono allo <strong>strato</strong> che li riceve: nel codice sarà così anche per <code>DenseLayer</code>.</p>
 </section>
 <section id="la-matrice-dei-pesi-w" class="slide level2 smaller">
 <h2>La matrice dei pesi (W)</h2>
 <p>Restano i pesi. Ogni neurone del nostro layer ha 3 frecce in entrata (provenienti da <span class="math inline">\(\mathbf{x}\)</span>). Dato che abbiamo 2 neuroni, in totale ci sono 6 pesi.</p>
-<p>Li organizziamo in una matrice <span class="math inline">\(\mathbf{W}\)</span> di dimensione <span class="math inline">\(2 \times 3\)</span>.</p>
+<p>Li organizziamo, come in «Uno strato è una matrice», in una matrice <span class="math inline">\(\mathbf{W}\)</span> di dimensione <span class="math inline">\(2 \times 3\)</span>: <span class="math inline">\(m = 2\)</span> neuroni, <span class="math inline">\(n = 3\)</span> ingressi.</p>
 <p><span class="math display">\[
 \mathbf{W} = \begin{bmatrix}
 w_{11} &amp; w_{12} &amp; w_{13} \\
