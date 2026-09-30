@@ -386,7 +386,7 @@ Cristiano De Michele
 
 </section>
 <section id="obiettivo-di-oggi" class="slide level2 smaller">
-<h2>Obiettivo di Oggi</h2>
+<h2>Obiettivo di oggi</h2>
 <p>Prima di scrivere una sola riga del nostro framework, dobbiamo costruire il <strong>cantiere</strong>. In questo laboratorio configuriamo i tre strumenti che useremo per tutto il corso:</p>
 <ul>
 <li><strong>CMake</strong>: il sistema di build che trasforma i nostri file <code>.cpp</code> in un eseguibile, in modo automatico e indipendente dal sistema operativo.</li>
@@ -396,20 +396,22 @@ Cristiano De Michele
 <p>Al termine del laboratorio avrete un progetto che compila e stampa il risultato di un prodotto matrice-vettore.</p>
 </section>
 <section id="lambiente-di-lavoro-il-compilatore" class="slide level2 smaller">
-<h2>L’Ambiente di Lavoro: Il Compilatore</h2>
+<h2>L’ambiente di lavoro: il compilatore</h2>
 <p>Per compilare C++17 vi serve un compilatore moderno. Scegliete il vostro sistema:</p>
 <p><strong>Linux</strong> — tutto già disponibile:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a aria-label="1"></a><span class="fu">sudo</span> apt install build-essential cmake   <span class="co"># Ubuntu/Debian</span></span>
 <span id="cb1-2"><a aria-label="2"></a><span class="fu">sudo</span> dnf install gcc-c++ cmake           <span class="co"># Fedora</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>macOS</strong> — usate <a href="https://brew.sh">Homebrew</a>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a aria-label="1"></a><span class="ex">brew</span> install gcc cmake</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Il <code>clang++</code> di Apple funziona, ma <code>gcc</code> via Homebrew è più coerente con Linux.</p>
+<p><strong>macOS</strong> — il compilatore è il <code>clang++</code> di Apple, dagli strumenti da riga di comando di Xcode; il resto arriva con <a href="https://brew.sh">Homebrew</a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a aria-label="1"></a><span class="ex">xcode-select</span> <span class="at">--install</span></span>
+<span id="cb2-2"><a aria-label="2"></a><span class="ex">brew</span> install cmake</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Non installate <code>gcc</code> da Homebrew: CMake userebbe comunque <code>clang++</code>, e forzando <code>g++</code> il collegamento con l’OpenCV di Homebrew (compilata con <code>clang++</code>) può fallire.</p>
 <p><strong>Windows</strong> — il consiglio è <strong>WSL 2</strong> (Windows Subsystem for Linux): un terminale Linux reale dentro Windows, senza macchine virtuali:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a aria-label="1"></a>wsl <span class="op">--</span>install   <span class="co"># installa Ubuntu di default; riavviate poi</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Poi seguite le istruzioni Linux. Verificate con <code>g++ --version</code> e <code>cmake --version</code>.</p>
+<p>Poi seguite le istruzioni Linux. Per verificare:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">--version</span> <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--version</span>    <span class="co"># su macOS: clang++ --version</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="lambiente-di-lavoro-leditor" class="slide level2 smaller">
-<h2>L’Ambiente di Lavoro: L’Editor</h2>
+<h2>L’ambiente di lavoro: l’editor</h2>
 <p>Il consiglio è <strong>Visual Studio Code</strong> — gratuito, multipiattaforma, estensibile.</p>
 <p>Estensioni da installare subito dal pannello Extensions:</p>
 <ul>
@@ -423,37 +425,37 @@ Cristiano De Michele
 <h2>Installare Eigen</h2>
 <p>Eigen è <strong>header-only</strong>: non occorre compilarla. Scegliete il metodo più comodo:</p>
 <p><strong>Via package manager (consigliato):</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a aria-label="1"></a><span class="fu">sudo</span> apt install libeigen3-dev    <span class="co"># Linux Ubuntu/Debian</span></span>
-<span id="cb4-2"><a aria-label="2"></a><span class="ex">brew</span> install eigen                <span class="co"># macOS</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a aria-label="1"></a><span class="fu">sudo</span> apt install libeigen3-dev    <span class="co"># Linux Ubuntu/Debian</span></span>
+<span id="cb5-2"><a aria-label="2"></a><span class="ex">brew</span> install eigen                <span class="co"># macOS</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Manualmente (funziona su tutti i sistemi):</strong></p>
 <ol type="1">
 <li>Scaricate Eigen da <a href="https://eigen.tuxfamily.org">eigen.tuxfamily.org</a></li>
 <li>Copiate la cartella <code>Eigen/</code> dentro <code>libs/eigen/</code> nel vostro progetto</li>
 </ol>
-<p>Nel <code>CMakeLists.txt</code> punterete agli header con:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb5-1"><a aria-label="1"></a><span class="co"># Se installata via package manager:</span></span>
-<span id="cb5-2"><a aria-label="2"></a><span class="kw">find_package</span>(Eigen3 <span class="ot">REQUIRED</span>)</span>
-<span id="cb5-3"><a aria-label="3"></a></span>
-<span id="cb5-4"><a aria-label="4"></a><span class="co"># Se installata manualmente:</span></span>
-<span id="cb5-5"><a aria-label="5"></a><span class="kw">include_directories</span>(libs/eigen)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Nel <code>CMakeLists.txt</code> il bersaglio <code>basic_neural</code> troverà gli header così:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb6-1"><a aria-label="1"></a><span class="co"># Se installata via package manager:</span></span>
+<span id="cb6-2"><a aria-label="2"></a><span class="kw">find_package</span>(Eigen3 <span class="ot">QUIET</span>)</span>
+<span id="cb6-3"><a aria-label="3"></a><span class="kw">target_link_libraries</span>(<span class="bn">basic_neural</span> <span class="bn">Eigen3::Eigen</span>)</span>
+<span id="cb6-4"><a aria-label="4"></a></span>
+<span id="cb6-5"><a aria-label="5"></a><span class="co"># Se installata manualmente:</span></span>
+<span id="cb6-6"><a aria-label="6"></a><span class="kw">target_include_directories</span>(<span class="bn">basic_neural</span> <span class="ot">PRIVATE</span> libs/eigen)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il <code>CMakeLists.txt</code> del corso (fra due slide) sceglie da solo fra i due casi.</p>
 </section>
 <section id="installare-opencv" class="slide level2 smaller">
 <h2>Installare OpenCV</h2>
 <p>OpenCV è una libreria compilata: va installata e poi collegata al progetto.</p>
-<p><strong>Linux:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a aria-label="1"></a><span class="fu">sudo</span> apt install libopencv-dev</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>macOS:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a aria-label="1"></a><span class="ex">brew</span> install opencv</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Windows/WSL:</strong> stessa procedura Linux dentro il terminale WSL.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a aria-label="1"></a><span class="fu">sudo</span> apt install libopencv-dev   <span class="co"># Linux, e Windows dentro WSL</span></span>
+<span id="cb7-2"><a aria-label="2"></a><span class="ex">brew</span> install opencv              <span class="co"># macOS</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Nel <code>CMakeLists.txt</code> aggiungete:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb8-1"><a aria-label="1"></a><span class="kw">find_package</span>(OpenCV <span class="ot">REQUIRED</span>)</span>
-<span id="cb8-2"><a aria-label="2"></a><span class="kw">target_link_libraries</span>(<span class="bn">mio_prog</span> <span class="dv">${OpenCV_LIBS}</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-2"><a aria-label="2"></a><span class="kw">target_link_libraries</span>(<span class="bn">basic_neural</span> <span class="dv">${OpenCV_LIBS}</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Per verificare che sia installata:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a aria-label="1"></a><span class="ex">pkg-config</span> <span class="at">--modversion</span> opencv4   <span class="co"># su Linux stampa es. 4.6.0</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>La verifica che conta però è un’altra: quando lancerete <code>cmake -B build</code>, il <code>CMakeLists.txt</code> della prossima slide stamperà da solo la versione che ha trovato.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a aria-label="1"></a><span class="ex">pkg-config</span> <span class="at">--modversion</span> opencv4   <span class="co"># Linux: es. 4.6.0</span></span>
+<span id="cb9-2"><a aria-label="2"></a><span class="ex">brew</span> list <span class="at">--versions</span> opencv       <span class="co"># macOS: es. opencv 5.0.0</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>La verifica che conta però è un’altra: quando lancerete <code>cmake -B build</code>, il <code>CMakeLists.txt</code> della prossima slide stamperà da solo la versione che ha trovato. Ubuntu 24.04 ha la 4.6, Homebrew la 5: il codice del corso compila con entrambe.</p>
 </section>
 <section id="il-cmakelists.txt-del-corso" class="slide level2 smaller">
-<h2>Il CMakeLists.txt del Corso</h2>
+<h2>Il CMakeLists.txt del corso</h2>
 <p>Ecco il file di partenza che useremo e aggiorneremo nel corso delle settimane:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-10"><pre class="sourceCode numberSource cmake code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cmake"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-label="1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> <span class="dt">3.15</span>)</span>
 <span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-label="2"></a><span class="kw">project</span>(BasicNeuralPlusPlus)</span>
@@ -502,7 +504,7 @@ Cristiano De Michele
 <span id="cb10-3"><a aria-label="3"></a><span class="ex">./build/basic_neural</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="i-tipi-fondamentali-di-eigen" class="slide level2 smaller">
-<h2>I Tipi Fondamentali di Eigen</h2>
+<h2>I tipi fondamentali di Eigen</h2>
 <p>Useremo questi tipi per tutto il corso:</p>
 <table class="caption-top">
 <colgroup>
@@ -519,66 +521,95 @@ Cristiano De Michele
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>Eigen::MatrixXd</code></td>
-<td>Matrice di <code>double</code>, dimensioni dinamiche</td>
-<td>Pesi di un layer</td>
+<td><code>Eigen::MatrixXf</code></td>
+<td>Matrice di <code>float</code>, dimensioni dinamiche</td>
+<td>Pesi di uno strato</td>
 </tr>
 <tr class="even">
-<td><code>Eigen::VectorXd</code></td>
-<td>Vettore colonna di <code>double</code></td>
-<td>Bias, output di un layer</td>
+<td><code>Eigen::VectorXf</code></td>
+<td>Vettore colonna di <code>float</code></td>
+<td>Bias, uscita di uno strato</td>
 </tr>
 <tr class="odd">
-<td><code>Eigen::ArrayXd</code></td>
+<td><code>Eigen::ArrayXf</code></td>
 <td>Array 1D per operazioni elemento per elemento</td>
 <td>Funzioni di attivazione</td>
 </tr>
 </tbody>
 </table>
-<p><code>Xd</code> sta per <em>X-dimensionale double</em>. Ci sono varianti float (<code>Xf</code>) e a dimensioni fisse (<code>Matrix3d</code>, ecc.) che non useremo.</p>
+<p><code>Xf</code> sta per <em>dimensioni dinamiche (X), elementi <code>float</code></em>. Per una rete neurale la precisione del <code>float</code> basta, e occupa metà memoria del <code>double</code>. Ci sono varianti <code>double</code> (<code>Xd</code>) e a dimensioni fisse (<code>Matrix3f</code>, ecc.) che non useremo.</p>
 </section>
 <section id="operazioni-fondamentali-di-eigen" class="slide level2 smaller">
-<h2>Operazioni Fondamentali di Eigen</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;Eigen/Dense&gt;</span></span>
+<h2>Operazioni fondamentali di Eigen</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;Eigen/Dense&gt;</span><span class="pp">                              </span><span class="co">// in cima al file</span></span>
 <span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-label="2"></a></span>
-<span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-label="3"></a>Eigen<span class="op">::</span>MatrixXd W <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">);</span> <span class="co">// 3x4, valori in [-1,1]</span></span>
-<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-label="4"></a>Eigen<span class="op">::</span>VectorXd x <span class="op">=</span> Eigen<span class="op">::</span>VectorXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">4</span><span class="op">);</span>    <span class="co">// 4x1</span></span>
-<span id="annotated-cell-12-5"><a href="#annotated-cell-12-5" aria-label="5"></a></span>
-<span id="annotated-cell-12-6"><a href="#annotated-cell-12-6" aria-label="6"></a><span class="co">// Prodotto matrice-vettore → risultato 3x1</span></span>
-<span id="annotated-cell-12-7"><a href="#annotated-cell-12-7" aria-label="7"></a>Eigen<span class="op">::</span>VectorXd z <span class="op">=</span> W <span class="op">*</span> x<span class="op">;</span></span>
-<span id="annotated-cell-12-8"><a href="#annotated-cell-12-8" aria-label="8"></a></span>
-<span id="annotated-cell-12-9"><a href="#annotated-cell-12-9" aria-label="9"></a><span class="co">// Trasposta</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-10" class="code-annotation-target"><a href="#annotated-cell-12-10" aria-label="10"></a>Eigen<span class="op">::</span>MatrixXd W_trasposta <span class="op">=</span> W<span class="op">.</span>transpose<span class="op">();</span>  <span class="co">// diventa 4x3</span></span>
-<span id="annotated-cell-12-11"><a href="#annotated-cell-12-11" aria-label="11"></a></span>
-<span id="annotated-cell-12-12"><a href="#annotated-cell-12-12" aria-label="12"></a><span class="co">// Inizializzazioni utili</span></span>
-<span id="annotated-cell-12-13"><a href="#annotated-cell-12-13" aria-label="13"></a>Eigen<span class="op">::</span>MatrixXd Z <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Zero<span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">);</span></span>
-<span id="annotated-cell-12-14"><a href="#annotated-cell-12-14" aria-label="14"></a>Eigen<span class="op">::</span>MatrixXd I <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Identity<span class="op">(</span><span class="dv">4</span><span class="op">,</span> <span class="dv">4</span><span class="op">);</span></span>
-<span id="annotated-cell-12-15"><a href="#annotated-cell-12-15" aria-label="15"></a></span>
-<span id="annotated-cell-12-16"><a href="#annotated-cell-12-16" aria-label="16"></a><span class="co">// Operazioni ELEMENTO PER ELEMENTO con .array()</span></span>
-<span id="annotated-cell-12-17"><a href="#annotated-cell-12-17" aria-label="17"></a><span class="co">// (indispensabile per le funzioni di attivazione!)</span></span>
-<span id="annotated-cell-12-18"><a href="#annotated-cell-12-18" aria-label="18"></a>Eigen<span class="op">::</span>ArrayXd relu <span class="op">=</span> z<span class="op">.</span>array<span class="op">().</span>max<span class="op">(</span><span class="fl">0.0</span><span class="op">);</span>   <span class="co">// ReLU: max(0, zi)</span></span>
-<span id="annotated-cell-12-19"><a href="#annotated-cell-12-19" aria-label="19"></a>Eigen<span class="op">::</span>ArrayXd sig  <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="op">(-</span>z<span class="op">.</span>array<span class="op">()).</span>exp<span class="op">());</span> <span class="co">// Sigmoid</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-label="3"></a><span class="co">// dentro main():</span></span>
+<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-label="4"></a>Eigen<span class="op">::</span>MatrixXf W <span class="op">=</span> Eigen<span class="op">::</span>MatrixXf<span class="op">::</span>Random<span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">);</span> <span class="co">// 3x4, valori in [-1,1]</span></span>
+<span id="annotated-cell-12-5"><a href="#annotated-cell-12-5" aria-label="5"></a>Eigen<span class="op">::</span>VectorXf x <span class="op">=</span> Eigen<span class="op">::</span>VectorXf<span class="op">::</span>Random<span class="op">(</span><span class="dv">4</span><span class="op">);</span>    <span class="co">// 4x1</span></span>
+<span id="annotated-cell-12-6"><a href="#annotated-cell-12-6" aria-label="6"></a></span>
+<span id="annotated-cell-12-7"><a href="#annotated-cell-12-7" aria-label="7"></a><span class="co">// Prodotto matrice-vettore → risultato 3x1</span></span>
+<span id="annotated-cell-12-8"><a href="#annotated-cell-12-8" aria-label="8"></a>Eigen<span class="op">::</span>VectorXf z <span class="op">=</span> W <span class="op">*</span> x<span class="op">;</span></span>
+<span id="annotated-cell-12-9"><a href="#annotated-cell-12-9" aria-label="9"></a></span>
+<span id="annotated-cell-12-10"><a href="#annotated-cell-12-10" aria-label="10"></a><span class="co">// Trasposta</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-11" class="code-annotation-target"><a href="#annotated-cell-12-11" aria-label="11"></a>Eigen<span class="op">::</span>MatrixXf W_trasposta <span class="op">=</span> W<span class="op">.</span>transpose<span class="op">();</span>  <span class="co">// diventa 4x3</span></span>
+<span id="annotated-cell-12-12"><a href="#annotated-cell-12-12" aria-label="12"></a></span>
+<span id="annotated-cell-12-13"><a href="#annotated-cell-12-13" aria-label="13"></a><span class="co">// Inizializzazioni utili</span></span>
+<span id="annotated-cell-12-14"><a href="#annotated-cell-12-14" aria-label="14"></a>Eigen<span class="op">::</span>MatrixXf Z <span class="op">=</span> Eigen<span class="op">::</span>MatrixXf<span class="op">::</span>Zero<span class="op">(</span><span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">);</span></span>
+<span id="annotated-cell-12-15"><a href="#annotated-cell-12-15" aria-label="15"></a>Eigen<span class="op">::</span>MatrixXf I <span class="op">=</span> Eigen<span class="op">::</span>MatrixXf<span class="op">::</span>Identity<span class="op">(</span><span class="dv">4</span><span class="op">,</span> <span class="dv">4</span><span class="op">);</span></span>
+<span id="annotated-cell-12-16"><a href="#annotated-cell-12-16" aria-label="16"></a></span>
+<span id="annotated-cell-12-17"><a href="#annotated-cell-12-17" aria-label="17"></a><span class="co">// Operazioni ELEMENTO PER ELEMENTO con .array()</span></span>
+<span id="annotated-cell-12-18"><a href="#annotated-cell-12-18" aria-label="18"></a><span class="co">// (indispensabile per le funzioni di attivazione!)</span></span>
+<span id="annotated-cell-12-19"><a href="#annotated-cell-12-19" aria-label="19"></a>Eigen<span class="op">::</span>ArrayXf relu <span class="op">=</span> z<span class="op">.</span>array<span class="op">().</span>max<span class="op">(</span><span class="fl">0.0</span><span class="bu">f</span><span class="op">);</span>   <span class="co">// ReLU: max(0, zi)</span></span>
+<span id="annotated-cell-12-20"><a href="#annotated-cell-12-20" aria-label="20"></a>Eigen<span class="op">::</span>ArrayXf sig  <span class="op">=</span> <span class="fl">1.0</span><span class="bu">f</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span><span class="bu">f</span> <span class="op">+</span> <span class="op">(-</span>z<span class="op">.</span>array<span class="op">()).</span>exp<span class="op">());</span> <span class="co">// Sigmoid</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="10" data-code-annotation="1">Non chiamatela <code>Wt</code>: fra qualche settimana <code>Wt</code> sarà il nome della <strong>matrice dei pesi</strong> di un layer, non della trasposta.</span>
+<span data-code-cell="annotated-cell-12" data-code-lines="11" data-code-annotation="1">Non chiamatela <code>Wt</code>: fra qualche settimana <code>Wt</code> sarà il nome della <strong>matrice dei pesi</strong> di un layer, non della trasposta.</span>
 </dd>
 </dl>
-<p>Attenzione: <code>*</code> tra due <code>MatrixXd</code> è <strong>sempre</strong> prodotto matriciale. Per il prodotto elemento per elemento usate <code>.array()</code>.</p>
+<p>Attenzione: <code>*</code> tra due <code>MatrixXf</code> è <strong>sempre</strong> prodotto matriciale. Per il prodotto elemento per elemento usate <code>.array()</code>.</p>
+</section>
+<section id="stampare-in-c" class="slide level2 smaller">
+<h2>Stampare in C++</h2>
+<p>In C stampavate con <code>printf</code>. In C++ si usa lo <em>stream</em> <code>std::cout</code> (header <code>&lt;iostream&gt;</code>), che sa stampare anche le matrici di Eigen:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span><span class="pp">                                 </span><span class="co">// in cima al file</span></span>
+<span id="cb11-2"><a aria-label="2"></a></span>
+<span id="cb11-3"><a aria-label="3"></a><span class="co">// dentro main():</span></span>
+<span id="cb11-4"><a aria-label="4"></a><span class="dt">int</span> n <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb11-5"><a aria-label="5"></a><span class="dt">float</span> t <span class="op">=</span> <span class="fl">0.5</span><span class="bu">f</span><span class="op">;</span></span>
+<span id="cb11-6"><a aria-label="6"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"n = "</span> <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">", t = "</span> <span class="op">&lt;&lt;</span> t <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>  <span class="co">// come printf("n = %d, t = %g\n", n, t)</span></span>
+<span id="cb11-7"><a aria-label="7"></a></span>
+<span id="cb11-8"><a aria-label="8"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"z =</span><span class="sc">\n</span><span class="st">"</span> <span class="op">&lt;&lt;</span> z <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>                  <span class="co">// z = W * x: tutta la matrice</span></span>
+<span id="cb11-9"><a aria-label="9"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> z<span class="op">.</span>rows<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"x"</span> <span class="op">&lt;&lt;</span> z<span class="op">.</span>cols<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>   <span class="co">// le dimensioni: 3x1</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>&lt;&lt;</code> accoda i pezzi da stampare, e il tipo di ciascuno lo riconosce il compilatore: niente <code>%d</code> o <code>%g</code>.</li>
+<li><code>printf</code> funziona ancora (header <code>&lt;cstdio&gt;</code>), ma non sa stampare un oggetto di Eigen: servirebbe un ciclo sugli elementi <code>z(i)</code>.</li>
+<li><code>std::</code> indica che <code>cout</code> appartiene alla libreria standard; il perché del prefisso lo vedremo a lezione.</li>
+</ul>
 </section>
 <section id="task-hello-eigen-opencv" class="slide level2 smaller scrollable">
 <h2>Task: Hello Eigen + OpenCV</h2>
 <p>Verificate che tutto funzioni scrivendo un <code>main.cpp</code> che:</p>
 <ol type="1">
 <li>Crea una matrice <code>W</code> (<span class="math inline">\(3 \times 4\)</span>, valori casuali) e un vettore <code>x</code> (<span class="math inline">\(4 \times 1\)</span>).</li>
-<li>Calcola <span class="math inline">\(z = W \cdot x\)</span> e lo stampa — le dimensioni devono essere <span class="math inline">\(3 \times 1\)</span>.</li>
-<li>Calcola <code>z_relu = z.array().max(0.0)</code> e lo stampa: è il vostro primo forward pass!</li>
+<li>Calcola <span class="math inline">\(z = W \cdot x\)</span> e lo stampa con <code>std::cout</code>: le dimensioni devono essere <span class="math inline">\(3 \times 1\)</span>.</li>
+<li>Calcola <code>z_relu = z.array().max(0.0f)</code> e lo stampa: è il vostro primo forward pass (senza bias)!</li>
 <li>Crea un’immagine vuota OpenCV <span class="math inline">\(28 \times 28\)</span> (scala di grigi) e la visualizza:</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;opencv2/opencv.hpp&gt;</span></span>
-<span id="cb11-2"><a aria-label="2"></a>cv<span class="op">::</span>Mat img<span class="op">(</span><span class="dv">28</span><span class="op">,</span> <span class="dv">28</span><span class="op">,</span> CV_8UC1<span class="op">,</span> cv<span class="op">::</span>Scalar<span class="op">(</span><span class="dv">128</span><span class="op">));</span> <span class="co">// grigio medio</span></span>
-<span id="cb11-3"><a aria-label="3"></a>cv<span class="op">::</span>imshow<span class="op">(</span><span class="st">"Test MNIST size"</span><span class="op">,</span> img<span class="op">);</span></span>
-<span id="cb11-4"><a aria-label="4"></a>cv<span class="op">::</span>waitKey<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb12-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;Eigen/Dense&gt;</span></span>
+<span id="cb12-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;opencv2/opencv.hpp&gt;</span></span>
+<span id="cb12-4"><a aria-label="4"></a></span>
+<span id="cb12-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-6"><a aria-label="6"></a>    <span class="co">// punti 1-3: W, x, z = W * x e z_relu, stampati con std::cout</span></span>
+<span id="cb12-7"><a aria-label="7"></a></span>
+<span id="cb12-8"><a aria-label="8"></a>    cv<span class="op">::</span>Mat img<span class="op">(</span><span class="dv">28</span><span class="op">,</span> <span class="dv">28</span><span class="op">,</span> CV_8UC1<span class="op">,</span> cv<span class="op">::</span>Scalar<span class="op">(</span><span class="dv">128</span><span class="op">));</span>   <span class="co">// punto 4: grigio medio</span></span>
+<span id="cb12-9"><a aria-label="9"></a>    cv<span class="op">::</span>imshow<span class="op">(</span><span class="st">"Test MNIST size"</span><span class="op">,</span> img<span class="op">);</span></span>
+<span id="cb12-10"><a aria-label="10"></a>    cv<span class="op">::</span>waitKey<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb12-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="se-la-finestra-non-si-apre" class="slide level2 smaller">
+<h2>Se la finestra non si apre</h2>
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -595,15 +626,15 @@ Cristiano De Michele
 <p>Se Eigen stampa e OpenCV apre la finestra (o scrive il PNG), l’ambiente è pronto per tutto il corso.</p>
 </section>
 <section id="task-da-completare" class="slide level2 smaller scrollable">
-<h2>Task da Completare</h2>
+<h2>Task da completare</h2>
 <ul class="task-list">
-<li><label><input type="checkbox"><code>g++ --version</code> e <code>cmake --version</code> rispondono</label></li>
+<li><label><input type="checkbox"><code>g++ --version</code> (su macOS <code>clang++ --version</code>) e <code>cmake --version</code> rispondono</label></li>
 <li><label><input type="checkbox">Eigen installata (via package manager, oppure in <code>libs/eigen/</code>)</label></li>
 <li><label><input type="checkbox">OpenCV installata: <code>cmake -B build</code> stampa la versione trovata</label></li>
-<li><label><input type="checkbox"><code>CMakeLists.txt</code> come nella slide, con <code>Eigen3::Eigen</code> se Eigen c’e’</label></li>
+<li><label><input type="checkbox"><code>CMakeLists.txt</code> come nella slide, con <code>Eigen3::Eigen</code> se Eigen c’è</label></li>
 <li><label><input type="checkbox"><code>main.cpp</code> che crea <code>W</code> (<span class="math inline">\(3 \times 4\)</span>) e <code>x</code> (<span class="math inline">\(4 \times 1\)</span>) e stampa <span class="math inline">\(z = W x\)</span></label></li>
 <li><label><input type="checkbox">Verificato che <code>z</code> sia <span class="math inline">\(3 \times 1\)</span></label></li>
-<li><label><input type="checkbox">Calcolato e stampato <code>z.array().max(0.0)</code></label></li>
+<li><label><input type="checkbox">Calcolato e stampato <code>z.array().max(0.0f)</code></label></li>
 <li><label><input type="checkbox">Immagine OpenCV <span class="math inline">\(28 \times 28\)</span> visualizzata (o salvata con <code>imwrite</code>)</label></li>
 <li><label><input type="checkbox"><code>cmake -B build &amp;&amp; cmake --build build &amp;&amp; ./build/basic_neural</code> funziona da zero</label></li>
 </ul>
