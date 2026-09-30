@@ -417,12 +417,17 @@ Cristiano De Michele
 <section id="il-modello-matematico-perceptron" class="slide level2 smaller">
 <h2>Il modello matematico (perceptron)</h2>
 <p>L’unità di base di una rete neurale artificiale è il <strong>percettrone</strong> (Rosenblatt, 1958): il singolo neurone artificiale, quello che Rashid chiama semplicemente <em>neurone</em> o <em>nodo</em>. Per prima cosa calcola la somma pesata dei suoi ingressi, più il bias:</p>
+<div class="columns">
+<div class="column" style="width:55%;">
 <p><span class="math display">\[ z = \sum_{i=1}^{n} (w_i \cdot x_i) + b \]</span></p>
 <ul>
 <li><span class="math inline">\(x_i\)</span>: il segnale in ingresso.</li>
-<li><span class="math inline">\(w_i\)</span>: il peso (<em>weight</em>), cioè l’importanza del collegamento.</li>
-<li><span class="math inline">\(b\)</span>: il <strong>bias</strong>, un numero che “sposta” artificialmente la soglia di scatto del neurone.</li>
+<li><span class="math inline">\(w_i\)</span>: il peso (<em>weight</em>) del collegamento.</li>
+<li><span class="math inline">\(b\)</span>: il <strong>bias</strong>, che “sposta” la soglia di scatto.</li>
 </ul>
+</div><div class="column" style="width:45%;">
+<p><img data-src="images/neurone_n_ingressi.png"></p>
+</div></div>
 <p>Poi decide in base a <span class="math inline">\(z\)</span>: nel percettrone di Rosenblatt l’uscita è <span class="math inline">\(y = \Theta(z)\)</span>, la funzione di Heaviside, cioè <span class="math inline">\(1\)</span> se <span class="math inline">\(z \ge 0\)</span> e <span class="math inline">\(0\)</span> se <span class="math inline">\(z &lt; 0\)</span> (qui <span class="math inline">\(\Theta(0) = 1\)</span>).</p>
 </section>
 <section id="la-combinazione-lineare" class="slide level2 smaller">
@@ -644,46 +649,21 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
           display:block!important;
       }</style></aside>
 </section>
-<section id="un-neurone-due-ingressi" class="slide level2 smaller">
-<h2>Un neurone, due ingressi</h2>
-
-<img data-src="images/neurone_due_ingressi.png" class="quarto-figure quarto-figure-center r-stretch"><p>È il percettrone di prima con <span class="math inline">\(n = 2\)</span> ingressi. Le tre porte sono tre richieste allo <strong>stesso</strong> neurone, e per soddisfarle si possono cambiare solo i tre numeri <span class="math inline">\(w_1, w_2, b\)</span>.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">porta</th>
-<th style="text-align: center;"><span class="math inline">\(w_1\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(w_2\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(b\)</span></th>
-<th style="text-align: left;"><span class="math inline">\(y\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">AND</td>
-<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(-1.5\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\Theta(A + B - 1.5)\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">OR</td>
-<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(-0.5\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\Theta(A + B - 0.5)\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">XOR</td>
-<td style="text-align: center;">?</td>
-<td style="text-align: center;">?</td>
-<td style="text-align: center;">?</td>
-<td style="text-align: left;">nessuna scelta funziona</td>
-</tr>
-</tbody>
-</table>
+<section id="le-porte-logiche-con-un-neurone" class="slide level2 smaller">
+<h2>Le porte logiche con un neurone</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>AND: un neurone</strong></p>
+<p><img data-src="images/porta_and_neurone.png"></p>
+<p><span class="math display">\[ z = A + B - 1.5, \quad y = \Theta(z) \]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>OR: un neurone</strong></p>
+<p><img data-src="images/porta_or_neurone.png"></p>
+<p><span class="math display">\[ z = A + B - 0.5, \quad y = \Theta(z) \]</span></p>
+</div></div>
+<p>Sono le due rette della slide prima, <span class="math inline">\(A + B = 1.5\)</span> e <span class="math inline">\(A + B = 0.5\)</span>. AND e OR sono lo <strong>stesso</strong> neurone, e cambia solo il bias. Per lo XOR, invece, nessuna scelta dei tre numeri <span class="math inline">\(w_1, w_2, b\)</span> funziona.</p>
 <aside class="notes">
-<p>La scelta dei pesi non è unica: va bene qualunque terna <span class="math inline">\((w_1, w_2, b)\)</span> che lasci i vertici “sì” da una parte della retta e i “no” dall’altra. Qui ne abbiamo scelta una: <span class="math inline">\(w_1 = w_2 = 1\)</span>, con <span class="math inline">\(b = -1.5\)</span> per l’AND e <span class="math inline">\(b = -0.5\)</span> per l’OR, cioè la retta a metà strada fra i vertici “sì” e i vertici “no”. I numeri sono nostri: Rashid mostra solo le rette.</p>
+<p>La scelta dei pesi non è unica: va bene qualunque terna <span class="math inline">\((w_1, w_2, b)\)</span> che lasci i vertici “sì” da una parte della retta e i “no” dall’altra. Qui ne abbiamo scelta una: <span class="math inline">\(w_1 = w_2 = 1\)</span>, con <span class="math inline">\(b = -1.5\)</span> per l’AND e <span class="math inline">\(b = -0.5\)</span> per l’OR, cioè la retta a metà strada fra i vertici “sì” e i vertici “no”. I numeri sono nostri: Rashid mostra solo le rette. È il neurone della slide «Il modello matematico» con <span class="math inline">\(n = 2\)</span> ingressi <span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -700,10 +680,10 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 <h2>Lo XOR con uno strato nascosto</h2>
 
 <img data-src="images/xor_rete.png" class="quarto-figure quarto-figure-center r-stretch"><p><span class="math display">\[ h_1 = \Theta(A + B - 0.5), \quad h_2 = \Theta(A + B - 1.5), \quad y = \Theta(h_1 - h_2 - 0.5) \]</span></p>
-<p>È la rete della glicemia e delle cimici, con ingressi <span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span>: <span class="math inline">\(h_1\)</span> è l’OR, <span class="math inline">\(h_2\)</span> l’AND e, poiché AND <span class="math inline">\(\le\)</span> OR, <span class="math inline">\(y = h_1 - h_2 = \mathrm{OR} - \mathrm{AND}\)</span>, cioè lo XOR.</p>
+<p>È la rete della glicemia e delle cimici, con ingressi <span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span>: <span class="math inline">\(h_1\)</span> è il neurone OR della slide prima, <span class="math inline">\(h_2\)</span> il neurone AND e, poiché AND <span class="math inline">\(\le\)</span> OR, <span class="math inline">\(y = h_1 - h_2 = \mathrm{OR} - \mathrm{AND}\)</span>, cioè lo XOR.</p>
 <p>La non linearità sta nei riquadri <span class="math inline">\(z \ge 0\)</span> dei neuroni nascosti. Toglieteli, e <span class="math inline">\(y\)</span> riceverebbe <span class="math inline">\((A+B-0.5)-(A+B-1.5)\)</span>: il suo <span class="math inline">\(z\)</span> varrebbe <span class="math inline">\(0.5\)</span> per qualunque ingresso. Che uno strato nascosto basti non solo per lo XOR, ma per <em>qualunque</em> funzione continua, lo dice il <strong>teorema di approssimazione universale</strong>, fra poche slide.</p>
 <aside class="notes">
-<p>Sono le due rette della slide «AND, OR e XOR nel piano» più un neurone d’uscita, con la regola <span class="math inline">\(z \ge 0\)</span> di sempre. Il riquadro <span class="math inline">\(z \ge 0\)</span> è la funzione a gradino (slide «La funzione a gradino»): qui fa da funzione di attivazione. Pesi e bias di <span class="math inline">\(h_1\)</span> e <span class="math inline">\(h_2\)</span> sono le righe OR e AND della tabella di «Un neurone, due ingressi». Il bias <span class="math inline">\(-0.5\)</span> dell’uscita serve: con <span class="math inline">\(b = 0\)</span>, poiché <span class="math inline">\(\Theta(0) = 1\)</span>, <span class="math inline">\(y\)</span> direbbe «sì» anche per <span class="math inline">\((0,0)\)</span> e <span class="math inline">\((1,1)\)</span>, dove <span class="math inline">\(h_1 = h_2\)</span>. La non linearità che serve è la decisione <span class="math inline">\(z \ge 0\)</span> dei neuroni nascosti: senza, <span class="math inline">\(h_1\)</span> e <span class="math inline">\(h_2\)</span> sarebbero lineari in <span class="math inline">\(A, B\)</span>, e (slide «Piegare lo spazio», più avanti) tutto collasserebbe in una retta sola.</p>
+<p>Sono le due rette della slide «AND, OR e XOR nel piano» più un neurone d’uscita, con la regola <span class="math inline">\(z \ge 0\)</span> di sempre. Il riquadro <span class="math inline">\(z \ge 0\)</span> è la funzione a gradino (slide «La funzione a gradino»): qui fa da funzione di attivazione. <span class="math inline">\(h_1\)</span> e <span class="math inline">\(h_2\)</span> sono i neuroni OR e AND di «Le porte logiche con un neurone», con gli stessi pesi. Il bias <span class="math inline">\(-0.5\)</span> dell’uscita serve: con <span class="math inline">\(b = 0\)</span>, poiché <span class="math inline">\(\Theta(0) = 1\)</span>, <span class="math inline">\(y\)</span> direbbe «sì» anche per <span class="math inline">\((0,0)\)</span> e <span class="math inline">\((1,1)\)</span>, dove <span class="math inline">\(h_1 = h_2\)</span>. La non linearità che serve è la decisione <span class="math inline">\(z \ge 0\)</span> dei neuroni nascosti: senza, <span class="math inline">\(h_1\)</span> e <span class="math inline">\(h_2\)</span> sarebbero lineari in <span class="math inline">\(A, B\)</span>, e (slide «Piegare lo spazio», più avanti) tutto collasserebbe in una retta sola.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
