@@ -784,7 +784,7 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 \underbrace{\begin{bmatrix} w_{11} &amp; \cdots &amp; w_{1n} \\ \vdots &amp; &amp; \vdots \\ w_{m1} &amp; \cdots &amp; w_{mn} \end{bmatrix}}_{\mathbf{W}\ (m \times n)}
 \underbrace{\begin{bmatrix} x_1 \\ \vdots \\ x_n \end{bmatrix}}_{\mathbf{x}} +
 \underbrace{\begin{bmatrix} b_1 \\ \vdots \\ b_m \end{bmatrix}}_{\mathbf{b}}
-\]</span> La riga <span class="math inline">\(j\)</span> di <span class="math inline">\(\mathbf{W}\)</span> sono i pesi del neurone <span class="math inline">\(j\)</span>. Lo strato intero è la mappa <span class="math inline">\(\mathbf{x} \mapsto f(\mathbf{W}\mathbf{x} + \mathbf{b})\)</span> da <span class="math inline">\(\mathbb{R}^n\)</span> a <span class="math inline">\(\mathbb{R}^m\)</span>, con <span class="math inline">\(f\)</span> applicata componente per componente (per lo strato <span class="math inline">\(\ell\)</span>: <span class="math inline">\(\mathbf{W}^{(\ell)}, \mathbf{b}^{(\ell)}\)</span>). Una rete è una <strong>composizione</strong> di queste mappe: da qui in poi la si studia con l’<strong>algebra lineare</strong>.</p>
+\]</span> La riga <span class="math inline">\(j\)</span> di <span class="math inline">\(\mathbf{W}\)</span> sono i pesi del neurone <span class="math inline">\(j\)</span>. Lo strato intero è la mappa <span class="math inline">\(\mathbf{x} \mapsto f(\mathbf{W}\mathbf{x} + \mathbf{b})\)</span> da <span class="math inline">\(\mathbb{R}^n\)</span> a <span class="math inline">\(\mathbb{R}^m\)</span>, con <span class="math inline">\(f\)</span> applicata componente per componente (per lo strato <span class="math inline">\(L\)</span>: <span class="math inline">\(\mathbf{W}^{(L)}, \mathbf{b}^{(L)}\)</span>). Una rete è una <strong>composizione</strong> di queste mappe: da qui in poi la si studia con l’<strong>algebra lineare</strong>.</p>
 <aside class="notes">
 <p>È il passaggio chiave della lezione: dai neuroni uno per uno agli oggetti dell’algebra lineare. Indici: <span class="math inline">\(w_{jk}\)</span> è il peso con cui il neurone <span class="math inline">\(j\)</span> legge l’ingresso <span class="math inline">\(k\)</span>, la stessa convenzione di «La matrice dei pesi (W)» più avanti. Rashid scrive <span class="math inline">\(w_{i,j}\)</span> con <span class="math inline">\(i\)</span> ingresso e <span class="math inline">\(j\)</span> neurone: se <span class="math inline">\(\Omega\)</span> è la matrice dei suoi <span class="math inline">\(w_{i,j}\)</span>, quella che moltiplica è <span class="math inline">\(\Omega^T\)</span>, cioè questa <span class="math inline">\(\mathbf{W}\)</span> (in <span class="math inline">\(X = W \cdot I\)</span> scrive proprio lei, prima riga <span class="math inline">\(w_{1,1}, w_{2,1}\)</span>; nel codice <code>wih</code> è hnodes × inodes). Nel nostro codice è <code>Wt</code>, <span class="math inline">\(N_n \times N_i\)</span>. Dove serve l’algebra lineare: subito dopo, in «Piegare lo spazio», il collasso degli strati lineari è un prodotto di matrici; nella seconda parte della lezione lo stesso passaggio torna su un esempio 3 → 2, dal lato del calcolo: i due cicli <code>for</code> annidati diventano un prodotto matrice per vettore.</p>
 <style type="text/css">
@@ -953,7 +953,7 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 </section>
 <section id="la-matrice-dei-pesi-w" class="slide level2 smaller">
 <h2>La matrice dei pesi (W)</h2>
-<p>Restano i pesi. Ogni neurone del nostro layer ha 3 frecce in entrata (provenienti da <span class="math inline">\(\mathbf{x}\)</span>). Dato che abbiamo 2 neuroni, in totale ci sono 6 pesi.</p>
+<p>Restano i pesi. Ogni neurone del nostro strato ha 3 frecce in entrata (provenienti da <span class="math inline">\(\mathbf{x}\)</span>). Dato che abbiamo 2 neuroni, in totale ci sono 6 pesi.</p>
 <p>Li organizziamo, come in «Uno strato è una matrice», in una matrice <span class="math inline">\(\mathbf{W}\)</span> di dimensione <span class="math inline">\(2 \times 3\)</span>: <span class="math inline">\(m = 2\)</span> neuroni, <span class="math inline">\(n = 3\)</span> ingressi.</p>
 <p><span class="math display">\[
 \mathbf{W} = \begin{bmatrix}
@@ -1003,18 +1003,18 @@ w_{21} &amp; w_{22} &amp; w_{23}
 <p>In C++ la moltiplicazione tra matrici non si scrive a mano.</p>
 <p>Nel progetto userete una libreria di algebra lineare di livello industriale, <strong>Eigen</strong> (o BLAS/LAPACK): basta definire due oggetti <code>Eigen::Matrix</code> e moltiplicarli con l’operatore <code>*</code>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="co">// Eigen usa le istruzioni SIMD</span></span>
-<span id="cb2-2"><a aria-label="2"></a>Eigen<span class="op">::</span>VectorXd z <span class="op">=</span> W <span class="op">*</span> x <span class="op">+</span> b<span class="op">;</span> </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a aria-label="2"></a>Eigen<span class="op">::</span>VectorXf z <span class="op">=</span> W <span class="op">*</span> x <span class="op">+</span> b<span class="op">;</span> </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Il codice è più leggibile e molto più veloce: lo misurerete in laboratorio.</p>
 </section>
 <section id="lequazione-ricorsiva-finale" class="slide level2 smaller">
 <h2>L’equazione ricorsiva finale</h2>
-<p>L’ultimo passo per ottenere i valori da inviare al livello successivo è applicare la funzione di attivazione a tutto il vettore colonna.</p>
+<p>L’ultimo passo per ottenere i valori da inviare allo strato successivo è applicare la funzione di attivazione a tutto il vettore colonna.</p>
 <p><span class="math display">\[ \mathbf{a}^{(L)} = f\left( \mathbf{W}^{(L)} \mathbf{a}^{(L-1)} + \mathbf{b}^{(L)} \right) \]</span></p>
 <p>È tutta la <em>forward propagation</em> di un MLP.</p>
 <ul>
 <li>Prendi l’input (<span class="math inline">\(\mathbf{a}^{(L-1)}\)</span>), moltiplica per i pesi (<span class="math inline">\(\mathbf{W}\)</span>), somma il bias (<span class="math inline">\(\mathbf{b}\)</span>).</li>
 <li>Applica la funzione di attivazione (<span class="math inline">\(f\)</span> — per noi la sigmoide).</li>
-<li>Invia al prossimo layer, e ripeti.</li>
+<li>Invia allo strato successivo, e ripeti.</li>
 </ul>
 </section>
 <section id="esercizio-in-classe-15-min-la-rete-a-mano" class="slide level2 smaller">
@@ -1024,7 +1024,7 @@ w_{21} &amp; w_{22} &amp; w_{23}
 \qquad
 \mathbf{x} = \begin{pmatrix} 0.9 \\ 0.1 \\ 0.8 \end{pmatrix}\]</span></p>
 <ol type="1">
-<li>Calcolate <span class="math inline">\(\mathbf{z} = \mathbf{W}\mathbf{x}\)</span> a mano.</li>
+<li>Calcolate <span class="math inline">\(\mathbf{z} = \mathbf{W}\mathbf{x}\)</span> a mano (senza bias, come nel libro).</li>
 <li>Applicate la sigmoide a ciascuna componente: <span class="math inline">\(\sigma(z) = 1/(1+e^{-z})\)</span>.</li>
 <li><strong>Contate quante moltiplicazioni avete fatto.</strong> Poi rifate il conto per la rete di MNIST, <span class="math inline">\(784 \to 200 \to 10\)</span>, e per un’epoca su 60.000 immagini.</li>
 </ol>
@@ -1037,7 +1037,6 @@ w_{21} &amp; w_{22} &amp; w_{23}
 </section>
 <section id="e-il-conto-che-conta" class="slide level2 smaller">
 <h2>E il conto che conta</h2>
-<p>E il conto che conta davvero:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1077,21 +1076,20 @@ w_{21} &amp; w_{22} &amp; w_{23}
 <p><strong>Importante</strong></p>
 </div>
 <div class="callout-content">
-<p>Nove moltiplicazioni le avete fatte a mano in un minuto. Nove <strong>miliardi</strong> sono un’epoca, e le epoche sono decine. Ecco perché il ciclo <code>for</code> ingenuo non basta, e perché quel prodotto si scrive come una sola operazione matriciale (slide «Lo strato in forma matriciale»).</p>
+<p>Nove moltiplicazioni le avete fatte a mano in un minuto. Quasi dieci <strong>miliardi</strong> sono un’epoca, e le epoche sono decine. Ecco perché il ciclo <code>for</code> ingenuo non basta. Le moltiplicazioni restano le stesse: scritte come una sola operazione matriciale (slide «Lo strato in forma matriciale»), le esegue in parallelo una libreria ottimizzata (slide «Il vantaggio hardware»).</p>
 </div>
 </div>
 </div>
 </section>
 <section id="quesiti-finali" class="slide level2 smaller">
 <h2>Quesiti finali</h2>
-<p><strong>1. Dieci strati per niente.</strong> Immaginate una rete di dieci strati densi, ciascuno con la sua matrice di pesi, e <strong>nessuna</strong> funzione di attivazione fra uno e l’altro. Quanti strati servono per calcolare esattamente la stessa funzione?</p>
-<p><strong>2. (aperta) Perché “deep” e non “wide”?</strong> Il teorema di approssimazione universale dice che <strong>uno</strong> strato nascosto basta per qualunque funzione. E allora perché il campo si chiama <em>deep</em> learning? Provate a rendere quantitativo l’argomento della slide “Cosa il Teorema Non Dice”: confrontate <strong>784 → 200 → 10</strong> con <strong>784 → 100 → 100 → 10</strong>, contate i pesi dell’una e dell’altra, e chiedetevi quante “pieghe” sa fare ciascuna.</p>
+<p><strong>1. Tre strati per niente.</strong> Immaginate tre strati densi, ciascuno con la sua matrice di pesi <span class="math inline">\(\mathbf{W}^{(L)}\)</span> e il suo vettore di bias <span class="math inline">\(\mathbf{b}^{(L)}\)</span>, e <strong>nessuna</strong> funzione di attivazione fra uno e l’altro. Scrivete la rete come un solo strato <span class="math inline">\(\mathbf{x} \mapsto \mathbf{W}'\mathbf{x} + \mathbf{b}'\)</span>: quanto valgono <span class="math inline">\(\mathbf{W}'\)</span> e <span class="math inline">\(\mathbf{b}'\)</span>?</p>
+<p><strong>2. (aperta) Perché “deep” e non “wide”?</strong> Il teorema di approssimazione universale dice che <strong>uno</strong> strato nascosto basta per qualunque funzione. E allora perché il campo si chiama <em>deep</em> learning? Provate a rendere quantitativo l’argomento della slide «Cosa il teorema non dice»: confrontate <strong>784 → 200 → 10</strong> con <strong>784 → 100 → 100 → 10</strong>, contate i pesi dell’una e dell’altra, e chiedetevi quante “pieghe” sa fare ciascuna.</p>
 </section>
 <section id="quesiti-finali-le-risposte" class="slide level2 smaller">
 <h2>Quesiti finali: le risposte</h2>
-<p><strong>1.</strong> Uno. <span class="math inline">\(\mathbf{W}_{10}(\mathbf{W}_9(\cdots \mathbf{W}_1 \mathbf{x})) =
-(\mathbf{W}_{10} \cdots \mathbf{W}_1)\,\mathbf{x} = \mathbf{W}\mathbf{x}\)</span>: il prodotto di dieci matrici è una matrice. Dieci strati lineari non sono più espressivi di uno — sono lo stesso identico modello, scritto peggio e calcolato dieci volte più lentamente. La non linearità non è un abbellimento: senza, la profondità non esiste proprio.</p>
-<p><strong>2.</strong> Traccia: <span class="math inline">\(784 \times 200 + 200 \times 10 = 158.800\)</span> pesi contro <span class="math inline">\(784 \times 100 + 100 \times 100 + 100 \times 10 = 89.400\)</span>. La rete profonda costa poco più della <strong>metà</strong> ed è quella che in pratica funziona meglio: ogni strato ripiega lo spazio già ripiegato dal precedente, e le regioni che sa distinguere crescono come un prodotto, non come una somma. Il teorema garantisce che la rete larga <em>esiste</em>; non dice che sia quella conveniente, né che la troviate.</p>
+<p><strong>1.</strong> Applicando due volte la formula di «Piegare lo spazio»: <span class="math inline">\(\mathbf{W}' = \mathbf{W}^{(3)}\mathbf{W}^{(2)}\mathbf{W}^{(1)}\)</span> e <span class="math inline">\(\mathbf{b}' = \mathbf{W}^{(3)}\mathbf{W}^{(2)}\mathbf{b}^{(1)} + \mathbf{W}^{(3)}\mathbf{b}^{(2)} + \mathbf{b}^{(3)}\)</span>. Per induzione vale per qualunque numero di strati: senza non linearità la profondità non aggiunge nulla, è lo stesso modello con più parametri e più calcoli.</p>
+<p><strong>2.</strong> Traccia: <span class="math inline">\(784 \times 200 + 200 \times 10 = 158.800\)</span> pesi contro <span class="math inline">\(784 \times 100 + 100 \times 100 + 100 \times 10 = 89.400\)</span>. La rete profonda costa poco più della <strong>metà</strong> e, a parità di pesi, di solito rende meglio: ogni strato ripiega lo spazio già ripiegato dal precedente, e le regioni che sa distinguere crescono come un prodotto, non come una somma. Il teorema garantisce che la rete larga <em>esiste</em>; non dice che sia quella conveniente, né che la troviate.</p>
 
 
 </section>
