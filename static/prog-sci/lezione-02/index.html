@@ -925,12 +925,11 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 </section>
 <section id="il-problema-computazionale-i-cicli-for" class="slide level2 smaller">
 <h2>Il problema computazionale (i cicli for)</h2>
-<p>Fermiamoci un momento e scriviamo la <em>forward propagation</em> nel modo più diretto.</p>
-<p>Per ogni neurone <span class="math inline">\(i\)</span> del layer <span class="math inline">\(L\)</span> va calcolato <span class="math inline">\(z_i = \sum_j w_{ij}\,x_j + b_i\)</span>, dove gli <span class="math inline">\(x_j\)</span> sono le uscite del layer <span class="math inline">\(L-1\)</span>. In C++:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="co">// Vogliamo calcolare le attivazioni del layer L</span></span>
-<span id="cb1-2"><a aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> num_neuroni_layer_L<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb1-3"><a aria-label="3"></a>    <span class="dt">double</span> z <span class="op">=</span> bias<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb1-4"><a aria-label="4"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> num_neuroni_layer_L_meno_1<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<p>Sulla carta uno strato è già <span class="math inline">\(\mathbf{a} = f(\mathbf{W}\mathbf{x} + \mathbf{b})\)</span> (slide «Uno strato è una matrice»). Ma in C++? Il modo più diretto è tradurre la somma componente per componente: per ogni neurone <span class="math inline">\(i\)</span> dello strato <span class="math inline">\(L\)</span>, <span class="math inline">\(z_i = \sum_j w_{ij}\,x_j + b_i\)</span>, dove gli <span class="math inline">\(x_j\)</span> sono le uscite dello strato <span class="math inline">\(L-1\)</span>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="co">// Vogliamo calcolare le attivazioni dello strato L</span></span>
+<span id="cb1-2"><a aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> num_neuroni_strato_L<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb1-3"><a aria-label="3"></a>    <span class="dt">float</span> z <span class="op">=</span> bias<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb1-4"><a aria-label="4"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> num_neuroni_strato_L_meno_1<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
 <span id="cb1-5"><a aria-label="5"></a>        z <span class="op">+=</span> peso<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">*</span> input<span class="op">[</span>j<span class="op">];</span></span>
 <span id="cb1-6"><a aria-label="6"></a>    <span class="op">}</span></span>
 <span id="cb1-7"><a aria-label="7"></a>    attivazione<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> relu<span class="op">(</span>z<span class="op">);</span></span>
@@ -939,23 +938,22 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 </section>
 <section id="il-costo-del-codice-ingenuo" class="slide level2 smaller">
 <h2>Il costo del codice ingenuo</h2>
-<p>Le reti usate in pratica (per esempio GPT o ResNet) hanno <em>migliaia</em> di neuroni per layer.</p>
-<p>Un layer da 4000 neuroni connesso a un layer da 4000 neuroni significa: <span class="math inline">\(4000 \times 4000 = 16.000.000\)</span> di moltiplicazioni all’interno di un doppio ciclo <code>for</code>. Immaginate di ripeterlo per 100 layer.</p>
-<p>I cicli <code>for</code> in C++ sono sequenziali. Il processore fa la prima moltiplicazione, aspetta che finisca, fa la seconda, aspetta, fa la terza. E l’addestramento ripete questo calcolo su ogni esempio, più e più volte: ci vuole moltissimo tempo.</p>
+<p>Le reti usate in pratica (per esempio GPT o ResNet) hanno <em>migliaia</em> di neuroni per strato.</p>
+<p>Uno strato da 4000 neuroni connesso a uno strato da 4000 neuroni significa: <span class="math inline">\(4000 \times 4000 = 16.000.000\)</span> di moltiplicazioni all’interno di un doppio ciclo <code>for</code>. Immaginate di ripeterlo per 100 strati.</p>
+<p>Scritto così, il calcolo procede una moltiplicazione dopo l’altra, e il compilatore non sempre riesce a fare di meglio. E l’addestramento ripete questo calcolo su ogni esempio, più e più volte: ci vuole moltissimo tempo.</p>
 </section>
 <section id="dai-cicli-alle-matrici" class="slide level2 smaller">
 <h2>Dai cicli alle matrici</h2>
-<p>Per ridurre i tempi di calcolo si trattano i neuroni di uno strato non uno alla volta, ma tutti insieme, come <strong>vettori e matrici</strong>.</p>
-<p>Invece di calcolare l’output del “Neurone 1” e poi del “Neurone 2”, calcoleremo l’output <strong>di tutto lo strato insieme</strong>.</p>
-<p>Questo processo di astrazione matematica si chiama <strong>vettorizzazione</strong>.</p>
+<p>La matematica tratta già lo strato intero come una sola operazione, <span class="math inline">\(\mathbf{W}\mathbf{x} + \mathbf{b}\)</span>.</p>
+<p>Scrivere così anche il codice, invece di un neurone alla volta, si chiama <strong>vettorizzazione</strong>: il prodotto matrice per vettore lo esegue una libreria che sa sfruttare l’hardware (fra poche slide).</p>
 </section>
 <section id="la-vettorizzazione-concetto" class="slide level2 smaller">
 <h2>La vettorizzazione (concetto)</h2>
-<p>Immaginate che il layer precedente abbia emesso tre output (attivazioni). Li impiliamo in un vettore colonna (una matrice di dimensione <span class="math inline">\(3 \times 1\)</span>) che chiameremo <span class="math inline">\(\mathbf{x}\)</span>.</p>
+<p>Riprendiamo il caso generale con un esempio piccolo, che useremo nelle prossime slide: lo strato precedente ha emesso tre attivazioni, il vettore colonna <span class="math inline">\(\mathbf{x}\)</span> (una matrice <span class="math inline">\(3 \times 1\)</span>).</p>
 <p><span class="math display">\[
 \mathbf{x} = \begin{bmatrix} 1.2 \\ -0.5 \\ 0.8 \end{bmatrix}
 \]</span></p>
-<p>Immaginiamo che il nostro layer abbia 2 neuroni, e che ognuno abbia il suo bias. Li mettiamo nel vettore colonna <span class="math inline">\(\mathbf{b}\)</span> (dimensione <span class="math inline">\(2 \times 1\)</span>).</p>
+<p>Il nostro strato ha 2 neuroni, ognuno con il suo bias. Li mettiamo nel vettore colonna <span class="math inline">\(\mathbf{b}\)</span> (dimensione <span class="math inline">\(2 \times 1\)</span>).</p>
 <p><span class="math display">\[
 \mathbf{b} = \begin{bmatrix} 0.1 \\ -0.2 \end{bmatrix}
 \]</span></p>
