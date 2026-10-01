@@ -410,6 +410,14 @@ Cristiano De Michele
 <p>Poi seguite le istruzioni Linux. Per verificare:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">--version</span> <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--version</span>    <span class="co"># su macOS: clang++ --version</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
+<section id="in-wsl-dove-tenere-il-progetto" class="slide level2 smaller">
+<h2>In WSL: dove tenere il progetto</h2>
+<p>Per chi usa Windows con WSL 2:</p>
+<ul>
+<li>Tenete il progetto nella <strong>home di Linux</strong> (<code>~/...</code>), non in <code>/mnt/c/...</code>: dai dischi di Windows la lettura dei file è molto più lenta, e il CSV di MNIST, che leggerete più avanti, è grande.</li>
+<li>VS Code lo apre con l’estensione <strong>WSL</strong>: dal terminale Linux, nella cartella del progetto, <code>code .</code></li>
+</ul>
+</section>
 <section id="lambiente-di-lavoro-leditor" class="slide level2 smaller">
 <h2>L’ambiente di lavoro: l’editor</h2>
 <p>Il consiglio è <strong>Visual Studio Code</strong> — gratuito, multipiattaforma, estensibile.</p>
@@ -619,7 +627,7 @@ Cristiano De Michele
 <p><strong>Avviso</strong></p>
 </div>
 <div class="callout-content">
-<p><code>cv::imshow</code> apre una <strong>finestra grafica</strong>. Se lavorate in WSL su Windows 10, o siete collegati a una macchina via <code>ssh</code>, la finestra non può aprirsi e il programma si ferma con un errore. WSL su Windows 11 (WSLg) funziona. In caso di problemi, sostituite <code>imshow</code>/<code>waitKey</code> con <code>cv::imwrite("test.png", img);</code> e aprite il file: il resto del corso non dipende dalle finestre.</p>
+<p><code>cv::imshow</code> apre una <strong>finestra grafica</strong>. In WSL le finestre funzionano grazie a WSLg, che c’è su Windows 11 e su Windows 10 dalla build 19044 (21H2), purché WSL sia quello installato da <code>wsl --install</code> (la versione dello Store): il comando <code style="white-space: nowrap">wsl --version</code> in PowerShell risponde solo in quel caso, e <code style="white-space: nowrap">wsl --update</code> lo aggiorna. Collegati via <code>ssh</code>, invece, la finestra non si apre e il programma si ferma con un errore. In caso di problemi, sostituite <code>imshow</code>/<code>waitKey</code> con <code>cv::imwrite("test.png", img);</code> e aprite il file: il resto del corso non dipende dalle finestre.</p>
 </div>
 </div>
 </div>

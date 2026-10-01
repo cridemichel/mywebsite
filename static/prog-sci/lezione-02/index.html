@@ -1012,11 +1012,25 @@ w_{21} &amp; w_{22} &amp; w_{23}
 </section>
 <section id="c-e-librerie-ottimizzate-eigen-blas" class="slide level2 smaller">
 <h2>C++ e librerie ottimizzate (Eigen / BLAS)</h2>
-<p>In C++ la moltiplicazione tra matrici non si scrive a mano.</p>
-<p>Nel progetto userete una libreria di algebra lineare di livello industriale, <strong>Eigen</strong> (o BLAS/LAPACK): basta definire due oggetti <code>Eigen::Matrix</code> e moltiplicarli con l’operatore <code>*</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="co">// Eigen usa le istruzioni SIMD</span></span>
-<span id="cb2-2"><a aria-label="2"></a>Eigen<span class="op">::</span>VectorXf z <span class="op">=</span> W <span class="op">*</span> x <span class="op">+</span> b<span class="op">;</span> </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In C++ il prodotto matrice per vettore non si scrive a mano.</p>
+<p>Nel progetto userete una libreria ottimizzata di algebra lineare, <strong>Eigen</strong> (o BLAS/LAPACK): basta dichiarare la matrice dei pesi come <code>Eigen::MatrixXf</code> e i vettori come <code>Eigen::VectorXf</code>, e scrivere il prodotto con l’operatore <code>*</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a>Eigen<span class="op">::</span>MatrixXf W<span class="op">(</span><span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">);</span>          <span class="co">// pesi dello strato: 2 neuroni, 3 ingressi</span></span>
+<span id="cb2-2"><a aria-label="2"></a>Eigen<span class="op">::</span>VectorXf x<span class="op">(</span><span class="dv">3</span><span class="op">),</span> b<span class="op">(</span><span class="dv">2</span><span class="op">);</span>       <span class="co">// ingressi e bias</span></span>
+<span id="cb2-3"><a aria-label="3"></a>Eigen<span class="op">::</span>VectorXf z <span class="op">=</span> W <span class="op">*</span> x <span class="op">+</span> b<span class="op">;</span>    <span class="co">// Eigen usa le istruzioni SIMD</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Il codice è più leggibile e molto più veloce: lo misurerete in laboratorio.</p>
+<aside class="notes">
+<p><code>MatrixXf</code> e <code>VectorXf</code> sono abbreviazioni del template generico <code>Eigen::Matrix</code>: <code>Matrix&lt;float, Dynamic, Dynamic&gt;</code> e <code>Matrix&lt;float, Dynamic, 1&gt;</code>. Per Eigen un vettore è una matrice con una sola colonna. <code>f</code> sta per float, il tipo usato dal framework.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="lequazione-ricorsiva-finale" class="slide level2 smaller">
 <h2>L’equazione ricorsiva finale</h2>
