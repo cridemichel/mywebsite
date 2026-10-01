@@ -490,7 +490,7 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 \end{aligned}
 \]</span></p>
 </div></div>
-<p>Per la soglia basta un neurone. La finestra chiede due neuroni sullo stesso ingresso: <span class="math inline">\(h_1\)</span> si accende da 70 in su, <span class="math inline">\(h_2\)</span> da 100 in su. Non sono né ingressi né uscita: formano uno <strong>strato nascosto</strong>. Poiché <span class="math inline">\(h_1, h_2 \in \{0, 1\}\)</span> e <span class="math inline">\(h_2 \le h_1\)</span>, <span class="math inline">\(y = h_1 - h_2 = \Theta(x - 70) - \Theta(x - 100)\)</span>: la <strong>differenza</strong> di due gradini.</p>
+<p>La finestra chiede due neuroni sullo stesso ingresso: <span class="math inline">\(h_1\)</span> si accende da 70 in su, <span class="math inline">\(h_2\)</span> da 100 in su. Non sono né ingressi né uscita: formano uno <strong>strato nascosto</strong>. Poiché <span class="math inline">\(h_1, h_2 \in \{0, 1\}\)</span> e <span class="math inline">\(h_2 \le h_1\)</span>, <span class="math inline">\(y = h_1 - h_2 = \Theta(x - 70) - \Theta(x - 100)\)</span>: la <strong>differenza</strong> di due gradini (pesi e bias non sono unici: slide 16).</p>
 <aside class="notes">
 <p>Con <span class="math inline">\(\Theta(0) = 1\)</span> le soglie cliniche entrano esatte: 126 è già «diabete», 70 è già «nella norma», 100 non più (<span class="math inline">\(w = 1\)</span> è una scelta: basta <span class="math inline">\(w &gt; 0\)</span>). Il neurone d’uscita calcola «<span class="math inline">\(h_1\)</span> e non <span class="math inline">\(h_2\)</span>». Il suo bias <span class="math inline">\(-0.5\)</span> serve: con <span class="math inline">\(b = 0\)</span>, poiché <span class="math inline">\(\Theta(0) = 1\)</span>, <span class="math inline">\(y\)</span> direbbe «sì» anche quando <span class="math inline">\(h_1 = h_2\)</span>, cioè sotto 70 e da 100 in su. Va bene qualunque <span class="math inline">\(b\)</span> con <span class="math inline">\(-1 \le b &lt; 0\)</span>: <span class="math inline">\(-0.5\)</span> sta a metà. La stessa rete torna con le cimici e con lo XOR.</p>
 <style type="text/css">
@@ -654,14 +654,14 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>AND: un neurone</strong></p>
-<p><img data-src="images/porta_and_neurone.png"></p>
+<p><img data-src="images/porta_and_neurone.png" style="width:82.0%"></p>
 <p><span class="math display">\[ z = A + B - 1.5, \quad y = \Theta(z) \]</span></p>
 </div><div class="column" style="width:50%;">
 <p><strong>OR: un neurone</strong></p>
-<p><img data-src="images/porta_or_neurone.png"></p>
+<p><img data-src="images/porta_or_neurone.png" style="width:82.0%"></p>
 <p><span class="math display">\[ z = A + B - 0.5, \quad y = \Theta(z) \]</span></p>
 </div></div>
-<p>Sono le due rette della slide prima, <span class="math inline">\(A + B = 1.5\)</span> e <span class="math inline">\(A + B = 0.5\)</span>. AND e OR sono lo <strong>stesso</strong> neurone, e cambia solo il bias. Per lo XOR, invece, nessuna scelta dei tre numeri <span class="math inline">\(w_1, w_2, b\)</span> funziona.</p>
+<p>Sono le due rette della slide prima: AND e OR sono lo <strong>stesso</strong> neurone con un bias diverso, e per lo XOR nessuna terna <span class="math inline">\((w_1, w_2, b)\)</span> funziona. Pesi e bias non sono unici: l’AND funziona con qualunque <span class="math inline">\(-2 \le b &lt; -1\)</span>, e <span class="math inline">\(\lambda\,(w_1, w_2, b)\)</span> con <span class="math inline">\(\lambda &gt; 0\)</span> dà lo stesso neurone, perché <span class="math inline">\(\Theta(\lambda z) = \Theta(z)\)</span>. Qui li abbiamo scelti semplici; in una rete vera li sceglie l’<strong>addestramento</strong>, l’argomento delle prossime lezioni.</p>
 <aside class="notes">
 <p>La scelta dei pesi non è unica: va bene qualunque terna <span class="math inline">\((w_1, w_2, b)\)</span> che lasci i vertici “sì” da una parte della retta e i “no” dall’altra. Qui ne abbiamo scelta una: <span class="math inline">\(w_1 = w_2 = 1\)</span>, con <span class="math inline">\(b = -1.5\)</span> per l’AND e <span class="math inline">\(b = -0.5\)</span> per l’OR, cioè la retta a metà strada fra i vertici “sì” e i vertici “no”. I numeri sono nostri: Rashid mostra solo le rette. È il neurone della slide «Il modello matematico» con <span class="math inline">\(n = 2\)</span> ingressi <span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span>.</p>
 <style type="text/css">
