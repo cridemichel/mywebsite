@@ -738,7 +738,7 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 <section id="una-rete-di-neuroni-il-multi-layer-perceptron" class="slide level2 smaller">
 <h2>Una rete di neuroni: il multi-layer perceptron</h2>
 <p>Ora che il neurone ha una funzione di attivazione non lineare, ne prendiamo tanti e li organizziamo in strati (layer).</p>
-<p>Nasce il <strong>Multi-Layer Perceptron (MLP)</strong> o Rete <em>Feedforward Fully Connected</em>.</p>
+<p>Otteniamo così una <strong>Multi-Layer Perceptron (MLP)</strong> o Rete <em>Feedforward Fully Connected</em>.</p>
 <ul>
 <li><strong>Input Layer:</strong> I dati puri (es. i pixel dell’immagine).</li>
 <li><strong>Hidden Layers:</strong> I livelli intermedi “nascosti”. Ogni neurone è connesso a <em>tutti</em> i neuroni del layer precedente.</li>
@@ -840,6 +840,7 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 <li>È derivabile ovunque, con <span class="math inline">\(f'(z) = f(z)\,\bigl(1 - f(z)\bigr)\)</span>.</li>
 </ol>
 <p><strong>Svantaggio:</strong> per <span class="math inline">\(|z|\)</span> grande la funzione satura e la sua derivata tende a zero (<em>vanishing gradient</em>): l’apprendimento rallenta fino a bloccarsi.</p>
+<p>La <strong>tangente iperbolica</strong> è la stessa curva riscalata, <span class="math inline">\(\tanh z = 2 f(2z) - 1\)</span>: centrata in zero, con uscita in <span class="math inline">\((-1, 1)\)</span>, e con lo stesso svantaggio.</p>
 </section>
 <section id="lera-del-deep-learning-relu" class="slide level2 smaller">
 <h2>L’era del deep learning: ReLU</h2>
@@ -865,7 +866,20 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 <h2>La nostra architettura: MNIST</h2>
 <p>Per MNIST: <strong>784 → 200 → 10</strong>, un solo strato nascosto, sigmoide su entrambi. Ingressi in <span class="math inline">\([0.01,\,0.99]\)</span>, la cifra è il neurone più acceso. Basta a superare il 90%; ReLU e softmax sono varianti da progetto.</p>
 
-<img data-src="images/nn_architecture.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"></section>
+<img data-src="images/nn_architecture.png" class="quarto-figure quarto-figure-center r-stretch" style="width:76.0%"><aside class="notes">
+<p>Softmax, se qualcuno chiede: <span class="math inline">\(\mathrm{softmax}_k(\mathbf{z}) = e^{z_k} / \sum_j e^{z_j}\)</span>, cioè la distribuzione di Boltzmann con energie <span class="math inline">\(-z_k\)</span> e <span class="math inline">\(k_B T = 1\)</span>. Trasforma le 10 uscite in probabilità positive che sommano a 1, e la cifra scelta resta il neurone più acceso. Con la sigmoide le 10 uscite sono indipendenti e la loro somma non vale 1.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="forward-propagation-strato-dopo-strato" class="slide level2 smaller">
 <h2>Forward propagation: strato dopo strato</h2>
 <p>Il processo con cui i dati entrano dall’Input Layer, vengono moltiplicati per i pesi, sommati, passati nelle funzioni di attivazione livello dopo livello fino ad uscire come risultato finale, si chiama <strong>Forward Propagation</strong>.</p>
