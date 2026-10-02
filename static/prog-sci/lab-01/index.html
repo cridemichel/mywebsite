@@ -425,9 +425,8 @@ Cristiano De Michele
 <ul>
 <li><strong>C/C++</strong> (Microsoft) — syntax highlighting, IntelliSense, debugger integrato</li>
 <li><strong>CMake Tools</strong> (Microsoft) — compila con un click dalla barra di stato</li>
-<li><strong>clangd</strong> (opzionale) — autocompletamento più preciso e veloce</li>
 </ul>
-<p>Con CMake Tools potete dimenticare i comandi da terminale: il pulsante <strong>Build</strong> in basso a sinistra compila il progetto. Usate comunque il terminale nelle prime settimane per capire cosa succede sotto.</p>
+<p>Con CMake Tools i pulsanti <strong>Build</strong> e <strong>Run</strong> nella barra di stato (o <strong>F7</strong> per compilare) sostituiscono i comandi da terminale: come usarli, subito dopo il <code>CMakeLists.txt</code> del corso. Usate comunque il terminale nelle prime settimane per capire cosa succede sotto.</p>
 </section>
 <section id="un-progetto-cmake-le-basi" class="slide level2 smaller">
 <h2>Un progetto CMake: le basi</h2>
@@ -517,6 +516,17 @@ Cristiano De Michele
 <span data-code-cell="annotated-cell-14" data-code-lines="20" data-code-annotation="5">Gli header di OpenCV arrivano da soli insieme alle librerie: non serve aggiungere <code>${OpenCV_INCLUDE_DIRS}</code>.</span>
 </dd>
 </dl>
+</section>
+<section id="in-vs-code-con-cmake-tools" class="slide level2 smaller">
+<h2>In VS Code con CMake Tools</h2>
+<ul>
+<li><strong>Aprite la cartella del progetto</strong> (<em>File → Open Folder</em>), quella con <code>CMakeLists.txt</code>: CMake Tools la riconosce e propone di configurarla (è il <code>cmake -B build</code>).</li>
+<li><strong>Scegliete il kit</strong>, cioè il compilatore, quando ve lo chiede: su macOS il Clang di Apple, su Linux e WSL GCC. <code>[Unspecified]</code> lascia scegliere a CMake, come da terminale.</li>
+<li><strong>Build</strong> nella barra di stato (o <strong>F7</strong>) compila, <strong>Run</strong> esegue <code>basic_neural</code>.</li>
+<li><strong>Run parte da <code>build/</code></strong>: <code>test.png</code> finisce in <code>build/test.png</code>, non accanto a <code>main.cpp</code> (da terminale, invece, nella cartella da cui lanciate il programma).</li>
+<li><code>#include &lt;Eigen/Dense&gt;</code> in rosso, ma si compila? È IntelliSense che non conosce ancora CMake: accettate quando CMake Tools propone di configurarlo.</li>
+<li><strong>In WSL</strong>: VS Code si apre dal terminale Linux con <code>code .</code>; estensioni con <em>Install in WSL</em>.</li>
+</ul>
 </section>
 <section id="i-tipi-fondamentali-di-eigen" class="slide level2 smaller">
 <h2>I tipi fondamentali di Eigen</h2>
