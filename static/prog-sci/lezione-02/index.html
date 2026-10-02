@@ -925,14 +925,14 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 </section>
 <section id="il-problema-computazionale-i-cicli-for" class="slide level2 smaller">
 <h2>Il problema computazionale (i cicli for)</h2>
-<p>Sulla carta uno strato è già <span class="math inline">\(\mathbf{a} = f(\mathbf{W}\mathbf{x} + \mathbf{b})\)</span> (slide «Uno strato è una matrice»). Ma in C++? Il modo più diretto è tradurre la somma componente per componente: per ogni neurone <span class="math inline">\(i\)</span> dello strato <span class="math inline">\(L\)</span>, <span class="math inline">\(z_i = \sum_j w_{ij}\,x_j + b_i\)</span>, dove gli <span class="math inline">\(x_j\)</span> sono le uscite dello strato <span class="math inline">\(L-1\)</span>.</p>
+<p>Sulla carta uno strato è già <span class="math inline">\(\mathbf{a} = f(\mathbf{W}\mathbf{x} + \mathbf{b})\)</span> (slide «Uno strato è una matrice»). Ma in C++? Il modo più diretto è tradurre la somma componente per componente: per ogni neurone <span class="math inline">\(j\)</span> dello strato <span class="math inline">\(L\)</span>, <span class="math inline">\(z_j = \sum_k w_{jk}\,x_k + b_j\)</span>, dove gli <span class="math inline">\(x_k\)</span> sono le uscite dello strato <span class="math inline">\(L-1\)</span>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="co">// Vogliamo calcolare le attivazioni dello strato L</span></span>
-<span id="cb1-2"><a aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> num_neuroni_strato_L<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb1-3"><a aria-label="3"></a>    <span class="dt">float</span> z <span class="op">=</span> bias<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb1-4"><a aria-label="4"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> num_neuroni_strato_L_meno_1<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb1-5"><a aria-label="5"></a>        z <span class="op">+=</span> peso<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">*</span> input<span class="op">[</span>j<span class="op">];</span></span>
+<span id="cb1-2"><a aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> num_neuroni_strato_L<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb1-3"><a aria-label="3"></a>    <span class="dt">float</span> z <span class="op">=</span> bias<span class="op">[</span>j<span class="op">];</span></span>
+<span id="cb1-4"><a aria-label="4"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> num_neuroni_strato_L_meno_1<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb1-5"><a aria-label="5"></a>        z <span class="op">+=</span> peso<span class="op">[</span>j<span class="op">][</span>k<span class="op">]</span> <span class="op">*</span> input<span class="op">[</span>k<span class="op">];</span></span>
 <span id="cb1-6"><a aria-label="6"></a>    <span class="op">}</span></span>
-<span id="cb1-7"><a aria-label="7"></a>    attivazione<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> relu<span class="op">(</span>z<span class="op">);</span></span>
+<span id="cb1-7"><a aria-label="7"></a>    attivazione<span class="op">[</span>j<span class="op">]</span> <span class="op">=</span> relu<span class="op">(</span>z<span class="op">);</span></span>
 <span id="cb1-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Vi sembra un buon codice?</p>
 </section>
@@ -961,7 +961,7 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 <section id="lo-schema-della-rete" class="slide level2 smaller">
 <h2>Lo schema della rete</h2>
 
-<img data-src="images/mlp_scheme.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>Lo stesso esempio di prima — tre ingressi, due neuroni — visto come circuito: <strong>sei pesi</strong>, uno per freccia. <span class="math inline">\(\omega_{i,j}\)</span> collega l’ingresso <span class="math inline">\(i\)</span> al neurone <span class="math inline">\(j\)</span>: <strong>primo indice la partenza, secondo l’arrivo</strong>, come nel libro di Rashid. Pesi e bias appartengono allo <strong>strato</strong> che li riceve: nel codice sarà così anche per <code>DenseLayer</code>.</p>
+<img data-src="images/mlp_scheme.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>Lo stesso esempio di prima — tre ingressi, due neuroni — visto come circuito: <strong>sei pesi</strong>, uno per freccia. <span class="math inline">\(w_{jk}\)</span> è il peso con cui il neurone <span class="math inline">\(j\)</span> legge l’ingresso <span class="math inline">\(k\)</span>, come in «Uno strato è una matrice»: <strong>primo indice l’arrivo, secondo la partenza</strong>. Pesi e bias appartengono allo <strong>strato</strong> che li riceve: nel codice sarà così anche per <code>DenseLayer</code>.</p>
 </section>
 <section id="la-matrice-dei-pesi-w" class="slide level2 smaller">
 <h2>La matrice dei pesi (W)</h2>
@@ -982,7 +982,7 @@ w_{21} &amp; w_{22} &amp; w_{23}
 <p><strong>Nota</strong></p>
 </div>
 <div class="callout-content">
-<p>Attenzione all’ordine degli indici. Nello schema di prima (e nel libro di Rashid) <span class="math inline">\(\omega_{i,j}\)</span> va <strong>dalla</strong> partenza <span class="math inline">\(i\)</span> <strong>all’</strong>arrivo <span class="math inline">\(j\)</span>: se <span class="math inline">\(\Omega\)</span> è la matrice degli <span class="math inline">\(\omega_{i,j}\)</span>, quella che serve per moltiplicare è la sua <strong>trasposta</strong>, <span class="math inline">\(\mathbf{W} = \Omega^{T}\)</span>, con la <strong>riga</strong> sul neurone d’arrivo (<span class="math inline">\(w_{jk} = \omega_{k,j}\)</span>). È la matrice che Rashid scrive in <span class="math inline">\(X = W \cdot I\)</span> (prima riga <span class="math inline">\(\omega_{1,1}, \omega_{2,1}\)</span>), ed è per questo che nel codice si chiamerà <code>Wt</code>.</p>
+<p>Chi legge il libro di Rashid trova gli indici scambiati: lui scrive <span class="math inline">\(w_{i,j}\)</span> con il primo indice sulla <strong>partenza</strong> e il secondo sull’arrivo, quindi la sua tabella dei pesi è la <strong>trasposta</strong> della nostra <span class="math inline">\(\mathbf{W}\)</span>. La matrice con cui moltiplica in <span class="math inline">\(X = W \cdot I\)</span> è però proprio la nostra (prima riga <span class="math inline">\(w_{1,1}, w_{2,1}\)</span> nella sua notazione), cioè la trasposta della sua tabella: per questo nel codice si chiamerà <code>Wt</code>.</p>
 </div>
 </div>
 </div>
