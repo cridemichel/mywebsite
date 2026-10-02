@@ -613,7 +613,7 @@ Cristiano De Michele
 <span id="cb12-7"><a aria-label="7"></a></span>
 <span id="cb12-8"><a aria-label="8"></a>    cv<span class="op">::</span>Mat img<span class="op">(</span><span class="dv">28</span><span class="op">,</span> <span class="dv">28</span><span class="op">,</span> CV_8UC1<span class="op">,</span> cv<span class="op">::</span>Scalar<span class="op">(</span><span class="dv">128</span><span class="op">));</span>   <span class="co">// punto 4: grigio medio</span></span>
 <span id="cb12-9"><a aria-label="9"></a>    cv<span class="op">::</span>imshow<span class="op">(</span><span class="st">"Test MNIST size"</span><span class="op">,</span> img<span class="op">);</span></span>
-<span id="cb12-10"><a aria-label="10"></a>    cv<span class="op">::</span>waitKey<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb12-10"><a aria-label="10"></a>    cv<span class="op">::</span>waitKey<span class="op">(</span><span class="dv">0</span><span class="op">);</span>   <span class="co">// aspetta un tasto, con la finestra in primo piano</span></span>
 <span id="cb12-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="se-la-finestra-non-si-apre" class="slide level2 smaller">
@@ -631,6 +631,7 @@ Cristiano De Michele
 </div>
 </div>
 </div>
+<p>Su macOS il primo avvio dopo l’installazione di OpenCV può richiedere decine di secondi: il programma non è bloccato, aspettate. Dal secondo avvio è immediato.</p>
 <p>Se Eigen stampa e OpenCV apre la finestra (o scrive il PNG), l’ambiente è pronto per tutto il corso.</p>
 </section>
 <section id="task-da-completare" class="slide level2 smaller scrollable">
