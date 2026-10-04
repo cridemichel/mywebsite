@@ -369,6 +369,21 @@ Cristiano De Michele
 <p>Calcolare <span class="math inline">\(\partial E/\partial \mathbf{W}^{(L)}\)</span> per l’<strong>ultimo</strong> strato è facile: basta la derivata della loss. Ma un peso del <strong>primo</strong> strato, per esempio <span class="math inline">\(w^{(1)}_{57,\,432}\)</span> (quello con cui il neurone nascosto 57 legge il pixel 432), influenza <span class="math inline">\(E\)</span> solo attraverso <strong>tutti</strong> gli strati successivi. La rete è una funzione composta:</p>
 <p><span class="math display">\[ E = \Big\lVert\, \mathbf{f}_L\big(\cdots \mathbf{f}_2(\mathbf{f}_1(\mathbf{x}))\cdots\big) - \mathbf{y} \,\Big\rVert^2, \qquad \mathbf{f}_\ell(\mathbf{a}) = \sigma\!\left(\mathbf{W}^{(\ell)}\mathbf{a} + \mathbf{b}^{(\ell)}\right) , \]</span></p>
 <p>e <span class="math inline">\(\mathbf{W}^{(1)}\)</span> sta nella funzione più interna. La sua derivata si calcola con la <strong>regola della catena</strong> (la derivata della funzione composta), attraversando tutti gli strati: uno in una rete a due strati, cento in una rete di cento.</p>
+<div title="Il piano">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Il piano</strong></p>
+</div>
+<div class="callout-content">
+<p>Calcolando i gradienti vedremo che dipendono tutti da una sola quantità per neurone, il <strong>segnale d’errore</strong> <span class="math inline">\(\delta\)</span>, e che il <span class="math inline">\(\delta\)</span> di uno strato si calcola <strong>ricorsivamente</strong> da quello dello strato successivo. Partendo dall’uscita e procedendo all’indietro si ottengono tutti i gradienti: è la backpropagation.</p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="due-strati-un-neurone-ciascuno" class="slide level2 smaller">
 <h2>Due strati, un neurone ciascuno</h2>
@@ -448,12 +463,27 @@ Cristiano De Michele
 <h2>③ Passo 3: la trasposta</h2>
 <p>Nella somma <span class="math inline">\(\sum_k w^{(\ell+1)}_{kj}\,\delta^{(\ell+1)}_k\)</span> l’indice sommato è il <strong>primo</strong> di <span class="math inline">\(w\)</span>, quello del neurone d’arrivo. Sommare sul primo indice è moltiplicare per la <strong>trasposta</strong>: <span class="math inline">\(\big(\mathbf{W}^{T}\boldsymbol{\delta}\big)_j = \sum_k w_{kj}\,\delta_k\)</span>. In forma vettoriale:</p>
 <p><span class="math display">\[ \boxed{\;\boldsymbol{\delta}^{(\ell)} = \left(\left(\mathbf{W}^{(\ell+1)}\right)^{T}\boldsymbol{\delta}^{(\ell+1)}\right) \odot \sigma'\!\left(\mathbf{z}^{(\ell)}\right)\;} \]</span></p>
-<p>Per tornare indietro <strong>non serve invertire</strong> <span class="math inline">\(\mathbf{W}\)</span>, un’operazione costosa e impossibile se <span class="math inline">\(\mathbf{W}\)</span> non è quadrata (<span class="math inline">\(784 \to 200\)</span>): basta la trasposta, che costa quanto il prodotto in avanti e riporta i segnali d’errore dei neuroni d’arrivo al neurone di partenza, con gli stessi pesi che avevano portato il segnale in avanti. Su trasposta e inversa torneremo nel Lab 16 (<em>back query</em>).</p>
+<p>La trasposta non approssima nessuna inversa: è il risultato <strong>esatto</strong> della regola della catena, costa quanto il prodotto in avanti e riporta i segnali d’errore dei neuroni d’arrivo al neurone di partenza, con gli stessi pesi che avevano portato il segnale in avanti. Una <span class="math inline">\(\mathbf{W}\)</span> non quadrata (<span class="math inline">\(784 \to 200\)</span>) non ha inversa ma ha una <strong>pseudo-inversa</strong>: nel Lab 16 (<em>back query</em>) vedremo che, a meno di un fattore, questa si riduce approssimativamente alla trasposta, per una ragione diversa da quella di qui.</p>
 </section>
 <section id="il-grafo-di-calcolo-riepilogo" class="slide level2 smaller">
 <h2>Il grafo di calcolo: riepilogo</h2>
 
 <img data-src="images/backprop.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>① gradiente di pesi e bias (passo 1); ② <span class="math inline">\(\partial E/\partial \mathbf{a}^{(L)}\)</span> dalla loss (passo 2); ③ <span class="math inline">\(\mathbf{W}^{(\ell)T}\boldsymbol{\delta}^{(\ell)}\)</span> verso lo strato prima (passo 3). La freccia che arriva da destra, <span class="math inline">\(\partial E/\partial \mathbf{a}^{(\ell)}\)</span>, è il ③ dello strato dopo; solo per <span class="math inline">\(\ell = L\)</span> viene direttamente da <span class="math inline">\(E\)</span>, ed è il ②.</p>
+<div title="In sintesi">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>In sintesi</strong></p>
+</div>
+<div class="callout-content">
+<p>Per aggiornare la rete servono i gradienti. Ciascuno si scrive con il <span class="math inline">\(\boldsymbol{\delta}\)</span> del proprio strato (①). I <span class="math inline">\(\boldsymbol{\delta}\)</span> si calcolano a ritroso, ciascuno da quello dello strato successivo (③), partendo dall’ultimo, che dipende solo dalla loss (②).</p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="lalgoritmo-completo" class="slide level2 smaller">
 <h2>L’algoritmo completo</h2>
@@ -577,16 +607,31 @@ Cristiano De Michele
 <section id="i-limiti-dellsgd-e-il-momentum" class="slide level2 smaller">
 <h2>I limiti dell’SGD e il momentum</h2>
 <p>La discesa del gradiente semplice ha due limiti. In una valle stretta oscilla fra le due pareti invece di scendere lungo il fondo. E dove il gradiente è quasi nullo — un minimo locale o, più spesso in milioni di dimensioni, un punto di sella — rallenta fino quasi a fermarsi.</p>
-<p>Il rimedio viene dalla meccanica: l’<strong>SGD con momentum</strong> tratta i pesi come una particella con massa e attrito nel potenziale <span class="math inline">\(E\)</span>,</p>
-<p><span class="math display">\[ \mathbf{v} \leftarrow \mu\,\mathbf{v} - \eta\,\nabla E, \qquad \mathbf{W} \leftarrow \mathbf{W} + \mathbf{v}, \]</span></p>
-<p>con <span class="math inline">\(0 \le \mu &lt; 1\)</span>: <span class="math inline">\(1-\mu\)</span> fa la parte dell’attrito. La velocità accumulata smorza le oscillazioni trasverse e fa superare i tratti quasi piatti; con <span class="math inline">\(\mu = 0\)</span> si torna alla discesa semplice.</p>
+<p>Il rimedio viene dalla meccanica: l’<strong>SGD con momentum</strong> tratta i parametri come una particella di massa <span class="math inline">\(m\)</span> nel potenziale <span class="math inline">\(E\)</span>, con attrito viscoso: <span class="math inline">\(m\ddot{\boldsymbol\theta} = -\nabla E - \gamma\dot{\boldsymbol\theta}\)</span>. Discretizzata con passo <span class="math inline">\(\Delta t\)</span> (prima la velocità, poi la posizione) e con <span class="math inline">\(\mathbf{v} = \Delta t\,\dot{\boldsymbol\theta}\)</span>, diventa</p>
+<p><span class="math display">\[ \mathbf{v} \leftarrow \mu\,\mathbf{v} - \eta\,\nabla E, \qquad \boldsymbol\theta \leftarrow \boldsymbol\theta + \mathbf{v}, \qquad \mu = 1 - \frac{\gamma\,\Delta t}{m} \in [0, 1), \quad \eta = \frac{\Delta t^2}{m} . \]</span></p>
+<p><span class="math inline">\(\mathbf{v}\)</span>, lo <strong>spostamento per passo</strong>, ha la forma di <span class="math inline">\(\boldsymbol\theta\)</span> e parte da zero; <span class="math inline">\(1-\mu\)</span> è l’attrito. La velocità smorza le oscillazioni trasverse e supera i tratti quasi piatti; con <span class="math inline">\(\mu = 0\)</span> resta la discesa semplice (limite sovrasmorzato, <span class="math inline">\(\gamma\dot{\boldsymbol\theta} = -\nabla E\)</span>).</p>
 </section>
 <section id="lottimizzatore-adam" class="slide level2 smaller">
 <h2>L’ottimizzatore Adam</h2>
-<p>Oggi l’ottimizzatore più usato è <strong>Adam</strong> (<em>Adaptive Moment Estimation</em>, Kingma e Ba, 2014).</p>
-<p>L’SGD usa un solo learning rate <span class="math inline">\(\eta\)</span> per tutti i pesi. Adam tiene per ogni peso due medie mobili, del gradiente (<span class="math inline">\(m\)</span>, il momentum) e del suo quadrato (<span class="math inline">\(v\)</span>), e fa il passo</p>
-<p><span class="math display">\[ \Delta w = -\eta\,\frac{\hat{m}}{\sqrt{\hat{v}} + \epsilon} , \]</span></p>
-<p>cioè il gradiente diviso per la sua ampiezza tipica recente (<span class="math inline">\(\hat{m}\)</span>, <span class="math inline">\(\hat{v}\)</span>: medie corrette per la partenza da zero): ogni peso ha di fatto il suo learning rate. I valori di default (<span class="math inline">\(\eta = 10^{-3}\)</span>, <span class="math inline">\(\beta_1 = 0{,}9\)</span>, <span class="math inline">\(\beta_2 = 0{,}999\)</span>) vanno bene in molti casi.</p>
+<p><strong>Adam</strong> (<em>Adaptive Moment Estimation</em>, Kingma e Ba, 2014) è oggi l’ottimizzatore più usato. Tiene per ogni parametro due medie mobili esponenziali, del gradiente <span class="math inline">\(\mathbf{g} = \nabla E\)</span> e del suo quadrato; a ogni passo <span class="math inline">\(t = 1, 2, \dots\)</span>, elemento per elemento:</p>
+<p><span class="math display">\[ \begin{aligned}
+\mathbf{m} &amp;\leftarrow \beta_1\,\mathbf{m} + (1-\beta_1)\,\mathbf{g}, &amp; \hat{\mathbf{m}} &amp;= \mathbf{m}/(1-\beta_1^{\,t}), \\
+\mathbf{s} &amp;\leftarrow \beta_2\,\mathbf{s} + (1-\beta_2)\,\mathbf{g}\odot\mathbf{g}, &amp; \hat{\mathbf{s}} &amp;= \mathbf{s}/(1-\beta_2^{\,t}), \\
+\boldsymbol\theta &amp;\leftarrow \boldsymbol\theta - \eta\,\frac{\hat{\mathbf{m}}}{\sqrt{\hat{\mathbf{s}}}+\epsilon} .
+\end{aligned} \]</span></p>
+<ul>
+<li><span class="math inline">\(\mathbf{m}\)</span> (primo momento) è il momentum; <span class="math inline">\(\mathbf{s}\)</span> (secondo momento) è l’ampiezza tipica recente del gradiente. Nell’articolo si chiama <span class="math inline">\(v\)</span>: qui <span class="math inline">\(\mathbf{s}\)</span>, per non confonderla con la velocità.</li>
+<li><span class="math inline">\(\mathbf{m}\)</span> e <span class="math inline">\(\mathbf{s}\)</span> partono da zero: ai primi passi sono schiacciate verso zero di un fattore <span class="math inline">\(1-\beta^{\,t}\)</span>, che la divisione compensa.</li>
+</ul>
+</section>
+<section id="adam-in-pratica" class="slide level2 smaller">
+<h2>Adam in pratica</h2>
+<p>Il passo è il gradiente medio diviso per la sua ampiezza tipica: rispetto all’SGD, dove il gradiente è grande o rumoroso il passo si accorcia, dove è piccolo ma costante si allunga. Ogni parametro ha di fatto il suo learning rate, e il passo è dell’ordine di <span class="math inline">\(\eta\)</span> qualunque sia la scala del gradiente: moltiplicare <span class="math inline">\(E\)</span> per una costante non lo cambia (a meno di <span class="math inline">\(\epsilon\)</span>).</p>
+<ul>
+<li><span class="math inline">\(\beta_1\)</span> e <span class="math inline">\(\beta_2\)</span> fissano la memoria delle due medie, circa <span class="math inline">\(1/(1-\beta)\)</span> passi: 10 per <span class="math inline">\(\beta_1 = 0{,}9\)</span>, 1000 per <span class="math inline">\(\beta_2 = 0{,}999\)</span>;</li>
+<li><span class="math inline">\(\epsilon \approx 10^{-8}\)</span> evita la divisione per zero;</li>
+<li>con <span class="math inline">\(\eta = 10^{-3}\)</span> e questi valori (i default) Adam funziona bene in molti casi.</li>
+</ul>
 <p>Nel Laboratorio 10 implementerete <code>SDOptimizer</code>, la discesa più semplice — una riga, <code>param -= lr * grad</code>. Momentum e Adam sono la <strong>traccia 1</strong> dei progetti finali: l’interfaccia <code>Optimizer</code> è fatta perché si possano aggiungere senza toccare né i layer né la rete.</p>
 </section>
 <section id="i-learning-rate-scheduler" class="slide level2 smaller">
