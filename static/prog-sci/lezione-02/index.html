@@ -961,7 +961,7 @@ y &amp;= \Theta(h_1 - h_2 - 0.5)
 <section id="lo-schema-della-rete" class="slide level2 smaller">
 <h2>Lo schema della rete</h2>
 
-<img data-src="images/mlp_scheme.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>Lo stesso esempio di prima — tre ingressi, due neuroni — visto come circuito: <strong>sei pesi</strong>, uno per freccia. <span class="math inline">\(w_{jk}\)</span> è il peso con cui il neurone <span class="math inline">\(j\)</span> legge l’ingresso <span class="math inline">\(k\)</span>, come in «Uno strato è una matrice»: <strong>primo indice l’arrivo, secondo la partenza</strong>. Pesi e bias appartengono allo <strong>strato</strong> che li riceve: nel codice sarà così anche per <code>DenseLayer</code>.</p>
+<img data-src="images/mlp_scheme.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><p>Lo stesso esempio di prima — tre ingressi, due neuroni — visto come circuito: <strong>sei pesi</strong>, uno per freccia. <span class="math inline">\(w_{jk}\)</span> è il peso con cui il neurone <span class="math inline">\(j\)</span> legge l’ingresso <span class="math inline">\(k\)</span>, come in «Uno strato è una matrice»: <strong>primo indice l’arrivo, secondo la partenza</strong>. Pesi e bias appartengono allo <strong>strato</strong> che li riceve. Nel codice i pesi stanno in <code>DenseLayer</code>, che però, come la rete del libro, non ha bias: <span class="math inline">\(\mathbf{b} = 0\)</span>.</p>
 </section>
 <section id="la-matrice-dei-pesi-w" class="slide level2 smaller">
 <h2>La matrice dei pesi (W)</h2>
