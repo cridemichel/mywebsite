@@ -344,37 +344,49 @@ Cristiano De Michele
 <h2>L’obiettivo matematico</h2>
 <p>Il nostro obiettivo diventa: <strong>trovare i pesi <span class="math inline">\(\mathbf{W}^{(\ell)}\)</span> e i bias <span class="math inline">\(\mathbf{b}^{(\ell)}\)</span> che rendono <span class="math inline">\(E\)</span> il più piccolo possibile.</strong> (Non zero: una rete che azzera l’errore sui dati di addestramento di solito ha solo imparato a memoria — ne riparleremo col <em>test set</em>.)</p>
 <p>Una rete con 100 strati può avere <span class="math inline">\(10^7\)</span> pesi, e <span class="math display">\[ E = E\!\left(\mathbf{W}^{(1)}, \dots, \mathbf{W}^{(100)}\right) \]</span> è una superficie in uno spazio a dieci milioni di dimensioni.</p>
-<p>Come si trova il suo punto più basso?</p>
+<p>Come se ne trova un minimo?</p>
 </section>
 <section id="lescursionista-bendato" class="slide level2 smaller">
 <h2>L’escursionista bendato</h2>
-<p>Immaginate di essere bendati in cima a una catena montuosa e di voler scendere a valle. L’unica informazione disponibile è la pendenza del terreno sotto i piedi: la tastate, individuate la direzione in cui scende di più e fate un piccolo passo.</p>
-<p>Ripetendo il procedimento migliaia di volte si arriva in fondo a una valle.</p>
-<p>È la <strong>discesa del gradiente</strong> (<em>gradient descent</em>).</p>
-</section>
+<p>Immaginate di essere bendati in cima a una catena montuosa e di voler scendere a valle. L’unica informazione disponibile è la pendenza del terreno sotto i piedi: la tastate, individuate la direzione in cui scende di più e fate un piccolo passo. Ripetendo il procedimento migliaia di volte si arriva in fondo a una valle: è la <strong>discesa del gradiente</strong> (<em>gradient descent</em>).</p>
+
+<img data-src="images/escursionista.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"></section>
 <section id="la-discesa-del-gradiente" class="slide level2 smaller">
 <h2>La discesa del gradiente</h2>
-<p>La pendenza del terreno è il <strong>gradiente</strong> dell’errore <span class="math inline">\(E\)</span> rispetto ai pesi <span class="math inline">\(\mathbf{W}\)</span>. Per addestrare la rete si aggiorna ogni peso sottraendogli una frazione del gradiente:</p>
-<p><span class="math display">\[ \mathbf{W}_{\text{new}} = \mathbf{W}_{\text{old}} - \eta \frac{\partial E}{\partial \mathbf{W}} \]</span></p>
-<p>dove <span class="math inline">\(\eta\)</span> è il <strong>learning rate</strong>, la lunghezza del passo. Con un passo troppo lungo si scavalca il fondo della valle e la discesa può divergere; con uno troppo corto la convergenza è lentissima (quesito 1, in fondo alla lezione).</p>
+<p>Raccogliamo tutti i parametri della rete in un unico vettore <span class="math display">\[ \boldsymbol{\theta} = \left(\mathbf{W}^{(1)}, \dots, \mathbf{W}^{(L)},\ \mathbf{b}^{(1)}, \dots, \mathbf{b}^{(L)}\right) \in \mathbb{R}^{P}, \]</span> con <span class="math inline">\(P\)</span> il numero totale di pesi e bias. A dati fissati la loss è una funzione <span class="math inline">\(E: \mathbb{R}^P \to \mathbb{R}\)</span>, e la discesa del gradiente è l’iterazione <span class="math display">\[ \boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \eta\, \nabla_{\boldsymbol{\theta}} E(\boldsymbol{\theta}_t) , \]</span> cioè, blocco per blocco, <span class="math inline">\(\mathbf{W}^{(\ell)} \leftarrow \mathbf{W}^{(\ell)} - \eta\, \partial E/\partial \mathbf{W}^{(\ell)}\)</span> e <span class="math inline">\(\mathbf{b}^{(\ell)} \leftarrow \mathbf{b}^{(\ell)} - \eta\, \partial E/\partial \mathbf{b}^{(\ell)}\)</span> per ogni <span class="math inline">\(\ell\)</span>, con tutti i gradienti calcolati nello <strong>stesso</strong> punto <span class="math inline">\(\boldsymbol{\theta}_t\)</span>. Qui <span class="math inline">\(\partial E/\partial \mathbf{W}^{(\ell)}\)</span> è la matrice che in posizione <span class="math inline">\((j,k)\)</span> ha la derivata <span class="math inline">\(\partial E/\partial w^{(\ell)}_{jk}\)</span>: ha le stesse dimensioni di <span class="math inline">\(\mathbf{W}^{(\ell)}\)</span>, e l’aggiornamento sottrae elemento per elemento.</p>
+</section>
+<section id="la-direzione-di-discesa-più-rapida" class="slide level2 smaller">
+<h2>La direzione di discesa più rapida</h2>
+<p>Per uno spostamento piccolo <span class="math inline">\(\Delta\boldsymbol{\theta}\)</span>, al primo ordine <span class="math display">\[ E(\boldsymbol{\theta} + \Delta\boldsymbol{\theta}) \simeq E(\boldsymbol{\theta}) + \nabla E \cdot \Delta\boldsymbol{\theta} . \]</span> Fra gli spostamenti di lunghezza fissata, <span class="math inline">\(\lVert \Delta\boldsymbol{\theta} \rVert = \varepsilon\)</span>, la disuguaglianza di Cauchy–Schwarz <span class="math inline">\(\lvert \nabla E \cdot \Delta\boldsymbol{\theta} \rvert \le \lVert \nabla E \rVert\, \lVert \Delta\boldsymbol{\theta} \rVert\)</span> dà <span class="math display">\[ -\varepsilon \lVert \nabla E \rVert \;\le\; \nabla E \cdot \Delta\boldsymbol{\theta} \;\le\; \varepsilon \lVert \nabla E \rVert , \]</span> e il minimo si raggiunge solo per <span class="math inline">\(\Delta\boldsymbol{\theta}\)</span> antiparallelo al gradiente, <span class="math inline">\(\Delta\boldsymbol{\theta} = -\varepsilon\, \nabla E / \lVert \nabla E \rVert\)</span>: è la direzione di discesa più rapida. Con <span class="math inline">\(\Delta\boldsymbol{\theta} = -\eta \nabla E\)</span>, <span class="math inline">\(E(\boldsymbol{\theta} - \eta \nabla E) \simeq E(\boldsymbol{\theta}) - \eta \lVert \nabla E \rVert^2 \le E(\boldsymbol{\theta})\)</span>.</p>
+<p><span class="math inline">\(\eta\)</span> è il <strong>learning rate</strong>: con un passo troppo lungo il primo ordine non basta più e la discesa può divergere (quesito 1); con uno troppo corto la convergenza è lentissima.</p>
 </section>
 <section id="la-discesa-del-gradiente-visualizzazione" class="slide level2">
 <h2>La discesa del gradiente: visualizzazione</h2>
 
 <img data-src="images/gradient_descent.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"></section>
-<section id="il-paradosso-della-rete-profonda" class="slide level2 smaller">
-<h2>Il paradosso della rete profonda</h2>
-<p>Calcolare il gradiente <span class="math inline">\(\partial E/\partial \mathbf{W}\)</span> per l’<strong>ultimo</strong> strato è facile: basta la derivata della MSE. Ma prendete un peso del <strong>primo</strong> strato — per esempio <span class="math inline">\(w^{(1)}_{57,\,432}\)</span>, quello con cui il neurone nascosto 57 legge il pixel 432. Quanto vale <span class="math inline">\(\partial E / \partial w^{(1)}_{57,\,432}\)</span>, se <span class="math inline">\(E\)</span> si misura solo all’uscita, uno strato più in là? E in una rete di cento strati, cento strati più in là?</p>
-<p>La risposta è la regola della catena (la derivata della funzione composta).</p>
-<blockquote>
-<p>L’errore finale dipende dall’uscita dello strato 100, che dipende dallo strato 99, che dipende dal 98… giù fino allo strato 1.</p>
-</blockquote>
-<p>La <strong>backpropagation</strong> parte dall’errore all’uscita e lo <em>propaga all’indietro</em>, strato per strato, calcolando quanta parte dell’errore spetta a ogni neurone. È l’algoritmo che rende possibile addestrare le reti profonde: ora lo deriviamo.</p>
+<section id="il-gradiente-negli-strati-interni" class="slide level2 smaller">
+<h2>Il gradiente negli strati interni</h2>
+<p>Calcolare <span class="math inline">\(\partial E/\partial \mathbf{W}^{(L)}\)</span> per l’<strong>ultimo</strong> strato è facile: basta la derivata della loss. Ma un peso del <strong>primo</strong> strato, per esempio <span class="math inline">\(w^{(1)}_{57,\,432}\)</span> (quello con cui il neurone nascosto 57 legge il pixel 432), influenza <span class="math inline">\(E\)</span> solo attraverso <strong>tutti</strong> gli strati successivi. La rete è una funzione composta:</p>
+<p><span class="math display">\[ E = \Big\lVert\, \mathbf{f}_L\big(\cdots \mathbf{f}_2(\mathbf{f}_1(\mathbf{x}))\cdots\big) - \mathbf{y} \,\Big\rVert^2, \qquad \mathbf{f}_\ell(\mathbf{a}) = \sigma\!\left(\mathbf{W}^{(\ell)}\mathbf{a} + \mathbf{b}^{(\ell)}\right) , \]</span></p>
+<p>e <span class="math inline">\(\mathbf{W}^{(1)}\)</span> sta nella funzione più interna. La sua derivata si calcola con la <strong>regola della catena</strong> (la derivata della funzione composta), attraversando tutti gli strati: uno in una rete a due strati, cento in una rete di cento.</p>
 </section>
-<section id="backpropagation-il-grafo-di-calcolo" class="slide level2">
-<h2>Backpropagation: il grafo di calcolo</h2>
-
-<img data-src="images/backprop.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
+<section id="due-strati-un-neurone-ciascuno" class="slide level2 smaller">
+<h2>Due strati, un neurone ciascuno</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/catena_due_neuroni.png" class="quarto-figure quarto-figure-center" style="width:68.0%"></p>
+</figure>
+</div>
+<p>Con <span class="math inline">\(E = (a_2 - y)^2\)</span> e la regola della catena:</p>
+<p><span class="math display">\[ \frac{\partial E}{\partial w_2} = \underbrace{2(a_2 - y)\,\sigma'(z_2)}_{\delta_2}\; a_1 ,
+\qquad
+\frac{\partial E}{\partial w_1} = \underbrace{2(a_2 - y)\,\sigma'(z_2)}_{\delta_2}\; w_2\,\sigma'(z_1)\; x . \]</span></p>
+<ul>
+<li>Ogni strato attraversato aggiunge un fattore <span class="math inline">\(w\,\sigma'\)</span>: con cento strati, cento fattori.</li>
+<li>I primi fattori sono <strong>comuni</strong>: sono i <span class="math inline">\(\delta\)</span> del diagramma, e <span class="math inline">\(\partial E/\partial w_1 = \delta_1\, x\)</span>.</li>
+</ul>
+<p>Calcolarli una sola volta, dall’uscita verso l’ingresso, è la <strong>backpropagation</strong>.</p>
+</section>
 <section id="notazione-tre-vettori-per-ogni-strato" class="slide level2 smaller">
 <h2>Notazione: tre vettori per ogni strato</h2>
 <p>Numeriamo gli strati <span class="math inline">\(\ell = 1, \dots, L\)</span> e chiamiamo <span class="math inline">\(\mathbf{a}^{(0)} = \mathbf{x}\)</span> l’ingresso. (Nella Lezione 2 lo strato generico si chiamava <span class="math inline">\(L\)</span>; qui serve un nome anche per l’ultimo: <span class="math inline">\(\ell\)</span> è lo strato generico, <span class="math inline">\(L\)</span> l’ultimo.) Ogni strato produce due vettori:</p>
@@ -382,27 +394,27 @@ Cristiano De Michele
 <p><span class="math inline">\(\mathbf{z}\)</span> è la <strong>pre-attivazione</strong>, <span class="math inline">\(\mathbf{a}\)</span> l’<strong>attivazione</strong>; per componenti, con la convenzione della Lezione 2 (<span class="math inline">\(j\)</span> = arrivo, <span class="math inline">\(k\)</span> = ingresso), <span class="math inline">\(z^{(\ell)}_j = \sum_k w^{(\ell)}_{jk}\, a^{(\ell-1)}_k + b^{(\ell)}_j\)</span>.</p>
 <p><span class="math inline">\(\sigma\)</span> è la sigmoide del framework: con un’altra attivazione <span class="math inline">\(f\)</span> si sostituisce <span class="math inline">\(\sigma'\)</span> con <span class="math inline">\(f'\)</span>. Nel framework, inoltre, <span class="math inline">\(\mathbf{b} = 0\)</span>: le formule che seguono valgono togliendolo.</p>
 </section>
-<section id="la-colpa-di-un-neurone" class="slide level2 smaller">
-<h2>La colpa di un neurone</h2>
+<section id="il-segnale-derrore-boldsymboldelta" class="slide level2 smaller">
+<h2>Il segnale d’errore <span class="math inline">\(\boldsymbol{\delta}\)</span></h2>
 <p>Il terzo vettore di ogni strato è la definizione su cui poggia tutto:</p>
 <p><span class="math display">\[ \delta^{(\ell)}_j \;\equiv\; \frac{\partial E}{\partial z^{(\ell)}_j} \]</span></p>
-<p>cioè <em>quanto cambia l’errore se sposto di poco la pre-attivazione del neurone <span class="math inline">\(j\)</span></em>: la sua <strong>colpa</strong>. La backpropagation è un modo efficiente di calcolare tutti i <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span>, in tre passi:</p>
+<p>cioè <em>quanto cambia l’errore se sposto di poco la pre-attivazione del neurone <span class="math inline">\(j\)</span></em>: il <strong>segnale d’errore</strong> del neurone. La backpropagation è un modo efficiente di calcolare tutti i <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span>, in tre passi:</p>
 <ol type="1">
-<li>il gradiente dei pesi si scrive con i <span class="math inline">\(\boldsymbol{\delta}\)</span>;</li>
+<li>il gradiente di pesi e bias si scrive con i <span class="math inline">\(\boldsymbol{\delta}\)</span>;</li>
 <li>all’ultimo strato <span class="math inline">\(\boldsymbol{\delta}^{(L)}\)</span> si calcola direttamente dalla loss;</li>
 <li>ogni <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span> si ottiene da <span class="math inline">\(\boldsymbol{\delta}^{(\ell+1)}\)</span>, all’indietro.</li>
 </ol>
 </section>
-<section id="passo-1-il-gradiente-dei-pesi" class="slide level2 smaller">
-<h2>Passo 1: il gradiente dei pesi</h2>
+<section id="passo-1-i-gradienti" class="slide level2 smaller">
+<h2>① Passo 1: i gradienti</h2>
 <p>Il peso <span class="math inline">\(w^{(\ell)}_{jk}\)</span> influenza <span class="math inline">\(E\)</span> <strong>solo</strong> attraverso <span class="math inline">\(z^{(\ell)}_j\)</span>: è l’unica pre-attivazione in cui compare. Regola della catena:</p>
 <p><span class="math display">\[ \frac{\partial E}{\partial w^{(\ell)}_{jk}} = \frac{\partial E}{\partial z^{(\ell)}_j}\,\frac{\partial z^{(\ell)}_j}{\partial w^{(\ell)}_{jk}} = \delta^{(\ell)}_j\, a^{(\ell-1)}_k , \]</span></p>
 <p>perché nella somma <span class="math inline">\(z^{(\ell)}_j = \sum_k w^{(\ell)}_{jk} a^{(\ell-1)}_k\)</span> il peso <span class="math inline">\(w_{jk}\)</span> moltiplica solo <span class="math inline">\(a_k\)</span>. In forma matriciale è un <strong>prodotto colonna per riga</strong>:</p>
 <p><span class="math display">\[ \frac{\partial E}{\partial \mathbf{W}^{(\ell)}} = \boldsymbol{\delta}^{(\ell)} \left(\mathbf{a}^{(\ell-1)}\right)^{T}, \qquad \frac{\partial E}{\partial \mathbf{b}^{(\ell)}} = \boldsymbol{\delta}^{(\ell)} . \]</span></p>
-<p>Le dimensioni tornano: <span class="math inline">\((N_\ell \times 1)(1 \times N_{\ell-1})\)</span>, la forma di <span class="math inline">\(\mathbf{W}^{(\ell)}\)</span>. Colpa del neurone <span class="math inline">\(j\)</span> per attività dell’ingresso <span class="math inline">\(k\)</span>: un ingresso spento non fa cambiare il suo peso.</p>
+<p>Le dimensioni tornano: <span class="math inline">\((N_\ell \times 1)(1 \times N_{\ell-1})\)</span>, la forma di <span class="math inline">\(\mathbf{W}^{(\ell)}\)</span>. Se l’ingresso è nullo, <span class="math inline">\(a_k = 0\)</span>, il suo peso resta invariato.</p>
 </section>
 <section id="passo-2-lultimo-strato" class="slide level2 smaller">
-<h2>Passo 2: l’ultimo strato</h2>
+<h2>② Passo 2: l’ultimo strato</h2>
 <p>All’uscita <span class="math inline">\(E\)</span> dipende da <span class="math inline">\(z^{(L)}_j\)</span> solo attraverso <span class="math inline">\(a^{(L)}_j = \sigma(z^{(L)}_j)\)</span>:</p>
 <p><span class="math display">\[ \delta^{(L)}_j = \frac{\partial E}{\partial a^{(L)}_j}\,\sigma'\!\left(z^{(L)}_j\right)
 \qquad\Longrightarrow\qquad
@@ -423,15 +435,8 @@ Cristiano De Michele
 </div>
 </div>
 </section>
-<section id="il-problema-dellinversione" class="slide level2 smaller">
-<h2>Il problema dell’inversione</h2>
-<p>Abbiamo <span class="math inline">\(\boldsymbol{\delta}^{(L)}\)</span>. Ci serve <span class="math inline">\(\boldsymbol{\delta}^{(L-1)}\)</span>, poi <span class="math inline">\(\boldsymbol{\delta}^{(L-2)}\)</span>, fino al primo strato. Nel <em>forward pass</em> l’informazione ha attraversato <span class="math inline">\(\mathbf{W}\)</span> in avanti: <span class="math display">\[ \mathbf{z} = \mathbf{W} \cdot \mathbf{x} + \mathbf{b} \]</span></p>
-<p>Ora l’errore deve tornare <strong>indietro</strong>, attraversando la stessa matrice. Verrebbe da usare l’inversa <span class="math inline">\(\mathbf{W}^{-1}\)</span>.</p>
-<p>Ma l’inversa è costosa da calcolare, numericamente instabile, e non esiste se <span class="math inline">\(\mathbf{W}\)</span> non è quadrata — e <span class="math inline">\(\mathbf{W}\)</span> quasi mai lo è: <span class="math inline">\(784 \to 200\)</span> non si inverte.</p>
-<p>In realtà non serve invertire nulla: basta applicare la regola della catena.</p>
-</section>
 <section id="passo-3-la-regola-della-catena" class="slide level2 smaller">
-<h2>Passo 3: la regola della catena</h2>
+<h2>③ Passo 3: la regola della catena</h2>
 <p><span class="math inline">\(z^{(\ell)}_j\)</span> influenza <span class="math inline">\(E\)</span> attraverso <strong>tutte</strong> le pre-attivazioni dello strato successivo, <span class="math inline">\(z^{(\ell+1)}_k\)</span>. Regola della catena con una somma:</p>
 <p><span class="math display">\[ \delta^{(\ell)}_j = \sum_k \frac{\partial E}{\partial z^{(\ell+1)}_k}\,\frac{\partial z^{(\ell+1)}_k}{\partial z^{(\ell)}_j} = \sum_k \delta^{(\ell+1)}_k\,\frac{\partial z^{(\ell+1)}_k}{\partial z^{(\ell)}_j} . \]</span></p>
 <p>Da <span class="math inline">\(z^{(\ell+1)}_k = \sum_m w^{(\ell+1)}_{km}\,\sigma(z^{(\ell)}_m) + b^{(\ell+1)}_k\)</span>, derivando rispetto a <span class="math inline">\(z^{(\ell)}_j\)</span> sopravvive solo <span class="math inline">\(m = j\)</span>:</p>
@@ -440,29 +445,34 @@ Cristiano De Michele
 \delta^{(\ell)}_j = \sigma'\!\left(z^{(\ell)}_j\right)\sum_k w^{(\ell+1)}_{kj}\,\delta^{(\ell+1)}_k . \]</span></p>
 </section>
 <section id="passo-3-la-trasposta" class="slide level2 smaller">
-<h2>Passo 3: la trasposta</h2>
+<h2>③ Passo 3: la trasposta</h2>
 <p>Nella somma <span class="math inline">\(\sum_k w^{(\ell+1)}_{kj}\,\delta^{(\ell+1)}_k\)</span> l’indice sommato è il <strong>primo</strong> di <span class="math inline">\(w\)</span>, quello del neurone d’arrivo. Sommare sul primo indice è moltiplicare per la <strong>trasposta</strong>: <span class="math inline">\(\big(\mathbf{W}^{T}\boldsymbol{\delta}\big)_j = \sum_k w_{kj}\,\delta_k\)</span>. In forma vettoriale:</p>
 <p><span class="math display">\[ \boxed{\;\boldsymbol{\delta}^{(\ell)} = \left(\left(\mathbf{W}^{(\ell+1)}\right)^{T}\boldsymbol{\delta}^{(\ell+1)}\right) \odot \sigma'\!\left(\mathbf{z}^{(\ell)}\right)\;} \]</span></p>
-<p>Nessuna inversa: la trasposta riporta le colpe dei neuroni d’arrivo al neurone di partenza, con lo stesso peso che aveva portato il segnale in avanti.</p>
+<p>Per tornare indietro <strong>non serve invertire</strong> <span class="math inline">\(\mathbf{W}\)</span>, un’operazione costosa e impossibile se <span class="math inline">\(\mathbf{W}\)</span> non è quadrata (<span class="math inline">\(784 \to 200\)</span>): basta la trasposta, che costa quanto il prodotto in avanti e riporta i segnali d’errore dei neuroni d’arrivo al neurone di partenza, con gli stessi pesi che avevano portato il segnale in avanti. Su trasposta e inversa torneremo nel Lab 16 (<em>back query</em>).</p>
+</section>
+<section id="il-grafo-di-calcolo-riepilogo" class="slide level2 smaller">
+<h2>Il grafo di calcolo: riepilogo</h2>
+
+<img data-src="images/backprop.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>① gradiente di pesi e bias (passo 1); ② <span class="math inline">\(\partial E/\partial \mathbf{a}^{(L)}\)</span> dalla loss (passo 2); ③ <span class="math inline">\(\mathbf{W}^{(\ell)T}\boldsymbol{\delta}^{(\ell)}\)</span> verso lo strato prima (passo 3). La freccia che arriva da destra, <span class="math inline">\(\partial E/\partial \mathbf{a}^{(\ell)}\)</span>, è il ③ dello strato dopo; solo per <span class="math inline">\(\ell = L\)</span> viene direttamente da <span class="math inline">\(E\)</span>, ed è il ②.</p>
 </section>
 <section id="lalgoritmo-completo" class="slide level2 smaller">
 <h2>L’algoritmo completo</h2>
 <ol type="1">
 <li><strong>Forward</strong>: calcola e <strong>conserva</strong> <span class="math inline">\(\mathbf{z}^{(\ell)}\)</span> e <span class="math inline">\(\mathbf{a}^{(\ell)}\)</span>, per <span class="math inline">\(\ell = 1 \dots L\)</span>.</li>
 <li><strong>Ultimo strato</strong>: <span class="math inline">\(\;\boldsymbol{\delta}^{(L)} = \nabla_{\mathbf{a}}E \odot \sigma'(\mathbf{z}^{(L)})\)</span>.</li>
-<li><strong>Backward</strong>, per <span class="math inline">\(\ell = L, \dots, 1\)</span>: il gradiente dello strato, poi la colpa per quello prima:</li>
+<li><strong>Backward</strong>, per <span class="math inline">\(\ell = L, \dots, 1\)</span>: il gradiente dello strato, poi il segnale d’errore per quello prima:</li>
 </ol>
 <p><span class="math display">\[ \begin{aligned}
-\partial E/\partial\mathbf{W}^{(\ell)} &amp;= \boldsymbol{\delta}^{(\ell)}\left(\mathbf{a}^{(\ell-1)}\right)^T \\
+\partial E/\partial\mathbf{W}^{(\ell)} &amp;= \boldsymbol{\delta}^{(\ell)}\left(\mathbf{a}^{(\ell-1)}\right)^T, \qquad \partial E/\partial\mathbf{b}^{(\ell)} = \boldsymbol{\delta}^{(\ell)} \\
 \boldsymbol{\delta}^{(\ell-1)} &amp;= \big((\mathbf{W}^{(\ell)})^T\boldsymbol{\delta}^{(\ell)}\big)\odot\sigma'\!\left(\mathbf{z}^{(\ell-1)}\right) \qquad (\ell &gt; 1)
 \end{aligned} \]</span></p>
 <ol start="4" type="1">
-<li><strong>Aggiornamento</strong>: <span class="math inline">\(\;\mathbf{W}^{(\ell)} \leftarrow \mathbf{W}^{(\ell)} - \eta\,\partial E/\partial\mathbf{W}^{(\ell)}\)</span>, per ogni <span class="math inline">\(\ell\)</span>.</li>
+<li><strong>Aggiornamento</strong>: <span class="math inline">\(\;\mathbf{W}^{(\ell)} \leftarrow \mathbf{W}^{(\ell)} - \eta\,\partial E/\partial\mathbf{W}^{(\ell)}\)</span> (e così <span class="math inline">\(\mathbf{b}^{(\ell)}\)</span>), per ogni <span class="math inline">\(\ell\)</span>.</li>
 </ol>
 <p>Costo: <span class="math inline">\(\mathbf{W}^T\boldsymbol{\delta}\)</span> e <span class="math inline">\(\boldsymbol{\delta}\,\mathbf{a}^T\)</span> sono di ordine <span class="math inline">\(N_\ell N_{\ell-1}\)</span>, come il forward. Perturbando un peso alla volta servirebbe un forward <em>per ogni peso</em>.</p>
 </section>
-<section id="attenzione-al-libro" class="slide level2 smaller">
-<h2>Attenzione al libro</h2>
+<section id="la-differenza-con-il-libro-di-rashid" class="slide level2 smaller">
+<h2>La differenza con il libro di Rashid</h2>
 <p>Nel libro di Rashid il passo 3 è <strong>semplificato</strong>: per riportare l’errore dallo strato di uscita (2) a quello nascosto (1) usa l’errore grezzo <span class="math inline">\(\mathbf{e} = \mathbf{y} - \mathbf{a}^{(2)}\)</span>,</p>
 <p><span class="math display">\[ \begin{aligned}
 \text{libro:}\quad &amp; \left(\mathbf{W}^{(2)T}\,\mathbf{e}\right)\odot\sigma'\!\left(\mathbf{z}^{(1)}\right) \\[2pt]
@@ -521,7 +531,7 @@ Cristiano De Michele
 </tbody>
 </table>
 <p><span class="math inline">\(E = (0{,}6750 - 1)^2 = 0{,}1056\)</span>. Verifica: <span class="math inline">\(E(1{,}01) = 0{,}105321\)</span>, <span class="math inline">\(E(0{,}99) = 0{,}105882\)</span>, e <span class="math inline">\((0{,}105321 - 0{,}105882)/0{,}02 = -0{,}0280\)</span>: torna. È il <em>gradient check</em> che farete nel Lab 13.</p>
-<p><span class="math inline">\(\delta_1\)</span> è circa <strong>cinque volte</strong> più piccolo di <span class="math inline">\(\delta_2\)</span>: da uno strato all’altro la colpa si moltiplica per <span class="math inline">\(w_2\,\sigma'(z_1) \approx 0{,}2\)</span> (con dieci strati, dieci fattori così: quesito 2). I gradienti negativi dicono di <strong>aumentare</strong> i pesi, e infatti <span class="math inline">\(a_2 &lt; y\)</span>.</p>
+<p><span class="math inline">\(\delta_1\)</span> è circa <strong>cinque volte</strong> più piccolo di <span class="math inline">\(\delta_2\)</span>: da uno strato all’altro il segnale d’errore si moltiplica per <span class="math inline">\(w_2\,\sigma'(z_1) \approx 0{,}2\)</span> (con dieci strati, dieci fattori così: quesito 2). I gradienti negativi dicono di <strong>aumentare</strong> i pesi, e infatti <span class="math inline">\(a_2 &lt; y\)</span>.</p>
 </section>
 <section id="il-batching" class="slide level2 smaller">
 <h2>Il batching</h2>
@@ -542,11 +552,11 @@ Cristiano De Michele
 </div>
 <p>Le formule appena derivate elaborano un’immagine alla volta (un vettore colonna <span class="math inline">\(\mathbf{x}\)</span>): predizione, errore, aggiornamento dei pesi. È lo <em>stochastic gradient descent</em> (SGD).</p>
 <p>Ma elaborare <span class="math inline">\(60.000\)</span> immagini una per una lascia inutilizzata gran parte della potenza della CPU: ogni prodotto matrice-vettore è troppo piccolo per riempire le unità vettoriali.</p>
-<p>Possiamo mandare 64 immagini <strong>contemporaneamente</strong> alla rete?</p>
+<p>Si possono elaborare 64 immagini <strong>insieme</strong>?</p>
 </section>
 <section id="matrici-invece-di-vettori" class="slide level2 smaller">
 <h2>Matrici invece di vettori</h2>
-<p>Sì, ancora con l’algebra lineare: è il <strong>batching</strong>.</p>
+<p>Sì, con l’algebra lineare: è il <strong>batching</strong>.</p>
 <p>Invece di un vettore colonna <span class="math inline">\(\mathbf{x}\)</span> (784 pixel <span class="math inline">\(\times\)</span> 1 immagine) si passa una matrice <span class="math inline">\(\mathbf{X}\)</span> (784 pixel <span class="math inline">\(\times\)</span> 64 immagini), un’immagine per colonna.</p>
 <p>Le equazioni restano le stesse, <span class="math inline">\(\mathbf{Z} = \mathbf{W} \mathbf{X} + \mathbf{B}\)</span>, dove <span class="math inline">\(\mathbf{B}\)</span> ha in ogni colonna lo stesso <span class="math inline">\(\mathbf{b}\)</span>.</p>
 <p>Una libreria come <strong>Eigen</strong> elabora le 64 colonne con le istruzioni vettoriali (SIMD), riducendo molto il tempo per epoca.</p>
@@ -591,11 +601,11 @@ Cristiano De Michele
 <section id="quesiti-finali" class="slide level2 smaller">
 <h2>Quesiti finali</h2>
 <p><strong>1. Un passo troppo lungo.</strong> Loss <span class="math inline">\(E(x) = x^2\)</span>, partenza <span class="math inline">\(x_0 = 1\)</span>, learning rate <span class="math inline">\(\eta = 1\)</span>. Dove siete dopo un passo? E dopo due? Per quali <span class="math inline">\(\eta\)</span> il metodo converge, e qual è il valore che centra il minimo in <strong>un solo</strong> passo?</p>
-<p><strong>2. (aperta) Il tetto della sigmoide.</strong> La derivata della sigmoide è <span class="math inline">\(\sigma' = \sigma(1-\sigma)\)</span>. Qual è il suo valore massimo? La backpropagation moltiplica questo fattore una volta per strato: cosa arriva al primo strato di una rete di dieci? E allora come fanno ad addestrarsi le reti da cinquanta strati di cui leggete sui giornali?</p>
+<p><strong>2. (aperta) Il tetto della sigmoide.</strong> La derivata della sigmoide è <span class="math inline">\(\sigma' = \sigma(1-\sigma)\)</span>. Qual è il suo valore massimo? La backpropagation moltiplica questo fattore una volta per strato: cosa arriva al primo strato di una rete di dieci? E allora come si addestrano le reti con decine di strati usate oggi?</p>
 </section>
 <section id="quesiti-finali-le-risposte" class="slide level2 smaller">
 <h2>Quesiti finali: le risposte</h2>
-<p><strong>1.</strong> <span class="math inline">\(E'(x) = 2x\)</span>, quindi il passo è <span class="math inline">\(x \leftarrow x - \eta\,2x = (1 - 2\eta)\,x\)</span>. Con <span class="math inline">\(\eta = 1\)</span> il fattore vale <span class="math inline">\(-1\)</span>: <span class="math inline">\(x_1 = -1\)</span>, <span class="math inline">\(x_2 = +1\)</span>, e si rimbalza fra i due per sempre senza che la loss cali di un millesimo. Si converge per <span class="math inline">\(|1 - 2\eta| &lt; 1\)</span>, cioè <span class="math inline">\(0 &lt; \eta &lt; 1\)</span>; e <span class="math inline">\(\eta = 0{,}5\)</span> annulla il fattore e centra il minimo al primo passo. Un learning rate grande non è “la stessa discesa, più veloce”: è un metodo diverso, che può non convergere affatto.</p>
+<p><strong>1.</strong> <span class="math inline">\(E'(x) = 2x\)</span>, quindi il passo è <span class="math inline">\(x \leftarrow x - \eta\,2x = (1 - 2\eta)\,x\)</span>. Con <span class="math inline">\(\eta = 1\)</span> il fattore vale <span class="math inline">\(-1\)</span>: <span class="math inline">\(x_1 = -1\)</span>, <span class="math inline">\(x_2 = +1\)</span>, e così via: <span class="math inline">\(x\)</span> oscilla fra i due valori e la loss non diminuisce. Si converge per <span class="math inline">\(|1 - 2\eta| &lt; 1\)</span>, cioè <span class="math inline">\(0 &lt; \eta &lt; 1\)</span>; e <span class="math inline">\(\eta = 0{,}5\)</span> annulla il fattore e centra il minimo al primo passo. Un learning rate grande non è “la stessa discesa, più veloce”: è un metodo diverso, che può non convergere affatto.</p>
 <p><strong>2.</strong> Traccia: <span class="math inline">\(\sigma(1-\sigma)\)</span> è massima dove <span class="math inline">\(\sigma = 1/2\)</span> e vale <span class="math inline">\(0{,}25\)</span>. Dieci strati la moltiplicano dieci volte: <span class="math inline">\(0{,}25^{10} \approx
 10^{-6}\)</span>, e siamo nel caso <strong>migliore</strong>. Il primo strato riceve un gradiente un milione di volte più piccolo dell’ultimo e di fatto non impara: è il <em>vanishing gradient</em>, già incontrato nella Lezione 02. Le reti profonde di oggi lo aggirano cambiando i tre ingredienti che qui diamo per scontati: la funzione di attivazione (ReLU, Lezione 02), l’inizializzazione dei pesi (He e Xavier, Laboratorio 08) e il percorso che l’errore fa per tornare indietro.</p>
 
