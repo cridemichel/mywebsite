@@ -374,7 +374,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Laboratorio 02</h1>
-  <p class="subtitle">Setup dell’Ambiente e Primo Programma C++</p>
+  <p class="subtitle">Primo Programma C++: Discesa del Gradiente e Backpropagation</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -496,55 +496,85 @@ dopo la ReLU:
 immagine 28x28, canali: 1</code></pre>
 <p>I vostri numeri possono essere diversi da questi, perché <code>std::rand()</code> cambia da un sistema all’altro, ma a ogni esecuzione saranno gli stessi finché non date un seme con <code>std::srand</code>. <strong>La forma invece no</strong>: <code>z</code> deve essere <span class="math inline">\(3 \times 1\)</span>, e dopo la ReLU i negativi devono essere esattamente <code>0</code> e i positivi invariati. Se le dimensioni non tornano, avete invertito <code>W</code> e <code>x</code>.</p>
 </section>
-<section id="obiettivo-di-oggi" class="slide level2">
-<h2>Obiettivo di Oggi</h2>
-<p>Iniziare la costruzione del framework <strong><code>BASIC_NEURAL++</code></strong> partendo dalle basi assolute. Non scriveremo ancora codice neurale, ma prepareremo il terreno.</p>
-<p><strong>L’ambiente di lavoro è fondamentale:</strong> un ingegnere del software deve conoscere e controllare perfettamente i propri strumenti (compilatore, IDE, build system).</p>
-</section>
-<section id="task-1-il-compilatore" class="slide level2">
-<h2>Task 1: Il Compilatore</h2>
-<p>Il compilatore l’avete già installato nel Laboratorio 01: qui si tratta solo di verificare che risponda.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">--version</span>      <span class="co"># Linux e WSL</span></span>
-<span id="cb2-2"><a aria-label="2"></a><span class="fu">clang</span>++ <span class="at">--version</span>  <span class="co"># macOS (lì anche g++ è il clang di Apple)</span></span>
-<span id="cb2-3"><a aria-label="3"></a><span class="fu">cmake</span> <span class="at">--version</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Se uno di questi comandi non risponde, tornate alle slide del Laboratorio 01: lì ci sono le istruzioni per Linux, macOS e Windows (WSL 2).</p>
-</section>
-<section id="task-2-cmake-e-ide" class="slide level2 scrollable">
-<h2>Task 2: CMake e IDE</h2>
-<p>Useremo <strong>CMake</strong> per gestire la compilazione multi-file del nostro framework, e un IDE per scrivere il codice.</p>
+<section id="obiettivo-di-oggi" class="slide level2 smaller scrollable">
+<h2>Obiettivo di oggi</h2>
+<p>Il progetto del Laboratorio 01 compila: oggi lo usiamo per il primo programma C++ vero, con quello che avete visto nelle Lezioni 03 e 04.</p>
 <ol type="1">
-<li>Apri il tuo IDE preferito (VS Code, CLion, ecc.)</li>
-<li>Apri la cartella del progetto del Laboratorio 01, <code>basic_neural_plusplus</code> (quella con <code>CMakeLists.txt</code> e <code>main.cpp</code>): da qui in avanti è il progetto del framework.</li>
+<li><strong>Ripartire dal progetto</strong> del Laboratorio 01 (cinque minuti).</li>
+<li><strong>Tipi base e divisione intera</strong>: il primo errore silenzioso del calcolo scientifico.</li>
+<li><strong>Il quesito 1 della Lezione 03</strong> al calcolatore: la discesa del gradiente su <span class="math inline">\(E(x) = x^2\)</span>.</li>
+<li><strong>L’esercizio in classe della Lezione 03</strong> in C++: forward, backward e gradient check.</li>
+<li><strong>Addestrare</strong> la catena di due neuroni con un ciclo <code>for</code>.</li>
 </ol>
+<p>Bastano <code>double</code>, <code>std::exp</code>, <code>for</code>, <code>if</code> e <code>std::cout</code>. Le funzioni arrivano con la Lezione 05: oggi tutto sta nel <code>main()</code>.</p>
 </section>
-<section id="task-3-hello-world-con-cmake" class="slide level2 smaller scrollable">
-<h2>Task 3: Hello World con CMake</h2>
+<section id="task-1-ripartire-dal-laboratorio-01" class="slide level2 smaller scrollable">
+<h2>Task 1: ripartire dal Laboratorio 01</h2>
 <ol type="1">
-<li><strong>Riusate il <code>CMakeLists.txt</code> del Laboratorio 01</strong>, quello con Eigen e OpenCV. Non serve rifarlo: da qui in avanti quel file cresce, non si riscrive.</li>
-<li>Sostituite il <code>main.cpp</code> con uno che stampi a schermo “Inizio progetto BASIC_NEURAL++!”.</li>
-<li>Compilate ed eseguite con <code>cmake -B build &amp;&amp; cmake --build build &amp;&amp; ./build/basic_neural</code> (o col pulsante Build del vostro IDE).</li>
+<li>Verificate che compilatore e CMake rispondano: <code>g++ --version</code> (Linux e WSL) o <code>clang++ --version</code> (macOS), e <code>cmake --version</code>. Se uno non risponde, le istruzioni sono nel Laboratorio 01.</li>
+<li>Aprite nel vostro IDE la cartella del Laboratorio 01, <code>basic_neural_plusplus</code>: da qui in avanti è il progetto del framework. Il suo <code>CMakeLists.txt</code> cresce, non si riscrive.</li>
+<li>Sostituite il <code>main.cpp</code> con uno che stampi “Inizio progetto BASIC_NEURAL++!” e compilate da zero:</li>
 </ol>
-<p><em>(Per un “hello world” Eigen e OpenCV non servirebbero, ma tenere un solo file di build evita di ritrovarsi con due progetti diversi.)</em></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a aria-label="1"></a><span class="fu">rm</span> <span class="at">-rf</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="kw">&amp;&amp;</span> <span class="ex">./build/basic_neural</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>oppure con i pulsanti di CMake Tools in VS Code. Eigen e OpenCV oggi non servono, ma un solo file di build evita di ritrovarsi con due progetti diversi.</p>
 </section>
-<section id="task-4-esplorazione-tipi-base" class="slide level2">
-<h2>Task 4: Esplorazione Tipi Base</h2>
-<p>Nel tuo <code>main.cpp</code>, prova a dichiarare, stampare e combinare alcune variabili fondamentali per il Machine Learning:</p>
+<section id="task-2-tipi-base-e-divisione-intera" class="slide level2">
+<h2>Task 2: tipi base e divisione intera</h2>
+<p>Nel <code>main.cpp</code> dichiarate, stampate e combinate:</p>
 <ul>
-<li>Un <code>int</code> (es. numero di epoche)</li>
-<li>Un <code>double</code> (es. learning rate o peso)</li>
-<li>Prova a moltiplicarli e stamparli. Cosa succede se dividi un <code>int</code> per un altro <code>int</code> (es. <code>5 / 2</code>)? E se ne casti uno a <code>double</code>?</li>
+<li>un <code>int</code> (per esempio il numero di epoche) e un <code>double</code> (il learning rate);</li>
+<li><code>5 / 2</code> fra due <code>int</code>: cosa stampa, e <strong>perché</strong>? (Lezione 04)</li>
+<li>la stessa divisione con <code>static_cast&lt;double&gt;(a) / b</code>.</li>
 </ul>
 </section>
+<section id="task-3-il-quesito-1-al-calcolatore" class="slide level2 smaller scrollable">
+<h2>Task 3: il quesito 1 al calcolatore</h2>
+<p>Il quesito 1 della Lezione 03: discesa del gradiente su <span class="math inline">\(E(x) = x^2\)</span> partendo da <span class="math inline">\(x_0 = 1\)</span>, cioè <span class="math inline">\(x \leftarrow x - \eta\,E'(x)\)</span> con <span class="math inline">\(E'(x) = 2x\)</span>.</p>
+<ol type="1">
+<li>Scrivete un ciclo <code>for</code> che faccia cinque passi e stampi <span class="math inline">\(x\)</span> dopo ognuno.</li>
+<li>Mettetelo dentro un secondo ciclo che provi <span class="math inline">\(\eta = 0{,}25,\ 0{,}5,\ 0{,}75,\ 1,\ 1{,}25\)</span>:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> k <span class="op">&lt;=</span> <span class="dv">5</span><span class="op">;</span> <span class="op">++</span>k<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a aria-label="2"></a>    <span class="dt">double</span> eta <span class="op">=</span> <span class="fl">0.25</span> <span class="op">*</span> k<span class="op">;</span></span>
+<span id="cb3-3"><a aria-label="3"></a>    <span class="co">// ... i cinque passi</span></span>
+<span id="cb3-4"><a aria-label="4"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li>Per ogni <span class="math inline">\(\eta\)</span>: la discesa converge, centra il minimo, oscilla o diverge? Confrontate con la risposta del quesito.</li>
+</ol>
+<p>Il contatore è un <code>int</code> e <span class="math inline">\(\eta\)</span> si ricava da lui: un ciclo <code>for (double eta = 0.1; ...; eta += 0.1)</code> accumulerebbe errori di arrotondamento, perché <span class="math inline">\(0{,}1\)</span> non è rappresentabile esattamente in binario.</p>
+</section>
+<section id="task-4-lesercizio-della-lezione-03" class="slide level2 smaller scrollable">
+<h2>Task 4: l’esercizio della Lezione 03</h2>
+<p>La catena di due neuroni dell’esercizio in classe, con <span class="math inline">\(x = 1\)</span>, <span class="math inline">\(w_1 = w_2 = 1\)</span>, <span class="math inline">\(y = 1\)</span>:</p>
+<ol type="1">
+<li><strong>Forward</strong>: una variabile <code>double</code> per ciascuna di <span class="math inline">\(z_1, a_1, z_2, a_2\)</span> ed <span class="math inline">\(E\)</span>. La sigmoide è <code>1.0 / (1.0 + std::exp(-z))</code>, con <code>#include &lt;cmath&gt;</code>.</li>
+<li><strong>Backward</strong>: <span class="math inline">\(\sigma'(z) = a\,(1-a)\)</span>, poi <span class="math inline">\(\delta_2\)</span>, <span class="math inline">\(\delta_1\)</span>, <span class="math inline">\(\partial E/\partial w_2 = \delta_2\, a_1\)</span> e <span class="math inline">\(\partial E/\partial w_1 = \delta_1\, x\)</span>.</li>
+<li>Stampate una tabella (una riga per grandezza, una colonna per strato, colonne separate da <code>"\t"</code>) e confrontatela con la soluzione nella Lezione 03.</li>
+<li><strong>Gradient check</strong>: ricalcolate <span class="math inline">\(E\)</span> con <span class="math inline">\(w_1 + h\)</span> e con <span class="math inline">\(w_1 - h\)</span>, <span class="math inline">\(h = 0{,}01\)</span>, e confrontate <span class="math inline">\(\big[E(w_1+h) - E(w_1-h)\big]/2h\)</span> con <span class="math inline">\(\partial E/\partial w_1\)</span>.</li>
+</ol>
+<p>Il forward va ricopiato due volte: è scomodo, ed è voluto. Nel Laboratorio 03 lo risolveremo con una funzione, <code>double sigmoid(double z)</code>.</p>
+</section>
+<section id="task-5-addestrare-la-catena" class="slide level2 smaller scrollable">
+<h2>Task 5: addestrare la catena</h2>
+<p>Ora i pesi si aggiornano. Un ciclo <code>for</code> di 200 passi con <span class="math inline">\(\eta = 1\)</span> che a ogni passo fa forward e backward e poi</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a>w1 <span class="op">=</span> w1 <span class="op">-</span> eta <span class="op">*</span> dE_dw1<span class="op">;</span></span>
+<span id="cb4-2"><a aria-label="2"></a>w2 <span class="op">=</span> w2 <span class="op">-</span> eta <span class="op">*</span> dE_dw2<span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Con un <code>if (t % 20 == 0)</code> stampate <span class="math inline">\(t\)</span>, <span class="math inline">\(E\)</span>, <span class="math inline">\(w_1\)</span> e <span class="math inline">\(w_2\)</span> ogni 20 passi.</p>
+<ol type="1">
+<li><span class="math inline">\(E\)</span> scende? Di quanto, in 200 passi?</li>
+<li>Guardate i pesi: si fermano?</li>
+<li>Rifate tutto con <span class="math inline">\(y = 0{,}8\)</span>. Cosa cambia, e perché? Un suggerimento: per quale <span class="math inline">\(z\)</span> la sigmoide vale 1?</li>
+</ol>
+</section>
 <section id="task-da-completare" class="slide level2 smaller scrollable">
-<h2>Task da Completare</h2>
+<h2>Task da completare</h2>
 <ul class="task-list">
-<li><label><input type="checkbox"><code>g++ --version</code> (o <code>clang++</code>) e <code>cmake --version</code> rispondono</label></li>
-<li><label><input type="checkbox">Progetto ripreso dal Lab 01, con il suo <code>CMakeLists.txt</code></label></li>
-<li><label><input type="checkbox"><code>main.cpp</code> che stampa “Inizio progetto BASIC_NEURAL++!”</label></li>
-<li><label><input type="checkbox">Un <code>int</code> (epoche) e un <code>double</code> (learning rate) dichiarati e stampati</label></li>
-<li><label><input type="checkbox">Provato <code>5 / 2</code> fra due <code>int</code>: capito <strong>perché</strong> stampa <code>2</code></label></li>
-<li><label><input type="checkbox">Rifatto con <code>static_cast&lt;double&gt;(a) / b</code>: ora stampa <code>2.5</code></label></li>
-<li><label><input type="checkbox">Il progetto compila da zero dopo aver cancellato <code>build/</code></label></li>
+<li><label><input type="checkbox">Il progetto del Lab 01 compila da zero, dopo aver cancellato <code>build/</code>, e stampa “Inizio progetto BASIC_NEURAL++!”</label></li>
+<li><label><input type="checkbox"><code>5 / 2</code> fra due <code>int</code>: capito <strong>perché</strong> stampa <code>2</code>; con <code>static_cast&lt;double&gt;</code> stampa <code>2.5</code></label></li>
+<li><label><input type="checkbox">Discesa su <span class="math inline">\(x^2\)</span>: riconosciuto il comportamento per ciascuno dei cinque <span class="math inline">\(\eta\)</span></label></li>
+<li><label><input type="checkbox">Tabella del forward e del backward uguale a quella della Lezione 03</label></li>
+<li><label><input type="checkbox">Gradient check: le due stime di <span class="math inline">\(\partial E/\partial w_1\)</span> coincidono almeno nelle prime quattro cifre significative</label></li>
+<li><label><input type="checkbox">Addestramento con <span class="math inline">\(y = 1\)</span> e con <span class="math inline">\(y = 0{,}8\)</span>: capito perché nel primo caso i pesi non si fermano</label></li>
 </ul>
 <p><strong>Buon lavoro! La soluzione di riferimento verrà discussa all’inizio del prossimo laboratorio.</strong></p>
 
