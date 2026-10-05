@@ -366,7 +366,7 @@ Cristiano De Michele
 <img data-src="images/gradient_descent.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"></section>
 <section id="il-gradiente-negli-strati-interni" class="slide level2 smaller">
 <h2>Il gradiente negli strati interni</h2>
-<p>Calcolare <span class="math inline">\(\partial E/\partial \mathbf{W}^{(L)}\)</span> e <span class="math inline">\(\partial E/\partial \mathbf{b}^{(L)}\)</span> per l’<strong>ultimo</strong> strato è facile: fra quei parametri ed <span class="math inline">\(E\)</span> c’è un solo strato. Ma un parametro del <strong>primo</strong> strato, per esempio il peso <span class="math inline">\(w^{(1)}_{57,\,432}\)</span> (quello con cui il neurone nascosto 57 legge il pixel 432) o il bias <span class="math inline">\(b^{(1)}_{57}\)</span>, influenza <span class="math inline">\(E\)</span> solo attraverso <strong>tutti</strong> gli strati successivi. La rete è una funzione composta:</p>
+<p>Calcolare <span class="math inline">\(\partial E/\partial \mathbf{W}^{(L)}\)</span> e <span class="math inline">\(\partial E/\partial \mathbf{b}^{(L)}\)</span> per l’<strong>ultimo</strong> strato è facile: fra quei parametri ed <span class="math inline">\(E\)</span> c’è un solo strato. Ma da un parametro del <strong>primo</strong> strato, per esempio il peso <span class="math inline">\(w^{(1)}_{57,\,432}\)</span> (quello con cui il neurone nascosto 57 legge il pixel 432) o il bias <span class="math inline">\(b^{(1)}_{57}\)</span>, <span class="math inline">\(E\)</span> dipende solo attraverso <strong>tutti</strong> gli strati successivi. La rete è una funzione composta:</p>
 <p><span class="math display">\[ E = \Big\lVert\, \mathbf{f}_L\big(\cdots \mathbf{f}_2(\mathbf{f}_1(\mathbf{x}))\cdots\big) - \mathbf{y} \,\Big\rVert^2, \qquad \mathbf{f}_\ell(\mathbf{a}) = \sigma\!\left(\mathbf{W}^{(\ell)}\mathbf{a} + \mathbf{b}^{(\ell)}\right) , \]</span></p>
 <p>e <span class="math inline">\(\mathbf{W}^{(1)}\)</span> e <span class="math inline">\(\mathbf{b}^{(1)}\)</span> stanno nella funzione più interna. Le loro derivate si calcolano con la <strong>regola della catena</strong> (la derivata della funzione composta), attraversando tutti gli strati: uno in una rete a due strati, cento in una rete di cento.</p>
 <div title="Il piano">
@@ -414,22 +414,33 @@ Cristiano De Michele
 <p>Il terzo vettore di ogni strato è la definizione su cui poggia tutto:</p>
 <p><span class="math display">\[ \delta^{(\ell)}_j \;\equiv\; \frac{\partial E}{\partial z^{(\ell)}_j} \]</span></p>
 <p>cioè <em>quanto cambia l’errore se sposto di poco la pre-attivazione del neurone <span class="math inline">\(j\)</span></em>: il <strong>segnale d’errore</strong> del neurone. La backpropagation è un modo efficiente di calcolare tutti i <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span>, in tre passi:</p>
-<ol type="1">
-<li>il gradiente di pesi e bias si scrive con i <span class="math inline">\(\boldsymbol{\delta}\)</span>;</li>
-<li>all’ultimo strato <span class="math inline">\(\boldsymbol{\delta}^{(L)}\)</span> si calcola direttamente dalla loss;</li>
-<li>ogni <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span> si ottiene da <span class="math inline">\(\boldsymbol{\delta}^{(\ell+1)}\)</span>, all’indietro.</li>
-</ol>
+<p><span class="passo">1</span> il gradiente di pesi e bias si scrive con i <span class="math inline">\(\boldsymbol{\delta}\)</span>;<br>
+<span class="passo">2</span> all’ultimo strato <span class="math inline">\(\boldsymbol{\delta}^{(L)}\)</span> si calcola direttamente dalla loss;<br>
+<span class="passo">3</span> ogni <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span> si ottiene da <span class="math inline">\(\boldsymbol{\delta}^{(\ell+1)}\)</span>, all’indietro.</p>
 </section>
 <section id="passo-1-i-gradienti" class="slide level2 smaller">
-<h2>① Passo 1: i gradienti</h2>
-<p>Il peso <span class="math inline">\(w^{(\ell)}_{jk}\)</span> influenza <span class="math inline">\(E\)</span> <strong>solo</strong> attraverso <span class="math inline">\(z^{(\ell)}_j\)</span>: è l’unica pre-attivazione in cui compare. Regola della catena:</p>
+<h2>Passo <span class="passo">1</span>: i gradienti</h2>
+<div class="columns">
+<div class="column" style="width:46%;">
+<p><span class="math inline">\(E\)</span> dipende dal peso <span class="math inline">\(w^{(\ell)}_{jk}\)</span> <strong>solo</strong> attraverso <span class="math inline">\(z^{(\ell)}_j\)</span>: è l’unica pre-attivazione in cui compare. Regola della catena:</p>
 <p><span class="math display">\[ \frac{\partial E}{\partial w^{(\ell)}_{jk}} = \frac{\partial E}{\partial z^{(\ell)}_j}\,\frac{\partial z^{(\ell)}_j}{\partial w^{(\ell)}_{jk}} = \delta^{(\ell)}_j\, a^{(\ell-1)}_k , \]</span></p>
-<p>perché nella somma <span class="math inline">\(z^{(\ell)}_j = \sum_k w^{(\ell)}_{jk} a^{(\ell-1)}_k\)</span> il peso <span class="math inline">\(w_{jk}\)</span> moltiplica solo <span class="math inline">\(a_k\)</span>. In forma matriciale è un <strong>prodotto colonna per riga</strong>:</p>
+</div><div class="column" style="width:54%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/passo1_freccia.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+<p>perché in <span class="math inline">\(z^{(\ell)}_j = \sum_k w^{(\ell)}_{jk} a^{(\ell-1)}_k + b^{(\ell)}_j\)</span> il peso <span class="math inline">\(w_{jk}\)</span> moltiplica solo <span class="math inline">\(a_k\)</span>. Nella figura: il gradiente di un peso è il segnale che entra nella freccia per il segnale d’errore che arriva alla punta. Il bias è un peso su un ingresso che vale sempre 1, e il suo gradiente è <span class="math inline">\(\delta^{(\ell)}_j\)</span>.</p>
+</section>
+<section id="passo-1-la-forma-matriciale" class="slide level2 smaller">
+<h2>Passo <span class="passo">1</span>: la forma matriciale</h2>
+<p>Per tutti i pesi dello strato insieme, la formula per componenti è un <strong>prodotto colonna per riga</strong>:</p>
 <p><span class="math display">\[ \frac{\partial E}{\partial \mathbf{W}^{(\ell)}} = \boldsymbol{\delta}^{(\ell)} \left(\mathbf{a}^{(\ell-1)}\right)^{T}, \qquad \frac{\partial E}{\partial \mathbf{b}^{(\ell)}} = \boldsymbol{\delta}^{(\ell)} . \]</span></p>
 <p>Le dimensioni tornano: <span class="math inline">\((N_\ell \times 1)(1 \times N_{\ell-1})\)</span>, la forma di <span class="math inline">\(\mathbf{W}^{(\ell)}\)</span>. Se l’ingresso è nullo, <span class="math inline">\(a_k = 0\)</span>, il suo peso resta invariato.</p>
 </section>
 <section id="passo-2-lultimo-strato" class="slide level2 smaller">
-<h2>② Passo 2: l’ultimo strato</h2>
+<h2>Passo <span class="passo">2</span>: l’ultimo strato</h2>
 <p>All’uscita <span class="math inline">\(E\)</span> dipende da <span class="math inline">\(z^{(L)}_j\)</span> solo attraverso <span class="math inline">\(a^{(L)}_j = \sigma(z^{(L)}_j)\)</span>:</p>
 <p><span class="math display">\[ \delta^{(L)}_j = \frac{\partial E}{\partial a^{(L)}_j}\,\sigma'\!\left(z^{(L)}_j\right)
 \qquad\Longrightarrow\qquad
@@ -451,24 +462,38 @@ Cristiano De Michele
 </div>
 </section>
 <section id="passo-3-la-regola-della-catena" class="slide level2 smaller">
-<h2>③ Passo 3: la regola della catena</h2>
-<p>La pre-attivazione <span class="math inline">\(z^{(\ell)}_j\)</span> del neurone <span class="math inline">\(j\)</span> dello strato <span class="math inline">\(\ell\)</span> influenza <span class="math inline">\(E\)</span> solo attraverso lo strato successivo: l’uscita del neurone <span class="math inline">\(j\)</span> entra nelle pre-attivazioni <span class="math inline">\(z^{(\ell+1)}_k\)</span> di <strong>tutti</strong> i neuroni dello strato <span class="math inline">\(\ell+1\)</span> (<span class="math inline">\(k = 1, \dots, N_{\ell+1}\)</span>). Regola della catena con una somma su <span class="math inline">\(k\)</span>:</p>
+<h2>Passo <span class="passo">3</span>: la regola della catena</h2>
+<div class="columns">
+<div class="column" style="width:46%;">
+<p><span class="math inline">\(E\)</span> dipende dalla pre-attivazione <span class="math inline">\(z^{(\ell)}_j\)</span> del neurone <span class="math inline">\(j\)</span> dello strato <span class="math inline">\(\ell\)</span> solo attraverso lo strato successivo: l’uscita di <span class="math inline">\(j\)</span> entra nelle pre-attivazioni <span class="math inline">\(z^{(\ell+1)}_k\)</span> di <strong>tutti</strong> i neuroni dello strato <span class="math inline">\(\ell+1\)</span>, <span class="math inline">\(k = 1, \dots, N_{\ell+1}\)</span> (nella figura fino a <span class="math inline">\(N\)</span>).</p>
+</div><div class="column" style="width:54%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/ventaglio_passo3.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+<p>Regola della catena con una somma su <span class="math inline">\(k\)</span>, un termine per ogni cammino:</p>
 <p><span class="math display">\[ \delta^{(\ell)}_j = \sum_k \frac{\partial E}{\partial z^{(\ell+1)}_k}\,\frac{\partial z^{(\ell+1)}_k}{\partial z^{(\ell)}_j} = \sum_k \delta^{(\ell+1)}_k\,\frac{\partial z^{(\ell+1)}_k}{\partial z^{(\ell)}_j} . \]</span></p>
-<p>Da <span class="math inline">\(z^{(\ell+1)}_k = \sum_m w^{(\ell+1)}_{km}\,\sigma(z^{(\ell)}_m) + b^{(\ell+1)}_k\)</span>, derivando rispetto a <span class="math inline">\(z^{(\ell)}_j\)</span> sopravvive solo <span class="math inline">\(m = j\)</span>:</p>
+</section>
+<section id="passo-3-la-ricorsione" class="slide level2 smaller">
+<h2>Passo <span class="passo">3</span>: la ricorsione</h2>
+<p>Nella somma resta da calcolare <span class="math inline">\(\partial z^{(\ell+1)}_k / \partial z^{(\ell)}_j\)</span>, il fattore che nella figura sta sulla freccia da <span class="math inline">\(j\)</span> a <span class="math inline">\(k\)</span>. Da <span class="math inline">\(z^{(\ell+1)}_k = \sum_m w^{(\ell+1)}_{km}\,\sigma(z^{(\ell)}_m) + b^{(\ell+1)}_k\)</span>, derivando rispetto a <span class="math inline">\(z^{(\ell)}_j\)</span> sopravvive solo <span class="math inline">\(m = j\)</span>:</p>
 <p><span class="math display">\[ \frac{\partial z^{(\ell+1)}_k}{\partial z^{(\ell)}_j} = w^{(\ell+1)}_{kj}\,\sigma'\!\left(z^{(\ell)}_j\right)
 \qquad\Longrightarrow\qquad
 \delta^{(\ell)}_j = \sigma'\!\left(z^{(\ell)}_j\right)\sum_k w^{(\ell+1)}_{kj}\,\delta^{(\ell+1)}_k . \]</span></p>
+<p>È la figura letta da destra a sinistra: le frecce rosse portano a <span class="math inline">\(j\)</span> i <span class="math inline">\(\delta_k\)</span> di tutti i neuroni dello strato dopo, ciascuno moltiplicato per il peso <span class="math inline">\(w_{kj}\)</span> della sua freccia; il fattore <span class="math inline">\(\sigma'(z^{(\ell)}_j)\)</span> lo aggiunge il neurone <span class="math inline">\(j\)</span>.</p>
 </section>
 <section id="passo-3-la-trasposta" class="slide level2 smaller">
-<h2>③ Passo 3: la trasposta</h2>
+<h2>Passo <span class="passo">3</span>: la trasposta</h2>
 <p>Nella somma <span class="math inline">\(\sum_k w^{(\ell+1)}_{kj}\,\delta^{(\ell+1)}_k\)</span> l’indice sommato è il <strong>primo</strong> di <span class="math inline">\(w\)</span>, quello del neurone d’arrivo. Sommare sul primo indice è moltiplicare per la <strong>trasposta</strong>: <span class="math inline">\(\big(\mathbf{W}^{T}\boldsymbol{\delta}\big)_j = \sum_k w_{kj}\,\delta_k\)</span>. In forma vettoriale:</p>
 <p><span class="math display">\[ \boxed{\;\boldsymbol{\delta}^{(\ell)} = \left(\left(\mathbf{W}^{(\ell+1)}\right)^{T}\boldsymbol{\delta}^{(\ell+1)}\right) \odot \sigma'\!\left(\mathbf{z}^{(\ell)}\right)\;} \]</span></p>
-<p>La trasposta non approssima nessuna inversa: è il risultato <strong>esatto</strong> della regola della catena, costa quanto il prodotto in avanti e riporta i segnali d’errore dei neuroni d’arrivo al neurone di partenza, con gli stessi pesi che avevano portato il segnale in avanti. Una <span class="math inline">\(\mathbf{W}\)</span> non quadrata (<span class="math inline">\(784 \to 200\)</span>) non ha inversa ma ha una <strong>pseudo-inversa</strong>: nel Lab 16 (<em>back query</em>) vedremo che, a meno di un fattore, questa si riduce approssimativamente alla trasposta, per una ragione diversa da quella di qui.</p>
+<p>La trasposta è il risultato <strong>esatto</strong> della regola della catena, per qualunque <span class="math inline">\(\mathbf{W}\)</span>: costa quanto il prodotto in avanti e riporta i segnali d’errore dei neuroni d’arrivo al neurone di partenza, con gli stessi pesi dell’andata. Non è un’inversa approssimata: una <span class="math inline">\(\mathbf{W}\)</span> non quadrata (<span class="math inline">\(784 \to 200\)</span>) ha solo la <strong>pseudo-inversa</strong> <span class="math inline">\(\mathbf{W}^{+} = \mathbf{W}^T(\mathbf{W}\mathbf{W}^T)^{-1}\)</span>, e nel Lab 16 (<em>back query</em>) vedremo che si riduce alla trasposta, a meno di un fattore, solo se <span class="math inline">\(\mathbf{W}\mathbf{W}^T \approx c\,\mathbf{I}\)</span>: lì è un’approssimazione che dipende dai pesi.</p>
 </section>
 <section id="il-grafo-di-calcolo-riepilogo" class="slide level2 smaller">
 <h2>Il grafo di calcolo: riepilogo</h2>
 
-<img data-src="images/backprop.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>① gradiente di pesi e bias (passo 1); ③ <span class="math inline">\(\mathbf{W}^{(\ell)T}\boldsymbol{\delta}^{(\ell)}\)</span> verso lo strato prima (passo 3). La formula di <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span> vale per ogni strato, e il suo primo fattore è la freccia che arriva da destra: per <span class="math inline">\(\ell = L\)</span> è <span class="math inline">\(\nabla_{\mathbf{a}}E\)</span>, dalla loss (②), e si ritrova il passo 2; per <span class="math inline">\(\ell &lt; L\)</span> è il ③ dello strato dopo, <span class="math inline">\(\mathbf{W}^{(\ell+1)T}\boldsymbol{\delta}^{(\ell+1)}\)</span>, e si ritrova il passo 3.</p>
+<img data-src="images/backprop.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p><span class="passo">1</span> gradiente di pesi e bias; <span class="passo">3</span> <span class="math inline">\(\mathbf{W}^{(\ell)T}\boldsymbol{\delta}^{(\ell)}\)</span> verso lo strato prima. La formula di <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span> vale per ogni strato, e il suo primo fattore è la freccia che arriva da destra: per <span class="math inline">\(\ell = L\)</span> è <span class="math inline">\(\nabla_{\mathbf{a}}E\)</span>, dalla loss: è il passo <span class="passo">2</span>; per <span class="math inline">\(\ell &lt; L\)</span> è <span class="math inline">\(\mathbf{W}^{(\ell+1)T}\boldsymbol{\delta}^{(\ell+1)}\)</span>, il passo <span class="passo">3</span> dello strato dopo.</p>
 <div title="In sintesi">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -479,7 +504,7 @@ Cristiano De Michele
 <p><strong>In sintesi</strong></p>
 </div>
 <div class="callout-content">
-<p>Per aggiornare la rete servono i gradienti. Ciascuno si scrive con il <span class="math inline">\(\boldsymbol{\delta}\)</span> del proprio strato (①). I <span class="math inline">\(\boldsymbol{\delta}\)</span> si calcolano a ritroso, ciascuno da quello dello strato successivo (③), partendo dall’ultimo, che si calcola direttamente dalla loss (②).</p>
+<p>Per aggiornare la rete servono i gradienti. Ciascuno si scrive con il <span class="math inline">\(\boldsymbol{\delta}\)</span> del proprio strato (<span class="passo">1</span>). I <span class="math inline">\(\boldsymbol{\delta}\)</span> si calcolano a ritroso, ciascuno da quello dello strato successivo (<span class="passo">3</span>), partendo dall’ultimo, che si calcola direttamente dalla loss (<span class="passo">2</span>).</p>
 </div>
 </div>
 </div>

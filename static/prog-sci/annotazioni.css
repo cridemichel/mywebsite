@@ -78,3 +78,21 @@
 .reveal > .controls {
   opacity: 0.6;
 }
+
+/* Numeri dei passi della backpropagation (lezione-03, 5/10/2026): cerchio
+   rosso pieno con il numero in bianco, come nella figura del grafo di calcolo
+   (make_backprop_figure.py, RED = #c8442f). Uso nel .qmd: [1]{.passo},
+   anche nei titoli ("## Passo [1]{.passo}: i gradienti"). */
+.reveal .passo {
+  display: inline-block;
+  width: 1.3em;
+  height: 1.3em;
+  line-height: 1.3em;
+  border-radius: 50%;
+  background: #c8442f;
+  color: #fff;
+  font-size: 0.78em;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: 0.1em;
+}
