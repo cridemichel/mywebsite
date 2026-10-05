@@ -96,3 +96,22 @@
   text-align: center;
   vertical-align: 0.1em;
 }
+
+/* Catena delle dipendenze con i passi sulle frecce (lezione-03, "Il segnale
+   d'errore", 5/10/2026): [[2]{.passo}$\longleftarrow$]{.anello} mette il
+   cerchio del passo sopra la freccia, che resta sulla riga della formula. */
+.reveal .catena {
+  text-align: center;
+  margin: 1.3em 0 0.5em 0;
+}
+.reveal .anello {
+  position: relative;
+  display: inline-block;
+  margin: 0 0.15em;
+}
+.reveal .anello .passo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 1.3em;
+}

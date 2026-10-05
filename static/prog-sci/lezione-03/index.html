@@ -413,10 +413,13 @@ Cristiano De Michele
 <h2>Il segnale d’errore <span class="math inline">\(\boldsymbol{\delta}\)</span></h2>
 <p>Il terzo vettore di ogni strato è la definizione su cui poggia tutto:</p>
 <p><span class="math display">\[ \delta^{(\ell)}_j \;\equiv\; \frac{\partial E}{\partial z^{(\ell)}_j} \]</span></p>
-<p>cioè <em>quanto cambia l’errore se sposto di poco la pre-attivazione del neurone <span class="math inline">\(j\)</span></em>: il <strong>segnale d’errore</strong> del neurone. La backpropagation è un modo efficiente di calcolare tutti i <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span>, in tre passi:</p>
-<p><span class="passo">1</span> il gradiente di pesi e bias si scrive con i <span class="math inline">\(\boldsymbol{\delta}\)</span>;<br>
-<span class="passo">2</span> all’ultimo strato <span class="math inline">\(\boldsymbol{\delta}^{(L)}\)</span> si calcola direttamente dalla loss;<br>
-<span class="passo">3</span> ogni <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span> si ottiene da <span class="math inline">\(\boldsymbol{\delta}^{(\ell+1)}\)</span>, all’indietro.</p>
+<p>cioè <em>quanto cambia l’errore se sposto di poco la pre-attivazione del neurone <span class="math inline">\(j\)</span></em>: il <strong>segnale d’errore</strong> del neurone. La backpropagation è un modo efficiente di calcolare tutti i <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span>. Le dipendenze di <span class="math inline">\(E\)</span> dai parametri dello strato <span class="math inline">\(\ell\)</span> sono la funzione composta vista prima, scritta strato per strato:</p>
+<div class="catena">
+<p><span class="math inline">\(E\)</span> <span class="anello"><span class="passo">2</span><span class="math inline">\(\longleftarrow\)</span></span> <span class="math inline">\(\mathbf{z}^{(L)}\)</span> <span class="math inline">\(\longleftarrow \cdots \longleftarrow\)</span> <span class="math inline">\(\mathbf{z}^{(\ell+1)}\)</span> <span class="anello"><span class="passo">3</span><span class="math inline">\(\longleftarrow\)</span></span> <span class="math inline">\(\mathbf{z}^{(\ell)}\)</span> <span class="anello"><span class="passo">1</span><span class="math inline">\(\longleftarrow\)</span></span> <span class="math inline">\(\big(\mathbf{W}^{(\ell)}, \mathbf{b}^{(\ell)}\big)\)</span></p>
+</div>
+<p><span class="passo">1</span> l’ultima freccia, dai parametri a <span class="math inline">\(\mathbf{z}^{(\ell)}\)</span>: il gradiente di pesi e bias si scrive con i <span class="math inline">\(\boldsymbol{\delta}\)</span>;<br>
+<span class="passo">2</span> la prima, da <span class="math inline">\(\mathbf{z}^{(L)}\)</span> a <span class="math inline">\(E\)</span> attraverso <span class="math inline">\(\mathbf{a}^{(L)}\)</span>: <span class="math inline">\(\boldsymbol{\delta}^{(L)}\)</span> si calcola direttamente dalla loss;<br>
+<span class="passo">3</span> quelle intermedie, da <span class="math inline">\(\mathbf{z}^{(\ell)}\)</span> a <span class="math inline">\(\mathbf{z}^{(\ell+1)}\)</span> attraverso <span class="math inline">\(\mathbf{a}^{(\ell)}\)</span>: <span class="math inline">\(\boldsymbol{\delta}^{(\ell)}\)</span> si ottiene da <span class="math inline">\(\boldsymbol{\delta}^{(\ell+1)}\)</span>.</p>
 </section>
 <section id="passo-1-i-gradienti" class="slide level2 smaller">
 <h2>Passo <span class="passo">1</span>: i gradienti</h2>
@@ -434,7 +437,7 @@ Cristiano De Michele
 <p><img data-src="images/passo1_freccia.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
-<p><span style="font-size: 0.85em">Il gradiente di un peso è il segnale che entra nella freccia per il segnale d’errore che arriva alla punta. Il bias è il peso di un ingresso fittizio che vale sempre 1, come l’intercetta in un fit lineare.</span></p>
+<p><span style="font-size: 0.85em">Il gradiente di un peso è il segnale che entra nella freccia per il segnale d’errore che arriva alla punta. Il bias è il peso di un ingresso fittizio che vale sempre 1.</span></p>
 </div></div>
 </section>
 <section id="passo-1-la-forma-matriciale" class="slide level2 smaller">
