@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Computational Statistical Mechanics — Lab sessions",
+    "section": "",
+    "text": "← Back to the home page of the personal website\n  \n\nSlides of the lab sessions (academic year 2026-27). During the labs we write, from scratch, simple C++ codes for Monte Carlo and Molecular Dynamics simulations.\n\n\n\nLab\nTopic\n\n\n\n\nLab 1\nDevelopment environment (WSL 2), introduction to C++ (part I), a first vector class"
+  },
+  {
     "objectID": "lab-01/index.html#today",
     "href": "lab-01/index.html#today",
     "title": "Lab #1",
@@ -63,11 +70,11 @@
     "text": "Check: compile and run\nhello.cpp:\n#include &lt;iostream&gt;\nint main()\n{\n  std::cout &lt;&lt; \"Hello from C++!\" &lt;&lt; std::endl;\n  return 0;\n}\ng++ -std=c++17 -Wall -o hello hello.cpp   # compile\n./hello                                    # run: Hello from C++!\n\n-std=c++17 selects the C++ standard; -o hello the name of the executable.\n-Wall turns on the compiler warnings: always use it. Today you will see why (an empty method that should return a value compiles, with a warning only).\n-O2 (optimization) will be important for the simulations, not today.\n\nIf ./hello prints the line, the environment is ready."
   },
   {
-    "objectID": "lab-01/index.html#object-oriented-oo-paradigm-key-concepts",
-    "href": "lab-01/index.html#object-oriented-oo-paradigm-key-concepts",
+    "objectID": "lab-01/index.html#object-oriented-oo-paradigm",
+    "href": "lab-01/index.html#object-oriented-oo-paradigm",
     "title": "Lab #1",
-    "section": "Object oriented (OO) paradigm: key concepts",
-    "text": "Object oriented (OO) paradigm: key concepts\nEncapsulation\n\nSeparate implementation from interface.\nAttributes (data members) and methods (functions) can be public (→ interface) or private (→ implementation, hidden to user).\nNo need to know/remember internals of all objects.\n\n\n\n\n\n\n\nMethods/functions act on objects and return objects (as an operator does) ⇓\n\n\n\nPolymorphism — functions/methods can behave differently depending on the objects they act on: function overloading, operator overloading (e.g. + - / *), pointers.\nExample: \\(a + b\\) (scalars) or \\(\\vec a + \\vec b\\) (vectors): operator “+” overloading.\nInheritance — in OO paradigm we have custom types called classes and we can enrich a class with more attributes and methods from base one."
+    "section": "Object oriented (OO) paradigm",
+    "text": "Object oriented (OO) paradigm\nKey concepts\nEncapsulation\n\nSeparate implementation from interface.\nAttributes (data members) and methods (functions) can be public (→ interface) or private (→ implementation, hidden to user).\nNo need to know/remember internals of all objects.\n\n\n\n\n\n\n\nMethods/functions act on objects and return objects (as an operator does) ⇓\n\n\n\nPolymorphism — functions/methods can behave differently depending on the objects they act on: function overloading, operator overloading (e.g. + - / *), pointers.\nExample: \\(a + b\\) (scalars) or \\(\\vec a + \\vec b\\) (vectors): operator “+” overloading.\nInheritance — in OO paradigm we have custom types called classes and we can enrich a class with more attributes and methods from base one."
   },
   {
     "objectID": "lab-01/index.html#example-custom-types",
@@ -229,19 +236,5 @@
     "title": "Lab #1",
     "section": "Checklist for today",
     "text": "Checklist for today\n\ng++ --version answers (on Windows: inside Ubuntu, with wsl -l -v showing version 2)\nhello.cpp compiles with -Wall and runs\nExamples N0, N1, N2 compiled and run; tried to access a private member and read the error\npvector() sets all components to zero; empty destructor\ninitializer_list constructor: {1,2,3} and {4,5} → (4,5,0)\nshow(std::string s=\"\") const\nsum(), operator+, operator- returning by value, const\nget() const and set()\npvector.cpp tests everything, output as expected, no warnings with -Wall\nStill works with NT 2 and ntype = float\n\nNext lab: protected members, more overloading (+=, -=, scalar product, norm(), vector times scalar), function overloading."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Computational Statistical Mechanics — Lab sessions",
-    "section": "",
-    "text": "← Back to the home page of the personal website\n  \n\nSlides of the lab sessions (academic year 2026-27). During the labs we write, from scratch, simple C++ codes for Monte Carlo and Molecular Dynamics simulations.\n\n\n\nLab\nTopic\n\n\n\n\nLab 1\nDevelopment environment (WSL 2), introduction to C++ (part I), a first vector class"
-  },
-  {
-    "objectID": "lab-01/index.html#object-oriented-oo-paradigm",
-    "href": "lab-01/index.html#object-oriented-oo-paradigm",
-    "title": "Lab #1",
-    "section": "Object oriented (OO) paradigm",
-    "text": "Object oriented (OO) paradigm\nKey concepts\nEncapsulation\n\nSeparate implementation from interface.\nAttributes (data members) and methods (functions) can be public (→ interface) or private (→ implementation, hidden to user).\nNo need to know/remember internals of all objects.\n\n\n\n\n\n\n\nMethods/functions act on objects and return objects (as an operator does) ⇓\n\n\n\nPolymorphism — functions/methods can behave differently depending on the objects they act on: function overloading, operator overloading (e.g. + - / *), pointers.\nExample: \\(a + b\\) (scalars) or \\(\\vec a + \\vec b\\) (vectors): operator “+” overloading.\nInheritance — in OO paradigm we have custom types called classes and we can enrich a class with more attributes and methods from base one."
   }
 ]
