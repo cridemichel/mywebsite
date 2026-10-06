@@ -390,8 +390,8 @@ Cristiano De Michele
 <p>Three hours, three parts:</p>
 <ol type="1">
 <li><strong>Set up a development environment</strong> — compiler, terminal, editor. On Windows: <strong>WSL 2</strong>, a real Linux inside Windows.</li>
-<li><strong>Introduction to C++ (part I)</strong> — the object oriented paradigm: encapsulation, polymorphism, inheritance. From C to C++ with three short examples.</li>
-<li><strong>Task: a vector class from scratch</strong> — <code>pvector.hpp</code> and its <code>main</code> in <code>pvector.cpp</code>: constructors and destructor, overloading of <code>=</code>, <code>+</code> and <code>-</code>, arguments passed by reference, <code>this</code>, <code>const</code> methods, <code>using</code> and <code>constexpr</code>.</li>
+<li><strong>Introduction to C++ (part I)</strong> — the object oriented paradigm: encapsulation, polymorphism, inheritance. From C to C++ with the examples N0, N1 and N2.</li>
+<li><strong>Task: a vector class from scratch</strong> — <code>pvector.hpp</code> and its <code>main</code> in <code>pvector.cpp</code>: header guards, constructor and destructor, overloading of <code>=</code>, <code>+</code> and <code>-</code>, arguments passed by reference, <code>this</code>, <code>const</code> methods, <code>using</code> and <code>constexpr</code>.</li>
 </ol>
 <p><code>pvector</code> is the first brick of the simulation codes (Monte Carlo and Molecular Dynamics) we will write in the next labs: positions, velocities and forces of the particles will all be <code>pvector</code>s.</p>
 </section>
@@ -421,7 +421,7 @@ Cristiano De Michele
 <tr class="odd">
 <td><strong>Compiler</strong></td>
 <td><code>g++</code> (GCC)</td>
-<td><code>clang++</code> (Apple), also called as <code>g++</code></td>
+<td><code>clang++</code> (Apple), also callable as <code>g++</code></td>
 <td><code>g++</code> <strong>inside WSL 2</strong></td>
 </tr>
 <tr class="even">
@@ -440,8 +440,8 @@ Cristiano De Michele
 </table>
 <ul>
 <li>In this course we compile <strong>from the terminal</strong>, with one command: you see exactly what happens, and it works the same way everywhere.</li>
-<li>Any editor is fine (VS Code, vim, emacs, …): what matters is to have a C++ compiler that supports at least <strong>C++17</strong>.</li>
-<li>On Windows we do not use MinGW or Visual Studio: with WSL you get the same environment as on a Linux machine (and later the same packages, e.g.&nbsp;for the <code>molgl</code> visualizer).</li>
+<li>Any editor is fine (VS Code, vim, emacs, …): what matters is to have a C++ compiler that supports at least <strong>C++17</strong>, the 2017 version of the C++ standard.</li>
+<li>On Windows we do not use the native compilers (MinGW, Visual Studio): with WSL you get the same environment as on a Linux machine (and later the same packages, e.g.&nbsp;for the <code>molgl</code> visualizer).</li>
 </ul>
 </section>
 <section id="windows-what-is-wsl-2" class="slide level2 smaller">
@@ -451,29 +451,29 @@ Cristiano De Michele
 <li>you get a Linux distribution (Ubuntu by default) with its terminal, <code>apt</code>, <code>g++</code>, <code>make</code>, <code>gdb</code>, …</li>
 <li>no dual boot, no VirtualBox: Ubuntu is an app, it starts in a few seconds;</li>
 <li>Linux and Windows see each other’s files;</li>
-<li>graphical Linux programs open their windows on the Windows desktop (WSLg).</li>
+<li>graphical Linux programs open their windows on the Windows desktop (WSLg: Windows 11, or Windows 10 from build 19044).</li>
 </ul>
 <p><strong>Requirements:</strong> Windows 11, or Windows 10 version 2004 (build 19041) or later, and <strong>hardware virtualization enabled</strong> (it usually is on recent laptops).</p>
 </section>
 <section id="installing-wsl-2" class="slide level2 smaller scrollable">
 <h2>Installing WSL 2</h2>
 <ol type="1">
-<li><p>Open <strong>PowerShell as administrator</strong> (right click on <em>Start</em> → <em>Terminal (Admin)</em>).</p></li>
+<li><p>Open <strong>PowerShell as administrator</strong>: right click on <em>Start</em> → <em>Terminal (Admin)</em> (Windows 11) or <em>Windows PowerShell (Admin)</em> (Windows 10).</p></li>
 <li><p>Run</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb1-1"><a aria-label="1"></a>wsl <span class="op">--</span>install</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>It enables the required Windows features, installs WSL 2 and <strong>Ubuntu</strong>.</p></li>
 <li><p><strong>Restart</strong> Windows.</p></li>
 <li><p>Open the <strong>Ubuntu</strong> app (Start menu). The first time it asks for a <strong>UNIX username and password</strong>: choose them and <em>remember the password</em>, it is the one <code>sudo</code> will ask for. While you type it nothing is shown: that is normal.</p></li>
 <li><p>Check, from PowerShell:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a aria-label="1"></a>wsl <span class="op">-</span>l <span class="op">-</span>v          <span class="co"># NAME: Ubuntu   STATE: Running   VERSION: 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a aria-label="1"></a>wsl <span class="op">-</span>l <span class="op">-</span>v          <span class="co"># lists the distributions: Ubuntu must have VERSION 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ol>
 </section>
 <section id="if-something-goes-wrong" class="slide level2 smaller">
 <h2>If something goes wrong</h2>
 <ul>
-<li><p><strong><code>VERSION</code> is 1</strong> → <code>wsl --set-version Ubuntu 2</code>, and for the future <code>wsl --set-default-version 2</code>.</p></li>
+<li><p><strong><code>VERSION</code> is 1</strong> → <code>wsl --set-version Ubuntu 2</code> (use the <code>NAME</code> printed by <code>wsl -l -v</code>), and for the future <code>wsl --set-default-version 2</code>.</p></li>
 <li><p><strong>Error about virtualization</strong> (e.g.&nbsp;<code>0x80370102</code>) → enable it in the BIOS/UEFI (<em>Intel VT-x</em> or <em>AMD-V / SVM</em>), then retry.</p></li>
-<li><p><strong>Older Windows 10</strong>, <code>wsl --install</code> only prints the help → enable the two features by hand, from an administrator PowerShell, then restart and install <em>Ubuntu</em> from the Microsoft Store:</p>
+<li><p><strong><code>wsl --install</code> only prints the help</strong> (Windows 10 not up to date) → run Windows Update first. If it still does not work, enable the two features by hand from an administrator PowerShell, restart, run <code>wsl --update</code> (it installs the WSL 2 kernel) and <code>wsl --set-default-version 2</code>, then install <em>Ubuntu</em> from the Microsoft Store:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a aria-label="1"></a>dism<span class="op">.</span><span class="fu">exe</span> <span class="op">/</span>online <span class="op">/</span>enable-feature <span class="op">/</span>featurename<span class="op">:</span>Microsoft-Windows-Subsystem-Linux <span class="op">/</span>all <span class="op">/</span>norestart</span>
 <span id="cb3-2"><a aria-label="2"></a>dism<span class="op">.</span><span class="fu">exe</span> <span class="op">/</span>online <span class="op">/</span>enable-feature <span class="op">/</span>featurename<span class="op">:</span>VirtualMachinePlatform <span class="op">/</span>all <span class="op">/</span>norestart</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Keep WSL up to date: <code>wsl --update</code>; general status: <code>wsl --status</code>.</p></li>
@@ -481,7 +481,7 @@ Cristiano De Michele
 </section>
 <section id="inside-ubuntu-the-compiler" class="slide level2 smaller">
 <h2>Inside Ubuntu: the compiler</h2>
-<p>From the Ubuntu terminal (the same commands on a native Ubuntu/Debian machine):</p>
+<p>From the Ubuntu terminal (the same commands on a native Ubuntu/Debian machine). <code>apt</code> is the package manager of Ubuntu; <code>sudo</code> runs a command as administrator and asks for your Linux password:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a aria-label="1"></a><span class="fu">sudo</span> apt update</span>
 <span id="cb4-2"><a aria-label="2"></a><span class="fu">sudo</span> apt install build-essential gdb unzip   <span class="co"># g++, gcc, make, C/C++ headers, debugger, unzip</span></span>
 <span id="cb4-3"><a aria-label="3"></a><span class="ex">g++</span> <span class="at">--version</span>                           <span class="co"># check</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -494,45 +494,116 @@ Cristiano De Michele
 <section id="wsl-where-to-keep-your-files" class="slide level2 smaller">
 <h2>WSL: where to keep your files</h2>
 <ul>
-<li><p>Work in your <strong>Linux home</strong>, e.g.&nbsp;<code>~/csm</code>, not on the Windows disk <code>/mnt/c/...</code>: compiling and running from <code>/mnt/c</code> is much slower.</p></li>
+<li><p>Work in your <strong>Linux home</strong> (<code>~</code>, i.e.&nbsp;<code>/home/&lt;your Linux user&gt;</code>), e.g.&nbsp;<code>~/csm</code>, not on the Windows disk <code>/mnt/c/...</code>: compiling and running from <code>/mnt/c</code> is much slower.</p></li>
 <li><p>From Linux, the Windows disk is under <code>/mnt/c</code>. To unpack the zips you downloaded with the browser from the course page:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a aria-label="1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/csm <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> ~/csm</span>
 <span id="cb6-2"><a aria-label="2"></a><span class="fu">unzip</span> /mnt/c/Users/<span class="op">&lt;</span>your Windows user<span class="op">&gt;</span>/Downloads/project_classes.zip   <span class="co"># -&gt; ~/csm/project</span></span>
-<span id="cb6-3"><a aria-label="3"></a><span class="fu">unzip</span> /mnt/c/Users/<span class="op">&lt;</span>your Windows user<span class="op">&gt;</span>/Downloads/cpp_examples.zip     <span class="co"># -&gt; ~/csm/C++_EXAMPLES</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<span id="cb6-3"><a aria-label="3"></a><span class="fu">unzip</span> /mnt/c/Users/<span class="op">&lt;</span>your Windows user<span class="op">&gt;</span>/Downloads/cpp_examples.zip     <span class="co"># -&gt; ~/csm/examples</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>mkdir -p</code>: no error if the folder already exists; <code>a &amp;&amp; b</code>: run <code>b</code> only if <code>a</code> succeeded.</p></li>
 <li><p>From Windows, the Linux files are in the <strong>Linux</strong> entry of File Explorer, or at <code>\\wsl.localhost\Ubuntu\home\&lt;your Linux user&gt;</code>.</p></li>
 <li><p>Quick trick: <code>explorer.exe .</code> opens the current Linux folder in File Explorer.</p></li>
 </ul>
 </section>
-<section id="the-editor-vs-code-with-wsl" class="slide level2 smaller">
-<h2>The editor: VS Code with WSL</h2>
-<p>If you do not have a favourite editor, use <strong>Visual Studio Code</strong> (free, all systems):</p>
+<section id="the-editor-visual-studio-code" class="slide level2 smaller">
+<h2>The editor: Visual Studio Code</h2>
+<p>If you do not have a favourite editor, use <strong>Visual Studio Code</strong> (free, all systems). On Windows install it <strong>on Windows</strong>, not inside Ubuntu.</p>
+<p>Suggested extensions (<em>Extensions</em> panel, <code>Ctrl+Shift+X</code>, on macOS <code>Cmd+Shift+X</code>):</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Extension</th>
+<th>What it gives you</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>WSL</strong> (Microsoft) — <em>Windows only</em></td>
+<td>VS Code works on the Linux files and runs the Linux <code>g++</code></td>
+</tr>
+<tr class="even">
+<td><strong>C/C++</strong> (Microsoft)</td>
+<td><strong>IntelliSense</strong>: completion, errors underlined while you type, info on hover, <em>Go to Definition</em> (<code>F12</code>); the debugger</td>
+</tr>
+<tr class="odd">
+<td><strong>GitHub Copilot</strong></td>
+<td>AI suggestions and chat; sign in with a GitHub account: <em>Copilot Free</em> has a monthly limit, <em>Copilot Student</em> is free for verified students (GitHub Education)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vs-code-opening-the-project" class="slide level2 smaller">
+<h2>VS Code: opening the project</h2>
 <ul>
-<li><p>Install it <strong>on Windows</strong> (not inside Ubuntu), then add the <strong>WSL</strong> extension (Microsoft).</p></li>
-<li><p>From the Ubuntu terminal, inside your project folder:</p>
+<li><p><em>File → Open Folder…</em> and choose the project folder (<code>~/csm/project</code>): VS Code works on a folder, and writes its settings in <code>.vscode/</code> inside it.</p></li>
+<li><p><strong>On Windows</strong>, open it from the Ubuntu terminal instead:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
 <span id="cb7-2"><a aria-label="2"></a><span class="ex">code</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The first time it installs its server inside Linux; the window then works directly on the Linux files (bottom left: <em>WSL: Ubuntu</em>).</p></li>
-<li><p>Install the <strong>C/C++</strong> extension (Microsoft) <em>in WSL</em>: syntax highlighting, completion, errors while you type.</p></li>
-<li><p><em>Terminal → New Terminal</em> opens a Linux terminal inside VS Code: compile there.</p></li>
+<p>The first time VS Code installs its server inside Linux; bottom left you then read <em>WSL: Ubuntu</em>. Install the C/C++ extension when it proposes <em>Install in WSL</em>.</p></li>
+<li><p><strong>IntelliSense</strong> and the compiler can disagree: what counts is what <code>g++</code> says when you compile.</p></li>
+<li><p><strong>Copilot</strong>: useful to understand an error or a piece of code. But the point of the labs is that <em>you</em> write <code>pvector</code>: at the exam nobody writes it for you.</p></li>
+</ul>
+</section>
+<section id="compiling-and-running-in-vs-code" class="slide level2 smaller">
+<h2>Compiling and running in VS Code</h2>
+<ul>
+<li><p><strong>The integrated terminal</strong> (<em>Terminal → New Terminal</em>): a Linux terminal (in WSL, in Ubuntu) in the project folder. Type the same <code>g++</code> command as outside. In the first weeks, do it this way: you see what happens.</p></li>
+<li><p><strong>The ▷ button</strong> at the top right of the editor, <em>Run C/C++ File</em> (C/C++ extension): with the file with <code>main</code> open (<code>pvector.cpp</code>, not <code>pvector.hpp</code>), choose <em>C/C++: g++ build and debug active file</em> (on macOS <em>clang++</em>). VS Code compiles the active file, runs it, and writes the recipe in <code>.vscode/tasks.json</code>.</p></li>
+<li><p>That recipe does not use our options: add them at the beginning of <code>"args"</code> in <code>.vscode/tasks.json</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a aria-label="1"></a>"args": [</span>
+<span id="cb8-2"><a aria-label="2"></a>    "-std=c++17", "-Wall",</span>
+<span id="cb8-3"><a aria-label="3"></a>    ...the arguments that are already there ("-g", "${file}", ...)</span>
+<span id="cb8-4"><a aria-label="4"></a>],</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><code>Ctrl+Shift+B</code> (macOS <code>Cmd+Shift+B</code>, <em>Terminal → Run Build Task</em>) compiles with the same recipe; <code>F5</code> starts the debugger (we will use it later).</p></li>
 </ul>
 </section>
 <section id="check-compile-and-run" class="slide level2 smaller">
 <h2>Check: compile and run</h2>
 <p><code>hello.cpp</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb8-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">()</span></span>
-<span id="cb8-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb8-4"><a aria-label="4"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Hello from C++!"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb8-5"><a aria-label="5"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb8-6"><a aria-label="6"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> hello hello.cpp   <span class="co"># compile</span></span>
-<span id="cb9-2"><a aria-label="2"></a><span class="ex">./hello</span>                                    <span class="co"># run: Hello from C++!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb9-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb9-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb9-4"><a aria-label="4"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Hello from C++!"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb9-5"><a aria-label="5"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-6"><a aria-label="6"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> hello hello.cpp   <span class="co"># compile</span></span>
+<span id="cb10-2"><a aria-label="2"></a><span class="ex">./hello</span>                                    <span class="co"># run: Hello from C++!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>std::cout</code> is explained in the next slide. <code>./hello</code>: the program <code>hello</code> of the current folder (<code>.</code>); Linux does not look for programs there by itself.</p>
 <ul>
 <li><code>-std=c++17</code> selects the C++ standard; <code>-o hello</code> the name of the executable.</li>
-<li><code>-Wall</code> turns on the compiler <strong>warnings</strong>: always use it. Today you will see why (an empty method that should return a value compiles, with a warning only).</li>
+<li><code>-Wall</code> turns on most of the useful <strong>warnings</strong> of the compiler (an unused variable, for example: Example 1): always use it, and read them.</li>
 <li><code>-O2</code> (optimization) will be important for the simulations, not today.</li>
 </ul>
 <p><strong>If <code>./hello</code> prints the line, the environment is ready.</strong></p>
+</section>
+<section id="printing-in-c-stdcout" class="slide level2 smaller">
+<h2>Printing in C++: <code>std::cout</code></h2>
+<p>In C++ you print with the <em>stream</em> <code>std::cout</code> (header <code>&lt;iostream&gt;</code>), not <code>printf</code>:</p>
+<div class="columns">
+<div class="column" style="width:72%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb11-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb11-3"><a aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb11-4"><a aria-label="4"></a><span class="op">{</span></span>
+<span id="cb11-5"><a aria-label="5"></a>  <span class="dt">int</span> n <span class="op">=</span> <span class="dv">3</span><span class="op">;</span>  <span class="dt">double</span> t <span class="op">=</span> <span class="fl">0.5</span><span class="op">;</span></span>
+<span id="cb11-6"><a aria-label="6"></a>  <span class="bu">std::</span>string name <span class="op">=</span> <span class="st">"pvector"</span><span class="op">;</span></span>
+<span id="cb11-7"><a aria-label="7"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"n = "</span> <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">", t = "</span> <span class="op">&lt;&lt;</span> t <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb11-8"><a aria-label="8"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> name <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb11-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:28%;">
+<p>Output:</p>
+<pre><code>n = 3, t = 0.5
+pvector</code></pre>
+</div></div>
+<ul>
+<li><code>&lt;&lt;</code> (the shift operator of C, <em>redefined</em> for the output: an example of the operator overloading of Part 2) sends the pieces one after the other; the compiler knows the type of each, so no <code>%d</code> or <code>%f</code>. <code>std::endl</code> ends the line.</li>
+<li><code>std::string</code> (header <code>&lt;string&gt;</code>) is the string type of C++: a <em>class</em> (a type defined by a library, Part 2), assigned with <code>=</code> and printed with <code>&lt;&lt;</code>.</li>
+<li><code>std::</code> says that <code>cout</code>, <code>endl</code> and <code>string</code> belong to the C++ <strong>standard library</strong>; why the prefix is needed (namespaces) we will see in a later lab.</li>
+<li><code>printf</code> still works (header <code>&lt;cstdio&gt;</code>), but cannot print C++ objects.</li>
+</ul>
 </section></section>
 <section>
 <section id="part-2-introduction-to-c" class="title-slide slide level1 center">
@@ -590,13 +661,13 @@ Cristiano De Michele
 <h2>Instantiation</h2>
 <p><code>int</code>, <code>double</code>, <code>float</code> ← fundamental types of C language.</p>
 <p>If one writes</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="dt">double</span> d<span class="op">;</span>   <span class="co">// double: type/class    d: instance of class "double", i.e. an OBJECT</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a aria-label="1"></a><span class="dt">double</span> d<span class="op">;</span>   <span class="co">// double: type/class    d: instance of class "double", i.e. an OBJECT</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Assume you have a custom type, i.e.&nbsp;a class, called <code>vector</code> which represents a vector. You can instantiate it as follows:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a>vector v<span class="op">;</span>   <span class="co">// v is an instance of this class, i.e. an object</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a aria-label="1"></a>vector v<span class="op">;</span>   <span class="co">// v is an instance of this class, i.e. an object</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If we have</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a>vector a<span class="op">,</span> b<span class="op">,</span> c<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a>vector a<span class="op">,</span> b<span class="op">,</span> c<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>and we <strong>“overloaded”</strong> the operators <code>=</code> and <code>+</code>, we can write</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a aria-label="1"></a>c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a>c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="the-goal-of-the-first-labs" class="slide level2 smaller">
 <h2>The goal of the first labs</h2>
@@ -615,69 +686,69 @@ Cristiano De Michele
 </section>
 <section id="example-0-ex0_basic_c_types.c" class="slide level2 smaller codice-intero">
 <h2>Example 0: <code>ex0_basic_c_types.c</code></h2>
-<p><code>C++_EXAMPLES/N0_from_c_to_cpp/ex0_basic_c_types.c</code></p>
+<p><code>examples/N0_from_c_to_cpp/ex0_basic_c_types.c</code></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb14-1"><a aria-label="1"></a><span class="pp">#include</span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb14-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb14-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb14-4"><a aria-label="4"></a>  <span class="co">/* basic types */</span></span>
-<span id="cb14-5"><a aria-label="5"></a>  <span class="dt">int</span> a<span class="op">,</span> b<span class="op">,</span> c<span class="op">,</span> i<span class="op">;</span></span>
-<span id="cb14-6"><a aria-label="6"></a>  <span class="dt">double</span> d<span class="op">,</span> e<span class="op">,</span> f<span class="op">;</span></span>
-<span id="cb14-7"><a aria-label="7"></a>  <span class="co">/* double is a class */</span></span>
-<span id="cb14-8"><a aria-label="8"></a>  <span class="co">/* d, e and f are instances of the class double */</span> </span>
-<span id="cb14-9"><a aria-label="9"></a>  a<span class="op">=</span><span class="dv">1</span><span class="op">;</span></span>
-<span id="cb14-10"><a aria-label="10"></a>  b<span class="op">=</span><span class="dv">2</span><span class="op">;</span></span>
-<span id="cb14-11"><a aria-label="11"></a>  c <span class="op">=</span> a <span class="op">+</span> <span class="dv">2</span><span class="op">;</span></span>
-<span id="cb14-12"><a aria-label="12"></a></span>
-<span id="cb14-13"><a aria-label="13"></a>  d <span class="op">=</span> <span class="fl">1.2</span><span class="op">;</span></span>
-<span id="cb14-14"><a aria-label="14"></a>  e <span class="op">=</span> <span class="fl">2.3</span><span class="op">;</span></span>
-<span id="cb14-15"><a aria-label="15"></a>  f <span class="op">=</span> d <span class="op">+</span> e<span class="op">;</span></span>
-<span id="cb14-16"><a aria-label="16"></a>  printf<span class="op">(</span><span class="st">"a=</span><span class="sc">%d</span><span class="st"> b=</span><span class="sc">%d</span><span class="st"> c=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">,</span> c<span class="op">);</span></span>
-<span id="cb14-17"><a aria-label="17"></a>  printf<span class="op">(</span><span class="st">"d=</span><span class="sc">%f</span><span class="st"> e=</span><span class="sc">%f</span><span class="st"> f=</span><span class="sc">%f\n</span><span class="st">"</span><span class="op">,</span> d<span class="op">,</span> e<span class="op">,</span> f<span class="op">);</span></span>
-<span id="cb14-18"><a aria-label="18"></a></span>
-<span id="cb14-19"><a aria-label="19"></a>  <span class="co">/* vectors */</span></span>
-<span id="cb14-20"><a aria-label="20"></a></span>
-<span id="cb14-21"><a aria-label="21"></a>  <span class="dt">double</span> va<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.3</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">};</span></span>
-<span id="cb14-22"><a aria-label="22"></a>  <span class="dt">double</span> vb<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">0.2</span><span class="op">,</span> <span class="fl">0.1</span><span class="op">,</span> <span class="fl">0.4</span><span class="op">};</span> </span>
-<span id="cb14-23"><a aria-label="23"></a>  <span class="dt">double</span> vc<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
-<span id="cb14-24"><a aria-label="24"></a>  <span class="co">// vc = va + vb  </span></span>
-<span id="cb14-25"><a aria-label="25"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb14-26"><a aria-label="26"></a>    <span class="op">{</span></span>
-<span id="cb14-27"><a aria-label="27"></a>      vc<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> va<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> vb<span class="op">[</span>i<span class="op">];</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb17-1"><a aria-label="1"></a><span class="pp">#include</span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb17-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb17-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb17-4"><a aria-label="4"></a>  <span class="co">/* basic types */</span></span>
+<span id="cb17-5"><a aria-label="5"></a>  <span class="dt">int</span> a<span class="op">,</span> b<span class="op">,</span> c<span class="op">,</span> i<span class="op">;</span></span>
+<span id="cb17-6"><a aria-label="6"></a>  <span class="dt">double</span> d<span class="op">,</span> e<span class="op">,</span> f<span class="op">;</span></span>
+<span id="cb17-7"><a aria-label="7"></a>  <span class="co">/* double is a class */</span></span>
+<span id="cb17-8"><a aria-label="8"></a>  <span class="co">/* d, e and f are instances of the class double */</span> </span>
+<span id="cb17-9"><a aria-label="9"></a>  a<span class="op">=</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb17-10"><a aria-label="10"></a>  b<span class="op">=</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb17-11"><a aria-label="11"></a>  c <span class="op">=</span> a <span class="op">+</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb17-12"><a aria-label="12"></a></span>
+<span id="cb17-13"><a aria-label="13"></a>  d <span class="op">=</span> <span class="fl">1.2</span><span class="op">;</span></span>
+<span id="cb17-14"><a aria-label="14"></a>  e <span class="op">=</span> <span class="fl">2.3</span><span class="op">;</span></span>
+<span id="cb17-15"><a aria-label="15"></a>  f <span class="op">=</span> d <span class="op">+</span> e<span class="op">;</span></span>
+<span id="cb17-16"><a aria-label="16"></a>  printf<span class="op">(</span><span class="st">"a=</span><span class="sc">%d</span><span class="st"> b=</span><span class="sc">%d</span><span class="st"> c=</span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> a<span class="op">,</span> b<span class="op">,</span> c<span class="op">);</span></span>
+<span id="cb17-17"><a aria-label="17"></a>  printf<span class="op">(</span><span class="st">"d=</span><span class="sc">%f</span><span class="st"> e=</span><span class="sc">%f</span><span class="st"> f=</span><span class="sc">%f\n</span><span class="st">"</span><span class="op">,</span> d<span class="op">,</span> e<span class="op">,</span> f<span class="op">);</span></span>
+<span id="cb17-18"><a aria-label="18"></a></span>
+<span id="cb17-19"><a aria-label="19"></a>  <span class="co">/* vectors */</span></span>
+<span id="cb17-20"><a aria-label="20"></a></span>
+<span id="cb17-21"><a aria-label="21"></a>  <span class="dt">double</span> va<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.3</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">};</span></span>
+<span id="cb17-22"><a aria-label="22"></a>  <span class="dt">double</span> vb<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">0.2</span><span class="op">,</span> <span class="fl">0.1</span><span class="op">,</span> <span class="fl">0.4</span><span class="op">};</span> </span>
+<span id="cb17-23"><a aria-label="23"></a>  <span class="dt">double</span> vc<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
+<span id="cb17-24"><a aria-label="24"></a>  <span class="co">// vc = va + vb  </span></span>
+<span id="cb17-25"><a aria-label="25"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb17-26"><a aria-label="26"></a>    <span class="op">{</span></span>
+<span id="cb17-27"><a aria-label="27"></a>      vc<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> va<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> vb<span class="op">[</span>i<span class="op">];</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-startfrom="28"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c" style="counter-reset: source-line 27;"><span id="cb15-28"><a aria-label="28"></a>    <span class="op">}</span></span>
-<span id="cb15-29"><a aria-label="29"></a>  printf<span class="op">(</span><span class="st">"va=("</span><span class="op">);</span></span>
-<span id="cb15-30"><a aria-label="30"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb15-31"><a aria-label="31"></a>    <span class="op">{</span></span>
-<span id="cb15-32"><a aria-label="32"></a>      printf<span class="op">(</span><span class="st">"</span><span class="sc">%f</span><span class="st">"</span><span class="op">,</span> va<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb15-33"><a aria-label="33"></a>      <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> <span class="dv">2</span><span class="op">)</span></span>
-<span id="cb15-34"><a aria-label="34"></a>        printf<span class="op">(</span><span class="st">","</span><span class="op">);</span></span>
-<span id="cb15-35"><a aria-label="35"></a>    <span class="op">}</span> </span>
-<span id="cb15-36"><a aria-label="36"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
-<span id="cb15-37"><a aria-label="37"></a>  printf<span class="op">(</span><span class="st">"vb=("</span><span class="op">);</span></span>
-<span id="cb15-38"><a aria-label="38"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb15-39"><a aria-label="39"></a>    <span class="op">{</span></span>
-<span id="cb15-40"><a aria-label="40"></a>      printf<span class="op">(</span><span class="st">"</span><span class="sc">%f</span><span class="st">"</span><span class="op">,</span> vb<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb15-41"><a aria-label="41"></a>      <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> <span class="dv">2</span><span class="op">)</span></span>
-<span id="cb15-42"><a aria-label="42"></a>        printf<span class="op">(</span><span class="st">","</span><span class="op">);</span></span>
-<span id="cb15-43"><a aria-label="43"></a>    <span class="op">}</span> </span>
-<span id="cb15-44"><a aria-label="44"></a></span>
-<span id="cb15-45"><a aria-label="45"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
-<span id="cb15-46"><a aria-label="46"></a>  printf<span class="op">(</span><span class="st">"vc=va+vb=("</span><span class="op">);</span></span>
-<span id="cb15-47"><a aria-label="47"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb15-48"><a aria-label="48"></a>    <span class="op">{</span></span>
-<span id="cb15-49"><a aria-label="49"></a>      printf<span class="op">(</span><span class="st">"</span><span class="sc">%f</span><span class="st">"</span><span class="op">,</span> vc<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb15-50"><a aria-label="50"></a>      <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> <span class="dv">2</span><span class="op">)</span></span>
-<span id="cb15-51"><a aria-label="51"></a>        printf<span class="op">(</span><span class="st">","</span><span class="op">);</span></span>
-<span id="cb15-52"><a aria-label="52"></a>    <span class="op">}</span> </span>
-<span id="cb15-53"><a aria-label="53"></a>  printf<span class="op">(</span><span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
-<span id="cb15-54"><a aria-label="54"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-startfrom="28"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c" style="counter-reset: source-line 27;"><span id="cb18-28"><a aria-label="28"></a>    <span class="op">}</span></span>
+<span id="cb18-29"><a aria-label="29"></a>  printf<span class="op">(</span><span class="st">"va=("</span><span class="op">);</span></span>
+<span id="cb18-30"><a aria-label="30"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb18-31"><a aria-label="31"></a>    <span class="op">{</span></span>
+<span id="cb18-32"><a aria-label="32"></a>      printf<span class="op">(</span><span class="st">"</span><span class="sc">%f</span><span class="st">"</span><span class="op">,</span> va<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb18-33"><a aria-label="33"></a>      <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> <span class="dv">2</span><span class="op">)</span></span>
+<span id="cb18-34"><a aria-label="34"></a>        printf<span class="op">(</span><span class="st">","</span><span class="op">);</span></span>
+<span id="cb18-35"><a aria-label="35"></a>    <span class="op">}</span> </span>
+<span id="cb18-36"><a aria-label="36"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb18-37"><a aria-label="37"></a>  printf<span class="op">(</span><span class="st">"vb=("</span><span class="op">);</span></span>
+<span id="cb18-38"><a aria-label="38"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb18-39"><a aria-label="39"></a>    <span class="op">{</span></span>
+<span id="cb18-40"><a aria-label="40"></a>      printf<span class="op">(</span><span class="st">"</span><span class="sc">%f</span><span class="st">"</span><span class="op">,</span> vb<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb18-41"><a aria-label="41"></a>      <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> <span class="dv">2</span><span class="op">)</span></span>
+<span id="cb18-42"><a aria-label="42"></a>        printf<span class="op">(</span><span class="st">","</span><span class="op">);</span></span>
+<span id="cb18-43"><a aria-label="43"></a>    <span class="op">}</span> </span>
+<span id="cb18-44"><a aria-label="44"></a></span>
+<span id="cb18-45"><a aria-label="45"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb18-46"><a aria-label="46"></a>  printf<span class="op">(</span><span class="st">"vc=va+vb=("</span><span class="op">);</span></span>
+<span id="cb18-47"><a aria-label="47"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb18-48"><a aria-label="48"></a>    <span class="op">{</span></span>
+<span id="cb18-49"><a aria-label="49"></a>      printf<span class="op">(</span><span class="st">"</span><span class="sc">%f</span><span class="st">"</span><span class="op">,</span> vc<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb18-50"><a aria-label="50"></a>      <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> <span class="dv">2</span><span class="op">)</span></span>
+<span id="cb18-51"><a aria-label="51"></a>        printf<span class="op">(</span><span class="st">","</span><span class="op">);</span></span>
+<span id="cb18-52"><a aria-label="52"></a>    <span class="op">}</span> </span>
+<span id="cb18-53"><a aria-label="53"></a>  printf<span class="op">(</span><span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb18-54"><a aria-label="54"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </section>
 <section id="example-0-compile-and-run" class="slide level2 smaller">
 <h2>Example 0: compile and run</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a aria-label="1"></a><span class="fu">gcc</span> <span class="at">-Wall</span> <span class="at">-o</span> ex0 ex0_basic_c_types.c <span class="kw">&amp;&amp;</span> <span class="ex">./ex0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a aria-label="1"></a><span class="fu">gcc</span> <span class="at">-Wall</span> <span class="at">-o</span> ex0 ex0_basic_c_types.c <span class="kw">&amp;&amp;</span> <span class="ex">./ex0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>a=1 b=2 c=3
 d=1.200000 e=2.300000 f=3.500000
 va=(1.200000,1.300000,-1.000000
@@ -686,65 +757,68 @@ vc=va+vb=(1.400000,1.400000,-0.600000)</code></pre>
 <ul>
 <li>For <code>double</code> we write <code>f = d + e</code>; for vectors <code>vc = va + vb</code> is not possible: every component has to be spelled out with a loop.</li>
 <li>Printing a vector takes another loop, repeated three times (for <code>va</code>, <code>vb</code> and <code>vc</code>).</li>
+<li><code>gcc</code> compiles C, <code>g++</code> C++: these two examples are C files.</li>
+<li>The comment “double is a class” is an analogy: in C++ <code>double</code> is a <em>fundamental type</em>, but it behaves like a class here (objects and operators).</li>
 </ul>
 </section>
 <section id="example-1-ex1_vec_with_funcs.c" class="slide level2 smaller codice-intero">
 <h2>Example 1: <code>ex1_vec_with_funcs.c</code></h2>
-<p><code>C++_EXAMPLES/N0_from_c_to_cpp/ex1_vec_with_funcs.c</code></p>
+<p><code>examples/N0_from_c_to_cpp/ex1_vec_with_funcs.c</code></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb18-1"><a aria-label="1"></a><span class="pp">#include</span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb18-2"><a aria-label="2"></a><span class="dt">void</span> sumvec<span class="op">(</span><span class="dt">double</span> va<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">double</span> vb<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">double</span> vc<span class="op">[</span><span class="dv">3</span><span class="op">]);</span></span>
-<span id="cb18-3"><a aria-label="3"></a></span>
-<span id="cb18-4"><a aria-label="4"></a><span class="dt">void</span> printvec<span class="op">(</span><span class="dt">double</span> vec<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">char</span><span class="op">*</span> txt<span class="op">);</span></span>
-<span id="cb18-5"><a aria-label="5"></a></span>
-<span id="cb18-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb18-7"><a aria-label="7"></a><span class="op">{</span></span>
-<span id="cb18-8"><a aria-label="8"></a>  <span class="co">/* basi types */</span></span>
-<span id="cb18-9"><a aria-label="9"></a>  <span class="dt">int</span> i<span class="op">;</span></span>
-<span id="cb18-10"><a aria-label="10"></a>  <span class="dt">double</span> va<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.3</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">},</span> vb<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">0.2</span><span class="op">,</span> <span class="fl">0.1</span><span class="op">,</span> <span class="fl">0.4</span><span class="op">},</span> vc<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
-<span id="cb18-11"><a aria-label="11"></a>  </span>
-<span id="cb18-12"><a aria-label="12"></a>  <span class="co">/* ... or better with functions */</span></span>
-<span id="cb18-13"><a aria-label="13"></a>  sumvec<span class="op">(</span>va<span class="op">,</span> vb<span class="op">,</span> vc<span class="op">);</span></span>
-<span id="cb18-14"><a aria-label="14"></a>  printvec<span class="op">(</span>va<span class="op">,</span> <span class="st">"va"</span><span class="op">);</span></span>
-<span id="cb18-15"><a aria-label="15"></a>  printvec<span class="op">(</span>vb<span class="op">,</span> <span class="st">"vb"</span><span class="op">);</span></span>
-<span id="cb18-16"><a aria-label="16"></a>  printvec<span class="op">(</span>vc<span class="op">,</span> <span class="st">"vc=va+vb"</span><span class="op">);</span></span>
-<span id="cb18-17"><a aria-label="17"></a><span class="op">}</span></span>
-<span id="cb18-18"><a aria-label="18"></a></span>
-<span id="cb18-19"><a aria-label="19"></a></span>
-<span id="cb18-20"><a aria-label="20"></a><span class="dt">void</span> printvec<span class="op">(</span><span class="dt">double</span> vec<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">char</span><span class="op">*</span> txt<span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb21-1"><a aria-label="1"></a><span class="pp">#include</span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb21-2"><a aria-label="2"></a><span class="dt">void</span> sumvec<span class="op">(</span><span class="dt">double</span> va<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">double</span> vb<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">double</span> vc<span class="op">[</span><span class="dv">3</span><span class="op">]);</span></span>
+<span id="cb21-3"><a aria-label="3"></a></span>
+<span id="cb21-4"><a aria-label="4"></a><span class="dt">void</span> printvec<span class="op">(</span><span class="dt">double</span> vec<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">char</span><span class="op">*</span> txt<span class="op">);</span></span>
+<span id="cb21-5"><a aria-label="5"></a></span>
+<span id="cb21-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb21-7"><a aria-label="7"></a><span class="op">{</span></span>
+<span id="cb21-8"><a aria-label="8"></a>  <span class="co">/* basi types */</span></span>
+<span id="cb21-9"><a aria-label="9"></a>  <span class="dt">int</span> i<span class="op">;</span></span>
+<span id="cb21-10"><a aria-label="10"></a>  <span class="dt">double</span> va<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.3</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">},</span> vb<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">0.2</span><span class="op">,</span> <span class="fl">0.1</span><span class="op">,</span> <span class="fl">0.4</span><span class="op">},</span> vc<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
+<span id="cb21-11"><a aria-label="11"></a>  </span>
+<span id="cb21-12"><a aria-label="12"></a>  <span class="co">/* ... or better with functions */</span></span>
+<span id="cb21-13"><a aria-label="13"></a>  sumvec<span class="op">(</span>va<span class="op">,</span> vb<span class="op">,</span> vc<span class="op">);</span></span>
+<span id="cb21-14"><a aria-label="14"></a>  printvec<span class="op">(</span>va<span class="op">,</span> <span class="st">"va"</span><span class="op">);</span></span>
+<span id="cb21-15"><a aria-label="15"></a>  printvec<span class="op">(</span>vb<span class="op">,</span> <span class="st">"vb"</span><span class="op">);</span></span>
+<span id="cb21-16"><a aria-label="16"></a>  printvec<span class="op">(</span>vc<span class="op">,</span> <span class="st">"vc=va+vb"</span><span class="op">);</span></span>
+<span id="cb21-17"><a aria-label="17"></a><span class="op">}</span></span>
+<span id="cb21-18"><a aria-label="18"></a></span>
+<span id="cb21-19"><a aria-label="19"></a></span>
+<span id="cb21-20"><a aria-label="20"></a><span class="dt">void</span> printvec<span class="op">(</span><span class="dt">double</span> vec<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">char</span><span class="op">*</span> txt<span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" data-startfrom="21"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c" style="counter-reset: source-line 20;"><span id="cb19-21"><a aria-label="21"></a><span class="op">{</span></span>
-<span id="cb19-22"><a aria-label="22"></a>  <span class="dt">int</span> i<span class="op">;</span></span>
-<span id="cb19-23"><a aria-label="23"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">%s</span><span class="st">=("</span><span class="op">,</span> txt<span class="op">);</span></span>
-<span id="cb19-24"><a aria-label="24"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb19-25"><a aria-label="25"></a>    <span class="op">{</span></span>
-<span id="cb19-26"><a aria-label="26"></a>      printf<span class="op">(</span><span class="st">"</span><span class="sc">%f</span><span class="st">"</span><span class="op">,</span> vec<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb19-27"><a aria-label="27"></a>      <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> <span class="dv">2</span><span class="op">)</span></span>
-<span id="cb19-28"><a aria-label="28"></a>        printf<span class="op">(</span><span class="st">","</span><span class="op">);</span></span>
-<span id="cb19-29"><a aria-label="29"></a>    <span class="op">}</span> </span>
-<span id="cb19-30"><a aria-label="30"></a>  printf<span class="op">(</span><span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
-<span id="cb19-31"><a aria-label="31"></a> </span>
-<span id="cb19-32"><a aria-label="32"></a><span class="op">}</span></span>
-<span id="cb19-33"><a aria-label="33"></a></span>
-<span id="cb19-34"><a aria-label="34"></a><span class="dt">void</span> sumvec<span class="op">(</span><span class="dt">double</span> va<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">double</span> vb<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">double</span> vc<span class="op">[</span><span class="dv">3</span><span class="op">])</span></span>
-<span id="cb19-35"><a aria-label="35"></a><span class="op">{</span></span>
-<span id="cb19-36"><a aria-label="36"></a>  <span class="dt">int</span> i<span class="op">;</span></span>
-<span id="cb19-37"><a aria-label="37"></a>  <span class="cf">for</span> <span class="op">(</span>i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb19-38"><a aria-label="38"></a>    <span class="op">{</span></span>
-<span id="cb19-39"><a aria-label="39"></a>      vc<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> va<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> vb<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb19-40"><a aria-label="40"></a>    <span class="op">}</span></span>
-<span id="cb19-41"><a aria-label="41"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-startfrom="21"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c" style="counter-reset: source-line 20;"><span id="cb22-21"><a aria-label="21"></a><span class="op">{</span></span>
+<span id="cb22-22"><a aria-label="22"></a>  <span class="dt">int</span> i<span class="op">;</span></span>
+<span id="cb22-23"><a aria-label="23"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">%s</span><span class="st">=("</span><span class="op">,</span> txt<span class="op">);</span></span>
+<span id="cb22-24"><a aria-label="24"></a>  <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb22-25"><a aria-label="25"></a>    <span class="op">{</span></span>
+<span id="cb22-26"><a aria-label="26"></a>      printf<span class="op">(</span><span class="st">"</span><span class="sc">%f</span><span class="st">"</span><span class="op">,</span> vec<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb22-27"><a aria-label="27"></a>      <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> <span class="dv">2</span><span class="op">)</span></span>
+<span id="cb22-28"><a aria-label="28"></a>        printf<span class="op">(</span><span class="st">","</span><span class="op">);</span></span>
+<span id="cb22-29"><a aria-label="29"></a>    <span class="op">}</span> </span>
+<span id="cb22-30"><a aria-label="30"></a>  printf<span class="op">(</span><span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb22-31"><a aria-label="31"></a> </span>
+<span id="cb22-32"><a aria-label="32"></a><span class="op">}</span></span>
+<span id="cb22-33"><a aria-label="33"></a></span>
+<span id="cb22-34"><a aria-label="34"></a><span class="dt">void</span> sumvec<span class="op">(</span><span class="dt">double</span> va<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">double</span> vb<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">double</span> vc<span class="op">[</span><span class="dv">3</span><span class="op">])</span></span>
+<span id="cb22-35"><a aria-label="35"></a><span class="op">{</span></span>
+<span id="cb22-36"><a aria-label="36"></a>  <span class="dt">int</span> i<span class="op">;</span></span>
+<span id="cb22-37"><a aria-label="37"></a>  <span class="cf">for</span> <span class="op">(</span>i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb22-38"><a aria-label="38"></a>    <span class="op">{</span></span>
+<span id="cb22-39"><a aria-label="39"></a>      vc<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> va<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> vb<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb22-40"><a aria-label="40"></a>    <span class="op">}</span></span>
+<span id="cb22-41"><a aria-label="41"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </section>
 <section id="example-1-compile-and-run" class="slide level2 smaller">
 <h2>Example 1: compile and run</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a aria-label="1"></a><span class="fu">gcc</span> <span class="at">-Wall</span> <span class="at">-o</span> ex1 ex1_vec_with_funcs.c <span class="kw">&amp;&amp;</span> <span class="ex">./ex1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a aria-label="1"></a><span class="fu">gcc</span> <span class="at">-Wall</span> <span class="at">-o</span> ex1 ex1_vec_with_funcs.c <span class="kw">&amp;&amp;</span> <span class="ex">./ex1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>va=(1.200000,1.300000,-1.000000)
 vb=(0.200000,0.100000,0.400000)
 vc=va+vb=(1.400000,1.400000,-0.600000)</code></pre>
 <ul>
 <li>Less repetition, but <code>sumvec(va, vb, vc)</code> is not <code>vc = va + vb</code>.</li>
+<li>Reminder of C: an array passed to a function is not copied, the function works on the caller’s array; this is why <code>sumvec</code> can fill <code>vc</code>. <code>char* txt</code> is a C string (compiled with <code>g++</code> it warns: in C++ <code>"va"</code> is a <code>const char*</code>).</li>
 <li>Data (<code>double[3]</code>) and functions acting on them live separately: nothing tells the compiler that <code>sumvec</code> belongs to “vectors”.</li>
 <li>What we want: a <strong>type</strong> <code>vector</code> that carries its data <em>and</em> its operations.</li>
 <li><code>-Wall</code> also warns that <code>i</code> in <code>main</code> is never used: <code>warning: unused variable 'i'</code>.</li>
@@ -752,68 +826,76 @@ vc=va+vb=(1.400000,1.400000,-0.600000)</code></pre>
 </section>
 <section id="example-2-ex2_a_cpp_class.hpp" class="slide level2 smaller codice-intero">
 <h2>Example 2: <code>ex2_a_cpp_class.hpp</code></h2>
-<p><code>C++_EXAMPLES/N0_from_c_to_cpp/ex2_a_cpp_class.hpp</code></p>
+<p><code>examples/N0_from_c_to_cpp/ex2_a_cpp_class.hpp</code></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb22-2"><a aria-label="2"></a><span class="pp">#include</span><span class="im">&lt;string&gt;</span></span>
-<span id="cb22-3"><a aria-label="3"></a><span class="kw">class</span> myclass </span>
-<span id="cb22-4"><a aria-label="4"></a><span class="op">{</span></span>
-<span id="cb22-5"><a aria-label="5"></a><span class="co">//private:</span></span>
-<span id="cb22-6"><a aria-label="6"></a>  <span class="dt">int</span> a<span class="op">;</span></span>
-<span id="cb22-7"><a aria-label="7"></a>  <span class="bu">std::</span>string txt<span class="op">;</span> <span class="co">// private member (an int)</span></span>
-<span id="cb22-8"><a aria-label="8"></a>  <span class="dt">void</span> show_private<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span> <span class="co">// private method/function </span></span>
-<span id="cb22-9"><a aria-label="9"></a>    <span class="op">{</span></span>
-<span id="cb22-10"><a aria-label="10"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"no</span><span class="sc">\n</span><span class="st">!"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb22-11"><a aria-label="11"></a>    <span class="op">}</span></span>
-<span id="cb22-12"><a aria-label="12"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb22-13"><a aria-label="13"></a></span>
-<span id="cb22-14"><a aria-label="14"></a><span class="dt">void</span> show<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span></span>
-<span id="cb22-15"><a aria-label="15"></a>  <span class="op">{</span></span>
-<span id="cb22-16"><a aria-label="16"></a>    show_private<span class="op">();</span>  </span>
-<span id="cb22-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> txt <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> a <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb25-1"><a aria-label="1"></a><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb25-2"><a aria-label="2"></a><span class="pp">#include</span><span class="im">&lt;string&gt;</span></span>
+<span id="cb25-3"><a aria-label="3"></a><span class="kw">class</span> myclass </span>
+<span id="cb25-4"><a aria-label="4"></a><span class="op">{</span></span>
+<span id="cb25-5"><a aria-label="5"></a><span class="co">//private:</span></span>
+<span id="cb25-6"><a aria-label="6"></a>  <span class="dt">int</span> a<span class="op">;</span></span>
+<span id="cb25-7"><a aria-label="7"></a>  <span class="bu">std::</span>string txt<span class="op">;</span> <span class="co">// private member (an int)</span></span>
+<span id="cb25-8"><a aria-label="8"></a>  <span class="dt">void</span> show_private<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span> <span class="co">// private method/function </span></span>
+<span id="cb25-9"><a aria-label="9"></a>    <span class="op">{</span></span>
+<span id="cb25-10"><a aria-label="10"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"no</span><span class="sc">\n</span><span class="st">!"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb25-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb25-12"><a aria-label="12"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb25-13"><a aria-label="13"></a></span>
+<span id="cb25-14"><a aria-label="14"></a><span class="dt">void</span> show<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span></span>
+<span id="cb25-15"><a aria-label="15"></a>  <span class="op">{</span></span>
+<span id="cb25-16"><a aria-label="16"></a>    show_private<span class="op">();</span>  </span>
+<span id="cb25-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> txt <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> a <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-startfrom="18"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 17;"><span id="cb23-18"><a aria-label="18"></a>  <span class="op">}</span></span>
-<span id="cb23-19"><a aria-label="19"></a></span>
-<span id="cb23-20"><a aria-label="20"></a>myclass<span class="op">()</span> <span class="co">// constructor</span></span>
-<span id="cb23-21"><a aria-label="21"></a>  <span class="op">{</span></span>
-<span id="cb23-22"><a aria-label="22"></a>    <span class="co">// constructor (called when creating object)</span></span>
-<span id="cb23-23"><a aria-label="23"></a>    txt <span class="op">=</span> <span class="st">"Hallo World"</span><span class="op">;</span></span>
-<span id="cb23-24"><a aria-label="24"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Object created"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb23-25"><a aria-label="25"></a>    a<span class="op">=</span><span class="dv">2</span><span class="op">;</span></span>
-<span id="cb23-26"><a aria-label="26"></a>  <span class="op">}</span></span>
-<span id="cb23-27"><a aria-label="27"></a></span>
-<span id="cb23-28"><a aria-label="28"></a><span class="op">~</span>myclass<span class="op">()</span> <span class="co">// destructor</span></span>
-<span id="cb23-29"><a aria-label="29"></a>  <span class="op">{</span></span>
-<span id="cb23-30"><a aria-label="30"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Object destroyed"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb23-31"><a aria-label="31"></a>  <span class="op">}</span></span>
-<span id="cb23-32"><a aria-label="32"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26" data-startfrom="18"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 17;"><span id="cb26-18"><a aria-label="18"></a>  <span class="op">}</span></span>
+<span id="cb26-19"><a aria-label="19"></a></span>
+<span id="cb26-20"><a aria-label="20"></a>myclass<span class="op">()</span> <span class="co">// constructor</span></span>
+<span id="cb26-21"><a aria-label="21"></a>  <span class="op">{</span></span>
+<span id="cb26-22"><a aria-label="22"></a>    <span class="co">// constructor (called when creating object)</span></span>
+<span id="cb26-23"><a aria-label="23"></a>    txt <span class="op">=</span> <span class="st">"Hallo World"</span><span class="op">;</span></span>
+<span id="cb26-24"><a aria-label="24"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Object created"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb26-25"><a aria-label="25"></a>    a<span class="op">=</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb26-26"><a aria-label="26"></a>  <span class="op">}</span></span>
+<span id="cb26-27"><a aria-label="27"></a></span>
+<span id="cb26-28"><a aria-label="28"></a><span class="op">~</span>myclass<span class="op">()</span> <span class="co">// destructor</span></span>
+<span id="cb26-29"><a aria-label="29"></a>  <span class="op">{</span></span>
+<span id="cb26-30"><a aria-label="30"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Object destroyed"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb26-31"><a aria-label="31"></a>  <span class="op">}</span></span>
+<span id="cb26-32"><a aria-label="32"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <ul>
-<li><code>private</code> is the default in a <code>class</code> (the opposite of <code>struct</code>): <code>main</code> can call <code>C.show()</code>, but not <code>C.show_private()</code> nor read <code>C.a</code>. Try it: the compiler refuses.</li>
-<li><strong>Constructor</strong> <code>myclass()</code>: same name as the class, no return type, called when the object is created. <strong>Destructor</strong> <code>~myclass()</code>: called when it is destroyed.</li>
+<li>Data (<code>a</code>, <code>txt</code>) and functions, the <strong>methods</strong>, which use data and other methods directly (<code>show()</code> calls <code>show_private()</code>); <code>const</code>: <code>show</code> does not change the object (N1).</li>
+<li><code>private</code> is the default in a <code>class</code> (not in a <code>struct</code>): <code>main</code> can call <code>C.show()</code>, not <code>C.show_private()</code> nor read <code>C.a</code> (<code>error: 'int myclass::a' is private ...</code>).</li>
+<li><strong>Constructor</strong> <code>myclass()</code>: same name as the class, no return type, runs when the object is created; <strong>destructor</strong> <code>~myclass()</code>: runs when it is destroyed.</li>
 </ul>
 </section>
 <section id="example-2-ex2_a_cpp_class.cpp" class="slide level2 smaller">
 <h2>Example 2: <code>ex2_a_cpp_class.cpp</code></h2>
-<p><code>C++_EXAMPLES/N0_from_c_to_cpp/ex2_a_cpp_class.cpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb24-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./ex2_a_cpp_class.hpp"</span></span>
-<span id="cb24-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb24-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb24-4"><a aria-label="4"></a>  myclass C<span class="op">;</span> <span class="co">// a new type!</span></span>
-<span id="cb24-5"><a aria-label="5"></a></span>
-<span id="cb24-6"><a aria-label="6"></a></span>
-<span id="cb24-7"><a aria-label="7"></a>  C<span class="op">.</span>show<span class="op">();</span></span>
-<span id="cb24-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> ex2 ex2_a_cpp_class.cpp <span class="kw">&amp;&amp;</span> <span class="ex">./ex2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>examples/N0_from_c_to_cpp/ex2_a_cpp_class.cpp</code></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb27-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./ex2_a_cpp_class.hpp"</span></span>
+<span id="cb27-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb27-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb27-4"><a aria-label="4"></a>  myclass C<span class="op">;</span> <span class="co">// a new type!</span></span>
+<span id="cb27-5"><a aria-label="5"></a></span>
+<span id="cb27-6"><a aria-label="6"></a></span>
+<span id="cb27-7"><a aria-label="7"></a>  C<span class="op">.</span>show<span class="op">();</span></span>
+<span id="cb27-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> ex2 ex2_a_cpp_class.cpp</span>
+<span id="cb28-2"><a aria-label="2"></a><span class="ex">./ex2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>Object created
 no
 !
 Hallo World 2 
 Object destroyed</code></pre>
+</div></div>
 <ul>
+<li><code>myclass C;</code>: the class name is already a type (in C you would write <code>struct</code>). A method is called with a dot, as for the fields of a C <code>struct</code>: <code>C.show()</code>.</li>
 <li>Constructor and destructor are never called explicitly: the compiler calls them when <code>C</code> is born and when it goes out of scope (at the end of <code>main</code>).</li>
-<li>The class is in a header (<code>.hpp</code>), <code>main</code> in a <code>.cpp</code> that <code>#include</code>s it: we compile only the <code>.cpp</code>.</li>
+<li><code>"no\n!"</code> contains a newline: that is why <code>no</code> and <code>!</code> are on two lines.</li>
+<li>The class is in a header (<code>.hpp</code>), <code>main</code> in a <code>.cpp</code> that <code>#include</code>s it: we compile only the <code>.cpp</code>. <code>#include "..."</code> is for our own files (looked for first in the folder of the file), <code>#include &lt;...&gt;</code> for the standard headers.</li>
 </ul>
 </section>
 <section id="c-struct-vs-c-class" class="slide level2 smaller">
@@ -821,131 +903,138 @@ Object destroyed</code></pre>
 <div class="columns">
 <div class="column" style="width:48%;">
 <p><strong>C</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb27-1"><a aria-label="1"></a><span class="kw">struct</span> vec <span class="op">{</span></span>
-<span id="cb27-2"><a aria-label="2"></a>  <span class="dt">double</span> v<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
-<span id="cb27-3"><a aria-label="3"></a><span class="op">};</span></span>
-<span id="cb27-4"><a aria-label="4"></a></span>
-<span id="cb27-5"><a aria-label="5"></a><span class="kw">struct</span> vec sumvec<span class="op">(</span><span class="kw">struct</span> vec a<span class="op">,</span></span>
-<span id="cb27-6"><a aria-label="6"></a>                  <span class="kw">struct</span> vec b<span class="op">);</span></span>
-<span id="cb27-7"><a aria-label="7"></a></span>
-<span id="cb27-8"><a aria-label="8"></a><span class="kw">struct</span> vec a<span class="op">,</span> b<span class="op">,</span> c<span class="op">;</span></span>
-<span id="cb27-9"><a aria-label="9"></a>a<span class="op">.</span>v<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span>     <span class="co">/* direct access */</span></span>
-<span id="cb27-10"><a aria-label="10"></a>c <span class="op">=</span> sumvec<span class="op">(</span>a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb30-1"><a aria-label="1"></a><span class="kw">struct</span> vec <span class="op">{</span></span>
+<span id="cb30-2"><a aria-label="2"></a>  <span class="dt">double</span> v<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
+<span id="cb30-3"><a aria-label="3"></a><span class="op">};</span></span>
+<span id="cb30-4"><a aria-label="4"></a></span>
+<span id="cb30-5"><a aria-label="5"></a><span class="kw">struct</span> vec sumvec<span class="op">(</span><span class="kw">struct</span> vec a<span class="op">,</span></span>
+<span id="cb30-6"><a aria-label="6"></a>                  <span class="kw">struct</span> vec b<span class="op">);</span></span>
+<span id="cb30-7"><a aria-label="7"></a></span>
+<span id="cb30-8"><a aria-label="8"></a><span class="kw">struct</span> vec a<span class="op">,</span> b<span class="op">,</span> c<span class="op">;</span></span>
+<span id="cb30-9"><a aria-label="9"></a>a<span class="op">.</span>v<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span>     <span class="co">/* direct access */</span></span>
+<span id="cb30-10"><a aria-label="10"></a>c <span class="op">=</span> sumvec<span class="op">(</span>a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:52%;">
 <p><strong>C++</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb28-1"><a aria-label="1"></a><span class="kw">class</span> pvector <span class="op">{</span></span>
-<span id="cb28-2"><a aria-label="2"></a>  <span class="dt">double</span> v<span class="op">[</span><span class="dv">3</span><span class="op">];</span>     <span class="co">// private</span></span>
-<span id="cb28-3"><a aria-label="3"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb28-4"><a aria-label="4"></a>  <span class="dt">void</span> set<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">double</span> x<span class="op">);</span></span>
-<span id="cb28-5"><a aria-label="5"></a>  pvector <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> pvector<span class="op">&amp;)</span> <span class="at">const</span><span class="op">;</span></span>
-<span id="cb28-6"><a aria-label="6"></a>  <span class="co">// ...</span></span>
-<span id="cb28-7"><a aria-label="7"></a><span class="op">};</span></span>
-<span id="cb28-8"><a aria-label="8"></a></span>
-<span id="cb28-9"><a aria-label="9"></a>pvector a<span class="op">,</span> b<span class="op">,</span> c<span class="op">;</span></span>
-<span id="cb28-10"><a aria-label="10"></a>a<span class="op">.</span>set<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span>    <span class="co">// through the interface</span></span>
-<span id="cb28-11"><a aria-label="11"></a>c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span>        <span class="co">// operator overloading</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb31-1"><a aria-label="1"></a><span class="kw">class</span> pvector <span class="op">{</span></span>
+<span id="cb31-2"><a aria-label="2"></a>  <span class="dt">double</span> v<span class="op">[</span><span class="dv">3</span><span class="op">];</span>     <span class="co">// private</span></span>
+<span id="cb31-3"><a aria-label="3"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb31-4"><a aria-label="4"></a>  <span class="dt">void</span> set<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">double</span> x<span class="op">);</span></span>
+<span id="cb31-5"><a aria-label="5"></a>  <span class="co">// ... and the operator +,</span></span>
+<span id="cb31-6"><a aria-label="6"></a>  <span class="co">//     which we write in Part 3</span></span>
+<span id="cb31-7"><a aria-label="7"></a><span class="op">};</span></span>
+<span id="cb31-8"><a aria-label="8"></a></span>
+<span id="cb31-9"><a aria-label="9"></a>pvector a<span class="op">,</span> b<span class="op">,</span> c<span class="op">;</span></span>
+<span id="cb31-10"><a aria-label="10"></a>a<span class="op">.</span>set<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span>    <span class="co">// through the interface</span></span>
+<span id="cb31-11"><a aria-label="11"></a>c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span>        <span class="co">// operator overloading</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <ul>
 <li>Both define a <strong>type</strong>, and <code>a</code>, <code>b</code>, <code>c</code> are <strong>instances</strong> of it (objects).</li>
 <li>The class also contains the <strong>operations</strong>, and decides what the user can touch.</li>
 <li><code>a.v[0] = 1.0</code> on a <code>pvector</code> does not compile: <code>v</code> is private. If tomorrow we change how the data are stored, the code that uses <code>pvector</code> does not change.</li>
+<li><strong>Overloading</strong>: the same name (of a function or operator) with arguments of different types; the compiler picks the version from the types. <code>a + b</code> on two <code>pvector</code>s is an overloaded <code>+</code>. (The “pointers” of polymorphism: a later lab.)</li>
 </ul>
 </section>
 <section id="example-n1-myvec.hpp" class="slide level2 smaller codice-intero codice-mini">
 <h2>Example N1: <code>myvec.hpp</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb29-1"><a aria-label="1"></a><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb29-2"><a aria-label="2"></a><span class="kw">class</span> myvec</span>
-<span id="cb29-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb29-4"><a aria-label="4"></a>  <span class="co">// private members</span></span>
-<span id="cb29-5"><a aria-label="5"></a>  <span class="dt">int</span> v<span class="op">[</span><span class="dv">3</span><span class="op">];</span> <span class="co">// array of integers</span></span>
-<span id="cb29-6"><a aria-label="6"></a>  <span class="dt">int</span> len<span class="op">;</span> <span class="co">// allocated int</span></span>
-<span id="cb29-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb29-8"><a aria-label="8"></a>  <span class="co">// constructor</span></span>
-<span id="cb29-9"><a aria-label="9"></a>  myvec<span class="op">()</span></span>
-<span id="cb29-10"><a aria-label="10"></a>    <span class="op">{</span></span>
-<span id="cb29-11"><a aria-label="11"></a>      len<span class="op">=</span><span class="dv">3</span><span class="op">;</span></span>
-<span id="cb29-12"><a aria-label="12"></a>    <span class="op">}</span></span>
-<span id="cb29-13"><a aria-label="13"></a>  <span class="co">// destructor</span></span>
-<span id="cb29-14"><a aria-label="14"></a>  <span class="op">~</span>myvec<span class="op">()</span></span>
-<span id="cb29-15"><a aria-label="15"></a>    <span class="op">{</span></span>
-<span id="cb29-16"><a aria-label="16"></a>      <span class="co">// do nothing</span></span>
-<span id="cb29-17"><a aria-label="17"></a>    <span class="op">}</span></span>
-<span id="cb29-18"><a aria-label="18"></a></span>
-<span id="cb29-19"><a aria-label="19"></a>  <span class="co">// assign value to (i+1)-th element of the array</span></span>
-<span id="cb29-20"><a aria-label="20"></a>  <span class="dt">void</span> set<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> val<span class="op">)</span></span>
-<span id="cb29-21"><a aria-label="21"></a>    <span class="op">{</span></span>
-<span id="cb29-22"><a aria-label="22"></a>      v<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> val<span class="op">;</span></span>
-<span id="cb29-23"><a aria-label="23"></a>    <span class="op">}</span></span>
-<span id="cb29-24"><a aria-label="24"></a></span>
-<span id="cb29-25"><a aria-label="25"></a>  <span class="co">// get (i+1)-th element of array</span></span>
-<span id="cb29-26"><a aria-label="26"></a>  <span class="dt">int</span> get<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="at">const</span> <span class="co">// pass implicitly argument (*this) with const modifier, </span></span>
-<span id="cb29-27"><a aria-label="27"></a>                       <span class="co">//it means that this method does not change the state of the object</span></span>
-<span id="cb29-28"><a aria-label="28"></a>    <span class="op">{</span></span>
-<span id="cb29-29"><a aria-label="29"></a>      <span class="cf">return</span> v<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb29-30"><a aria-label="30"></a>    <span class="op">}</span></span>
-<span id="cb29-31"><a aria-label="31"></a>  <span class="co">// get actual length of array</span></span>
-<span id="cb29-32"><a aria-label="32"></a>  <span class="dt">int</span> length<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span></span>
-<span id="cb29-33"><a aria-label="33"></a>    <span class="op">{</span></span>
-<span id="cb29-34"><a aria-label="34"></a>      <span class="cf">return</span> len<span class="op">;</span></span>
-<span id="cb29-35"><a aria-label="35"></a>    <span class="op">}</span></span>
-<span id="cb29-36"><a aria-label="36"></a> <span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb32-1"><a aria-label="1"></a><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb32-2"><a aria-label="2"></a><span class="kw">class</span> myvec</span>
+<span id="cb32-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb32-4"><a aria-label="4"></a>  <span class="co">// private members</span></span>
+<span id="cb32-5"><a aria-label="5"></a>  <span class="dt">int</span> v<span class="op">[</span><span class="dv">3</span><span class="op">];</span> <span class="co">// array of integers</span></span>
+<span id="cb32-6"><a aria-label="6"></a>  <span class="dt">int</span> len<span class="op">;</span> <span class="co">// allocated int</span></span>
+<span id="cb32-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb32-8"><a aria-label="8"></a>  <span class="co">// constructor</span></span>
+<span id="cb32-9"><a aria-label="9"></a>  myvec<span class="op">()</span></span>
+<span id="cb32-10"><a aria-label="10"></a>    <span class="op">{</span></span>
+<span id="cb32-11"><a aria-label="11"></a>      len<span class="op">=</span><span class="dv">3</span><span class="op">;</span></span>
+<span id="cb32-12"><a aria-label="12"></a>    <span class="op">}</span></span>
+<span id="cb32-13"><a aria-label="13"></a>  <span class="co">// destructor</span></span>
+<span id="cb32-14"><a aria-label="14"></a>  <span class="op">~</span>myvec<span class="op">()</span></span>
+<span id="cb32-15"><a aria-label="15"></a>    <span class="op">{</span></span>
+<span id="cb32-16"><a aria-label="16"></a>      <span class="co">// do nothing</span></span>
+<span id="cb32-17"><a aria-label="17"></a>    <span class="op">}</span></span>
+<span id="cb32-18"><a aria-label="18"></a></span>
+<span id="cb32-19"><a aria-label="19"></a>  <span class="co">// assign value to (i+1)-th element of the array</span></span>
+<span id="cb32-20"><a aria-label="20"></a>  <span class="dt">void</span> set<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> val<span class="op">)</span></span>
+<span id="cb32-21"><a aria-label="21"></a>    <span class="op">{</span></span>
+<span id="cb32-22"><a aria-label="22"></a>      v<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> val<span class="op">;</span></span>
+<span id="cb32-23"><a aria-label="23"></a>    <span class="op">}</span></span>
+<span id="cb32-24"><a aria-label="24"></a></span>
+<span id="cb32-25"><a aria-label="25"></a>  <span class="co">// get (i+1)-th element of array</span></span>
+<span id="cb32-26"><a aria-label="26"></a>  <span class="dt">int</span> get<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="at">const</span> <span class="co">// pass implicitly argument (*this) with const modifier, </span></span>
+<span id="cb32-27"><a aria-label="27"></a>                       <span class="co">//it means that this method does not change the state of the object</span></span>
+<span id="cb32-28"><a aria-label="28"></a>    <span class="op">{</span></span>
+<span id="cb32-29"><a aria-label="29"></a>      <span class="cf">return</span> v<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb32-30"><a aria-label="30"></a>    <span class="op">}</span></span>
+<span id="cb32-31"><a aria-label="31"></a>  <span class="co">// get actual length of array</span></span>
+<span id="cb32-32"><a aria-label="32"></a>  <span class="dt">int</span> length<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span></span>
+<span id="cb32-33"><a aria-label="33"></a>    <span class="op">{</span></span>
+<span id="cb32-34"><a aria-label="34"></a>      <span class="cf">return</span> len<span class="op">;</span></span>
+<span id="cb32-35"><a aria-label="35"></a>    <span class="op">}</span></span>
+<span id="cb32-36"><a aria-label="36"></a> <span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="example-n1-myvec.cpp" class="slide level2 smaller codice-intero">
 <h2>Example N1: <code>myvec.cpp</code></h2>
-<p><code>C++_EXAMPLES/N1_a_first_vec_class/myvec.cpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb30-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./myvec.hpp"</span></span>
-<span id="cb30-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">**</span> argv<span class="op">)</span></span>
-<span id="cb30-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb30-4"><a aria-label="4"></a>  <span class="co">// class instantiation</span></span>
-<span id="cb30-5"><a aria-label="5"></a>  myvec v<span class="op">;</span></span>
-<span id="cb30-6"><a aria-label="6"></a></span>
-<span id="cb30-7"><a aria-label="7"></a>  <span class="co">// initialize array elements</span></span>
-<span id="cb30-8"><a aria-label="8"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> v<span class="op">.</span>length<span class="op">();</span> i<span class="op">++)</span></span>
-<span id="cb30-9"><a aria-label="9"></a>    <span class="op">{</span></span>
-<span id="cb30-10"><a aria-label="10"></a>      v<span class="op">.</span>set<span class="op">(</span>i<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
-<span id="cb30-11"><a aria-label="11"></a>    <span class="op">}</span></span>
-<span id="cb30-12"><a aria-label="12"></a>  <span class="co">// print out value of third element</span></span>
-<span id="cb30-13"><a aria-label="13"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"v[2]="</span> <span class="op">&lt;&lt;</span> v<span class="op">.</span>get<span class="op">(</span><span class="dv">2</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb30-14"><a aria-label="14"></a></span>
-<span id="cb30-15"><a aria-label="15"></a>  <span class="co">// set 2-th element  </span></span>
-<span id="cb30-16"><a aria-label="16"></a>  v<span class="op">.</span>set<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
-<span id="cb30-17"><a aria-label="17"></a></span>
-<span id="cb30-18"><a aria-label="18"></a>  <span class="co">// set 3-th element  </span></span>
-<span id="cb30-19"><a aria-label="19"></a>  v<span class="op">.</span>set<span class="op">(</span><span class="dv">2</span><span class="op">,</span> <span class="op">-</span><span class="dv">2</span><span class="op">);</span></span>
-<span id="cb30-20"><a aria-label="20"></a></span>
-<span id="cb30-21"><a aria-label="21"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"v[1]="</span> <span class="op">&lt;&lt;</span> v<span class="op">.</span>get<span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">" v[2]="</span> <span class="op">&lt;&lt;</span> v<span class="op">.</span>get<span class="op">(</span><span class="dv">2</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb30-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> myvec myvec.cpp <span class="kw">&amp;&amp;</span> <span class="ex">./myvec</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>examples/N1_a_first_vec_class/myvec.cpp</code></p>
+<div class="columns">
+<div class="column" style="width:66%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb33-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./myvec.hpp"</span></span>
+<span id="cb33-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">**</span> argv<span class="op">)</span></span>
+<span id="cb33-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb33-4"><a aria-label="4"></a>  <span class="co">// class instantiation</span></span>
+<span id="cb33-5"><a aria-label="5"></a>  myvec v<span class="op">;</span></span>
+<span id="cb33-6"><a aria-label="6"></a></span>
+<span id="cb33-7"><a aria-label="7"></a>  <span class="co">// initialize array elements</span></span>
+<span id="cb33-8"><a aria-label="8"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> v<span class="op">.</span>length<span class="op">();</span> i<span class="op">++)</span></span>
+<span id="cb33-9"><a aria-label="9"></a>    <span class="op">{</span></span>
+<span id="cb33-10"><a aria-label="10"></a>      v<span class="op">.</span>set<span class="op">(</span>i<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb33-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb33-12"><a aria-label="12"></a>  <span class="co">// print out value of third element</span></span>
+<span id="cb33-13"><a aria-label="13"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"v[2]="</span> <span class="op">&lt;&lt;</span> v<span class="op">.</span>get<span class="op">(</span><span class="dv">2</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb33-14"><a aria-label="14"></a></span>
+<span id="cb33-15"><a aria-label="15"></a>  <span class="co">// set 2-th element  </span></span>
+<span id="cb33-16"><a aria-label="16"></a>  v<span class="op">.</span>set<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb33-17"><a aria-label="17"></a></span>
+<span id="cb33-18"><a aria-label="18"></a>  <span class="co">// set 3-th element  </span></span>
+<span id="cb33-19"><a aria-label="19"></a>  v<span class="op">.</span>set<span class="op">(</span><span class="dv">2</span><span class="op">,</span> <span class="op">-</span><span class="dv">2</span><span class="op">);</span></span>
+<span id="cb33-20"><a aria-label="20"></a></span>
+<span id="cb33-21"><a aria-label="21"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"v[1]="</span> <span class="op">&lt;&lt;</span> v<span class="op">.</span>get<span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">" v[2]="</span> <span class="op">&lt;&lt;</span> v<span class="op">.</span>get<span class="op">(</span><span class="dv">2</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb33-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:34%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="dt">\</span></span>
+<span id="cb34-2"><a aria-label="2"></a>    <span class="at">-o</span> myvec myvec.cpp</span>
+<span id="cb34-3"><a aria-label="3"></a><span class="ex">./myvec</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>v[2]=0
 v[1]=1 v[2]=-2</code></pre>
+</div></div>
 <ul>
-<li><strong><code>const</code> method</strong> (<code>get</code>, <code>length</code>): it does not change the state of the object. Every method receives implicitly the object it is called on (<code>*this</code>); <code>const</code> makes it read-only.</li>
+<li><strong><code>const</code> method</strong> (<code>get</code>, <code>length</code>): it does not change the object. Every method receives implicitly the object it is called on (the <code>*this</code> of the comment, see Part 3); <code>const</code> makes it read-only. <code>argc</code>, <code>argv</code>: command line, as in C.</li>
 </ul>
 </section>
 <section id="example-n2-vecder.hpp" class="slide level2 smaller codice-intero">
 <h2>Example N2: <code>vecder.hpp</code></h2>
-<p><code>C++_EXAMPLES/N2_a_derived_vec_class/vecder.hpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb33-1"><a aria-label="1"></a><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb33-2"><a aria-label="2"></a><span class="pp">#include</span><span class="im">"../N1_a_first_vec_class/myvec.hpp"</span></span>
-<span id="cb33-3"><a aria-label="3"></a><span class="kw">class</span> vecder<span class="op">:</span> <span class="kw">public</span> myvec</span>
-<span id="cb33-4"><a aria-label="4"></a><span class="op">{</span></span>
-<span id="cb33-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span> </span>
-<span id="cb33-6"><a aria-label="6"></a>  <span class="co">// we add just a show public method to this derived class</span></span>
-<span id="cb33-7"><a aria-label="7"></a>  <span class="dt">void</span> show<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span></span>
-<span id="cb33-8"><a aria-label="8"></a>    <span class="op">{</span></span>
-<span id="cb33-9"><a aria-label="9"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"("</span><span class="op">;</span></span>
-<span id="cb33-10"><a aria-label="10"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> length<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span> </span>
-<span id="cb33-11"><a aria-label="11"></a>        <span class="co">// note that length() is a public method of base class </span></span>
-<span id="cb33-12"><a aria-label="12"></a>          <span class="op">{</span></span>
-<span id="cb33-13"><a aria-label="13"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> get<span class="op">(</span>i<span class="op">);</span> <span class="co">// get() is another public method of public class</span></span>
-<span id="cb33-14"><a aria-label="14"></a>          <span class="op">}</span></span>
-<span id="cb33-15"><a aria-label="15"></a>        <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> length<span class="op">()-</span><span class="dv">1</span><span class="op">)</span></span>
-<span id="cb33-16"><a aria-label="16"></a>          <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">","</span><span class="op">;</span></span>
-<span id="cb33-17"><a aria-label="17"></a>        <span class="cf">else</span></span>
-<span id="cb33-18"><a aria-label="18"></a>          <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">")"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb33-19"><a aria-label="19"></a>      <span class="op">}</span></span>
-<span id="cb33-20"><a aria-label="20"></a>    <span class="op">}</span></span>
-<span id="cb33-21"><a aria-label="21"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>examples/N2_a_derived_vec_class/vecder.hpp</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb36-1"><a aria-label="1"></a><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb36-2"><a aria-label="2"></a><span class="pp">#include</span><span class="im">"../N1_a_first_vec_class/myvec.hpp"</span></span>
+<span id="cb36-3"><a aria-label="3"></a><span class="kw">class</span> vecder<span class="op">:</span> <span class="kw">public</span> myvec</span>
+<span id="cb36-4"><a aria-label="4"></a><span class="op">{</span></span>
+<span id="cb36-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span> </span>
+<span id="cb36-6"><a aria-label="6"></a>  <span class="co">// we add just a show public method to this derived class</span></span>
+<span id="cb36-7"><a aria-label="7"></a>  <span class="dt">void</span> show<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span></span>
+<span id="cb36-8"><a aria-label="8"></a>    <span class="op">{</span></span>
+<span id="cb36-9"><a aria-label="9"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"("</span><span class="op">;</span></span>
+<span id="cb36-10"><a aria-label="10"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> length<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span> </span>
+<span id="cb36-11"><a aria-label="11"></a>        <span class="co">// note that length() is a public method of base class </span></span>
+<span id="cb36-12"><a aria-label="12"></a>          <span class="op">{</span></span>
+<span id="cb36-13"><a aria-label="13"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> get<span class="op">(</span>i<span class="op">);</span> <span class="co">// get() is another public method of public class</span></span>
+<span id="cb36-14"><a aria-label="14"></a>          <span class="op">}</span></span>
+<span id="cb36-15"><a aria-label="15"></a>        <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> length<span class="op">()-</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb36-16"><a aria-label="16"></a>          <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">","</span><span class="op">;</span></span>
+<span id="cb36-17"><a aria-label="17"></a>        <span class="cf">else</span></span>
+<span id="cb36-18"><a aria-label="18"></a>          <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">")"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb36-19"><a aria-label="19"></a>      <span class="op">}</span></span>
+<span id="cb36-20"><a aria-label="20"></a>    <span class="op">}</span></span>
+<span id="cb36-21"><a aria-label="21"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><strong>Inheritance</strong> — <code>class vecder: public myvec</code>: <code>vecder</code> inherits everything from <code>myvec</code>, and its public interface stays public; it adds the method <code>show()</code>.</li>
 <li>Writing <code>v[i]</code> in <code>show()</code> would not compile: <code>v</code> is <strong>private</strong> in <code>myvec</code>, not even a derived class sees it. The way out (<code>protected</code>) is for next lab.</li>
@@ -953,21 +1042,22 @@ v[1]=1 v[2]=-2</code></pre>
 </section>
 <section id="example-n2-vecder.cpp" class="slide level2 smaller codice-intero">
 <h2>Example N2: <code>vecder.cpp</code></h2>
-<p><code>C++_EXAMPLES/N2_a_derived_vec_class/vecder.cpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb34-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./vecder.hpp"</span></span>
-<span id="cb34-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">**</span> argv<span class="op">)</span></span>
-<span id="cb34-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb34-4"><a aria-label="4"></a>  vecder vd<span class="op">;</span></span>
-<span id="cb34-5"><a aria-label="5"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> vd<span class="op">.</span>length<span class="op">();</span> i<span class="op">++)</span></span>
-<span id="cb34-6"><a aria-label="6"></a>    <span class="op">{</span></span>
-<span id="cb34-7"><a aria-label="7"></a>      vd<span class="op">.</span>set<span class="op">(</span>i<span class="op">,</span> i<span class="op">);</span> <span class="co">// initialize elements of vector vd</span></span>
-<span id="cb34-8"><a aria-label="8"></a>    <span class="op">}</span></span>
-<span id="cb34-9"><a aria-label="9"></a>  vd<span class="op">.</span>show<span class="op">();</span> <span class="co">// show content of vector vd</span></span>
-<span id="cb34-10"><a aria-label="10"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> vecder vecder.cpp <span class="kw">&amp;&amp;</span> <span class="ex">./vecder</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>examples/N2_a_derived_vec_class/vecder.cpp</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb37-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./vecder.hpp"</span></span>
+<span id="cb37-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">**</span> argv<span class="op">)</span></span>
+<span id="cb37-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb37-4"><a aria-label="4"></a>  vecder vd<span class="op">;</span></span>
+<span id="cb37-5"><a aria-label="5"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> vd<span class="op">.</span>length<span class="op">();</span> i<span class="op">++)</span></span>
+<span id="cb37-6"><a aria-label="6"></a>    <span class="op">{</span></span>
+<span id="cb37-7"><a aria-label="7"></a>      vd<span class="op">.</span>set<span class="op">(</span>i<span class="op">,</span> i<span class="op">);</span> <span class="co">// initialize elements of vector vd</span></span>
+<span id="cb37-8"><a aria-label="8"></a>    <span class="op">}</span></span>
+<span id="cb37-9"><a aria-label="9"></a>  vd<span class="op">.</span>show<span class="op">();</span> <span class="co">// show content of vector vd</span></span>
+<span id="cb37-10"><a aria-label="10"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> vecder vecder.cpp <span class="kw">&amp;&amp;</span> <span class="ex">./vecder</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>(0,1,2)</code></pre>
 <ul>
 <li><code>set()</code> and <code>length()</code> come from the base class <code>myvec</code>, <code>show()</code> from <code>vecder</code>.</li>
+<li><code>vecder</code> has no constructor: the one generated by the compiler calls <code>myvec()</code> first, which sets <code>len=3</code>. The base part is always built first.</li>
 </ul>
 </section></section>
 <section>
@@ -979,94 +1069,123 @@ v[1]=1 v[2]=-2</code></pre>
 <h2>The task</h2>
 <p>Write <strong>from scratch</strong> an efficient class for vectors, with methods and overloaded operators: <code>pvector.hpp</code> (the class) and <code>pvector.cpp</code> (a <code>main</code> to test it), in the folder <code>project/</code> of <code>project_classes.zip</code> (course page).</p>
 <p>The header begins with a <strong>TODO list</strong>: <code>[*]</code> = to do <strong>today</strong>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb37-1"><a aria-label="1"></a><span class="co">// [*] standard constructor/destructor</span></span>
-<span id="cb37-2"><a aria-label="2"></a><span class="co">// [ ] constructor (with overloading-&gt;initializer_list)        &lt;- not today</span></span>
-<span id="cb37-3"><a aria-label="3"></a><span class="co">// [*] show()</span></span>
-<span id="cb37-4"><a aria-label="4"></a><span class="co">// [*] overloading of = assignment</span></span>
-<span id="cb37-5"><a aria-label="5"></a><span class="co">// [*] overloading of + operator for addition of vectors</span></span>
-<span id="cb37-6"><a aria-label="6"></a><span class="co">// [*] overloading of - operator for substraction of vectors</span></span>
-<span id="cb37-7"><a aria-label="7"></a><span class="co">// [*] sum() method to sum two vectors</span></span>
-<span id="cb37-8"><a aria-label="8"></a><span class="co">// [*] get( ) (get i-th element)</span></span>
-<span id="cb37-9"><a aria-label="9"></a><span class="co">// [*] set( , ) (set i-th element)</span></span>
-<span id="cb37-10"><a aria-label="10"></a><span class="co">// [ ] overloading of += and -= operators with vectors          &lt;- next labs</span></span>
-<span id="cb37-11"><a aria-label="11"></a><span class="co">// [ ] overloading of * operator for scalar product ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb40-1"><a aria-label="1"></a><span class="co">// [*] standard constructor/destructor</span></span>
+<span id="cb40-2"><a aria-label="2"></a><span class="co">// [ ] constructor (with overloading-&gt;initializer_list)        &lt;- not today</span></span>
+<span id="cb40-3"><a aria-label="3"></a><span class="co">// [*] show()</span></span>
+<span id="cb40-4"><a aria-label="4"></a><span class="co">// [*] overloading of = assignment</span></span>
+<span id="cb40-5"><a aria-label="5"></a><span class="co">// [*] overloading of + operator for addition of vectors</span></span>
+<span id="cb40-6"><a aria-label="6"></a><span class="co">// [*] overloading of - operator for substraction of vectors</span></span>
+<span id="cb40-7"><a aria-label="7"></a><span class="co">// [*] sum() method to sum two vectors</span></span>
+<span id="cb40-8"><a aria-label="8"></a><span class="co">// [*] get( ) (get i-th element)</span></span>
+<span id="cb40-9"><a aria-label="9"></a><span class="co">// [*] set( , ) (set i-th element)</span></span>
+<span id="cb40-10"><a aria-label="10"></a><span class="co">// [ ] overloading of += and -= operators with vectors          &lt;- next labs</span></span>
+<span id="cb40-11"><a aria-label="11"></a><span class="co">// [ ] overloading of * operator for scalar product ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The skeleton already contains all the signatures, and <code>operator=</code> is implemented: your job is to fill the empty bodies.</p>
+</section>
+<section id="include-and-the-header-guard" class="slide level2 smaller">
+<h2><code>#include</code> and the header guard</h2>
+<p><code>pvector.hpp</code> begins and ends like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb41-1"><a aria-label="1"></a><span class="pp">#ifndef _PVECTOR_      </span><span class="co">// if the macro _PVECTOR_ is not defined yet...</span></span>
+<span id="cb41-2"><a aria-label="2"></a><span class="pp">#define _PVECTOR_      </span><span class="co">// ...define it, and read the rest of the file</span></span>
+<span id="cb41-3"><a aria-label="3"></a><span class="op">...</span></span>
+<span id="cb41-4"><a aria-label="4"></a><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span><span class="pp"> </span><span class="co">// input/output</span></span>
+<span id="cb41-5"><a aria-label="5"></a><span class="pp">#include</span><span class="im">&lt;cmath&gt;</span></span>
+<span id="cb41-6"><a aria-label="6"></a><span class="pp">#include</span><span class="im">&lt;string&gt;</span></span>
+<span id="cb41-7"><a aria-label="7"></a><span class="op">...</span></span>
+<span id="cb41-8"><a aria-label="8"></a><span class="kw">class</span> pvector</span>
+<span id="cb41-9"><a aria-label="9"></a><span class="op">{</span> <span class="op">...</span> <span class="op">};</span></span>
+<span id="cb41-10"><a aria-label="10"></a><span class="pp">#endif                 </span><span class="co">// end of the #ifndef</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>#include</code> is a <strong>preprocessor</strong> directive: before compiling, the content of the header is copied in its place. <code>&lt;iostream&gt;</code> gives <code>std::cout</code>, <code>&lt;string&gt;</code> gives <code>std::string</code>, <code>&lt;cmath&gt;</code> the math functions (<code>sqrt</code>, … for <code>norm()</code> later).</li>
+<li><code>#ifndef</code>, <code>#define</code>, <code>#endif</code> are also preprocessor directives: together they form the <strong>header guard</strong>, next slide.</li>
+</ul>
+</section>
+<section id="why-the-header-guard" class="slide level2 smaller">
+<h2>Why the header guard</h2>
+<ul>
+<li>A class may be defined <strong>only once</strong> in each <code>.cpp</code>. If a <code>.cpp</code> includes the same header twice, also through another header, the class is defined twice. Example N2 without guards: <code>vecder.hpp</code> already includes <code>myvec.hpp</code>, so a <code>main</code> that includes both stops with <code>error: redefinition of 'class myvec'</code>.</li>
+<li>The <strong>header guard</strong> prevents it: the first time <code>_PVECTOR_</code> is not defined, so the file is read and the macro defined; the second time everything between <code>#ifndef</code> and <code>#endif</code> is skipped. Each header needs its own name.</li>
+</ul>
 </section>
 <section id="the-skeleton-nt-and-ntype" class="slide level2 smaller">
 <h2>The skeleton: <code>NT</code> and <code>ntype</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-25"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-25-1" class="code-annotation-target"><a href="#annotated-cell-25-1" aria-label="1"></a><span class="pp">#define NT </span><span class="dv">3</span><span class="pp">                </span><span class="co">// STRATEGIES TO MAKE CLASS GENERIC</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-25-2" class="code-annotation-target"><a href="#annotated-cell-25-2" aria-label="2"></a><span class="co">//constexpr int NT=3;</span></span>
-<span id="annotated-cell-25-3"><a href="#annotated-cell-25-3" aria-label="3"></a></span>
-<span id="annotated-cell-25-4"><a href="#annotated-cell-25-4" aria-label="4"></a><span class="co">//typedef float ntype;      // as in C</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-25-5" class="code-annotation-target"><a href="#annotated-cell-25-5" aria-label="5"></a><span class="kw">using</span> ntype<span class="op">=</span><span class="dt">double</span><span class="op">;</span></span>
-<span id="annotated-cell-25-6"><a href="#annotated-cell-25-6" aria-label="6"></a></span>
-<span id="annotated-cell-25-7"><a href="#annotated-cell-25-7" aria-label="7"></a><span class="kw">class</span> pvector</span>
-<span id="annotated-cell-25-8"><a href="#annotated-cell-25-8" aria-label="8"></a><span class="op">{</span></span>
-<span id="annotated-cell-25-9"><a href="#annotated-cell-25-9" aria-label="9"></a>  ntype v<span class="op">[</span>NT<span class="op">];</span>              <span class="co">// private member: the NT components</span></span>
-<span id="annotated-cell-25-10"><a href="#annotated-cell-25-10" aria-label="10"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-25-11"><a href="#annotated-cell-25-11" aria-label="11"></a>  <span class="op">...</span></span>
-<span id="annotated-cell-25-12"><a href="#annotated-cell-25-12" aria-label="12"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-1" class="code-annotation-target"><a href="#annotated-cell-20-1" aria-label="1"></a><span class="pp">#define NT </span><span class="dv">3</span><span class="pp">                </span><span class="co">// STRATEGIES TO MAKE CLASS GENERIC</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-20-2" class="code-annotation-target"><a href="#annotated-cell-20-2" aria-label="2"></a><span class="co">//constexpr int NT=3;</span></span>
+<span id="annotated-cell-20-3"><a href="#annotated-cell-20-3" aria-label="3"></a></span>
+<span id="annotated-cell-20-4"><a href="#annotated-cell-20-4" aria-label="4"></a><span class="co">//typedef float ntype;      // as in C</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-20-5" class="code-annotation-target"><a href="#annotated-cell-20-5" aria-label="5"></a><span class="kw">using</span> ntype<span class="op">=</span><span class="dt">double</span><span class="op">;</span></span>
+<span id="annotated-cell-20-6"><a href="#annotated-cell-20-6" aria-label="6"></a></span>
+<span id="annotated-cell-20-7"><a href="#annotated-cell-20-7" aria-label="7"></a><span class="kw">class</span> pvector</span>
+<span id="annotated-cell-20-8"><a href="#annotated-cell-20-8" aria-label="8"></a><span class="op">{</span></span>
+<span id="annotated-cell-20-9"><a href="#annotated-cell-20-9" aria-label="9"></a>  ntype v<span class="op">[</span>NT<span class="op">];</span>              <span class="co">// private member: the NT components</span></span>
+<span id="annotated-cell-20-10"><a href="#annotated-cell-20-10" aria-label="10"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-20-11"><a href="#annotated-cell-20-11" aria-label="11"></a>  <span class="op">...</span></span>
+<span id="annotated-cell-20-12"><a href="#annotated-cell-20-12" aria-label="12"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-25" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-25" data-code-lines="1" data-code-annotation="1">A <strong>macro</strong>: the preprocessor replaces the text <code>NT</code> with <code>3</code> before compiling. No type, no scope.</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="1" data-code-annotation="1">A <strong>macro</strong>: the preprocessor replaces the text <code>NT</code> with <code>3</code> before compiling. No type, no scope.</span>
 </dd>
-<dt data-target-cell="annotated-cell-25" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-25" data-code-lines="2" data-code-annotation="2"><code>constexpr</code>: a typed constant that the compiler can <strong>compute at compile time</strong> — so it can size an array. In C++ it is the preferred way.</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="2" data-code-annotation="2"><code>constexpr</code>: a typed constant that the compiler can <strong>compute at compile time</strong> — so it can size an array. In C++ it is the preferred way.</span>
 </dd>
-<dt data-target-cell="annotated-cell-25" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-25" data-code-lines="5" data-code-annotation="3"><code>using</code> defines an <strong>alias</strong> of a type, exactly like <code>typedef</code>. Change this single line to <code>float</code> and the whole class works in single precision.</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="5" data-code-annotation="3"><code>using</code> defines an <strong>alias</strong> of a type, exactly like <code>typedef</code>. Change this single line to <code>float</code> and the whole class works in single precision.</span>
 </dd>
 </dl>
 <ul>
-<li>Dimension and type are fixed in one place each: with <code>NT=2</code> you get vectors in the plane, with no other change.</li>
+<li>Dimension and type are fixed in one place each: with <code>NT</code> equal to <code>2</code> you get vectors in the plane, with no other change in the class.</li>
 <li>In a few labs <strong>templates</strong> will make both parameters of the class itself: <code>pvector&lt;double,3&gt;</code>, <code>pvector&lt;float,2&gt;</code>.</li>
 </ul>
 </section>
 <section id="constructors-and-destructor" class="slide level2 smaller">
 <h2>Constructors and destructor</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb38-1"><a aria-label="1"></a>pvector<span class="op">()</span>  <span class="op">{</span> <span class="op">...</span> <span class="op">}</span>   <span class="co">// void constructor: pvector P;</span></span>
-<span id="cb38-2"><a aria-label="2"></a><span class="op">~</span>pvector<span class="op">()</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span>   <span class="co">// destructor</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb42-1"><a aria-label="1"></a>pvector<span class="op">()</span>  <span class="op">{</span> <span class="op">...</span> <span class="op">}</span>   <span class="co">// void constructor: pvector P;</span></span>
+<span id="cb42-2"><a aria-label="2"></a><span class="op">~</span>pvector<span class="op">()</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span>   <span class="co">// destructor</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li><p>Today the <strong>void constructor</strong> is the only way to create a <code>pvector</code>: it runs every time you write <code>pvector P;</code>, and it must leave the vector in a <strong>known state</strong>. (A local <code>double v[3]</code> in C contains garbage!)</p></li>
+<li><p>The <strong>void constructor</strong> (also called <em>default constructor</em>) is the only constructor you write today: it runs every time you write <code>pvector P;</code>, and it must leave the vector in a <strong>known state</strong>. Without it the components would contain garbage, like a local <code>double v[3]</code> in C.</p></li>
 <li><p>Initialize the <code>NT</code> components with values of your choice — not necessarily zero: all <code>0</code>, <code>v[i] = i</code>, … Then change them with <code>set()</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb39-1"><a aria-label="1"></a>pvector<span class="op">()</span>                 <span class="co">// void constructor</span></span>
-<span id="cb39-2"><a aria-label="2"></a>  <span class="op">{</span></span>
-<span id="cb39-3"><a aria-label="3"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb39-4"><a aria-label="4"></a>      v<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="op">...;</span>         <span class="co">// a value of your choice</span></span>
-<span id="cb39-5"><a aria-label="5"></a>  <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb43-1"><a aria-label="1"></a>pvector<span class="op">()</span>                 <span class="co">// void constructor</span></span>
+<span id="cb43-2"><a aria-label="2"></a>  <span class="op">{</span></span>
+<span id="cb43-3"><a aria-label="3"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb43-4"><a aria-label="4"></a>      v<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="op">...;</span>         <span class="co">// a value of your choice</span></span>
+<span id="cb43-5"><a aria-label="5"></a>  <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>The <strong>destructor</strong> has nothing to do here: <code>v</code> is a fixed-size array, it disappears with the object. Leave it empty (we will need it when we allocate memory dynamically).</p></li>
 </ul>
 </section>
 <section id="show-default-arguments-and-const" class="slide level2 smaller">
 <h2><code>show()</code>: default arguments and <code>const</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb40-1"><a aria-label="1"></a><span class="co">// Note this method does not change data of object hence it is declared "const"</span></span>
-<span id="cb40-2"><a aria-label="2"></a><span class="dt">void</span> show<span class="op">(</span><span class="bu">std::</span>string s<span class="op">=</span><span class="st">""</span><span class="op">)</span> <span class="at">const</span>    <span class="co">// default argument</span></span>
-<span id="cb40-3"><a aria-label="3"></a>  <span class="op">{</span></span>
-<span id="cb40-4"><a aria-label="4"></a>    <span class="op">...</span>   <span class="co">// print s, then (v[0],v[1],v[2])</span></span>
-<span id="cb40-5"><a aria-label="5"></a>  <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb41-1"><a aria-label="1"></a>V<span class="op">.</span>show<span class="op">(</span><span class="st">"V="</span><span class="op">);</span>   <span class="co">// V=(1,2,3)</span></span>
-<span id="cb41-2"><a aria-label="2"></a>V<span class="op">.</span>show<span class="op">();</span>       <span class="co">// (1,2,3)      s takes the default value ""</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb44-1"><a aria-label="1"></a><span class="co">// Note this method does not change data of object hence it is declared "const"</span></span>
+<span id="cb44-2"><a aria-label="2"></a><span class="dt">void</span> show<span class="op">(</span><span class="bu">std::</span>string s<span class="op">=</span><span class="st">""</span><span class="op">)</span> <span class="at">const</span>    <span class="co">// default argument</span></span>
+<span id="cb44-3"><a aria-label="3"></a>  <span class="op">{</span></span>
+<span id="cb44-4"><a aria-label="4"></a>    <span class="op">...</span>   <span class="co">// print s, then (v[0],v[1],v[2])</span></span>
+<span id="cb44-5"><a aria-label="5"></a>  <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb45-1"><a aria-label="1"></a>V<span class="op">.</span>show<span class="op">(</span><span class="st">"V="</span><span class="op">);</span>   <span class="co">// V=(1,2,3)    for a vector V with components 1, 2, 3</span></span>
+<span id="cb45-2"><a aria-label="2"></a>V<span class="op">.</span>show<span class="op">();</span>       <span class="co">// (1,2,3)      s takes the default value ""</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><p><strong>Default argument</strong>: if the caller omits it, <code>s</code> is <code>""</code>.</p></li>
 <li><p><strong><code>const</code> method</strong>: it only <em>reads</em> the object. The compiler checks it (assigning <code>v[i]</code> inside <code>show()</code> is an error), and only <code>const</code> methods can be called on a <code>const</code> object:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb42-1"><a aria-label="1"></a><span class="at">const</span> pvector PC<span class="op">;</span></span>
-<span id="cb42-2"><a aria-label="2"></a>PC<span class="op">.</span>show<span class="op">(</span><span class="st">"PC="</span><span class="op">);</span>   <span class="co">// compiles only because show() is const</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb46-1"><a aria-label="1"></a><span class="at">const</span> pvector PC<span class="op">;</span></span>
+<span id="cb46-2"><a aria-label="2"></a>PC<span class="op">.</span>show<span class="op">(</span><span class="st">"PC="</span><span class="op">);</span>   <span class="co">// compiles only because show() is const</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Use <code>std::cout</code> with a loop over the <code>NT</code> components, and a comma between them.</p></li>
 </ul>
 </section>
 <section id="arguments-passed-by-reference" class="slide level2 smaller">
 <h2>Arguments passed by reference</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb43-1"><a aria-label="1"></a><span class="dt">void</span> twice_val<span class="op">(</span><span class="dt">int</span> x<span class="op">)</span>  <span class="op">{</span> x <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>x<span class="op">;</span> <span class="op">}</span>   <span class="co">// by value: x is a COPY, the caller sees nothing</span></span>
-<span id="cb43-2"><a aria-label="2"></a><span class="dt">void</span> twice_ref<span class="op">(</span><span class="dt">int</span> <span class="op">&amp;</span>x<span class="op">)</span> <span class="op">{</span> x <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>x<span class="op">;</span> <span class="op">}</span>   <span class="co">// by reference: x is an alias of the argument</span></span>
-<span id="cb43-3"><a aria-label="3"></a></span>
-<span id="cb43-4"><a aria-label="4"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
-<span id="cb43-5"><a aria-label="5"></a>twice_val<span class="op">(</span>a<span class="op">);</span>   <span class="co">// a is still 3</span></span>
-<span id="cb43-6"><a aria-label="6"></a>twice_ref<span class="op">(</span>a<span class="op">);</span>   <span class="co">// a is now 6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb47-1"><a aria-label="1"></a><span class="dt">void</span> twice_val<span class="op">(</span><span class="dt">int</span> x<span class="op">)</span>  <span class="op">{</span> x <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>x<span class="op">;</span> <span class="op">}</span>   <span class="co">// by value: x is a COPY, the caller sees nothing</span></span>
+<span id="cb47-2"><a aria-label="2"></a><span class="dt">void</span> twice_ref<span class="op">(</span><span class="dt">int</span> <span class="op">&amp;</span>x<span class="op">)</span> <span class="op">{</span> x <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>x<span class="op">;</span> <span class="op">}</span>   <span class="co">// by reference: x is an alias of the argument</span></span>
+<span id="cb47-3"><a aria-label="3"></a></span>
+<span id="cb47-4"><a aria-label="4"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb47-5"><a aria-label="5"></a>twice_val<span class="op">(</span>a<span class="op">);</span>   <span class="co">// a is still 3</span></span>
+<span id="cb47-6"><a aria-label="6"></a>twice_ref<span class="op">(</span>a<span class="op">);</span>   <span class="co">// a is now 6     (no &amp; in the call)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>In a declaration <code>int &amp;x</code> means <strong>reference</strong>; in an expression <code>&amp;a</code> is still, as in C, the address of <code>a</code>.</li>
+</ul>
 <p>In the class all the vector arguments are passed as <strong><code>const pvector&amp;</code></strong>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb44-1"><a aria-label="1"></a>pvector <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span> <span class="at">const</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb48-1"><a aria-label="1"></a>pvector sum<span class="op">(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span> <span class="at">const</span>    <span class="co">// the first const protects V2,</span></span>
+<span id="cb48-2"><a aria-label="2"></a>                                        <span class="co">// the last one the object (const method)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><strong><code>&amp;</code></strong>: no copy of the object (for a vector of 3 doubles it is cheap, but think of a configuration of <span class="math inline">\(10^5\)</span> particles…).</li>
 <li><strong><code>const</code></strong>: the method promises not to modify <code>V2</code>; the compiler enforces it.</li>
@@ -1076,32 +1195,33 @@ v[1]=1 v[2]=-2</code></pre>
 <section id="operator-and-this" class="slide level2 smaller">
 <h2><code>operator=</code> and <code>this</code></h2>
 <p>The one method already implemented in the skeleton:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-31"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-31-1" class="code-annotation-target"><a href="#annotated-cell-31-1" aria-label="1"></a>pvector<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span>   <span class="co">// A = B  is  A.operator=(B)</span></span>
-<span id="annotated-cell-31-2"><a href="#annotated-cell-31-2" aria-label="2"></a>  <span class="op">{</span></span>
-<span id="annotated-cell-31-3"><a href="#annotated-cell-31-3" aria-label="3"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="annotated-cell-31-4"><a href="#annotated-cell-31-4" aria-label="4"></a>      v<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> V2<span class="op">.</span>v<span class="op">[</span>i<span class="op">];</span>                   <span class="co">// v[i] is A's, V2.v[i] is B's</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-31-5" class="code-annotation-target"><a href="#annotated-cell-31-5" aria-label="5"></a>    <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span><span class="op">);</span></span>
-<span id="annotated-cell-31-6"><a href="#annotated-cell-31-6" aria-label="6"></a>  <span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-26"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><a class="code-annotation-anchor" data-target-cell="annotated-cell-26" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-26-1" class="code-annotation-target"><a href="#annotated-cell-26-1" aria-label="1"></a>pvector<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span>   <span class="co">// A = B  is  A.operator=(B)</span></span>
+<span id="annotated-cell-26-2"><a href="#annotated-cell-26-2" aria-label="2"></a>  <span class="op">{</span></span>
+<span id="annotated-cell-26-3"><a href="#annotated-cell-26-3" aria-label="3"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="annotated-cell-26-4"><a href="#annotated-cell-26-4" aria-label="4"></a>      v<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> V2<span class="op">.</span>v<span class="op">[</span>i<span class="op">];</span>                   <span class="co">// v[i] is A's, V2.v[i] is B's</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-26" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-26-5" class="code-annotation-target"><a href="#annotated-cell-26-5" aria-label="5"></a>    <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span><span class="op">);</span></span>
+<span id="annotated-cell-26-6"><a href="#annotated-cell-26-6" aria-label="6"></a>  <span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-31" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-26" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-31" data-code-lines="1" data-code-annotation="1"><code>A = B</code> is just a nicer way to write the method call <code>A.operator=(B)</code>: <code>A</code> is the object the method acts on, <code>B</code> the argument.</span>
+<span data-code-cell="annotated-cell-26" data-code-lines="1" data-code-annotation="1"><code>A = B</code> is just a nicer way to write the method call <code>A.operator=(B)</code>: <code>A</code> is the object the method acts on, <code>B</code> the argument.</span>
 </dd>
-<dt data-target-cell="annotated-cell-31" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-26" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-31" data-code-lines="5" data-code-annotation="2"><code>this</code> is the address of the object the method has been called on (<code>A</code>); <code>*this</code> is the object itself. <code>v[i]</code> is a shorthand for <code>(*this).v[i]</code>.</span>
+<span data-code-cell="annotated-cell-26" data-code-lines="5" data-code-annotation="2"><code>this</code> is a pointer: the address of the object the method has been called on (<code>A</code>). As in C, <code>*</code> applied to an address gives the object, so <code>*this</code> is <code>A</code> itself. <code>v[i]</code> is a shorthand for <code>(*this).v[i]</code>.</span>
 </dd>
 </dl>
 <ul>
-<li>It returns <strong>a reference to <code>A</code> itself</strong> (<code>pvector&amp;</code>), not a copy: so <code>A = B = C;</code> works, as for <code>double</code> — it is <code>A = (B = C)</code>.</li>
+<li>It returns <strong><code>A</code> itself by reference</strong> (<code>pvector&amp;</code>): <code>A = B = C;</code> works as for <code>double</code> — it is <code>A = (B = C)</code> — and no copy of the vector is made.</li>
 <li>It is not <code>const</code>: it changes the object.</li>
+<li>Even without writing it, <code>A = B</code> works: the compiler generates a copy member by member, as for C <code>struct</code>s. We write it to see how an operator is defined.</li>
 </ul>
 </section>
 <section id="sum-operator-and-operator-" class="slide level2 smaller scrollable">
 <h2><code>sum()</code>, <code>operator+</code> and <code>operator-</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb45-1"><a aria-label="1"></a>pvector sum<span class="op">(</span><span class="at">const</span> pvector <span class="op">&amp;</span>V2<span class="op">)</span> <span class="at">const</span>      <span class="co">// C = A.sum(B)</span></span>
-<span id="cb45-2"><a aria-label="2"></a>pvector <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span> <span class="at">const</span> <span class="co">// C = A + B   is   C = A.operator+(B)</span></span>
-<span id="cb45-3"><a aria-label="3"></a>pvector <span class="kw">operator</span><span class="op">-(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span> <span class="at">const</span> <span class="co">// C = A - B</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb49-1"><a aria-label="1"></a>pvector sum<span class="op">(</span><span class="at">const</span> pvector <span class="op">&amp;</span>V2<span class="op">)</span> <span class="at">const</span>      <span class="co">// C = A.sum(B)</span></span>
+<span id="cb49-2"><a aria-label="2"></a>pvector <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span> <span class="at">const</span> <span class="co">// C = A + B   is   C = A.operator+(B)</span></span>
+<span id="cb49-3"><a aria-label="3"></a>pvector <span class="kw">operator</span><span class="op">-(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span> <span class="at">const</span> <span class="co">// C = A - B</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Recipe, the same for the three:</p>
 <ol type="1">
 <li>create a local vector <code>VT</code>;</li>
@@ -1116,24 +1236,24 @@ v[1]=1 v[2]=-2</code></pre>
 </section>
 <section id="get-and-set" class="slide level2 smaller">
 <h2><code>get()</code> and <code>set()</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb46-1"><a aria-label="1"></a>ntype get<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="at">const</span>          <span class="co">// returns the i-th component</span></span>
-<span id="cb46-2"><a aria-label="2"></a>ntype set<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> ntype val<span class="op">)</span>     <span class="co">// sets the i-th component to val</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb50-1"><a aria-label="1"></a>ntype get<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="at">const</span>          <span class="co">// returns the i-th component</span></span>
+<span id="cb50-2"><a aria-label="2"></a>ntype set<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> ntype val<span class="op">)</span>     <span class="co">// sets the i-th component to val</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>get</code> is <code>const</code>, <code>set</code> is not: why?</li>
 <li><code>set</code> in the skeleton returns an <code>ntype</code>: return <code>val</code> (or change it to <code>void</code>, as in <code>myvec</code>).</li>
 <li>Components are numbered from <code>0</code> to <code>NT-1</code>, as in C. Nothing checks the index: <code>get(3)</code> reads outside the array (undefined behaviour).</li>
 </ul>
-<div title="Compile with -Wall while you work">
+<div title="Read the warnings">
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Compile with -Wall while you work</strong></p>
+<p><strong>Read the warnings</strong></p>
 </div>
 <div class="callout-content">
-<p>The empty bodies of the skeleton <strong>compile</strong>: a method that should return a value and has no <code>return</code> is accepted, and its result is garbage (<em>undefined behaviour</em>). With <code>-Wall</code> the compiler tells you: <code>warning: no return statement in function returning non-void [-Wreturn-type]</code>.</p>
+<p>The empty bodies of the skeleton <strong>compile</strong>: for a method that should return a value and has no <code>return</code> the compiler only warns <code>no return statement in function returning non-void [-Wreturn-type]</code>. But when the program calls it, it crashes (<code>Illegal instruction</code>) or worse (<em>undefined behaviour</em>): fill a method before testing it.</p>
 </div>
 </div>
 </div>
@@ -1142,36 +1262,36 @@ v[1]=1 v[2]=-2</code></pre>
 <section id="the-main-pvector.cpp" class="slide level2 smaller">
 <h2>The <code>main</code>: <code>pvector.cpp</code></h2>
 <p>The skeleton only declares three vectors. Test every method, for example:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb47-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./pvector.hpp"</span></span>
-<span id="cb47-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb47-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb47-4"><a aria-label="4"></a>  pvector A<span class="op">,</span> B<span class="op">,</span> C<span class="op">;</span>     <span class="co">// the void constructor runs for the three vectors</span></span>
-<span id="cb47-5"><a aria-label="5"></a>  C<span class="op">.</span>show<span class="op">(</span><span class="st">"C="</span><span class="op">);</span>        <span class="co">// the values set by pvector()</span></span>
-<span id="cb47-6"><a aria-label="6"></a></span>
-<span id="cb47-7"><a aria-label="7"></a>  A<span class="op">.</span>set<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span>  A<span class="op">.</span>set<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span>   A<span class="op">.</span>set<span class="op">(</span><span class="dv">2</span><span class="op">,</span> <span class="fl">3.0</span><span class="op">);</span></span>
-<span id="cb47-8"><a aria-label="8"></a>  B<span class="op">.</span>set<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">0.5</span><span class="op">);</span>  B<span class="op">.</span>set<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">);</span>  B<span class="op">.</span>set<span class="op">(</span><span class="dv">2</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
-<span id="cb47-9"><a aria-label="9"></a>  A<span class="op">.</span>show<span class="op">(</span><span class="st">"A="</span><span class="op">);</span></span>
-<span id="cb47-10"><a aria-label="10"></a>  B<span class="op">.</span>show<span class="op">(</span><span class="st">"B="</span><span class="op">);</span></span>
-<span id="cb47-11"><a aria-label="11"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A(1)="</span> <span class="op">&lt;&lt;</span> A<span class="op">.</span>get<span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb47-12"><a aria-label="12"></a></span>
-<span id="cb47-13"><a aria-label="13"></a>  C <span class="op">=</span> A <span class="op">+</span> B<span class="op">;</span>      C<span class="op">.</span>show<span class="op">(</span><span class="st">"A+B="</span><span class="op">);</span></span>
-<span id="cb47-14"><a aria-label="14"></a>  C <span class="op">=</span> A <span class="op">-</span> B<span class="op">;</span>      C<span class="op">.</span>show<span class="op">(</span><span class="st">"A-B="</span><span class="op">);</span></span>
-<span id="cb47-15"><a aria-label="15"></a>  C <span class="op">=</span> A<span class="op">.</span>sum<span class="op">(</span>B<span class="op">);</span>   C<span class="op">.</span>show<span class="op">(</span><span class="st">"A.sum(B)="</span><span class="op">);</span></span>
-<span id="cb47-16"><a aria-label="16"></a></span>
-<span id="cb47-17"><a aria-label="17"></a>  pvector E<span class="op">,</span> F<span class="op">;</span></span>
-<span id="cb47-18"><a aria-label="18"></a>  E <span class="op">=</span> F <span class="op">=</span> A<span class="op">;</span>      <span class="co">// chained assignment: operator= returns pvector&amp;</span></span>
-<span id="cb47-19"><a aria-label="19"></a>  E<span class="op">.</span>show<span class="op">(</span><span class="st">"E="</span><span class="op">);</span></span>
-<span id="cb47-20"><a aria-label="20"></a></span>
-<span id="cb47-21"><a aria-label="21"></a>  <span class="at">const</span> pvector PC<span class="op">;</span></span>
-<span id="cb47-22"><a aria-label="22"></a>  PC<span class="op">.</span>show<span class="op">(</span><span class="st">"PC="</span><span class="op">);</span>   <span class="co">// ok only because show() is const</span></span>
-<span id="cb47-23"><a aria-label="23"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb47-24"><a aria-label="24"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb51-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./pvector.hpp"</span></span>
+<span id="cb51-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb51-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb51-4"><a aria-label="4"></a>  pvector A<span class="op">,</span> B<span class="op">,</span> C<span class="op">;</span>     <span class="co">// the void constructor runs for the three vectors</span></span>
+<span id="cb51-5"><a aria-label="5"></a>  C<span class="op">.</span>show<span class="op">(</span><span class="st">"C="</span><span class="op">);</span>        <span class="co">// the values set by pvector()</span></span>
+<span id="cb51-6"><a aria-label="6"></a></span>
+<span id="cb51-7"><a aria-label="7"></a>  A<span class="op">.</span>set<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span>  A<span class="op">.</span>set<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span>   A<span class="op">.</span>set<span class="op">(</span><span class="dv">2</span><span class="op">,</span> <span class="fl">3.0</span><span class="op">);</span></span>
+<span id="cb51-8"><a aria-label="8"></a>  B<span class="op">.</span>set<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">0.5</span><span class="op">);</span>  B<span class="op">.</span>set<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">);</span>  B<span class="op">.</span>set<span class="op">(</span><span class="dv">2</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
+<span id="cb51-9"><a aria-label="9"></a>  A<span class="op">.</span>show<span class="op">(</span><span class="st">"A="</span><span class="op">);</span></span>
+<span id="cb51-10"><a aria-label="10"></a>  B<span class="op">.</span>show<span class="op">(</span><span class="st">"B="</span><span class="op">);</span></span>
+<span id="cb51-11"><a aria-label="11"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A(1)="</span> <span class="op">&lt;&lt;</span> A<span class="op">.</span>get<span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb51-12"><a aria-label="12"></a></span>
+<span id="cb51-13"><a aria-label="13"></a>  C <span class="op">=</span> A <span class="op">+</span> B<span class="op">;</span>      C<span class="op">.</span>show<span class="op">(</span><span class="st">"A+B="</span><span class="op">);</span></span>
+<span id="cb51-14"><a aria-label="14"></a>  C <span class="op">=</span> A <span class="op">-</span> B<span class="op">;</span>      C<span class="op">.</span>show<span class="op">(</span><span class="st">"A-B="</span><span class="op">);</span></span>
+<span id="cb51-15"><a aria-label="15"></a>  C <span class="op">=</span> A<span class="op">.</span>sum<span class="op">(</span>B<span class="op">);</span>   C<span class="op">.</span>show<span class="op">(</span><span class="st">"A.sum(B)="</span><span class="op">);</span></span>
+<span id="cb51-16"><a aria-label="16"></a></span>
+<span id="cb51-17"><a aria-label="17"></a>  pvector E<span class="op">,</span> F<span class="op">;</span></span>
+<span id="cb51-18"><a aria-label="18"></a>  E <span class="op">=</span> F <span class="op">=</span> A<span class="op">;</span>      <span class="co">// chained assignment: operator= returns pvector&amp;</span></span>
+<span id="cb51-19"><a aria-label="19"></a>  E<span class="op">.</span>show<span class="op">(</span><span class="st">"E="</span><span class="op">);</span></span>
+<span id="cb51-20"><a aria-label="20"></a></span>
+<span id="cb51-21"><a aria-label="21"></a>  <span class="at">const</span> pvector PC<span class="op">;</span></span>
+<span id="cb51-22"><a aria-label="22"></a>  PC<span class="op">.</span>show<span class="op">(</span><span class="st">"PC="</span><span class="op">);</span>   <span class="co">// ok only because show() is const</span></span>
+<span id="cb51-23"><a aria-label="23"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb51-24"><a aria-label="24"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="compile-run-compare" class="slide level2 smaller">
 <h2>Compile, run, compare</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
-<span id="cb48-2"><a aria-label="2"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> pvector pvector.cpp</span>
-<span id="cb48-3"><a aria-label="3"></a><span class="ex">./pvector</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
+<span id="cb52-2"><a aria-label="2"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> pvector pvector.cpp</span>
+<span id="cb52-3"><a aria-label="3"></a><span class="ex">./pvector</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Expected output, if <code>pvector()</code> sets all components to <code>0</code> (otherwise <code>C=</code> and <code>PC=</code> show the values you chose):</p>
 <pre><code>C=(0,0,0)
 A=(1,2,3)
@@ -1190,12 +1310,12 @@ PC=(0,0,0)</code></pre>
 <section id="classic-pitfalls" class="slide level2 smaller">
 <h2>Classic pitfalls</h2>
 <ul>
-<li><strong><code>;</code> after the class</strong>: <code>class pvector { ... };</code> — without it the error appears in the <em>next</em> line, often in another file.</li>
-<li><strong><code>pvector P();</code> is not an object</strong>: it declares a <em>function</em> <code>P</code> returning a <code>pvector</code>. Write <code>pvector P;</code> (or <code>pvector P{};</code>).</li>
-<li><strong>Returning a reference to a local object</strong> in <code>operator+</code>: it compiles (with a warning) and gives garbage.</li>
-<li><strong>Missing <code>const</code></strong> on <code>show()</code> or <code>get()</code>: then they cannot be called on a <code>const pvector</code>, nor on an argument <code>const pvector&amp; V2</code>.</li>
-<li><strong>Missing <code>return</code></strong> in a non-void method: see <code>-Wall</code>.</li>
-<li><strong>Header guard</strong>: <code>#ifndef _PVECTOR_ / #define _PVECTOR_ / ... #endif</code> stops the class from being defined twice when the header is included more than once.</li>
+<li><strong><code>;</code> after the class</strong>: <code>class pvector { ... };</code>. Without it: <code>error: expected ';' after class definition</code>.</li>
+<li><strong><code>pvector P();</code> is not an object</strong>: it declares a <em>function</em> <code>P</code> returning a <code>pvector</code>. Write <code>pvector P;</code>.</li>
+<li><strong>Returning a reference to a local object</strong> in <code>operator+</code>: it compiles with a warning (<code>reference to local variable 'VT' returned</code>), then with <code>g++</code> it usually crashes (<code>Segmentation fault</code>): undefined behaviour.</li>
+<li><strong>Missing <code>const</code></strong> on <code>show()</code> or <code>get()</code>: then they cannot be called on a <code>const pvector</code>, nor on an argument <code>const pvector&amp; V2</code>: <code>passing 'const pvector' as 'this' argument discards qualifiers</code>.</li>
+<li><strong>Missing <code>return</code></strong> in a non-void method: only a warning, then a crash (see <code>get()</code> and <code>set()</code>).</li>
+<li><strong>Header guard</strong> missing, or with the name already used by another header: <code>error: redefinition of 'class ...'</code> as soon as the header is included twice.</li>
 </ul>
 </section>
 <section id="checklist-for-today" class="slide level2 smaller scrollable">
