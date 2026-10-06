@@ -343,7 +343,7 @@ Cristiano De Michele
 <section id="lobiettivo-matematico" class="slide level2 smaller">
 <h2>L’obiettivo matematico</h2>
 <p>Il nostro obiettivo diventa: <strong>trovare i pesi <span class="math inline">\(\mathbf{W}^{(\ell)}\)</span> e i bias <span class="math inline">\(\mathbf{b}^{(\ell)}\)</span> che rendono <span class="math inline">\(E\)</span> il più piccolo possibile.</strong> (Non zero: una rete che azzera l’errore sui dati di addestramento di solito ha solo imparato a memoria — ne riparleremo col <em>test set</em>.)</p>
-<p>Una rete con 100 strati può avere <span class="math inline">\(10^7\)</span> pesi, e <span class="math display">\[ E = E\!\left(\mathbf{W}^{(1)}, \dots, \mathbf{W}^{(100)}\right) \]</span> è una superficie in uno spazio a dieci milioni di dimensioni.</p>
+<p>Una rete con 100 strati può avere <span class="math inline">\(10^7\)</span> parametri fra pesi e bias, e <span class="math display">\[ E = E\!\left(\mathbf{W}^{(1)}, \dots, \mathbf{W}^{(100)},\ \mathbf{b}^{(1)}, \dots, \mathbf{b}^{(100)}\right) \]</span> è una superficie in uno spazio a dieci milioni di dimensioni.</p>
 <p>Come se ne trova un minimo?</p>
 </section>
 <section id="lescursionista-bendato" class="slide level2 smaller">
