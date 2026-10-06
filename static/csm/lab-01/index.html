@@ -483,7 +483,7 @@ Cristiano De Michele
 <h2>Inside Ubuntu: the compiler</h2>
 <p>From the Ubuntu terminal (the same commands on a native Ubuntu/Debian machine):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a aria-label="1"></a><span class="fu">sudo</span> apt update</span>
-<span id="cb4-2"><a aria-label="2"></a><span class="fu">sudo</span> apt install build-essential gdb    <span class="co"># g++, gcc, make, the C/C++ headers, the debugger</span></span>
+<span id="cb4-2"><a aria-label="2"></a><span class="fu">sudo</span> apt install build-essential gdb unzip   <span class="co"># g++, gcc, make, C/C++ headers, debugger, unzip</span></span>
 <span id="cb4-3"><a aria-label="3"></a><span class="ex">g++</span> <span class="at">--version</span>                           <span class="co"># check</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>On <strong>macOS</strong> the compiler comes with the Xcode command line tools:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a aria-label="1"></a><span class="ex">xcode-select</span> <span class="at">--install</span></span>
@@ -494,10 +494,11 @@ Cristiano De Michele
 <section id="wsl-where-to-keep-your-files" class="slide level2 smaller">
 <h2>WSL: where to keep your files</h2>
 <ul>
-<li><p>Work in your <strong>Linux home</strong>, e.g.&nbsp;<code>~/csm/lab01</code>, not on the Windows disk <code>/mnt/c/...</code>: compiling and running from <code>/mnt/c</code> is much slower.</p></li>
-<li><p>From Linux, the Windows disk is under <code>/mnt/c</code>. To copy the lab files you downloaded with the browser:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a aria-label="1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/csm/lab01</span>
-<span id="cb6-2"><a aria-label="2"></a><span class="fu">cp</span> /mnt/c/Users/<span class="op">&lt;</span>your Windows user<span class="op">&gt;</span>/Downloads/pvector.<span class="pp">*</span> ~/csm/lab01/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Work in your <strong>Linux home</strong>, e.g.&nbsp;<code>~/csm</code>, not on the Windows disk <code>/mnt/c/...</code>: compiling and running from <code>/mnt/c</code> is much slower.</p></li>
+<li><p>From Linux, the Windows disk is under <code>/mnt/c</code>. To unpack the zips you downloaded with the browser from the course page:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a aria-label="1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/csm <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> ~/csm</span>
+<span id="cb6-2"><a aria-label="2"></a><span class="fu">unzip</span> /mnt/c/Users/<span class="op">&lt;</span>your Windows user<span class="op">&gt;</span>/Downloads/project_classes.zip   <span class="co"># -&gt; ~/csm/project</span></span>
+<span id="cb6-3"><a aria-label="3"></a><span class="fu">unzip</span> /mnt/c/Users/<span class="op">&lt;</span>your Windows user<span class="op">&gt;</span>/Downloads/cpp_examples.zip     <span class="co"># -&gt; ~/csm/C++_EXAMPLES</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>From Windows, the Linux files are in the <strong>Linux</strong> entry of File Explorer, or at <code>\\wsl.localhost\Ubuntu\home\&lt;your Linux user&gt;</code>.</p></li>
 <li><p>Quick trick: <code>explorer.exe .</code> opens the current Linux folder in File Explorer.</p></li>
 </ul>
@@ -508,7 +509,7 @@ Cristiano De Michele
 <ul>
 <li><p>Install it <strong>on Windows</strong> (not inside Ubuntu), then add the <strong>WSL</strong> extension (Microsoft).</p></li>
 <li><p>From the Ubuntu terminal, inside your project folder:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/lab01</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
 <span id="cb7-2"><a aria-label="2"></a><span class="ex">code</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The first time it installs its server inside Linux; the window then works directly on the Linux files (bottom left: <em>WSL: Ubuntu</em>).</p></li>
 <li><p>Install the <strong>C/C++</strong> extension (Microsoft) <em>in WSL</em>: syntax highlighting, completion, errors while you type.</p></li>
@@ -976,7 +977,7 @@ v[1]=1 v[2]=-2</code></pre>
 </section>
 <section id="the-task" class="slide level2 smaller">
 <h2>The task</h2>
-<p>Write <strong>from scratch</strong> an efficient class for vectors, with methods and overloaded operators: <code>LABWORK_2026-27/pvector.hpp</code> (the class) and <code>pvector.cpp</code> (a <code>main</code> to test it).</p>
+<p>Write <strong>from scratch</strong> an efficient class for vectors, with methods and overloaded operators: <code>pvector.hpp</code> (the class) and <code>pvector.cpp</code> (a <code>main</code> to test it), in the folder <code>project/</code> of <code>project_classes.zip</code> (course page).</p>
 <p>The header begins with a <strong>TODO list</strong>: <code>[*]</code> = to do <strong>today</strong>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb37-1"><a aria-label="1"></a><span class="co">// [*] standard constructor/destructor</span></span>
 <span id="cb37-2"><a aria-label="2"></a><span class="co">// [ ] constructor (with overloading-&gt;initializer_list)        &lt;- not today</span></span>
@@ -1168,7 +1169,7 @@ v[1]=1 v[2]=-2</code></pre>
 </section>
 <section id="compile-run-compare" class="slide level2 smaller">
 <h2>Compile, run, compare</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/lab01</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
 <span id="cb48-2"><a aria-label="2"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> pvector pvector.cpp</span>
 <span id="cb48-3"><a aria-label="3"></a><span class="ex">./pvector</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Expected output, if <code>pvector()</code> sets all components to <code>0</code> (otherwise <code>C=</code> and <code>PC=</code> show the values you chose):</p>
