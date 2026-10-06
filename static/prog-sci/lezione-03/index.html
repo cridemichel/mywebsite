@@ -421,12 +421,12 @@ Cristiano De Michele
 <h2>Passo <span class="passo">1</span>: i gradienti</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><span class="math inline">\(E\)</span> dipende da <span class="math inline">\(w^{(\ell)}_{jk}\)</span> e <span class="math inline">\(b^{(\ell)}_j\)</span> <strong>solo</strong> attraverso <span class="math inline">\(z^{(\ell)}_j\)</span>, l’unica pre-attivazione in cui compaiono:</p>
+<p><span class="math inline">\(E\)</span> dipende da <span class="math inline">\(w^{(\ell)}_{jk}\)</span> e <span class="math inline">\(b^{(\ell)}_j\)</span> <strong>solo</strong> attraverso <span class="math inline">\(z^{(\ell)}_j\)</span>, l’unica in cui compaiono:</p>
 <p><span class="math display">\[ \begin{aligned}
 \frac{\partial E}{\partial w^{(\ell)}_{jk}} &amp;= \frac{\partial E}{\partial z^{(\ell)}_j}\,\frac{\partial z^{(\ell)}_j}{\partial w^{(\ell)}_{jk}} = \delta^{(\ell)}_j\, a^{(\ell-1)}_k , \\
 \frac{\partial E}{\partial b^{(\ell)}_j} &amp;= \frac{\partial E}{\partial z^{(\ell)}_j}\,\frac{\partial z^{(\ell)}_j}{\partial b^{(\ell)}_j} = \delta^{(\ell)}_j ,
 \end{aligned} \]</span></p>
-<p>perché in <span class="math inline">\(z^{(\ell)}_j = \sum_k w^{(\ell)}_{jk} a^{(\ell-1)}_k + b^{(\ell)}_j \cdot 1\)</span>, <span class="math inline">\(w_{jk}\)</span> moltiplica solo <span class="math inline">\(a_k\)</span> e <span class="math inline">\(b_j\)</span> moltiplica <span class="math inline">\(1\)</span>.</p>
+<p>perché in <span class="math inline">\(z^{(\ell)}_j = \sum_m w^{(\ell)}_{jm} a^{(\ell-1)}_m + b^{(\ell)}_j \cdot 1\)</span>, per <span class="math inline">\(w_{jk}\)</span> conta solo il termine <span class="math inline">\(m = k\)</span>, e <span class="math inline">\(b_j\)</span> moltiplica <span class="math inline">\(1\)</span>.</p>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
