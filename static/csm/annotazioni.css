@@ -115,3 +115,11 @@
   transform: translateX(-50%);
   bottom: 1.3em;
 }
+
+/* Sorgenti degli esempi riportati per intero (lab-01, 6/10/2026): codice un po'
+   piu' piccolo, cosi' un file da ~30 righe sta in una colonna o in una slide. */
+.reveal .codice-intero pre code { font-size: 0.82em; }
+.reveal .codice-intero .columns .column pre { margin-top: 0.2em; }
+/* Il sorgente deve vedersi TUTTO, senza scorrere dentro il riquadro. */
+.reveal .codice-intero pre, .reveal .codice-intero pre code { max-height: none; }
+.reveal .codice-mini pre code { font-size: 0.78em; }
