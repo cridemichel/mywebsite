@@ -364,6 +364,19 @@ Cristiano De Michele
 <h2>La discesa del gradiente: visualizzazione</h2>
 
 <img data-src="images/gradient_descent.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>Per riprodurla: <span class="math inline">\(E(\theta) = \theta^2 + \tfrac12\)</span>, partenza <span class="math inline">\(\theta_0 = 3\)</span>, passo <span class="math inline">\(\theta_{t+1} = \theta_t - \eta\, E'(\theta_t) = (1 - 2\eta)\,\theta_t\)</span>. Per quali <span class="math inline">\(\eta\)</span> converge? È il quesito 1.</p>
+<aside class="notes">
+<p>Nella parabola <span class="math inline">\(\eta = 0{,}05\)</span> e <span class="math inline">\(\eta = 0{,}95\)</span> fanno scendere <span class="math inline">\(E\)</span> esattamente allo stesso modo, passo per passo: oscillare non costa passi in più. In un landscape non convesso invece un passo grande può saltare la barriera e finire in un altro bacino, non necessariamente migliore (a volte migliore: tende a evitare i minimi stretti). In più dimensioni le oscillazioni avvengono lungo la direzione più curva mentre lungo quelle piatte si avanza piano: è la motivazione di momentum e Adam.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="il-gradiente-negli-strati-interni" class="slide level2 smaller">
 <h2>Il gradiente negli strati interni</h2>
