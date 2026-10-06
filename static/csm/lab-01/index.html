@@ -931,7 +931,7 @@ Object destroyed</code></pre>
 <li>Both define a <strong>type</strong>, and <code>a</code>, <code>b</code>, <code>c</code> are <strong>instances</strong> of it (objects).</li>
 <li>The class also contains the <strong>operations</strong>, and decides what the user can touch.</li>
 <li><code>a.v[0] = 1.0</code> on a <code>pvector</code> does not compile: <code>v</code> is private. If tomorrow we change how the data are stored, the code that uses <code>pvector</code> does not change.</li>
-<li><strong>Overloading</strong>: the same name (of a function or operator) with arguments of different types; the compiler picks the version from the types. <code>a + b</code> on two <code>pvector</code>s is an overloaded <code>+</code>. (The “pointers” of polymorphism: a later lab.)</li>
+<li><strong>Overloading</strong>: the same name (of a function or operator) with arguments of different types; the compiler picks the version from the types. <code>a + b</code> on two <code>pvector</code>s is an overloaded <code>+</code>.</li>
 </ul>
 </section>
 <section id="example-n1-myvec.hpp" class="slide level2 smaller codice-intero codice-mini">
@@ -1068,18 +1068,21 @@ v[1]=1 v[2]=-2</code></pre>
 <section id="the-task" class="slide level2 smaller">
 <h2>The task</h2>
 <p>Write <strong>from scratch</strong> an efficient class for vectors, with methods and overloaded operators: <code>pvector.hpp</code> (the class) and <code>pvector.cpp</code> (a <code>main</code> to test it), in the folder <code>project/</code> of <code>project_classes.zip</code> (course page).</p>
-<p>The header begins with a <strong>TODO list</strong>: <code>[*]</code> = to do <strong>today</strong>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb40-1"><a aria-label="1"></a><span class="co">// [*] standard constructor/destructor</span></span>
-<span id="cb40-2"><a aria-label="2"></a><span class="co">// [ ] constructor (with overloading-&gt;initializer_list)        &lt;- not today</span></span>
-<span id="cb40-3"><a aria-label="3"></a><span class="co">// [*] show()</span></span>
-<span id="cb40-4"><a aria-label="4"></a><span class="co">// [*] overloading of = assignment</span></span>
-<span id="cb40-5"><a aria-label="5"></a><span class="co">// [*] overloading of + operator for addition of vectors</span></span>
-<span id="cb40-6"><a aria-label="6"></a><span class="co">// [*] overloading of - operator for substraction of vectors</span></span>
-<span id="cb40-7"><a aria-label="7"></a><span class="co">// [*] sum() method to sum two vectors</span></span>
-<span id="cb40-8"><a aria-label="8"></a><span class="co">// [*] get( ) (get i-th element)</span></span>
-<span id="cb40-9"><a aria-label="9"></a><span class="co">// [*] set( , ) (set i-th element)</span></span>
-<span id="cb40-10"><a aria-label="10"></a><span class="co">// [ ] overloading of += and -= operators with vectors          &lt;- next labs</span></span>
-<span id="cb40-11"><a aria-label="11"></a><span class="co">// [ ] overloading of * operator for scalar product ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The header begins with a <strong>TODO list</strong>: <code>[*]</code> = to do <strong>today</strong>, <code>[ ]</code> = next labs.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb40-1"><a aria-label="1"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> LIST:</span></span>
+<span id="cb40-2"><a aria-label="2"></a><span class="co">// * = </span><span class="al">TODO</span><span class="co">, X = done, E = exercise</span></span>
+<span id="cb40-3"><a aria-label="3"></a><span class="co">// [*] standard constructor/destructor</span></span>
+<span id="cb40-4"><a aria-label="4"></a><span class="co">// [*] constructor </span></span>
+<span id="cb40-5"><a aria-label="5"></a><span class="co">// [*] show()</span></span>
+<span id="cb40-6"><a aria-label="6"></a><span class="co">// [*] overloading of = assignment </span></span>
+<span id="cb40-7"><a aria-label="7"></a><span class="co">// [*] overloading of + operator for addition of vectors</span></span>
+<span id="cb40-8"><a aria-label="8"></a><span class="co">// [*] overloading of - operator for substraction of vectors</span></span>
+<span id="cb40-9"><a aria-label="9"></a><span class="co">// [*] sum() method to sum two vectors</span></span>
+<span id="cb40-10"><a aria-label="10"></a><span class="co">// [*] get( ) (get i-th element)</span></span>
+<span id="cb40-11"><a aria-label="11"></a><span class="co">// [*] set( , ) (set i-th element)</span></span>
+<span id="cb40-12"><a aria-label="12"></a><span class="co">// [ ] constructor with overloading-&gt;initializer_list</span></span>
+<span id="cb40-13"><a aria-label="13"></a><span class="co">// [ ] overloading of += and -= operators with vectors</span></span>
+<span id="cb40-14"><a aria-label="14"></a><span class="co">// ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The skeleton already contains all the signatures, and <code>operator=</code> is implemented: your job is to fill the empty bodies.</p>
 </section>
 <section id="include-and-the-header-guard" class="slide level2 smaller">
