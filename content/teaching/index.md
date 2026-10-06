@@ -27,6 +27,8 @@ header:
 ### COMPUTATIONAL STATISTICAL MECHANICS
 ### (first year - master in physics) 
 
+[Lab sessions: website and slides](/csm/index.html)
+
 [elearning webpage](https://elearning.uniroma1.it/course/view.php?id=7741 "elearning web page of the course") 
 
 [google classroom](https://classroom.google.com/c/ODA3MjMwMDI2Nzg1?cjc=f3wrxe7c)

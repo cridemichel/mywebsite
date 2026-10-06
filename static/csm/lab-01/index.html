@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Cristiano De Michele">
+  <title>Computational Statistical Mechanics — Lab – Lab #1</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../annotazioni.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="text/x-mathjax-config">
+  // Solo i font TeX serviti dal sito (mathjax/, 30/9/2026). Sul Mac sono installati
+  // i font STIX: MathJax li preferiva, chiedeva fonts/STIX/fontdata.js, che la copia
+  // ridotta non ha, e mostrava "Math Processing Error" (slide "Piegare lo spazio").
+  MathJax.Hub.Config({"HTML-CSS": {availableFonts: ["TeX"], preferredFont: "TeX",
+                                   webFont: "TeX", imageFont: null}});
+  </script>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
+  <style>
+  /* pulsanti "gomma" e "schermo intero" accanto a lavagna e notes canvas (29/9/2026) */
+  .reveal .slide-chalkboard-buttons .fa-eraser::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-schermo-intero::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-esci-schermo::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/></svg>')}
+  </style>
+  <script>
+  // Due pulsanti in piu' in basso a sinistra, per chi presenta dal tablet
+  // senza tastiera:
+  //  - la gomma cancella in un colpo i disegni della slide corrente, nel modo
+  //    attivo (la lavagna se e' aperta, altrimenti il notes canvas): e' il
+  //    tasto Canc. Le altre slide non si toccano;
+  //  - schermo intero, entra ed esce (il tasto F); l'icona segue lo stato.
+  window.addEventListener('load', function () {
+    var tentativi = 0;
+    (function aggiungi() {
+      var div = document.querySelector('.reveal .slide-chalkboard-buttons');
+      if (!div || typeof RevealChalkboard === 'undefined') {
+        if (++tentativi < 50) setTimeout(aggiungi, 100);
+        return;
+      }
+      if (div.querySelector('.fa-eraser')) return;
+      var span = document.createElement('span');
+      span.title = 'Cancella i disegni di questa slide (Canc)';
+      var icona = document.createElement('i');
+      icona.className = 'fas fa-eraser';
+      span.appendChild(icona);
+      span.onclick = function (ev) { ev.preventDefault(); RevealChalkboard.clear(); };
+      div.appendChild(span);
+
+      var doc = document.documentElement;
+      if (!doc.requestFullscreen) return;       // browser senza schermo intero
+      var fs = document.createElement('span');
+      var ifs = document.createElement('i');
+      fs.appendChild(ifs);
+      function aggiorna() {
+        var dentro = !!document.fullscreenElement;
+        ifs.className = 'fas ' + (dentro ? 'fa-esci-schermo' : 'fa-schermo-intero');
+        fs.title = dentro ? 'Esci dallo schermo intero (F)' : 'Schermo intero (F)';
+      }
+      fs.onclick = function (ev) {
+        ev.preventDefault();
+        if (document.fullscreenElement) document.exitFullscreen();
+        else doc.requestFullscreen().catch(function () {});
+      };
+      document.addEventListener('fullscreenchange', aggiorna);
+      aggiorna();
+      div.appendChild(fs);
+    })();
+  });
+  </script>
+  <script>
+  // Swipe a DUE dita per cambiare slide (29/9/2026). Lo swipe a un dito resta
+  // quello di reveal.js, che pero' non funziona se il dito parte su qualcosa che
+  // scorre (slide .scrollable, blocchi di codice): li' il browser si prende il
+  // gesto per lo scorrimento. Con due dita si cambia slide ovunque, anche con la
+  // matita attiva. Un pinch (dita che si allontanano) resta uno zoom.
+  (function () {
+    var SOGLIA = 60;            // px di spostamento del punto medio delle due dita
+    var g = null;               // gesto a due dita in corso
+    var tocchi = new Set();     // pointer "touch" attivi
+    var muto = false;           // da quando posi il secondo dito a quando li togli tutti
+
+    function medio(t) {
+      return { x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2,
+               d: Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) };
+    }
+    document.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) { var m = medio(e.touches); g = { x: m.x, y: m.y, d: m.d, fatto: false }; }
+      else if (e.touches.length > 2) g = null;
+    }, { capture: true, passive: true });
+
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches.length < 2) return;
+      e.stopPropagation();                      // la lavagna non disegna col secondo dito
+      if (!g || e.touches.length !== 2) return;
+      if (g.fatto) { if (e.cancelable) e.preventDefault(); return; }
+      var m = medio(e.touches), dx = m.x - g.x, dy = m.y - g.y;
+      if (Math.abs(m.d - g.d) > 0.35 * g.d) { g = null; return; }      // pinch: al browser
+      if (Math.abs(dx) > SOGLIA && Math.abs(dx) > 1.5 * Math.abs(dy)) {
+        g.fatto = true;
+        if (e.cancelable) e.preventDefault();
+        if (dx < 0) Reveal.next(); else Reveal.prev();
+      } else if (Math.abs(dy) > SOGLIA && Math.abs(dy) > 1.5 * Math.abs(dx)) {
+        g = null;                                // due dita in verticale: scorrimento
+      }
+    }, { capture: true, passive: false });
+
+    document.addEventListener('touchend', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+    document.addEventListener('touchcancel', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+
+    // reveal.js legge lo swipe dai pointer events, dito per dito: con due dita
+    // vedrebbe anche uno swipe a un dito e salterebbe due slide. Dal secondo dito
+    // in poi, e finche' non si alzano tutti, i suoi pointermove non gli arrivano.
+    function conta(e) {
+      if (e.pointerType !== 'touch') return;
+      if (e.type === 'pointerdown') { tocchi.add(e.pointerId); if (tocchi.size >= 2) muto = true; }
+      else { tocchi.delete(e.pointerId); if (tocchi.size === 0) muto = false; }
+    }
+    ['pointerdown', 'pointerup', 'pointercancel'].forEach(function (t) {
+      document.addEventListener(t, conta, true);
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch' && muto) e.stopPropagation();
+    }, true);
+  })();
+  </script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Lab #1</h1>
+  <p class="subtitle">A development environment and a first C++ class</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Cristiano De Michele
+</div>
+</div>
+</div>
+
+</section>
+<section id="today" class="slide level2 smaller scrollable">
+<h2>Today</h2>
+<p>Three hours, three parts:</p>
+<ol type="1">
+<li><strong>Set up a development environment</strong> — compiler, terminal, editor. On Windows: <strong>WSL 2</strong>, a real Linux inside Windows.</li>
+<li><strong>Introduction to C++ (part I)</strong> — the object oriented paradigm: encapsulation, polymorphism, inheritance. From C to C++ with three short examples.</li>
+<li><strong>Task: a vector class from scratch</strong> — <code>pvector.hpp</code> and its <code>main</code> in <code>pvector.cpp</code>: constructors and destructor, overloading of <code>=</code>, <code>+</code> and <code>-</code>, arguments passed by reference, <code>this</code>, <code>const</code> methods, <code>using</code> and <code>constexpr</code>.</li>
+</ol>
+<p><code>pvector</code> is the first brick of the simulation codes (Monte Carlo and Molecular Dynamics) we will write in the next labs: positions, velocities and forces of the particles will all be <code>pvector</code>s.</p>
+</section>
+<section>
+<section id="part-1-dev-environment" class="title-slide slide level1 center">
+<h1>Part 1<br>Dev environment</h1>
+
+</section>
+<section id="what-you-need" class="slide level2 smaller">
+<h2>What you need</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Linux</th>
+<th>macOS</th>
+<th>Windows</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Compiler</strong></td>
+<td><code>g++</code> (GCC)</td>
+<td><code>clang++</code> (Apple), also called as <code>g++</code></td>
+<td><code>g++</code> <strong>inside WSL 2</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Terminal</strong></td>
+<td>any</td>
+<td>Terminal / iTerm2</td>
+<td>Ubuntu (WSL) / Windows Terminal</td>
+</tr>
+<tr class="odd">
+<td><strong>Editor</strong></td>
+<td>your choice</td>
+<td>your choice</td>
+<td>VS Code + <em>WSL</em> extension</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>In this course we compile <strong>from the terminal</strong>, with one command: you see exactly what happens, and it works the same way everywhere.</li>
+<li>Any editor is fine (VS Code, vim, emacs, …): what matters is to have a C++ compiler that supports at least <strong>C++17</strong>.</li>
+<li>On Windows we do not use MinGW or Visual Studio: with WSL you get the same environment as on a Linux machine (and later the same packages, e.g.&nbsp;for the <code>molgl</code> visualizer).</li>
+</ul>
+</section>
+<section id="windows-what-is-wsl-2" class="slide level2 smaller">
+<h2>Windows: what is WSL 2</h2>
+<p><strong>WSL</strong> = <em>Windows Subsystem for Linux</em>. Version 2 runs a <strong>real Linux kernel</strong> in a lightweight virtual machine managed by Windows:</p>
+<ul>
+<li>you get a Linux distribution (Ubuntu by default) with its terminal, <code>apt</code>, <code>g++</code>, <code>make</code>, <code>gdb</code>, …</li>
+<li>no dual boot, no VirtualBox: Ubuntu is an app, it starts in a few seconds;</li>
+<li>Linux and Windows see each other’s files;</li>
+<li>graphical Linux programs open their windows on the Windows desktop (WSLg).</li>
+</ul>
+<p><strong>Requirements:</strong> Windows 11, or Windows 10 version 2004 (build 19041) or later, and <strong>hardware virtualization enabled</strong> (it usually is on recent laptops).</p>
+</section>
+<section id="installing-wsl-2" class="slide level2 smaller scrollable">
+<h2>Installing WSL 2</h2>
+<ol type="1">
+<li><p>Open <strong>PowerShell as administrator</strong> (right click on <em>Start</em> → <em>Terminal (Admin)</em>).</p></li>
+<li><p>Run</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb1-1"><a aria-label="1"></a>wsl <span class="op">--</span>install</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It enables the required Windows features, installs WSL 2 and <strong>Ubuntu</strong>.</p></li>
+<li><p><strong>Restart</strong> Windows.</p></li>
+<li><p>Open the <strong>Ubuntu</strong> app (Start menu). The first time it asks for a <strong>UNIX username and password</strong>: choose them and <em>remember the password</em>, it is the one <code>sudo</code> will ask for. While you type it nothing is shown: that is normal.</p></li>
+<li><p>Check, from PowerShell:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a aria-label="1"></a>wsl <span class="op">-</span>l <span class="op">-</span>v          <span class="co"># NAME: Ubuntu   STATE: Running   VERSION: 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+</section>
+<section id="if-something-goes-wrong" class="slide level2 smaller">
+<h2>If something goes wrong</h2>
+<ul>
+<li><p><strong><code>VERSION</code> is 1</strong> → <code>wsl --set-version Ubuntu 2</code>, and for the future <code>wsl --set-default-version 2</code>.</p></li>
+<li><p><strong>Error about virtualization</strong> (e.g.&nbsp;<code>0x80370102</code>) → enable it in the BIOS/UEFI (<em>Intel VT-x</em> or <em>AMD-V / SVM</em>), then retry.</p></li>
+<li><p><strong>Older Windows 10</strong>, <code>wsl --install</code> only prints the help → enable the two features by hand, from an administrator PowerShell, then restart and install <em>Ubuntu</em> from the Microsoft Store:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a aria-label="1"></a>dism<span class="op">.</span><span class="fu">exe</span> <span class="op">/</span>online <span class="op">/</span>enable-feature <span class="op">/</span>featurename<span class="op">:</span>Microsoft-Windows-Subsystem-Linux <span class="op">/</span>all <span class="op">/</span>norestart</span>
+<span id="cb3-2"><a aria-label="2"></a>dism<span class="op">.</span><span class="fu">exe</span> <span class="op">/</span>online <span class="op">/</span>enable-feature <span class="op">/</span>featurename<span class="op">:</span>VirtualMachinePlatform <span class="op">/</span>all <span class="op">/</span>norestart</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Keep WSL up to date: <code>wsl --update</code>; general status: <code>wsl --status</code>.</p></li>
+</ul>
+</section>
+<section id="inside-ubuntu-the-compiler" class="slide level2 smaller">
+<h2>Inside Ubuntu: the compiler</h2>
+<p>From the Ubuntu terminal (the same commands on a native Ubuntu/Debian machine):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a aria-label="1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb4-2"><a aria-label="2"></a><span class="fu">sudo</span> apt install build-essential gdb    <span class="co"># g++, gcc, make, the C/C++ headers, the debugger</span></span>
+<span id="cb4-3"><a aria-label="3"></a><span class="ex">g++</span> <span class="at">--version</span>                           <span class="co"># check</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>On <strong>macOS</strong> the compiler comes with the Xcode command line tools:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a aria-label="1"></a><span class="ex">xcode-select</span> <span class="at">--install</span></span>
+<span id="cb5-2"><a aria-label="2"></a><span class="ex">g++</span> <span class="at">--version</span>        <span class="co"># it prints "Apple clang ...": fine, g++ is an alias of clang++</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>On <strong>Fedora</strong>: <code>sudo dnf install gcc-c++ make gdb</code>.</p>
+<p>Later in the course we will also install the libraries for <code>molgl</code>, the program we use to look at the configurations (<code>freeglut</code>, <code>libpng</code>): not today.</p>
+</section>
+<section id="wsl-where-to-keep-your-files" class="slide level2 smaller">
+<h2>WSL: where to keep your files</h2>
+<ul>
+<li><p>Work in your <strong>Linux home</strong>, e.g.&nbsp;<code>~/csm/lab01</code>, not on the Windows disk <code>/mnt/c/...</code>: compiling and running from <code>/mnt/c</code> is much slower.</p></li>
+<li><p>From Linux, the Windows disk is under <code>/mnt/c</code>. To copy the lab files you downloaded with the browser:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a aria-label="1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/csm/lab01</span>
+<span id="cb6-2"><a aria-label="2"></a><span class="fu">cp</span> /mnt/c/Users/<span class="op">&lt;</span>your Windows user<span class="op">&gt;</span>/Downloads/pvector.<span class="pp">*</span> ~/csm/lab01/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>From Windows, the Linux files are in the <strong>Linux</strong> entry of File Explorer, or at <code>\\wsl.localhost\Ubuntu\home\&lt;your Linux user&gt;</code>.</p></li>
+<li><p>Quick trick: <code>explorer.exe .</code> opens the current Linux folder in File Explorer.</p></li>
+</ul>
+</section>
+<section id="the-editor-vs-code-with-wsl" class="slide level2 smaller">
+<h2>The editor: VS Code with WSL</h2>
+<p>If you do not have a favourite editor, use <strong>Visual Studio Code</strong> (free, all systems):</p>
+<ul>
+<li><p>Install it <strong>on Windows</strong> (not inside Ubuntu), then add the <strong>WSL</strong> extension (Microsoft).</p></li>
+<li><p>From the Ubuntu terminal, inside your project folder:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/lab01</span>
+<span id="cb7-2"><a aria-label="2"></a><span class="ex">code</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The first time it installs its server inside Linux; the window then works directly on the Linux files (bottom left: <em>WSL: Ubuntu</em>).</p></li>
+<li><p>Install the <strong>C/C++</strong> extension (Microsoft) <em>in WSL</em>: syntax highlighting, completion, errors while you type.</p></li>
+<li><p><em>Terminal → New Terminal</em> opens a Linux terminal inside VS Code: compile there.</p></li>
+</ul>
+</section>
+<section id="check-compile-and-run" class="slide level2 smaller">
+<h2>Check: compile and run</h2>
+<p><code>hello.cpp</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb8-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb8-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb8-4"><a aria-label="4"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Hello from C++!"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb8-5"><a aria-label="5"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-6"><a aria-label="6"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> hello hello.cpp   <span class="co"># compile</span></span>
+<span id="cb9-2"><a aria-label="2"></a><span class="ex">./hello</span>                                    <span class="co"># run: Hello from C++!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>-std=c++17</code> selects the C++ standard; <code>-o hello</code> the name of the executable.</li>
+<li><code>-Wall</code> turns on the compiler <strong>warnings</strong>: always use it. Today you will see why (an empty method that should return a value compiles, with a warning only).</li>
+<li><code>-O2</code> (optimization) will be important for the simulations, not today.</li>
+</ul>
+<p><strong>If <code>./hello</code> prints the line, the environment is ready.</strong></p>
+</section></section>
+<section>
+<section id="part-2-introduction-to-c" class="title-slide slide level1 center">
+<h1>Part 2<br>Introduction to C++</h1>
+
+</section>
+<section id="object-oriented-oo-paradigm" class="slide level2 smaller">
+<h2>Object oriented (OO) paradigm</h2>
+<p><strong>Key concepts</strong></p>
+<p><strong>Encapsulation</strong></p>
+<ul>
+<li>Separate implementation from interface.</li>
+<li>Attributes (data members) and methods (functions) can be <strong>public</strong> (→ interface) or <strong>private</strong> (→ implementation, hidden to user).</li>
+<li>No need to know/remember internals of all objects.</li>
+</ul>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p><strong>Methods/functions act on objects and return objects (as an operator does)</strong> ⇓</p>
+</div>
+</div>
+</div>
+<p><strong>Polymorphism</strong> — functions/methods can behave differently depending on the objects they act on: function overloading, operator overloading (e.g.&nbsp;<code>+</code> <code>-</code> <code>/</code> <code>*</code>), pointers.</p>
+<p><strong>Example:</strong> <span class="math inline">\(a + b\)</span> (scalars) or <span class="math inline">\(\vec a + \vec b\)</span> (vectors): operator “<code>+</code>” overloading.</p>
+<p><strong>Inheritance</strong> — in OO paradigm we have custom types called <strong>classes</strong> and we can enrich a class with more attributes and methods from base one.</p>
+</section>
+<section id="example-custom-types" class="slide level2 smaller">
+<h2>Example: custom types</h2>
+<p><strong>From a non OO language (C) to an OO language (C++)</strong></p>
+<ul>
+<li>C language can be thought as a <strong>subset</strong> of C++.</li>
+<li>In C you have objects (variables) of several different types such as <code>char</code>, <code>int</code>, <code>float</code>, <code>double</code> and operators that act on them (such as <code>++</code>, <code>--</code>, <code>+</code>, <code>*</code>, etc.).</li>
+<li>C++ introduces <strong>custom types</strong> (similar to <code>struct</code>) called <strong>“classes”</strong> and it allows operators and methods to act on them.</li>
+</ul>
+<div title="Note">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>In C you had <code>struct</code> which could embed attributes but not methods. Hence classes can be also thought as a generalization of “<code>struct</code>”.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="instantiation" class="slide level2 smaller">
+<h2>Instantiation</h2>
+<p><code>int</code>, <code>double</code>, <code>float</code> ← fundamental types of C language.</p>
+<p>If one writes</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="dt">double</span> d<span class="op">;</span>   <span class="co">// double: type/class    d: instance of class "double", i.e. an OBJECT</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Assume you have a custom type, i.e.&nbsp;a class, called <code>vector</code> which represents a vector. You can instantiate it as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a>vector v<span class="op">;</span>   <span class="co">// v is an instance of this class, i.e. an object</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If we have</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a>vector a<span class="op">,</span> b<span class="op">,</span> c<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>and we <strong>“overloaded”</strong> the operators <code>=</code> and <code>+</code>, we can write</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a aria-label="1"></a>c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-goal-of-the-first-labs" class="slide level2 smaller">
+<h2>The goal of the first labs</h2>
+<p>Similarly we can overload other operators such as <code>==</code>, <code>++</code>, <code>--</code>, <code>*</code>, <code>/</code>, <code>*=</code>, etc.</p>
+<p>And this is precisely the goal of the first part of these hands-on classes, i.e.</p>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p><strong>learn how to write your own class to handle vectors and matrices for computations.</strong></p>
+</div>
+</div>
+</div>
+</section>
+<section id="example-0-vectors-in-c" class="slide level2 smaller">
+<h2>Example 0: vectors in C</h2>
+<p><code>C++_EXAMPLES/N0_from_c_to_cpp/ex0_basic_c_types.c</code> (excerpt):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb14-1"><a aria-label="1"></a><span class="dt">double</span> d<span class="op">,</span> e<span class="op">,</span> f<span class="op">;</span>   <span class="co">/* d, e, f are instances of the type double */</span></span>
+<span id="cb14-2"><a aria-label="2"></a>d <span class="op">=</span> <span class="fl">1.2</span><span class="op">;</span></span>
+<span id="cb14-3"><a aria-label="3"></a>e <span class="op">=</span> <span class="fl">2.3</span><span class="op">;</span></span>
+<span id="cb14-4"><a aria-label="4"></a>f <span class="op">=</span> d <span class="op">+</span> e<span class="op">;</span>        <span class="co">/* for double, + is built in */</span></span>
+<span id="cb14-5"><a aria-label="5"></a></span>
+<span id="cb14-6"><a aria-label="6"></a><span class="dt">double</span> va<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.3</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">};</span></span>
+<span id="cb14-7"><a aria-label="7"></a><span class="dt">double</span> vb<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">0.2</span><span class="op">,</span> <span class="fl">0.1</span><span class="op">,</span> <span class="fl">0.4</span><span class="op">};</span></span>
+<span id="cb14-8"><a aria-label="8"></a><span class="dt">double</span> vc<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
+<span id="cb14-9"><a aria-label="9"></a><span class="co">/* vc = va + vb is not possible: an explicit loop is needed */</span></span>
+<span id="cb14-10"><a aria-label="10"></a><span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb14-11"><a aria-label="11"></a>  <span class="op">{</span></span>
+<span id="cb14-12"><a aria-label="12"></a>    vc<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> va<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> vb<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb14-13"><a aria-label="13"></a>  <span class="op">}</span></span>
+<span id="cb14-14"><a aria-label="14"></a><span class="co">/* ...and another loop (3 times!) to print va, vb and vc */</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For <code>double</code> we write <code>f = d + e</code>, for vectors we have to spell out every component, every time.</p>
+</section>
+<section id="example-1-better-with-functions" class="slide level2 smaller">
+<h2>Example 1: better, with functions</h2>
+<p><code>ex1_vec_with_funcs.c</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb15-1"><a aria-label="1"></a><span class="dt">void</span> sumvec<span class="op">(</span><span class="dt">double</span> va<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">double</span> vb<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">double</span> vc<span class="op">[</span><span class="dv">3</span><span class="op">]);</span></span>
+<span id="cb15-2"><a aria-label="2"></a><span class="dt">void</span> printvec<span class="op">(</span><span class="dt">double</span> vec<span class="op">[</span><span class="dv">3</span><span class="op">],</span> <span class="dt">char</span><span class="op">*</span> txt<span class="op">);</span></span>
+<span id="cb15-3"><a aria-label="3"></a></span>
+<span id="cb15-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb15-5"><a aria-label="5"></a><span class="op">{</span></span>
+<span id="cb15-6"><a aria-label="6"></a>  <span class="dt">double</span> va<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.3</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">},</span> vb<span class="op">[</span><span class="dv">3</span><span class="op">]={</span><span class="fl">0.2</span><span class="op">,</span> <span class="fl">0.1</span><span class="op">,</span> <span class="fl">0.4</span><span class="op">},</span> vc<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
+<span id="cb15-7"><a aria-label="7"></a>  sumvec<span class="op">(</span>va<span class="op">,</span> vb<span class="op">,</span> vc<span class="op">);</span>        <span class="co">/* vc = va + vb */</span></span>
+<span id="cb15-8"><a aria-label="8"></a>  printvec<span class="op">(</span>va<span class="op">,</span> <span class="st">"va"</span><span class="op">);</span></span>
+<span id="cb15-9"><a aria-label="9"></a>  printvec<span class="op">(</span>vb<span class="op">,</span> <span class="st">"vb"</span><span class="op">);</span></span>
+<span id="cb15-10"><a aria-label="10"></a>  printvec<span class="op">(</span>vc<span class="op">,</span> <span class="st">"vc=va+vb"</span><span class="op">);</span></span>
+<span id="cb15-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Less repetition, but <code>sumvec(va, vb, vc)</code> is not <code>vc = va + vb</code>.</li>
+<li>Data (<code>double[3]</code>) and functions acting on them live separately: nothing tells the compiler that <code>sumvec</code> belongs to “vectors”.</li>
+<li>What we want: a <strong>type</strong> <code>vector</code> that carries its data <em>and</em> its operations.</li>
+</ul>
+</section>
+<section id="example-2-a-first-c-class" class="slide level2 smaller">
+<h2>Example 2: a first C++ class</h2>
+<p><code>ex2_a_cpp_class.hpp</code> (without the <code>#include</code>s):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="kw">class</span> myclass</span>
+<span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a><span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-3" class="code-annotation-target"><a href="#annotated-cell-11-3" aria-label="3"></a>  <span class="dt">int</span> a<span class="op">;</span>              <span class="co">// private members: by default everything in a class is private</span></span>
+<span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-label="4"></a>  <span class="bu">std::</span>string txt<span class="op">;</span></span>
+<span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a>  <span class="dt">void</span> show_private<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span> <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"no!"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span> <span class="op">}</span>   <span class="co">// private method</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-11-6" class="code-annotation-target"><a href="#annotated-cell-11-6" aria-label="6"></a><span class="kw">public</span><span class="op">:</span>               <span class="co">// from here on: the interface</span></span>
+<span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-label="7"></a>  <span class="dt">void</span> show<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span></span>
+<span id="annotated-cell-11-8"><a href="#annotated-cell-11-8" aria-label="8"></a>    <span class="op">{</span></span>
+<span id="annotated-cell-11-9"><a href="#annotated-cell-11-9" aria-label="9"></a>      show_private<span class="op">();</span> <span class="co">// a method can use the private members</span></span>
+<span id="annotated-cell-11-10"><a href="#annotated-cell-11-10" aria-label="10"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> txt <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> a <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="annotated-cell-11-11"><a href="#annotated-cell-11-11" aria-label="11"></a>    <span class="op">}</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-11-12" class="code-annotation-target"><a href="#annotated-cell-11-12" aria-label="12"></a>  myclass<span class="op">()</span>           <span class="co">// constructor: called when the object is created</span></span>
+<span id="annotated-cell-11-13"><a href="#annotated-cell-11-13" aria-label="13"></a>    <span class="op">{</span> txt <span class="op">=</span> <span class="st">"Hallo World"</span><span class="op">;</span> a <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Object created"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span> <span class="op">}</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-11-14" class="code-annotation-target"><a href="#annotated-cell-11-14" aria-label="14"></a>  <span class="op">~</span>myclass<span class="op">()</span>          <span class="co">// destructor: called when the object is destroyed</span></span>
+<span id="annotated-cell-11-15"><a href="#annotated-cell-11-15" aria-label="15"></a>    <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Object destroyed"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-11-16"><a href="#annotated-cell-11-16" aria-label="16"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-11" data-code-lines="3" data-code-annotation="1">In a <code>struct</code> the default is the opposite: everything public.</span>
+</dd>
+<dt data-target-cell="annotated-cell-11" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-11" data-code-lines="6" data-code-annotation="2"><code>main</code> can call <code>C.show()</code>, but not <code>C.show_private()</code> nor read <code>C.a</code>: try it, the compiler refuses.</span>
+</dd>
+<dt data-target-cell="annotated-cell-11" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-11" data-code-lines="12" data-code-annotation="3">Same name as the class, no return type.</span>
+</dd>
+<dt data-target-cell="annotated-cell-11" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-11" data-code-lines="14" data-code-annotation="4"><code>~</code> + class name, no arguments: here it only prints, later it will free resources.</span>
+</dd>
+</dl>
+</section>
+<section id="example-2-using-the-class" class="slide level2 smaller">
+<h2>Example 2: using the class</h2>
+<p><code>ex2_a_cpp_class.cpp</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./ex2_a_cpp_class.hpp"</span></span>
+<span id="cb16-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb16-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb16-4"><a aria-label="4"></a>  myclass C<span class="op">;</span>   <span class="co">// a new type! the constructor runs here</span></span>
+<span id="cb16-5"><a aria-label="5"></a>  C<span class="op">.</span>show<span class="op">();</span></span>
+<span id="cb16-6"><a aria-label="6"></a><span class="op">}</span>              <span class="co">// C goes out of scope here: the destructor runs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> ex2 ex2_a_cpp_class.cpp <span class="kw">&amp;&amp;</span> <span class="ex">./ex2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>Object created
+no!
+Hallo World 2
+Object destroyed</code></pre>
+<ul>
+<li>We never call constructor and destructor explicitly: the compiler does it, when the object is born and when it dies.</li>
+<li>The class is in a header (<code>.hpp</code>), the <code>main</code> in a <code>.cpp</code> that <code>#include</code>s it: we compile only the <code>.cpp</code>.</li>
+</ul>
+</section>
+<section id="c-struct-vs-c-class" class="slide level2 smaller">
+<h2>C struct vs C++ class</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p><strong>C</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb19-1"><a aria-label="1"></a><span class="kw">struct</span> vec <span class="op">{</span></span>
+<span id="cb19-2"><a aria-label="2"></a>  <span class="dt">double</span> v<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
+<span id="cb19-3"><a aria-label="3"></a><span class="op">};</span></span>
+<span id="cb19-4"><a aria-label="4"></a></span>
+<span id="cb19-5"><a aria-label="5"></a><span class="kw">struct</span> vec sumvec<span class="op">(</span><span class="kw">struct</span> vec a<span class="op">,</span></span>
+<span id="cb19-6"><a aria-label="6"></a>                  <span class="kw">struct</span> vec b<span class="op">);</span></span>
+<span id="cb19-7"><a aria-label="7"></a></span>
+<span id="cb19-8"><a aria-label="8"></a><span class="kw">struct</span> vec a<span class="op">,</span> b<span class="op">,</span> c<span class="op">;</span></span>
+<span id="cb19-9"><a aria-label="9"></a>a<span class="op">.</span>v<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span>     <span class="co">/* direct access */</span></span>
+<span id="cb19-10"><a aria-label="10"></a>c <span class="op">=</span> sumvec<span class="op">(</span>a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:52%;">
+<p><strong>C++</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a><span class="kw">class</span> pvector <span class="op">{</span></span>
+<span id="cb20-2"><a aria-label="2"></a>  <span class="dt">double</span> v<span class="op">[</span><span class="dv">3</span><span class="op">];</span>     <span class="co">// private</span></span>
+<span id="cb20-3"><a aria-label="3"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb20-4"><a aria-label="4"></a>  <span class="dt">void</span> set<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">double</span> x<span class="op">);</span></span>
+<span id="cb20-5"><a aria-label="5"></a>  pvector <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> pvector<span class="op">&amp;)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb20-6"><a aria-label="6"></a>  <span class="co">// ...</span></span>
+<span id="cb20-7"><a aria-label="7"></a><span class="op">};</span></span>
+<span id="cb20-8"><a aria-label="8"></a></span>
+<span id="cb20-9"><a aria-label="9"></a>pvector a<span class="op">,</span> b<span class="op">,</span> c<span class="op">;</span></span>
+<span id="cb20-10"><a aria-label="10"></a>a<span class="op">.</span>set<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span>    <span class="co">// through the interface</span></span>
+<span id="cb20-11"><a aria-label="11"></a>c <span class="op">=</span> a <span class="op">+</span> b<span class="op">;</span>        <span class="co">// operator overloading</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<ul>
+<li>Both define a <strong>type</strong>, and <code>a</code>, <code>b</code>, <code>c</code> are <strong>instances</strong> of it (objects).</li>
+<li>The class also contains the <strong>operations</strong>, and decides what the user can touch.</li>
+<li><code>a.v[0] = 1.0</code> on a <code>pvector</code> does not compile: <code>v</code> is private. If tomorrow we change how the data are stored, the code that uses <code>pvector</code> does not change.</li>
+</ul>
+</section>
+<section id="example-n1-a-first-vector-class" class="slide level2 smaller">
+<h2>Example N1: a first vector class</h2>
+<p><code>C++_EXAMPLES/N1_a_first_vec_class/myvec.hpp</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-15"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1" aria-label="1"></a><span class="kw">class</span> myvec</span>
+<span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-label="2"></a><span class="op">{</span></span>
+<span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-label="3"></a>  <span class="dt">int</span> v<span class="op">[</span><span class="dv">3</span><span class="op">];</span>  <span class="co">// private members</span></span>
+<span id="annotated-cell-15-4"><a href="#annotated-cell-15-4" aria-label="4"></a>  <span class="dt">int</span> len<span class="op">;</span></span>
+<span id="annotated-cell-15-5"><a href="#annotated-cell-15-5" aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-15-6"><a href="#annotated-cell-15-6" aria-label="6"></a>  myvec<span class="op">()</span>  <span class="op">{</span> len<span class="op">=</span><span class="dv">3</span><span class="op">;</span> <span class="op">}</span>        <span class="co">// constructor</span></span>
+<span id="annotated-cell-15-7"><a href="#annotated-cell-15-7" aria-label="7"></a>  <span class="op">~</span>myvec<span class="op">()</span> <span class="op">{</span> <span class="op">}</span>               <span class="co">// destructor: nothing to do</span></span>
+<span id="annotated-cell-15-8"><a href="#annotated-cell-15-8" aria-label="8"></a></span>
+<span id="annotated-cell-15-9"><a href="#annotated-cell-15-9" aria-label="9"></a>  <span class="dt">void</span> set<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> val<span class="op">)</span> <span class="op">{</span> v<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> val<span class="op">;</span> <span class="op">}</span>   <span class="co">// assign the (i+1)-th element</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-15-10" class="code-annotation-target"><a href="#annotated-cell-15-10" aria-label="10"></a>  <span class="dt">int</span> get<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="at">const</span>       <span class="op">{</span> <span class="cf">return</span> v<span class="op">[</span>i<span class="op">];</span> <span class="op">}</span></span>
+<span id="annotated-cell-15-11"><a href="#annotated-cell-15-11" aria-label="11"></a>  <span class="dt">int</span> length<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span>     <span class="op">{</span> <span class="cf">return</span> len<span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-15-12"><a href="#annotated-cell-15-12" aria-label="12"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="10" data-code-annotation="1"><strong><code>const</code> method</strong>: it does not change the state of the object. Every method receives implicitly the object it is called on (<code>*this</code>); <code>const</code> makes it read-only.</span>
+</dd>
+</dl>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb21-1"><a aria-label="1"></a>myvec v<span class="op">;</span>                                          <span class="co">// instantiation</span></span>
+<span id="cb21-2"><a aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> v<span class="op">.</span>length<span class="op">();</span> i<span class="op">++)</span> v<span class="op">.</span>set<span class="op">(</span>i<span class="op">,</span> <span class="dv">0</span><span class="op">);</span>   <span class="co">// initialize the elements</span></span>
+<span id="cb21-3"><a aria-label="3"></a>v<span class="op">.</span>set<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span>  v<span class="op">.</span>set<span class="op">(</span><span class="dv">2</span><span class="op">,</span> <span class="op">-</span><span class="dv">2</span><span class="op">);</span></span>
+<span id="cb21-4"><a aria-label="4"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"v[1]="</span> <span class="op">&lt;&lt;</span> v<span class="op">.</span>get<span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">" v[2]="</span> <span class="op">&lt;&lt;</span> v<span class="op">.</span>get<span class="op">(</span><span class="dv">2</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span>   <span class="co">// v[1]=1 v[2]=-2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="example-n2-inheritance" class="slide level2 smaller">
+<h2>Example N2: inheritance</h2>
+<p><code>C++_EXAMPLES/N2_a_derived_vec_class/vecder.hpp</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-17"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-label="1"></a><span class="pp">#include </span><span class="im">"../N1_a_first_vec_class/myvec.hpp"</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-17-2" class="code-annotation-target"><a href="#annotated-cell-17-2" aria-label="2"></a><span class="kw">class</span> vecder<span class="op">:</span> <span class="kw">public</span> myvec    <span class="co">// vecder inherits everything from myvec</span></span>
+<span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-label="3"></a><span class="op">{</span></span>
+<span id="annotated-cell-17-4"><a href="#annotated-cell-17-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-label="5"></a>  <span class="dt">void</span> show<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span>       <span class="co">// ...and adds one public method</span></span>
+<span id="annotated-cell-17-6"><a href="#annotated-cell-17-6" aria-label="6"></a>    <span class="op">{</span></span>
+<span id="annotated-cell-17-7"><a href="#annotated-cell-17-7" aria-label="7"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"("</span><span class="op">;</span></span>
+<span id="annotated-cell-17-8"><a href="#annotated-cell-17-8" aria-label="8"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> length<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="annotated-cell-17-9"><a href="#annotated-cell-17-9" aria-label="9"></a>        <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-17-10" class="code-annotation-target"><a href="#annotated-cell-17-10" aria-label="10"></a>          <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> get<span class="op">(</span>i<span class="op">);</span>           <span class="co">// length() and get() are public methods of the base class</span></span>
+<span id="annotated-cell-17-11"><a href="#annotated-cell-17-11" aria-label="11"></a>          <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> length<span class="op">()-</span><span class="dv">1</span><span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">","</span><span class="op">;</span></span>
+<span id="annotated-cell-17-12"><a href="#annotated-cell-17-12" aria-label="12"></a>          <span class="cf">else</span>                <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">")"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="annotated-cell-17-13"><a href="#annotated-cell-17-13" aria-label="13"></a>        <span class="op">}</span></span>
+<span id="annotated-cell-17-14"><a href="#annotated-cell-17-14" aria-label="14"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-17-15"><a href="#annotated-cell-17-15" aria-label="15"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-17" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-17" data-code-lines="2" data-code-annotation="1"><code>public</code> inheritance: the public interface of <code>myvec</code> stays public in <code>vecder</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-17" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-17" data-code-lines="10" data-code-annotation="2">Writing <code>v[i]</code> here would not compile: <code>v</code> is <strong>private</strong> in <code>myvec</code>, not even a derived class sees it. The way out (<code>protected</code>) is for next lab.</span>
+</dd>
+</dl>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a>vecder vd<span class="op">;</span></span>
+<span id="cb22-2"><a aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> vd<span class="op">.</span>length<span class="op">();</span> i<span class="op">++)</span> vd<span class="op">.</span>set<span class="op">(</span>i<span class="op">,</span> i<span class="op">);</span>   <span class="co">// set() comes from myvec</span></span>
+<span id="cb22-3"><a aria-label="3"></a>vd<span class="op">.</span>show<span class="op">();</span>                                         <span class="co">// (0,1,2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section></section>
+<section>
+<section id="part-3-the-class-pvector" class="title-slide slide level1 center">
+<h1>Part 3<br>The class <code>pvector</code></h1>
+
+</section>
+<section id="the-task" class="slide level2 smaller">
+<h2>The task</h2>
+<p>Write <strong>from scratch</strong> an efficient class for vectors, with methods and overloaded operators: <code>LABWORK_2026-27/pvector.hpp</code> (the class) and <code>pvector.cpp</code> (a <code>main</code> to test it).</p>
+<p>The header begins with a <strong>TODO list</strong>: <code>[*]</code> = to do <strong>today</strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb23-1"><a aria-label="1"></a><span class="co">// [*] standard constructor/destructor</span></span>
+<span id="cb23-2"><a aria-label="2"></a><span class="co">// [*] constructor (with overloading-&gt;initializer_list)</span></span>
+<span id="cb23-3"><a aria-label="3"></a><span class="co">// [*] show()</span></span>
+<span id="cb23-4"><a aria-label="4"></a><span class="co">// [*] overloading of = assignment</span></span>
+<span id="cb23-5"><a aria-label="5"></a><span class="co">// [*] overloading of + operator for addition of vectors</span></span>
+<span id="cb23-6"><a aria-label="6"></a><span class="co">// [*] overloading of - operator for substraction of vectors</span></span>
+<span id="cb23-7"><a aria-label="7"></a><span class="co">// [*] sum() method to sum two vectors</span></span>
+<span id="cb23-8"><a aria-label="8"></a><span class="co">// [*] get( ) (get i-th element)</span></span>
+<span id="cb23-9"><a aria-label="9"></a><span class="co">// [*] set( , ) (set i-th element)</span></span>
+<span id="cb23-10"><a aria-label="10"></a><span class="co">// [ ] overloading of += and -= operators with vectors          &lt;- next labs</span></span>
+<span id="cb23-11"><a aria-label="11"></a><span class="co">// [ ] overloading of * operator for scalar product ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The skeleton already contains all the signatures, and <code>operator=</code> is implemented: your job is to fill the empty bodies.</p>
+</section>
+<section id="the-skeleton-nt-and-ntype" class="slide level2 smaller">
+<h2>The skeleton: <code>NT</code> and <code>ntype</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-1" class="code-annotation-target"><a href="#annotated-cell-20-1" aria-label="1"></a><span class="pp">#define NT </span><span class="dv">3</span><span class="pp">                </span><span class="co">// STRATEGIES TO MAKE CLASS GENERIC</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-20-2" class="code-annotation-target"><a href="#annotated-cell-20-2" aria-label="2"></a><span class="co">//constexpr int NT=3;</span></span>
+<span id="annotated-cell-20-3"><a href="#annotated-cell-20-3" aria-label="3"></a></span>
+<span id="annotated-cell-20-4"><a href="#annotated-cell-20-4" aria-label="4"></a><span class="co">//typedef float ntype;      // as in C</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-20-5" class="code-annotation-target"><a href="#annotated-cell-20-5" aria-label="5"></a><span class="kw">using</span> ntype<span class="op">=</span><span class="dt">double</span><span class="op">;</span></span>
+<span id="annotated-cell-20-6"><a href="#annotated-cell-20-6" aria-label="6"></a></span>
+<span id="annotated-cell-20-7"><a href="#annotated-cell-20-7" aria-label="7"></a><span class="kw">class</span> pvector</span>
+<span id="annotated-cell-20-8"><a href="#annotated-cell-20-8" aria-label="8"></a><span class="op">{</span></span>
+<span id="annotated-cell-20-9"><a href="#annotated-cell-20-9" aria-label="9"></a>  ntype v<span class="op">[</span>NT<span class="op">];</span>              <span class="co">// private member: the NT components</span></span>
+<span id="annotated-cell-20-10"><a href="#annotated-cell-20-10" aria-label="10"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-20-11"><a href="#annotated-cell-20-11" aria-label="11"></a>  <span class="op">...</span></span>
+<span id="annotated-cell-20-12"><a href="#annotated-cell-20-12" aria-label="12"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-20" data-code-lines="1" data-code-annotation="1">A <strong>macro</strong>: the preprocessor replaces the text <code>NT</code> with <code>3</code> before compiling. No type, no scope.</span>
+</dd>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-20" data-code-lines="2" data-code-annotation="2"><code>constexpr</code>: a typed constant that the compiler can <strong>compute at compile time</strong> — so it can size an array. In C++ it is the preferred way.</span>
+</dd>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-20" data-code-lines="5" data-code-annotation="3"><code>using</code> defines an <strong>alias</strong> of a type, exactly like <code>typedef</code>. Change this single line to <code>float</code> and the whole class works in single precision.</span>
+</dd>
+</dl>
+<ul>
+<li>Dimension and type are fixed in one place each: with <code>NT=2</code> you get vectors in the plane, with no other change.</li>
+<li>In a few labs <strong>templates</strong> will make both parameters of the class itself: <code>pvector&lt;double,3&gt;</code>, <code>pvector&lt;float,2&gt;</code>.</li>
+</ul>
+</section>
+<section id="constructors-and-destructor" class="slide level2 smaller">
+<h2>Constructors and destructor</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb24-1"><a aria-label="1"></a>pvector<span class="op">()</span>  <span class="op">{</span> <span class="op">...</span> <span class="op">}</span>   <span class="co">// void constructor: pvector P;</span></span>
+<span id="cb24-2"><a aria-label="2"></a><span class="op">~</span>pvector<span class="op">()</span> <span class="op">{</span> <span class="op">...</span> <span class="op">}</span>   <span class="co">// destructor</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>The <strong>void constructor</strong> should leave the vector in a known state: all components set to zero. (A local <code>double v[3]</code> in C contains garbage!)</li>
+<li>The <strong>destructor</strong> has nothing to do here: <code>v</code> is a fixed-size array, it disappears with the object. Leave it empty (we will need it when we allocate memory dynamically).</li>
+</ul>
+<p><strong>Constructor overloading:</strong> a class can have several constructors, which differ by their arguments. We want to write</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb25-1"><a aria-label="1"></a>pvector V <span class="op">=</span> <span class="op">{</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">,</span> <span class="fl">3.0</span><span class="op">};</span>    <span class="co">// V = (1,2,3)</span></span>
+<span id="cb25-2"><a aria-label="2"></a>pvector W <span class="op">=</span> <span class="op">{</span><span class="fl">4.0</span><span class="op">,</span> <span class="fl">5.0</span><span class="op">};</span>         <span class="co">// W = (4,5,0): missing components are zero</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Not in the skeleton: you add it.</p>
+</section>
+<section id="the-initializer_list-constructor" class="slide level2 smaller">
+<h2>The <code>initializer_list</code> constructor</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-23"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-23-1"><a href="#annotated-cell-23-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;initializer_list&gt;</span><span class="pp">          </span><span class="co">// add it among the includes</span></span>
+<span id="annotated-cell-23-2"><a href="#annotated-cell-23-2" aria-label="2"></a></span>
+<span id="annotated-cell-23-3"><a href="#annotated-cell-23-3" aria-label="3"></a>pvector<span class="op">(</span><span class="bu">std::</span>initializer_list<span class="op">&lt;</span>ntype<span class="op">&gt;</span> L<span class="op">)</span>   <span class="co">// overloading of the constructor</span></span>
+<span id="annotated-cell-23-4"><a href="#annotated-cell-23-4" aria-label="4"></a>  <span class="op">{</span></span>
+<span id="annotated-cell-23-5"><a href="#annotated-cell-23-5" aria-label="5"></a>    <span class="dt">int</span> c<span class="op">=</span><span class="dv">0</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-23" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-23-6" class="code-annotation-target"><a href="#annotated-cell-23-6" aria-label="6"></a>    <span class="cf">for</span> <span class="op">(</span>ntype el<span class="op">:</span> L<span class="op">)</span>                <span class="co">// range-based for: el takes, one after</span></span>
+<span id="annotated-cell-23-7"><a href="#annotated-cell-23-7" aria-label="7"></a>      <span class="op">{</span>                              <span class="co">//   the other, the values in the braces</span></span>
+<span id="annotated-cell-23-8"><a href="#annotated-cell-23-8" aria-label="8"></a>        <span class="co">// copy el in v[c], if c &lt; NT (extra values are ignored)</span></span>
+<span id="annotated-cell-23-9"><a href="#annotated-cell-23-9" aria-label="9"></a>        c<span class="op">++;</span></span>
+<span id="annotated-cell-23-10"><a href="#annotated-cell-23-10" aria-label="10"></a>      <span class="op">}</span></span>
+<span id="annotated-cell-23-11"><a href="#annotated-cell-23-11" aria-label="11"></a>    <span class="co">// set to zero the components from c to NT-1, if any</span></span>
+<span id="annotated-cell-23-12"><a href="#annotated-cell-23-12" aria-label="12"></a>  <span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-23" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-23" data-code-lines="6" data-code-annotation="1"><code>for (ntype el: L)</code> reads “for each <code>el</code> in <code>L</code>”: no index, no size to know. It works on every container (<code>std::vector</code>, arrays, …).</span>
+</dd>
+</dl>
+<ul>
+<li><code>std::initializer_list&lt;ntype&gt;</code> is the type of <code>{1.0, 2.0, 3.0}</code>: the compiler builds it and passes it to the constructor.</li>
+<li>The compiler chooses the constructor from the arguments: <code>pvector P;</code> calls the void one, <code>pvector V = {1,2,3};</code> this one. This is <strong>overloading</strong>.</li>
+</ul>
+</section>
+<section id="show-default-arguments-and-const" class="slide level2 smaller">
+<h2><code>show()</code>: default arguments and <code>const</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb26-1"><a aria-label="1"></a><span class="co">// Note this method does not change data of object hence it is declared "const"</span></span>
+<span id="cb26-2"><a aria-label="2"></a><span class="dt">void</span> show<span class="op">(</span><span class="bu">std::</span>string s<span class="op">=</span><span class="st">""</span><span class="op">)</span> <span class="at">const</span>    <span class="co">// default argument</span></span>
+<span id="cb26-3"><a aria-label="3"></a>  <span class="op">{</span></span>
+<span id="cb26-4"><a aria-label="4"></a>    <span class="op">...</span>   <span class="co">// print s, then (v[0],v[1],v[2])</span></span>
+<span id="cb26-5"><a aria-label="5"></a>  <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb27-1"><a aria-label="1"></a>V<span class="op">.</span>show<span class="op">(</span><span class="st">"V="</span><span class="op">);</span>   <span class="co">// V=(1,2,3)</span></span>
+<span id="cb27-2"><a aria-label="2"></a>V<span class="op">.</span>show<span class="op">();</span>       <span class="co">// (1,2,3)      s takes the default value ""</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><p><strong>Default argument</strong>: if the caller omits it, <code>s</code> is <code>""</code>.</p></li>
+<li><p><strong><code>const</code> method</strong>: it only <em>reads</em> the object. The compiler checks it (assigning <code>v[i]</code> inside <code>show()</code> is an error), and only <code>const</code> methods can be called on a <code>const</code> object:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb28-1"><a aria-label="1"></a><span class="at">const</span> pvector PC <span class="op">=</span> <span class="op">{</span><span class="fl">0.2</span><span class="op">,</span> <span class="fl">0.3</span><span class="op">,</span> <span class="fl">0.4</span><span class="op">};</span></span>
+<span id="cb28-2"><a aria-label="2"></a>PC<span class="op">.</span>show<span class="op">(</span><span class="st">"PC="</span><span class="op">);</span>   <span class="co">// compiles only because show() is const</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Use <code>std::cout</code> with a loop over the <code>NT</code> components, and a comma between them.</p></li>
+</ul>
+</section>
+<section id="arguments-passed-by-reference" class="slide level2 smaller">
+<h2>Arguments passed by reference</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb29-1"><a aria-label="1"></a><span class="dt">void</span> twice_val<span class="op">(</span><span class="dt">int</span> x<span class="op">)</span>  <span class="op">{</span> x <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>x<span class="op">;</span> <span class="op">}</span>   <span class="co">// by value: x is a COPY, the caller sees nothing</span></span>
+<span id="cb29-2"><a aria-label="2"></a><span class="dt">void</span> twice_ref<span class="op">(</span><span class="dt">int</span> <span class="op">&amp;</span>x<span class="op">)</span> <span class="op">{</span> x <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>x<span class="op">;</span> <span class="op">}</span>   <span class="co">// by reference: x is an alias of the argument</span></span>
+<span id="cb29-3"><a aria-label="3"></a></span>
+<span id="cb29-4"><a aria-label="4"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb29-5"><a aria-label="5"></a>twice_val<span class="op">(</span>a<span class="op">);</span>   <span class="co">// a is still 3</span></span>
+<span id="cb29-6"><a aria-label="6"></a>twice_ref<span class="op">(</span>a<span class="op">);</span>   <span class="co">// a is now 6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In the class all the vector arguments are passed as <strong><code>const pvector&amp;</code></strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb30-1"><a aria-label="1"></a>pvector <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span> <span class="at">const</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><strong><code>&amp;</code></strong>: no copy of the object (for a vector of 3 doubles it is cheap, but think of a configuration of <span class="math inline">\(10^5\)</span> particles…).</li>
+<li><strong><code>const</code></strong>: the method promises not to modify <code>V2</code>; the compiler enforces it.</li>
+<li>Inside a method of <code>pvector</code> you can read the private members of <strong>another</strong> <code>pvector</code>: <code>V2.v[i]</code> is legal. Access is per class, not per object.</li>
+</ul>
+</section>
+<section id="operator-and-this" class="slide level2 smaller">
+<h2><code>operator=</code> and <code>this</code></h2>
+<p>The one method already implemented in the skeleton:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-28"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><a class="code-annotation-anchor" data-target-cell="annotated-cell-28" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-28-1" class="code-annotation-target"><a href="#annotated-cell-28-1" aria-label="1"></a>pvector<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span>   <span class="co">// A = B  is  A.operator=(B)</span></span>
+<span id="annotated-cell-28-2"><a href="#annotated-cell-28-2" aria-label="2"></a>  <span class="op">{</span></span>
+<span id="annotated-cell-28-3"><a href="#annotated-cell-28-3" aria-label="3"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="annotated-cell-28-4"><a href="#annotated-cell-28-4" aria-label="4"></a>      v<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> V2<span class="op">.</span>v<span class="op">[</span>i<span class="op">];</span>                   <span class="co">// v[i] is A's, V2.v[i] is B's</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-28" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-28-5" class="code-annotation-target"><a href="#annotated-cell-28-5" aria-label="5"></a>    <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span><span class="op">);</span></span>
+<span id="annotated-cell-28-6"><a href="#annotated-cell-28-6" aria-label="6"></a>  <span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-28" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-28" data-code-lines="1" data-code-annotation="1"><code>A = B</code> is just a nicer way to write the method call <code>A.operator=(B)</code>: <code>A</code> is the object the method acts on, <code>B</code> the argument.</span>
+</dd>
+<dt data-target-cell="annotated-cell-28" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-28" data-code-lines="5" data-code-annotation="2"><code>this</code> is the address of the object the method has been called on (<code>A</code>); <code>*this</code> is the object itself. <code>v[i]</code> is a shorthand for <code>(*this).v[i]</code>.</span>
+</dd>
+</dl>
+<ul>
+<li>It returns <strong>a reference to <code>A</code> itself</strong> (<code>pvector&amp;</code>), not a copy: so <code>A = B = C;</code> works, as for <code>double</code> — it is <code>A = (B = C)</code>.</li>
+<li>It is not <code>const</code>: it changes the object.</li>
+</ul>
+</section>
+<section id="sum-operator-and-operator-" class="slide level2 smaller scrollable">
+<h2><code>sum()</code>, <code>operator+</code> and <code>operator-</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb31-1"><a aria-label="1"></a>pvector sum<span class="op">(</span><span class="at">const</span> pvector <span class="op">&amp;</span>V2<span class="op">)</span> <span class="at">const</span>      <span class="co">// C = A.sum(B)</span></span>
+<span id="cb31-2"><a aria-label="2"></a>pvector <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span> <span class="at">const</span> <span class="co">// C = A + B   is   C = A.operator+(B)</span></span>
+<span id="cb31-3"><a aria-label="3"></a>pvector <span class="kw">operator</span><span class="op">-(</span><span class="at">const</span> pvector<span class="op">&amp;</span> V2<span class="op">)</span> <span class="at">const</span> <span class="co">// C = A - B</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Recipe, the same for the three:</p>
+<ol type="1">
+<li>create a local vector <code>VT</code>;</li>
+<li>fill it component by component, using <code>v[i]</code> (of <code>A</code>) and <code>V2.v[i]</code> (of <code>B</code>);</li>
+<li><code>return VT;</code></li>
+</ol>
+<ul>
+<li>They are <code>const</code>: <code>A + B</code> must change neither <code>A</code> nor <code>B</code>.</li>
+<li>They return <strong>by value</strong> (<code>pvector</code>, not <code>pvector&amp;</code>): <code>VT</code> is a local object, destroyed when the method ends. A reference to it would point to a dead object (<code>g++</code> warns: <em>reference to local variable returned</em>).</li>
+<li><code>sum()</code> and <code>operator+</code> do the same thing: the operator is just nicer to read. Once one is written, the other can call it.</li>
+</ul>
+</section>
+<section id="get-and-set" class="slide level2 smaller">
+<h2><code>get()</code> and <code>set()</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb32-1"><a aria-label="1"></a>ntype get<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="at">const</span>          <span class="co">// returns the i-th component</span></span>
+<span id="cb32-2"><a aria-label="2"></a>ntype set<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> ntype val<span class="op">)</span>     <span class="co">// sets the i-th component to val</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>get</code> is <code>const</code>, <code>set</code> is not: why?</li>
+<li><code>set</code> in the skeleton returns an <code>ntype</code>: return <code>val</code> (or change it to <code>void</code>, as in <code>myvec</code>).</li>
+<li>Components are numbered from <code>0</code> to <code>NT-1</code>, as in C. Nothing checks the index: <code>get(3)</code> reads outside the array (undefined behaviour).</li>
+</ul>
+<div title="Compile with -Wall while you work">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Compile with -Wall while you work</strong></p>
+</div>
+<div class="callout-content">
+<p>The empty bodies of the skeleton <strong>compile</strong>: a method that should return a value and has no <code>return</code> is accepted, and its result is garbage (<em>undefined behaviour</em>). With <code>-Wall</code> the compiler tells you: <code>warning: no return statement in function returning non-void [-Wreturn-type]</code>.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-main-pvector.cpp" class="slide level2 smaller">
+<h2>The <code>main</code>: <code>pvector.cpp</code></h2>
+<p>The skeleton only declares three vectors. Test every method, for example:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb33-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./pvector.hpp"</span></span>
+<span id="cb33-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb33-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb33-4"><a aria-label="4"></a>  pvector A <span class="op">=</span> <span class="op">{</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">,</span> <span class="fl">3.0</span><span class="op">},</span> B <span class="op">=</span> <span class="op">{</span><span class="fl">0.5</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">};</span></span>
+<span id="cb33-5"><a aria-label="5"></a>  pvector C<span class="op">,</span> D <span class="op">=</span> <span class="op">{</span><span class="fl">4.0</span><span class="op">,</span> <span class="fl">5.0</span><span class="op">};</span>   <span class="co">// C=(0,0,0), D=(4,5,0)</span></span>
+<span id="cb33-6"><a aria-label="6"></a></span>
+<span id="cb33-7"><a aria-label="7"></a>  A<span class="op">.</span>show<span class="op">(</span><span class="st">"A="</span><span class="op">);</span></span>
+<span id="cb33-8"><a aria-label="8"></a>  D<span class="op">.</span>show<span class="op">(</span><span class="st">"D="</span><span class="op">);</span></span>
+<span id="cb33-9"><a aria-label="9"></a>  C <span class="op">=</span> A <span class="op">+</span> B<span class="op">;</span>      C<span class="op">.</span>show<span class="op">(</span><span class="st">"A+B="</span><span class="op">);</span></span>
+<span id="cb33-10"><a aria-label="10"></a>  C <span class="op">=</span> A <span class="op">-</span> B<span class="op">;</span>      C<span class="op">.</span>show<span class="op">(</span><span class="st">"A-B="</span><span class="op">);</span></span>
+<span id="cb33-11"><a aria-label="11"></a>  C <span class="op">=</span> A<span class="op">.</span>sum<span class="op">(</span>B<span class="op">);</span>   C<span class="op">.</span>show<span class="op">(</span><span class="st">"A.sum(B)="</span><span class="op">);</span></span>
+<span id="cb33-12"><a aria-label="12"></a></span>
+<span id="cb33-13"><a aria-label="13"></a>  B<span class="op">.</span>set<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">10.0</span><span class="op">);</span></span>
+<span id="cb33-14"><a aria-label="14"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"B(0)="</span> <span class="op">&lt;&lt;</span> B<span class="op">.</span>get<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb33-15"><a aria-label="15"></a></span>
+<span id="cb33-16"><a aria-label="16"></a>  pvector E<span class="op">,</span> F<span class="op">;</span></span>
+<span id="cb33-17"><a aria-label="17"></a>  E <span class="op">=</span> F <span class="op">=</span> A<span class="op">;</span>      <span class="co">// chained assignment: operator= returns pvector&amp;</span></span>
+<span id="cb33-18"><a aria-label="18"></a>  E<span class="op">.</span>show<span class="op">(</span><span class="st">"E="</span><span class="op">);</span></span>
+<span id="cb33-19"><a aria-label="19"></a></span>
+<span id="cb33-20"><a aria-label="20"></a>  <span class="at">const</span> pvector PC <span class="op">=</span> <span class="op">{</span><span class="fl">0.2</span><span class="op">,</span> <span class="fl">0.3</span><span class="op">,</span> <span class="fl">0.4</span><span class="op">};</span></span>
+<span id="cb33-21"><a aria-label="21"></a>  PC<span class="op">.</span>show<span class="op">(</span><span class="st">"PC="</span><span class="op">);</span>   <span class="co">// ok only because show() is const</span></span>
+<span id="cb33-22"><a aria-label="22"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb33-23"><a aria-label="23"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="compile-run-compare" class="slide level2 smaller">
+<h2>Compile, run, compare</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/lab01</span>
+<span id="cb34-2"><a aria-label="2"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> pvector pvector.cpp</span>
+<span id="cb34-3"><a aria-label="3"></a><span class="ex">./pvector</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Expected output:</p>
+<pre><code>A=(1,2,3)
+D=(4,5,0)
+A+B=(1.5,1,5)
+A-B=(0.5,3,1)
+A.sum(B)=(1.5,1,5)
+B(0)=10
+E=(1,2,3)
+PC=(0.2,0.3,0.4)</code></pre>
+<ul>
+<li>No warnings with <code>-Wall</code>: if there are, read them — they are usually a bug.</li>
+<li>Change <code>NT</code> to <code>2</code> and <code>ntype</code> to <code>float</code>: everything must still compile and run.</li>
+</ul>
+</section>
+<section id="classic-pitfalls" class="slide level2 smaller">
+<h2>Classic pitfalls</h2>
+<ul>
+<li><strong><code>;</code> after the class</strong>: <code>class pvector { ... };</code> — without it the error appears in the <em>next</em> line, often in another file.</li>
+<li><strong><code>pvector P();</code> is not an object</strong>: it declares a <em>function</em> <code>P</code> returning a <code>pvector</code>. Write <code>pvector P;</code> (or <code>pvector P{};</code>).</li>
+<li><strong>Returning a reference to a local object</strong> in <code>operator+</code>: it compiles (with a warning) and gives garbage.</li>
+<li><strong>Missing <code>const</code></strong> on <code>show()</code> or <code>get()</code>: then they cannot be called on a <code>const pvector</code>, nor on an argument <code>const pvector&amp; V2</code>.</li>
+<li><strong>Missing <code>return</code></strong> in a non-void method: see <code>-Wall</code>.</li>
+<li><strong>Header guard</strong>: <code>#ifndef _PVECTOR_ / #define _PVECTOR_ / ... #endif</code> stops the class from being defined twice when the header is included more than once.</li>
+</ul>
+</section>
+<section id="checklist-for-today" class="slide level2 smaller scrollable">
+<h2>Checklist for today</h2>
+<ul class="task-list">
+<li><label><input type="checkbox"><code>g++ --version</code> answers (on Windows: inside Ubuntu, with <code>wsl -l -v</code> showing version 2)</label></li>
+<li><label><input type="checkbox"><code>hello.cpp</code> compiles with <code>-Wall</code> and runs</label></li>
+<li><label><input type="checkbox">Examples N0, N1, N2 compiled and run; tried to access a private member and read the error</label></li>
+<li><label><input type="checkbox"><code>pvector()</code> sets all components to zero; empty destructor</label></li>
+<li><label><input type="checkbox"><code>initializer_list</code> constructor: <code>{1,2,3}</code> and <code>{4,5}</code> → <code>(4,5,0)</code></label></li>
+<li><label><input type="checkbox"><code>show(std::string s="") const</code></label></li>
+<li><label><input type="checkbox"><code>sum()</code>, <code>operator+</code>, <code>operator-</code> returning by value, <code>const</code></label></li>
+<li><label><input type="checkbox"><code>get() const</code> and <code>set()</code></label></li>
+<li><label><input type="checkbox"><code>pvector.cpp</code> tests everything, output as expected, <strong>no warnings</strong> with <code>-Wall</code></label></li>
+<li><label><input type="checkbox">Still works with <code>NT 2</code> and <code>ntype</code> = <code>float</code></label></li>
+</ul>
+<p><strong>Next lab:</strong> <code>protected</code> members, more overloading (<code>+=</code>, <code>-=</code>, scalar product, <code>norm()</code>, vector times scalar), function overloading.</p>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="../index.html">🏠 Home</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true,"storage":"csm-lavagna-lab-01"},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'convex',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: '../mathjax/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+            let selectedAnnoteEl;
+            const selectorForAnnotation = ( cell, annotation) => {
+              let cellAttr = 'data-code-cell="' + cell + '"';
+              let lineAttr = 'data-code-annotation="' +  annotation + '"';
+              const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+              return selector;
+            }
+            const selectCodeLines = (annoteEl) => {
+              const doc = window.document;
+              const targetCell = annoteEl.getAttribute("data-target-cell");
+              const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+              const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+              const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+              const lineIds = lines.map((line) => {
+                return targetCell + "-" + line;
+              })
+              let top = null;
+              let height = null;
+              let parent = null;
+              if (lineIds.length > 0) {
+                  //compute the position of the single el (top and bottom and make a div)
+                  const el = window.document.getElementById(lineIds[0]);
+                  top = el.offsetTop;
+                  height = el.offsetHeight;
+                  parent = el.parentElement.parentElement;
+                if (lineIds.length > 1) {
+                  const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+                  const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+                  height = bottom - top;
+                }
+                if (top !== null && height !== null && parent !== null) {
+                  // cook up a div (if necessary) and position it 
+                  let div = window.document.getElementById("code-annotation-line-highlight");
+                  if (div === null) {
+                    div = window.document.createElement("div");
+                    div.setAttribute("id", "code-annotation-line-highlight");
+                    div.style.position = 'absolute';
+                    parent.appendChild(div);
+                  }
+                  div.style.top = top - 2 + "px";
+                  div.style.height = height + 4 + "px";
+                  div.style.left = 0;
+                  let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+                  if (gutterDiv === null) {
+                    gutterDiv = window.document.createElement("div");
+                    gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                    gutterDiv.style.position = 'absolute';
+                    const codeCell = window.document.getElementById(targetCell);
+                    const gutter = codeCell.querySelector('.code-annotation-gutter');
+                    gutter.appendChild(gutterDiv);
+                  }
+                  gutterDiv.style.top = top - 2 + "px";
+                  gutterDiv.style.height = height + 4 + "px";
+                }
+                selectedAnnoteEl = annoteEl;
+              }
+            };
+            const unselectCodeLines = () => {
+              const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+              elementsIds.forEach((elId) => {
+                const div = window.document.getElementById(elId);
+                if (div) {
+                  div.remove();
+                }
+              });
+              selectedAnnoteEl = undefined;
+            };
+              // Handle positioning of the toggle
+          window.addEventListener(
+            "resize",
+            throttle(() => {
+              elRect = undefined;
+              if (selectedAnnoteEl) {
+                selectCodeLines(selectedAnnoteEl);
+              }
+            }, 10)
+          );
+          function throttle(fn, ms) {
+          let throttle = false;
+          let timer;
+            return (...args) => {
+              if(!throttle) { // first call gets through
+                  fn.apply(this, args);
+                  throttle = true;
+              } else { // all the others get throttled
+                  if(timer) clearTimeout(timer); // cancel #2
+                  timer = setTimeout(() => {
+                    fn.apply(this, args);
+                    timer = throttle = false;
+                  }, ms);
+              }
+            };
+          }
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
+                  unselectCodeLines();
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
+                  }
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
+            }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
