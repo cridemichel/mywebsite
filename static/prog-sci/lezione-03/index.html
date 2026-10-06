@@ -389,18 +389,14 @@ Cristiano De Michele
 <h2>Due strati, un neurone ciascuno</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/catena_due_neuroni.png" class="quarto-figure quarto-figure-center" style="width:68.0%"></p>
+<p><img data-src="images/catena_due_neuroni.png" class="quarto-figure quarto-figure-center" style="width:62.0%"></p>
 </figure>
 </div>
-<p>Con <span class="math inline">\(E = (a_2 - y)^2\)</span> e la regola della catena:</p>
+<p>Con <span class="math inline">\(E = (a_2 - y)^2\)</span> e la regola della catena, con <span class="math inline">\(\sigma'(z_i) = (d\sigma/dz)\big|_{z = z_i}\)</span>:</p>
 <p><span class="math display">\[ \frac{\partial E}{\partial w_2} = \underbrace{2(a_2 - y)\,\sigma'(z_2)}_{\delta_2}\; a_1 ,
 \qquad
-\frac{\partial E}{\partial w_1} = \underbrace{2(a_2 - y)\,\sigma'(z_2)}_{\delta_2}\; w_2\,\sigma'(z_1)\; x . \]</span></p>
-<ul>
-<li>Ogni strato attraversato aggiunge un fattore <span class="math inline">\(w\,\sigma'\)</span>: con cento strati, cento fattori.</li>
-<li>I primi fattori sono <strong>comuni</strong>: sono i <span class="math inline">\(\delta\)</span> del diagramma, e <span class="math inline">\(\partial E/\partial w_1 = \delta_1\, x\)</span>.</li>
-</ul>
-<p>Calcolarli una sola volta, dall’uscita verso l’ingresso, è la <strong>backpropagation</strong>.</p>
+\frac{\partial E}{\partial w_1} = \underbrace{\underbrace{2(a_2 - y)\,\sigma'(z_2)}_{\delta_2}\; w_2\,\sigma'(z_1)}_{\delta_1}\; x . \]</span></p>
+<p>Ogni strato attraversato aggiunge un fattore <span class="math inline">\(w\,\sigma'\)</span> (con cento strati, cento fattori), e i fattori comuni sono i <span class="math inline">\(\delta\)</span>: calcolarli una volta sola, dall’uscita verso l’ingresso, è la <strong>backpropagation</strong>.</p>
 </section>
 <section id="notazione-tre-vettori-per-ogni-strato" class="slide level2 smaller">
 <h2>Notazione: tre vettori per ogni strato</h2>
