@@ -307,7 +307,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 3</h1>
-  <p class="subtitle">Deep Learning — Loss, Backpropagation e Ottimizzatori</p>
+  <p class="subtitle">Deep Learning — Loss, Discesa del Gradiente e Backpropagation</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -325,7 +325,6 @@ Cristiano De Michele
 <li>La discesa del gradiente</li>
 <li>Backpropagation: la regola della catena, i <span class="math inline">\(\boldsymbol{\delta}\)</span> e le due formule</li>
 <li>Esercizio: la backpropagation a mano</li>
-<li>Il batching e gli ottimizzatori, dalla discesa semplice ad Adam (per i progetti finali: da leggere, se non ci arriviamo)</li>
 </ul>
 </section>
 <section id="minimizzare-lerrore-la-funzione-costo" class="slide level2 smaller">
@@ -365,7 +364,7 @@ Cristiano De Michele
 
 <img data-src="images/gradient_descent.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>Per riprodurla: <span class="math inline">\(E(\theta) = \theta^2 + \tfrac12\)</span>, partenza <span class="math inline">\(\theta_0 = 3\)</span>, passo <span class="math inline">\(\theta_{t+1} = \theta_t - \eta\, E'(\theta_t) = (1 - 2\eta)\,\theta_t\)</span>. Per quali <span class="math inline">\(\eta\)</span> converge? È il quesito 1.</p>
 <aside class="notes">
-<p>Nella parabola <span class="math inline">\(\eta = 0{,}05\)</span> e <span class="math inline">\(\eta = 0{,}95\)</span> fanno scendere <span class="math inline">\(E\)</span> esattamente allo stesso modo, passo per passo: oscillare non costa passi in più. In un landscape non convesso invece un passo grande può saltare la barriera e finire in un altro bacino, non necessariamente migliore (a volte migliore: tende a evitare i minimi stretti). In più dimensioni le oscillazioni avvengono lungo la direzione più curva mentre lungo quelle piatte si avanza piano: è la motivazione di momentum e Adam.</p>
+<p>Nella parabola <span class="math inline">\(\eta = 0{,}05\)</span> e <span class="math inline">\(\eta = 0{,}95\)</span> fanno scendere <span class="math inline">\(E\)</span> esattamente allo stesso modo, passo per passo: oscillare non costa passi in più. In un landscape non convesso invece un passo grande può saltare la barriera e finire in un altro bacino, non necessariamente migliore (a volte migliore: tende a evitare i minimi stretti). In più dimensioni le oscillazioni avvengono lungo la direzione più curva mentre lungo quelle piatte si avanza piano: è la motivazione di momentum e Adam (Lezione 20).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -427,7 +426,7 @@ Cristiano De Michele
 <div class="catena">
 <p><span class="math inline">\(E\)</span> <span class="anello"><span class="passo">2</span><span class="math inline">\(\longleftarrow\)</span></span> <span class="math inline">\(\mathbf{z}^{(L)}\)</span> <span class="math inline">\(\longleftarrow \cdots \longleftarrow\)</span> <span class="math inline">\(\mathbf{z}^{(\ell+1)}\)</span> <span class="anello"><span class="passo">3</span><span class="math inline">\(\longleftarrow\)</span></span> <span class="math inline">\(\mathbf{z}^{(\ell)}\)</span> <span class="anello"><span class="passo">1</span><span class="math inline">\(\longleftarrow\)</span></span> <span class="math inline">\(\big(\mathbf{W}^{(\ell)}, \mathbf{b}^{(\ell)}\big)\)</span></p>
 </div>
-<p><span class="passo">1</span> dai parametri a <span class="math inline">\(\mathbf{z}^{(\ell)}\)</span>: i gradienti di pesi e bias si scrivono in termini dei <span class="math inline">\(\boldsymbol{\delta}\)</span>;<br>
+<p><span class="passo">1</span> dai parametri a <span class="math inline">\(\mathbf{z}^{(\ell)}\)</span>: i gradienti <span class="math inline">\(\partial E/\partial \mathbf{W}^{(\ell)}\)</span> e <span class="math inline">\(\partial E/\partial \mathbf{b}^{(\ell)}\)</span> si scrivono con i <span class="math inline">\(\boldsymbol{\delta}\)</span>;<br>
 <span class="passo">2</span> verso <span class="math inline">\(E\)</span>: <span class="math inline">\(\boldsymbol{\delta}^{(L)} = \partial E/\partial \mathbf{a}^{(L)} \odot \sigma'(\mathbf{z}^{(L)})\)</span>, con <span class="math inline">\(\partial E/\partial \mathbf{a}^{(L)}\)</span> dalla loss;<br>
 <span class="passo">3</span> tra due strati: <span class="math inline">\(\boldsymbol{\delta}^{(\ell)} = \partial E/\partial \mathbf{a}^{(\ell)} \odot \sigma'(\mathbf{z}^{(\ell)})\)</span>, con <span class="math inline">\(\partial E/\partial \mathbf{a}^{(\ell)}\)</span> da <span class="math inline">\(\boldsymbol{\delta}^{(\ell+1)}\)</span>.</p>
 </section>
@@ -604,95 +603,6 @@ Cristiano De Michele
 </table>
 <p><span class="math inline">\(E = (0{,}6750 - 1)^2 = 0{,}1056\)</span>. Verifica: <span class="math inline">\(E(1{,}01) = 0{,}105321\)</span>, <span class="math inline">\(E(0{,}99) = 0{,}105882\)</span>, e <span class="math inline">\((0{,}105321 - 0{,}105882)/0{,}02 = -0{,}0280\)</span>: torna. È il <em>gradient check</em> che farete nel Lab 13.</p>
 <p><span class="math inline">\(\delta_1\)</span> è circa <strong>cinque volte</strong> più piccolo di <span class="math inline">\(\delta_2\)</span>: da uno strato all’altro il segnale d’errore si moltiplica per <span class="math inline">\(w_2\,\sigma'(z_1) \approx 0{,}2\)</span> (con dieci strati, dieci fattori così: quesito 2). I gradienti negativi dicono di <strong>aumentare</strong> i pesi, e infatti <span class="math inline">\(a_2 &lt; y\)</span>.</p>
-</section>
-<section id="il-batching" class="slide level2 smaller">
-<h2>Il batching</h2>
-<div title="Da qui alla fine della lezione">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Da qui alla fine della lezione</strong></p>
-</div>
-<div class="callout-content">
-<p>Batching, momentum, Adam e gli scheduler di questa parte non entrano nel framework: servono per i progetti finali. Se non ci arriviamo in aula, sono da leggere a casa.</p>
-</div>
-</div>
-</div>
-</div>
-<p>Le formule appena derivate elaborano un’immagine alla volta (un vettore colonna <span class="math inline">\(\mathbf{x}\)</span>): predizione, errore, aggiornamento dei pesi. È lo <em>stochastic gradient descent</em> (SGD).</p>
-<p>Ma elaborare <span class="math inline">\(60.000\)</span> immagini una per una lascia inutilizzata gran parte della potenza della CPU: ogni prodotto matrice-vettore è troppo piccolo per riempire le unità vettoriali.</p>
-<p>Si possono elaborare 64 immagini <strong>insieme</strong>?</p>
-</section>
-<section id="matrici-invece-di-vettori" class="slide level2 smaller">
-<h2>Matrici invece di vettori</h2>
-<p>Il <strong>batching</strong> sostituisce il vettore colonna <span class="math inline">\(\mathbf{x}\)</span> (784 pixel <span class="math inline">\(\times\)</span> 1 immagine) con una matrice <span class="math inline">\(\mathbf{X}\)</span> (784 pixel <span class="math inline">\(\times\)</span> 64 immagini), un’immagine per colonna.</p>
-<p>Le equazioni restano le stesse, <span class="math inline">\(\mathbf{Z} = \mathbf{W} \mathbf{X} + \mathbf{B}\)</span>, dove <span class="math inline">\(\mathbf{B}\)</span> ha in ogni colonna lo stesso <span class="math inline">\(\mathbf{b}\)</span>.</p>
-<p>Una libreria come <strong>Eigen</strong> elabora le 64 colonne con le istruzioni vettoriali (SIMD), riducendo molto il tempo per epoca.</p>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Nota</strong></p>
-</div>
-<div class="callout-content">
-<p>Nel nostro framework il batch avrà <strong>una sola colonna</strong>: aggiorniamo i pesi dopo ogni immagine, come fa Rashid nel libro. È lo <em>stochastic gradient descent</em> puro, e su MNIST basta per superare il 90% in tre epoche. Scriveremo comunque tutto in forma matriciale: le equazioni sono già quelle giuste, e passare al mini-batch richiederebbe di adattare solo il dataset e le metriche.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="i-limiti-dellsgd-e-il-momentum" class="slide level2 smaller">
-<h2>I limiti dell’SGD e il momentum</h2>
-<p>La discesa del gradiente semplice ha due limiti. In una valle stretta oscilla fra le due pareti invece di scendere lungo il fondo. E dove il gradiente è quasi nullo — un minimo locale o, più spesso in milioni di dimensioni, un punto di sella — rallenta fino quasi a fermarsi.</p>
-<p>Il rimedio viene dalla meccanica. L’<strong>SGD con momentum</strong> tratta i parametri come una particella di massa <span class="math inline">\(m\)</span> nel potenziale <span class="math inline">\(E\)</span>, con attrito viscoso: <span class="math inline">\(m\ddot{\boldsymbol\theta} = -\nabla E - \gamma\dot{\boldsymbol\theta}\)</span>. Discretizzata con passo <span class="math inline">\(\Delta t\)</span> (prima la velocità, poi la posizione) e con <span class="math inline">\(\mathbf{v} = \Delta t\,\dot{\boldsymbol\theta}\)</span>, diventa</p>
-<p><span class="math display">\[ \mathbf{v} \leftarrow \mu\,\mathbf{v} - \eta\,\nabla E, \qquad \boldsymbol\theta \leftarrow \boldsymbol\theta + \mathbf{v}, \qquad \mu = 1 - \frac{\gamma\,\Delta t}{m} \in [0, 1), \quad \eta = \frac{\Delta t^2}{m} . \]</span></p>
-<p><span class="math inline">\(\mathbf{v}\)</span>, lo <strong>spostamento per passo</strong>, ha la forma di <span class="math inline">\(\boldsymbol\theta\)</span> e parte da zero; <span class="math inline">\(1-\mu\)</span> è l’attrito. La velocità smorza le oscillazioni trasverse e supera i tratti quasi piatti; con <span class="math inline">\(\mu = 0\)</span> resta la discesa semplice (limite sovrasmorzato, <span class="math inline">\(\gamma\dot{\boldsymbol\theta} = -\nabla E\)</span>).</p>
-</section>
-<section id="il-momentum-in-figura" class="slide level2 smaller">
-<h2>Il momentum in figura</h2>
-
-<img data-src="images/ottimizzatori_momentum.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>A sinistra la discesa semplice rimbalza fra le pareti e avanza piano lungo il fondo. Il momentum somma i passi successivi: le componenti trasverse, di segno alterno, si compensano, quelle lungo il fondo si accumulano. A destra, dove il gradiente è quasi nullo, la velocità accumulata attraversa il tratto piatto in una ventina di passi, a costo di qualche oscillazione intorno al minimo; la discesa semplice dopo sessanta passi non è ancora arrivata.</p>
-</section>
-<section id="lottimizzatore-adam" class="slide level2 smaller">
-<h2>L’ottimizzatore Adam</h2>
-<p><strong>Adam</strong> (<em>Adaptive Moment Estimation</em>, Kingma e Ba, 2014) è oggi l’ottimizzatore più usato. Tiene per ogni parametro due medie mobili esponenziali, del gradiente <span class="math inline">\(\mathbf{g} = \nabla E\)</span> e del suo quadrato; a ogni passo <span class="math inline">\(t = 1, 2, \dots\)</span>, elemento per elemento:</p>
-<p><span class="math display">\[ \begin{aligned}
-\mathbf{m} &amp;\leftarrow \beta_1\,\mathbf{m} + (1-\beta_1)\,\mathbf{g}, &amp; \hat{\mathbf{m}} &amp;= \mathbf{m}/(1-\beta_1^{\,t}), \\
-\mathbf{s} &amp;\leftarrow \beta_2\,\mathbf{s} + (1-\beta_2)\,\mathbf{g}\odot\mathbf{g}, &amp; \hat{\mathbf{s}} &amp;= \mathbf{s}/(1-\beta_2^{\,t}), \\
-\boldsymbol\theta &amp;\leftarrow \boldsymbol\theta - \eta\,\frac{\hat{\mathbf{m}}}{\sqrt{\hat{\mathbf{s}}}+\epsilon} .
-\end{aligned} \]</span></p>
-<ul>
-<li><span class="math inline">\(\mathbf{m}\)</span> (primo momento) è il momentum; <span class="math inline">\(\mathbf{s}\)</span> (secondo momento) è l’ampiezza tipica recente del gradiente. Nell’articolo si chiama <span class="math inline">\(v\)</span>: qui <span class="math inline">\(\mathbf{s}\)</span>, per non confonderla con la velocità.</li>
-<li><span class="math inline">\(\mathbf{m}\)</span> e <span class="math inline">\(\mathbf{s}\)</span> partono da zero: ai primi passi sono schiacciate verso zero di un fattore <span class="math inline">\(1-\beta^{\,t}\)</span>, che la divisione compensa.</li>
-</ul>
-</section>
-<section id="adam-in-pratica" class="slide level2 smaller">
-<h2>Adam in pratica</h2>
-<p>Il passo è il gradiente medio diviso per la sua ampiezza tipica: rispetto all’SGD si accorcia dove il gradiente è grande o rumoroso e si allunga dove è piccolo ma costante. Ogni parametro ha di fatto il suo learning rate, e il passo è dell’ordine di <span class="math inline">\(\eta\)</span> qualunque sia la scala di <span class="math inline">\(E\)</span> (a meno di <span class="math inline">\(\epsilon\)</span>).</p>
-<ul>
-<li><span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>: memoria delle medie, circa <span class="math inline">\(1/(1-\beta)\)</span> passi (10 e 1000 con <span class="math inline">\(0{,}9\)</span> e <span class="math inline">\(0{,}999\)</span>);</li>
-<li><span class="math inline">\(\epsilon \approx 10^{-8}\)</span> evita la divisione per zero; i default vanno bene in molti casi, con <span class="math inline">\(\eta = 10^{-3}\)</span>;</li>
-<li><strong>AdamW</strong> (Loshchilov e Hutter, 2019), lo standard per le reti grandi, sottrae <span class="math inline">\(\eta\lambda\boldsymbol\theta\)</span> (<em>weight decay</em>) fuori dalla divisione per <span class="math inline">\(\sqrt{\hat{\mathbf{s}}}\)</span>.</li>
-</ul>
-<p>Nel Laboratorio 10 implementerete <code>SDOptimizer</code>, la discesa più semplice — una riga, <code>param -= lr * grad</code>. Momentum e Adam sono la <strong>traccia 1</strong> dei progetti finali: l’interfaccia <code>Optimizer</code> è fatta perché si possano aggiungere senza toccare né i layer né la rete.</p>
-</section>
-<section id="adam-in-figura" class="slide level2 smaller">
-<h2>Adam in figura</h2>
-
-<img data-src="images/ottimizzatori_adam.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>Adam divide ogni componente del passo per l’ampiezza recente del proprio gradiente. Nella valle stretta le due direzioni avanzano con passi dello stesso ordine, circa <span class="math inline">\(\eta\)</span>: il percorso non rimbalza fra le pareti. Nel tratto piatto il gradiente è piccolissimo ma costante, quindi <span class="math inline">\(\hat{\mathbf{m}}/\sqrt{\hat{\mathbf{s}}} \approx 1\)</span> e il passo non si accorcia.</p>
-</section>
-<section id="i-learning-rate-scheduler" class="slide level2 smaller">
-<h2>I learning rate scheduler</h2>
-<p>Anche con Adam, tenere lo stesso passo dall’inizio alla fine non è ideale: vicino al fondo della valle un passo troppo lungo scavalca il minimo. Un <strong>learning rate scheduler</strong> diminuisce <span class="math inline">\(\eta\)</span> durante l’addestramento. Due politiche classiche:</p>
-<ul>
-<li><strong>ReduceLROnPlateau</strong> — reattiva: se la loss smette di scendere per un certo numero di epoche (per esempio 5), divide <span class="math inline">\(\eta\)</span> per un fattore (per esempio 10). Utile nella fase finale dell’addestramento.</li>
-<li><strong>Cosine annealing</strong> — programmata: <span class="math inline">\(\eta\)</span> segue mezzo periodo di coseno, alto all’inizio e decrescente dolcemente verso la fine, senza i gradini del plateau.</li>
-</ul>
-<p>Nel Laboratorio 10 scriverete l’interfaccia <code>Scheduler</code> a <span class="math inline">\(\eta\)</span> costante; queste due sono la <strong>traccia 2</strong> dei progetti. Ma come uniamo strati, ottimizzatori, scheduler e backpropagation nello stesso software C++ senza perdere il controllo del codice?</p>
 </section>
 <section id="quesiti-finali" class="slide level2 smaller">
 <h2>Quesiti finali</h2>
