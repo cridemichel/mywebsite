@@ -415,6 +415,7 @@ Cristiano De Michele
 </section>
 <section id="struttura-di-un-programma-c" class="slide level2">
 <h2>Struttura di un programma C++</h2>
+<p>Il C++ è <em>quasi</em> un sovrainsieme del C: un programma C, salvo poche eccezioni, è anche un programma C++ (un esempio: in C++ il <code>void*</code> restituito da <code>malloc</code> va convertito esplicitamente). Le prossime slide sono quindi in gran parte un <strong>ripasso</strong> di ciò che resta uguale; segnaliamo man mano quello che il C++ aggiunge.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="co">// la tua prima applicazione C++!</span></span>
 <span id="cb1-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span><span class="pp"> </span><span class="co">// richiesto per eseguire l'I/O stream in C++</span></span>
 <span id="cb1-3"><a aria-label="3"></a></span>
@@ -425,7 +426,7 @@ Cristiano De Michele
 </section>
 <section id="direttive-del-precompilatorepreprocessore" class="slide level2">
 <h2>Direttive del precompilatore/preprocessore</h2>
-<p>Cos’è il preprocessore? Cosa fa?</p>
+<p>Il preprocessore è lo stesso del C. Cosa fa?</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="co">// la tua prima applicazione C++!</span></span>
 <span id="cb2-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span><span class="pp"> </span><span class="co">// richiesto per eseguire l'I/O stream in C++</span></span>
 <span id="cb2-3"><a aria-label="3"></a></span>
@@ -452,7 +453,7 @@ Cristiano De Michele
 </section>
 <section id="commenti-in-c" class="slide level2">
 <h2>Commenti in C++</h2>
-<p>I commenti sono preceduti da <code>//</code> Possono iniziare ovunque nel programma, sia all’inizio della riga che subito dopo un’istruzione a metà della riga</p>
+<p>Come in C (dal C99) i commenti di riga sono preceduti da <code>//</code>, e restano validi i commenti <code>/* ... */</code>. Possono iniziare ovunque nel programma, sia all’inizio della riga che subito dopo un’istruzione a metà della riga</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="co">// la tua prima applicazione C++!</span></span>
 <span id="cb5-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span><span class="pp"> </span><span class="co">// richiesto per eseguire l'I/O stream in C++</span></span>
 <span id="cb5-3"><a aria-label="3"></a></span>
@@ -463,7 +464,7 @@ Cristiano De Michele
 </section>
 <section id="compilare-unapplicazione-c" class="slide level2">
 <h2>Compilare un’applicazione C++</h2>
-<p>In questo corso useremo il compilatore gratuito <code>g++</code> in tutti gli esempi</p>
+<p>In questo corso useremo il compilatore gratuito <code>g++</code>, il corrispondente C++ di <code>gcc</code>, con le stesse opzioni</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a aria-label="1"></a><span class="ex">$</span> g++ <span class="at">-o</span> Welcome Welcome.cpp</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>-o Welcome</code>: Nome dell’eseguibile (output binario)</li>
@@ -472,6 +473,7 @@ Cristiano De Michele
 </section>
 <section id="alcuni-aspetti-base-del-c" class="slide level2 smaller">
 <h2>Alcuni aspetti base del C++</h2>
+<p>Ripasso: sono le stesse regole del C.</p>
 <ul>
 <li>Tutte le istruzioni devono terminare con un punto e virgola <code>;</code>
 <ul>
@@ -497,7 +499,7 @@ Cristiano De Michele
 <span id="cb7-4"><a aria-label="4"></a><span class="dt">void</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="cb7-5"><a aria-label="5"></a>    <span class="co">// nessun tipo di ritorno</span></span>
 <span id="cb7-6"><a aria-label="6"></a><span class="op">}</span> <span class="co">// fine della funzione main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Il compilatore richiede che il <code>main</code> restituisca un valore <code>int</code>!</p>
+<p>Il compilatore richiede che il <code>main</code> restituisca un valore <code>int</code>! Qui il C++ è più severo del C: <code>g++</code> dà un errore, mentre <code>gcc</code> su un file <code>.c</code> compila, e solo con <code>-Wall</code> avvisa.</p>
 </section>
 <section id="output-con-iostream" class="slide level2">
 <h2>Output con iostream</h2>
@@ -572,7 +574,7 @@ Cristiano De Michele
 <span id="cb11-17"><a aria-label="17"></a></span>
 <span id="cb11-18"><a aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb11-19"><a aria-label="19"></a><span class="op">}</span> <span class="co">// fine del main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>int samples;</code> è già una <strong>definizione</strong>: crea la variabile. Una dichiarazione pura, come <code>extern int samples;</code>, dice solo che la variabile esiste altrove.</p>
+<p>Come in C, <code>int samples;</code> è già una <strong>definizione</strong>: crea la variabile. Una dichiarazione pura (<code>extern int samples;</code>) dice solo che esiste altrove.</p>
 </section>
 <section id="richiamo-la-divisione-intera" class="slide level2 smaller">
 <h2>Richiamo: la divisione intera</h2>
@@ -615,6 +617,7 @@ Cristiano De Michele
 </section>
 <section id="cicli-e-iterazioni-in-c" class="slide level2 smaller">
 <h2>Cicli e iterazioni in C++</h2>
+<p>I cicli sono quelli del C (<code>for</code>, <code>while</code>, <code>do</code>–<code>while</code>); di nuovo c’è solo l’ingresso e uscita con <code>std::cin</code> e <code>std::cout</code>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> <span class="co">// il main inizia qui</span></span>
 <span id="cb15-2"><a aria-label="2"></a>    <span class="dt">int</span> nIterations<span class="op">;</span></span>
 <span id="cb15-3"><a aria-label="3"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Quante iterazioni? "</span><span class="op">;</span></span>
@@ -755,6 +758,7 @@ Cristiano De Michele
 </section>
 <section id="istruzioni-di-controllo" class="slide level2 smaller">
 <h2>Istruzioni di controllo</h2>
+<p>Identiche al C. In più il C++ ha il tipo <code>bool</code> nativo, con i valori <code>true</code> e <code>false</code> (in C serve <code>&lt;stdbool.h&gt;</code>).</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb20-2"><a aria-label="2"></a></span>
 <span id="cb20-3"><a aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> </span>
@@ -773,7 +777,7 @@ Cristiano De Michele
 <section id="scope-delle-variabili" class="slide level2 smaller">
 <h2>Scope delle variabili</h2>
 <ul>
-<li>Lo <strong>scope</strong> (visibilità) di un nome è il blocco in cui quel nome è valido.</li>
+<li>Come in C, lo <strong>scope</strong> (visibilità) di un nome è il blocco in cui quel nome è valido.</li>
 <li>Un blocco è delimitato da parentesi graffe <code>{ }</code>.</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
