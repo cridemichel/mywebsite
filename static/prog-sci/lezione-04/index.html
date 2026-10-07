@@ -438,20 +438,17 @@ Cristiano De Michele
 <section id="cosa-fa-il-preprocessore" class="slide level2 smaller scrollable">
 <h2>Cosa fa il preprocessore?</h2>
 <p>Sostituisce le direttive dell’utente con il codice sorgente richiesto (Solo pre-compilazione)</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="co">// Foo.h</span></span>
-<span id="cb3-2"><a aria-label="2"></a><span class="kw">class</span> Foo <span class="op">{</span></span>
-<span id="cb3-3"><a aria-label="3"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb3-4"><a aria-label="4"></a>    Foo<span class="op">()</span> <span class="op">{};</span></span>
-<span id="cb3-5"><a aria-label="5"></a>    Foo<span class="op">(</span><span class="dt">int</span> a<span class="op">)</span> <span class="op">{</span> <span class="va">x_</span> <span class="op">=</span> a<span class="op">;</span> <span class="op">};</span></span>
-<span id="cb3-6"><a aria-label="6"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb3-7"><a aria-label="7"></a>    <span class="dt">int</span> <span class="va">x_</span><span class="op">;</span></span>
-<span id="cb3-8"><a aria-label="8"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="co">// ExamplePreprocessor.cpp</span></span>
-<span id="cb4-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">"Foo.h"</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="co">// rete.h</span></span>
+<span id="cb3-2"><a aria-label="2"></a><span class="pp">#define N_PIXEL </span><span class="dv">784</span><span class="pp">              </span><span class="co">// una costante del preprocessore</span></span>
+<span id="cb3-3"><a aria-label="3"></a><span class="dt">double</span> sigmoide<span class="op">(</span><span class="dt">double</span> x<span class="op">);</span>       <span class="co">// il prototipo di una funzione</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="co">// main.cpp</span></span>
+<span id="cb4-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">"rete.h"</span><span class="pp">                </span><span class="co">// qui il preprocessore copia il contenuto di rete.h</span></span>
 <span id="cb4-3"><a aria-label="3"></a></span>
 <span id="cb4-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb4-5"><a aria-label="5"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb4-6"><a aria-label="6"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-5"><a aria-label="5"></a>    <span class="dt">double</span> ingresso<span class="op">[</span>N_PIXEL<span class="op">];</span>    <span class="co">// il compilatore vede: double ingresso[784];</span></span>
+<span id="cb4-6"><a aria-label="6"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-7"><a aria-label="7"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il risultato del solo preprocessore si vede con <code>g++ -E main.cpp</code>.</p>
 </section>
 <section id="commenti-in-c" class="slide level2">
 <h2>Commenti in C++</h2>
@@ -496,11 +493,10 @@ Cristiano De Michele
 <h2>Cosa succede se cambiamo il tipo del main?</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="co">// VoidMain.cpp</span></span>
 <span id="cb7-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb7-3"><a aria-label="3"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb7-4"><a aria-label="4"></a></span>
-<span id="cb7-5"><a aria-label="5"></a><span class="dt">void</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb7-6"><a aria-label="6"></a>    <span class="co">// nessun tipo di ritorno</span></span>
-<span id="cb7-7"><a aria-label="7"></a><span class="op">}</span> <span class="co">// fine della funzione main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-3"><a aria-label="3"></a></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="dt">void</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb7-5"><a aria-label="5"></a>    <span class="co">// nessun tipo di ritorno</span></span>
+<span id="cb7-6"><a aria-label="6"></a><span class="op">}</span> <span class="co">// fine della funzione main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Il compilatore richiede che il <code>main</code> restituisca un valore <code>int</code>!</p>
 </section>
 <section id="output-con-iostream" class="slide level2">
@@ -508,29 +504,29 @@ Cristiano De Michele
 <p><code>iostream</code> fornisce funzionalità di output al tuo programma</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="co">// SimpleIO.cpp</span></span>
 <span id="cb8-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb8-3"><a aria-label="3"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span> </span>
-<span id="cb8-4"><a aria-label="4"></a></span>
-<span id="cb8-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> <span class="co">// il main inizia qui</span></span>
-<span id="cb8-6"><a aria-label="6"></a>    <span class="co">// stampa il messaggio sullo STDOUT (standard output)</span></span>
-<span id="cb8-7"><a aria-label="7"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Primi passi in C++!"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb8-8"><a aria-label="8"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb8-9"><a aria-label="9"></a><span class="op">}</span> <span class="co">// fine del main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-3"><a aria-label="3"></a></span>
+<span id="cb8-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> <span class="co">// il main inizia qui</span></span>
+<span id="cb8-5"><a aria-label="5"></a>    <span class="co">// stampa il messaggio sullo STDOUT (standard output)</span></span>
+<span id="cb8-6"><a aria-label="6"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Primi passi in C++!"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb8-7"><a aria-label="7"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-8"><a aria-label="8"></a><span class="op">}</span> <span class="co">// fine del main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>std::</code> dice che <code>cout</code> appartiene alla libreria standard: il perché lo vediamo alla fine della lezione, con i namespace. <code>endl</code> va a capo come <code>"\n"</code> e svuota il buffer.</p>
 </section>
 <section id="input-con-iostream" class="slide level2">
 <h2>Input con iostream</h2>
 <p><code>iostream</code> fornisce anche funzionalità di input al tuo programma</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a><span class="co">// SimpleInput.cpp</span></span>
 <span id="cb9-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb9-3"><a aria-label="3"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb9-4"><a aria-label="4"></a></span>
-<span id="cb9-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> <span class="co">// il main inizia qui</span></span>
-<span id="cb9-6"><a aria-label="6"></a>    <span class="dt">int</span> nIterations<span class="op">;</span></span>
-<span id="cb9-7"><a aria-label="7"></a></span>
-<span id="cb9-8"><a aria-label="8"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Quante iterazioni? "</span><span class="op">;</span> </span>
-<span id="cb9-9"><a aria-label="9"></a>    cin <span class="op">&gt;&gt;</span> nIterations<span class="op">;</span></span>
-<span id="cb9-10"><a aria-label="10"></a></span>
-<span id="cb9-11"><a aria-label="11"></a>    <span class="co">// stampa il messaggio sullo STDOUT</span></span>
-<span id="cb9-12"><a aria-label="12"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Numero di iterazioni richieste: "</span> <span class="op">&lt;&lt;</span> nIterations <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb9-3"><a aria-label="3"></a></span>
+<span id="cb9-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> <span class="co">// il main inizia qui</span></span>
+<span id="cb9-5"><a aria-label="5"></a>    <span class="dt">int</span> nIterations<span class="op">;</span></span>
+<span id="cb9-6"><a aria-label="6"></a></span>
+<span id="cb9-7"><a aria-label="7"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Quante iterazioni? "</span><span class="op">;</span> </span>
+<span id="cb9-8"><a aria-label="8"></a>    <span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> nIterations<span class="op">;</span></span>
+<span id="cb9-9"><a aria-label="9"></a></span>
+<span id="cb9-10"><a aria-label="10"></a>    <span class="co">// stampa il messaggio sullo STDOUT</span></span>
+<span id="cb9-11"><a aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Numero di iterazioni richieste: "</span></span>
+<span id="cb9-12"><a aria-label="12"></a>              <span class="op">&lt;&lt;</span> nIterations <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
 <span id="cb9-13"><a aria-label="13"></a></span>
 <span id="cb9-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb9-15"><a aria-label="15"></a><span class="op">}</span> <span class="co">// fine del main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
@@ -539,18 +535,18 @@ Cristiano De Michele
 <h2>Tipici errori di compilazione finora</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="co">// BadCode1.cpp</span></span>
 <span id="cb10-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb10-3"><a aria-label="3"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span> </span>
-<span id="cb10-4"><a aria-label="4"></a></span>
-<span id="cb10-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> <span class="co">// il main inizia qui</span></span>
-<span id="cb10-6"><a aria-label="6"></a>    <span class="dt">int</span> nIterations<span class="op">;</span></span>
-<span id="cb10-7"><a aria-label="7"></a></span>
-<span id="cb10-8"><a aria-label="8"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"How many </span></span>
-<span id="cb10-9"><a aria-label="9"></a>    iterations<span class="op">?</span> <span class="st">"; // impossibile andare a capo in mezzo a una stringa!</span></span>
-<span id="cb10-10"><a aria-label="10"></a></span>
-<span id="cb10-11"><a aria-label="11"></a>    cin <span class="op">&gt;&gt;</span> nIteration<span class="op">;</span> <span class="co">// nome errato! manca la 's' finale</span></span>
-<span id="cb10-12"><a aria-label="12"></a></span>
-<span id="cb10-13"><a aria-label="13"></a>    <span class="co">// stampa il messaggio sullo STDOUT</span></span>
-<span id="cb10-14"><a aria-label="14"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Numero di iterazioni richieste: "</span> <span class="op">&lt;&lt;</span> nIterations <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb10-3"><a aria-label="3"></a></span>
+<span id="cb10-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> <span class="co">// il main inizia qui</span></span>
+<span id="cb10-5"><a aria-label="5"></a>    <span class="dt">int</span> nIterations<span class="op">;</span></span>
+<span id="cb10-6"><a aria-label="6"></a></span>
+<span id="cb10-7"><a aria-label="7"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"How many </span></span>
+<span id="cb10-8"><a aria-label="8"></a>    iterations<span class="op">?</span> <span class="st">"; // impossibile andare a capo in mezzo a una stringa!</span></span>
+<span id="cb10-9"><a aria-label="9"></a></span>
+<span id="cb10-10"><a aria-label="10"></a>    <span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> nIteration<span class="op">;</span> <span class="co">// nome errato! manca la 's' finale</span></span>
+<span id="cb10-11"><a aria-label="11"></a></span>
+<span id="cb10-12"><a aria-label="12"></a>    <span class="co">// stampa il messaggio sullo STDOUT</span></span>
+<span id="cb10-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Numero di iterazioni richieste: "</span></span>
+<span id="cb10-14"><a aria-label="14"></a>              <span class="op">&lt;&lt;</span> nIterations <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
 <span id="cb10-15"><a aria-label="15"></a></span>
 <span id="cb10-16"><a aria-label="16"></a>    <span class="cf">return</span> <span class="dv">0</span> <span class="co">// manca il ; !</span></span>
 <span id="cb10-17"><a aria-label="17"></a><span class="op">}</span> <span class="co">// fine del main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
@@ -559,24 +555,23 @@ Cristiano De Michele
 <h2>Dichiarazione e definizione delle variabili</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="co">// SimpleVars.cpp</span></span>
 <span id="cb11-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb11-3"><a aria-label="3"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb11-4"><a aria-label="4"></a></span>
-<span id="cb11-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> </span>
-<span id="cb11-6"><a aria-label="6"></a>    <span class="dt">int</span> samples<span class="op">;</span> <span class="co">// definizione, senza inizializzazione</span></span>
-<span id="cb11-7"><a aria-label="7"></a>    <span class="dt">int</span> events <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// definizione con inizializzazione</span></span>
-<span id="cb11-8"><a aria-label="8"></a>    </span>
-<span id="cb11-9"><a aria-label="9"></a>    samples <span class="op">=</span> <span class="dv">123</span><span class="op">;</span> <span class="co">// assegnazione</span></span>
-<span id="cb11-10"><a aria-label="10"></a></span>
-<span id="cb11-11"><a aria-label="11"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Quanti samples? "</span> <span class="op">;</span></span>
-<span id="cb11-12"><a aria-label="12"></a>    cin <span class="op">&gt;&gt;</span> samples<span class="op">;</span> <span class="co">// assegnazione tramite I/O</span></span>
-<span id="cb11-13"><a aria-label="13"></a></span>
-<span id="cb11-14"><a aria-label="14"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"samples: "</span> <span class="op">&lt;&lt;</span> samples</span>
-<span id="cb11-15"><a aria-label="15"></a>         <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span> <span class="co">// inserisce un carattere di tabulazione (tab) nella stampa</span></span>
-<span id="cb11-16"><a aria-label="16"></a>         <span class="op">&lt;&lt;</span> <span class="st">"events: "</span> <span class="op">&lt;&lt;</span> events</span>
-<span id="cb11-17"><a aria-label="17"></a>         <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb11-18"><a aria-label="18"></a></span>
-<span id="cb11-19"><a aria-label="19"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb11-20"><a aria-label="20"></a><span class="op">}</span> <span class="co">// fine del main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-3"><a aria-label="3"></a></span>
+<span id="cb11-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> </span>
+<span id="cb11-5"><a aria-label="5"></a>    <span class="dt">int</span> samples<span class="op">;</span> <span class="co">// definizione, senza inizializzazione</span></span>
+<span id="cb11-6"><a aria-label="6"></a>    <span class="dt">int</span> events <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// definizione con inizializzazione</span></span>
+<span id="cb11-7"><a aria-label="7"></a>    </span>
+<span id="cb11-8"><a aria-label="8"></a>    samples <span class="op">=</span> <span class="dv">123</span><span class="op">;</span> <span class="co">// assegnazione</span></span>
+<span id="cb11-9"><a aria-label="9"></a></span>
+<span id="cb11-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Quanti samples? "</span> <span class="op">;</span></span>
+<span id="cb11-11"><a aria-label="11"></a>    <span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> samples<span class="op">;</span> <span class="co">// assegnazione tramite I/O</span></span>
+<span id="cb11-12"><a aria-label="12"></a></span>
+<span id="cb11-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"samples: "</span> <span class="op">&lt;&lt;</span> samples</span>
+<span id="cb11-14"><a aria-label="14"></a>         <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span> <span class="co">// inserisce un carattere di tabulazione (tab) nella stampa</span></span>
+<span id="cb11-15"><a aria-label="15"></a>         <span class="op">&lt;&lt;</span> <span class="st">"events: "</span> <span class="op">&lt;&lt;</span> events</span>
+<span id="cb11-16"><a aria-label="16"></a>         <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb11-17"><a aria-label="17"></a></span>
+<span id="cb11-18"><a aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-19"><a aria-label="19"></a><span class="op">}</span> <span class="co">// fine del main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>int samples;</code> è già una <strong>definizione</strong>: crea la variabile. Una dichiarazione pura, come <code>extern int samples;</code>, dice solo che la variabile esiste altrove.</p>
 </section>
 <section id="richiamo-la-divisione-intera" class="slide level2 smaller">
@@ -622,15 +617,15 @@ Cristiano De Michele
 <h2>Cicli e iterazioni in C++</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> <span class="co">// il main inizia qui</span></span>
 <span id="cb15-2"><a aria-label="2"></a>    <span class="dt">int</span> nIterations<span class="op">;</span></span>
-<span id="cb15-3"><a aria-label="3"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Quante iterazioni? "</span><span class="op">;</span></span>
-<span id="cb15-4"><a aria-label="4"></a>    cin <span class="op">&gt;&gt;</span> nIterations<span class="op">;</span></span>
+<span id="cb15-3"><a aria-label="3"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Quante iterazioni? "</span><span class="op">;</span></span>
+<span id="cb15-4"><a aria-label="4"></a>    <span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> nIterations<span class="op">;</span></span>
 <span id="cb15-5"><a aria-label="5"></a></span>
 <span id="cb15-6"><a aria-label="6"></a>    <span class="dt">int</span> step<span class="op">;</span></span>
-<span id="cb15-7"><a aria-label="7"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"passo (step) dell'iterazione? "</span> <span class="op">;</span></span>
-<span id="cb15-8"><a aria-label="8"></a>    cin <span class="op">&gt;&gt;</span> step<span class="op">;</span></span>
+<span id="cb15-7"><a aria-label="7"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"passo (step) dell'iterazione? "</span> <span class="op">;</span></span>
+<span id="cb15-8"><a aria-label="8"></a>    <span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> step<span class="op">;</span></span>
 <span id="cb15-9"><a aria-label="9"></a></span>
 <span id="cb15-10"><a aria-label="10"></a>    <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> index<span class="op">=</span><span class="dv">0</span><span class="op">;</span> index <span class="op">&lt;</span> nIterations<span class="op">;</span> index<span class="op">+=</span>step<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-11"><a aria-label="11"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"indice: "</span> <span class="op">&lt;&lt;</span> index <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb15-11"><a aria-label="11"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"indice: "</span> <span class="op">&lt;&lt;</span> index <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
 <span id="cb15-12"><a aria-label="12"></a>    <span class="op">}</span></span>
 <span id="cb15-13"><a aria-label="13"></a>    </span>
 <span id="cb15-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
@@ -639,20 +634,19 @@ Cristiano De Michele
 <section id="problemi-con-cin" class="slide level2 smaller scrollable">
 <h2>Problemi con <code>cin</code></h2>
 <div class="columns">
-<div class="column" style="width:60%;">
+<div class="column" style="width:62%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="co">// tinput_bad.cc</span></span>
 <span id="cb16-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb16-3"><a aria-label="3"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb16-4"><a aria-label="4"></a></span>
-<span id="cb16-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb16-6"><a aria-label="6"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"iterazioni? "</span><span class="op">;</span></span>
-<span id="cb16-7"><a aria-label="7"></a>    <span class="dt">int</span> iters<span class="op">;</span></span>
-<span id="cb16-8"><a aria-label="8"></a>    cin <span class="op">&gt;&gt;</span> iters<span class="op">;</span></span>
-<span id="cb16-9"><a aria-label="9"></a>    </span>
-<span id="cb16-10"><a aria-label="10"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"richieste "</span> <span class="op">&lt;&lt;</span> iters <span class="op">&lt;&lt;</span> <span class="st">" iterazioni</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb16-11"><a aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb16-12"><a aria-label="12"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:40%;">
+<span id="cb16-3"><a aria-label="3"></a></span>
+<span id="cb16-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb16-5"><a aria-label="5"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"iterazioni? "</span><span class="op">;</span></span>
+<span id="cb16-6"><a aria-label="6"></a>    <span class="dt">int</span> iters<span class="op">;</span></span>
+<span id="cb16-7"><a aria-label="7"></a>    <span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> iters<span class="op">;</span></span>
+<span id="cb16-8"><a aria-label="8"></a>    </span>
+<span id="cb16-9"><a aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"richieste "</span> <span class="op">&lt;&lt;</span> iters <span class="op">&lt;&lt;</span> <span class="st">" iterazioni</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb16-10"><a aria-label="10"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb16-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:38%;">
 <p><strong>Terminale:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a aria-label="1"></a><span class="ex">$</span> g++ <span class="at">-Wall</span> <span class="at">-o</span> tinput_bad <span class="dt">\</span></span>
 <span id="cb17-2"><a aria-label="2"></a>      tinput_bad.cc</span>
@@ -681,15 +675,15 @@ Cristiano De Michele
 <section id="variabili-non-inizializzate" class="slide level2 smaller">
 <h2>Variabili non inizializzate</h2>
 <div class="columns">
-<div class="column" style="width:55%;">
+<div class="column" style="width:58%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-29"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-29-1"><a href="#annotated-cell-29-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-29" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-29-2" class="code-annotation-target"><a href="#annotated-cell-29-2" aria-label="2"></a>    <span class="dt">int</span> iters<span class="op">;</span></span>
-<span id="annotated-cell-29-3"><a href="#annotated-cell-29-3" aria-label="3"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"iters prima: "</span> <span class="op">&lt;&lt;</span> iters <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="annotated-cell-29-3"><a href="#annotated-cell-29-3" aria-label="3"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"iters prima: "</span> <span class="op">&lt;&lt;</span> iters <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
 <span id="annotated-cell-29-4"><a href="#annotated-cell-29-4" aria-label="4"></a>    </span>
-<span id="annotated-cell-29-5"><a href="#annotated-cell-29-5" aria-label="5"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"iterazioni? "</span><span class="op">;</span></span>
-<span id="annotated-cell-29-6"><a href="#annotated-cell-29-6" aria-label="6"></a>    cin <span class="op">&gt;&gt;</span> iters<span class="op">;</span></span>
+<span id="annotated-cell-29-5"><a href="#annotated-cell-29-5" aria-label="5"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"iterazioni? "</span><span class="op">;</span></span>
+<span id="annotated-cell-29-6"><a href="#annotated-cell-29-6" aria-label="6"></a>    <span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> iters<span class="op">;</span></span>
 <span id="annotated-cell-29-7"><a href="#annotated-cell-29-7" aria-label="7"></a>    </span>
-<span id="annotated-cell-29-8"><a href="#annotated-cell-29-8" aria-label="8"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"richieste "</span> <span class="op">&lt;&lt;</span> iters <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="annotated-cell-29-8"><a href="#annotated-cell-29-8" aria-label="8"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"richieste "</span> <span class="op">&lt;&lt;</span> iters <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
 <span id="annotated-cell-29-9"><a href="#annotated-cell-29-9" aria-label="9"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-29-10"><a href="#annotated-cell-29-10" aria-label="10"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
@@ -698,7 +692,7 @@ Cristiano De Michele
 <span data-code-cell="annotated-cell-29" data-code-lines="2" data-code-annotation="1">Valore random (spazzatura) poiché la memoria non è stata inizializzata: questa riga è <em>undefined behaviour</em>, può stampare qualsiasi cosa. La lettura fallita che segue invece azzera <code>iters</code>, e la spazzatura sparisce.</span>
 </dd>
 </dl>
-</div><div class="column" style="width:45%;">
+</div><div class="column" style="width:42%;">
 <p><strong>Terminale:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a aria-label="1"></a><span class="ex">$</span> ./tinput_bad2</span>
 <span id="cb18-2"><a aria-label="2"></a><span class="ex">iters</span> prima: 134514841</span>
@@ -712,14 +706,14 @@ Cristiano De Michele
 <div class="column" style="width:60%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-31"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-31-1"><a href="#annotated-cell-31-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-31-2"><a href="#annotated-cell-31-2" aria-label="2"></a>    <span class="dt">int</span> iters <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-31-3"><a href="#annotated-cell-31-3" aria-label="3"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"iterazioni? "</span><span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-31-4" class="code-annotation-target"><a href="#annotated-cell-31-4" aria-label="4"></a>    cin <span class="op">&gt;&gt;</span> iters<span class="op">;</span></span>
+<span id="annotated-cell-31-3"><a href="#annotated-cell-31-3" aria-label="3"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"iterazioni? "</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-31-4" class="code-annotation-target"><a href="#annotated-cell-31-4" aria-label="4"></a>    <span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> iters<span class="op">;</span></span>
 <span id="annotated-cell-31-5"><a href="#annotated-cell-31-5" aria-label="5"></a>    </span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-31-6" class="code-annotation-target"><a href="#annotated-cell-31-6" aria-label="6"></a>    <span class="cf">if</span><span class="op">(</span>cin<span class="op">.</span>fail<span class="op">())</span> <span class="op">{</span></span>
-<span id="annotated-cell-31-7"><a href="#annotated-cell-31-7" aria-label="7"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"cin fallito!"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-31-6" class="code-annotation-target"><a href="#annotated-cell-31-6" aria-label="6"></a>    <span class="cf">if</span><span class="op">(</span><span class="bu">std::</span>cin<span class="op">.</span>fail<span class="op">())</span> <span class="op">{</span></span>
+<span id="annotated-cell-31-7"><a href="#annotated-cell-31-7" aria-label="7"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"cin fallito!"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
 <span id="annotated-cell-31-8"><a href="#annotated-cell-31-8" aria-label="8"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-31-9"><a href="#annotated-cell-31-9" aria-label="9"></a>    </span>
-<span id="annotated-cell-31-10"><a href="#annotated-cell-31-10" aria-label="10"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"richieste "</span> <span class="op">&lt;&lt;</span> iters <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="annotated-cell-31-10"><a href="#annotated-cell-31-10" aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"richieste "</span> <span class="op">&lt;&lt;</span> iters <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
 <span id="annotated-cell-31-11"><a href="#annotated-cell-31-11" aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-31-12"><a href="#annotated-cell-31-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
@@ -762,20 +756,19 @@ Cristiano De Michele
 <section id="istruzioni-di-controllo" class="slide level2 smaller">
 <h2>Istruzioni di controllo</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb20-2"><a aria-label="2"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb20-3"><a aria-label="3"></a></span>
-<span id="cb20-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> </span>
-<span id="cb20-5"><a aria-label="5"></a>    <span class="cf">if</span><span class="op">(</span> <span class="dv">1</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">)</span> cout <span class="op">&lt;&lt;</span> <span class="st">"1==0"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb20-6"><a aria-label="6"></a>    </span>
-<span id="cb20-7"><a aria-label="7"></a>    <span class="cf">if</span><span class="op">(</span> <span class="fl">7.2</span> <span class="op">&gt;=</span> <span class="fl">6.9</span> <span class="op">)</span> cout <span class="op">&lt;&lt;</span> <span class="st">"7.2 &gt;= 6.9"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb20-8"><a aria-label="8"></a>    </span>
-<span id="cb20-9"><a aria-label="9"></a>    <span class="dt">bool</span> truth <span class="op">=</span> <span class="op">(</span><span class="dv">1</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span>
-<span id="cb20-10"><a aria-label="10"></a>    <span class="cf">if</span><span class="op">(</span>truth<span class="op">)</span> cout <span class="op">&lt;&lt;</span> <span class="st">"1 != 0"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb20-11"><a aria-label="11"></a>    </span>
-<span id="cb20-12"><a aria-label="12"></a>    <span class="cf">if</span><span class="op">(</span> <span class="op">!</span> <span class="op">(</span> <span class="fl">1.1</span> <span class="op">&gt;=</span> <span class="fl">1.2</span> <span class="op">)</span> <span class="op">)</span> cout <span class="op">&lt;&lt;</span> <span class="st">"1.1 &lt; 1.2"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb20-13"><a aria-label="13"></a>    </span>
-<span id="cb20-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb20-15"><a aria-label="15"></a><span class="op">}</span> </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-2"><a aria-label="2"></a></span>
+<span id="cb20-3"><a aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> </span>
+<span id="cb20-4"><a aria-label="4"></a>    <span class="cf">if</span><span class="op">(</span> <span class="dv">1</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"1==0"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb20-5"><a aria-label="5"></a>    </span>
+<span id="cb20-6"><a aria-label="6"></a>    <span class="cf">if</span><span class="op">(</span> <span class="fl">7.2</span> <span class="op">&gt;=</span> <span class="fl">6.9</span> <span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"7.2 &gt;= 6.9"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb20-7"><a aria-label="7"></a>    </span>
+<span id="cb20-8"><a aria-label="8"></a>    <span class="dt">bool</span> truth <span class="op">=</span> <span class="op">(</span><span class="dv">1</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb20-9"><a aria-label="9"></a>    <span class="cf">if</span><span class="op">(</span>truth<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"1 != 0"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb20-10"><a aria-label="10"></a>    </span>
+<span id="cb20-11"><a aria-label="11"></a>    <span class="cf">if</span><span class="op">(</span> <span class="op">!</span> <span class="op">(</span> <span class="fl">1.1</span> <span class="op">&gt;=</span> <span class="fl">1.2</span> <span class="op">)</span> <span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"1.1 &lt; 1.2"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb20-12"><a aria-label="12"></a>    </span>
+<span id="cb20-13"><a aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb20-14"><a aria-label="14"></a><span class="op">}</span> </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="scope-delle-variabili" class="slide level2 smaller">
 <h2>Scope delle variabili</h2>
@@ -853,15 +846,13 @@ Cristiano De Michele
 <li>Previene le “collisioni di nomi”: due librerie diverse possono avere una funzione chiamata <code>print()</code>.</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a><span class="kw">namespace</span> neural <span class="op">{</span></span>
-<span id="cb22-2"><a aria-label="2"></a>    <span class="kw">class</span> layer<span class="op">;</span></span>
-<span id="cb22-3"><a aria-label="3"></a>    <span class="kw">class</span> network<span class="op">;</span></span>
-<span id="cb22-4"><a aria-label="4"></a>    <span class="dt">void</span> activate<span class="op">();</span></span>
-<span id="cb22-5"><a aria-label="5"></a><span class="op">}</span></span>
-<span id="cb22-6"><a aria-label="6"></a></span>
-<span id="cb22-7"><a aria-label="7"></a><span class="kw">namespace</span> math <span class="op">{</span></span>
-<span id="cb22-8"><a aria-label="8"></a>    <span class="kw">class</span> matrix<span class="op">;</span></span>
-<span id="cb22-9"><a aria-label="9"></a>    <span class="dt">void</span> activate<span class="op">();</span></span>
-<span id="cb22-10"><a aria-label="10"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb22-2"><a aria-label="2"></a>    <span class="dt">double</span> activate<span class="op">(</span><span class="dt">double</span> x<span class="op">);</span></span>
+<span id="cb22-3"><a aria-label="3"></a>    <span class="at">const</span> <span class="dt">int</span> n_strati <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb22-4"><a aria-label="4"></a><span class="op">}</span></span>
+<span id="cb22-5"><a aria-label="5"></a></span>
+<span id="cb22-6"><a aria-label="6"></a><span class="kw">namespace</span> math <span class="op">{</span></span>
+<span id="cb22-7"><a aria-label="7"></a>    <span class="dt">double</span> activate<span class="op">(</span><span class="dt">double</span> x<span class="op">);</span></span>
+<span id="cb22-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="usare-i-namespace-loperatore" class="slide level2 smaller">
 <h2>Usare i namespace: l’operatore <code>::</code></h2>
@@ -906,7 +897,7 @@ Cristiano De Michele
 <p><strong>Nota</strong></p>
 </div>
 <div class="callout-content">
-<p>L’operatore <code>::</code> si chiama <strong>Scope Resolution Operator</strong>. Lo vediamo sempre in <code>std::cout</code>, perché <code>cout</code> appartiene al namespace <code>std</code>.</p>
+<p>L’operatore <code>::</code> si chiama <strong>Scope Resolution Operator</strong>. Lo vediamo sempre in <code>std::cout</code>, perché <code>cout</code> appartiene al namespace <code>std</code>; lo stesso per <code>std::exp</code> e <code>std::tanh</code>: <code>&lt;cmath&gt;</code> è il <code>math.h</code> del C, con le funzioni nel namespace <code>std</code>.</p>
 </div>
 </div>
 </div>
@@ -970,7 +961,7 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-21" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-21" data-code-lines="9" data-code-annotation="1"><em>Errore del compilatore: <code>call of overloaded 'activate(double&amp;)' is ambiguous</code></em> — con la reference, perché <code>input</code> è una variabile e non una costante.</span>
+<span data-code-cell="annotated-cell-21" data-code-lines="9" data-code-annotation="1"><em>Errore del compilatore: <code>call of overloaded 'activate(double&amp;)' is ambiguous</code></em>. <em>Overloaded</em>: ci sono più funzioni con lo stesso nome. Il <code>&amp;</code> indica una <em>reference</em> (Lezione 05): qui dice solo che <code>input</code> è una variabile.</span>
 </dd>
 </dl>
 <div class="callout callout-important callout-titled callout-style-default">
@@ -1031,7 +1022,7 @@ Cristiano De Michele
 <span id="annotated-cell-22-17"><a href="#annotated-cell-22-17" aria-label="17"></a>    <span class="op">}</span></span>
 <span id="annotated-cell-22-18"><a href="#annotated-cell-22-18" aria-label="18"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Addestro per "</span> <span class="op">&lt;&lt;</span> epoche <span class="op">&lt;&lt;</span> <span class="st">" epoche.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-22-19"><a href="#annotated-cell-22-19" aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>La riga con <code>eof()</code> serve se l’input finisce (Ctrl-D, o un file rediretto): non c’è più niente da rileggere, e senza quel controllo il ciclo girerebbe per sempre.</p>
+<p>La riga con <code>eof()</code> serve se l’input finisce (Ctrl-D, o un file rediretto): non c’è più niente da rileggere, e senza quel controllo il ciclo girerebbe per sempre. Manca anche il <code>return 0;</code> finale: nel <code>main</code>, e solo lì, arrivare in fondo equivale a restituire 0.</p>
 </section>
 <section id="esercizio-soluzione-perché-funziona" class="slide level2 smaller">
 <h2>Esercizio: soluzione — perché funziona</h2>
