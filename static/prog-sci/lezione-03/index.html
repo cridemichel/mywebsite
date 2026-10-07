@@ -652,6 +652,11 @@ Cristiano De Michele
 <p><span class="math display">\[ \mathbf{v} \leftarrow \mu\,\mathbf{v} - \eta\,\nabla E, \qquad \boldsymbol\theta \leftarrow \boldsymbol\theta + \mathbf{v}, \qquad \mu = 1 - \frac{\gamma\,\Delta t}{m} \in [0, 1), \quad \eta = \frac{\Delta t^2}{m} . \]</span></p>
 <p><span class="math inline">\(\mathbf{v}\)</span>, lo <strong>spostamento per passo</strong>, ha la forma di <span class="math inline">\(\boldsymbol\theta\)</span> e parte da zero; <span class="math inline">\(1-\mu\)</span> è l’attrito. La velocità smorza le oscillazioni trasverse e supera i tratti quasi piatti; con <span class="math inline">\(\mu = 0\)</span> resta la discesa semplice (limite sovrasmorzato, <span class="math inline">\(\gamma\dot{\boldsymbol\theta} = -\nabla E\)</span>).</p>
 </section>
+<section id="il-momentum-in-figura" class="slide level2 smaller">
+<h2>Il momentum in figura</h2>
+
+<img data-src="images/ottimizzatori_momentum.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>A sinistra la discesa semplice rimbalza fra le pareti e avanza piano lungo il fondo. Il momentum somma i passi successivi: le componenti trasverse, di segno alterno, si compensano, quelle lungo il fondo si accumulano. A destra, dove il gradiente è quasi nullo, la velocità accumulata attraversa il tratto piatto in una ventina di passi, a costo di qualche oscillazione intorno al minimo; la discesa semplice dopo sessanta passi non è ancora arrivata.</p>
+</section>
 <section id="lottimizzatore-adam" class="slide level2 smaller">
 <h2>L’ottimizzatore Adam</h2>
 <p><strong>Adam</strong> (<em>Adaptive Moment Estimation</em>, Kingma e Ba, 2014) è oggi l’ottimizzatore più usato. Tiene per ogni parametro due medie mobili esponenziali, del gradiente <span class="math inline">\(\mathbf{g} = \nabla E\)</span> e del suo quadrato; a ogni passo <span class="math inline">\(t = 1, 2, \dots\)</span>, elemento per elemento:</p>
@@ -674,6 +679,11 @@ Cristiano De Michele
 <li><strong>AdamW</strong> (Loshchilov e Hutter, 2019), lo standard per le reti grandi, sottrae <span class="math inline">\(\eta\lambda\boldsymbol\theta\)</span> (<em>weight decay</em>) fuori dalla divisione per <span class="math inline">\(\sqrt{\hat{\mathbf{s}}}\)</span>.</li>
 </ul>
 <p>Nel Laboratorio 10 implementerete <code>SDOptimizer</code>, la discesa più semplice — una riga, <code>param -= lr * grad</code>. Momentum e Adam sono la <strong>traccia 1</strong> dei progetti finali: l’interfaccia <code>Optimizer</code> è fatta perché si possano aggiungere senza toccare né i layer né la rete.</p>
+</section>
+<section id="adam-in-figura" class="slide level2 smaller">
+<h2>Adam in figura</h2>
+
+<img data-src="images/ottimizzatori_adam.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>Adam divide ogni componente del passo per l’ampiezza recente del proprio gradiente. Nella valle stretta le due direzioni avanzano con passi dello stesso ordine, circa <span class="math inline">\(\eta\)</span>: il percorso non rimbalza fra le pareti. Nel tratto piatto il gradiente è piccolissimo ma costante, quindi <span class="math inline">\(\hat{\mathbf{m}}/\sqrt{\hat{\mathbf{s}}} \approx 1\)</span> e il passo non si accorcia.</p>
 </section>
 <section id="i-learning-rate-scheduler" class="slide level2 smaller">
 <h2>I learning rate scheduler</h2>
