@@ -628,8 +628,7 @@ Cristiano De Michele
 </section>
 <section id="matrici-invece-di-vettori" class="slide level2 smaller">
 <h2>Matrici invece di vettori</h2>
-<p>Sì, con l’algebra lineare: è il <strong>batching</strong>.</p>
-<p>Invece di un vettore colonna <span class="math inline">\(\mathbf{x}\)</span> (784 pixel <span class="math inline">\(\times\)</span> 1 immagine) si passa una matrice <span class="math inline">\(\mathbf{X}\)</span> (784 pixel <span class="math inline">\(\times\)</span> 64 immagini), un’immagine per colonna.</p>
+<p>Il <strong>batching</strong> sostituisce il vettore colonna <span class="math inline">\(\mathbf{x}\)</span> (784 pixel <span class="math inline">\(\times\)</span> 1 immagine) con una matrice <span class="math inline">\(\mathbf{X}\)</span> (784 pixel <span class="math inline">\(\times\)</span> 64 immagini), un’immagine per colonna.</p>
 <p>Le equazioni restano le stesse, <span class="math inline">\(\mathbf{Z} = \mathbf{W} \mathbf{X} + \mathbf{B}\)</span>, dove <span class="math inline">\(\mathbf{B}\)</span> ha in ogni colonna lo stesso <span class="math inline">\(\mathbf{b}\)</span>.</p>
 <p>Una libreria come <strong>Eigen</strong> elabora le 64 colonne con le istruzioni vettoriali (SIMD), riducendo molto il tempo per epoca.</p>
 <div class="callout callout-note callout-titled callout-style-default">
@@ -641,7 +640,7 @@ Cristiano De Michele
 <p><strong>Nota</strong></p>
 </div>
 <div class="callout-content">
-<p>Nel nostro framework il batch avrà <strong>una sola colonna</strong>: aggiorniamo i pesi dopo ogni immagine, come fa Rashid nel libro. È lo <em>Stochastic Gradient Descent</em> puro, e su MNIST basta per superare il 90% in tre epoche. Scriveremo comunque tutto in forma matriciale: le equazioni sono già quelle giuste, e passare al mini-batch richiederebbe di adattare solo il dataset e le metriche.</p>
+<p>Nel nostro framework il batch avrà <strong>una sola colonna</strong>: aggiorniamo i pesi dopo ogni immagine, come fa Rashid nel libro. È lo <em>stochastic gradient descent</em> puro, e su MNIST basta per superare il 90% in tre epoche. Scriveremo comunque tutto in forma matriciale: le equazioni sono già quelle giuste, e passare al mini-batch richiederebbe di adattare solo il dataset e le metriche.</p>
 </div>
 </div>
 </div>
