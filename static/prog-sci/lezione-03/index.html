@@ -6,8 +6,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.10.18">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9bbf5fa004a0676d7f26111dc3fdfdb2.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Cristiano De Michele">
   <title>Programmazione Scientifica++ – Programmazione Scientifica++: Lezione 3</title>
@@ -547,10 +547,10 @@ Cristiano De Michele
 <h2>La differenza con il libro di Rashid</h2>
 <p>Nel libro di Rashid il passo 3 è <strong>semplificato</strong>: per riportare l’errore dallo strato di uscita (2) a quello nascosto (1) usa l’errore grezzo <span class="math inline">\(\mathbf{e} = \mathbf{y} - \mathbf{a}^{(2)}\)</span>,</p>
 <p><span class="math display">\[ \begin{aligned}
-\text{libro:}\quad &amp; \left(\mathbf{W}^{(2)T}\,\mathbf{e}\right)\odot\sigma'\!\left(\mathbf{z}^{(1)}\right) \\[2pt]
-\text{esatto:}\quad &amp; \left(\mathbf{W}^{(2)T}\big[\,\mathbf{e}\odot\sigma'\!\left(\mathbf{z}^{(2)}\right)\big]\right)\odot\sigma'\!\left(\mathbf{z}^{(1)}\right)
+\text{libro:}\quad &amp; -\left(\mathbf{W}^{(2)T}\,\mathbf{e}\right)\odot\sigma'\!\left(\mathbf{z}^{(1)}\right) \\[2pt]
+\text{esatto:}\quad &amp; -2\left(\mathbf{W}^{(2)T}\big[\,\mathbf{e}\odot\sigma'\!\left(\mathbf{z}^{(2)}\right)\big]\right)\odot\sigma'\!\left(\mathbf{z}^{(1)}\right) = \boldsymbol{\delta}^{(1)}
 \end{aligned} \]</span></p>
-<p>(a meno del fattore <span class="math inline">\(-2\)</span>, perché <span class="math inline">\(\boldsymbol{\delta}^{(2)} = 2(\mathbf{a}^{(2)} - \mathbf{y})\odot\sigma' = -2\,\mathbf{e}\odot\sigma'\)</span>: il segno e la costante si riassorbono nel verso dell’aggiornamento e in <span class="math inline">\(\eta\)</span>). Manca il fattore <span class="math inline">\(\sigma'(\mathbf{z}^{(2)})\)</span> dello strato di uscita, cioè il passaggio da <span class="math inline">\(\mathbf{e}\)</span> a <span class="math inline">\(\boldsymbol{\delta}^{(2)}\)</span>. La rete del libro impara comunque, ma <strong>quello che scende non è il gradiente di <span class="math inline">\(E\)</span></strong>. Il framework implementa la formula esatta, e nel Lab 13 la misurerete: il gradient check torna alla decima cifra, mentre il gradiente del libro ha la stessa direzione (coseno <span class="math inline">\(0{,}9997\)</span>) ma norma <strong>quattro volte</strong> più grande. È un riscalamento, non una rotazione: si riassorbe quasi tutto nel learning rate.</p>
+<p>Il segno è lo stesso, ed è per questo che la rete del libro scende; il fattore <span class="math inline">\(2\)</span> si riassorbe in <span class="math inline">\(\eta\)</span>. Manca invece <span class="math inline">\(\sigma'(\mathbf{z}^{(2)})\)</span>, cioè il passaggio da <span class="math inline">\(\mathbf{e}\)</span> a <span class="math inline">\(\boldsymbol{\delta}^{(2)} = -2\,\mathbf{e}\odot\sigma'\)</span>: <strong>quello che scende non è il gradiente di <span class="math inline">\(E\)</span></strong>. Nel Lab 13 lo misurerete. A rete appena inizializzata tutte le uscite sono vicine a <span class="math inline">\(0{,}5\)</span> e <span class="math inline">\(\sigma' \approx 1/4\)</span> per tutte: il fattore omesso è quasi uno scalare, e il gradiente del libro ha quasi la stessa direzione (coseno <span class="math inline">\(0{,}9997\)</span>) con norma quattro volte più grande. Durante l’addestramento però <span class="math inline">\(\sigma'\)</span> diventa diverso da un’uscita all’altra: la direzione <strong>ruota</strong> (coseno <span class="math inline">\(0{,}16\)</span> all’epoca 120) e il passo cresce di due ordini di grandezza.</p>
 </section>
 <section id="esercizio-in-classe-backprop-a-mano" class="slide level2 smaller">
 <h2>Esercizio in classe: backprop a mano</h2>
