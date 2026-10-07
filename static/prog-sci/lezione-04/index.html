@@ -6,8 +6,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.10.18">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9bbf5fa004a0676d7f26111dc3fdfdb2.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Cristiano De Michele">
   <title>Programmazione Scientifica++ – Programmazione Scientifica++: Lezione 4</title>
@@ -385,7 +385,7 @@ Cristiano De Michele
 
 </section>
 <section id="argomenti-di-oggi" class="slide level2 smaller">
-<h2>Argomenti di Oggi</h2>
+<h2>Argomenti di oggi</h2>
 <ul>
 <li><strong>Come nasce un eseguibile</strong>: preprocessore, compilatore, assemblatore, linker</li>
 <li><strong>La struttura di un programma C++</strong>
@@ -405,7 +405,7 @@ Cristiano De Michele
 </ul>
 </section>
 <section id="di-cosa-hai-bisogno-per-compilare-il-tuo-programma-c" class="slide level2 smaller">
-<h2>Di cosa hai bisogno per compilare il tuo Programma C++?</h2>
+<h2>Di cosa hai bisogno per compilare il tuo programma C++?</h2>
 
 <img data-src="images/toolchain.png" class="quarto-figure quarto-figure-center r-stretch" style="width:98.0%"><ul>
 <li>Su macchine Linux/Unix dovresti avere il compilatore <code>g++</code> installato di default</li>
@@ -414,7 +414,7 @@ Cristiano De Michele
 </ul>
 </section>
 <section id="struttura-di-un-programma-c" class="slide level2">
-<h2>Struttura di un Programma C++</h2>
+<h2>Struttura di un programma C++</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="co">// la tua prima applicazione C++!</span></span>
 <span id="cb1-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span><span class="pp"> </span><span class="co">// richiesto per eseguire l'I/O stream in C++</span></span>
 <span id="cb1-3"><a aria-label="3"></a></span>
@@ -424,7 +424,7 @@ Cristiano De Michele
 <span id="cb1-7"><a aria-label="7"></a><span class="op">}</span> <span class="co">// fine della funzione main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="direttive-del-precompilatorepreprocessore" class="slide level2">
-<h2>Direttive del Precompilatore/Preprocessore</h2>
+<h2>Direttive del precompilatore/preprocessore</h2>
 <p>Cos’è il preprocessore? Cosa fa?</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="co">// la tua prima applicazione C++!</span></span>
 <span id="cb2-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span><span class="pp"> </span><span class="co">// richiesto per eseguire l'I/O stream in C++</span></span>
@@ -436,7 +436,7 @@ Cristiano De Michele
 <p><code>iostream</code> verrà incluso prima della compilazione di questo codice!</p>
 </section>
 <section id="cosa-fa-il-preprocessore" class="slide level2 smaller scrollable">
-<h2>Cosa fa il Preprocessore?</h2>
+<h2>Cosa fa il preprocessore?</h2>
 <p>Sostituisce le direttive dell’utente con il codice sorgente richiesto (Solo pre-compilazione)</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="co">// Foo.h</span></span>
 <span id="cb3-2"><a aria-label="2"></a><span class="kw">class</span> Foo <span class="op">{</span></span>
@@ -478,13 +478,13 @@ Cristiano De Michele
 <ul>
 <li>Tutte le istruzioni devono terminare con un punto e virgola <code>;</code>
 <ul>
-<li>I ritorni a capo (carriage returns) non sono significativi e vengono ignorati dal compilatore</li>
+<li>Gli a capo non contano, salvo nelle stringhe, nei commenti <code>//</code> e nelle direttive <code>#</code></li>
 </ul></li>
 <li>I commenti sono preceduti da <code>//</code>
 <ul>
 <li>I commenti possono occupare un’intera riga o trovarsi a metà della riga dopo un’istruzione</li>
 </ul></li>
-<li>Qualsiasi applicazione C++ deve avere un metodo <code>main</code></li>
+<li>Qualsiasi applicazione C++ deve avere una funzione <code>main</code></li>
 <li>Il <code>main</code> deve restituire un <code>int</code> (intero)
 <ul>
 <li>Il valore restituito può essere utilizzato dall’utente/client/ambiente</li>
@@ -536,7 +536,7 @@ Cristiano De Michele
 <span id="cb9-15"><a aria-label="15"></a><span class="op">}</span> <span class="co">// fine del main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="tipici-errori-di-compilazione-finora" class="slide level2 smaller">
-<h2>Tipici Errori di Compilazione Finora</h2>
+<h2>Tipici errori di compilazione finora</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="co">// BadCode1.cpp</span></span>
 <span id="cb10-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb10-3"><a aria-label="3"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span> </span>
@@ -556,14 +556,14 @@ Cristiano De Michele
 <span id="cb10-17"><a aria-label="17"></a><span class="op">}</span> <span class="co">// fine del main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="dichiarazione-e-definizione-delle-variabili" class="slide level2 smaller">
-<h2>Dichiarazione e Definizione delle Variabili</h2>
+<h2>Dichiarazione e definizione delle variabili</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="co">// SimpleVars.cpp</span></span>
 <span id="cb11-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb11-3"><a aria-label="3"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
 <span id="cb11-4"><a aria-label="4"></a></span>
 <span id="cb11-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> </span>
-<span id="cb11-6"><a aria-label="6"></a>    <span class="dt">int</span> samples<span class="op">;</span> <span class="co">// solo dichiarazione</span></span>
-<span id="cb11-7"><a aria-label="7"></a>    <span class="dt">int</span> events <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// dichiarazione e assegnazione</span></span>
+<span id="cb11-6"><a aria-label="6"></a>    <span class="dt">int</span> samples<span class="op">;</span> <span class="co">// definizione, senza inizializzazione</span></span>
+<span id="cb11-7"><a aria-label="7"></a>    <span class="dt">int</span> events <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// definizione con inizializzazione</span></span>
 <span id="cb11-8"><a aria-label="8"></a>    </span>
 <span id="cb11-9"><a aria-label="9"></a>    samples <span class="op">=</span> <span class="dv">123</span><span class="op">;</span> <span class="co">// assegnazione</span></span>
 <span id="cb11-10"><a aria-label="10"></a></span>
@@ -577,9 +577,10 @@ Cristiano De Michele
 <span id="cb11-18"><a aria-label="18"></a></span>
 <span id="cb11-19"><a aria-label="19"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb11-20"><a aria-label="20"></a><span class="op">}</span> <span class="co">// fine del main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>int samples;</code> è già una <strong>definizione</strong>: crea la variabile. Una dichiarazione pura, come <code>extern int samples;</code>, dice solo che la variabile esiste altrove.</p>
 </section>
 <section id="richiamo-la-divisione-intera" class="slide level2 smaller">
-<h2>Richiamo: la Divisione Intera</h2>
+<h2>Richiamo: la divisione intera</h2>
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -589,7 +590,7 @@ Cristiano De Michele
 <p><strong>Avviso</strong></p>
 </div>
 <div class="callout-content">
-<p>Lo sapete già dal C. Lo ripetiamo perché, nel calcolo scientifico, è il bug che costa più ore di debug di qualunque altro — e non dà <strong>nessun</strong> errore.</p>
+<p>Lo sapete già dal C. Lo ripetiamo perché è fra gli errori più insidiosi del calcolo scientifico: non produce <strong>nessun</strong> errore né avviso.</p>
 </div>
 </div>
 </div>
@@ -604,7 +605,7 @@ Cristiano De Michele
 <span id="cb13-3"><a aria-label="3"></a><span class="dt">double</span> frazione <span class="op">=</span> i <span class="op">/</span> <span class="op">(</span>N <span class="op">-</span> <span class="dv">1</span><span class="op">);</span>     <span class="co">// dentro un ciclo: sempre 0 tranne all'ultimo giro</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="la-cura-promozione-esplicita" class="slide level2 smaller">
-<h2>La Cura: Promozione Esplicita</h2>
+<h2>La cura: promozione esplicita</h2>
 <p>Basta che <strong>uno</strong> dei due operandi sia <code>double</code>: C++ promuove automaticamente anche l’altro, e la divisione diventa reale.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a aria-label="1"></a><span class="dt">double</span> efficienza <span class="op">=</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span>eventi_buoni<span class="op">)</span> <span class="op">/</span> eventi_totali<span class="op">;</span>  <span class="co">// 0.714</span></span>
 <span id="cb14-2"><a aria-label="2"></a><span class="dt">double</span> passo      <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="dv">100</span><span class="op">;</span>                                           <span class="co">// 0.01</span></span>
@@ -653,14 +654,15 @@ Cristiano De Michele
 <span id="cb16-12"><a aria-label="12"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:40%;">
 <p><strong>Terminale:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a aria-label="1"></a><span class="ex">$</span> g++ <span class="at">-Wall</span> <span class="at">-o</span> tinput_bad tinput_bad.cc</span>
-<span id="cb17-2"><a aria-label="2"></a><span class="ex">$</span> ./tinput_bad</span>
-<span id="cb17-3"><a aria-label="3"></a><span class="ex">iterazioni?</span> 23</span>
-<span id="cb17-4"><a aria-label="4"></a><span class="ex">richieste</span> 23 iterazioni</span>
-<span id="cb17-5"><a aria-label="5"></a></span>
-<span id="cb17-6"><a aria-label="6"></a><span class="ex">$</span> ./tinput_bad</span>
-<span id="cb17-7"><a aria-label="7"></a><span class="ex">iterazioni?</span> dfed</span>
-<span id="cb17-8"><a aria-label="8"></a><span class="ex">richieste</span> 0 iterazioni</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a aria-label="1"></a><span class="ex">$</span> g++ <span class="at">-Wall</span> <span class="at">-o</span> tinput_bad <span class="dt">\</span></span>
+<span id="cb17-2"><a aria-label="2"></a>      tinput_bad.cc</span>
+<span id="cb17-3"><a aria-label="3"></a><span class="ex">$</span> ./tinput_bad</span>
+<span id="cb17-4"><a aria-label="4"></a><span class="ex">iterazioni?</span> 23</span>
+<span id="cb17-5"><a aria-label="5"></a><span class="ex">richieste</span> 23 iterazioni</span>
+<span id="cb17-6"><a aria-label="6"></a></span>
+<span id="cb17-7"><a aria-label="7"></a><span class="ex">$</span> ./tinput_bad</span>
+<span id="cb17-8"><a aria-label="8"></a><span class="ex">iterazioni?</span> dfed</span>
+<span id="cb17-9"><a aria-label="9"></a><span class="ex">richieste</span> 0 iterazioni</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
@@ -676,8 +678,8 @@ Cristiano De Michele
 </div>
 </div>
 </section>
-<section id="errore-variabili-non-inizializzate" class="slide level2 smaller">
-<h2>1° Errore: Variabili non inizializzate</h2>
+<section id="variabili-non-inizializzate" class="slide level2 smaller">
+<h2>Variabili non inizializzate</h2>
 <div class="columns">
 <div class="column" style="width:55%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-28"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-28-1"><a href="#annotated-cell-28-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
@@ -710,23 +712,24 @@ Cristiano De Michele
 <div class="column" style="width:60%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-30"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-30-1"><a href="#annotated-cell-30-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-30-2"><a href="#annotated-cell-30-2" aria-label="2"></a>    <span class="dt">int</span> iters <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-30" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-30-3" class="code-annotation-target"><a href="#annotated-cell-30-3" aria-label="3"></a>    cin <span class="op">&gt;&gt;</span> iters<span class="op">;</span></span>
-<span id="annotated-cell-30-4"><a href="#annotated-cell-30-4" aria-label="4"></a>    </span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-30" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-30-5" class="code-annotation-target"><a href="#annotated-cell-30-5" aria-label="5"></a>    <span class="cf">if</span><span class="op">(</span>cin<span class="op">.</span>fail<span class="op">())</span> <span class="op">{</span></span>
-<span id="annotated-cell-30-6"><a href="#annotated-cell-30-6" aria-label="6"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"cin fallito!"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="annotated-cell-30-7"><a href="#annotated-cell-30-7" aria-label="7"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-30-8"><a href="#annotated-cell-30-8" aria-label="8"></a>    </span>
-<span id="annotated-cell-30-9"><a href="#annotated-cell-30-9" aria-label="9"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"richieste "</span> <span class="op">&lt;&lt;</span> iters <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="annotated-cell-30-10"><a href="#annotated-cell-30-10" aria-label="10"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-30-11"><a href="#annotated-cell-30-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-30-3"><a href="#annotated-cell-30-3" aria-label="3"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"iterazioni? "</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-30" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-30-4" class="code-annotation-target"><a href="#annotated-cell-30-4" aria-label="4"></a>    cin <span class="op">&gt;&gt;</span> iters<span class="op">;</span></span>
+<span id="annotated-cell-30-5"><a href="#annotated-cell-30-5" aria-label="5"></a>    </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-30" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-30-6" class="code-annotation-target"><a href="#annotated-cell-30-6" aria-label="6"></a>    <span class="cf">if</span><span class="op">(</span>cin<span class="op">.</span>fail<span class="op">())</span> <span class="op">{</span></span>
+<span id="annotated-cell-30-7"><a href="#annotated-cell-30-7" aria-label="7"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"cin fallito!"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="annotated-cell-30-8"><a href="#annotated-cell-30-8" aria-label="8"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-30-9"><a href="#annotated-cell-30-9" aria-label="9"></a>    </span>
+<span id="annotated-cell-30-10"><a href="#annotated-cell-30-10" aria-label="10"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"richieste "</span> <span class="op">&lt;&lt;</span> iters <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="annotated-cell-30-11"><a href="#annotated-cell-30-11" aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-30-12"><a href="#annotated-cell-30-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-30" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-30" data-code-lines="3" data-code-annotation="1">Se diamo in pasto del testo a una variabile <code>int</code>, l’operazione fallisce silenziosamente.</span>
+<span data-code-cell="annotated-cell-30" data-code-lines="4" data-code-annotation="1">Se diamo in pasto del testo a una variabile <code>int</code>, l’operazione fallisce silenziosamente.</span>
 </dd>
 <dt data-target-cell="annotated-cell-30" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-30" data-code-lines="5" data-code-annotation="2">Usiamo <code>.fail()</code> per intercettare l’errore e gestirlo!</span>
+<span data-code-cell="annotated-cell-30" data-code-lines="6" data-code-annotation="2">Usiamo <code>.fail()</code> per intercettare l’errore e gestirlo!</span>
 </dd>
 </dl>
 </div><div class="column" style="width:40%;">
@@ -737,8 +740,8 @@ Cristiano De Michele
 <span id="cb19-4"><a aria-label="4"></a><span class="ex">richieste</span> 0</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </section>
-<section id="dichiarazioni-di-controllo" class="slide level2 smaller">
-<h2>Dichiarazioni di Controllo</h2>
+<section id="istruzioni-di-controllo" class="slide level2 smaller">
+<h2>Istruzioni di controllo</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb20-2"><a aria-label="2"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
 <span id="cb20-3"><a aria-label="3"></a></span>
@@ -756,7 +759,7 @@ Cristiano De Michele
 <span id="cb20-15"><a aria-label="15"></a><span class="op">}</span> </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="scope-delle-variabili" class="slide level2 smaller">
-<h2>Scope delle Variabili</h2>
+<h2>Scope delle variabili</h2>
 <ul>
 <li>Lo <strong>scope</strong> (visibilità) di un nome è il blocco in cui quel nome è valido.</li>
 <li>Un blocco è delimitato da parentesi graffe <code>{ }</code>.</li>
@@ -792,7 +795,7 @@ Cristiano De Michele
 </dl>
 </section>
 <section id="variable-shadowing-ombreggiatura" class="slide level2 smaller scrollable">
-<h2>Variable Shadowing (Ombreggiatura)</h2>
+<h2>Variable shadowing (ombreggiatura)</h2>
 <p>Cosa succede se dichiariamo una variabile con lo stesso nome in uno scope nidificato? La variabile più interna “nasconde” quella esterna!</p>
 <div class="columns">
 <div class="column" style="width:60%;">
@@ -821,12 +824,12 @@ Cristiano De Michele
 </dl>
 </div><div class="column" style="width:40%;">
 <p><strong>Terminale:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a aria-label="1"></a><span class="ex">x</span> interno: 5.0</span>
-<span id="cb21-2"><a aria-label="2"></a><span class="ex">x</span> esterno: 10.0</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a aria-label="1"></a><span class="ex">x</span> interno: 5</span>
+<span id="cb21-2"><a aria-label="2"></a><span class="ex">x</span> esterno: 10</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </section>
 <section id="cosè-un-namespace" class="slide level2 smaller">
-<h2>Cos’è un Namespace?</h2>
+<h2>Cos’è un namespace?</h2>
 <ul>
 <li>Previene le “collisioni di nomi”: due librerie diverse possono avere una funzione chiamata <code>print()</code>.</li>
 </ul>
@@ -849,27 +852,29 @@ Cristiano De Michele
 <span id="annotated-cell-34-2"><a href="#annotated-cell-34-2" aria-label="2"></a></span>
 <span id="annotated-cell-34-3"><a href="#annotated-cell-34-3" aria-label="3"></a><span class="kw">namespace</span> neural <span class="op">{</span></span>
 <span id="annotated-cell-34-4"><a href="#annotated-cell-34-4" aria-label="4"></a>    <span class="co">// la sigmoide: quella che useremo davvero nella rete</span></span>
-<span id="annotated-cell-34-5"><a href="#annotated-cell-34-5" aria-label="5"></a>    <span class="dt">double</span> activate<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>x<span class="op">));</span> <span class="op">}</span></span>
-<span id="annotated-cell-34-6"><a href="#annotated-cell-34-6" aria-label="6"></a><span class="op">}</span></span>
-<span id="annotated-cell-34-7"><a href="#annotated-cell-34-7" aria-label="7"></a></span>
-<span id="annotated-cell-34-8"><a href="#annotated-cell-34-8" aria-label="8"></a><span class="kw">namespace</span> math <span class="op">{</span></span>
-<span id="annotated-cell-34-9"><a href="#annotated-cell-34-9" aria-label="9"></a>    <span class="co">// la tangente iperbolica: un'altra scelta possibile</span></span>
-<span id="annotated-cell-34-10"><a href="#annotated-cell-34-10" aria-label="10"></a>    <span class="dt">double</span> activate<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="bu">std::</span>tanh<span class="op">(</span>x<span class="op">);</span> <span class="op">}</span></span>
-<span id="annotated-cell-34-11"><a href="#annotated-cell-34-11" aria-label="11"></a><span class="op">}</span></span>
-<span id="annotated-cell-34-12"><a href="#annotated-cell-34-12" aria-label="12"></a></span>
-<span id="annotated-cell-34-13"><a href="#annotated-cell-34-13" aria-label="13"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-34" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-34-14" class="code-annotation-target"><a href="#annotated-cell-34-14" aria-label="14"></a>    <span class="dt">double</span> out1 <span class="op">=</span> neural<span class="op">::</span>activate<span class="op">(-</span><span class="fl">2.5</span><span class="op">);</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-34" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-34-15" class="code-annotation-target"><a href="#annotated-cell-34-15" aria-label="15"></a>    <span class="dt">double</span> out2 <span class="op">=</span> math<span class="op">::</span>activate<span class="op">(-</span><span class="fl">2.5</span><span class="op">);</span></span>
-<span id="annotated-cell-34-16"><a href="#annotated-cell-34-16" aria-label="16"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-34-17"><a href="#annotated-cell-34-17" aria-label="17"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-34-5"><a href="#annotated-cell-34-5" aria-label="5"></a>    <span class="dt">double</span> activate<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-34-6"><a href="#annotated-cell-34-6" aria-label="6"></a>        <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>x<span class="op">));</span></span>
+<span id="annotated-cell-34-7"><a href="#annotated-cell-34-7" aria-label="7"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-34-8"><a href="#annotated-cell-34-8" aria-label="8"></a><span class="op">}</span></span>
+<span id="annotated-cell-34-9"><a href="#annotated-cell-34-9" aria-label="9"></a></span>
+<span id="annotated-cell-34-10"><a href="#annotated-cell-34-10" aria-label="10"></a><span class="kw">namespace</span> math <span class="op">{</span></span>
+<span id="annotated-cell-34-11"><a href="#annotated-cell-34-11" aria-label="11"></a>    <span class="co">// la tangente iperbolica: un'altra scelta possibile</span></span>
+<span id="annotated-cell-34-12"><a href="#annotated-cell-34-12" aria-label="12"></a>    <span class="dt">double</span> activate<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="bu">std::</span>tanh<span class="op">(</span>x<span class="op">);</span> <span class="op">}</span></span>
+<span id="annotated-cell-34-13"><a href="#annotated-cell-34-13" aria-label="13"></a><span class="op">}</span></span>
+<span id="annotated-cell-34-14"><a href="#annotated-cell-34-14" aria-label="14"></a></span>
+<span id="annotated-cell-34-15"><a href="#annotated-cell-34-15" aria-label="15"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-34" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-34-16" class="code-annotation-target"><a href="#annotated-cell-34-16" aria-label="16"></a>    <span class="dt">double</span> out1 <span class="op">=</span> neural<span class="op">::</span>activate<span class="op">(-</span><span class="fl">2.5</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-34" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-34-17" class="code-annotation-target"><a href="#annotated-cell-34-17" aria-label="17"></a>    <span class="dt">double</span> out2 <span class="op">=</span> math<span class="op">::</span>activate<span class="op">(-</span><span class="fl">2.5</span><span class="op">);</span></span>
+<span id="annotated-cell-34-18"><a href="#annotated-cell-34-18" aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-34-19"><a href="#annotated-cell-34-19" aria-label="19"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-34" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-34" data-code-lines="14" data-code-annotation="1">Richiama esplicitamente la <code>activate</code> del namespace <code>neural</code>: vale 0.076.</span>
+<span data-code-cell="annotated-cell-34" data-code-lines="16" data-code-annotation="1">Richiama esplicitamente la <code>activate</code> del namespace <code>neural</code>: vale 0.076.</span>
 </dd>
 <dt data-target-cell="annotated-cell-34" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-34" data-code-lines="15" data-code-annotation="2">Richiama l’omonima di <code>math</code>: vale −0.987. Stesso nome, nessuna collisione.</span>
+<span data-code-cell="annotated-cell-34" data-code-lines="17" data-code-annotation="2">Richiama l’omonima di <code>math</code>: vale −0.987. Stesso nome, nessuna collisione.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:40%;">
@@ -952,13 +957,13 @@ Cristiano De Michele
 </div>
 </section>
 <section id="esercizio-in-classe-15-min-leggere-un-numero-sul-serio" class="slide level2 smaller">
-<h2>Esercizio in Classe (15 min): leggere un numero, sul serio</h2>
-<p>Chiedete all’utente il numero di epoche, e <strong>non arrendetevi</strong> finche’ non ne digita uno valido.</p>
+<h2>Esercizio in classe (15 min): leggere un numero, sul serio</h2>
+<p>Chiedete all’utente il numero di epoche, e <strong>non arrendetevi</strong> finché non ne digita uno valido.</p>
 <ol type="1">
 <li>Un ciclo che chiede <code>epoche</code> con <code>std::cin &gt;&gt; epoche</code>.</li>
-<li>Se l’utente digita del testo, dite che non e’ un numero e <strong>richiedete</strong>.</li>
+<li>Se l’utente digita del testo, dite che non è un numero e <strong>richiedete</strong>.</li>
 <li>Se digita zero o un negativo, dite che dev’essere positivo e richiedete.</li>
-<li>Quando il numero e’ buono, uscite dal ciclo e stampatelo.</li>
+<li>Quando il numero è buono, uscite dal ciclo e stampatelo.</li>
 </ol>
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
@@ -969,13 +974,13 @@ Cristiano De Michele
 <p><strong>Avviso</strong></p>
 </div>
 <div class="callout-content">
-<p>Provate prima la versione ingenua, senza <code>clear()</code> e <code>ignore()</code>: digitate <code>pippo</code> e guardate cosa succede. Quello che vedete e’ il motivo di questo esercizio.</p>
+<p>Provate prima la versione ingenua, senza <code>clear()</code> e <code>ignore()</code>: digitate <code>pippo</code> e guardate cosa succede. Quello che vedete è il motivo di questo esercizio.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="esercizio-soluzione" class="slide level2 smaller">
-<h2>Esercizio: Soluzione</h2>
+<h2>Esercizio: soluzione</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-21"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-21-1"><a href="#annotated-cell-21-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;limits&gt;</span></span>
 <span id="annotated-cell-21-3"><a href="#annotated-cell-21-3" aria-label="3"></a></span>
@@ -987,18 +992,20 @@ Cristiano De Michele
 <span id="annotated-cell-21-9"><a href="#annotated-cell-21-9" aria-label="9"></a>            <span class="cf">if</span> <span class="op">(</span>epoche <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
 <span id="annotated-cell-21-10"><a href="#annotated-cell-21-10" aria-label="10"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Dev'essere positivo.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-21-11"><a href="#annotated-cell-21-11" aria-label="11"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="annotated-cell-21-12"><a href="#annotated-cell-21-12" aria-label="12"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Quello non e' un numero.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-21-13"><a href="#annotated-cell-21-13" aria-label="13"></a>            <span class="bu">std::</span>cin<span class="op">.</span>clear<span class="op">();</span></span>
-<span id="annotated-cell-21-14"><a href="#annotated-cell-21-14" aria-label="14"></a>            <span class="bu">std::</span>cin<span class="op">.</span>ignore<span class="op">(</span><span class="bu">std::</span>numeric_limits<span class="op">&lt;</span><span class="bu">std::</span>streamsize<span class="op">&gt;::</span>max<span class="op">(),</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">);</span></span>
-<span id="annotated-cell-21-15"><a href="#annotated-cell-21-15" aria-label="15"></a>        <span class="op">}</span></span>
-<span id="annotated-cell-21-16"><a href="#annotated-cell-21-16" aria-label="16"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-21-17"><a href="#annotated-cell-21-17" aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Addestro per "</span> <span class="op">&lt;&lt;</span> epoche <span class="op">&lt;&lt;</span> <span class="st">" epoche.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-21-18"><a href="#annotated-cell-21-18" aria-label="18"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-21-12"><a href="#annotated-cell-21-12" aria-label="12"></a>            <span class="cf">if</span> <span class="op">(</span><span class="bu">std::</span>cin<span class="op">.</span>eof<span class="op">())</span> <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span>                  <span class="co">// fine dell'input</span></span>
+<span id="annotated-cell-21-13"><a href="#annotated-cell-21-13" aria-label="13"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Quello non e' un numero.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-21-14"><a href="#annotated-cell-21-14" aria-label="14"></a>            <span class="bu">std::</span>cin<span class="op">.</span>clear<span class="op">();</span></span>
+<span id="annotated-cell-21-15"><a href="#annotated-cell-21-15" aria-label="15"></a>            <span class="bu">std::</span>cin<span class="op">.</span>ignore<span class="op">(</span><span class="bu">std::</span>numeric_limits<span class="op">&lt;</span><span class="bu">std::</span>streamsize<span class="op">&gt;::</span>max<span class="op">(),</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">);</span></span>
+<span id="annotated-cell-21-16"><a href="#annotated-cell-21-16" aria-label="16"></a>        <span class="op">}</span></span>
+<span id="annotated-cell-21-17"><a href="#annotated-cell-21-17" aria-label="17"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-21-18"><a href="#annotated-cell-21-18" aria-label="18"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Addestro per "</span> <span class="op">&lt;&lt;</span> epoche <span class="op">&lt;&lt;</span> <span class="st">" epoche.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-21-19"><a href="#annotated-cell-21-19" aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>La riga con <code>eof()</code> serve se l’input finisce (Ctrl-D, o un file rediretto): non c’è più niente da rileggere, e senza quel controllo il ciclo girerebbe per sempre.</p>
 </section>
-<section id="esercizio-soluzione-perche-funziona" class="slide level2 smaller">
-<h2>Esercizio: Soluzione — perche’ funziona</h2>
+<section id="esercizio-soluzione-perché-funziona" class="slide level2 smaller">
+<h2>Esercizio: soluzione — perché funziona</h2>
 <ol type="1">
-<li><code>std::cin &gt;&gt; epoche</code> restituisce lo <strong>stream</strong>, che in un <code>if</code> diventa il suo stato: vero se la lettura e’ riuscita.</li>
+<li><code>std::cin &gt;&gt; epoche</code> restituisce lo <strong>stream</strong>, che in un <code>if</code> diventa il suo stato: vero se la lettura è riuscita.</li>
 <li>Le due righe vanno <strong>insieme</strong>: <code>clear()</code> toglie il flag, <code>ignore()</code> butta la riga sbagliata. Senza la seconda quel testo resta nel buffer, e viene riletto all’infinito.</li>
 </ol>
 <pre><code>Quante epoche? pippo
@@ -1020,7 +1027,7 @@ Addestro per 20 epoche.</code></pre>
 <pre><code>Quante epoche? Quello non e' un numero.
 Quante epoche? Quello non e' un numero.
 Quante epoche? Quello non e' un numero.      &lt;- all'infinito</code></pre>
-<p>Il <code>cin</code> resta in stato di errore e non consuma piu’ niente: ogni giro rilegge lo stesso <code>pippo</code> che non se n’e’ mai andato.</p>
+<p>Il <code>cin</code> resta in stato di errore e non consuma più niente: ogni giro rilegge lo stesso <code>pippo</code> che non se n’è mai andato.</p>
 </div>
 </div>
 </div>
