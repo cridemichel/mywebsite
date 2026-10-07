@@ -906,10 +906,9 @@ Cristiano De Michele
 <span id="annotated-cell-19-9"><a href="#annotated-cell-19-9" aria-label="9"></a></span>
 <span id="annotated-cell-19-10"><a href="#annotated-cell-19-10" aria-label="10"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-19-11"><a href="#annotated-cell-19-11" aria-label="11"></a>    <span class="dt">double</span> out1 <span class="op">=</span> neural<span class="op">::</span>activate<span class="op">(</span><span class="fl">3.5</span><span class="op">);</span></span>
-<span id="annotated-cell-19-12"><a href="#annotated-cell-19-12" aria-label="12"></a>    </span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-19-13" class="code-annotation-target"><a href="#annotated-cell-19-13" aria-label="13"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"neural::activate = "</span> <span class="op">&lt;&lt;</span> out1 <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="annotated-cell-19-14"><a href="#annotated-cell-19-14" aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-19-15"><a href="#annotated-cell-19-15" aria-label="15"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-19-12" class="code-annotation-target"><a href="#annotated-cell-19-12" aria-label="12"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"neural::activate = "</span> <span class="op">&lt;&lt;</span> out1 <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="annotated-cell-19-13"><a href="#annotated-cell-19-13" aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-19-14"><a href="#annotated-cell-19-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-19" data-target-annotation="1">1</dt>
 <dd>
@@ -917,9 +916,22 @@ Cristiano De Michele
 </dd>
 <dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-19" data-code-lines="13" data-code-annotation="2">Il compilatore ora sa che <code>cout</code> ed <code>endl</code> fanno parte di <code>std</code>.</span>
+<span data-code-cell="annotated-cell-19" data-code-lines="12" data-code-annotation="2">Il compilatore ora sa che <code>cout</code> ed <code>endl</code> fanno parte di <code>std</code>.</span>
 </dd>
 </dl>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Avviso</strong></p>
+</div>
+<div class="callout-content">
+<p>Nel resto del corso scriviamo sempre <code>std::</code>. Con <code>using namespace std;</code> ogni nome non qualificato viene cercato anche in <code>std</code>: un nome comune come <code>count</code> o <code>distance</code> diventa ambiguo, e se una chiamata non compila il compilatore elenca anche i candidati di <code>std</code> che ha provato (per una nostra <code>distance(Punto, Punto)</code> chiamata male, l’errore passa da 6 a 24 righe).</p>
+</div>
+</div>
+</div>
 </section>
 <section id="attenzione-a-using-multipli" class="slide level2 smaller">
 <h2>Attenzione a <code>using</code> multipli!</h2>
@@ -956,8 +968,8 @@ Cristiano De Michele
 </div>
 </div>
 </section>
-<section id="esercizio-in-classe-15-min-leggere-un-numero-sul-serio" class="slide level2 smaller">
-<h2>Esercizio in classe (15 min): leggere un numero, sul serio</h2>
+<section id="esercizio-in-classe-15-min-lettura-robusta-di-un-numero" class="slide level2 smaller">
+<h2>Esercizio in classe (15 min): lettura robusta di un numero</h2>
 <p>Chiedete all’utente il numero di epoche, e <strong>non arrendetevi</strong> finché non ne digita uno valido.</p>
 <ol type="1">
 <li>Un ciclo che chiede <code>epoche</code> con <code>std::cin &gt;&gt; epoche</code>.</li>
@@ -1053,7 +1065,7 @@ Quante epoche? Quello non e' un numero.      &lt;- all'infinito</code></pre>
 <h2>Esercizi lampo: le risposte</h2>
 <p><strong>1.</strong> Stampa <code>0</code>, non <code>42</code>. Dal C++11 una lettura fallita <strong>azzera</strong> la variabile: il valore che c’era prima è perso. Se vi serve, controllate <code>cin.fail()</code> <em>prima</em> di usare <code>n</code>.</p>
 <p><strong>2.</strong> Stampa <code>2  2.5</code>. Nel primo caso <code>a / b</code> è già stato calcolato fra interi: il cast arriva troppo tardi e promuove un <code>2</code> in cui non c’è più niente da recuperare. Il cast va messo su un <strong>operando</strong>, mai sul risultato.</p>
-<p><strong>3.</strong> Stampa <code>0</code>, non <code>3</code>. L’<code>i</code> dichiarato nella testa del <code>for</code> vive solo dentro il ciclo e ombreggia quello esterno, che nessuno ha mai toccato. È per questo che esiste l’opzione <code>-Wshadow</code>: <code>-Wall</code> da sola non dice niente.</p>
+<p><strong>3.</strong> Stampa <code>0</code>, non <code>3</code>. L’<code>i</code> dichiarato nella testa del <code>for</code> è una <strong>seconda</strong> variabile, visibile solo dentro il ciclo, che nasconde quella esterna: l’<code>i</code> esterno nessuno l’ha mai toccato. È per questo che esiste l’opzione <code>-Wshadow</code>: <code>-Wall</code> da sola non dice niente.</p>
 
 
 </section>
