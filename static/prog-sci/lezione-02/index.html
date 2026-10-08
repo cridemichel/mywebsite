@@ -6,8 +6,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.10.18">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9bbf5fa004a0676d7f26111dc3fdfdb2.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Cristiano De Michele">
   <title>Programmazione Scientifica++ – Programmazione Scientifica++: Lezione 2</title>
@@ -364,6 +364,62 @@
     document.addEventListener('pointermove', function (e) {
       if (e.pointerType === 'touch' && muto) e.stopPropagation();
     }, true);
+  })();
+  </script>
+  <script>
+  // Puntatore nella vista proiettata (8/10/2026). Con la speaker view (tasto S)
+  // su uno schermo esteso, il cursore resta sul portatile e il pubblico non lo
+  // vede. Muovendo il mouse sull'anteprima della slide CORRENTE nella speaker
+  // view, sulla finestra proiettata compare un pallino rosso nello stesso punto.
+  // Esce dall'anteprima -> il pallino sparisce (e anche dopo 4 s di immobilita').
+  // Non tocca nulla se si presenta senza speaker view.
+  (function () {
+    var NS = 'puntatore-speaker';
+    function area() {                    // dove stanno le slide in questa finestra
+      var v = document.querySelector('.reveal');
+      if (!v || typeof Reveal === 'undefined' || !Reveal.isReady()) return null;
+      var r = v.getBoundingClientRect(), c = Reveal.getConfig(), s = Reveal.getScale();
+      var w = c.width * s, h = c.height * s;
+      return { x: r.left + (r.width - w) / 2, y: r.top + (r.height - h) / 2, w: w, h: h };
+    }
+
+    if (/receiver/i.test(window.location.search)) {
+      // siamo un'anteprima dentro la speaker view: solo quella della slide corrente
+      var cornice = null, dest = null;
+      try { cornice = window.frameElement; dest = window.parent.opener; } catch (e) {}
+      if (!cornice || !dest || !cornice.closest('#current-slide')) return;
+      function manda(m) { m.namespace = NS; try { dest.postMessage(JSON.stringify(m), '*'); } catch (e) {} }
+      document.addEventListener('mousemove', function (e) {
+        var a = area(); if (!a) return;
+        manda({ x: (e.clientX - a.x) / a.w, y: (e.clientY - a.y) / a.h });
+      });
+      document.documentElement.addEventListener('mouseleave', function () { manda({ via: true }); });
+      return;
+    }
+
+    // finestra proiettata: disegna il pallino
+    var punto = null, timer = null;
+    function pallino() {
+      if (punto) return punto;
+      punto = document.createElement('div');
+      punto.style.cssText = 'position:fixed;width:18px;height:18px;margin:-9px 0 0 -9px;' +
+        'border-radius:50%;background:rgba(220,30,30,.85);box-shadow:0 0 10px 3px rgba(220,30,30,.5);' +
+        'pointer-events:none;z-index:100000;display:none';
+      document.body.appendChild(punto);
+      return punto;
+    }
+    window.addEventListener('message', function (ev) {
+      var m; try { m = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data; } catch (e) { return; }
+      if (!m || m.namespace !== NS) return;
+      var p = pallino();
+      clearTimeout(timer);
+      if (m.via || m.x < 0 || m.x > 1 || m.y < 0 || m.y > 1) { p.style.display = 'none'; return; }
+      var a = area(); if (!a) return;
+      p.style.left = (a.x + m.x * a.w) + 'px';
+      p.style.top = (a.y + m.y * a.h) + 'px';
+      p.style.display = 'block';
+      timer = setTimeout(function () { p.style.display = 'none'; }, 4000);
+    });
   })();
   </script>
 </head>
