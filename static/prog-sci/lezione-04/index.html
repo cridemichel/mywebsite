@@ -383,6 +383,9 @@
   //    remoto non risente piu' di clic o cambi di finestra su quella proiettata).
   //    Tasto R premuto nella speaker view: spegne/riaccende questo pallino (all'apertura
   //    e' acceso; la conferma compare solo nell'anteprima, non sul proiettore).
+  //  - Evidenziatore: il testo selezionato nell'anteprima si colora di giallo sulla
+  //    vista proiettata (8/10/2026). Non usa la selezione vera (in una finestra senza
+  //    fuoco e' grigio chiaro) ma la CSS Custom Highlight API; le formule si saltano.
   //  - Lavagna e penna: i disegni fatti sull'anteprima (tasti C e B, gomma, Canc)
   //    passano alla vista proiettata, e viceversa; aprendo la speaker view
   //    l'anteprima riceve i disegni gia' fatti.
@@ -408,6 +411,17 @@
     function leggi(ev) {
       var m; try { m = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data; } catch (e) { return null; }
       return (m && m.namespace === NS) ? m : null;
+    }
+    // Testo di una slide come sequenza di caratteri, saltando formule e script: le due
+    // finestre caricano la stessa pagina, quindi le posizioni coincidono.
+    var SALTA = 'script, style, .MathJax, .MathJax_Display, .MathJax_Preview, .MJX_Assistive_MathML, mjx-container';
+    function testi(sez) {
+      var w = document.createTreeWalker(sez, NodeFilter.SHOW_TEXT, null), n, l = [], tot = 0;
+      while ((n = w.nextNode())) {
+        if (n.parentElement && n.parentElement.closest(SALTA)) continue;
+        l.push({ n: n, da: tot }); tot += n.length;
+      }
+      return l;
     }
     function ricevuto(contenuto) {       // consegna al plugin chalkboard
       var e = new CustomEvent('received'); e.content = contenuto; document.dispatchEvent(e);
@@ -453,6 +467,23 @@
         var m = leggi(ev); if (m && m.lavagna) ricevuto(m.lavagna);
       });
       window.addEventListener('load', function () { setTimeout(function () { manda(dest, { ciao: true }); }, 500); });
+      var ultimaSel = '';
+      document.addEventListener('selectionchange', function () {   // evidenziatore
+        var sel = document.getSelection(), sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide();
+        var ev = null;
+        if (sel && sel.rangeCount && !sel.isCollapsed && sez) {
+          var r = sel.getRangeAt(0), da = null, a = null;
+          testi(sez).forEach(function (t) {
+            if (!r.intersectsNode(t.n)) return;
+            if (da === null) da = t.da + (t.n === r.startContainer ? r.startOffset : 0);
+            a = t.da + (t.n === r.endContainer ? r.endOffset : t.n.length);
+          });
+          if (da !== null && a > da) ev = [da, a];
+        }
+        var k = JSON.stringify(ev); if (k === ultimaSel) return; ultimaSel = k;
+        var i = Reveal.getIndices();
+        manda(dest, { evid: ev, h: i.h, v: i.v });
+      });
       return;
     }
 
@@ -539,6 +570,30 @@
     window.addEventListener('blur', function () { premuto = false; spegni(true); });
     radice.addEventListener('mouseleave', function () { spegni(true); });
 
+    // evidenziatore: stessa porzione di testo selezionata nell'anteprima
+    var EVIDENZIA = !!(window.CSS && CSS.highlights && window.Highlight);
+    if (EVIDENZIA) {
+      var stileEv = document.createElement('style');
+      stileEv.textContent = '::highlight(speaker-view) { background-color: rgba(255, 220, 0, .6); }';
+      document.head.appendChild(stileEv);
+    }
+    function evidenzia(m) {
+      if (!EVIDENZIA) return;
+      CSS.highlights.delete('speaker-view');
+      var i = Reveal.getIndices();
+      if (!m.evid || m.h !== i.h || m.v !== i.v) return;
+      var l = testi(Reveal.getCurrentSlide()), r = document.createRange(), ok = 0;
+      for (var k = 0; k < l.length; k++) {
+        var t = l[k], fine = t.da + t.n.length;
+        if (!(ok & 1) && m.evid[0] < fine) { r.setStart(t.n, m.evid[0] - t.da); ok |= 1; }
+        if (!(ok & 2) && m.evid[1] <= fine) { r.setEnd(t.n, m.evid[1] - t.da); ok |= 2; break; }
+      }
+      if (ok === 3) CSS.highlights.set('speaker-view', new Highlight(r));
+    }
+    if (EVIDENZIA) window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { CSS.highlights.delete('speaker-view'); });
+    });
+
     window.addEventListener('message', function (ev) {
       var m = leggi(ev); if (!m) return;
       if (m.ciao) {                      // nuova anteprima: le mando i disegni gia' fatti
@@ -547,6 +602,7 @@
         return;
       }
       if (m.lavagna) { ricevuto(m.lavagna); return; }
+      if ('evid' in m) { evidenzia(m); return; }
       var p = pallinoRemoto();
       clearTimeout(timerRemoto);
       if (m.via || m.x < 0 || m.x > 1 || m.y < 0 || m.y > 1) { p.style.display = 'none'; return; }
