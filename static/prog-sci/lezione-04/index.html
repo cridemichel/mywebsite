@@ -1153,24 +1153,25 @@ Cristiano De Michele
 <span id="annotated-cell-22-5"><a href="#annotated-cell-22-5" aria-label="5"></a>    <span class="dt">int</span> epoche <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-22-6"><a href="#annotated-cell-22-6" aria-label="6"></a>    <span class="cf">while</span> <span class="op">(</span><span class="kw">true</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-22-7"><a href="#annotated-cell-22-7" aria-label="7"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Quante epoche? "</span><span class="op">;</span></span>
-<span id="annotated-cell-22-8"><a href="#annotated-cell-22-8" aria-label="8"></a>        <span class="cf">if</span> <span class="op">(</span><span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> epoche<span class="op">)</span> <span class="op">{</span>                 <span class="co">// lo STATO, non il valore</span></span>
-<span id="annotated-cell-22-9"><a href="#annotated-cell-22-9" aria-label="9"></a>            <span class="cf">if</span> <span class="op">(</span>epoche <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
-<span id="annotated-cell-22-10"><a href="#annotated-cell-22-10" aria-label="10"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Dev'essere positivo.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-22-11"><a href="#annotated-cell-22-11" aria-label="11"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="annotated-cell-22-12"><a href="#annotated-cell-22-12" aria-label="12"></a>            <span class="cf">if</span> <span class="op">(</span><span class="bu">std::</span>cin<span class="op">.</span>eof<span class="op">())</span> <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span>                  <span class="co">// fine dell'input</span></span>
-<span id="annotated-cell-22-13"><a href="#annotated-cell-22-13" aria-label="13"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Quello non e' un numero.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-22-14"><a href="#annotated-cell-22-14" aria-label="14"></a>            <span class="bu">std::</span>cin<span class="op">.</span>clear<span class="op">();</span></span>
-<span id="annotated-cell-22-15"><a href="#annotated-cell-22-15" aria-label="15"></a>            <span class="bu">std::</span>cin<span class="op">.</span>ignore<span class="op">(</span><span class="bu">std::</span>numeric_limits<span class="op">&lt;</span><span class="bu">std::</span>streamsize<span class="op">&gt;::</span>max<span class="op">(),</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">);</span></span>
-<span id="annotated-cell-22-16"><a href="#annotated-cell-22-16" aria-label="16"></a>        <span class="op">}</span></span>
-<span id="annotated-cell-22-17"><a href="#annotated-cell-22-17" aria-label="17"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-22-18"><a href="#annotated-cell-22-18" aria-label="18"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Addestro per "</span> <span class="op">&lt;&lt;</span> epoche <span class="op">&lt;&lt;</span> <span class="st">" epoche.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-22-19"><a href="#annotated-cell-22-19" aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-22-8"><a href="#annotated-cell-22-8" aria-label="8"></a>        <span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> epoche<span class="op">;</span></span>
+<span id="annotated-cell-22-9"><a href="#annotated-cell-22-9" aria-label="9"></a>        <span class="cf">if</span> <span class="op">(!</span><span class="bu">std::</span>cin<span class="op">.</span>fail<span class="op">())</span> <span class="op">{</span>                   <span class="co">// lo STATO, non il valore</span></span>
+<span id="annotated-cell-22-10"><a href="#annotated-cell-22-10" aria-label="10"></a>            <span class="cf">if</span> <span class="op">(</span>epoche <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="annotated-cell-22-11"><a href="#annotated-cell-22-11" aria-label="11"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Dev'essere positivo.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-22-12"><a href="#annotated-cell-22-12" aria-label="12"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="annotated-cell-22-13"><a href="#annotated-cell-22-13" aria-label="13"></a>            <span class="cf">if</span> <span class="op">(</span><span class="bu">std::</span>cin<span class="op">.</span>eof<span class="op">())</span> <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span>                  <span class="co">// fine dell'input</span></span>
+<span id="annotated-cell-22-14"><a href="#annotated-cell-22-14" aria-label="14"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Quello non e' un numero.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-22-15"><a href="#annotated-cell-22-15" aria-label="15"></a>            <span class="bu">std::</span>cin<span class="op">.</span>clear<span class="op">();</span></span>
+<span id="annotated-cell-22-16"><a href="#annotated-cell-22-16" aria-label="16"></a>            <span class="bu">std::</span>cin<span class="op">.</span>ignore<span class="op">(</span><span class="bu">std::</span>numeric_limits<span class="op">&lt;</span><span class="bu">std::</span>streamsize<span class="op">&gt;::</span>max<span class="op">(),</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">);</span></span>
+<span id="annotated-cell-22-17"><a href="#annotated-cell-22-17" aria-label="17"></a>        <span class="op">}</span></span>
+<span id="annotated-cell-22-18"><a href="#annotated-cell-22-18" aria-label="18"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-22-19"><a href="#annotated-cell-22-19" aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Addestro per "</span> <span class="op">&lt;&lt;</span> epoche <span class="op">&lt;&lt;</span> <span class="st">" epoche.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-22-20"><a href="#annotated-cell-22-20" aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>La riga con <code>eof()</code> serve se l’input finisce (Ctrl-D, o un file rediretto): non c’è più niente da rileggere, e senza quel controllo il ciclo girerebbe per sempre. Manca anche il <code>return 0;</code> finale: nel <code>main</code>, e solo lì, arrivare in fondo equivale a restituire 0.</p>
 </section>
 <section id="esercizio-soluzione-perché-funziona" class="slide level2 smaller">
 <h2>Esercizio: soluzione — perché funziona</h2>
 <ol type="1">
-<li><code>std::cin &gt;&gt; epoche</code> restituisce lo <strong>stream</strong>, che in un <code>if</code> diventa il suo stato: vero se la lettura è riuscita.</li>
+<li><code>std::cin.fail()</code> controlla lo <strong>stato</strong> di <code>cin</code>, non il valore: dopo un errore <code>epoche</code> vale 0, e direste “dev’essere positivo” invece di “non è un numero”.</li>
 <li>Le due righe vanno <strong>insieme</strong>: <code>clear()</code> toglie il flag, <code>ignore()</code> butta la riga sbagliata. Senza la seconda quel testo resta nel buffer, e viene riletto all’infinito.</li>
 </ol>
 <pre><code>Quante epoche? pippo
@@ -1198,21 +1199,44 @@ Quante epoche? Quello non e' un numero.      &lt;- all'infinito</code></pre>
 </div>
 </div>
 </section>
+<section id="esercizio-la-forma-compatta" class="slide level2 smaller">
+<h2>Esercizio: la forma compatta</h2>
+<p>Lettura e controllo si scrivono spesso in una riga sola; le due versioni sono equivalenti:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Come nella soluzione</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb25-1"><a aria-label="1"></a><span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> epoche<span class="op">;</span></span>
+<span id="cb25-2"><a aria-label="2"></a><span class="cf">if</span> <span class="op">(!</span><span class="bu">std::</span>cin<span class="op">.</span>fail<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb25-3"><a aria-label="3"></a>    <span class="co">// lettura riuscita</span></span>
+<span id="cb25-4"><a aria-label="4"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<p><strong>Forma compatta</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb26-1"><a aria-label="1"></a><span class="cf">if</span> <span class="op">(</span><span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> epoche<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb26-2"><a aria-label="2"></a>    <span class="co">// lettura riuscita</span></span>
+<span id="cb26-3"><a aria-label="3"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<p>Perché funziona:</p>
+<ol type="1">
+<li><code>std::cin &gt;&gt; epoche</code> legge e <strong>restituisce <code>std::cin</code> stesso</strong>: è per questo che si può concatenare <code>std::cout &lt;&lt; a &lt;&lt; b</code>.</li>
+<li>Uno stream in una condizione vale <code>true</code> se <strong>non</strong> è in errore: <code>!std::cin.fail()</code>.</li>
+</ol>
+<p>Così si scrive anche <code>while (std::cin &gt;&gt; x)</code>: legge numeri uno dopo l’altro, fino al primo errore o alla fine dell’input.</p>
+</section>
 <section id="esercizi-lampo-cosa-stampa" class="slide level2 smaller">
 <h2>Esercizi lampo: cosa stampa?</h2>
 <p>Tre frammenti, un minuto ciascuno. Rispondete <strong>prima</strong> di girare la slide: in tutti e tre la risposta istintiva è sbagliata.</p>
 <p><strong>1.</strong> L’utente digita <code>ciao</code>, non un numero.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb25-1"><a aria-label="1"></a><span class="dt">int</span> n <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
-<span id="cb25-2"><a aria-label="2"></a><span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> n<span class="op">;</span></span>
-<span id="cb25-3"><a aria-label="3"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb27-1"><a aria-label="1"></a><span class="dt">int</span> n <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
+<span id="cb27-2"><a aria-label="2"></a><span class="bu">std::</span>cin <span class="op">&gt;&gt;</span> n<span class="op">;</span></span>
+<span id="cb27-3"><a aria-label="3"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>2.</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb26-1"><a aria-label="1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
-<span id="cb26-2"><a aria-label="2"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span>a <span class="op">/</span> b<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"  "</span></span>
-<span id="cb26-3"><a aria-label="3"></a>          <span class="op">&lt;&lt;</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span>a<span class="op">)</span> <span class="op">/</span> b <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb28-1"><a aria-label="1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb28-2"><a aria-label="2"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span>a <span class="op">/</span> b<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"  "</span></span>
+<span id="cb28-3"><a aria-label="3"></a>          <span class="op">&lt;&lt;</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span>a<span class="op">)</span> <span class="op">/</span> b <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>3.</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb27-1"><a aria-label="1"></a><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb27-2"><a aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span> <span class="co">/* ... */</span> <span class="op">}</span></span>
-<span id="cb27-3"><a aria-label="3"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> i <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb29-1"><a aria-label="1"></a><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb29-2"><a aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span> <span class="co">/* ... */</span> <span class="op">}</span></span>
+<span id="cb29-3"><a aria-label="3"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> i <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="esercizi-lampo-le-risposte" class="slide level2 smaller">
 <h2>Esercizi lampo: le risposte</h2>
