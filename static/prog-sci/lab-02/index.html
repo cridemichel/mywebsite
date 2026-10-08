@@ -203,6 +203,13 @@
   // ridotta non ha, e mostrava "Math Processing Error" (slide "Piegare lo spazio").
   MathJax.Hub.Config({"HTML-CSS": {availableFonts: ["TeX"], preferredFont: "TeX",
                                    webFont: "TeX", imageFont: null}});
+  // Anteprime della speaker view (8/10/2026): formule viste DOPPIE con schermo esteso.
+  // Solo li' si spengono la copia MathML nascosta (per i lettori di schermo) e la
+  // bozza veloce che precede il disegno definitivo: le slide proiettate e il sito
+  // degli studenti restano come prima.
+  if (/receiver/i.test(window.location.search))
+    MathJax.Hub.Config({menuSettings: {assistiveMML: false, FastPreview: false},
+                        AssistiveMML: {disabled: true}, "fast-preview": {disabled: true}});
   </script>
   <script>
   // Collega ogni spiegazione alla sua riga di codice e viceversa.
@@ -372,7 +379,11 @@
   // della slide CORRENTE nella speaker view (tasto S) si vede anche sulla finestra
   // proiettata, che il cursore non raggiunge.
   //  - Puntatore: muovendo il mouse sull'anteprima compare un pallino rosso nello
-  //    stesso punto della vista proiettata (sparisce uscendo, o dopo 4 s fermo).
+  //    stesso punto della vista proiettata; resta finche' il mouse e' sull'anteprima
+  //    e sparisce uscendo (8/10: tolto lo spegnimento dopo 4 s fermo, e il pallino
+  //    remoto non risente piu' di clic o cambi di finestra su quella proiettata).
+  //    Tasto R premuto nella speaker view: spegne/riaccende questo pallino (all'apertura
+  //    e' acceso; la conferma compare solo nell'anteprima, non sul proiettore).
   //  - Lavagna e penna: i disegni fatti sull'anteprima (tasti C e B, gomma, Canc)
   //    passano alla vista proiettata, e viceversa; aprendo la speaker view
   //    l'anteprima riceve i disegni gia' fatti.
@@ -408,7 +419,30 @@
       var cornice = null, dest = null;
       try { cornice = window.frameElement; dest = window.parent.opener; } catch (e) {}
       if (!cornice || !dest || !cornice.closest('#current-slide')) return;
+      var invia = true, scritta = null, timerScritta = null;   // acceso all'apertura
+      function conferma(testo) {         // scritta solo nell'anteprima
+        if (!scritta) {
+          scritta = document.createElement('div');
+          scritta.style.cssText = 'position:fixed;left:50%;bottom:60px;transform:translateX(-50%);' +
+            'padding:6px 18px;border-radius:8px;background:rgba(0,0,0,.75);color:#fff;' +
+            'font:28px sans-serif;pointer-events:none;z-index:100001;display:none';
+          document.body.appendChild(scritta);
+        }
+        scritta.textContent = testo; scritta.style.display = 'block';
+        clearTimeout(timerScritta);
+        timerScritta = setTimeout(function () { scritta.style.display = 'none'; }, 1500);
+      }
+      window.addEventListener('load', function () {   // la speaker view gira qui i tasti premuti
+        if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+          Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Pallino sulla vista proiettata acceso/spento' },
+            function () {
+              invia = !invia;
+              if (!invia) manda(dest, { via: true });
+              conferma('Pallino sul proiettore ' + (invia ? 'acceso' : 'spento') + ' (tasto R)');
+            });
+      });
       document.addEventListener('mousemove', function (e) {
+        if (!invia) return;
         var a = area(); if (!a) return;
         manda(dest, { x: (e.clientX - a.x) / a.w, y: (e.clientY - a.y) / a.h });
       });
@@ -424,16 +458,17 @@
     }
 
     // finestra proiettata
-    var punto = null, timer = null, anteprime = [];
-    function pallino() {
-      if (punto) return punto;
-      punto = document.createElement('div');
-      punto.style.cssText = 'position:fixed;width:18px;height:18px;margin:-9px 0 0 -9px;' +
+    var punto = null, puntoRemoto = null, timer = null, timerRemoto = null, anteprime = [];
+    function nuovoPallino() {
+      var d = document.createElement('div');
+      d.style.cssText = 'position:fixed;width:18px;height:18px;margin:-9px 0 0 -9px;' +
         'border-radius:50%;background:rgba(220,30,30,.85);box-shadow:0 0 10px 3px rgba(220,30,30,.5);' +
         'pointer-events:none;z-index:100000;display:none';
-      document.body.appendChild(punto);
-      return punto;
+      document.body.appendChild(d);
+      return d;
     }
+    function pallino() { return punto || (punto = nuovoPallino()); }               // mouse qui
+    function pallinoRemoto() { return puntoRemoto || (puntoRemoto = nuovoPallino()); } // speaker view
     document.addEventListener('broadcast', function (e) {
       if (!e.content || e.content.sender !== 'chalkboard-plugin') return;
       anteprime = anteprime.filter(function (w) { return !w.closed; });
@@ -513,14 +548,15 @@
         return;
       }
       if (m.lavagna) { ricevuto(m.lavagna); return; }
-      var p = pallino();
-      clearTimeout(timer);
+      var p = pallinoRemoto();
+      clearTimeout(timerRemoto);
       if (m.via || m.x < 0 || m.x > 1 || m.y < 0 || m.y > 1) { p.style.display = 'none'; return; }
       var a = area(); if (!a) return;
       p.style.left = (a.x + m.x * a.w) + 'px';
       p.style.top = (a.y + m.y * a.h) + 'px';
       p.style.display = 'block';
-      timer = setTimeout(function () { p.style.display = 'none'; }, 4000);
+      // sicurezza: se l'uscita dall'anteprima andasse persa, sparisce dopo 30 s fermo
+      timerRemoto = setTimeout(function () { p.style.display = 'none'; }, 30000);
     });
   })();
   </script>
