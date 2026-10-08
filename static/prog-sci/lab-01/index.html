@@ -378,7 +378,11 @@
   //    l'anteprima riceve i disegni gia' fatti.
   // Usa i messaggi "broadcast"/"received" previsti dal plugin chalkboard per le
   // presentazioni condivise; l'anteprima della slide successiva e' esclusa.
-  //  - Senza speaker view il pallino segue semplicemente il mouse sulla slide.
+  //  - Senza speaker view il pallino segue il mouse sulla slide e la freccia viene
+  //    nascosta; tornano manina/freccia sugli elementi cliccabili (pulsanti, link,
+  //    callout richiudibili, menu, footer), il cursore di disegno con penna e lavagna,
+  //    il cursore normale tenendo premuto il tasto (selezione del testo).
+  //    Dopo 3 s fermo spariscono pallino e freccia: basta muovere il mouse.
   (function () {
     var NS = 'speaker-view-ponte';
     function area() {                    // dove stanno le slide in questa finestra
@@ -433,21 +437,49 @@
       anteprime = anteprime.filter(function (w) { return !w.closed; });
       anteprime.forEach(function (w) { manda(w, { lavagna: e.content }); });
     });
-    // anche senza speaker view: il pallino segue il mouse quando e' sulla slide
-    // (non sui pulsanti, sul footer o mentre si disegna; sparisce dopo 3 s fermo)
+    // anche senza speaker view: il pallino segue il mouse sulla slide al posto della freccia
+    var stile = document.createElement('style');
+    stile.textContent = 'html.laser-attivo, html.laser-attivo * { cursor: none !important; }';
+    document.head.appendChild(stile);
+    var radice = document.documentElement, premuto = false, ultimo = null, ultimoCliccabile = false;
+    var CLICCABILI = 'a, button, summary, label, input, select, textarea, [role="button"], [onclick],' +
+      ' .controls, .progress, .slide-number, .footer, .slide-menu-button, .slide-menu,' +
+      ' .slide-chalkboard-buttons, .chalkboard-buttons';
+    function cliccabile(t) {            // elemento con manina, o comunque interattivo
+      if (!t || t.nodeType !== 1) return false;
+      if (t === ultimo) return ultimoCliccabile;
+      var c = radice.classList.contains('laser-attivo');
+      if (c) radice.classList.remove('laser-attivo');   // per leggere il cursore vero
+      var cur = getComputedStyle(t).cursor;
+      if (c) radice.classList.add('laser-attivo');
+      ultimo = t;
+      ultimoCliccabile = !!t.closest(CLICCABILI) || cur === 'pointer' ||
+        (t.tagName === 'CANVAS' && !!t.closest('#notescanvas, #chalkboard'));
+      return ultimoCliccabile;
+    }
+    function spegni(anchefreccia) {     // nasconde il pallino; con true ridà la freccia
+      if (punto) punto.style.display = 'none';
+      if (anchefreccia) radice.classList.remove('laser-attivo');
+    }
     document.addEventListener('pointermove', function (e) {
-      if (e.pointerType !== 'mouse') return;
-      var p = pallino(), a = area(), t = e.target;
+      if (e.pointerType !== 'mouse' || premuto) return;
+      var a = area();
       clearTimeout(timer);
       var fuori = !a || e.clientX < a.x || e.clientX > a.x + a.w || e.clientY < a.y || e.clientY > a.y + a.h;
-      var escluso = t && t.closest && (t.closest('.controls, .progress, .slide-number, .footer, .slide-menu-button,' +
-        ' .slide-chalkboard-buttons, .slide-menu, a, button') ||
-        (t.tagName === 'CANVAS' && t.closest('#notescanvas, #chalkboard')));
-      if (fuori || escluso) { p.style.display = 'none'; return; }
+      if (fuori || cliccabile(e.target)) { spegni(true); return; }
+      var p = pallino();
       p.style.left = e.clientX + 'px'; p.style.top = e.clientY + 'px'; p.style.display = 'block';
-      timer = setTimeout(function () { p.style.display = 'none'; }, 3000);
+      radice.classList.add('laser-attivo');
+      timer = setTimeout(function () { spegni(false); }, 3000);   // fermo: sparisce tutto
     });
-    document.documentElement.addEventListener('mouseleave', function () { if (punto) punto.style.display = 'none'; });
+    document.addEventListener('pointerdown', function (e) {   // clic, selezione, doppio clic
+      if (e.pointerType !== 'mouse') return;
+      premuto = true; clearTimeout(timer); spegni(true);
+    }, true);
+    function rilascia() { premuto = false; }
+    document.addEventListener('pointerup', rilascia, true);
+    window.addEventListener('blur', function () { premuto = false; spegni(true); });
+    radice.addEventListener('mouseleave', function () { spegni(true); });
 
     window.addEventListener('message', function (ev) {
       var m = leggi(ev); if (!m) return;
