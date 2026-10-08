@@ -383,6 +383,8 @@
   //    callout richiudibili, menu, footer), il cursore di disegno con penna e lavagna,
   //    il cursore normale tenendo premuto il tasto (selezione del testo).
   //    Dopo 3 s fermo spariscono pallino e freccia: basta muovere il mouse.
+  //    Questo pallino parte SPENTO: si accende e si spegne col tasto R. Riguarda solo
+  //    l'uso senza speaker view: il pallino comandato dall'anteprima funziona sempre.
   (function () {
     var NS = 'speaker-view-ponte';
     function area() {                    // dove stanno le slide in questa finestra
@@ -442,6 +444,28 @@
     stile.textContent = 'html.laser-attivo, html.laser-attivo * { cursor: none !important; }';
     document.head.appendChild(stile);
     var radice = document.documentElement, premuto = false, ultimo = null, ultimoCliccabile = false;
+    var laserAcceso = false, avviso = null, timerAvviso = null;   // spento all'avvio
+    function mostraAvviso(testo) {     // piccola scritta in basso, per un secondo e mezzo
+      if (!avviso) {
+        avviso = document.createElement('div');
+        avviso.style.cssText = 'position:fixed;left:50%;bottom:48px;transform:translateX(-50%);' +
+          'padding:4px 12px;border-radius:6px;background:rgba(0,0,0,.7);color:#fff;' +
+          'font:15px sans-serif;pointer-events:none;z-index:100001;display:none';
+        document.body.appendChild(avviso);
+      }
+      avviso.textContent = testo; avviso.style.display = 'block';
+      clearTimeout(timerAvviso);
+      timerAvviso = setTimeout(function () { avviso.style.display = 'none'; }, 1500);
+    }
+    function cambiaLaser() {
+      laserAcceso = !laserAcceso;
+      if (!laserAcceso) { clearTimeout(timer); spegni(true); }
+      mostraAvviso('Puntatore laser ' + (laserAcceso ? 'acceso' : 'spento') + ' (tasto R)');
+    }
+    window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+        Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Puntatore laser acceso/spento' }, cambiaLaser);
+    });
     var CLICCABILI = 'a, button, summary, label, input, select, textarea, [role="button"], [onclick],' +
       ' .controls, .progress, .slide-number, .footer, .slide-menu-button, .slide-menu,' +
       ' .slide-chalkboard-buttons, .chalkboard-buttons';
@@ -462,7 +486,7 @@
       if (anchefreccia) radice.classList.remove('laser-attivo');
     }
     document.addEventListener('pointermove', function (e) {
-      if (e.pointerType !== 'mouse' || premuto) return;
+      if (e.pointerType !== 'mouse' || premuto || !laserAcceso) return;
       var a = area();
       clearTimeout(timer);
       var fuori = !a || e.clientX < a.x || e.clientX > a.x + a.w || e.clientY < a.y || e.clientY > a.y + a.h;
