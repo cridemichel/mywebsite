@@ -368,14 +368,19 @@
   })();
   </script>
   <script>
-  // Puntatore nella vista proiettata (8/10/2026). Con la speaker view (tasto S)
-  // su uno schermo esteso, il cursore resta sul portatile e il pubblico non lo
-  // vede. Muovendo il mouse sull'anteprima della slide CORRENTE nella speaker
-  // view, sulla finestra proiettata compare un pallino rosso nello stesso punto.
-  // Esce dall'anteprima -> il pallino sparisce (e anche dopo 4 s di immobilita').
-  // Non tocca nulla se si presenta senza speaker view.
+  // Speaker view su schermo esteso (8/10/2026): quello che si fa sull'anteprima
+  // della slide CORRENTE nella speaker view (tasto S) si vede anche sulla finestra
+  // proiettata, che il cursore non raggiunge.
+  //  - Puntatore: muovendo il mouse sull'anteprima compare un pallino rosso nello
+  //    stesso punto della vista proiettata (sparisce uscendo, o dopo 4 s fermo).
+  //  - Lavagna e penna: i disegni fatti sull'anteprima (tasti C e B, gomma, Canc)
+  //    passano alla vista proiettata, e viceversa; aprendo la speaker view
+  //    l'anteprima riceve i disegni gia' fatti.
+  // Usa i messaggi "broadcast"/"received" previsti dal plugin chalkboard per le
+  // presentazioni condivise; l'anteprima della slide successiva e' esclusa.
+  // Senza speaker view non cambia nulla.
   (function () {
-    var NS = 'puntatore-speaker';
+    var NS = 'speaker-view-ponte';
     function area() {                    // dove stanno le slide in questa finestra
       var v = document.querySelector('.reveal');
       if (!v || typeof Reveal === 'undefined' || !Reveal.isReady()) return null;
@@ -383,23 +388,37 @@
       var w = c.width * s, h = c.height * s;
       return { x: r.left + (r.width - w) / 2, y: r.top + (r.height - h) / 2, w: w, h: h };
     }
+    function manda(dest, m) { m.namespace = NS; try { dest.postMessage(JSON.stringify(m), '*'); } catch (e) {} }
+    function leggi(ev) {
+      var m; try { m = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data; } catch (e) { return null; }
+      return (m && m.namespace === NS) ? m : null;
+    }
+    function ricevuto(contenuto) {       // consegna al plugin chalkboard
+      var e = new CustomEvent('received'); e.content = contenuto; document.dispatchEvent(e);
+    }
 
     if (/receiver/i.test(window.location.search)) {
-      // siamo un'anteprima dentro la speaker view: solo quella della slide corrente
+      // anteprima dentro la speaker view: solo quella della slide corrente
       var cornice = null, dest = null;
       try { cornice = window.frameElement; dest = window.parent.opener; } catch (e) {}
       if (!cornice || !dest || !cornice.closest('#current-slide')) return;
-      function manda(m) { m.namespace = NS; try { dest.postMessage(JSON.stringify(m), '*'); } catch (e) {} }
       document.addEventListener('mousemove', function (e) {
         var a = area(); if (!a) return;
-        manda({ x: (e.clientX - a.x) / a.w, y: (e.clientY - a.y) / a.h });
+        manda(dest, { x: (e.clientX - a.x) / a.w, y: (e.clientY - a.y) / a.h });
       });
-      document.documentElement.addEventListener('mouseleave', function () { manda({ via: true }); });
+      document.documentElement.addEventListener('mouseleave', function () { manda(dest, { via: true }); });
+      document.addEventListener('broadcast', function (e) {
+        if (e.content && e.content.sender === 'chalkboard-plugin') manda(dest, { lavagna: e.content });
+      });
+      window.addEventListener('message', function (ev) {
+        var m = leggi(ev); if (m && m.lavagna) ricevuto(m.lavagna);
+      });
+      window.addEventListener('load', function () { setTimeout(function () { manda(dest, { ciao: true }); }, 500); });
       return;
     }
 
-    // finestra proiettata: disegna il pallino
-    var punto = null, timer = null;
+    // finestra proiettata
+    var punto = null, timer = null, anteprime = [];
     function pallino() {
       if (punto) return punto;
       punto = document.createElement('div');
@@ -409,9 +428,19 @@
       document.body.appendChild(punto);
       return punto;
     }
+    document.addEventListener('broadcast', function (e) {
+      if (!e.content || e.content.sender !== 'chalkboard-plugin') return;
+      anteprime = anteprime.filter(function (w) { return !w.closed; });
+      anteprime.forEach(function (w) { manda(w, { lavagna: e.content }); });
+    });
     window.addEventListener('message', function (ev) {
-      var m; try { m = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data; } catch (e) { return; }
-      if (!m || m.namespace !== NS) return;
+      var m = leggi(ev); if (!m) return;
+      if (m.ciao) {                      // nuova anteprima: le mando i disegni gia' fatti
+        if (anteprime.indexOf(ev.source) < 0) anteprime.push(ev.source);
+        var w = new CustomEvent('welcome'); w.id = 'speaker-view'; document.dispatchEvent(w);
+        return;
+      }
+      if (m.lavagna) { ricevuto(m.lavagna); return; }
       var p = pallino();
       clearTimeout(timer);
       if (m.via || m.x < 0 || m.x > 1 || m.y < 0 || m.y > 1) { p.style.display = 'none'; return; }
