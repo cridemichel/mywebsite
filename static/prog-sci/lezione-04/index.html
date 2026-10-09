@@ -1204,23 +1204,24 @@ Cristiano De Michele
 </section>
 <section id="attenzione-a-using-multipli" class="slide level2 smaller">
 <h2>Attenzione a <code>using</code> multipli!</h2>
-<p>Creare ambiguità è facilissimo:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-21"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-21-1"><a href="#annotated-cell-21-1" aria-label="1"></a><span class="kw">using</span> <span class="kw">namespace</span> math<span class="op">;</span></span>
-<span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-label="2"></a><span class="kw">using</span> <span class="kw">namespace</span> neural<span class="op">;</span></span>
-<span id="annotated-cell-21-3"><a href="#annotated-cell-21-3" aria-label="3"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
+<p>Creare ambiguità è facilissimo. Questo codice, di proposito, <strong>non compila</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-21"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-21-1"><a href="#annotated-cell-21-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
+<span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-label="2"></a><span class="kw">namespace</span> neural <span class="op">{</span> <span class="dt">double</span> activate<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>x<span class="op">));</span> <span class="op">}</span> <span class="op">}</span></span>
+<span id="annotated-cell-21-3"><a href="#annotated-cell-21-3" aria-label="3"></a><span class="kw">namespace</span> math   <span class="op">{</span> <span class="dt">double</span> activate<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="bu">std::</span>tanh<span class="op">(</span>x<span class="op">);</span> <span class="op">}</span> <span class="op">}</span></span>
 <span id="annotated-cell-21-4"><a href="#annotated-cell-21-4" aria-label="4"></a></span>
-<span id="annotated-cell-21-5"><a href="#annotated-cell-21-5" aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-21-6"><a href="#annotated-cell-21-6" aria-label="6"></a>    <span class="dt">double</span> input <span class="op">=</span> <span class="fl">3.5</span><span class="op">;</span></span>
-<span id="annotated-cell-21-7"><a href="#annotated-cell-21-7" aria-label="7"></a>    </span>
-<span id="annotated-cell-21-8"><a href="#annotated-cell-21-8" aria-label="8"></a>    <span class="co">// Ambiguo! Di quale metodo activate() stiamo parlando?</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-21-9" class="code-annotation-target"><a href="#annotated-cell-21-9" aria-label="9"></a>    <span class="dt">double</span> out1 <span class="op">=</span> activate<span class="op">(</span>input<span class="op">);</span></span>
-<span id="annotated-cell-21-10"><a href="#annotated-cell-21-10" aria-label="10"></a>    </span>
-<span id="annotated-cell-21-11"><a href="#annotated-cell-21-11" aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-21-12"><a href="#annotated-cell-21-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-21-5"><a href="#annotated-cell-21-5" aria-label="5"></a><span class="kw">using</span> <span class="kw">namespace</span> math<span class="op">;</span></span>
+<span id="annotated-cell-21-6"><a href="#annotated-cell-21-6" aria-label="6"></a><span class="kw">using</span> <span class="kw">namespace</span> neural<span class="op">;</span></span>
+<span id="annotated-cell-21-7"><a href="#annotated-cell-21-7" aria-label="7"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
+<span id="annotated-cell-21-8"><a href="#annotated-cell-21-8" aria-label="8"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-21-9"><a href="#annotated-cell-21-9" aria-label="9"></a>    <span class="dt">double</span> input <span class="op">=</span> <span class="fl">3.5</span><span class="op">;</span></span>
+<span id="annotated-cell-21-10"><a href="#annotated-cell-21-10" aria-label="10"></a>    <span class="co">// Ambiguo! Di quale funzione activate() stiamo parlando?</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-21-11" class="code-annotation-target"><a href="#annotated-cell-21-11" aria-label="11"></a>    <span class="dt">double</span> out1 <span class="op">=</span> activate<span class="op">(</span>input<span class="op">);</span></span>
+<span id="annotated-cell-21-12"><a href="#annotated-cell-21-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-21-13"><a href="#annotated-cell-21-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-21" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-21" data-code-lines="9" data-code-annotation="1"><em>Errore del compilatore: <code>call of overloaded 'activate(double&amp;)' is ambiguous</code></em>. <em>Overloaded</em>: ci sono più funzioni con lo stesso nome. Il <code>&amp;</code> indica una <em>reference</em> (Lezione 05): qui dice solo che <code>input</code> è una variabile.</span>
+<span data-code-cell="annotated-cell-21" data-code-lines="11" data-code-annotation="1"><em>Errore del compilatore: <code>call of overloaded 'activate(double&amp;)' is ambiguous</code></em>. <em>Overloaded</em>: ci sono più funzioni con lo stesso nome. Il <code>&amp;</code> indica una <em>reference</em> (Lezione 05): qui dice solo che <code>input</code> è una variabile.</span>
 </dd>
 </dl>
 <div class="callout callout-important callout-titled callout-style-default">
