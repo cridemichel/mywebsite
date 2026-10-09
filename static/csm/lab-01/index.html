@@ -6,11 +6,11 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-eec68b17241c1efd3eae2de50d816e3e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.10.18">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9bbf5fa004a0676d7f26111dc3fdfdb2.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Cristiano De Michele">
-  <title>Computational Statistical Mechanics — Lab – Lab #1</title>
+  <title>Computational Statistical Mechanics – Lab #1</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -203,6 +203,13 @@
   // ridotta non ha, e mostrava "Math Processing Error" (slide "Piegare lo spazio").
   MathJax.Hub.Config({"HTML-CSS": {availableFonts: ["TeX"], preferredFont: "TeX",
                                    webFont: "TeX", imageFont: null}});
+  // Anteprime della speaker view (8/10/2026): formule viste DOPPIE con schermo esteso.
+  // Solo li' si spengono la copia MathML nascosta (per i lettori di schermo) e la
+  // bozza veloce che precede il disegno definitivo: le slide proiettate e il sito
+  // degli studenti restano come prima.
+  if (/receiver/i.test(window.location.search))
+    MathJax.Hub.Config({menuSettings: {assistiveMML: false, FastPreview: false},
+                        AssistiveMML: {disabled: true}, "fast-preview": {disabled: true}});
   </script>
   <script>
   // Collega ogni spiegazione alla sua riga di codice e viceversa.
@@ -279,7 +286,7 @@
       }
       if (div.querySelector('.fa-eraser')) return;
       var span = document.createElement('span');
-      span.title = 'Cancella i disegni di questa slide (Canc)';
+      span.title = 'Erase the drawings on this slide (Del)';
       var icona = document.createElement('i');
       icona.className = 'fas fa-eraser';
       span.appendChild(icona);
@@ -294,7 +301,7 @@
       function aggiorna() {
         var dentro = !!document.fullscreenElement;
         ifs.className = 'fas ' + (dentro ? 'fa-esci-schermo' : 'fa-schermo-intero');
-        fs.title = dentro ? 'Esci dallo schermo intero (F)' : 'Schermo intero (F)';
+        fs.title = dentro ? 'Exit full screen (F)' : 'Full screen (F)';
       }
       fs.onclick = function (ev) {
         ev.preventDefault();
@@ -365,6 +372,248 @@
     document.addEventListener('pointermove', function (e) {
       if (e.pointerType === 'touch' && muto) e.stopPropagation();
     }, true);
+  })();
+  </script>
+  <script>
+  // Speaker view su schermo esteso (8/10/2026): quello che si fa sull'anteprima
+  // della slide CORRENTE nella speaker view (tasto S) si vede anche sulla finestra
+  // proiettata, che il cursore non raggiunge.
+  //  - Puntatore: muovendo il mouse sull'anteprima compare un pallino rosso nello
+  //    stesso punto della vista proiettata; resta finche' il mouse e' sull'anteprima
+  //    e sparisce uscendo (8/10: tolto lo spegnimento dopo 4 s fermo, e il pallino
+  //    remoto non risente piu' di clic o cambi di finestra su quella proiettata).
+  //    Tasto R premuto nella speaker view: spegne/riaccende questo pallino (all'apertura
+  //    e' acceso; la conferma compare solo nell'anteprima, non sul proiettore).
+  //  - Evidenziatore: il testo selezionato nell'anteprima si colora di giallo sulla
+  //    vista proiettata (8/10/2026). Non usa la selezione vera (in una finestra senza
+  //    fuoco e' grigio chiaro) ma la CSS Custom Highlight API; le formule si saltano.
+  //  - Lavagna e penna: i disegni fatti sull'anteprima (tasti C e B, gomma, Canc)
+  //    passano alla vista proiettata, e viceversa; aprendo la speaker view
+  //    l'anteprima riceve i disegni gia' fatti.
+  // Usa i messaggi "broadcast"/"received" previsti dal plugin chalkboard per le
+  // presentazioni condivise; l'anteprima della slide successiva e' esclusa.
+  //  - Senza speaker view il pallino segue il mouse sulla slide e la freccia viene
+  //    nascosta; tornano manina/freccia sugli elementi cliccabili (pulsanti, link,
+  //    callout richiudibili, menu, footer), il cursore di disegno con penna e lavagna,
+  //    il cursore normale tenendo premuto il tasto (selezione del testo).
+  //    Dopo 3 s fermo spariscono pallino e freccia: basta muovere il mouse.
+  //    Questo pallino parte SPENTO: si accende e si spegne col tasto R. Riguarda solo
+  //    l'uso senza speaker view: il pallino comandato dall'anteprima funziona sempre.
+  (function () {
+    var NS = 'speaker-view-ponte';
+    function area() {                    // dove stanno le slide in questa finestra
+      var v = document.querySelector('.reveal');
+      if (!v || typeof Reveal === 'undefined' || !Reveal.isReady()) return null;
+      var r = v.getBoundingClientRect(), c = Reveal.getConfig(), s = Reveal.getScale();
+      var w = c.width * s, h = c.height * s;
+      return { x: r.left + (r.width - w) / 2, y: r.top + (r.height - h) / 2, w: w, h: h };
+    }
+    function manda(dest, m) { m.namespace = NS; try { dest.postMessage(JSON.stringify(m), '*'); } catch (e) {} }
+    function leggi(ev) {
+      var m; try { m = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data; } catch (e) { return null; }
+      return (m && m.namespace === NS) ? m : null;
+    }
+    // Testo di una slide come sequenza di caratteri, saltando formule e script: le due
+    // finestre caricano la stessa pagina, quindi le posizioni coincidono.
+    var SALTA = 'script, style, .MathJax, .MathJax_Display, .MathJax_Preview, .MJX_Assistive_MathML, mjx-container';
+    function testi(sez) {
+      var w = document.createTreeWalker(sez, NodeFilter.SHOW_TEXT, null), n, l = [], tot = 0;
+      while ((n = w.nextNode())) {
+        if (n.parentElement && n.parentElement.closest(SALTA)) continue;
+        l.push({ n: n, da: tot }); tot += n.length;
+      }
+      return l;
+    }
+    function ricevuto(contenuto) {       // consegna al plugin chalkboard
+      var e = new CustomEvent('received'); e.content = contenuto; document.dispatchEvent(e);
+    }
+
+    if (/receiver/i.test(window.location.search)) {
+      // anteprima dentro la speaker view: solo quella della slide corrente
+      var cornice = null, dest = null;
+      try { cornice = window.frameElement; dest = window.parent.opener; } catch (e) {}
+      if (!cornice || !dest || !cornice.closest('#current-slide')) return;
+      var invia = true, scritta = null, timerScritta = null;   // acceso all'apertura
+      function conferma(testo) {         // scritta solo nell'anteprima
+        if (!scritta) {
+          scritta = document.createElement('div');
+          scritta.style.cssText = 'position:fixed;left:50%;bottom:60px;transform:translateX(-50%);' +
+            'padding:6px 18px;border-radius:8px;background:rgba(0,0,0,.75);color:#fff;' +
+            'font:28px sans-serif;pointer-events:none;z-index:100001;display:none';
+          document.body.appendChild(scritta);
+        }
+        scritta.textContent = testo; scritta.style.display = 'block';
+        clearTimeout(timerScritta);
+        timerScritta = setTimeout(function () { scritta.style.display = 'none'; }, 1500);
+      }
+      window.addEventListener('load', function () {   // la speaker view gira qui i tasti premuti
+        if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+          Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Red dot on the projected view on/off' },
+            function () {
+              invia = !invia;
+              if (!invia) manda(dest, { via: true });
+              conferma('Red dot on the projector ' + (invia ? 'on' : 'off') + ' (key R)');
+            });
+      });
+      document.addEventListener('mousemove', function (e) {
+        if (!invia) return;
+        var a = area(); if (!a) return;
+        manda(dest, { x: (e.clientX - a.x) / a.w, y: (e.clientY - a.y) / a.h });
+      });
+      document.documentElement.addEventListener('mouseleave', function () { manda(dest, { via: true }); });
+      document.addEventListener('broadcast', function (e) {
+        if (e.content && e.content.sender === 'chalkboard-plugin') manda(dest, { lavagna: e.content });
+      });
+      window.addEventListener('message', function (ev) {
+        var m = leggi(ev); if (m && m.lavagna) ricevuto(m.lavagna);
+      });
+      window.addEventListener('load', function () { setTimeout(function () { manda(dest, { ciao: true }); }, 500); });
+      var ultimaSel = '';
+      document.addEventListener('selectionchange', function () {   // evidenziatore
+        var sel = document.getSelection(), sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide();
+        var ev = null;
+        if (sel && sel.rangeCount && !sel.isCollapsed && sez) {
+          var r = sel.getRangeAt(0), da = null, a = null;
+          testi(sez).forEach(function (t) {
+            if (!r.intersectsNode(t.n)) return;
+            if (da === null) da = t.da + (t.n === r.startContainer ? r.startOffset : 0);
+            a = t.da + (t.n === r.endContainer ? r.endOffset : t.n.length);
+          });
+          if (da !== null && a > da) ev = [da, a];
+        }
+        var k = JSON.stringify(ev); if (k === ultimaSel) return; ultimaSel = k;
+        var i = Reveal.getIndices();
+        manda(dest, { evid: ev, h: i.h, v: i.v });
+      });
+      return;
+    }
+
+    // finestra proiettata
+    var punto = null, puntoRemoto = null, timer = null, timerRemoto = null, anteprime = [];
+    function nuovoPallino() {
+      var d = document.createElement('div');
+      d.style.cssText = 'position:fixed;width:18px;height:18px;margin:-9px 0 0 -9px;' +
+        'border-radius:50%;background:rgba(220,30,30,.85);box-shadow:0 0 10px 3px rgba(220,30,30,.5);' +
+        'pointer-events:none;z-index:100000;display:none';
+      document.body.appendChild(d);
+      return d;
+    }
+    function pallino() { return punto || (punto = nuovoPallino()); }               // mouse qui
+    function pallinoRemoto() { return puntoRemoto || (puntoRemoto = nuovoPallino()); } // speaker view
+    document.addEventListener('broadcast', function (e) {
+      if (!e.content || e.content.sender !== 'chalkboard-plugin') return;
+      anteprime = anteprime.filter(function (w) { return !w.closed; });
+      anteprime.forEach(function (w) { manda(w, { lavagna: e.content }); });
+    });
+    // anche senza speaker view: il pallino segue il mouse sulla slide al posto della freccia
+    var stile = document.createElement('style');
+    stile.textContent = 'html.laser-attivo, html.laser-attivo * { cursor: none !important; }';
+    document.head.appendChild(stile);
+    var radice = document.documentElement, premuto = false, ultimo = null, ultimoCliccabile = false;
+    var laserAcceso = false, avviso = null, timerAvviso = null;   // spento all'avvio
+    function mostraAvviso(testo) {     // piccola scritta in basso, per un secondo e mezzo
+      if (!avviso) {
+        avviso = document.createElement('div');
+        avviso.style.cssText = 'position:fixed;left:50%;bottom:48px;transform:translateX(-50%);' +
+          'padding:4px 12px;border-radius:6px;background:rgba(0,0,0,.7);color:#fff;' +
+          'font:15px sans-serif;pointer-events:none;z-index:100001;display:none';
+        document.body.appendChild(avviso);
+      }
+      avviso.textContent = testo; avviso.style.display = 'block';
+      clearTimeout(timerAvviso);
+      timerAvviso = setTimeout(function () { avviso.style.display = 'none'; }, 1500);
+    }
+    function cambiaLaser() {
+      laserAcceso = !laserAcceso;
+      if (!laserAcceso) { clearTimeout(timer); spegni(true); }
+      mostraAvviso('Laser pointer ' + (laserAcceso ? 'on' : 'off') + ' (key R)');
+    }
+    window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+        Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Laser pointer on/off' }, cambiaLaser);
+    });
+    var CLICCABILI = 'a, button, summary, label, input, select, textarea, [role="button"], [onclick],' +
+      ' .controls, .progress, .slide-number, .footer, .slide-menu-button, .slide-menu,' +
+      ' .slide-chalkboard-buttons, .chalkboard-buttons';
+    function cliccabile(t) {            // elemento con manina, o comunque interattivo
+      if (!t || t.nodeType !== 1) return false;
+      if (t === ultimo) return ultimoCliccabile;
+      var c = radice.classList.contains('laser-attivo');
+      if (c) radice.classList.remove('laser-attivo');   // per leggere il cursore vero
+      var cur = getComputedStyle(t).cursor;
+      if (c) radice.classList.add('laser-attivo');
+      ultimo = t;
+      ultimoCliccabile = !!t.closest(CLICCABILI) || cur === 'pointer' ||
+        (t.tagName === 'CANVAS' && !!t.closest('#notescanvas, #chalkboard'));
+      return ultimoCliccabile;
+    }
+    function spegni(anchefreccia) {     // nasconde il pallino; con true ridà la freccia
+      if (punto) punto.style.display = 'none';
+      if (anchefreccia) radice.classList.remove('laser-attivo');
+    }
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || premuto || !laserAcceso) return;
+      var a = area();
+      clearTimeout(timer);
+      var fuori = !a || e.clientX < a.x || e.clientX > a.x + a.w || e.clientY < a.y || e.clientY > a.y + a.h;
+      if (fuori || cliccabile(e.target)) { spegni(true); return; }
+      var p = pallino();
+      p.style.left = e.clientX + 'px'; p.style.top = e.clientY + 'px'; p.style.display = 'block';
+      radice.classList.add('laser-attivo');
+      timer = setTimeout(function () { spegni(false); }, 3000);   // fermo: sparisce tutto
+    });
+    document.addEventListener('pointerdown', function (e) {   // clic, selezione, doppio clic
+      if (e.pointerType !== 'mouse') return;
+      premuto = true; clearTimeout(timer); spegni(true);
+    }, true);
+    function rilascia() { premuto = false; }
+    document.addEventListener('pointerup', rilascia, true);
+    window.addEventListener('blur', function () { premuto = false; spegni(true); });
+    radice.addEventListener('mouseleave', function () { spegni(true); });
+
+    // evidenziatore: stessa porzione di testo selezionata nell'anteprima
+    var EVIDENZIA = !!(window.CSS && CSS.highlights && window.Highlight);
+    if (EVIDENZIA) {
+      var stileEv = document.createElement('style');
+      stileEv.textContent = '::highlight(speaker-view) { background-color: rgba(255, 220, 0, .6); }';
+      document.head.appendChild(stileEv);
+    }
+    function evidenzia(m) {
+      if (!EVIDENZIA) return;
+      CSS.highlights.delete('speaker-view');
+      var i = Reveal.getIndices();
+      if (!m.evid || m.h !== i.h || m.v !== i.v) return;
+      var l = testi(Reveal.getCurrentSlide()), r = document.createRange(), ok = 0;
+      for (var k = 0; k < l.length; k++) {
+        var t = l[k], fine = t.da + t.n.length;
+        if (!(ok & 1) && m.evid[0] < fine) { r.setStart(t.n, m.evid[0] - t.da); ok |= 1; }
+        if (!(ok & 2) && m.evid[1] <= fine) { r.setEnd(t.n, m.evid[1] - t.da); ok |= 2; break; }
+      }
+      if (ok === 3) CSS.highlights.set('speaker-view', new Highlight(r));
+    }
+    if (EVIDENZIA) window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { CSS.highlights.delete('speaker-view'); });
+    });
+
+    window.addEventListener('message', function (ev) {
+      var m = leggi(ev); if (!m) return;
+      if (m.ciao) {                      // nuova anteprima: le mando i disegni gia' fatti
+        if (anteprime.indexOf(ev.source) < 0) anteprime.push(ev.source);
+        var w = new CustomEvent('welcome'); w.id = 'speaker-view'; document.dispatchEvent(w);
+        return;
+      }
+      if (m.lavagna) { ricevuto(m.lavagna); return; }
+      if ('evid' in m) { evidenzia(m); return; }
+      var p = pallinoRemoto();
+      clearTimeout(timerRemoto);
+      if (m.via || m.x < 0 || m.x > 1 || m.y < 0 || m.y > 1) { p.style.display = 'none'; return; }
+      var a = area(); if (!a) return;
+      p.style.left = (a.x + m.x * a.w) + 'px';
+      p.style.top = (a.y + m.y * a.h) + 'px';
+      p.style.display = 'block';
+      // sicurezza: se l'uscita dall'anteprima andasse persa, sparisce dopo 30 s fermo
+      timerRemoto = setTimeout(function () { p.style.display = 'none'; }, 30000);
+    });
   })();
   </script>
 </head>
