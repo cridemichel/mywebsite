@@ -778,7 +778,7 @@ immagine 28x28, canali: 1</code></pre>
 </section>
 <section id="task-3-il-quesito-1-al-calcolatore" class="slide level2 smaller scrollable">
 <h2>Task 3: il quesito 1 al calcolatore</h2>
-<p>Il quesito 1 della Lezione 03: discesa del gradiente su <span class="math inline">\(E(x) = x^2\)</span> partendo da <span class="math inline">\(x_0 = 1\)</span>, cioè <span class="math inline">\(x \leftarrow x - \eta\,E'(x)\)</span> con <span class="math inline">\(E'(x) = 2x\)</span>.</p>
+<p>Il quesito 1 della Lezione 03: loss <span class="math inline">\(E(x) = x^2\)</span>, partenza <span class="math inline">\(x_0 = 1\)</span>, passo <span class="math inline">\(x \leftarrow x - \eta\,E'(x)\)</span> con <span class="math inline">\(E'(x) = 2x\)</span>. Per quali <span class="math inline">\(\eta\)</span> il metodo converge, e quale centra il minimo in un solo passo?</p>
 <ol type="1">
 <li>Scrivete un ciclo <code>for</code> che faccia cinque passi e stampi <span class="math inline">\(x\)</span> dopo ognuno.</li>
 <li>Mettetelo dentro un secondo ciclo che provi <span class="math inline">\(\eta = 0{,}25,\ 0{,}5,\ 0{,}75,\ 1,\ 1{,}25\)</span>:</li>
@@ -792,9 +792,22 @@ immagine 28x28, canali: 1</code></pre>
 </ol>
 <p>Il contatore è un <code>int</code> e <span class="math inline">\(\eta\)</span> si ricava da lui: un ciclo <code>for (double eta = 0.1; ...; eta += 0.1)</code> accumulerebbe errori di arrotondamento, perché <span class="math inline">\(0{,}1\)</span> non è rappresentabile esattamente in binario.</p>
 </section>
-<section id="task-4-lesercizio-della-lezione-03" class="slide level2 smaller scrollable">
-<h2>Task 4: l’esercizio della Lezione 03</h2>
-<p>La catena di due neuroni dell’esercizio in classe, con <span class="math inline">\(x = 1\)</span>, <span class="math inline">\(w_1 = w_2 = 1\)</span>, <span class="math inline">\(y = 1\)</span>:</p>
+<section id="task-4-la-catena-di-due-neuroni" class="slide level2 smaller">
+<h2>Task 4: la catena di due neuroni</h2>
+<p>L’esercizio in classe della Lezione 03: due neuroni sigmoidi in fila, senza bias.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/catena_due_neuroni.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
+</figure>
+</div>
+<p><span class="math display">\[ x \;\to\; z_1 = w_1 x \;\to\; a_1 = \sigma(z_1) \;\to\; z_2 = w_2 a_1 \;\to\; a_2 = \sigma(z_2), \qquad E = (a_2 - y)^2 \]</span></p>
+<p>con <span class="math inline">\(\sigma(z) = 1/(1 + e^{-z})\)</span> e <span class="math inline">\(\sigma'(z) = \sigma(z)\,\big(1 - \sigma(z)\big)\)</span>. La backpropagation dà</p>
+<p><span class="math display">\[ \delta_2 = 2(a_2 - y)\,\sigma'(z_2), \quad \delta_1 = w_2\,\delta_2\,\sigma'(z_1), \quad \frac{\partial E}{\partial w_2} = \delta_2\, a_1, \quad \frac{\partial E}{\partial w_1} = \delta_1\, x . \]</span></p>
+<p>Con <span class="math inline">\(x = 1\)</span>, <span class="math inline">\(w_1 = w_2 = 1\)</span>, <span class="math inline">\(y = 1\)</span> dovete ritrovare <span class="math inline">\(E = 0{,}1056\)</span> e <span class="math inline">\(\partial E/\partial w_1 = -0{,}0280\)</span>.</p>
+</section>
+<section id="task-4-in-c" class="slide level2 smaller scrollable">
+<h2>Task 4: in C++</h2>
+<p>Con <span class="math inline">\(x = 1\)</span>, <span class="math inline">\(w_1 = w_2 = 1\)</span>, <span class="math inline">\(y = 1\)</span>:</p>
 <ol type="1">
 <li><strong>Forward</strong>: una variabile <code>double</code> per ciascuna di <span class="math inline">\(z_1, a_1, z_2, a_2\)</span> ed <span class="math inline">\(E\)</span>. La sigmoide è <code>1.0 / (1.0 + std::exp(-z))</code>, con <code>#include &lt;cmath&gt;</code>.</li>
 <li><strong>Backward</strong>: <span class="math inline">\(\sigma'(z) = a\,(1-a)\)</span>, poi <span class="math inline">\(\delta_2\)</span>, <span class="math inline">\(\delta_1\)</span>, <span class="math inline">\(\partial E/\partial w_2 = \delta_2\, a_1\)</span> e <span class="math inline">\(\partial E/\partial w_1 = \delta_1\, x\)</span>.</li>
@@ -805,10 +818,14 @@ immagine 28x28, canali: 1</code></pre>
 </section>
 <section id="task-5-addestrare-la-catena" class="slide level2 smaller scrollable">
 <h2>Task 5: addestrare la catena</h2>
-<p>Ora i pesi si aggiornano. Un ciclo <code>for</code> di 200 passi con <span class="math inline">\(\eta = 1\)</span> che a ogni passo fa forward e backward e poi</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a>w1 <span class="op">=</span> w1 <span class="op">-</span> eta <span class="op">*</span> dE_dw1<span class="op">;</span></span>
-<span id="cb4-2"><a aria-label="2"></a>w2 <span class="op">=</span> w2 <span class="op">-</span> eta <span class="op">*</span> dE_dw2<span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Con un <code>if (t % 20 == 0)</code> stampate <span class="math inline">\(t\)</span>, <span class="math inline">\(E\)</span>, <span class="math inline">\(w_1\)</span> e <span class="math inline">\(w_2\)</span> ogni 20 passi.</p>
+<p>Ora i pesi si aggiornano: discesa del gradiente su <span class="math inline">\(w_1\)</span> e <span class="math inline">\(w_2\)</span>, con un solo esempio e <span class="math inline">\(\eta = 1\)</span>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> t <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> t <span class="op">&lt;=</span> <span class="dv">200</span><span class="op">;</span> <span class="op">++</span>t<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a aria-label="2"></a>    <span class="co">// forward (a1, a2, E) e backward (delta2, delta1), con i pesi attuali</span></span>
+<span id="cb4-3"><a aria-label="3"></a>    <span class="cf">if</span> <span class="op">(</span>t <span class="op">%</span> <span class="dv">20</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="co">/* stampa t, E, w1 e w2 */</span> <span class="op">}</span></span>
+<span id="cb4-4"><a aria-label="4"></a>    w1 <span class="op">=</span> w1 <span class="op">-</span> eta <span class="op">*</span> dE_dw1<span class="op">;</span></span>
+<span id="cb4-5"><a aria-label="5"></a>    w2 <span class="op">=</span> w2 <span class="op">-</span> eta <span class="op">*</span> dE_dw2<span class="op">;</span></span>
+<span id="cb4-6"><a aria-label="6"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I due gradienti vanno calcolati <strong>entrambi</strong> prima di aggiornare i pesi, nello stesso punto (Lezione 03): aggiornare <code>w2</code> e poi calcolare <code>delta1</code> con il <code>w2</code> nuovo è un errore silenzioso. A <span class="math inline">\(t = 0\)</span> deve uscire <span class="math inline">\(E = 0{,}1056\)</span>, come nel Task 4.</p>
 <ol type="1">
 <li><span class="math inline">\(E\)</span> scende? Di quanto, in 200 passi?</li>
 <li>Guardate i pesi: si fermano?</li>
