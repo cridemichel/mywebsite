@@ -320,6 +320,9 @@
   //  - Evidenziatore: il testo selezionato nell'anteprima si colora di giallo sulla
   //    vista proiettata (8/10/2026). Non usa la selezione vera (in una finestra senza
   //    fuoco e' grigio chiaro) ma la CSS Custom Highlight API; le formule si saltano.
+  //  - Annotazioni del codice (i numerini): quella accesa nell'anteprima, passandoci
+  //    sopra o con un clic, si accende anche sulla vista proiettata, con la sua riga
+  //    di codice (12/10/2026).
   //  - Lavagna e penna: i disegni fatti sull'anteprima (tasti C e B, gomma, Canc)
   //    passano alla vista proiettata, e viceversa; aprendo la speaker view
   //    l'anteprima riceve i disegni gia' fatti.
@@ -401,6 +404,22 @@
         var m = leggi(ev); if (m && m.lavagna) ricevuto(m.lavagna);
       });
       window.addEventListener('load', function () { setTimeout(function () { manda(dest, { ciao: true }); }, 500); });
+      var ultimeAnn = '', attesaAnn = null;
+      function mandaAnn() {              // annotazioni accese nella slide corrente
+        attesaAnn = null;
+        var sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide(), l = [];
+        if (sez) sez.querySelectorAll('dd > span[data-code-annotation].ann-on').forEach(function (sp) {
+          l.push([sp.dataset.codeCell, sp.dataset.codeAnnotation]);
+        });
+        var k = JSON.stringify(l); if (k === ultimeAnn) return; ultimeAnn = k;
+        var i = Reveal.getIndices();
+        manda(dest, { ann: l, h: i.h, v: i.v });
+      }
+      window.addEventListener('load', function () {
+        new MutationObserver(function () {
+          if (!attesaAnn) attesaAnn = setTimeout(mandaAnn, 0);
+        }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+      });
       var ultimaSel = '';
       document.addEventListener('selectionchange', function () {   // evidenziatore
         var sel = document.getSelection(), sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide();
@@ -527,6 +546,36 @@
     if (EVIDENZIA) window.addEventListener('load', function () {
       if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { CSS.highlights.delete('speaker-view'); });
     });
+    // annotazioni del codice accese dall'anteprima: stessi elementi dello script delle
+    // annotazioni (spiegazione, numerino, marcatore nel codice, righe di codice)
+    var annRemote = [];
+    function annotazioni(m) {
+      annRemote.forEach(function (e) { e.classList.remove('ann-on'); });
+      annRemote = [];
+      var i = Reveal.getIndices();
+      if (!m.ann || m.h !== i.h || m.v !== i.v) return;
+      m.ann.forEach(function (c) {
+        var cella = c[0], n = c[1];
+        var span = document.querySelector('dd > span[data-code-cell="' + cella + '"][data-code-annotation="' + n + '"]');
+        if (!span) return;
+        var dd = span.parentElement, dl = dd.parentElement, g = [span, dd];
+        var dds = Array.prototype.slice.call(dl.querySelectorAll('dd')), dts = dl.querySelectorAll('dt');
+        if (dts[dds.indexOf(dd)]) g.push(dts[dds.indexOf(dd)]);
+        var anchor = document.querySelector('.code-annotation-anchor[data-target-cell="' + cella +
+                                            '"][data-target-annotation="' + n + '"]');
+        if (anchor) g.push(anchor);
+        String(span.dataset.codeLines || '').split(',').forEach(function (p) {
+          var r = p.trim().match(/^(\d+)(?:-(\d+))?$/); if (!r) return;
+          for (var j = +r[1], b = r[2] ? +r[2] : +r[1]; j <= b; j++) {
+            var el = document.getElementById(cella + '-' + j); if (el) g.push(el);
+          }
+        });
+        g.forEach(function (e) { if (!e.classList.contains('ann-on')) { e.classList.add('ann-on'); annRemote.push(e); } });
+      });
+    }
+    window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { annotazioni({}); });
+    });
 
     window.addEventListener('message', function (ev) {
       var m = leggi(ev); if (!m) return;
@@ -537,6 +586,7 @@
       }
       if (m.lavagna) { ricevuto(m.lavagna); return; }
       if ('evid' in m) { evidenzia(m); return; }
+      if ('ann' in m) { annotazioni(m); return; }
       var p = pallinoRemoto();
       clearTimeout(timerRemoto);
       if (m.via || m.x < 0 || m.x > 1 || m.y < 0 || m.y > 1) { p.style.display = 'none'; return; }
