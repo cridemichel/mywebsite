@@ -23,7 +23,17 @@ if [ ! -f mathjax/MathJax.js ]; then
   echo "non si vedono. Rilancia dalla cartella LEZIONI:  ./publish_week.sh <settimana> --tutto"
 fi
 
-python3 -m http.server "$PORTA" --bind 127.0.0.1 >/dev/null 2>&1 &
+# Server con "Cache-Control: no-cache" (12/10/2026): con il semplice http.server Chrome
+# riusava dalla cache le pagine vecchie anche dopo un render, e la finestra delle slide
+# e la speaker view potevano mostrare versioni diverse della stessa lezione.
+python3 - "$PORTA" >/dev/null 2>&1 <<'PY' &
+import http.server, sys
+class H(http.server.SimpleHTTPRequestHandler):
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-cache")
+        super().end_headers()
+http.server.ThreadingHTTPServer(("127.0.0.1", int(sys.argv[1])), H).serve_forever()
+PY
 SERVER=$!
 trap 'kill $SERVER 2>/dev/null; echo; echo "Server del corso chiuso."' EXIT
 trap 'exit 0' INT TERM
