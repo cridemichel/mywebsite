@@ -918,9 +918,9 @@ Cristiano De Michele
 <section id="compiling-and-running-in-vs-code" class="slide level2 smaller">
 <h2>Compiling and running in VS Code</h2>
 <ul>
-<li><p><strong>The integrated terminal</strong> (<em>Terminal → New Terminal</em>): a Linux terminal (in WSL, in Ubuntu) in the project folder. Type the same <code>g++</code> command as outside. In the first weeks, do it this way: you see what happens.</p></li>
+<li><p><strong>The integrated terminal</strong> (<em>Terminal → New Terminal</em>): a normal Linux terminal (with WSL: Ubuntu’s), already in the project folder. Type the usual command, e.g. <code>g++ -std=c++17 -Wall -o pvector pvector.cpp</code>. In the first weeks prefer it to the ▷ button: you choose the options and read all the warnings.</p></li>
 <li><p><strong>The ▷ button</strong> at the top right of the editor, <em>Run C/C++ File</em> (C/C++ extension): with the file with <code>main</code> open (<code>pvector.cpp</code>, not <code>pvector.hpp</code>), choose <em>C/C++: g++ build and debug active file</em> (on macOS <em>clang++</em>). VS Code compiles the active file, runs it, and writes the recipe in <code>.vscode/tasks.json</code>.</p></li>
-<li><p>That recipe does not use our options: add them at the beginning of <code>"args"</code> in <code>.vscode/tasks.json</code>:</p>
+<li><p>The recipe lacks our options: add them at the beginning of <code>"args"</code> in <code>.vscode/tasks.json</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a aria-label="1"></a>"args": [</span>
 <span id="cb8-2"><a aria-label="2"></a>    "-std=c++17", "-Wall",</span>
 <span id="cb8-3"><a aria-label="3"></a>    ...the arguments that are already there ("-g", "${file}", ...)</span>
