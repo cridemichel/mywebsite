@@ -845,6 +845,7 @@ Cristiano De Michele
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a aria-label="1"></a>dism<span class="op">.</span><span class="fu">exe</span> <span class="op">/</span>online <span class="op">/</span>enable-feature <span class="op">/</span>featurename<span class="op">:</span>Microsoft-Windows-Subsystem-Linux <span class="op">/</span>all <span class="op">/</span>norestart</span>
 <span id="cb3-2"><a aria-label="2"></a>dism<span class="op">.</span><span class="fu">exe</span> <span class="op">/</span>online <span class="op">/</span>enable-feature <span class="op">/</span>featurename<span class="op">:</span>VirtualMachinePlatform <span class="op">/</span>all <span class="op">/</span>norestart</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Keep WSL up to date: <code>wsl --update</code>; general status: <code>wsl --status</code>.</p></li>
+<li><p><strong><code>code: command not found</code></strong> in Ubuntu → <code>code</code> comes from VS Code installed <strong>on Windows</strong> (option <em>Add to PATH</em>, on by default): install it first, then reopen the Ubuntu terminal (or <code>wsl --shutdown</code>). Do not install VS Code inside Ubuntu.</p></li>
 </ul>
 </section>
 <section id="inside-ubuntu-the-compiler" class="slide level2 smaller">
@@ -906,11 +907,10 @@ Cristiano De Michele
 <section id="vs-code-opening-the-project" class="slide level2 smaller">
 <h2>VS Code: opening the project</h2>
 <ul>
-<li><p><em>File → Open Folder…</em> and choose the project folder (<code>~/csm/project</code>): VS Code works on a folder, and writes its settings in <code>.vscode/</code> inside it.</p></li>
-<li><p><strong>On Windows</strong>, open it from the Ubuntu terminal instead:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
-<span id="cb7-2"><a aria-label="2"></a><span class="ex">code</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The first time VS Code installs its server inside Linux; bottom left you then read <em>WSL: Ubuntu</em>. Install the C/C++ extension when it proposes <em>Install in WSL</em>.</p></li>
+<li><p><strong>Linux, macOS</strong>: <em>File → Open Folder…</em> → <code>~/csm/project</code>. VS Code works on a folder, and writes its settings in <code>.vscode/</code> inside it.</p></li>
+<li><p><strong>Windows (WSL)</strong>: the files and <code>g++</code> are in Ubuntu, VS Code is a Windows app. Open the folder <strong>from the Ubuntu terminal</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project <span class="kw">&amp;&amp;</span> <span class="ex">code</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>VS Code opens connected to WSL (bottom left: <em>WSL: Ubuntu</em>): files, terminal and <code>g++</code> are the Linux ones; install the C/C++ extension when it proposes <em>Install in WSL</em>. Same result from VS Code: <code>&gt;&lt;</code> bottom left → <em>Connect to WSL</em>, then <em>Open Folder</em>. Not the same: opening <code>\\wsl.localhost\...</code> with the Windows dialog (PowerShell, no <code>g++</code>).</p></li>
 <li><p><strong>IntelliSense</strong> and the compiler can disagree: what counts is what <code>g++</code> says when you compile.</p></li>
 <li><p><strong>Copilot</strong>: useful to understand an error or a piece of code. But the point of the labs is that <em>you</em> write <code>pvector</code>.</p></li>
 </ul>
@@ -1313,11 +1313,11 @@ Object destroyed</code></pre>
 <li><strong>Overloading</strong>: the same name (of a function or operator) with arguments of different types; the compiler picks the version from the types. <code>a + b</code> on two <code>pvector</code>s is an overloaded <code>+</code>.</li>
 </ul>
 </section>
-<section id="example-n1-myvec.hpp" class="slide level2 smaller codice-intero">
+<section id="example-n1-myvec.hpp" class="slide level2 smaller codice-intero codice-micro">
 <h2>Example N1: <code>myvec.hpp</code></h2>
 <p><code>examples/N1_a_first_vec_class/myvec.hpp</code></p>
 <div class="columns">
-<div class="column" style="width:50%;">
+<div class="column" style="width:34%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb32-1"><a aria-label="1"></a><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb32-2"><a aria-label="2"></a><span class="kw">class</span> myvec</span>
 <span id="cb32-3"><a aria-label="3"></a><span class="op">{</span></span>
@@ -1335,7 +1335,7 @@ Object destroyed</code></pre>
 <span id="cb32-15"><a aria-label="15"></a>    <span class="op">{</span></span>
 <span id="cb32-16"><a aria-label="16"></a>      <span class="co">// do nothing</span></span>
 <span id="cb32-17"><a aria-label="17"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
+</div><div class="column" style="width:66%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33" data-startfrom="18"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 17;"><span id="cb33-18"><a aria-label="18"></a></span>
 <span id="cb33-19"><a aria-label="19"></a>  <span class="co">// assign value to (i+1)-th element of the array</span></span>
 <span id="cb33-20"><a aria-label="20"></a>  <span class="dt">void</span> set<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> val<span class="op">)</span></span>
@@ -1734,7 +1734,7 @@ v[1]=1 v[2]=-2</code></pre>
 <p><strong>Read the warnings</strong></p>
 </div>
 <div class="callout-content">
-<p>The empty bodies of the skeleton <strong>compile</strong>: for a method that should return a value and has no <code>return</code> the compiler only warns <code>no return statement in function returning non-void [-Wreturn-type]</code>. But when the program calls it, it crashes (<code>Illegal instruction</code>) or worse (<em>undefined behaviour</em>): fill a method before testing it.</p>
+<p>The empty bodies of the skeleton <strong>compile</strong>: for a method that should return a value and has no <code>return</code> the compiler only warns <code>no return statement in function returning non-void [-Wreturn-type]</code>. When the program calls it the behaviour is <em>undefined</em>: recent compilers stop with <code>Illegal instruction</code>, an older <code>g++</code> may silently return a garbage value. Fill a method before testing it.</p>
 </div>
 </div>
 </div>
@@ -1795,7 +1795,7 @@ PC=(0,0,0)</code></pre>
 <li><strong><code>pvector P();</code> is not an object</strong>: it declares a <em>function</em> <code>P</code> returning a <code>pvector</code>. Write <code>pvector P;</code>.</li>
 <li><strong>Returning a reference to a local object</strong> in <code>operator+</code>: it compiles with a warning (<code>reference to local variable 'VT' returned</code>), then with <code>g++</code> it usually crashes (<code>Segmentation fault</code>): undefined behaviour.</li>
 <li><strong>Missing <code>const</code></strong> on <code>show()</code> or <code>get()</code>: then they cannot be called on a <code>const pvector</code>, nor on an argument <code>const pvector&amp; V2</code>: <code>passing 'const pvector' as 'this' argument discards qualifiers</code>.</li>
-<li><strong>Missing <code>return</code></strong> in a non-void method: only a warning, then a crash (see <code>get()</code> and <code>set()</code>).</li>
+<li><strong>Missing <code>return</code></strong> in a non-void method: only a warning, then a crash or garbage values (see <code>get()</code> and <code>set()</code>).</li>
 <li><strong>Header guard</strong> missing, or with the name already used by another header: <code>error: redefinition of 'class ...'</code> as soon as the header is included twice.</li>
 </ul>
 </section>
