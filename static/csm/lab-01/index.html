@@ -666,6 +666,73 @@
     });
   })();
   </script>
+  <script>
+  // File di codice divisi in piu' blocchi (13/10/2026). Un blocco con startFrom="..."
+  // (numerazione che prosegue) e' la continuazione del blocco precedente: sulla stessa
+  // slide (due colonne) o, se e' il primo blocco della slide, dell'ultimo blocco della
+  // slide precedente (con lo stesso filename, se indicato). Il pulsante "copia" copia
+  // l'INTERO file; sulla stessa slide resta solo il pulsante del primo pezzo.
+  (function () {
+    var it = /^it/i.test(document.documentElement.lang || '');
+    function testo(div) {                      // testo di un blocco, senza i cerchietti delle annotazioni
+      var code = div.querySelector('pre code');
+      if (!code) return '';
+      var c = code.cloneNode(true);
+      c.querySelectorAll('.code-annotation-anchor').forEach(function (a) { a.remove(); });
+      return c.textContent.replace(/\n+$/, '');
+    }
+    function copia(t, btn) {
+      function ok() {
+        btn.classList.add('code-copy-button-checked');
+        setTimeout(function () { btn.classList.remove('code-copy-button-checked'); }, 1500);
+      }
+      function ripiego() {                     // senza https (es. file aperto in locale)
+        var ta = document.createElement('textarea');
+        ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { if (document.execCommand('copy')) ok(); } catch (e) {}
+        ta.remove();
+      }
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, ripiego);
+      else ripiego();
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      var sezioni = Array.prototype.filter.call(document.querySelectorAll('.reveal .slides section'),
+                                                function (s) { return !s.querySelector('section'); });
+      var tutti = [], prec = null;
+      sezioni.forEach(function (sez) {
+        var g = null;
+        sez.querySelectorAll('div.sourceCode').forEach(function (div) {
+          var segue = div.hasAttribute('data-startfrom');
+          if (segue && g) g.push(div);
+          else if (segue && prec && (div.dataset.filename || '') === (prec[0].dataset.filename || '')) {
+            prec.push(div); g = prec;                // continua dalla slide precedente
+          } else { g = [div]; tutti.push(g); }
+        });
+        prec = g;                                    // null se la slide non ha codice
+      });
+      tutti.forEach(function (gr) {
+        if (gr.length < 2) return;
+        var piuSlide = gr[0].closest('section') !== gr[gr.length - 1].closest('section');
+        gr.forEach(function (div, k) {
+          var b = div.parentElement.querySelector('.code-copy-button');
+          if (!b) return;
+          if (k > 0 && div.closest('section') === gr[k - 1].closest('section')) { b.style.display = 'none'; return; }
+          b.title = it ? (piuSlide ? "Copia l'intero file (tutte le parti)" : "Copia l'intero file")
+                       : (piuSlide ? 'Copy the whole file (all its parts)' : 'Copy the whole file');
+          b._gruppo = gr;
+        });
+      });
+      // in cattura: arriva prima del gestore di Quarto (ClipboardJS) e lo sostituisce
+      document.addEventListener('click', function (ev) {
+        var b = ev.target.closest && ev.target.closest('.code-copy-button');
+        if (!b || !b._gruppo) return;
+        ev.preventDefault(); ev.stopImmediatePropagation();
+        copia(b._gruppo.map(testo).join('\n'), b);
+      }, true);
+    });
+  })();
+  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
