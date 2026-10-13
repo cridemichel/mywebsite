@@ -123,3 +123,7 @@
 /* Il sorgente deve vedersi TUTTO, senza scorrere dentro il riquadro. */
 .reveal .codice-intero pre, .reveal .codice-intero pre code { max-height: none; }
 .reveal .codice-mini pre code { font-size: 0.78em; }
+
+/* Un file lungo con righe di commento larghe (es. N3 overloading.hpp, 13/10/2026):
+   un filo piu' piccolo di .codice-mini, per farlo stare in due colonne.     */
+.reveal .codice-micro pre code { font-size: 0.74em; }
