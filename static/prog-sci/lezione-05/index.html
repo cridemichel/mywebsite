@@ -776,7 +776,7 @@ Cristiano De Michele
 <h2>Array (vettori statici)</h2>
 <ul>
 <li>Come in C: un blocco di memoria <strong>contiguo</strong>, con l’indice che parte da 0.</li>
-<li>La dimensione deve essere nota a tempo di compilazione: <code>float v[n]</code> con <code>n</code> variabile è lecito in C99, non in C++ (g++ lo accetta come estensione).</li>
+<li>La dimensione deve essere nota a tempo di compilazione: <code>float v[n]</code> con <code>n</code> variabile è lecito in C99, <strong>non nello standard C++</strong>.</li>
 </ul>
 <div class="columns">
 <div class="column" style="width:55%;">
@@ -815,6 +815,19 @@ Cristiano De Michele
 </div>
 <div class="callout-content">
 <p>L’indice parte <strong>sempre da 0</strong>: <code>v1[0]</code>, <code>v1[1]</code>, <code>v1[2]</code>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<p><code>float v[n]</code> compila lo stesso: g++ e clang++ lo accettano come <strong>estensione</strong>. Con <code>-Wpedantic</code> g++ avvisa; clang++ recente avvisa anche senza opzioni.</p>
 </div>
 </div>
 </div>
