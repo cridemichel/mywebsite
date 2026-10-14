@@ -1646,12 +1646,25 @@ Cristiano De Michele
 </section>
 <section id="esercizio-finale-20-min-misure-e-statistiche" class="slide level2 smaller">
 <h2>Esercizio finale (20 min): misure e statistiche</h2>
-<ol type="1">
-<li>La classe <code>Misure</code> conserva fino a <code>MAX_MISURE</code> valori (<code>const int MAX_MISURE = 100;</code>) in un array privato, con un contatore privato. Metodi pubblici: <code>aggiungi(double v)</code>, che rifiuta il valore se l’array è pieno, <code>numero()</code> e <code>valore(int i)</code>.</li>
-<li>La classe <code>Statistiche</code> riceve nel costruttore un <code>Misure&amp;</code>, calcola la media <span class="math inline">\(\bar x\)</span> e la deviazione standard campionaria <span class="math inline">\(\sigma = \sqrt{\sum_i (x_i - \bar x)^2/(n-1)}\)</span> e le conserva in attributi privati, letti da <code>media()</code> e <code>sigma()</code>.</li>
-<li>Nel <code>main</code> inserite cinque misure del periodo di un pendolo (2,01; 1,98; 2,03; 1,99; 2,00 s) e stampate media e sigma.</li>
-</ol>
-<p><code>Statistiche</code> non può leggere l’array di <code>Misure</code>: deve usarne l’interfaccia pubblica.</p>
+<p>Due classi: <code>Misure</code> conserva i dati; <code>Statistiche</code> ne calcola media e deviazione standard. <code>x_</code> è privato in <code>Misure</code>: <code>Statistiche</code> deve usarne l’interfaccia pubblica.</p>
+<p><strong>1. La classe <code>Misure</code></strong></p>
+<ul>
+<li>Prima della classe, la costante <code>const int MAX_MISURE = 100;</code>.</li>
+<li>Attributi privati: <code>double x_[MAX_MISURE]</code> (le misure) e <code>int n_</code> (quante sono).</li>
+<li>Costruttore senza parametri, che pone <code>n_</code> a zero.</li>
+<li><code>void aggiungi(double v)</code>: se <code>n_ &lt; MAX_MISURE</code> scrive <code>v</code> in <code>x_[n_]</code> e incrementa <code>n_</code>, altrimenti ignora <code>v</code>.</li>
+<li><code>int numero()</code> restituisce <code>n_</code>; <code>double valore(int i)</code> restituisce <code>x_[i]</code>.</li>
+</ul>
+</section>
+<section id="esercizio-finale-misure-e-statistiche-segue" class="slide level2 smaller">
+<h2>Esercizio finale: misure e statistiche (segue)</h2>
+<p><strong>2. La classe <code>Statistiche</code></strong></p>
+<ul>
+<li>Attributi privati: <code>double media_</code> e <code>double sigma_</code>.</li>
+<li>Costruttore <code>Statistiche(Misure&amp; m)</code>: con <code>m.numero()</code> e <code>m.valore(i)</code> calcola la media <span class="math inline">\(\bar x = \sum_i x_i / n\)</span> e la deviazione standard campionaria <span class="math inline">\(\sigma = \sqrt{\sum_i (x_i - \bar x)^2 / (n-1)}\)</span> (<code>std::sqrt</code> è in <code>&lt;cmath&gt;</code>), e le salva negli attributi.</li>
+<li><code>double media()</code> e <code>double sigma()</code> restituiscono i valori calcolati.</li>
+</ul>
+<p><strong>3. Il <code>main</code></strong>: crea un oggetto <code>Misure</code>, vi aggiunge cinque misure del periodo di un pendolo (2,01; 1,98; 2,03; 1,99; 2,00 s), crea un oggetto <code>Statistiche</code> passandogli le misure e stampa media e deviazione standard.</p>
 </section>
 <section id="soluzione-dellesercizio-finale-la-classe-misure" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio finale: la classe <code>Misure</code></h2>
