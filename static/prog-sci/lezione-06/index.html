@@ -776,7 +776,7 @@ Cristiano De Michele
 </section>
 <section id="costanti" class="slide level2 smaller">
 <h2>Costanti</h2>
-<p>Come in C, la parola chiave <code>const</code> garantisce che il valore di una variabile non cambi più nel suo scope: è un contratto che il compilatore fa rispettare (per esempio sul <code>learning_rate</code> di una rete).</p>
+<p>Come in C, <code>const</code> dichiara una variabile <strong>in sola lettura</strong>: il valore si fissa all’inizializzazione e ogni assegnazione successiva è un errore di compilazione (per esempio sul <code>learning_rate</code> di una rete).</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-label="2"></a></span>
 <span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
@@ -839,7 +839,7 @@ Cristiano De Michele
 </section>
 <section id="puntatore-costante-int-const" class="slide level2 smaller">
 <h2>1. Puntatore costante (<code>int * const</code>)</h2>
-<p>Il puntatore <strong>non può cambiare bersaglio</strong>, ma attraverso di lui si può modificare il valore puntato.</p>
+<p>L’<strong>indirizzo contenuto nel puntatore non può cambiare</strong>, ma attraverso il puntatore si può modificare il valore puntato.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-label="2"></a></span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
@@ -855,7 +855,7 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="6" data-code-annotation="1"><code>b</code> è un puntatore costante: punta ad <code>a</code> per sempre.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="6" data-code-annotation="1"><code>b</code> è un puntatore costante: contiene l’indirizzo di <code>a</code> e non può contenerne un altro.</span>
 </dd>
 <dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
 <dd>
@@ -869,7 +869,7 @@ Cristiano De Michele
 </section>
 <section id="puntatore-a-costante-const-int" class="slide level2 smaller">
 <h2>2. Puntatore a costante (<code>const int *</code>)</h2>
-<p>Il valore puntato <strong>non si può modificare attraverso il puntatore</strong>, ma il puntatore può puntare altrove.</p>
+<p>Il valore puntato <strong>non si può modificare attraverso il puntatore</strong>, ma al puntatore si può assegnare un altro indirizzo.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-label="2"></a></span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
@@ -899,7 +899,7 @@ Cristiano De Michele
 </section>
 <section id="entrambi-costanti-const-float-const" class="slide level2 smaller">
 <h2>3. Entrambi costanti (<code>const float * const</code>)</h2>
-<p>Le due restrizioni insieme: non si può cambiare né il puntatore né il valore puntato. È l’accesso in sola lettura più restrittivo.</p>
+<p>Le due restrizioni insieme: non si può cambiare né l’indirizzo contenuto nel puntatore né il valore puntato. È l’accesso in sola lettura più restrittivo.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-4"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-label="2"></a></span>
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
@@ -929,7 +929,7 @@ Cristiano De Michele
 </section>
 <section id="reference-e-puntatori-costanti" class="slide level2 smaller">
 <h2>Reference e puntatori costanti</h2>
-<p>Un reference (Lezione 05) è un <strong>puntatore costante</strong> dereferenziato in automatico e mai nullo.</p>
+<p>Un reference è un <strong>puntatore costante</strong> dereferenziato in automatico e mai nullo.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 28%">
@@ -947,7 +947,7 @@ Cristiano De Michele
 <tr class="odd">
 <td><code>int&amp; r = a;</code></td>
 <td><code>int * const p = &amp;a;</code></td>
-<td>si modifica <code>a</code>; bersaglio fisso</td>
+<td>si modifica <code>a</code>; indirizzo fisso</td>
 </tr>
 <tr class="even">
 <td><code>const int&amp; r = a;</code></td>
@@ -957,7 +957,7 @@ Cristiano De Michele
 <tr class="odd">
 <td><em>(nessuno)</em></td>
 <td><code>const int * p = &amp;a;</code></td>
-<td><code>a</code> in sola lettura; <code>p</code> può puntare altrove</td>
+<td><code>a</code> in sola lettura; <code>p</code> può ricevere un altro indirizzo</td>
 </tr>
 </tbody>
 </table>
@@ -972,14 +972,14 @@ Cristiano De Michele
 <p><strong>Nota</strong></p>
 </div>
 <div class="callout-content">
-<p>Un reference non si riassegna mai: il suo <code>const</code> riguarda sempre il <strong>valore</strong>, mai il bersaglio.</p>
+<p>Un reference resta legato all’oggetto iniziale: il suo <code>const</code> riguarda sempre il <strong>valore</strong>.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="array-e-puntatori" class="slide level2 smaller">
 <h2>Array e puntatori</h2>
-<p>Come in C, il nome di un array <strong>decade</strong> (<em>decay</em>) a un puntatore al suo primo elemento appena lo si usa in un’espressione. Non <em>è</em> un puntatore (lo mostra il primo esercizio lampo, in fondo alla lezione), ma quasi sempre si comporta come tale.</p>
+<p>Come in C, il nome di un array <strong>decade</strong> (<em>decay</em>) a un puntatore al suo primo elemento quando compare in un’espressione (con poche eccezioni, come <code>sizeof</code> e <code>&amp;</code>). Non <em>è</em> un puntatore (lo mostra il primo esercizio lampo, in fondo alla lezione), ma quasi sempre si comporta come tale.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-label="2"></a></span>
 <span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
@@ -992,7 +992,7 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="5" data-code-annotation="1">Non serve <code>&amp;</code>: <code>v3</code> decade da solo all’indirizzo del primo elemento, <code>&amp;v3[0]</code>.</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="5" data-code-annotation="1">Non serve <code>&amp;</code>: <code>v3</code> decade automaticamente all’indirizzo del primo elemento, <code>&amp;v3[0]</code>.</span>
 </dd>
 <dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
 <dd>
@@ -1002,7 +1002,7 @@ Cristiano De Michele
 </section>
 <section id="aritmetica-dei-puntatori" class="slide level2 smaller">
 <h2>Aritmetica dei puntatori</h2>
-<p>Come in C, sommando un intero a un puntatore lo si sposta lungo la memoria, un elemento alla volta.</p>
+<p>Come in C, sommando un intero <code>k</code> a un puntatore si ottiene l’indirizzo dell’elemento <code>k</code> posizioni più avanti.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a></span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
@@ -1043,7 +1043,7 @@ Cristiano De Michele
 <tr class="header">
 <th>Tipo</th>
 <th>Dimensione tipica</th>
-<th>Salto di <code>ptr++</code></th>
+<th>Avanzamento di <code>d++</code></th>
 </tr>
 </thead>
 <tbody>
@@ -1084,9 +1084,9 @@ Cristiano De Michele
 </div>
 </div>
 </section>
-<section id="il-pericolo-dellaritmetica" class="slide level2 smaller">
-<h2>Il pericolo dell’aritmetica</h2>
-<p>Come in C, l’aritmetica dei puntatori non conosce i limiti dell’array: nessuno impedisce di uscirne.</p>
+<section id="accessi-fuori-dai-limiti-dellarray" class="slide level2 smaller">
+<h2>Accessi fuori dai limiti dell’array</h2>
+<p>Come in C, l’aritmetica dei puntatori non conosce i limiti dell’array: né il compilatore né il programma in esecuzione impediscono di uscirne.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a></span>
 <span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
@@ -1100,11 +1100,11 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="7" data-code-annotation="1">Già calcolare <code>d + 100</code>, ben oltre la fine dell’array, è <em>undefined behaviour</em>, e il compilatore non segnala niente.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="7" data-code-annotation="1">Già calcolare <code>d + 100</code>, ben oltre la fine dell’array, è <em>undefined behaviour</em>, e il compilatore non emette alcun avviso.</span>
 </dd>
 <dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="8" data-code-annotation="2">In prova ha stampato <code>0</code>. Può stampare un valore qualsiasi preso da un’altra zona della memoria <strong>dello stesso processo</strong> (quella di altri programmi è protetta dal sistema operativo), oppure terminare con <code>Segmentation fault</code>. Nella Lezione 08 vedremo l’AddressSanitizer, che questi errori li trova.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="8" data-code-annotation="2">In prova ha stampato <code>0</code>. Può stampare un valore qualsiasi preso da un’altra zona della memoria <strong>dello stesso processo</strong> (quella di altri programmi è protetta dal sistema operativo), oppure terminare con <code>Segmentation fault</code>. Nella Lezione 08 vedremo l’AddressSanitizer, che rileva questi errori in esecuzione.</span>
 </dd>
 </dl>
 </section>
@@ -1132,7 +1132,7 @@ Cristiano De Michele
 </section>
 <section id="interfacce-delle-funzioni-ripasso" class="slide level2 smaller">
 <h2>Interfacce delle funzioni: ripasso</h2>
-<p>Il meccanismo è quello della Lezione 05; qui lo rivediamo su un caso che vi servirà davvero. Uno <strong>scheduler</strong> dimezza il learning rate a fine epoca:</p>
+<p>Il meccanismo è quello della Lezione 05; qui lo rivediamo su un caso del framework. Uno <strong>scheduler</strong> dimezza il learning rate a fine epoca:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-10"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-label="2"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-3" class="code-annotation-target"><a href="#annotated-cell-10-3" aria-label="3"></a><span class="dt">void</span> decay<span class="op">(</span><span class="dt">double</span> eta<span class="op">)</span> <span class="op">{</span></span>
@@ -1152,13 +1152,13 @@ Cristiano De Michele
 </dd>
 <dt data-target-cell="annotated-cell-10" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-10" data-code-lines="10" data-code-annotation="2">Stampa ancora <code>0.2</code>: lo scheduler ha dimezzato la sua copia, che sparisce all’uscita dalla funzione; il learning rate vero non è cambiato.</span>
+<span data-code-cell="annotated-cell-10" data-code-lines="10" data-code-annotation="2">Stampa ancora <code>0.2</code>: lo scheduler ha dimezzato la sua copia, che viene distrutta all’uscita dalla funzione; <code>learning_rate</code> nel <code>main</code> non cambia.</span>
 </dd>
 </dl>
 </section>
 <section id="passaggio-per-reference" class="slide level2 smaller">
 <h2>Passaggio per reference</h2>
-<p>Basta una <code>&amp;</code> perché <code>eta</code> sia un <em>alias</em> del learning rate vero, senza copie.</p>
+<p>Con una <code>&amp;</code>, <code>eta</code> diventa un <em>alias</em> di <code>learning_rate</code>: nessuna copia.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-3" class="code-annotation-target"><a href="#annotated-cell-11-3" aria-label="3"></a><span class="dt">void</span> decay<span class="op">(</span><span class="dt">double</span><span class="op">&amp;</span> eta<span class="op">)</span> <span class="op">{</span></span>
@@ -1178,7 +1178,7 @@ Cristiano De Michele
 </dd>
 <dt data-target-cell="annotated-cell-11" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="10" data-code-annotation="2">Stampa <code>0.1</code>: ora lo scheduler modifica il learning rate vero.</span>
+<span data-code-cell="annotated-cell-11" data-code-lines="10" data-code-annotation="2">Stampa <code>0.1</code>: ora <code>decay</code> modifica direttamente <code>learning_rate</code>.</span>
 </dd>
 </dl>
 <div class="callout callout-note callout-titled callout-style-default">
@@ -1195,8 +1195,8 @@ Cristiano De Michele
 </div>
 </div>
 </section>
-<section id="gestire-array-nelle-funzioni" class="slide level2 smaller">
-<h2>Gestire array nelle funzioni</h2>
+<section id="array-come-parametri-di-funzione" class="slide level2 smaller">
+<h2>Array come parametri di funzione</h2>
 <p>Una funzione che riceve due array (come puntatori, Lezione 05) e scrive il risultato in un parametro per reference. <code>computeLoss</code> e <code>Result</code> sono esempi: nel framework la loss è la classe <code>MSELoss</code> (Laboratorio 10).</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-1" class="code-annotation-target"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="dt">void</span> computeLoss<span class="op">(</span><span class="at">const</span> <span class="dt">double</span><span class="op">*</span> pred<span class="op">,</span> <span class="at">const</span> <span class="dt">double</span><span class="op">*</span> target<span class="op">,</span> <span class="dt">int</span> n<span class="op">,</span> <span class="dt">double</span><span class="op">&amp;</span> loss<span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-label="2"></a>    loss <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
@@ -1221,13 +1221,13 @@ Cristiano De Michele
 </dd>
 <dt data-target-cell="annotated-cell-12" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-12" data-code-lines="14" data-code-annotation="2"><code>loss_finale</code> va dichiarata prima della chiamata, che la riempie.</span>
+<span data-code-cell="annotated-cell-12" data-code-lines="14" data-code-annotation="2"><code>loss_finale</code> va dichiarata prima della chiamata, che le assegna il valore.</span>
 </dd>
 </dl>
 </section>
 <section id="un-problema-di-leggibilità" class="slide level2 smaller">
 <h2>Un problema di leggibilità</h2>
-<p>Leggendo <code>computeLoss(a, b, c, d)</code>, chi non ha scritto la funzione non capisce quali argomenti sono input e quale è l’output. Meglio restituire il risultato:</p>
+<p>Dalla sola chiamata <code>computeLoss(a, b, c, d)</code> non si distingue quali argomenti sono input e quale è l’output. È preferibile restituire il risultato:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-13"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-13-1" class="code-annotation-target"><a href="#annotated-cell-13-1" aria-label="1"></a><span class="dt">double</span> computeLoss<span class="op">(</span><span class="at">const</span> <span class="dt">double</span><span class="op">*</span> pred<span class="op">,</span> <span class="at">const</span> <span class="dt">double</span><span class="op">*</span> target<span class="op">,</span> <span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
 <span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-label="2"></a>    <span class="dt">double</span> loss <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
 <span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-label="3"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
@@ -1243,7 +1243,7 @@ Cristiano De Michele
 </dd>
 <dt data-target-cell="annotated-cell-13" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-13" data-code-lines="7" data-code-annotation="2">Il risultato esce con il <code>return</code>.</span>
+<span data-code-cell="annotated-cell-13" data-code-lines="7" data-code-annotation="2">Il risultato è il valore di ritorno.</span>
 </dd>
 </dl>
 <div class="callout callout-important callout-titled callout-style-default">
@@ -1255,20 +1255,20 @@ Cristiano De Michele
 <p><strong>Importante</strong></p>
 </div>
 <div class="callout-content">
-<p>E se volessimo calcolare <strong>sia</strong> la loss <strong>sia</strong> l’accuratezza in un colpo solo? Il <code>return</code> restituisce <strong>un solo valore</strong>.</p>
+<p>Per calcolare <strong>sia</strong> la loss <strong>sia</strong> l’accuratezza con una sola chiamata, però, il <code>return</code> non basta: restituisce <strong>un solo valore</strong>.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="restituire-più-valori-una-struct-come-in-c" class="slide level2 smaller">
 <h2>Restituire più valori: una <code>struct</code>, come in C</h2>
-<p>La risposta del C funziona anche in C++: una <code>struct</code> che raccoglie i due valori e si restituisce intera.</p>
+<p>La soluzione del C vale anche in C++: una <code>struct</code> che raccoglie i due valori e viene restituita per intero.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-label="2"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-14-3" class="code-annotation-target"><a href="#annotated-cell-14-3" aria-label="3"></a><span class="kw">struct</span> Result <span class="op">{</span> <span class="dt">double</span> loss<span class="op">;</span> <span class="dt">double</span> accuracy<span class="op">;</span> <span class="op">};</span></span>
 <span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-label="4"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-14-5" class="code-annotation-target"><a href="#annotated-cell-14-5" aria-label="5"></a>Result computeMetrics<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-label="6"></a>    Result res <span class="op">=</span> <span class="op">{</span> <span class="fl">0.5</span><span class="op">,</span> <span class="fl">95.0</span> <span class="op">};</span>    <span class="co">// al posto dei calcoli veri</span></span>
+<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-label="6"></a>    Result res <span class="op">=</span> <span class="op">{</span> <span class="fl">0.5</span><span class="op">,</span> <span class="fl">95.0</span> <span class="op">};</span>    <span class="co">// valori di esempio</span></span>
 <span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-label="7"></a>    <span class="cf">return</span> res<span class="op">;</span>                    <span class="co">// un solo return, due valori</span></span>
 <span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-label="8"></a><span class="op">}</span></span>
 <span id="annotated-cell-14-9"><a href="#annotated-cell-14-9" aria-label="9"></a></span>
@@ -1290,12 +1290,12 @@ Cristiano De Michele
 </section>
 <section id="le-classi-in-c" class="slide level2 smaller">
 <h2>Le classi in C++</h2>
-<p>La programmazione orientata agli oggetti (OOP) unisce dati e funzioni in <strong>oggetti</strong>. Una <strong>classe</strong> è il progetto da cui si creano gli oggetti: rispetto alla <code>struct</code> aggiunge le funzioni e il controllo dell’accesso.</p>
+<p>La programmazione orientata agli oggetti (OOP) unisce dati e funzioni in <strong>oggetti</strong>. Una <strong>classe</strong> è un tipo definito dall’utente: ne descrive i dati e le operazioni, e gli oggetti ne sono le istanze. Rispetto alla <code>struct</code> del C aggiunge le funzioni e il controllo dell’accesso.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
 <li><strong>Attributi</strong> (dati): le caratteristiche dell’oggetto.</li>
-<li><strong>Metodi</strong> (comportamento): le funzioni che lavorano sui dati dell’oggetto.</li>
+<li><strong>Metodi</strong> (comportamento): le funzioni che operano sui dati dell’oggetto.</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <p><strong>Esempio dal framework:</strong> <em>Classe:</em> <code>DenseLayer</code> <em>Attributi:</em> la matrice dei pesi, il numero di neuroni. <em>Metodi:</em> <code>forward()</code>, <code>backward()</code>.</p>
@@ -1329,11 +1329,11 @@ Cristiano De Michele
 </dd>
 <dt data-target-cell="annotated-cell-15" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-15" data-code-lines="8" data-code-annotation="2">Un <strong>metodo</strong>: una funzione che sta dentro la classe e vede direttamente gli attributi.</span>
+<span data-code-cell="annotated-cell-15" data-code-lines="8" data-code-annotation="2">Un <strong>metodo</strong>: una funzione che sta dentro la classe e ha accesso diretto agli attributi.</span>
 </dd>
 <dt data-target-cell="annotated-cell-15" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-15" data-code-lines="11" data-code-annotation="3">Il <code>;</code> dopo la graffa finale serve, come per le <code>struct</code> del C.</span>
+<span data-code-cell="annotated-cell-15" data-code-lines="11" data-code-annotation="3">Il <code>;</code> dopo la parentesi graffa finale è obbligatorio, come per le <code>struct</code> del C.</span>
 </dd>
 <dt data-target-cell="annotated-cell-15" data-target-annotation="4">4</dt>
 <dd>
@@ -1362,7 +1362,7 @@ Cristiano De Michele
 </dd>
 <dt data-target-cell="annotated-cell-16" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-16" data-code-lines="6" data-code-annotation="2">L’unico modo di cambiare il valore passa da un controllo: una temperatura assoluta negativa viene rifiutata.</span>
+<span data-code-cell="annotated-cell-16" data-code-lines="6" data-code-annotation="2">Il valore si modifica solo attraverso questo metodo, che lo verifica: una temperatura assoluta negativa viene rifiutata.</span>
 </dd>
 <dt data-target-cell="annotated-cell-16" data-target-annotation="3">3</dt>
 <dd>
@@ -1372,7 +1372,7 @@ Cristiano De Michele
 </section>
 <section id="costruttori" class="slide level2 smaller">
 <h2>Costruttori</h2>
-<p>Come garantire che <code>kelvin_</code> parta da un valore definito, e non da quello che c’era in memoria? Con un <strong>costruttore</strong>:</p>
+<p>Per garantire che <code>kelvin_</code> abbia un valore definito fin dalla creazione dell’oggetto si usa un <strong>costruttore</strong>:</p>
 <ul>
 <li>ha lo <strong>stesso nome della classe</strong>;</li>
 <li>non ha tipo di ritorno, neanche <code>void</code>;</li>
@@ -1419,7 +1419,7 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-18" data-code-lines="6" data-code-annotation="1">Nota i <code>double</code> <strong>per valore</strong>: il const reference della Lezione 05 serve per gli oggetti pesanti; su un <code>double</code> costa più di quanto risparmi.</span>
+<span data-code-cell="annotated-cell-18" data-code-lines="6" data-code-annotation="1">I <code>double</code> passano <strong>per valore</strong>: il const reference della Lezione 05 serve per gli oggetti pesanti; su un <code>double</code> non porta vantaggi: copiarlo costa quanto passarne l’indirizzo.</span>
 </dd>
 <dt data-target-cell="annotated-cell-18" data-target-annotation="2">2</dt>
 <dd>
@@ -1433,7 +1433,7 @@ Cristiano De Michele
 </section>
 <section id="class-e-struct" class="slide level2 smaller">
 <h2><code>class</code> e <code>struct</code></h2>
-<p>Qual è la differenza in C++ fra <code>struct</code> e <code>class</code>? Una sola: la <strong>visibilità di default</strong>.</p>
+<p>In C++ <code>struct</code> e <code>class</code> differiscono solo per la <strong>visibilità di default</strong>.</p>
 <ul>
 <li>In una <code>struct</code> tutto è <code>public</code>, finché non si scrive <code>private:</code>.</li>
 <li>In una <code>class</code> tutto è <code>private</code>, finché non si scrive <code>public:</code>.</li>
@@ -1448,7 +1448,7 @@ Cristiano De Michele
 <p><strong>Nota</strong></p>
 </div>
 <div class="callout-content">
-<p>Per convenzione si usa <code>struct</code> per i semplici contenitori di dati (<em>plain old data</em>), come la <code>Result</code> di poche slide fa, e <code>class</code> quando ci sono un comportamento e dei dati da proteggere.</p>
+<p>Per convenzione si usa <code>struct</code> per i semplici contenitori di dati (<em>plain old data</em>), come la <code>Result</code> restituita da <code>computeMetrics</code>, e <code>class</code> quando ci sono un comportamento e dei dati da proteggere.</p>
 </div>
 </div>
 </div>
@@ -1486,7 +1486,7 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-19" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-19" data-code-lines="4" data-code-annotation="1">Incapsulamento: dall’esterno gli attributi non si toccano.</span>
+<span data-code-cell="annotated-cell-19" data-code-lines="4" data-code-annotation="1">Incapsulamento: gli attributi non sono accessibili dall’esterno.</span>
 </dd>
 <dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
 <dd>
@@ -1506,20 +1506,20 @@ Cristiano De Michele
 <h2>Soluzione dell’esercizio: il <code>main</code></h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-label="2"></a>    <span class="co">// 1. creazione (istanziazione) dell'oggetto</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-3" class="code-annotation-target"><a href="#annotated-cell-20-3" aria-label="3"></a>    Particella protone<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">10.0</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-3" class="code-annotation-target"><a href="#annotated-cell-20-3" aria-label="3"></a>    Particella p<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">10.0</span><span class="op">);</span></span>
 <span id="annotated-cell-20-4"><a href="#annotated-cell-20-4" aria-label="4"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-20-5" class="code-annotation-target"><a href="#annotated-cell-20-5" aria-label="5"></a>    <span class="co">// std::cout &lt;&lt; protone.massa_;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-20-5" class="code-annotation-target"><a href="#annotated-cell-20-5" aria-label="5"></a>    <span class="co">// std::cout &lt;&lt; p.massa_;</span></span>
 <span id="annotated-cell-20-6"><a href="#annotated-cell-20-6" aria-label="6"></a></span>
 <span id="annotated-cell-20-7"><a href="#annotated-cell-20-7" aria-label="7"></a>    <span class="co">// 2. chiamata al metodo con l'operatore punto (.)</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-20-8" class="code-annotation-target"><a href="#annotated-cell-20-8" aria-label="8"></a>    <span class="dt">double</span> e <span class="op">=</span> protone<span class="op">.</span>calcola_energia<span class="op">();</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-20-8" class="code-annotation-target"><a href="#annotated-cell-20-8" aria-label="8"></a>    <span class="dt">double</span> e <span class="op">=</span> p<span class="op">.</span>calcola_energia<span class="op">();</span></span>
 <span id="annotated-cell-20-9"><a href="#annotated-cell-20-9" aria-label="9"></a></span>
-<span id="annotated-cell-20-10"><a href="#annotated-cell-20-10" aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Energia della Particella: "</span> <span class="op">&lt;&lt;</span> e <span class="op">&lt;&lt;</span> <span class="st">" Joule</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-20-10"><a href="#annotated-cell-20-10" aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Energia cinetica: "</span> <span class="op">&lt;&lt;</span> e <span class="op">&lt;&lt;</span> <span class="st">" J</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="annotated-cell-20-11"><a href="#annotated-cell-20-11" aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="annotated-cell-20-12"><a href="#annotated-cell-20-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-20" data-code-lines="3" data-code-annotation="1">L’oggetto nasce già inizializzato dal costruttore.</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="3" data-code-annotation="1">L’oggetto è inizializzato dal costruttore al momento della creazione.</span>
 </dd>
 <dt data-target-cell="annotated-cell-20" data-target-annotation="2">2</dt>
 <dd>
@@ -1527,13 +1527,13 @@ Cristiano De Michele
 </dd>
 <dt data-target-cell="annotated-cell-20" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-20" data-code-lines="8" data-code-annotation="3">L’operatore <code>.</code> chiama il metodo sull’oggetto. Il programma stampa <code>Energia della Particella: 100 Joule</code>.</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="8" data-code-annotation="3">L’operatore <code>.</code> chiama il metodo sull’oggetto. Il programma stampa <code>Energia cinetica: 100 J</code>.</span>
 </dd>
 </dl>
 </section>
 <section id="esercizi-lampo-cosa-stampa" class="slide level2 smaller">
 <h2>Esercizi lampo: cosa stampa?</h2>
-<p>Due minuti, senza portatile. In entrambi la risposta istintiva è sbagliata.</p>
+<p>Due minuti, senza portatile. In entrambi i casi la risposta più immediata è sbagliata.</p>
 <p><strong>1.</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb4-2"><a aria-label="2"></a></span>
@@ -1551,8 +1551,8 @@ Cristiano De Michele
 </section>
 <section id="esercizi-lampo-le-risposte" class="slide level2 smaller">
 <h2>Esercizi lampo: le risposte</h2>
-<p><strong>1.</strong> Stampa <code>20</code> e poi <code>8</code>. Nel <code>main</code> <code>v</code> è un array di 5 interi e <code>sizeof</code> lo sa: 20 byte. Passato a <code>f</code>, l’array <strong>decade</strong> a <code>int*</code> e <code>sizeof</code> misura il puntatore: 8 byte su una macchina a 64 bit. È la dimostrazione che un array <em>non è</em> un puntatore: lo diventa attraversando la chiamata, e la lunghezza si perde per strada. Per questo <code>computeLoss</code> riceve anche <code>n</code>. In questo caso <code>g++ -Wall</code> avvisa, con <em><code>'sizeof' on array function parameter 'v' will return size of 'int*'</code></em>.</p>
-<p><strong>2.</strong> Stampa <code>3 20 30</code>. I primi due sono normale aritmetica dei puntatori. Il terzo è <code>2[v]</code>: sembra un errore di battitura e invece compila, perché <code>a[i]</code> è <strong>definito</strong>, come in C, come <code>*(a + i)</code>; la somma è commutativa, quindi <code>2[v]</code> è <code>*(2 + v)</code>, cioè <code>v[2]</code>. Non va mai scritto, ma capire perché funziona vuol dire aver capito cosa sono davvero le parentesi quadre.</p>
+<p><strong>1.</strong> Stampa <code>20</code> e poi <code>8</code>. Nel <code>main</code> <code>v</code> è un array di 5 interi e <code>sizeof</code> restituisce 20 byte. Passato a <code>f</code>, l’array <strong>decade</strong> a <code>int*</code> e <code>sizeof</code> misura il puntatore: 8 byte su una macchina a 64 bit. Questo dimostra che un array <em>non è</em> un puntatore: lo diventa nel passaggio alla funzione, e l’informazione sulla lunghezza va persa. Per questo <code>computeLoss</code> riceve anche <code>n</code>. In questo caso <code>g++ -Wall</code> avvisa, con <em><code>'sizeof' on array function parameter 'v' will return size of 'int*'</code></em>.</p>
+<p><strong>2.</strong> Stampa <code>3 20 30</code>. I primi due sono normale aritmetica dei puntatori. Il terzo è <code>2[v]</code>: sembra un errore di battitura e invece compila, perché <code>a[i]</code> è <strong>definito</strong>, come in C, come <code>*(a + i)</code>; la somma è commutativa, quindi <code>2[v]</code> è <code>*(2 + v)</code>, cioè <code>v[2]</code>. Non va usato in pratica, ma mostra che <code>[]</code> è solo una notazione per l’aritmetica dei puntatori.</p>
 
 
 </section>

@@ -762,7 +762,7 @@ Cristiano De Michele
 </ul></li>
 <li><strong>Puntatori</strong> (come in C) <strong>e reference</strong> (C++)
 <ul>
-<li>Che differenza c’è, e quando conviene l’uno o l’altro</li>
+<li>Differenze e criteri di scelta</li>
 </ul></li>
 <li><strong>Funzioni</strong> (come in C)
 <ul>
@@ -797,11 +797,11 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-14" data-code-lines="5" data-code-annotation="1">Non inizializzato: contiene quello che c’era in memoria.</span>
+<span data-code-cell="annotated-cell-14" data-code-lines="5" data-code-annotation="1">Non inizializzato: il suo contenuto è indeterminato.</span>
 </dd>
 <dt data-target-cell="annotated-cell-14" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-14" data-code-lines="6" data-code-annotation="2">La dimensione (3) la calcola il compilatore.</span>
+<span data-code-cell="annotated-cell-14" data-code-lines="6" data-code-annotation="2">Il compilatore ricava la dimensione (3) dall’inizializzazione.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:45%;">
@@ -835,7 +835,7 @@ Cristiano De Michele
 </section>
 <section id="nessun-controllo-sui-limiti" class="slide level2 smaller">
 <h2>Nessun controllo sui limiti</h2>
-<p>Come in C, a runtime non c’è <strong>nessun controllo sui limiti dell’array</strong>: costerebbe tempo a ogni accesso.</p>
+<p>Come in C, in esecuzione non c’è <strong>alcun controllo sui limiti dell’array</strong>: richiederebbe un test a ogni accesso.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-label="2"></a></span>
 <span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
@@ -861,7 +861,7 @@ Cristiano De Michele
 <p><strong>Avviso</strong></p>
 </div>
 <div class="callout-content">
-<p>Si leggono le celle di memoria adiacenti (<em>buffer over-read</em>; scrivendo, <em>over-write</em>). È <em>undefined behaviour</em>: in prova stampa numeri qualsiasi (<code>9.18341e-41</code>, <code>-1.05467e+36</code>), ma può anche terminare con <code>Segmentation fault</code>. Nella Lezione 08 vedremo l’AddressSanitizer, che questi errori li trova.</p>
+<p>Si leggono le celle di memoria adiacenti (<em>buffer over-read</em>; scrivendo, <em>over-write</em>). È <em>undefined behaviour</em>: nella nostra prova ha stampato valori privi di significato (<code>9.18341e-41</code>, <code>-1.05467e+36</code>), ma può anche terminare con <code>Segmentation fault</code>. Nella Lezione 08 vedremo l’AddressSanitizer, che rileva questi errori in esecuzione.</p>
 </div>
 </div>
 </div>
@@ -954,15 +954,15 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-15" data-code-lines="8" data-code-annotation="1">Cambiamo il valore <strong>dereferenziando</strong> il puntatore (<code>*</code>).</span>
+<span data-code-cell="annotated-cell-15" data-code-lines="8" data-code-annotation="1">Si modifica il valore <strong>dereferenziando</strong> il puntatore (<code>*</code>).</span>
 </dd>
 <dt data-target-cell="annotated-cell-15" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-15" data-code-lines="11" data-code-annotation="2">Cambiamo il valore tramite il reference (non serve <code>*</code>).</span>
+<span data-code-cell="annotated-cell-15" data-code-lines="11" data-code-annotation="2">Si modifica il valore tramite il reference (senza <code>*</code>).</span>
 </dd>
 <dt data-target-cell="annotated-cell-15" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-15" data-code-lines="14" data-code-annotation="3">Stampiamo l’indirizzo in memoria.</span>
+<span data-code-cell="annotated-cell-15" data-code-lines="14" data-code-annotation="3">Si stampa l’indirizzo di <code>a</code>.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:40%;">
@@ -989,22 +989,27 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="4" data-code-annotation="1">Non inizializzato: contiene un indirizzo qualsiasi, e già leggerlo è <em>undefined behaviour</em>.</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="4" data-code-annotation="1">Non inizializzato: contiene un indirizzo indeterminato, e già leggerlo è <em>undefined behaviour</em>.</span>
 </dd>
 <dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="6" data-code-annotation="2"><code>nullptr</code> è il <code>NULL</code> del C++ (dal C++11): ha un tipo suo e, a differenza di <code>0</code> o <code>NULL</code>, non si confonde con un intero (lo vedremo con l’overloading).</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="6" data-code-annotation="2"><code>nullptr</code> è il <code>NULL</code> del C++ (dal C++11): ha un tipo proprio (<code>std::nullptr_t</code>) e, a differenza di <code>0</code> o <code>NULL</code>, non si confonde con un intero (lo vedremo con l’overloading).</span>
 </dd>
 <dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="7" data-code-annotation="3">Prima di dereferenziare si controlla: dereferenziare un puntatore nullo è <em>undefined behaviour</em>. Su Linux e macOS in pratica dà <code>Segmentation fault</code>, ma lo standard non lo garantisce.</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="7" data-code-annotation="3">Prima di dereferenziare si controlla: dereferenziare un puntatore nullo è <em>undefined behaviour</em>. Su Linux e macOS in pratica il programma termina con <code>Segmentation fault</code>, ma lo standard non lo garantisce.</span>
 </dd>
 </dl>
 </section>
 <section id="reference-e-puntatori-a-confronto" class="slide level2 smaller">
 <h2>Reference e puntatori a confronto</h2>
-<p>In C++ si preferiscono i reference; i puntatori solo quando servono.</p>
+<p>In C++ si preferiscono i reference e si usano i puntatori solo quando necessario.</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -1020,8 +1025,8 @@ Cristiano De Michele
 </tr>
 <tr class="even">
 <td><strong>Riassegnazione</strong></td>
-<td>Mai: stesso bersaglio</td>
-<td>Può puntare altrove</td>
+<td>Mai: resta legato all’oggetto iniziale</td>
+<td>Può ricevere un altro indirizzo</td>
 </tr>
 <tr class="odd">
 <td><strong>Sintassi</strong></td>
@@ -1061,7 +1066,7 @@ Cristiano De Michele
 </section>
 <section id="passaggio-per-valore" class="slide level2 smaller">
 <h2>Passaggio per valore</h2>
-<p>Come in C, di default i parametri si passano <strong>per valore</strong>: la funzione riceve una <strong>copia</strong>, e le modifiche fatte dentro non toccano la variabile esterna.</p>
+<p>Come in C, di default i parametri si passano <strong>per valore</strong>: la funzione riceve una <strong>copia</strong>, e le modifiche all’interno della funzione non si riflettono sulla variabile del chiamante.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-label="2"></a></span>
 <span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-label="3"></a><span class="dt">void</span> raddoppia<span class="op">(</span><span class="dt">int</span> numero<span class="op">)</span> <span class="op">{</span></span>
@@ -1078,18 +1083,18 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="1">Modifichiamo solo la copia locale.</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="1">Si modifica solo la copia locale.</span>
 </dd>
 <dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
 <dd>
 <span data-code-cell="annotated-cell-6" data-code-lines="11" data-code-annotation="2">Stampa ancora <code>10</code>.</span>
 </dd>
 </dl>
-<p><strong>Il costo</strong>: passare per valore un oggetto grande, per esempio una matrice 1000×1000 di <code>double</code>, vuol dire copiare 8 MB a ogni chiamata.</p>
+<p><strong>Il costo</strong>: passare per valore un oggetto grande, per esempio una matrice 1000×1000 di <code>double</code>, comporta la copia di 8 MB a ogni chiamata.</p>
 </section>
 <section id="passaggio-per-reference" class="slide level2 smaller">
 <h2>Passaggio per reference</h2>
-<p>Con un reference (<code>&amp;</code>) la funzione riceve un <em>alias</em> della variabile: nessuna copia, e le modifiche arrivano al chiamante (serve anche a restituire più di un risultato). In C si usa un puntatore.</p>
+<p>Con un reference (<code>&amp;</code>) la funzione riceve un <em>alias</em> della variabile: nessuna copia, e le modifiche sono visibili al chiamante (serve anche a restituire più di un risultato). In C si usa un puntatore.</p>
 <div class="columns">
 <div class="column" style="width:40%;">
 <p><strong>In C</strong>, con un puntatore:</p>
@@ -1165,7 +1170,7 @@ Cristiano De Michele
 <p>Come in C, un array nativo <strong>non si può passare per valore</strong>: decade (<em>decay</em>) a un <strong>puntatore</strong> al suo primo elemento.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a></span>
-<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-label="3"></a><span class="co">// Sembra che chiediamo un array, ma il compilatore lo traduce in:</span></span>
+<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-label="3"></a><span class="co">// Il parametro sembra un array, ma il compilatore lo tratta come:</span></span>
 <span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-label="4"></a><span class="co">// void stampa_array(int* array, int lunghezza)</span></span>
 <span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-label="5"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-6" class="code-annotation-target"><a href="#annotated-cell-8-6" aria-label="6"></a><span class="dt">void</span> stampa_array<span class="op">(</span><span class="dt">int</span> array<span class="op">[],</span> <span class="dt">int</span> lunghezza<span class="op">)</span> <span class="op">{</span></span>
@@ -1183,17 +1188,17 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="6" data-code-annotation="1">Questo parametro è in realtà un <code>int* array</code>.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="6" data-code-annotation="1">Il compilatore lo tratta come <code>int* array</code>.</span>
 </dd>
 <dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="15" data-code-annotation="2">Passa in realtà l’indirizzo <code>&amp;dati[0]</code>.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="15" data-code-annotation="2">Viene passato l’indirizzo <code>&amp;dati[0]</code>.</span>
 </dd>
 </dl>
 </section>
 <section id="dichiarazione-prima-delluso" class="slide level2 smaller">
 <h2>Dichiarazione prima dell’uso</h2>
-<p>Come in C, il compilatore legge il file dall’alto verso il basso e non può usare una funzione che non ha ancora visto.</p>
+<p>Come in C, il compilatore legge il file dall’alto verso il basso: una funzione va dichiarata prima del suo uso.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Sbagliato:</strong></p>
@@ -1254,7 +1259,7 @@ Cristiano De Michele
 <span id="cb4-10"><a aria-label="10"></a>    stampa<span class="op">(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">20</span><span class="op">);</span>   <span class="co">// stampa(int, int)</span></span>
 <span id="cb4-11"><a aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb4-12"><a aria-label="12"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Per questo <code>nullptr</code> è meglio di <code>NULL</code>: con <code>g(int)</code> e <code>g(int*)</code>, la chiamata <code>g(NULL)</code> è ambigua, mentre <code>g(nullptr)</code> sceglie <code>g(int*)</code>.</p>
+<p>Per questo <code>nullptr</code> è preferibile a <code>NULL</code>: con <code>g(int)</code> e <code>g(int*)</code>, la chiamata <code>g(NULL)</code> è ambigua, mentre <code>g(nullptr)</code> sceglie <code>g(int*)</code>.</p>
 </section>
 <section id="argomenti-di-default" class="slide level2 smaller">
 <h2>Argomenti di default</h2>
@@ -1286,7 +1291,7 @@ Cristiano De Michele
 <p><strong>Avviso</strong></p>
 </div>
 <div class="callout-content">
-<p>I parametri con un default stanno sempre <strong>in fondo</strong> alla lista. Con <code>void f(int a=1, int b);</code> il compilatore risponde <em><code>error: default argument missing for parameter 2 of 'void f(int, int)'</code></em>.</p>
+<p>I parametri con un default stanno sempre <strong>in fondo</strong> alla lista. Con <code>void f(int a=1, int b);</code> il compilatore segnala <em><code>error: default argument missing for parameter 2 of 'void f(int, int)'</code></em>.</p>
 </div>
 </div>
 </div>
@@ -1328,7 +1333,7 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="4" data-code-annotation="1">Il <code>&amp;</code> serve perché vogliamo modificare le variabili del <code>main</code>.</span>
+<span data-code-cell="annotated-cell-11" data-code-lines="4" data-code-annotation="1">Il <code>&amp;</code> è necessario per modificare le variabili del <code>main</code>.</span>
 </dd>
 <dt data-target-cell="annotated-cell-11" data-target-annotation="2">2</dt>
 <dd>
@@ -1338,7 +1343,7 @@ Cristiano De Michele
 </section>
 <section id="esercizi-lampo-cosa-stampa" class="slide level2 smaller">
 <h2>Esercizi lampo: cosa stampa?</h2>
-<p>Due frammenti, un minuto ciascuno. Rispondete <strong>prima</strong> di girare la slide: in tutti e due la risposta istintiva è sbagliata.</p>
+<p>Due frammenti, un minuto ciascuno. Rispondete <strong>prima</strong> di passare alla slide successiva: in entrambi i casi la risposta più immediata è sbagliata.</p>
 <p><strong>1.</strong> Con le tre funzioni <code>stampa</code> della slide sull’overloading:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a>stampa<span class="op">(</span><span class="ch">'A'</span><span class="op">);</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>2.</strong></p>
@@ -1351,7 +1356,7 @@ Cristiano De Michele
 <section id="esercizi-lampo-le-risposte" class="slide level2 smaller">
 <h2>Esercizi lampo: le risposte</h2>
 <p><strong>1.</strong> Stampa <code>Intero: 65</code>. Non esiste una <code>stampa(char)</code>: il <code>char</code> <code>'A'</code> viene promosso a <code>int</code>, che ha la precedenza sulla conversione a <code>double</code>, e il suo codice ASCII è 65.</p>
-<p><strong>2.</strong> Stampa <code>2 2</code>: <code>r = b</code> non sposta <code>r</code> su <code>b</code>: copia in <code>a</code> il valore di <code>b</code>, perché un reference non cambia mai bersaglio. Poi <code>b = 5</code> non tocca né <code>a</code> né <code>r</code>.</p>
+<p><strong>2.</strong> Stampa <code>2 2</code>: <code>r = b</code> non lega <code>r</code> a <code>b</code>: copia in <code>a</code> il valore di <code>b</code>, perché un reference resta legato all’oggetto con cui è stato inizializzato. Poi <code>b = 5</code> non tocca né <code>a</code> né <code>r</code>.</p>
 
 
 </section>
