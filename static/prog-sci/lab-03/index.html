@@ -760,27 +760,30 @@ Cristiano De Michele
 <div class="code-with-filename-file">
 <pre><strong>task2_tipi.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="task2_tipi.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb1-2"><a aria-label="2"></a>    <span class="co">// ... epochs e learning_rate, dichiarati e stampati</span></span>
-<span id="cb1-3"><a aria-label="3"></a>    <span class="dt">int</span> a <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
-<span id="cb1-4"><a aria-label="4"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"5 / 2 = "</span> <span class="op">&lt;&lt;</span> a <span class="op">/</span> b <span class="op">&lt;&lt;</span> <span class="st">" (divisione intera)"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb1-5"><a aria-label="5"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"con il cast = "</span> <span class="op">&lt;&lt;</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span>a<span class="op">)</span> <span class="op">/</span> b <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb1-6"><a aria-label="6"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1" data-filename="task2_tipi.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-label="2"></a></span>
+<span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-label="4"></a>    <span class="dt">int</span> epochs <span class="op">=</span> <span class="dv">100</span><span class="op">;</span></span>
+<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-label="5"></a>    <span class="dt">double</span> learning_rate <span class="op">=</span> <span class="fl">0.01</span><span class="op">;</span></span>
+<span id="annotated-cell-1-6"><a href="#annotated-cell-1-6" aria-label="6"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"[Task 2] epoche: "</span> <span class="op">&lt;&lt;</span> epochs</span>
+<span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-label="7"></a>              <span class="op">&lt;&lt;</span> <span class="st">", learning rate: "</span> <span class="op">&lt;&lt;</span> learning_rate <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-label="8"></a></span>
+<span id="annotated-cell-1-9"><a href="#annotated-cell-1-9" aria-label="9"></a>    <span class="dt">int</span> a <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-10" class="code-annotation-target"><a href="#annotated-cell-1-10" aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"5 / 2 = "</span> <span class="op">&lt;&lt;</span> a <span class="op">/</span> b <span class="op">&lt;&lt;</span> <span class="st">" (divisione intera)"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-1-11" class="code-annotation-target"><a href="#annotated-cell-1-11" aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"con il cast = "</span> <span class="op">&lt;&lt;</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span>a<span class="op">)</span> <span class="op">/</span> b <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="annotated-cell-1-12"><a href="#annotated-cell-1-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-1-13"><a href="#annotated-cell-1-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>5 / 2</code> vale <code>2</code>: fra due <code>int</code>, come in C, la divisione è intera, senza alcun avviso del compilatore: è un errore frequente e difficile da individuare.</p>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Nota</strong></p>
-</div>
-<div class="callout-content">
-<p><strong><code>static_cast&lt;double&gt;(a)</code> non modifica <code>a</code></strong>: produce una copia temporanea di tipo <code>double</code> da usare in quell’espressione. È sufficiente convertire <strong>uno</strong> dei due operandi: l’altro viene convertito implicitamente, come in C. Le altre forme di cast arrivano nella Lezione 16.</p>
-</div>
-</div>
-</div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="10" data-code-annotation="1">Stampa <code>2</code>: fra due <code>int</code>, come in C, la divisione è intera, senza alcun avviso del compilatore.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="11" data-code-annotation="2"><code>static_cast&lt;double&gt;(a)</code> non modifica <code>a</code>: ne produce una copia temporanea di tipo <code>double</code>. È sufficiente convertire <strong>uno</strong> dei due operandi: l’altro viene convertito implicitamente, come in C. Le altre forme di cast arrivano nella Lezione 16.</span>
+</dd>
+</dl>
 </section>
 <section id="soluzione-del-laboratorio-02-la-discesa-su-x2" class="slide level2 smaller">
 <h2>Soluzione del Laboratorio 02: la discesa su <span class="math inline">\(x^2\)</span></h2>
@@ -788,18 +791,28 @@ Cristiano De Michele
 <div class="code-with-filename-file">
 <pre><strong>task3_discesa.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="task3_discesa.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> k <span class="op">&lt;=</span> <span class="dv">5</span><span class="op">;</span> <span class="op">++</span>k<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-2"><a aria-label="2"></a>        <span class="dt">double</span> eta <span class="op">=</span> <span class="fl">0.25</span> <span class="op">*</span> k<span class="op">;</span>              <span class="co">// int * double: k diventa double</span></span>
-<span id="cb2-3"><a aria-label="3"></a>        <span class="dt">double</span> x <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
-<span id="cb2-4"><a aria-label="4"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"eta = "</span> <span class="op">&lt;&lt;</span> eta <span class="op">&lt;&lt;</span> <span class="st">":"</span><span class="op">;</span></span>
-<span id="cb2-5"><a aria-label="5"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> n <span class="op">&lt;=</span> <span class="dv">5</span><span class="op">;</span> <span class="op">++</span>n<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-6"><a aria-label="6"></a>            x <span class="op">=</span> x <span class="op">-</span> eta <span class="op">*</span> <span class="fl">2.0</span> <span class="op">*</span> x<span class="op">;</span>          <span class="co">// E'(x) = 2x</span></span>
-<span id="cb2-7"><a aria-label="7"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"  "</span> <span class="op">&lt;&lt;</span> x<span class="op">;</span></span>
-<span id="cb2-8"><a aria-label="8"></a>        <span class="op">}</span></span>
-<span id="cb2-9"><a aria-label="9"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb2-10"><a aria-label="10"></a>    <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="task3_discesa.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb1-2"><a aria-label="2"></a></span>
+<span id="cb1-3"><a aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-4"><a aria-label="4"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"[Task 3] E(x) = x^2, x0 = 1"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb1-5"><a aria-label="5"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> k <span class="op">&lt;=</span> <span class="dv">5</span><span class="op">;</span> <span class="op">++</span>k<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-6"><a aria-label="6"></a>        <span class="dt">double</span> eta <span class="op">=</span> <span class="fl">0.25</span> <span class="op">*</span> k<span class="op">;</span>              <span class="co">// int * double: k diventa double</span></span>
+<span id="cb1-7"><a aria-label="7"></a>        <span class="dt">double</span> x <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb1-8"><a aria-label="8"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"eta = "</span> <span class="op">&lt;&lt;</span> eta <span class="op">&lt;&lt;</span> <span class="st">":"</span><span class="op">;</span></span>
+<span id="cb1-9"><a aria-label="9"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> n <span class="op">&lt;=</span> <span class="dv">5</span><span class="op">;</span> <span class="op">++</span>n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-10"><a aria-label="10"></a>            x <span class="op">=</span> x <span class="op">-</span> eta <span class="op">*</span> <span class="fl">2.0</span> <span class="op">*</span> x<span class="op">;</span>          <span class="co">// E'(x) = 2x</span></span>
+<span id="cb1-11"><a aria-label="11"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"  "</span> <span class="op">&lt;&lt;</span> x<span class="op">;</span></span>
+<span id="cb1-12"><a aria-label="12"></a>        <span class="op">}</span></span>
+<span id="cb1-13"><a aria-label="13"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb1-14"><a aria-label="14"></a>    <span class="op">}</span></span>
+<span id="cb1-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<pre><code>eta = 0.25:  0.5  0.25  0.125  0.0625  0.03125
+</section>
+<section id="soluzione-del-laboratorio-02-la-discesa-su-x2-cosa-stampa" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02: la discesa su <span class="math inline">\(x^2\)</span>, cosa stampa</h2>
+<pre><code>[Task 3] E(x) = x^2, x0 = 1
+eta = 0.25:  0.5  0.25  0.125  0.0625  0.03125
 eta = 0.5:  0  0  0  0  0
 eta = 0.75:  -0.5  0.25  -0.125  0.0625  -0.03125
 eta = 1:  -1  1  -1  1  -1
@@ -812,22 +825,56 @@ eta = 1.25:  -1.5  2.25  -3.375  5.0625  -7.59375</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>task4_backprop.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="task4_backprop.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a>    <span class="dt">double</span> x <span class="op">=</span> <span class="fl">1.0</span><span class="op">,</span> y <span class="op">=</span> <span class="fl">1.0</span><span class="op">,</span> w1 <span class="op">=</span> <span class="fl">1.0</span><span class="op">,</span> w2 <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
-<span id="cb4-2"><a aria-label="2"></a>    <span class="co">// forward</span></span>
-<span id="cb4-3"><a aria-label="3"></a>    <span class="dt">double</span> z1 <span class="op">=</span> w1 <span class="op">*</span> x<span class="op">;</span></span>
-<span id="cb4-4"><a aria-label="4"></a>    <span class="dt">double</span> a1 <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>z1<span class="op">));</span></span>
-<span id="cb4-5"><a aria-label="5"></a>    <span class="dt">double</span> z2 <span class="op">=</span> w2 <span class="op">*</span> a1<span class="op">;</span></span>
-<span id="cb4-6"><a aria-label="6"></a>    <span class="dt">double</span> a2 <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>z2<span class="op">));</span></span>
-<span id="cb4-7"><a aria-label="7"></a>    <span class="dt">double</span> E  <span class="op">=</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">)</span> <span class="op">*</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">);</span></span>
-<span id="cb4-8"><a aria-label="8"></a>    <span class="co">// backward</span></span>
-<span id="cb4-9"><a aria-label="9"></a>    <span class="dt">double</span> s1 <span class="op">=</span> a1 <span class="op">*</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">-</span> a1<span class="op">);</span>            <span class="co">// sigma'(z1) = sigma(1 - sigma)</span></span>
-<span id="cb4-10"><a aria-label="10"></a>    <span class="dt">double</span> s2 <span class="op">=</span> a2 <span class="op">*</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">-</span> a2<span class="op">);</span>            <span class="co">// sigma'(z2)</span></span>
-<span id="cb4-11"><a aria-label="11"></a>    <span class="dt">double</span> delta2 <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">)</span> <span class="op">*</span> s2<span class="op">;</span></span>
-<span id="cb4-12"><a aria-label="12"></a>    <span class="dt">double</span> delta1 <span class="op">=</span> w2 <span class="op">*</span> delta2 <span class="op">*</span> s1<span class="op">;</span></span>
-<span id="cb4-13"><a aria-label="13"></a>    <span class="dt">double</span> dE_dw2 <span class="op">=</span> delta2 <span class="op">*</span> a1<span class="op">;</span></span>
-<span id="cb4-14"><a aria-label="14"></a>    <span class="dt">double</span> dE_dw1 <span class="op">=</span> delta1 <span class="op">*</span> x<span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="task4_backprop.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb3-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
+<span id="cb3-3"><a aria-label="3"></a></span>
+<span id="cb3-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-5"><a aria-label="5"></a>    <span class="dt">double</span> x <span class="op">=</span> <span class="fl">1.0</span><span class="op">,</span> y <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb3-6"><a aria-label="6"></a>    <span class="dt">double</span> w1 <span class="op">=</span> <span class="fl">1.0</span><span class="op">,</span> w2 <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb3-7"><a aria-label="7"></a></span>
+<span id="cb3-8"><a aria-label="8"></a>    <span class="co">// forward</span></span>
+<span id="cb3-9"><a aria-label="9"></a>    <span class="dt">double</span> z1 <span class="op">=</span> w1 <span class="op">*</span> x<span class="op">;</span></span>
+<span id="cb3-10"><a aria-label="10"></a>    <span class="dt">double</span> a1 <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>z1<span class="op">));</span></span>
+<span id="cb3-11"><a aria-label="11"></a>    <span class="dt">double</span> z2 <span class="op">=</span> w2 <span class="op">*</span> a1<span class="op">;</span></span>
+<span id="cb3-12"><a aria-label="12"></a>    <span class="dt">double</span> a2 <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>z2<span class="op">));</span></span>
+<span id="cb3-13"><a aria-label="13"></a>    <span class="dt">double</span> E  <span class="op">=</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">)</span> <span class="op">*</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">);</span></span>
+<span id="cb3-14"><a aria-label="14"></a></span>
+<span id="cb3-15"><a aria-label="15"></a>    <span class="co">// backward</span></span>
+<span id="cb3-16"><a aria-label="16"></a>    <span class="dt">double</span> s1 <span class="op">=</span> a1 <span class="op">*</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">-</span> a1<span class="op">);</span>            <span class="co">// sigma'(z1) = sigma(1 - sigma)</span></span>
+<span id="cb3-17"><a aria-label="17"></a>    <span class="dt">double</span> s2 <span class="op">=</span> a2 <span class="op">*</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">-</span> a2<span class="op">);</span>            <span class="co">// sigma'(z2)</span></span>
+<span id="cb3-18"><a aria-label="18"></a>    <span class="dt">double</span> delta2 <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">)</span> <span class="op">*</span> s2<span class="op">;</span></span>
+<span id="cb3-19"><a aria-label="19"></a>    <span class="dt">double</span> delta1 <span class="op">=</span> w2 <span class="op">*</span> delta2 <span class="op">*</span> s1<span class="op">;</span></span>
+<span id="cb3-20"><a aria-label="20"></a>    <span class="dt">double</span> dE_dw2 <span class="op">=</span> delta2 <span class="op">*</span> a1<span class="op">;</span></span>
+<span id="cb3-21"><a aria-label="21"></a>    <span class="dt">double</span> dE_dw1 <span class="op">=</span> delta1 <span class="op">*</span> x<span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Per il gradient check lo stesso forward è ricopiato con <code>w1 + h</code> e con <code>w1 - h</code>: con una funzione <code>sigmoid()</code> sarebbero due righe: è il Task 3 di oggi.</p>
+</section>
+<section id="soluzione-del-laboratorio-02-lesercizio-della-lezione-03-segue" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02: l’esercizio della Lezione 03 (segue)</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>task4_backprop.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="task4_backprop.cpp" data-startfrom="22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 21;"><span id="cb4-22"><a aria-label="22"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"[Task 4]</span><span class="sc">\t</span><span class="st">strato 1</span><span class="sc">\t</span><span class="st">strato 2"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb4-23"><a aria-label="23"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"z</span><span class="sc">\t\t</span><span class="st">"</span> <span class="op">&lt;&lt;</span> z1 <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span> <span class="op">&lt;&lt;</span> z2 <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb4-24"><a aria-label="24"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"a</span><span class="sc">\t\t</span><span class="st">"</span> <span class="op">&lt;&lt;</span> a1 <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span> <span class="op">&lt;&lt;</span> a2 <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb4-25"><a aria-label="25"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"sigma'(z)</span><span class="sc">\t</span><span class="st">"</span> <span class="op">&lt;&lt;</span> s1 <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span> <span class="op">&lt;&lt;</span> s2 <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb4-26"><a aria-label="26"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"delta</span><span class="sc">\t\t</span><span class="st">"</span> <span class="op">&lt;&lt;</span> delta1 <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span> <span class="op">&lt;&lt;</span> delta2 <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb4-27"><a aria-label="27"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"dE/dw</span><span class="sc">\t\t</span><span class="st">"</span> <span class="op">&lt;&lt;</span> dE_dw1 <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span> <span class="op">&lt;&lt;</span> dE_dw2 <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb4-28"><a aria-label="28"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"E = "</span> <span class="op">&lt;&lt;</span> E <span class="op">&lt;&lt;</span> <span class="st">",  delta1/delta2 = "</span> <span class="op">&lt;&lt;</span> delta1 <span class="op">/</span> delta2 <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb4-29"><a aria-label="29"></a>    <span class="co">// gradient check: il forward ricopiato con w1 + h e w1 - h (con sigmoid(), Task 3: due righe)</span></span>
+<span id="cb4-30"><a aria-label="30"></a>    <span class="dt">double</span> h <span class="op">=</span> <span class="fl">0.01</span><span class="op">;</span></span>
+<span id="cb4-31"><a aria-label="31"></a>    <span class="dt">double</span> a1p <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-(</span>w1 <span class="op">+</span> h<span class="op">)</span> <span class="op">*</span> x<span class="op">));</span></span>
+<span id="cb4-32"><a aria-label="32"></a>    <span class="dt">double</span> a2p <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>w2 <span class="op">*</span> a1p<span class="op">));</span></span>
+<span id="cb4-33"><a aria-label="33"></a>    <span class="dt">double</span> E_piu <span class="op">=</span> <span class="op">(</span>a2p <span class="op">-</span> y<span class="op">)</span> <span class="op">*</span> <span class="op">(</span>a2p <span class="op">-</span> y<span class="op">);</span></span>
+<span id="cb4-34"><a aria-label="34"></a>    <span class="dt">double</span> a1m <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-(</span>w1 <span class="op">-</span> h<span class="op">)</span> <span class="op">*</span> x<span class="op">));</span></span>
+<span id="cb4-35"><a aria-label="35"></a>    <span class="dt">double</span> a2m <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>w2 <span class="op">*</span> a1m<span class="op">));</span></span>
+<span id="cb4-36"><a aria-label="36"></a>    <span class="dt">double</span> E_meno <span class="op">=</span> <span class="op">(</span>a2m <span class="op">-</span> y<span class="op">)</span> <span class="op">*</span> <span class="op">(</span>a2m <span class="op">-</span> y<span class="op">);</span></span>
+<span id="cb4-37"><a aria-label="37"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"gradient check: (E(w1+h) - E(w1-h)) / 2h = "</span></span>
+<span id="cb4-38"><a aria-label="38"></a>              <span class="op">&lt;&lt;</span> <span class="op">(</span>E_piu <span class="op">-</span> E_meno<span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> h<span class="op">)</span></span>
+<span id="cb4-39"><a aria-label="39"></a>              <span class="op">&lt;&lt;</span> <span class="st">"  (backprop: "</span> <span class="op">&lt;&lt;</span> dE_dw1 <span class="op">&lt;&lt;</span> <span class="st">")"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb4-40"><a aria-label="40"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-41"><a aria-label="41"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 <section id="soluzione-del-laboratorio-02-cosa-stampa" class="slide level2 smaller">
 <h2>Soluzione del Laboratorio 02: cosa stampa</h2>
@@ -851,21 +898,49 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <div class="code-with-filename-file">
 <pre><strong>task5_addestramento.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="task5_addestramento.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> t <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> t <span class="op">&lt;=</span> <span class="dv">200</span><span class="op">;</span> <span class="op">++</span>t<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-2"><a aria-label="2"></a>            <span class="dt">double</span> a1 <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>w1 <span class="op">*</span> x<span class="op">));</span></span>
-<span id="cb6-3"><a aria-label="3"></a>            <span class="dt">double</span> a2 <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>w2 <span class="op">*</span> a1<span class="op">));</span></span>
-<span id="cb6-4"><a aria-label="4"></a>            <span class="dt">double</span> E  <span class="op">=</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">)</span> <span class="op">*</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">);</span></span>
-<span id="cb6-5"><a aria-label="5"></a>            <span class="dt">double</span> delta2 <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">)</span> <span class="op">*</span> a2 <span class="op">*</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">-</span> a2<span class="op">);</span></span>
-<span id="cb6-6"><a aria-label="6"></a>            <span class="dt">double</span> delta1 <span class="op">=</span> w2 <span class="op">*</span> delta2 <span class="op">*</span> a1 <span class="op">*</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">-</span> a1<span class="op">);</span></span>
-<span id="cb6-7"><a aria-label="7"></a>            <span class="cf">if</span> <span class="op">(</span>t <span class="op">%</span> <span class="dv">20</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-8"><a aria-label="8"></a>                <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"t = "</span> <span class="op">&lt;&lt;</span> t <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">E = "</span> <span class="op">&lt;&lt;</span> E</span>
-<span id="cb6-9"><a aria-label="9"></a>                          <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">w1 = "</span> <span class="op">&lt;&lt;</span> w1 <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">w2 = "</span> <span class="op">&lt;&lt;</span> w2 <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
-<span id="cb6-10"><a aria-label="10"></a>            <span class="op">}</span></span>
-<span id="cb6-11"><a aria-label="11"></a>            w1 <span class="op">=</span> w1 <span class="op">-</span> eta <span class="op">*</span> delta1 <span class="op">*</span> x<span class="op">;</span>     <span class="co">// dE/dw1 = delta1 * x</span></span>
-<span id="cb6-12"><a aria-label="12"></a>            w2 <span class="op">=</span> w2 <span class="op">-</span> eta <span class="op">*</span> delta2 <span class="op">*</span> a1<span class="op">;</span>    <span class="co">// dE/dw2 = delta2 * a1</span></span>
-<span id="cb6-13"><a aria-label="13"></a>        <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7" data-filename="task5_addestramento.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a></span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-label="5"></a>    <span class="dt">double</span> x <span class="op">=</span> <span class="fl">1.0</span><span class="op">,</span> eta <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-6" class="code-annotation-target"><a href="#annotated-cell-7-6" aria-label="6"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> caso <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> caso <span class="op">&lt;</span> <span class="dv">2</span><span class="op">;</span> <span class="op">++</span>caso<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a>        <span class="dt">double</span> y <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a>        <span class="cf">if</span> <span class="op">(</span>caso <span class="op">==</span> <span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-label="9"></a>            y <span class="op">=</span> <span class="fl">0.8</span><span class="op">;</span></span>
+<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-label="10"></a>        <span class="op">}</span></span>
+<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-label="11"></a>        <span class="dt">double</span> w1 <span class="op">=</span> <span class="fl">1.0</span><span class="op">,</span> w2 <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-label="12"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">[Task 5] y = "</span> <span class="op">&lt;&lt;</span> y <span class="op">&lt;&lt;</span> <span class="st">", eta = "</span> <span class="op">&lt;&lt;</span> eta <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Il ciclo gira due volte, con <span class="math inline">\(y = 1\)</span> e con <span class="math inline">\(y = 0{,}8\)</span>, ripartendo ogni volta da <span class="math inline">\(w_1 = w_2 = 1\)</span>.</p>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="6" data-code-annotation="1">Il ciclo esterno gira due volte, con <span class="math inline">\(y = 1\)</span> e con <span class="math inline">\(y = 0{,}8\)</span>, ripartendo ogni volta da <span class="math inline">\(w_1 = w_2 = 1\)</span>.</span>
+</dd>
+</dl>
+</section>
+<section id="soluzione-del-laboratorio-02-laddestramento-segue" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02: l’addestramento (segue)</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>task5_addestramento.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="task5_addestramento.cpp" data-startfrom="13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 12;"><span id="cb6-13"><a aria-label="13"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> t <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> t <span class="op">&lt;=</span> <span class="dv">200</span><span class="op">;</span> <span class="op">++</span>t<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-14"><a aria-label="14"></a>            <span class="dt">double</span> a1 <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>w1 <span class="op">*</span> x<span class="op">));</span></span>
+<span id="cb6-15"><a aria-label="15"></a>            <span class="dt">double</span> a2 <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>w2 <span class="op">*</span> a1<span class="op">));</span></span>
+<span id="cb6-16"><a aria-label="16"></a>            <span class="dt">double</span> E  <span class="op">=</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">)</span> <span class="op">*</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">);</span></span>
+<span id="cb6-17"><a aria-label="17"></a>            <span class="dt">double</span> delta2 <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> <span class="op">(</span>a2 <span class="op">-</span> y<span class="op">)</span> <span class="op">*</span> a2 <span class="op">*</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">-</span> a2<span class="op">);</span></span>
+<span id="cb6-18"><a aria-label="18"></a>            <span class="dt">double</span> delta1 <span class="op">=</span> w2 <span class="op">*</span> delta2 <span class="op">*</span> a1 <span class="op">*</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">-</span> a1<span class="op">);</span></span>
+<span id="cb6-19"><a aria-label="19"></a>            <span class="cf">if</span> <span class="op">(</span>t <span class="op">%</span> <span class="dv">20</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-20"><a aria-label="20"></a>                <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"t = "</span> <span class="op">&lt;&lt;</span> t <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">E = "</span> <span class="op">&lt;&lt;</span> E</span>
+<span id="cb6-21"><a aria-label="21"></a>                          <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">w1 = "</span> <span class="op">&lt;&lt;</span> w1 <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\t</span><span class="st">w2 = "</span> <span class="op">&lt;&lt;</span> w2 <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb6-22"><a aria-label="22"></a>            <span class="op">}</span></span>
+<span id="cb6-23"><a aria-label="23"></a>            w1 <span class="op">=</span> w1 <span class="op">-</span> eta <span class="op">*</span> delta1 <span class="op">*</span> x<span class="op">;</span>     <span class="co">// dE/dw1 = delta1 * x</span></span>
+<span id="cb6-24"><a aria-label="24"></a>            w2 <span class="op">=</span> w2 <span class="op">-</span> eta <span class="op">*</span> delta2 <span class="op">*</span> a1<span class="op">;</span>    <span class="co">// dE/dw2 = delta2 * a1</span></span>
+<span id="cb6-25"><a aria-label="25"></a>        <span class="op">}</span></span>
+<span id="cb6-26"><a aria-label="26"></a>    <span class="op">}</span></span>
+<span id="cb6-27"><a aria-label="27"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-28"><a aria-label="28"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 <section id="soluzione-del-laboratorio-02-i-target" class="slide level2 smaller">
 <h2>Soluzione del Laboratorio 02: i target</h2>
