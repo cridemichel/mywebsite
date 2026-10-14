@@ -1229,7 +1229,7 @@ Cristiano De Michele
 <p><strong>Nota</strong></p>
 </div>
 <div class="callout-content">
-<p>Nel Laboratorio 10 scriverete l’interfaccia <code>Scheduler</code>. Il <code>fixedScheduler</code> del framework tiene un puntatore all’<code>Optimizer</code> proprio per questo: per poter modificare il learning rate di un altro oggetto.</p>
+<p>Nel framework (Laboratorio 10) lo scheduler deve modificare il learning rate dell’<code>Optimizer</code> per tutto l’addestramento, non durante una sola chiamata. Per questo <code>fixedScheduler</code> riceve nel costruttore l’<strong>indirizzo</strong> dell’optimizer, lo conserva in un puntatore e lo usa con <code>optimizer-&gt;set_lr(...)</code>: lo stesso scopo del reference, con il meccanismo del C.</p>
 </div>
 </div>
 </div>
