@@ -753,9 +753,19 @@ Cristiano De Michele
 </div>
 
 </section>
-<section id="soluzione-del-laboratorio-02-tipi-e-divisione-intera" class="slide level2 smaller">
-<h2>Soluzione del Laboratorio 02: tipi e divisione intera</h2>
+<section id="il-laboratorio-02-cosa-chiedeva" class="slide level2 smaller">
+<h2>Il Laboratorio 02: cosa chiedeva</h2>
+<ul>
+<li><strong>Task 1</strong>: il progetto del Lab 01 compila da zero e stampa “Inizio progetto BASIC_NEURAL++!”</li>
+<li><strong>Task 2</strong>: <code>5 / 2</code> fra due <code>int</code>, e con <code>static_cast&lt;double&gt;</code></li>
+<li><strong>Task 3</strong>: la discesa del gradiente su <span class="math inline">\(x^2\)</span> per <span class="math inline">\(\eta = 0{,}25\,k\)</span>, <span class="math inline">\(k = 1, \dots, 5\)</span> (quesito 1 della Lezione 03)</li>
+<li><strong>Task 4</strong>: forward, backward e gradient check della catena di due neuroni (esercizio della Lezione 03)</li>
+<li><strong>Task 5</strong>: addestramento della catena con <span class="math inline">\(y = 1\)</span> e con <span class="math inline">\(y = 0{,}8\)</span></li>
+</ul>
 <p>Un file e un eseguibile per task, ognuno con il suo <code>main()</code> (<code>./build/task2</code>, …).</p>
+</section>
+<section id="soluzione-del-laboratorio-02-task-2-tipi-e-divisione-intera" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02, Task 2: tipi e divisione intera</h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>task2_tipi.cpp</strong></pre>
@@ -785,8 +795,8 @@ Cristiano De Michele
 </dd>
 </dl>
 </section>
-<section id="soluzione-del-laboratorio-02-la-discesa-su-x2" class="slide level2 smaller">
-<h2>Soluzione del Laboratorio 02: la discesa su <span class="math inline">\(x^2\)</span></h2>
+<section id="soluzione-del-laboratorio-02-task-3-discesa-su-x2" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02, Task 3: discesa su <span class="math inline">\(x^2\)</span></h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>task3_discesa.cpp</strong></pre>
@@ -809,8 +819,8 @@ Cristiano De Michele
 <span id="cb1-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="soluzione-del-laboratorio-02-la-discesa-su-x2-cosa-stampa" class="slide level2 smaller">
-<h2>Soluzione del Laboratorio 02: la discesa su <span class="math inline">\(x^2\)</span>, cosa stampa</h2>
+<section id="soluzione-del-laboratorio-02-task-3-cosa-stampa" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02, Task 3: cosa stampa</h2>
 <pre><code>[Task 3] E(x) = x^2, x0 = 1
 eta = 0.25:  0.5  0.25  0.125  0.0625  0.03125
 eta = 0.5:  0  0  0  0  0
@@ -819,8 +829,8 @@ eta = 1:  -1  1  -1  1  -1
 eta = 1.25:  -1.5  2.25  -3.375  5.0625  -7.59375</code></pre>
 <p>A ogni passo <span class="math inline">\(x\)</span> si moltiplica per <span class="math inline">\(1 - 2\eta\)</span>: con <span class="math inline">\(\eta = 0{,}25\)</span> converge, con <span class="math inline">\(0{,}5\)</span> raggiunge il minimo al primo passo, con <span class="math inline">\(0{,}75\)</span> converge oscillando, con <span class="math inline">\(1\)</span> oscilla senza convergere, con <span class="math inline">\(1{,}25\)</span> diverge.</p>
 </section>
-<section id="soluzione-del-laboratorio-02-lesercizio-della-lezione-03" class="slide level2 smaller">
-<h2>Soluzione del Laboratorio 02: l’esercizio della Lezione 03</h2>
+<section id="soluzione-del-laboratorio-02-task-4-forward-e-backward" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02, Task 4: forward e backward</h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>task4_backprop.cpp</strong></pre>
@@ -848,8 +858,8 @@ eta = 1.25:  -1.5  2.25  -3.375  5.0625  -7.59375</code></pre>
 <span id="cb3-21"><a aria-label="21"></a>    <span class="dt">double</span> dE_dw1 <span class="op">=</span> delta1 <span class="op">*</span> x<span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="soluzione-del-laboratorio-02-lesercizio-della-lezione-03-segue" class="slide level2 smaller">
-<h2>Soluzione del Laboratorio 02: l’esercizio della Lezione 03 (segue)</h2>
+<section id="soluzione-del-laboratorio-02-task-4-segue" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02, Task 4 (segue)</h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>task4_backprop.cpp</strong></pre>
@@ -876,8 +886,8 @@ eta = 1.25:  -1.5  2.25  -3.375  5.0625  -7.59375</code></pre>
 <span id="cb4-41"><a aria-label="41"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="soluzione-del-laboratorio-02-cosa-stampa" class="slide level2 smaller">
-<h2>Soluzione del Laboratorio 02: cosa stampa</h2>
+<section id="soluzione-del-laboratorio-02-task-4-cosa-stampa" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02, Task 4: cosa stampa</h2>
 <pre><code>[Task 4]        strato 1        strato 2
 z               1       0.731059
 a               0.731059        0.675038
@@ -892,8 +902,8 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <li>Le colonne separate da <code>"\t"</code> non restano allineate: per incolonnare i numeri serve <code>&lt;iomanip&gt;</code>, che arriva nel Laboratorio 04.</li>
 </ul>
 </section>
-<section id="soluzione-del-laboratorio-02-laddestramento" class="slide level2 smaller">
-<h2>Soluzione del Laboratorio 02: l’addestramento</h2>
+<section id="soluzione-del-laboratorio-02-task-5-addestramento" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02, Task 5: addestramento</h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>task5_addestramento.cpp</strong></pre>
@@ -918,8 +928,8 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 </dd>
 </dl>
 </section>
-<section id="soluzione-del-laboratorio-02-laddestramento-segue" class="slide level2 smaller">
-<h2>Soluzione del Laboratorio 02: l’addestramento (segue)</h2>
+<section id="soluzione-del-laboratorio-02-task-5-segue" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02, Task 5 (segue)</h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>task5_addestramento.cpp</strong></pre>
@@ -942,8 +952,8 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <span id="cb6-28"><a aria-label="28"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="soluzione-del-laboratorio-02-i-target" class="slide level2 smaller">
-<h2>Soluzione del Laboratorio 02: i target</h2>
+<section id="soluzione-del-laboratorio-02-task-5-i-target" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 02, Task 5: i target</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 20%">
