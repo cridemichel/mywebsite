@@ -1395,90 +1395,129 @@ Cristiano De Michele
 <section id="incapsulamento-public-e-private" class="slide level2 smaller">
 <h2>Incapsulamento: <code>public</code> e <code>private</code></h2>
 <p>La buona norma è tenere i dati <strong>privati</strong> (<code>private</code>) e consentirne l’accesso solo attraverso metodi <strong>pubblici</strong> (<code>public</code>), che possono controllarli.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-label="1"></a><span class="kw">class</span> Temperatura <span class="op">{</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-18-2" class="code-annotation-target"><a href="#annotated-cell-18-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">kelvin_</span><span class="op">;</span></span>
-<span id="annotated-cell-18-4"><a href="#annotated-cell-18-4" aria-label="4"></a></span>
-<span id="annotated-cell-18-5"><a href="#annotated-cell-18-5" aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-18-6" class="code-annotation-target"><a href="#annotated-cell-18-6" aria-label="6"></a>    <span class="dt">void</span> imposta<span class="op">(</span><span class="dt">double</span> k<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-18-7"><a href="#annotated-cell-18-7" aria-label="7"></a>        <span class="cf">if</span> <span class="op">(</span>k <span class="op">&gt;=</span> <span class="fl">0.0</span><span class="op">)</span> <span class="va">kelvin_</span> <span class="op">=</span> k<span class="op">;</span></span>
-<span id="annotated-cell-18-8"><a href="#annotated-cell-18-8" aria-label="8"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-18-9"><a href="#annotated-cell-18-9" aria-label="9"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-18-10" class="code-annotation-target"><a href="#annotated-cell-18-10" aria-label="10"></a>    <span class="dt">double</span> kelvin<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">kelvin_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-18-11"><a href="#annotated-cell-18-11" aria-label="11"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-25"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-25-1"><a href="#annotated-cell-25-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-25-2"><a href="#annotated-cell-25-2" aria-label="2"></a></span>
+<span id="annotated-cell-25-3"><a href="#annotated-cell-25-3" aria-label="3"></a><span class="kw">class</span> Temperatura <span class="op">{</span></span>
+<span id="annotated-cell-25-4"><a href="#annotated-cell-25-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-25-5" class="code-annotation-target"><a href="#annotated-cell-25-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">kelvin_</span><span class="op">;</span></span>
+<span id="annotated-cell-25-6"><a href="#annotated-cell-25-6" aria-label="6"></a></span>
+<span id="annotated-cell-25-7"><a href="#annotated-cell-25-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-25-8" class="code-annotation-target"><a href="#annotated-cell-25-8" aria-label="8"></a>    <span class="dt">void</span> imposta<span class="op">(</span><span class="dt">double</span> k<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-25-9"><a href="#annotated-cell-25-9" aria-label="9"></a>        <span class="cf">if</span> <span class="op">(</span>k <span class="op">&gt;=</span> <span class="fl">0.0</span><span class="op">)</span> <span class="va">kelvin_</span> <span class="op">=</span> k<span class="op">;</span></span>
+<span id="annotated-cell-25-10"><a href="#annotated-cell-25-10" aria-label="10"></a>    <span class="op">}</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-25-11" class="code-annotation-target"><a href="#annotated-cell-25-11" aria-label="11"></a>    <span class="dt">double</span> kelvin<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">kelvin_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-25-12"><a href="#annotated-cell-25-12" aria-label="12"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-25" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-18" data-code-lines="2" data-code-annotation="1">Da fuori non si può scrivere <code>t.kelvin_ = -10.0;</code>: <em><code>error: 'double Temperatura::kelvin_' is private within this context</code></em>. L’underscore finale è una convenzione diffusa per i membri privati.</span>
+<span data-code-cell="annotated-cell-25" data-code-lines="5" data-code-annotation="1">Attributo privato; l’underscore finale è una convenzione diffusa per i membri privati.</span>
 </dd>
-<dt data-target-cell="annotated-cell-18" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-25" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-18" data-code-lines="6" data-code-annotation="2">Il valore si modifica solo attraverso questo metodo, che lo verifica: una temperatura assoluta negativa viene rifiutata.</span>
+<span data-code-cell="annotated-cell-25" data-code-lines="8" data-code-annotation="2">Il valore si modifica solo attraverso questo metodo, che lo verifica.</span>
 </dd>
-<dt data-target-cell="annotated-cell-18" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-25" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-18" data-code-lines="10" data-code-annotation="3"><strong>Getter</strong>: legge il dato privato senza poterlo modificare (getter e setter nella Lezione 07).</span>
+<span data-code-cell="annotated-cell-25" data-code-lines="11" data-code-annotation="3"><strong>Getter</strong>: legge il dato privato senza poterlo modificare (Lezione 07).</span>
 </dd>
 </dl>
+</div><div class="column" style="width:45%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-26"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-26-1"><a href="#annotated-cell-26-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-26-2"><a href="#annotated-cell-26-2" aria-label="2"></a>    Temperatura t<span class="op">;</span></span>
+<span id="annotated-cell-26-3"><a href="#annotated-cell-26-3" aria-label="3"></a>    t<span class="op">.</span>imposta<span class="op">(</span><span class="fl">300.0</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-26" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-26-4" class="code-annotation-target"><a href="#annotated-cell-26-4" aria-label="4"></a>    t<span class="op">.</span>imposta<span class="op">(-</span><span class="fl">10.0</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-26" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-26-5" class="code-annotation-target"><a href="#annotated-cell-26-5" aria-label="5"></a>    <span class="co">// t.kelvin_ = -10.0;</span></span>
+<span id="annotated-cell-26-6"><a href="#annotated-cell-26-6" aria-label="6"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> t<span class="op">.</span>kelvin<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" K</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-26-7"><a href="#annotated-cell-26-7" aria-label="7"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-26-8"><a href="#annotated-cell-26-8" aria-label="8"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-26" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-26" data-code-lines="4" data-code-annotation="4">Temperatura assoluta negativa: rifiutata, <code>kelvin_</code> resta 300. Il programma stampa <code>300 K</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-26" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-26" data-code-lines="5" data-code-annotation="5"><em><code>error: 'double Temperatura::kelvin_' is private within this context</code></em>.</span>
+</dd>
+</dl>
+</div></div>
 </section>
 <section id="costruttori" class="slide level2 smaller">
 <h2>Costruttori</h2>
-<p>Per garantire che <code>kelvin_</code> abbia un valore definito fin dalla creazione dell’oggetto si usa un <strong>costruttore</strong>:</p>
+<p>Per garantire che <code>kelvin_</code> abbia un valore definito fin dalla creazione dell’oggetto si usa un <strong>costruttore</strong>.</p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-27"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-27-1"><a href="#annotated-cell-27-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-27-2"><a href="#annotated-cell-27-2" aria-label="2"></a></span>
+<span id="annotated-cell-27-3"><a href="#annotated-cell-27-3" aria-label="3"></a><span class="kw">class</span> Temperatura <span class="op">{</span></span>
+<span id="annotated-cell-27-4"><a href="#annotated-cell-27-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-27-5"><a href="#annotated-cell-27-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">kelvin_</span><span class="op">;</span></span>
+<span id="annotated-cell-27-6"><a href="#annotated-cell-27-6" aria-label="6"></a></span>
+<span id="annotated-cell-27-7"><a href="#annotated-cell-27-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-27" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-27-8" class="code-annotation-target"><a href="#annotated-cell-27-8" aria-label="8"></a>    Temperatura<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-27-9"><a href="#annotated-cell-27-9" aria-label="9"></a>        <span class="va">kelvin_</span> <span class="op">=</span> <span class="fl">273.15</span><span class="op">;</span></span>
+<span id="annotated-cell-27-10"><a href="#annotated-cell-27-10" aria-label="10"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Temperatura creata: "</span></span>
+<span id="annotated-cell-27-11"><a href="#annotated-cell-27-11" aria-label="11"></a>                  <span class="op">&lt;&lt;</span> <span class="va">kelvin_</span> <span class="op">&lt;&lt;</span> <span class="st">" K</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-27-12"><a href="#annotated-cell-27-12" aria-label="12"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-27-13"><a href="#annotated-cell-27-13" aria-label="13"></a><span class="op">};</span></span>
+<span id="annotated-cell-27-14"><a href="#annotated-cell-27-14" aria-label="14"></a></span>
+<span id="annotated-cell-27-15"><a href="#annotated-cell-27-15" aria-label="15"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-27" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-27-16" class="code-annotation-target"><a href="#annotated-cell-27-16" aria-label="16"></a>    Temperatura t<span class="op">;</span></span>
+<span id="annotated-cell-27-17"><a href="#annotated-cell-27-17" aria-label="17"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-27-18"><a href="#annotated-cell-27-18" aria-label="18"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-27" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-27" data-code-lines="8" data-code-annotation="1">Costruttore di default, senza parametri.</span>
+</dd>
+<dt data-target-cell="annotated-cell-27" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-27" data-code-lines="16" data-code-annotation="2">Crea l’oggetto e chiama il costruttore: stampa <code>Temperatura creata: 273.15 K</code>.</span>
+</dd>
+</dl>
+</div><div class="column" style="width:45%;">
+<p>Il costruttore:</p>
 <ul>
 <li>ha lo <strong>stesso nome della classe</strong>;</li>
 <li>non ha tipo di ritorno, neanche <code>void</code>;</li>
 <li>viene eseguito automaticamente quando l’oggetto viene creato.</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-19"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-19-2"><a href="#annotated-cell-19-2" aria-label="2"></a></span>
-<span id="annotated-cell-19-3"><a href="#annotated-cell-19-3" aria-label="3"></a><span class="kw">class</span> Temperatura <span class="op">{</span></span>
-<span id="annotated-cell-19-4"><a href="#annotated-cell-19-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-19-5"><a href="#annotated-cell-19-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">kelvin_</span><span class="op">;</span></span>
-<span id="annotated-cell-19-6"><a href="#annotated-cell-19-6" aria-label="6"></a></span>
-<span id="annotated-cell-19-7"><a href="#annotated-cell-19-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-19-8" class="code-annotation-target"><a href="#annotated-cell-19-8" aria-label="8"></a>    Temperatura<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-19-9"><a href="#annotated-cell-19-9" aria-label="9"></a>        <span class="va">kelvin_</span> <span class="op">=</span> <span class="fl">273.15</span><span class="op">;</span></span>
-<span id="annotated-cell-19-10"><a href="#annotated-cell-19-10" aria-label="10"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Temperatura creata: "</span> <span class="op">&lt;&lt;</span> <span class="va">kelvin_</span> <span class="op">&lt;&lt;</span> <span class="st">" K</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-19-11"><a href="#annotated-cell-19-11" aria-label="11"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-19-12"><a href="#annotated-cell-19-12" aria-label="12"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-19" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-19" data-code-lines="8" data-code-annotation="1">Costruttore di default: lo chiama <code>Temperatura t;</code>. Senza, <code>kelvin_</code> conterrebbe un valore qualsiasi.</span>
-</dd>
-</dl>
+<p>Senza costruttore, <code>kelvin_</code> avrebbe un valore indeterminato finché non gli si assegna un valore.</p>
+</div></div>
 </section>
 <section id="costruttori-con-parametri" class="slide level2 smaller">
 <h2>Costruttori con parametri</h2>
 <p>Al costruttore si possono passare argomenti quando si crea l’oggetto.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-label="1"></a><span class="kw">class</span> Result <span class="op">{</span></span>
-<span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-20-3"><a href="#annotated-cell-20-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">loss_</span><span class="op">;</span></span>
-<span id="annotated-cell-20-4"><a href="#annotated-cell-20-4" aria-label="4"></a>    <span class="dt">double</span> <span class="va">accuracy_</span><span class="op">;</span></span>
-<span id="annotated-cell-20-5"><a href="#annotated-cell-20-5" aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-6" class="code-annotation-target"><a href="#annotated-cell-20-6" aria-label="6"></a>    Result<span class="op">(</span><span class="dt">double</span> l<span class="op">,</span> <span class="dt">double</span> a<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-20-7"><a href="#annotated-cell-20-7" aria-label="7"></a>        <span class="va">loss_</span> <span class="op">=</span> l<span class="op">;</span></span>
-<span id="annotated-cell-20-8"><a href="#annotated-cell-20-8" aria-label="8"></a>        <span class="va">accuracy_</span> <span class="op">=</span> a<span class="op">;</span></span>
-<span id="annotated-cell-20-9"><a href="#annotated-cell-20-9" aria-label="9"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-20-10"><a href="#annotated-cell-20-10" aria-label="10"></a><span class="op">};</span></span>
-<span id="annotated-cell-20-11"><a href="#annotated-cell-20-11" aria-label="11"></a></span>
-<span id="annotated-cell-20-12"><a href="#annotated-cell-20-12" aria-label="12"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-20-13" class="code-annotation-target"><a href="#annotated-cell-20-13" aria-label="13"></a>    <span class="co">// Result r1;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-20-14" class="code-annotation-target"><a href="#annotated-cell-20-14" aria-label="14"></a>    Result r2<span class="op">(</span><span class="fl">1.1</span><span class="op">,</span> <span class="fl">0.95</span><span class="op">);</span></span>
-<span id="annotated-cell-20-15"><a href="#annotated-cell-20-15" aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-20-16"><a href="#annotated-cell-20-16" aria-label="16"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-label="1"></a><span class="kw">class</span> Result <span class="op">{</span></span>
+<span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">loss_</span><span class="op">;</span></span>
+<span id="annotated-cell-18-4"><a href="#annotated-cell-18-4" aria-label="4"></a>    <span class="dt">double</span> <span class="va">accuracy_</span><span class="op">;</span></span>
+<span id="annotated-cell-18-5"><a href="#annotated-cell-18-5" aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-18-6" class="code-annotation-target"><a href="#annotated-cell-18-6" aria-label="6"></a>    Result<span class="op">(</span><span class="dt">double</span> l<span class="op">,</span> <span class="dt">double</span> a<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-18-7"><a href="#annotated-cell-18-7" aria-label="7"></a>        <span class="va">loss_</span> <span class="op">=</span> l<span class="op">;</span></span>
+<span id="annotated-cell-18-8"><a href="#annotated-cell-18-8" aria-label="8"></a>        <span class="va">accuracy_</span> <span class="op">=</span> a<span class="op">;</span></span>
+<span id="annotated-cell-18-9"><a href="#annotated-cell-18-9" aria-label="9"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-18-10"><a href="#annotated-cell-18-10" aria-label="10"></a><span class="op">};</span></span>
+<span id="annotated-cell-18-11"><a href="#annotated-cell-18-11" aria-label="11"></a></span>
+<span id="annotated-cell-18-12"><a href="#annotated-cell-18-12" aria-label="12"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-18-13" class="code-annotation-target"><a href="#annotated-cell-18-13" aria-label="13"></a>    <span class="co">// Result r1;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-18-14" class="code-annotation-target"><a href="#annotated-cell-18-14" aria-label="14"></a>    Result r2<span class="op">(</span><span class="fl">1.1</span><span class="op">,</span> <span class="fl">0.95</span><span class="op">);</span></span>
+<span id="annotated-cell-18-15"><a href="#annotated-cell-18-15" aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-18-16"><a href="#annotated-cell-18-16" aria-label="16"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-20" data-code-lines="6" data-code-annotation="1">I <code>double</code> passano <strong>per valore</strong>: il const reference della Lezione 05 serve per gli oggetti pesanti; su un <code>double</code> non porta vantaggi: copiarlo costa quanto passarne l’indirizzo.</span>
+<span data-code-cell="annotated-cell-18" data-code-lines="6" data-code-annotation="1">I <code>double</code> passano <strong>per valore</strong>: il const reference della Lezione 05 serve per gli oggetti pesanti; su un <code>double</code> non porta vantaggi: copiarlo costa quanto passarne l’indirizzo.</span>
 </dd>
-<dt data-target-cell="annotated-cell-20" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-18" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-20" data-code-lines="13" data-code-annotation="2"><em><code>error: no matching function for call to 'Result::Result()'</code></em>: mancano i parametri.</span>
+<span data-code-cell="annotated-cell-18" data-code-lines="13" data-code-annotation="2"><em><code>error: no matching function for call to 'Result::Result()'</code></em>: mancano i parametri.</span>
 </dd>
-<dt data-target-cell="annotated-cell-20" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-18" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-20" data-code-lines="14" data-code-annotation="3">Chiama il costruttore con i valori iniziali.</span>
+<span data-code-cell="annotated-cell-18" data-code-lines="14" data-code-annotation="3">Chiama il costruttore con i valori iniziali.</span>
 </dd>
 </dl>
 </section>
@@ -1517,68 +1556,68 @@ Cristiano De Michele
 </section>
 <section id="soluzione-dellesercizio-la-classe" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio: la classe</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-21"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-21-1"><a href="#annotated-cell-21-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-label="2"></a></span>
-<span id="annotated-cell-21-3"><a href="#annotated-cell-21-3" aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-21-4" class="code-annotation-target"><a href="#annotated-cell-21-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-21-5"><a href="#annotated-cell-21-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span></span>
-<span id="annotated-cell-21-6"><a href="#annotated-cell-21-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">velocita_</span><span class="op">;</span></span>
-<span id="annotated-cell-21-7"><a href="#annotated-cell-21-7" aria-label="7"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-21-8" class="code-annotation-target"><a href="#annotated-cell-21-8" aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-21-9" class="code-annotation-target"><a href="#annotated-cell-21-9" aria-label="9"></a>    Particella<span class="op">(</span><span class="dt">double</span> m<span class="op">,</span> <span class="dt">double</span> v<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-21-10"><a href="#annotated-cell-21-10" aria-label="10"></a>        <span class="va">massa_</span> <span class="op">=</span> m<span class="op">;</span></span>
-<span id="annotated-cell-21-11"><a href="#annotated-cell-21-11" aria-label="11"></a>        <span class="va">velocita_</span> <span class="op">=</span> v<span class="op">;</span></span>
-<span id="annotated-cell-21-12"><a href="#annotated-cell-21-12" aria-label="12"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-21-13"><a href="#annotated-cell-21-13" aria-label="13"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-21-14" class="code-annotation-target"><a href="#annotated-cell-21-14" aria-label="14"></a>    <span class="dt">double</span> calcola_energia<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-21-15"><a href="#annotated-cell-21-15" aria-label="15"></a>        <span class="cf">return</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="va">massa_</span> <span class="op">*</span> <span class="va">velocita_</span> <span class="op">*</span> <span class="va">velocita_</span><span class="op">;</span></span>
-<span id="annotated-cell-21-16"><a href="#annotated-cell-21-16" aria-label="16"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-21-17"><a href="#annotated-cell-21-17" aria-label="17"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-19"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-19-2"><a href="#annotated-cell-19-2" aria-label="2"></a></span>
+<span id="annotated-cell-19-3"><a href="#annotated-cell-19-3" aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-19-4" class="code-annotation-target"><a href="#annotated-cell-19-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-19-5"><a href="#annotated-cell-19-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span></span>
+<span id="annotated-cell-19-6"><a href="#annotated-cell-19-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">velocita_</span><span class="op">;</span></span>
+<span id="annotated-cell-19-7"><a href="#annotated-cell-19-7" aria-label="7"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-19-8" class="code-annotation-target"><a href="#annotated-cell-19-8" aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-19-9" class="code-annotation-target"><a href="#annotated-cell-19-9" aria-label="9"></a>    Particella<span class="op">(</span><span class="dt">double</span> m<span class="op">,</span> <span class="dt">double</span> v<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-19-10"><a href="#annotated-cell-19-10" aria-label="10"></a>        <span class="va">massa_</span> <span class="op">=</span> m<span class="op">;</span></span>
+<span id="annotated-cell-19-11"><a href="#annotated-cell-19-11" aria-label="11"></a>        <span class="va">velocita_</span> <span class="op">=</span> v<span class="op">;</span></span>
+<span id="annotated-cell-19-12"><a href="#annotated-cell-19-12" aria-label="12"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-19-13"><a href="#annotated-cell-19-13" aria-label="13"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-19-14" class="code-annotation-target"><a href="#annotated-cell-19-14" aria-label="14"></a>    <span class="dt">double</span> calcola_energia<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-19-15"><a href="#annotated-cell-19-15" aria-label="15"></a>        <span class="cf">return</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="va">massa_</span> <span class="op">*</span> <span class="va">velocita_</span> <span class="op">*</span> <span class="va">velocita_</span><span class="op">;</span></span>
+<span id="annotated-cell-19-16"><a href="#annotated-cell-19-16" aria-label="16"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-19-17"><a href="#annotated-cell-19-17" aria-label="17"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-21" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-19" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-21" data-code-lines="4" data-code-annotation="1">Incapsulamento: gli attributi non sono accessibili dall’esterno.</span>
+<span data-code-cell="annotated-cell-19" data-code-lines="4" data-code-annotation="1">Incapsulamento: gli attributi non sono accessibili dall’esterno.</span>
 </dd>
-<dt data-target-cell="annotated-cell-21" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-21" data-code-lines="8" data-code-annotation="2">L’interfaccia: ciò che il resto del programma può usare.</span>
+<span data-code-cell="annotated-cell-19" data-code-lines="8" data-code-annotation="2">L’interfaccia: ciò che il resto del programma può usare.</span>
 </dd>
-<dt data-target-cell="annotated-cell-21" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-19" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-21" data-code-lines="9" data-code-annotation="3">Il costruttore inizializza gli attributi.</span>
+<span data-code-cell="annotated-cell-19" data-code-lines="9" data-code-annotation="3">Il costruttore inizializza gli attributi.</span>
 </dd>
-<dt data-target-cell="annotated-cell-21" data-target-annotation="4">4</dt>
+<dt data-target-cell="annotated-cell-19" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="annotated-cell-21" data-code-lines="14" data-code-annotation="4">I metodi accedono direttamente agli attributi privati.</span>
+<span data-code-cell="annotated-cell-19" data-code-lines="14" data-code-annotation="4">I metodi accedono direttamente agli attributi privati.</span>
 </dd>
 </dl>
 </section>
 <section id="soluzione-dellesercizio-il-main" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio: il <code>main</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-22"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-22-1"><a href="#annotated-cell-22-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-22-2"><a href="#annotated-cell-22-2" aria-label="2"></a>    <span class="co">// 1. creazione (istanziazione) dell'oggetto</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-22" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-22-3" class="code-annotation-target"><a href="#annotated-cell-22-3" aria-label="3"></a>    Particella p<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">10.0</span><span class="op">);</span></span>
-<span id="annotated-cell-22-4"><a href="#annotated-cell-22-4" aria-label="4"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-22" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-22-5" class="code-annotation-target"><a href="#annotated-cell-22-5" aria-label="5"></a>    <span class="co">// std::cout &lt;&lt; p.massa_;</span></span>
-<span id="annotated-cell-22-6"><a href="#annotated-cell-22-6" aria-label="6"></a></span>
-<span id="annotated-cell-22-7"><a href="#annotated-cell-22-7" aria-label="7"></a>    <span class="co">// 2. chiamata al metodo con l'operatore punto (.)</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-22" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-22-8" class="code-annotation-target"><a href="#annotated-cell-22-8" aria-label="8"></a>    <span class="dt">double</span> e <span class="op">=</span> p<span class="op">.</span>calcola_energia<span class="op">();</span></span>
-<span id="annotated-cell-22-9"><a href="#annotated-cell-22-9" aria-label="9"></a></span>
-<span id="annotated-cell-22-10"><a href="#annotated-cell-22-10" aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Energia cinetica: "</span> <span class="op">&lt;&lt;</span> e <span class="op">&lt;&lt;</span> <span class="st">" J</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-22-11"><a href="#annotated-cell-22-11" aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-22-12"><a href="#annotated-cell-22-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-label="2"></a>    <span class="co">// 1. creazione (istanziazione) dell'oggetto</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-3" class="code-annotation-target"><a href="#annotated-cell-20-3" aria-label="3"></a>    Particella p<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">10.0</span><span class="op">);</span></span>
+<span id="annotated-cell-20-4"><a href="#annotated-cell-20-4" aria-label="4"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-20-5" class="code-annotation-target"><a href="#annotated-cell-20-5" aria-label="5"></a>    <span class="co">// std::cout &lt;&lt; p.massa_;</span></span>
+<span id="annotated-cell-20-6"><a href="#annotated-cell-20-6" aria-label="6"></a></span>
+<span id="annotated-cell-20-7"><a href="#annotated-cell-20-7" aria-label="7"></a>    <span class="co">// 2. chiamata al metodo con l'operatore punto (.)</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-20-8" class="code-annotation-target"><a href="#annotated-cell-20-8" aria-label="8"></a>    <span class="dt">double</span> e <span class="op">=</span> p<span class="op">.</span>calcola_energia<span class="op">();</span></span>
+<span id="annotated-cell-20-9"><a href="#annotated-cell-20-9" aria-label="9"></a></span>
+<span id="annotated-cell-20-10"><a href="#annotated-cell-20-10" aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Energia cinetica: "</span> <span class="op">&lt;&lt;</span> e <span class="op">&lt;&lt;</span> <span class="st">" J</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-20-11"><a href="#annotated-cell-20-11" aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-20-12"><a href="#annotated-cell-20-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-22" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-22" data-code-lines="3" data-code-annotation="1">L’oggetto è inizializzato dal costruttore al momento della creazione.</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="3" data-code-annotation="1">L’oggetto è inizializzato dal costruttore al momento della creazione.</span>
 </dd>
-<dt data-target-cell="annotated-cell-22" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-22" data-code-lines="5" data-code-annotation="2"><em><code>error: 'double Particella::massa_' is private within this context</code></em>.</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="5" data-code-annotation="2"><em><code>error: 'double Particella::massa_' is private within this context</code></em>.</span>
 </dd>
-<dt data-target-cell="annotated-cell-22" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-22" data-code-lines="8" data-code-annotation="3">L’operatore <code>.</code> chiama il metodo sull’oggetto. Il programma stampa <code>Energia cinetica: 100 J</code>.</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="8" data-code-annotation="3">L’operatore <code>.</code> chiama il metodo sull’oggetto. Il programma stampa <code>Energia cinetica: 100 J</code>.</span>
 </dd>
 </dl>
 </section>
