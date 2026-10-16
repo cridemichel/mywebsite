@@ -1083,6 +1083,7 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <li>per <span class="math inline">\(h\)</span> piccolo domina la <strong>cancellazione numerica</strong>: <code>f(x+h)</code> e <code>f(x-h)</code> diventano quasi uguali, e sottraendoli si perdono cifre significative.</li>
 </ul>
 <p>Il minimo sta dove i due si bilanciano: per la sigmoide e per la tanh, intorno a <span class="math inline">\(10^{-5}\)</span>. È un primo esempio dei limiti della precisione finita del <code>double</code>.</p>
+<p>La ReLU resta fuori dalla verifica perché in <span class="math inline">\(x = 0\)</span> non è derivabile (Task 2).</p>
 </section>
 <section id="task-da-completare" class="slide level2 smaller scrollable">
 <h2>Task da completare</h2>

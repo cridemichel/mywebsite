@@ -1708,8 +1708,8 @@ Cristiano De Michele
 <p><strong>1.</strong> Stampa <code>20</code> e poi <code>8</code>. Nel <code>main</code> <code>v</code> è un array di 5 interi e <code>sizeof</code> restituisce 20 byte. Passato a <code>f</code>, l’array <strong>decade</strong> a <code>int*</code> e <code>sizeof</code> misura il puntatore: 8 byte su una macchina a 64 bit. Questo dimostra che un array <em>non è</em> un puntatore: lo diventa nel passaggio alla funzione, e l’informazione sulla lunghezza va persa. Per questo <code>computeLoss</code> riceve anche <code>n</code>. In questo caso <code>g++ -Wall</code> avvisa, con <em><code>'sizeof' on array function parameter 'v' will return size of 'int*'</code></em>.</p>
 <p><strong>2.</strong> Stampa <code>3 20 30</code>. I primi due sono normale aritmetica dei puntatori. Il terzo è <code>2[v]</code>: sembra un errore di battitura e invece compila, perché <code>a[i]</code> è <strong>definito</strong>, come in C, come <code>*(a + i)</code>; la somma è commutativa, quindi <code>2[v]</code> è <code>*(2 + v)</code>, cioè <code>v[2]</code>. Non va usato in pratica, ma mostra che <code>[]</code> è solo una notazione per l’aritmetica dei puntatori.</p>
 </section>
-<section id="esercizio-finale-20-min-misure-e-statistiche" class="slide level2 smaller">
-<h2>Esercizio finale (20 min): misure e statistiche</h2>
+<section id="esercizio-finale-misure-e-statistiche" class="slide level2 smaller">
+<h2>Esercizio finale: misure e statistiche</h2>
 <p>Due classi: <code>Misure</code> conserva i dati; <code>Statistiche</code> ne calcola media e deviazione standard. <code>x_</code> è privato in <code>Misure</code>: <code>Statistiche</code> deve usarne l’interfaccia pubblica.</p>
 <p><strong>1. La classe <code>Misure</code></strong></p>
 <ul>
