@@ -1104,7 +1104,7 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <li><label><input type="checkbox"><code>sigmoid_numerical_derivative(x, h)</code> e l’analoga tanh, a differenze centrali</label></li>
 <li><label><input type="checkbox">Massimo errore su <span class="math inline">\(x \in [-5, 5]\)</span> con <span class="math inline">\(h = 10^{-5}\)</span>, in <code>std::scientific</code></label></li>
 <li><label><input type="checkbox">Ottenuto <code>[PASS]</code>: entrambi gli errori devono stare sotto <span class="math inline">\(10^{-6}\)</span></label></li>
-<li><label><input type="checkbox">Spazzata di <span class="math inline">\(h\)</span> in <span class="math inline">\(x = 1\)</span>, errore assoluto e relativo: scende e poi <strong>risale</strong></label></li>
+<li><label><input type="checkbox">Errore assoluto e relativo in <span class="math inline">\(x = 1\)</span> al variare di <span class="math inline">\(h\)</span>: scende e poi <strong>risale</strong></label></li>
 <li><label><input type="checkbox">Compilato sempre con <code>-Wall</code></label></li>
 </ul>
 <p><strong>La soluzione verrà discussa all’inizio del prossimo laboratorio.</strong></p>

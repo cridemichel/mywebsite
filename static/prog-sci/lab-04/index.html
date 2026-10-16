@@ -760,7 +760,7 @@ Cristiano De Michele
 <li><strong>Task 3</strong>: <code>sigmoid(x)</code> e <code>sigmoid_derivative(x)</code>, con <code>#include &lt;cmath&gt;</code></li>
 <li><strong>Task 4</strong>: una tabella con un ciclo <code>for</code> da <span class="math inline">\(-5\)</span> a <span class="math inline">\(+5\)</span> (contatore <code>int</code>), colonne separate da <code>"\t"</code>; valori di controllo <span class="math inline">\(\sigma(0) = 0{,}5\)</span> e <span class="math inline">\(\sigma'(0) = 0{,}25\)</span></li>
 <li><strong>Task 5</strong>: <code>tanh_act(x)</code> e <code>tanh_derivative(x)</code>, <strong>non</strong> <code>tanh</code></li>
-<li><strong>Task 6</strong>: derivate numeriche a differenze centrali; massimo errore su <span class="math inline">\(x \in [-5, 5]\)</span> con <span class="math inline">\(h = 10^{-5}\)</span>, in <code>std::scientific</code>, e <code>[PASS]</code> sotto <span class="math inline">\(10^{-6}\)</span>; spazzata di <span class="math inline">\(h\)</span> in <span class="math inline">\(x = 1\)</span></li>
+<li><strong>Task 6</strong>: derivate numeriche a differenze centrali; massimo errore su <span class="math inline">\(x \in [-5, 5]\)</span> con <span class="math inline">\(h = 10^{-5}\)</span>, in <code>std::scientific</code>, e <code>[PASS]</code> sotto <span class="math inline">\(10^{-6}\)</span>; errore in <span class="math inline">\(x = 1\)</span> al variare di <span class="math inline">\(h\)</span></li>
 <li><strong>Task 7</strong> (facoltativo): la catena del Laboratorio 02 con sigmoide, tanh e ReLU, per <span class="math inline">\(y = 1\)</span> e <span class="math inline">\(y = 0{,}8\)</span>; la ReLU con i parametri del Laboratorio 02; pesi iniziali <span class="math inline">\(w_0 = 0\)</span> e <span class="math inline">\(w_0 = 5\)</span></li>
 </ul>
 </section>
@@ -875,8 +875,8 @@ Cristiano De Michele
 <span id="cb4-81"><a aria-label="81"></a>    <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="soluzione-del-laboratorio-03-task-6-la-spazzata-di-h" class="slide level2 smaller">
-<h2>Soluzione del Laboratorio 03, Task 6: la spazzata di <code>h</code></h2>
+<section id="soluzione-del-laboratorio-03-task-6-lerrore-al-variare-di-h" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 03, Task 6: l’errore al variare di <code>h</code></h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>main.cpp</strong></pre>
