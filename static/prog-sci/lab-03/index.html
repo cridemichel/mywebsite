@@ -1100,6 +1100,27 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <li><label><input type="checkbox">Compilato sempre con <code>-Wall</code></label></li>
 </ul>
 <p><strong>La soluzione verrà discussa all’inizio del prossimo laboratorio.</strong></p>
+</section>
+<section id="task-7-facoltativo-la-catena-con-tre-attivazioni" class="slide level2 smaller scrollable">
+<h2>Task 7 (facoltativo): la catena con tre attivazioni</h2>
+<p>Nel Laboratorio 02 la catena di due neuroni con la sigmoide non raggiunge <span class="math inline">\(y = 1\)</span>, perché <span class="math inline">\(\sigma(z) = 1\)</span> solo per <span class="math inline">\(z \to \infty\)</span>. Con le funzioni di oggi si può verificare cosa cambia con la tanh e con la ReLU.</p>
+<ol type="1">
+<li>In un nuovo file <code>task7_attivazioni.cpp</code>, con il suo <code>add_executable</code> come nel Laboratorio 02, scrivete <code>double attiva(int tipo, double z)</code> e <code>double deriva(int tipo, double z)</code>: con un <code>if</code> scelgono sigmoide (<code>tipo == 0</code>), tanh (<code>1</code>) o ReLU (<code>2</code>).</li>
+<li>Scrivete <code>void addestra(int tipo, double y, double w0, double eta)</code>: il ciclo del Task 5 del Laboratorio 02 con <code>attiva</code> e <code>deriva</code> al posto della sigmoide, <span class="math inline">\(x = 1\)</span>, 1000 passi da <span class="math inline">\(w_1 = w_2 = w_0\)</span>. Stampate <span class="math inline">\(E\)</span>, <span class="math inline">\(w_1\)</span> e <span class="math inline">\(w_2\)</span> ogni 500 passi.</li>
+</ol>
+</section>
+<section id="task-7-segue" class="slide level2 smaller scrollable">
+<h2>Task 7 (segue)</h2>
+<ol start="3" type="1">
+<li>Con <span class="math inline">\(w_0 = 0{,}5\)</span> ed <span class="math inline">\(\eta = 0{,}25\)</span> addestrate le tre attivazioni con <span class="math inline">\(y = 1\)</span> e con <span class="math inline">\(y = 0{,}8\)</span>. Quali raggiungono <span class="math inline">\(y = 1\)</span>, e perché?</li>
+<li>Ripetete con la ReLU e i parametri del Laboratorio 02, <span class="math inline">\(w_0 = 1\)</span> ed <span class="math inline">\(\eta = 1\)</span>:
+<ul>
+<li>con <span class="math inline">\(y = 1\)</span> l’errore è nullo già al passo 0: perché?</li>
+<li>con <span class="math inline">\(y = 0{,}8\)</span> l’errore si ferma a <span class="math inline">\(0{,}64\)</span>. Guardate il segno dei pesi e spiegate perché il gradiente si annulla.</li>
+</ul></li>
+</ol>
+<p>Suggerimento per il punto 4: stampate i pesi ai primi passi e calcolate a mano <span class="math inline">\(a_2 = \mathrm{ReLU}(w_2\,\mathrm{ReLU}(w_1))\)</span>.</p>
+<p><strong>Anche la soluzione del Task 7 verrà discussa all’inizio del prossimo laboratorio.</strong></p>
 
 
 </section>
