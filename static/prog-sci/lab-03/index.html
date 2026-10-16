@@ -1007,7 +1007,7 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 </section>
 <section id="task-2-la-derivata-della-relu" class="slide level2 scrollable">
 <h2>Task 2: la derivata della ReLU</h2>
-<p>Nella backpropagation la rete deve calcolare la pendenza, cioè la derivata, della funzione di attivazione. Per la ReLU: <span class="math inline">\(f'(x) = 1\)</span> se <span class="math inline">\(x &gt; 0\)</span>, altrimenti <span class="math inline">\(0\)</span>. In <span class="math inline">\(x = 0\)</span> la derivata non esiste: il valore <span class="math inline">\(0\)</span> è una convenzione.</p>
+<p>Nella backpropagation la rete deve calcolare la pendenza, cioè la derivata, della funzione di attivazione. Per la ReLU: <span class="math inline">\(f'(x) = 1\)</span> se <span class="math inline">\(x &gt; 0\)</span>, altrimenti <span class="math inline">\(0\)</span>. In <span class="math inline">\(x = 0\)</span> la derivata non esiste: il valore <span class="math inline">\(0\)</span> è una convenzione, e per questo la ReLU resta fuori dalla verifica numerica del Task 6.</p>
 <ol type="1">
 <li>Scrivete una funzione <code>double relu_derivative(double x)</code>.</li>
 <li>Implementatela e provatela.</li>
@@ -1075,7 +1075,7 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <section id="task-6-segue-perché-proprio-h-10-5" class="slide level2 smaller scrollable">
 <h2>Task 6 (segue): perché proprio <span class="math inline">\(h = 10^{-5}\)</span>?</h2>
 <ol start="4" type="1">
-<li>Ripetete il confronto in <code>x = 1</code> per <code>h</code> = <span class="math inline">\(10^{-1}, 10^{-3}, \dots, 10^{-13}\)</span> e stampate l’errore.</li>
+<li>In <code>x = 1</code>, per <code>h</code> = <span class="math inline">\(10^{-1}, 10^{-3}, \dots, 10^{-13}\)</span>, stampate l’errore assoluto e quello <strong>relativo</strong>: se vale <span class="math inline">\(10^{-k}\)</span>, la derivata numerica ha <span class="math inline">\(k\)</span> cifre corrette.</li>
 </ol>
 <p>L’errore <strong>scende, poi risale</strong>, per l’effetto di due errori opposti:</p>
 <ul>
@@ -1083,7 +1083,6 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <li>per <span class="math inline">\(h\)</span> piccolo domina la <strong>cancellazione numerica</strong>: <code>f(x+h)</code> e <code>f(x-h)</code> diventano quasi uguali, e sottraendoli si perdono cifre significative.</li>
 </ul>
 <p>Il minimo sta dove i due si bilanciano: per la sigmoide e per la tanh, intorno a <span class="math inline">\(10^{-5}\)</span>. È un primo esempio dei limiti della precisione finita del <code>double</code>.</p>
-<p>La ReLU resta fuori dalla verifica perché in <span class="math inline">\(x = 0\)</span> non è derivabile (Task 2).</p>
 </section>
 <section id="task-da-completare" class="slide level2 smaller scrollable">
 <h2>Task da completare</h2>
@@ -1096,7 +1095,7 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <li><label><input type="checkbox"><code>sigmoid_numerical_derivative(x, h)</code> e l’analoga tanh, a differenze centrali</label></li>
 <li><label><input type="checkbox">Massimo errore su <span class="math inline">\(x \in [-5, 5]\)</span> con <span class="math inline">\(h = 10^{-5}\)</span>, in <code>std::scientific</code></label></li>
 <li><label><input type="checkbox">Ottenuto <code>[PASS]</code>: entrambi gli errori devono stare sotto <span class="math inline">\(10^{-6}\)</span></label></li>
-<li><label><input type="checkbox">Spazzata di <span class="math inline">\(h\)</span> in <span class="math inline">\(x = 1\)</span>: l’errore scende e poi <strong>risale</strong></label></li>
+<li><label><input type="checkbox">Spazzata di <span class="math inline">\(h\)</span> in <span class="math inline">\(x = 1\)</span>, errore assoluto e relativo: scende e poi <strong>risale</strong></label></li>
 <li><label><input type="checkbox">Compilato sempre con <code>-Wall</code></label></li>
 </ul>
 <p><strong>La soluzione verrà discussa all’inizio del prossimo laboratorio.</strong></p>
