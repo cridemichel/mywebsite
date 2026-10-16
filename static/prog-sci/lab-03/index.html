@@ -1104,12 +1104,24 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <h2>Task 7 (facoltativo): la catena con tre attivazioni</h2>
 <p>Nel Laboratorio 02 la catena di due neuroni con la sigmoide non raggiunge <span class="math inline">\(y = 1\)</span>, perché <span class="math inline">\(\sigma(z) = 1\)</span> solo per <span class="math inline">\(z \to \infty\)</span>. Qui si ripete l’addestramento con tanh e ReLU.</p>
 <ol type="1">
-<li>In un nuovo file <code>task7_attivazioni.cpp</code> scrivete <code>double attiva(int tipo, double z)</code> e <code>double deriva(int tipo, double z)</code>, con le formule dei Task 1–5: con un <code>if</code> scelgono sigmoide (<code>tipo == 0</code>), tanh (<code>1</code>) o ReLU (<code>2</code>). Nel <code>CMakeLists.txt</code> aggiungete <code>add_executable(task7 task7_attivazioni.cpp)</code>.</li>
+<li>In un nuovo file <code>task7_attivazioni.cpp</code> scrivete <code>double attiva(int tipo, double z)</code> e <code>double deriva(int tipo, double z)</code>, con le formule dei Task 1–5: con un <code>if</code> scelgono sigmoide (<code>tipo == 0</code>), tanh (<code>1</code>) o ReLU (<code>2</code>). Il file ha un suo <code>main()</code> e si compila come eseguibile a parte (slide successiva).</li>
 <li>Scrivete <code>void addestra(int tipo, double y, double w0, double eta)</code>: il ciclo del Task 5 del Laboratorio 02 con <code>attiva</code> e <code>deriva</code> al posto della sigmoide, <span class="math inline">\(x = 1\)</span>, 1000 passi da <span class="math inline">\(w_1 = w_2 = w_0\)</span>. Stampate <span class="math inline">\(E\)</span>, <span class="math inline">\(w_1\)</span> e <span class="math inline">\(w_2\)</span> ogni 500 passi.</li>
 </ol>
 </section>
-<section id="task-7-segue" class="slide level2 smaller scrollable">
-<h2>Task 7 (segue)</h2>
+<section id="task-7-segue-un-secondo-eseguibile-nel-progetto" class="slide level2 smaller">
+<h2>Task 7 (segue): un secondo eseguibile nel progetto</h2>
+<p>Il <code>CMakeLists.txt</code> del progetto contiene già <code>add_executable(basic_neural main.cpp)</code> (Laboratorio 01). Ogni <code>add_executable</code> produce un eseguibile distinto, con il proprio <code>main()</code>. Il <code>main()</code> di <code>task7_attivazioni.cpp</code> non può stare nello stesso eseguibile di quello di <code>main.cpp</code>: il linker segnalerebbe un <code>main</code> definito due volte. Serve quindi un secondo <code>add_executable</code>, come nella soluzione del Laboratorio 02:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>CMakeLists.txt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="CMakeLists.txt"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb8-1"><a aria-label="1"></a><span class="kw">add_executable</span>(<span class="bn">basic_neural</span> main.cpp)          <span class="co"># gia' presente (Laboratorio 01)</span></span>
+<span id="cb8-2"><a aria-label="2"></a><span class="kw">add_executable</span>(<span class="bn">task7</span> task7_attivazioni.cpp)    <span class="co"># da aggiungere (Task 7)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Si ricompila con <code>cmake --build build</code> e si esegue <code>./build/task7</code>. In VS Code, con CMake Tools, il nuovo eseguibile si sceglie fra i target di compilazione e di esecuzione.</p>
+</section>
+<section id="task-7-segue-gli-esperimenti" class="slide level2 smaller scrollable">
+<h2>Task 7 (segue): gli esperimenti</h2>
 <ol start="3" type="1">
 <li>Con <span class="math inline">\(w_0 = 0{,}5\)</span> ed <span class="math inline">\(\eta = 0{,}25\)</span> addestrate le tre attivazioni con <span class="math inline">\(y = 1\)</span> e con <span class="math inline">\(y = 0{,}8\)</span>. Quali raggiungono <span class="math inline">\(y = 1\)</span>, e perché?</li>
 <li>Ripetete con la ReLU e i parametri del Laboratorio 02, <span class="math inline">\(w_0 = 1\)</span> ed <span class="math inline">\(\eta = 1\)</span>:
