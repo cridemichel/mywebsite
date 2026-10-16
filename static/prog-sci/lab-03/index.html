@@ -995,6 +995,15 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <h2>Obiettivo di oggi</h2>
 <p>Oggi scriviamo la parte matematica di un neurone artificiale: le <strong>funzioni di attivazione</strong> e le loro derivate. Dopo <code>if</code> e <code>for</code> del Laboratorio 02 arrivano le <strong>funzioni</strong>, come in C (Lezione 05). Le derivate vanno poi <strong>verificate numericamente</strong>: nel Laboratorio 13 sono la base della backpropagation, dove un errore sarebbe molto più difficile da individuare.</p>
 </section>
+<section id="prima-di-iniziare-progetto-e-compilazione" class="slide level2 smaller">
+<h2>Prima di iniziare: progetto e compilazione</h2>
+<p>Si lavora sempre nel progetto del Laboratorio 01, <code>basic_neural_plusplus</code>; oggi nel suo <code>main.cpp</code>. Non si crea un progetto nuovo per ogni laboratorio: il <code>CMakeLists.txt</code> cresce, non si riscrive.</p>
+<p>Dalla cartella del progetto:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build                                <span class="co"># la prima volta: configura</span></span>
+<span id="cb7-2"><a aria-label="2"></a><span class="fu">cmake</span> <span class="at">--build</span> build <span class="kw">&amp;&amp;</span> <span class="ex">./build/basic_neural</span>   <span class="co"># a ogni modifica: compila ed esegue</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In VS Code gli stessi passi corrispondono ai pulsanti di CMake Tools. Se la configurazione in <code>build/</code> dà errori, si cancella e si riparte: <code>rm -rf build &amp;&amp; cmake -B build</code>.</p>
+<p>Il <code>CMakeLists.txt</code> del Laboratorio 01 contiene già <code>-Wall</code>: gli avvisi del compilatore compaiono senza opzioni aggiuntive.</p>
+</section>
 <section id="task-1-la-funzione-relu" class="slide level2 smaller scrollable">
 <h2>Task 1: la funzione ReLU</h2>
 <p>La <em>Rectified Linear Unit</em> (ReLU) è la funzione di attivazione più usata nel deep learning moderno: <span class="math inline">\(f(x) = \max(0, x)\)</span>. Si scrive con un <code>if</code>: per questo è la prima.</p>
@@ -1025,10 +1034,10 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <section id="task-4-validazione-con-un-ciclo-for" class="slide level2 smaller">
 <h2>Task 4: validazione con un ciclo <code>for</code></h2>
 <p>Nel <code>main()</code> fate variare <code>x</code> da <span class="math inline">\(-5\)</span> a <span class="math inline">\(+5\)</span> a passi di <span class="math inline">\(1\)</span>. Come nel Laboratorio 02, il contatore è un <code>int</code> e <code>x</code> si ricava dal contatore:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="op">-</span><span class="dv">5</span><span class="op">;</span> i <span class="op">&lt;=</span> <span class="dv">5</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-2"><a aria-label="2"></a>    <span class="dt">double</span> x <span class="op">=</span> i<span class="op">;</span></span>
-<span id="cb7-3"><a aria-label="3"></a>    <span class="co">// ... una riga della tabella</span></span>
-<span id="cb7-4"><a aria-label="4"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="op">-</span><span class="dv">5</span><span class="op">;</span> i <span class="op">&lt;=</span> <span class="dv">5</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-2"><a aria-label="2"></a>    <span class="dt">double</span> x <span class="op">=</span> i<span class="op">;</span></span>
+<span id="cb8-3"><a aria-label="3"></a>    <span class="co">// ... una riga della tabella</span></span>
+<span id="cb8-4"><a aria-label="4"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A ogni passo stampate una riga di tabella, con le colonne separate da <code>"\t"</code>:</p>
 <ul>
 <li>il valore di <code>x</code>;</li>
@@ -1116,7 +1125,7 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <li>aggiungete al <code>CMakeLists.txt</code> la riga <code>add_executable(task7 task7_attivazioni.cpp)</code> (slide successiva);</li>
 <li>dalla cartella del progetto configurate, compilate ed eseguite (in VS Code: CMake Tools, target <code>task7</code>):</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="kw">&amp;&amp;</span> <span class="ex">./build/task7</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="kw">&amp;&amp;</span> <span class="ex">./build/task7</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="task-7-segue-il-cmakelists.txt" class="slide level2 smaller">
 <h2>Task 7 (segue): il <code>CMakeLists.txt</code></h2>
@@ -1124,32 +1133,32 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <div class="code-with-filename-file">
 <pre><strong>CMakeLists.txt</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11" data-filename="CMakeLists.txt"><pre class="sourceCode numberSource cmake code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cmake"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> <span class="dt">3.15</span>)</span>
-<span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a><span class="kw">project</span>(BasicNeuralPlusPlus)</span>
-<span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-label="3"></a></span>
-<span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-label="4"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 17)</span>
-<span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="ot">ON</span>)</span>
-<span id="annotated-cell-11-6"><a href="#annotated-cell-11-6" aria-label="6"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_FLAGS</span> <span class="st">"</span><span class="dv">${CMAKE_CXX_FLAGS}</span><span class="st"> -Wall"</span>)</span>
-<span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-label="7"></a></span>
-<span id="annotated-cell-11-8"><a href="#annotated-cell-11-8" aria-label="8"></a><span class="kw">find_package</span>(Eigen3 <span class="ot">QUIET</span>)</span>
-<span id="annotated-cell-11-9"><a href="#annotated-cell-11-9" aria-label="9"></a><span class="kw">find_package</span>(OpenCV <span class="ot">REQUIRED</span>)</span>
-<span id="annotated-cell-11-10"><a href="#annotated-cell-11-10" aria-label="10"></a><span class="kw">message</span>(<span class="ot">STATUS</span> <span class="st">"OpenCV </span><span class="dv">${OpenCV_VERSION}</span><span class="st"> trovata"</span>)</span>
-<span id="annotated-cell-11-11"><a href="#annotated-cell-11-11" aria-label="11"></a></span>
-<span id="annotated-cell-11-12"><a href="#annotated-cell-11-12" aria-label="12"></a><span class="kw">add_executable</span>(<span class="bn">basic_neural</span> main.cpp)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-13" class="code-annotation-target"><a href="#annotated-cell-11-13" aria-label="13"></a><span class="kw">add_executable</span>(<span class="bn">task7</span> task7_attivazioni.cpp)</span>
-<span id="annotated-cell-11-14"><a href="#annotated-cell-11-14" aria-label="14"></a></span>
-<span id="annotated-cell-11-15"><a href="#annotated-cell-11-15" aria-label="15"></a><span class="cf">if</span>(<span class="dv">Eigen3_FOUND</span>)</span>
-<span id="annotated-cell-11-16"><a href="#annotated-cell-11-16" aria-label="16"></a>    <span class="kw">target_link_libraries</span>(<span class="bn">basic_neural</span> <span class="bn">Eigen3::Eigen</span>)</span>
-<span id="annotated-cell-11-17"><a href="#annotated-cell-11-17" aria-label="17"></a><span class="cf">else</span>()</span>
-<span id="annotated-cell-11-18"><a href="#annotated-cell-11-18" aria-label="18"></a>    <span class="kw">message</span>(<span class="ot">STATUS</span> <span class="st">"Eigen non trovata: uso libs/eigen"</span>)</span>
-<span id="annotated-cell-11-19"><a href="#annotated-cell-11-19" aria-label="19"></a>    <span class="kw">target_include_directories</span>(<span class="bn">basic_neural</span> <span class="ot">PRIVATE</span> libs/eigen)</span>
-<span id="annotated-cell-11-20"><a href="#annotated-cell-11-20" aria-label="20"></a><span class="cf">endif</span>()</span>
-<span id="annotated-cell-11-21"><a href="#annotated-cell-11-21" aria-label="21"></a><span class="kw">target_link_libraries</span>(<span class="bn">basic_neural</span> <span class="dv">${OpenCV_LIBS}</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12" data-filename="CMakeLists.txt"><pre class="sourceCode numberSource cmake code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cmake"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> <span class="dt">3.15</span>)</span>
+<span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-label="2"></a><span class="kw">project</span>(BasicNeuralPlusPlus)</span>
+<span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-label="3"></a></span>
+<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-label="4"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 17)</span>
+<span id="annotated-cell-12-5"><a href="#annotated-cell-12-5" aria-label="5"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="ot">ON</span>)</span>
+<span id="annotated-cell-12-6"><a href="#annotated-cell-12-6" aria-label="6"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_FLAGS</span> <span class="st">"</span><span class="dv">${CMAKE_CXX_FLAGS}</span><span class="st"> -Wall"</span>)</span>
+<span id="annotated-cell-12-7"><a href="#annotated-cell-12-7" aria-label="7"></a></span>
+<span id="annotated-cell-12-8"><a href="#annotated-cell-12-8" aria-label="8"></a><span class="kw">find_package</span>(Eigen3 <span class="ot">QUIET</span>)</span>
+<span id="annotated-cell-12-9"><a href="#annotated-cell-12-9" aria-label="9"></a><span class="kw">find_package</span>(OpenCV <span class="ot">REQUIRED</span>)</span>
+<span id="annotated-cell-12-10"><a href="#annotated-cell-12-10" aria-label="10"></a><span class="kw">message</span>(<span class="ot">STATUS</span> <span class="st">"OpenCV </span><span class="dv">${OpenCV_VERSION}</span><span class="st"> trovata"</span>)</span>
+<span id="annotated-cell-12-11"><a href="#annotated-cell-12-11" aria-label="11"></a></span>
+<span id="annotated-cell-12-12"><a href="#annotated-cell-12-12" aria-label="12"></a><span class="kw">add_executable</span>(<span class="bn">basic_neural</span> main.cpp)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-13" class="code-annotation-target"><a href="#annotated-cell-12-13" aria-label="13"></a><span class="kw">add_executable</span>(<span class="bn">task7</span> task7_attivazioni.cpp)</span>
+<span id="annotated-cell-12-14"><a href="#annotated-cell-12-14" aria-label="14"></a></span>
+<span id="annotated-cell-12-15"><a href="#annotated-cell-12-15" aria-label="15"></a><span class="cf">if</span>(<span class="dv">Eigen3_FOUND</span>)</span>
+<span id="annotated-cell-12-16"><a href="#annotated-cell-12-16" aria-label="16"></a>    <span class="kw">target_link_libraries</span>(<span class="bn">basic_neural</span> <span class="bn">Eigen3::Eigen</span>)</span>
+<span id="annotated-cell-12-17"><a href="#annotated-cell-12-17" aria-label="17"></a><span class="cf">else</span>()</span>
+<span id="annotated-cell-12-18"><a href="#annotated-cell-12-18" aria-label="18"></a>    <span class="kw">message</span>(<span class="ot">STATUS</span> <span class="st">"Eigen non trovata: uso libs/eigen"</span>)</span>
+<span id="annotated-cell-12-19"><a href="#annotated-cell-12-19" aria-label="19"></a>    <span class="kw">target_include_directories</span>(<span class="bn">basic_neural</span> <span class="ot">PRIVATE</span> libs/eigen)</span>
+<span id="annotated-cell-12-20"><a href="#annotated-cell-12-20" aria-label="20"></a><span class="cf">endif</span>()</span>
+<span id="annotated-cell-12-21"><a href="#annotated-cell-12-21" aria-label="21"></a><span class="kw">target_link_libraries</span>(<span class="bn">basic_neural</span> <span class="dv">${OpenCV_LIBS}</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="13" data-code-annotation="1">L’unica riga nuova rispetto al Laboratorio 01: <code>task7</code> non usa Eigen né OpenCV, quindi niente <code>target_link_libraries</code>.</span>
+<span data-code-cell="annotated-cell-12" data-code-lines="13" data-code-annotation="1">L’unica riga nuova rispetto al Laboratorio 01: <code>task7</code> non usa Eigen né OpenCV, quindi niente <code>target_link_libraries</code>.</span>
 </dd>
 </dl>
 </section>
