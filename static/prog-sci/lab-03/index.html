@@ -1103,9 +1103,9 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 </section>
 <section id="task-7-facoltativo-la-catena-con-tre-attivazioni" class="slide level2 smaller scrollable">
 <h2>Task 7 (facoltativo): la catena con tre attivazioni</h2>
-<p>Nel Laboratorio 02 la catena di due neuroni con la sigmoide non raggiunge <span class="math inline">\(y = 1\)</span>, perché <span class="math inline">\(\sigma(z) = 1\)</span> solo per <span class="math inline">\(z \to \infty\)</span>. Con le funzioni di oggi si può verificare cosa cambia con la tanh e con la ReLU.</p>
+<p>Nel Laboratorio 02 la catena di due neuroni con la sigmoide non raggiunge <span class="math inline">\(y = 1\)</span>, perché <span class="math inline">\(\sigma(z) = 1\)</span> solo per <span class="math inline">\(z \to \infty\)</span>. Qui si ripete l’addestramento con tanh e ReLU.</p>
 <ol type="1">
-<li>In un nuovo file <code>task7_attivazioni.cpp</code>, con il suo <code>add_executable</code> come nel Laboratorio 02, scrivete <code>double attiva(int tipo, double z)</code> e <code>double deriva(int tipo, double z)</code>: con un <code>if</code> scelgono sigmoide (<code>tipo == 0</code>), tanh (<code>1</code>) o ReLU (<code>2</code>).</li>
+<li>In un nuovo file <code>task7_attivazioni.cpp</code> scrivete <code>double attiva(int tipo, double z)</code> e <code>double deriva(int tipo, double z)</code>, con le formule dei Task 1–5: con un <code>if</code> scelgono sigmoide (<code>tipo == 0</code>), tanh (<code>1</code>) o ReLU (<code>2</code>). Nel <code>CMakeLists.txt</code> aggiungete <code>add_executable(task7 task7_attivazioni.cpp)</code>.</li>
 <li>Scrivete <code>void addestra(int tipo, double y, double w0, double eta)</code>: il ciclo del Task 5 del Laboratorio 02 con <code>attiva</code> e <code>deriva</code> al posto della sigmoide, <span class="math inline">\(x = 1\)</span>, 1000 passi da <span class="math inline">\(w_1 = w_2 = w_0\)</span>. Stampate <span class="math inline">\(E\)</span>, <span class="math inline">\(w_1\)</span> e <span class="math inline">\(w_2\)</span> ogni 500 passi.</li>
 </ol>
 </section>
@@ -1118,8 +1118,9 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <li>con <span class="math inline">\(y = 1\)</span> l’errore è nullo già al passo 0: perché?</li>
 <li>con <span class="math inline">\(y = 0{,}8\)</span> l’errore si ferma a <span class="math inline">\(0{,}64\)</span>. Guardate il segno dei pesi e spiegate perché il gradiente si annulla.</li>
 </ul></li>
+<li>Ripetete il punto 3 con <span class="math inline">\(y = 0{,}8\)</span> e con pesi iniziali <span class="math inline">\(w_0 = 0\)</span> e <span class="math inline">\(w_0 = 5\)</span>. Quali attivazioni non imparano, o imparano molto lentamente? Spiegatelo con i valori di <span class="math inline">\(a_1\)</span>, <span class="math inline">\(a_2\)</span> e delle derivate al passo 0.</li>
 </ol>
-<p>Suggerimento per il punto 4: stampate i pesi ai primi passi e calcolate a mano <span class="math inline">\(a_2 = \mathrm{ReLU}(w_2\,\mathrm{ReLU}(w_1))\)</span>.</p>
+<p>Suggerimento per il punto 4: stampate i pesi a ogni passo per i primi 25 passi e calcolate a mano <span class="math inline">\(a_2 = \mathrm{ReLU}(w_2\,\mathrm{ReLU}(w_1))\)</span>.</p>
 <p><strong>Anche la soluzione del Task 7 verrà discussa all’inizio del prossimo laboratorio.</strong></p>
 
 
