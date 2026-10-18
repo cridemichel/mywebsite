@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9bbf5fa004a0676d7f26111dc3fdfdb2.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <meta name="author" content="Cristiano De Michele">
+  <title>Programmazione Scientifica++ – Programmazione Scientifica++: Lezione 7</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="../annotazioni.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="text/x-mathjax-config">
+  // Solo i font TeX serviti dal sito (mathjax/, 30/9/2026). Sul Mac sono installati
+  // i font STIX: MathJax li preferiva, chiedeva fonts/STIX/fontdata.js, che la copia
+  // ridotta non ha, e mostrava "Math Processing Error" (slide "Piegare lo spazio").
+  MathJax.Hub.Config({"HTML-CSS": {availableFonts: ["TeX"], preferredFont: "TeX",
+                                   webFont: "TeX", imageFont: null}});
+  // Anteprime della speaker view (8/10/2026): formule viste DOPPIE con schermo esteso.
+  // Solo li' si spengono la copia MathML nascosta (per i lettori di schermo) e la
+  // bozza veloce che precede il disegno definitivo: le slide proiettate e il sito
+  // degli studenti restano come prima.
+  if (/receiver/i.test(window.location.search))
+    MathJax.Hub.Config({menuSettings: {assistiveMML: false, FastPreview: false},
+                        AssistiveMML: {disabled: true}, "fast-preview": {disabled: true}});
+  </script>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
+  <style>
+  /* pulsanti "gomma" e "schermo intero" accanto a lavagna e notes canvas (29/9/2026) */
+  .reveal .slide-chalkboard-buttons .fa-eraser::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-schermo-intero::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-esci-schermo::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/></svg>')}
+  </style>
+  <script>
+  // Due pulsanti in piu' in basso a sinistra, per chi presenta dal tablet
+  // senza tastiera:
+  //  - la gomma cancella in un colpo i disegni della slide corrente, nel modo
+  //    attivo (la lavagna se e' aperta, altrimenti il notes canvas): e' il
+  //    tasto Canc. Le altre slide non si toccano;
+  //  - schermo intero, entra ed esce (il tasto F); l'icona segue lo stato.
+  window.addEventListener('load', function () {
+    var tentativi = 0;
+    (function aggiungi() {
+      var div = document.querySelector('.reveal .slide-chalkboard-buttons');
+      if (!div || typeof RevealChalkboard === 'undefined') {
+        if (++tentativi < 50) setTimeout(aggiungi, 100);
+        return;
+      }
+      if (div.querySelector('.fa-eraser')) return;
+      var span = document.createElement('span');
+      span.title = 'Cancella i disegni di questa slide (Canc)';
+      var icona = document.createElement('i');
+      icona.className = 'fas fa-eraser';
+      span.appendChild(icona);
+      span.onclick = function (ev) { ev.preventDefault(); RevealChalkboard.clear(); };
+      div.appendChild(span);
+
+      var doc = document.documentElement;
+      if (!doc.requestFullscreen) return;       // browser senza schermo intero
+      var fs = document.createElement('span');
+      var ifs = document.createElement('i');
+      fs.appendChild(ifs);
+      function aggiorna() {
+        var dentro = !!document.fullscreenElement;
+        ifs.className = 'fas ' + (dentro ? 'fa-esci-schermo' : 'fa-schermo-intero');
+        fs.title = dentro ? 'Esci dallo schermo intero (F)' : 'Schermo intero (F)';
+      }
+      fs.onclick = function (ev) {
+        ev.preventDefault();
+        if (document.fullscreenElement) document.exitFullscreen();
+        else doc.requestFullscreen().catch(function () {});
+      };
+      document.addEventListener('fullscreenchange', aggiorna);
+      aggiorna();
+      div.appendChild(fs);
+    })();
+  });
+  </script>
+  <script>
+  // Swipe a DUE dita per cambiare slide (29/9/2026). Lo swipe a un dito resta
+  // quello di reveal.js, che pero' non funziona se il dito parte su qualcosa che
+  // scorre (slide .scrollable, blocchi di codice): li' il browser si prende il
+  // gesto per lo scorrimento. Con due dita si cambia slide ovunque, anche con la
+  // matita attiva. Un pinch (dita che si allontanano) resta uno zoom.
+  (function () {
+    var SOGLIA = 60;            // px di spostamento del punto medio delle due dita
+    var g = null;               // gesto a due dita in corso
+    var tocchi = new Set();     // pointer "touch" attivi
+    var muto = false;           // da quando posi il secondo dito a quando li togli tutti
+
+    function medio(t) {
+      return { x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2,
+               d: Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) };
+    }
+    document.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) { var m = medio(e.touches); g = { x: m.x, y: m.y, d: m.d, fatto: false }; }
+      else if (e.touches.length > 2) g = null;
+    }, { capture: true, passive: true });
+
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches.length < 2) return;
+      e.stopPropagation();                      // la lavagna non disegna col secondo dito
+      if (!g || e.touches.length !== 2) return;
+      if (g.fatto) { if (e.cancelable) e.preventDefault(); return; }
+      var m = medio(e.touches), dx = m.x - g.x, dy = m.y - g.y;
+      if (Math.abs(m.d - g.d) > 0.35 * g.d) { g = null; return; }      // pinch: al browser
+      if (Math.abs(dx) > SOGLIA && Math.abs(dx) > 1.5 * Math.abs(dy)) {
+        g.fatto = true;
+        if (e.cancelable) e.preventDefault();
+        if (dx < 0) Reveal.next(); else Reveal.prev();
+      } else if (Math.abs(dy) > SOGLIA && Math.abs(dy) > 1.5 * Math.abs(dx)) {
+        g = null;                                // due dita in verticale: scorrimento
+      }
+    }, { capture: true, passive: false });
+
+    document.addEventListener('touchend', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+    document.addEventListener('touchcancel', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+
+    // reveal.js legge lo swipe dai pointer events, dito per dito: con due dita
+    // vedrebbe anche uno swipe a un dito e salterebbe due slide. Dal secondo dito
+    // in poi, e finche' non si alzano tutti, i suoi pointermove non gli arrivano.
+    function conta(e) {
+      if (e.pointerType !== 'touch') return;
+      if (e.type === 'pointerdown') { tocchi.add(e.pointerId); if (tocchi.size >= 2) muto = true; }
+      else { tocchi.delete(e.pointerId); if (tocchi.size === 0) muto = false; }
+    }
+    ['pointerdown', 'pointerup', 'pointercancel'].forEach(function (t) {
+      document.addEventListener(t, conta, true);
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch' && muto) e.stopPropagation();
+    }, true);
+  })();
+  </script>
+  <script>
+  // Speaker view su schermo esteso (8/10/2026): quello che si fa sull'anteprima
+  // della slide CORRENTE nella speaker view (tasto S) si vede anche sulla finestra
+  // proiettata, che il cursore non raggiunge.
+  //  - Puntatore: muovendo il mouse sull'anteprima compare un pallino rosso nello
+  //    stesso punto della vista proiettata; resta finche' il mouse e' sull'anteprima
+  //    e sparisce uscendo (8/10: tolto lo spegnimento dopo 4 s fermo, e il pallino
+  //    remoto non risente piu' di clic o cambi di finestra su quella proiettata).
+  //    Tasto R premuto nella speaker view: spegne/riaccende questo pallino (all'apertura
+  //    e' acceso; la conferma compare solo nell'anteprima, non sul proiettore).
+  //  - Evidenziatore: il testo selezionato nell'anteprima si colora di giallo sulla
+  //    vista proiettata (8/10/2026). Non usa la selezione vera (in una finestra senza
+  //    fuoco e' grigio chiaro) ma la CSS Custom Highlight API; le formule si saltano.
+  //  - Annotazioni del codice (i numerini): quella accesa nell'anteprima, passandoci
+  //    sopra o con un clic, si accende anche sulla vista proiettata, con la sua riga
+  //    di codice (12/10/2026).
+  //  - Lavagna e penna: i disegni fatti sull'anteprima (tasti C e B, gomma, Canc)
+  //    passano alla vista proiettata, e viceversa; aprendo la speaker view
+  //    l'anteprima riceve i disegni gia' fatti.
+  // Usa i messaggi "broadcast"/"received" previsti dal plugin chalkboard per le
+  // presentazioni condivise; l'anteprima della slide successiva e' esclusa.
+  //  - Senza speaker view il pallino segue il mouse sulla slide e la freccia viene
+  //    nascosta; tornano manina/freccia sugli elementi cliccabili (pulsanti, link,
+  //    callout richiudibili, menu, footer), il cursore di disegno con penna e lavagna,
+  //    il cursore normale tenendo premuto il tasto (selezione del testo).
+  //    Dopo 3 s fermo spariscono pallino e freccia: basta muovere il mouse.
+  //    Questo pallino parte SPENTO: si accende e si spegne col tasto R. Riguarda solo
+  //    l'uso senza speaker view: il pallino comandato dall'anteprima funziona sempre.
+  (function () {
+    var NS = 'speaker-view-ponte';
+    function area() {                    // dove stanno le slide in questa finestra
+      var v = document.querySelector('.reveal');
+      if (!v || typeof Reveal === 'undefined' || !Reveal.isReady()) return null;
+      var r = v.getBoundingClientRect(), c = Reveal.getConfig(), s = Reveal.getScale();
+      var w = c.width * s, h = c.height * s;
+      return { x: r.left + (r.width - w) / 2, y: r.top + (r.height - h) / 2, w: w, h: h };
+    }
+    function manda(dest, m) { m.namespace = NS; try { dest.postMessage(JSON.stringify(m), '*'); } catch (e) {} }
+    function leggi(ev) {
+      var m; try { m = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data; } catch (e) { return null; }
+      return (m && m.namespace === NS) ? m : null;
+    }
+    // Testo di una slide come sequenza di caratteri, saltando formule e script: le due
+    // finestre caricano la stessa pagina, quindi le posizioni coincidono.
+    var SALTA = 'script, style, .MathJax, .MathJax_Display, .MathJax_Preview, .MJX_Assistive_MathML, mjx-container';
+    function testi(sez) {
+      var w = document.createTreeWalker(sez, NodeFilter.SHOW_TEXT, null), n, l = [], tot = 0;
+      while ((n = w.nextNode())) {
+        if (n.parentElement && n.parentElement.closest(SALTA)) continue;
+        l.push({ n: n, da: tot }); tot += n.length;
+      }
+      return l;
+    }
+    function ricevuto(contenuto) {       // consegna al plugin chalkboard
+      var e = new CustomEvent('received'); e.content = contenuto; document.dispatchEvent(e);
+    }
+
+    if (/receiver/i.test(window.location.search)) {
+      // anteprima dentro la speaker view: solo quella della slide corrente
+      var cornice = null, dest = null;
+      try { cornice = window.frameElement; dest = window.parent.opener; } catch (e) {}
+      if (!cornice || !dest || !cornice.closest('#current-slide')) return;
+      var invia = true, scritta = null, timerScritta = null;   // acceso all'apertura
+      function conferma(testo) {         // scritta solo nell'anteprima
+        if (!scritta) {
+          scritta = document.createElement('div');
+          scritta.style.cssText = 'position:fixed;left:50%;bottom:60px;transform:translateX(-50%);' +
+            'padding:6px 18px;border-radius:8px;background:rgba(0,0,0,.75);color:#fff;' +
+            'font:28px sans-serif;pointer-events:none;z-index:100001;display:none';
+          document.body.appendChild(scritta);
+        }
+        scritta.textContent = testo; scritta.style.display = 'block';
+        clearTimeout(timerScritta);
+        timerScritta = setTimeout(function () { scritta.style.display = 'none'; }, 1500);
+      }
+      window.addEventListener('load', function () {   // la speaker view gira qui i tasti premuti
+        if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+          Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Pallino sulla vista proiettata acceso/spento' },
+            function () {
+              invia = !invia;
+              if (!invia) manda(dest, { via: true });
+              conferma('Pallino sul proiettore ' + (invia ? 'acceso' : 'spento') + ' (tasto R)');
+            });
+      });
+      document.addEventListener('mousemove', function (e) {
+        if (!invia) return;
+        var a = area(); if (!a) return;
+        manda(dest, { x: (e.clientX - a.x) / a.w, y: (e.clientY - a.y) / a.h });
+      });
+      document.documentElement.addEventListener('mouseleave', function () { manda(dest, { via: true }); });
+      document.addEventListener('broadcast', function (e) {
+        if (e.content && e.content.sender === 'chalkboard-plugin') manda(dest, { lavagna: e.content });
+      });
+      window.addEventListener('message', function (ev) {
+        var m = leggi(ev); if (m && m.lavagna) ricevuto(m.lavagna);
+      });
+      window.addEventListener('load', function () { setTimeout(function () { manda(dest, { ciao: true }); }, 500); });
+      var ultimeAnn = '', attesaAnn = null;
+      function mandaAnn() {              // annotazioni accese nella slide corrente
+        attesaAnn = null;
+        var sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide(), l = [];
+        if (sez) sez.querySelectorAll('dd > span[data-code-annotation].ann-on').forEach(function (sp) {
+          l.push([sp.dataset.codeCell, sp.dataset.codeAnnotation]);
+        });
+        var k = JSON.stringify(l); if (k === ultimeAnn) return; ultimeAnn = k;
+        var i = Reveal.getIndices();
+        manda(dest, { ann: l, h: i.h, v: i.v });
+      }
+      window.addEventListener('load', function () {
+        new MutationObserver(function () {
+          if (!attesaAnn) attesaAnn = setTimeout(mandaAnn, 0);
+        }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+      });
+      var ultimaSel = '';
+      document.addEventListener('selectionchange', function () {   // evidenziatore
+        var sel = document.getSelection(), sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide();
+        var ev = null;
+        if (sel && sel.rangeCount && !sel.isCollapsed && sez) {
+          var r = sel.getRangeAt(0), da = null, a = null;
+          testi(sez).forEach(function (t) {
+            if (!r.intersectsNode(t.n)) return;
+            if (da === null) da = t.da + (t.n === r.startContainer ? r.startOffset : 0);
+            a = t.da + (t.n === r.endContainer ? r.endOffset : t.n.length);
+          });
+          if (da !== null && a > da) ev = [da, a];
+        }
+        var k = JSON.stringify(ev); if (k === ultimaSel) return; ultimaSel = k;
+        var i = Reveal.getIndices();
+        manda(dest, { evid: ev, h: i.h, v: i.v });
+      });
+      return;
+    }
+
+    // finestra proiettata
+    var punto = null, puntoRemoto = null, timer = null, timerRemoto = null, anteprime = [];
+    function nuovoPallino() {
+      var d = document.createElement('div');
+      d.style.cssText = 'position:fixed;width:18px;height:18px;margin:-9px 0 0 -9px;' +
+        'border-radius:50%;background:rgba(220,30,30,.85);box-shadow:0 0 10px 3px rgba(220,30,30,.5);' +
+        'pointer-events:none;z-index:100000;display:none';
+      document.body.appendChild(d);
+      return d;
+    }
+    function pallino() { return punto || (punto = nuovoPallino()); }               // mouse qui
+    function pallinoRemoto() { return puntoRemoto || (puntoRemoto = nuovoPallino()); } // speaker view
+    document.addEventListener('broadcast', function (e) {
+      if (!e.content || e.content.sender !== 'chalkboard-plugin') return;
+      anteprime = anteprime.filter(function (w) { return !w.closed; });
+      anteprime.forEach(function (w) { manda(w, { lavagna: e.content }); });
+    });
+    // anche senza speaker view: il pallino segue il mouse sulla slide al posto della freccia
+    var stile = document.createElement('style');
+    stile.textContent = 'html.laser-attivo, html.laser-attivo * { cursor: none !important; }';
+    document.head.appendChild(stile);
+    var radice = document.documentElement, premuto = false, ultimo = null, ultimoCliccabile = false;
+    var laserAcceso = false, avviso = null, timerAvviso = null;   // spento all'avvio
+    function mostraAvviso(testo) {     // piccola scritta in basso, per un secondo e mezzo
+      if (!avviso) {
+        avviso = document.createElement('div');
+        avviso.style.cssText = 'position:fixed;left:50%;bottom:48px;transform:translateX(-50%);' +
+          'padding:4px 12px;border-radius:6px;background:rgba(0,0,0,.7);color:#fff;' +
+          'font:15px sans-serif;pointer-events:none;z-index:100001;display:none';
+        document.body.appendChild(avviso);
+      }
+      avviso.textContent = testo; avviso.style.display = 'block';
+      clearTimeout(timerAvviso);
+      timerAvviso = setTimeout(function () { avviso.style.display = 'none'; }, 1500);
+    }
+    function cambiaLaser() {
+      laserAcceso = !laserAcceso;
+      if (!laserAcceso) { clearTimeout(timer); spegni(true); }
+      mostraAvviso('Puntatore laser ' + (laserAcceso ? 'acceso' : 'spento') + ' (tasto R)');
+    }
+    window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+        Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Puntatore laser acceso/spento' }, cambiaLaser);
+    });
+    var CLICCABILI = 'a, button, summary, label, input, select, textarea, [role="button"], [onclick],' +
+      ' .controls, .progress, .slide-number, .footer, .slide-menu-button, .slide-menu,' +
+      ' .slide-chalkboard-buttons, .chalkboard-buttons';
+    function cliccabile(t) {            // elemento con manina, o comunque interattivo
+      if (!t || t.nodeType !== 1) return false;
+      if (t === ultimo) return ultimoCliccabile;
+      var c = radice.classList.contains('laser-attivo');
+      if (c) radice.classList.remove('laser-attivo');   // per leggere il cursore vero
+      var cur = getComputedStyle(t).cursor;
+      if (c) radice.classList.add('laser-attivo');
+      ultimo = t;
+      ultimoCliccabile = !!t.closest(CLICCABILI) || cur === 'pointer' ||
+        (t.tagName === 'CANVAS' && !!t.closest('#notescanvas, #chalkboard'));
+      return ultimoCliccabile;
+    }
+    function spegni(anchefreccia) {     // nasconde il pallino; con true ridà la freccia
+      if (punto) punto.style.display = 'none';
+      if (anchefreccia) radice.classList.remove('laser-attivo');
+    }
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || premuto || !laserAcceso) return;
+      var a = area();
+      clearTimeout(timer);
+      var fuori = !a || e.clientX < a.x || e.clientX > a.x + a.w || e.clientY < a.y || e.clientY > a.y + a.h;
+      if (fuori || cliccabile(e.target)) { spegni(true); return; }
+      var p = pallino();
+      p.style.left = e.clientX + 'px'; p.style.top = e.clientY + 'px'; p.style.display = 'block';
+      radice.classList.add('laser-attivo');
+      timer = setTimeout(function () { spegni(false); }, 3000);   // fermo: sparisce tutto
+    });
+    document.addEventListener('pointerdown', function (e) {   // clic, selezione, doppio clic
+      if (e.pointerType !== 'mouse') return;
+      premuto = true; clearTimeout(timer); spegni(true);
+    }, true);
+    function rilascia() { premuto = false; }
+    document.addEventListener('pointerup', rilascia, true);
+    window.addEventListener('blur', function () { premuto = false; spegni(true); });
+    radice.addEventListener('mouseleave', function () { spegni(true); });
+
+    // evidenziatore: stessa porzione di testo selezionata nell'anteprima
+    var EVIDENZIA = !!(window.CSS && CSS.highlights && window.Highlight);
+    if (EVIDENZIA) {
+      var stileEv = document.createElement('style');
+      stileEv.textContent = '::highlight(speaker-view) { background-color: rgba(255, 220, 0, .6); }';
+      document.head.appendChild(stileEv);
+    }
+    function evidenzia(m) {
+      if (!EVIDENZIA) return;
+      CSS.highlights.delete('speaker-view');
+      var i = Reveal.getIndices();
+      if (!m.evid || m.h !== i.h || m.v !== i.v) return;
+      var l = testi(Reveal.getCurrentSlide()), r = document.createRange(), ok = 0;
+      for (var k = 0; k < l.length; k++) {
+        var t = l[k], fine = t.da + t.n.length;
+        if (!(ok & 1) && m.evid[0] < fine) { r.setStart(t.n, m.evid[0] - t.da); ok |= 1; }
+        if (!(ok & 2) && m.evid[1] <= fine) { r.setEnd(t.n, m.evid[1] - t.da); ok |= 2; break; }
+      }
+      if (ok === 3) CSS.highlights.set('speaker-view', new Highlight(r));
+    }
+    if (EVIDENZIA) window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { CSS.highlights.delete('speaker-view'); });
+    });
+    // annotazioni del codice accese dall'anteprima: stessi elementi dello script delle
+    // annotazioni (spiegazione, numerino, marcatore nel codice, righe di codice)
+    var annRemote = [];
+    function annotazioni(m) {
+      annRemote.forEach(function (e) { e.classList.remove('ann-on'); });
+      annRemote = [];
+      var i = Reveal.getIndices();
+      if (!m.ann || m.h !== i.h || m.v !== i.v) return;
+      m.ann.forEach(function (c) {
+        var cella = c[0], n = c[1];
+        var span = document.querySelector('dd > span[data-code-cell="' + cella + '"][data-code-annotation="' + n + '"]');
+        if (!span) return;
+        var dd = span.parentElement, dl = dd.parentElement, g = [span, dd];
+        var dds = Array.prototype.slice.call(dl.querySelectorAll('dd')), dts = dl.querySelectorAll('dt');
+        if (dts[dds.indexOf(dd)]) g.push(dts[dds.indexOf(dd)]);
+        var anchor = document.querySelector('.code-annotation-anchor[data-target-cell="' + cella +
+                                            '"][data-target-annotation="' + n + '"]');
+        if (anchor) g.push(anchor);
+        String(span.dataset.codeLines || '').split(',').forEach(function (p) {
+          var r = p.trim().match(/^(\d+)(?:-(\d+))?$/); if (!r) return;
+          for (var j = +r[1], b = r[2] ? +r[2] : +r[1]; j <= b; j++) {
+            var el = document.getElementById(cella + '-' + j); if (el) g.push(el);
+          }
+        });
+        g.forEach(function (e) { if (!e.classList.contains('ann-on')) { e.classList.add('ann-on'); annRemote.push(e); } });
+      });
+    }
+    window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { annotazioni({}); });
+    });
+
+    window.addEventListener('message', function (ev) {
+      var m = leggi(ev); if (!m) return;
+      if (m.ciao) {                      // nuova anteprima: le mando i disegni gia' fatti
+        if (anteprime.indexOf(ev.source) < 0) anteprime.push(ev.source);
+        var w = new CustomEvent('welcome'); w.id = 'speaker-view'; document.dispatchEvent(w);
+        return;
+      }
+      if (m.lavagna) { ricevuto(m.lavagna); return; }
+      if ('evid' in m) { evidenzia(m); return; }
+      if ('ann' in m) { annotazioni(m); return; }
+      var p = pallinoRemoto();
+      clearTimeout(timerRemoto);
+      if (m.via || m.x < 0 || m.x > 1 || m.y < 0 || m.y > 1) { p.style.display = 'none'; return; }
+      var a = area(); if (!a) return;
+      p.style.left = (a.x + m.x * a.w) + 'px';
+      p.style.top = (a.y + m.y * a.h) + 'px';
+      p.style.display = 'block';
+      // sicurezza: se l'uscita dall'anteprima andasse persa, sparisce dopo 30 s fermo
+      timerRemoto = setTimeout(function () { p.style.display = 'none'; }, 30000);
+    });
+  })();
+  </script>
+  <script>
+  // File di codice divisi in piu' blocchi (13/10/2026). Un blocco con startFrom="..."
+  // (numerazione che prosegue) e' la continuazione del blocco precedente: sulla stessa
+  // slide (due colonne) o, se e' il primo blocco della slide, dell'ultimo blocco della
+  // slide precedente (con lo stesso filename, se indicato). Il pulsante "copia" copia
+  // l'INTERO file; sulla stessa slide resta solo il pulsante del primo pezzo.
+  (function () {
+    var it = /^it/i.test(document.documentElement.lang || '');
+    function testo(div) {                      // testo di un blocco, senza i cerchietti delle annotazioni
+      var code = div.querySelector('pre code');
+      if (!code) return '';
+      var c = code.cloneNode(true);
+      c.querySelectorAll('.code-annotation-anchor').forEach(function (a) { a.remove(); });
+      var righe = c.querySelectorAll(':scope > span');   // una <span> per riga: conserva anche le righe vuote
+      if (righe.length) return Array.prototype.map.call(righe, function (r) { return r.textContent; }).join('\n');
+      return c.textContent.replace(/\n$/, '');
+    }
+    function copia(t, btn) {
+      function ok() {
+        btn.classList.add('code-copy-button-checked');
+        setTimeout(function () { btn.classList.remove('code-copy-button-checked'); }, 1500);
+      }
+      function ripiego() {                     // senza https (es. file aperto in locale)
+        var ta = document.createElement('textarea');
+        ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { if (document.execCommand('copy')) ok(); } catch (e) {}
+        ta.remove();
+      }
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, ripiego);
+      else ripiego();
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      var sezioni = Array.prototype.filter.call(document.querySelectorAll('.reveal .slides section'),
+                                                function (s) { return !s.querySelector('section'); });
+      var tutti = [], prec = null;
+      sezioni.forEach(function (sez) {
+        var g = null;
+        sez.querySelectorAll('div.sourceCode').forEach(function (div) {
+          var segue = div.hasAttribute('data-startfrom');
+          if (segue && g) g.push(div);
+          else if (segue && prec && (div.dataset.filename || '') === (prec[0].dataset.filename || '')) {
+            prec.push(div); g = prec;                // continua dalla slide precedente
+          } else { g = [div]; tutti.push(g); }
+        });
+        prec = g;                                    // null se la slide non ha codice
+      });
+      tutti.forEach(function (gr) {
+        if (gr.length < 2) return;
+        var piuSlide = gr[0].closest('section') !== gr[gr.length - 1].closest('section');
+        gr.forEach(function (div, k) {
+          var b = div.parentElement.querySelector('.code-copy-button');
+          if (!b) return;
+          if (k > 0 && div.closest('section') === gr[k - 1].closest('section')) { b.style.display = 'none'; return; }
+          b.title = it ? (piuSlide ? "Copia l'intero file (tutte le parti)" : "Copia l'intero file")
+                       : (piuSlide ? 'Copy the whole file (all its parts)' : 'Copy the whole file');
+          b._gruppo = gr;
+        });
+      });
+      // in cattura: arriva prima del gestore di Quarto (ClipboardJS) e lo sostituisce
+      document.addEventListener('click', function (ev) {
+        var b = ev.target.closest && ev.target.closest('.code-copy-button');
+        if (!b || !b._gruppo) return;
+        ev.preventDefault(); ev.stopImmediatePropagation();
+        copia(b._gruppo.map(testo).join('\n'), b);
+      }, true);
+    });
+  })();
+  </script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Programmazione Scientifica++: Lezione 7</h1>
+  <p class="subtitle">Incapsulamento, Getter/Setter e Costruttori</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Cristiano De Michele
+</div>
+</div>
+</div>
+
+</section>
+<section id="argomenti-di-oggi" class="slide level2 smaller">
+<h2>Argomenti di oggi</h2>
+<ul>
+<li>Richiamo della Lezione 06: classi, <code>public</code> e <code>private</code>, costruttori</li>
+<li>Perché i dati privati: un’interfaccia stabile</li>
+<li>Getter e setter</li>
+<li>La lista di inizializzazione del costruttore</li>
+<li>Più costruttori nella stessa classe; il costruttore generato dal compilatore</li>
+<li>Il costruttore di copia</li>
+<li>Costruttori privati: il Singleton</li>
+<li>Esercizio finale: i layer del framework</li>
+</ul>
+<p><em>Header, compilazione e linking sono l’argomento della Lezione 08, insieme a stack e heap.</em></p>
+</section>
+<section id="richiamo-della-lezione-06" class="slide level2 smaller">
+<h2>Richiamo della Lezione 06</h2>
+<ul>
+<li>Una classe riunisce attributi e metodi. I metodi accedono a tutti i membri; dall’esterno si accede solo a quelli <code>public</code>.</li>
+<li>I dati si tengono <code>private</code> e si modificano con metodi pubblici che li verificano, come <code>imposta()</code> della classe <code>Temperatura</code>.</li>
+<li>Il costruttore ha il nome della classe, non ha tipo di ritorno e viene eseguito quando l’oggetto viene creato; può ricevere parametri.</li>
+<li>Se la classe ha solo un costruttore con parametri, <code>Result r1;</code> non compila: <em><code>no matching function for call to 'Result::Result()'</code></em>.</li>
+</ul>
+<p>Oggi si vede perché conviene questa organizzazione e che cosa avviene esattamente quando un oggetto viene creato o copiato.</p>
+</section>
+<section id="perché-i-dati-privati-uninterfaccia-stabile" class="slide level2 smaller">
+<h2>Perché i dati privati: un’interfaccia stabile</h2>
+<p>Chi usa una classe dovrebbe dipendere solo dalla sua <strong>interfaccia</strong> pubblica, non dai dettagli interni. Un attributo pubblico entra a far parte dell’interfaccia: se l’autore della classe lo rinomina, il codice che lo usa smette di compilare.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>La classe, dopo la modifica:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-label="1"></a><span class="kw">class</span> Neurone <span class="op">{</span></span>
+<span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-18-3" class="code-annotation-target"><a href="#annotated-cell-18-3" aria-label="3"></a>    <span class="dt">double</span> peso_sinaptico<span class="op">;</span></span>
+<span id="annotated-cell-18-4"><a href="#annotated-cell-18-4" aria-label="4"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-18" data-code-lines="3" data-code-annotation="1">Prima si chiamava <code>peso</code>.</span>
+</dd>
+</dl>
+</div><div class="column" style="width:50%;">
+<p><strong>Il codice che la usa:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-19"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-19-2"><a href="#annotated-cell-19-2" aria-label="2"></a>    Neurone n1<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-19-3" class="code-annotation-target"><a href="#annotated-cell-19-3" aria-label="3"></a>    n1<span class="op">.</span>peso <span class="op">=</span> <span class="fl">1.12</span><span class="op">;</span></span>
+<span id="annotated-cell-19-4"><a href="#annotated-cell-19-4" aria-label="4"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-19-5"><a href="#annotated-cell-19-5" aria-label="5"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-19" data-code-lines="3" data-code-annotation="2"><em><code>error: 'class Neurone' has no member named 'peso'</code></em>.</span>
+</dd>
+</dl>
+</div></div>
+<p>Con l’attributo privato, un cambio di nome o di rappresentazione interna resta confinato nella classe: è il senso dell’<strong>incapsulamento</strong>.</p>
+</section>
+<section id="getter-e-setter" class="slide level2 smaller">
+<h2>Getter e setter</h2>
+<p>L’accesso ai dati privati passa per metodi pubblici: un <strong>getter</strong> restituisce il valore di un attributo, un <strong>setter</strong> lo modifica.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-label="2"></a></span>
+<span id="annotated-cell-20-3"><a href="#annotated-cell-20-3" aria-label="3"></a><span class="kw">class</span> Neurone <span class="op">{</span></span>
+<span id="annotated-cell-20-4"><a href="#annotated-cell-20-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-5" class="code-annotation-target"><a href="#annotated-cell-20-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">peso_</span><span class="op">;</span></span>
+<span id="annotated-cell-20-6"><a href="#annotated-cell-20-6" aria-label="6"></a></span>
+<span id="annotated-cell-20-7"><a href="#annotated-cell-20-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-20-8" class="code-annotation-target"><a href="#annotated-cell-20-8" aria-label="8"></a>    <span class="dt">double</span> getPeso<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-20-9"><a href="#annotated-cell-20-9" aria-label="9"></a>        <span class="cf">return</span> <span class="va">peso_</span><span class="op">;</span></span>
+<span id="annotated-cell-20-10"><a href="#annotated-cell-20-10" aria-label="10"></a>    <span class="op">}</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-20-11" class="code-annotation-target"><a href="#annotated-cell-20-11" aria-label="11"></a>    <span class="dt">void</span> setPeso<span class="op">(</span><span class="dt">double</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-20-12"><a href="#annotated-cell-20-12" aria-label="12"></a>        <span class="va">peso_</span> <span class="op">=</span> p<span class="op">;</span></span>
+<span id="annotated-cell-20-13"><a href="#annotated-cell-20-13" aria-label="13"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-20-14"><a href="#annotated-cell-20-14" aria-label="14"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-20" data-code-lines="5" data-code-annotation="1">Attributo privato, con il suffisso <code>_</code> (Lezione 06).</span>
+</dd>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-20" data-code-lines="8" data-code-annotation="2"><strong>Getter</strong>: restituisce il valore.</span>
+</dd>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-20" data-code-lines="11" data-code-annotation="3"><strong>Setter</strong>: assegna il valore.</span>
+</dd>
+</dl>
+</div><div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-startfrom="15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 14;"><span id="cb1-15"><a aria-label="15"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-16"><a aria-label="16"></a>    Neurone n1<span class="op">;</span></span>
+<span id="cb1-17"><a aria-label="17"></a>    n1<span class="op">.</span>setPeso<span class="op">(</span><span class="fl">1.12</span><span class="op">);</span></span>
+<span id="cb1-18"><a aria-label="18"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n1<span class="op">.</span>getPeso<span class="op">();</span></span>
+<span id="cb1-19"><a aria-label="19"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Se <code>peso_</code> cambia nome o rappresentazione, si aggiornano solo i due metodi: il <code>main</code> resta invariato.</p>
+<p>I prefissi <code>get</code> e <code>set</code> sono una convenzione, non una regola del linguaggio.</p>
+</div></div>
+</section>
+<section id="setter-che-verificano-i-dati" class="slide level2 smaller">
+<h2>Setter che verificano i dati</h2>
+<p>Come <code>imposta()</code> di <code>Temperatura</code> (Lezione 06), un setter può rifiutare i valori non validi.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-label="2"></a></span>
+<span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-label="3"></a><span class="kw">class</span> Persona <span class="op">{</span></span>
+<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-label="5"></a>    <span class="dt">int</span> <span class="va">eta_</span><span class="op">;</span></span>
+<span id="annotated-cell-1-6"><a href="#annotated-cell-1-6" aria-label="6"></a></span>
+<span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-label="8"></a>    <span class="dt">void</span> setEta<span class="op">(</span><span class="dt">int</span> nuova_eta<span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-9" class="code-annotation-target"><a href="#annotated-cell-1-9" aria-label="9"></a>        <span class="cf">if</span> <span class="op">(</span>nuova_eta <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> nuova_eta <span class="op">&lt;</span> <span class="dv">150</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-1-10"><a href="#annotated-cell-1-10" aria-label="10"></a>            <span class="va">eta_</span> <span class="op">=</span> nuova_eta<span class="op">;</span></span>
+<span id="annotated-cell-1-11"><a href="#annotated-cell-1-11" aria-label="11"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-1-12" class="code-annotation-target"><a href="#annotated-cell-1-12" aria-label="12"></a>            <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore: età non valida</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-1-13"><a href="#annotated-cell-1-13" aria-label="13"></a>        <span class="op">}</span></span>
+<span id="annotated-cell-1-14"><a href="#annotated-cell-1-14" aria-label="14"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-1-15"><a href="#annotated-cell-1-15" aria-label="15"></a>    <span class="dt">int</span> getEta<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">eta_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-1-16"><a href="#annotated-cell-1-16" aria-label="16"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="9" data-code-annotation="1">Controllo di validità: un valore fuori intervallo non viene assegnato.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="12" data-code-annotation="2">Per ora un messaggio su <code>std::cerr</code>. Le eccezioni, che permettono al chiamante di gestire l’errore, sono l’argomento della Lezione 19.</span>
+</dd>
+</dl>
+</section>
+<section id="la-lista-di-inizializzazione" class="slide level2 smaller">
+<h2>La lista di inizializzazione</h2>
+<p>Il costruttore può inizializzare gli attributi <strong>prima</strong> di eseguire il proprio corpo, con la lista di inizializzazione:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-label="1"></a><span class="kw">class</span> Neurone <span class="op">{</span></span>
+<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">peso_</span><span class="op">;</span></span>
+<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-label="4"></a>    <span class="dt">double</span> <span class="va">lr_</span><span class="op">;</span></span>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-label="5"></a></span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-7" class="code-annotation-target"><a href="#annotated-cell-2-7" aria-label="7"></a>    Neurone<span class="op">(</span><span class="dt">double</span> peso<span class="op">,</span> <span class="dt">double</span> lr<span class="op">)</span> <span class="op">:</span> <span class="va">peso_</span><span class="op">(</span>peso<span class="op">),</span> <span class="va">lr_</span><span class="op">(</span>lr<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-label="8"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="7" data-code-annotation="1">Dopo i <code>:</code> ogni attributo riceve il valore iniziale, nella forma <code>nome(valore)</code>; qui il corpo <code>{ }</code> è vuoto.</span>
+</dd>
+</dl>
+<p>Per un <code>double</code> il risultato è lo stesso che assegnare nel corpo (<code>peso_ = peso;</code>, Lezione 06). Un attributo che è a sua volta un oggetto, invece, nel corpo viene prima costruito con il costruttore di default e poi riassegnato; nella lista viene costruito direttamente con il valore iniziale.</p>
+</section>
+<section id="la-lista-di-inizializzazione-due-regole" class="slide level2 smaller">
+<h2>La lista di inizializzazione: due regole</h2>
+<ul>
+<li>Gli attributi <code>const</code> e i reference <strong>devono</strong> stare nella lista, perché dopo la creazione non si possono assegnare (la nota sullo scheduler nella Lezione 06).</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-label="1"></a><span class="kw">class</span> Sensore <span class="op">{</span></span>
+<span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-3" class="code-annotation-target"><a href="#annotated-cell-3-3" aria-label="3"></a>    <span class="at">const</span> <span class="dt">double</span> <span class="va">offset_</span><span class="op">;</span></span>
+<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-3-5" class="code-annotation-target"><a href="#annotated-cell-3-5" aria-label="5"></a>    Sensore<span class="op">(</span><span class="dt">double</span> o<span class="op">)</span> <span class="op">:</span> <span class="va">offset_</span><span class="op">(</span>o<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-label="6"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="3" data-code-annotation="1">Attributo costante: il valore si fissa una volta, alla creazione.</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="5" data-code-annotation="2">Con <code>Sensore(double o) { offset_ = o; }</code> invece: <em><code>error: assignment of read-only member 'Sensore::offset_'</code></em>.</span>
+</dd>
+</dl>
+<ul>
+<li>Gli attributi vengono inizializzati nell’<strong>ordine in cui sono dichiarati</strong> nella classe, non in quello della lista; se i due ordini differiscono, <code>-Wall</code> lo segnala (<code>-Wreorder</code>).</li>
+</ul>
+</section>
+<section id="più-costruttori-nella-stessa-classe" class="slide level2 smaller">
+<h2>Più costruttori nella stessa classe</h2>
+<p>Come le funzioni (Lezione 05), i costruttori si possono sovraccaricare: quale viene chiamato dipende dagli argomenti.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-4"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-label="1"></a><span class="kw">class</span> Datum <span class="op">{</span></span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">value_</span><span class="op">;</span></span>
+<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-label="4"></a></span>
+<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6" aria-label="6"></a>    Datum<span class="op">()</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-7" class="code-annotation-target"><a href="#annotated-cell-4-7" aria-label="7"></a>    Datum<span class="op">(</span><span class="dt">double</span> v<span class="op">)</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span>v<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-label="8"></a><span class="op">};</span></span>
+<span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-label="9"></a></span>
+<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-label="10"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-4-11" class="code-annotation-target"><a href="#annotated-cell-4-11" aria-label="11"></a>    Datum d1<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-4-12" class="code-annotation-target"><a href="#annotated-cell-4-12" aria-label="12"></a>    Datum d2<span class="op">(</span><span class="fl">5.5</span><span class="op">);</span></span>
+<span id="annotated-cell-4-13"><a href="#annotated-cell-4-13" aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-4-14"><a href="#annotated-cell-4-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="6" data-code-annotation="1">Costruttore di default, senza parametri.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="7" data-code-annotation="2">Costruttore con un parametro.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="11" data-code-annotation="3">Chiama il costruttore di default: <code>value_</code> vale <code>0.0</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="12" data-code-annotation="4">Chiama il costruttore con un parametro: <code>value_</code> vale <code>5.5</code>.</span>
+</dd>
+</dl>
+</section>
+<section id="il-costruttore-generato-dal-compilatore" class="slide level2 smaller">
+<h2>Il costruttore generato dal compilatore</h2>
+<ul>
+<li>Se una classe <strong>non dichiara alcun costruttore</strong>, il compilatore ne genera uno di default, che non inizializza gli attributi dei tipi fondamentali (<code>double</code>, <code>int</code>, puntatori): il loro valore resta indeterminato.</li>
+<li>Se la classe dichiara <strong>almeno un costruttore</strong>, quello di default non viene più generato. Con il solo <code>Datum(double v)</code>, la riga <code>Datum d1;</code> dà <em><code>error: no matching function for call to 'Datum::Datum()'</code></em>, come per <code>Result</code> nella Lezione 06. Se serve anche <code>Datum d1;</code>, il costruttore di default va scritto esplicitamente.</li>
+<li>Il costruttore di default scritto esplicitamente, con la lista di inizializzazione, è quindi il modo per garantire che ogni attributo abbia un valore definito fin dalla creazione dell’oggetto.</li>
+</ul>
+</section>
+<section id="il-costruttore-di-copia" class="slide level2 smaller">
+<h2>Il costruttore di copia</h2>
+<p>Un oggetto può essere creato come copia di un altro:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-label="2"></a>    Datum d1<span class="op">(</span><span class="fl">5.5</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-label="3"></a>    Datum d2 <span class="op">=</span> d1<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-4" class="code-annotation-target"><a href="#annotated-cell-5-4" aria-label="4"></a>    Datum d3<span class="op">(</span>d1<span class="op">);</span></span>
+<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-label="5"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-label="6"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="1"><code>d2</code> viene creato come copia di <code>d1</code>: si chiama il <strong>costruttore di copia</strong>, <code>Datum(const Datum&amp; altro)</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="2">La stessa operazione, scritta come chiamata esplicita.</span>
+</dd>
+</dl>
+<p>Se la classe non lo dichiara, il compilatore genera un costruttore di copia che copia uno per uno tutti gli attributi, privati compresi. Per un <code>double</code> è il comportamento corretto; di un puntatore, invece, copia l’indirizzo e non i dati a cui punta. Con la memoria dinamica (Lezione 08) questo diventa un problema, che si risolve con la <em>deep copy</em> (Lezione 10).</p>
+</section>
+<section id="costruttori-privati-il-singleton" class="slide level2 smaller">
+<h2>Costruttori privati: il Singleton</h2>
+<p>Un costruttore <code>private</code> impedisce di creare oggetti dall’esterno; con un metodo che restituisce sempre lo stesso oggetto, ne garantisce uno solo. È il <em>design pattern</em> <strong>Singleton</strong>, utile per esempio per un unico generatore di numeri casuali.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="kw">class</span> Generatore <span class="op">{</span></span>
+<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-3" class="code-annotation-target"><a href="#annotated-cell-6-3" aria-label="3"></a>    Generatore<span class="op">()</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-6-5" class="code-annotation-target"><a href="#annotated-cell-6-5" aria-label="5"></a>    <span class="at">static</span> Generatore<span class="op">&amp;</span> get<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-label="6"></a>        <span class="at">static</span> Generatore unico<span class="op">;</span> <span class="cf">return</span> unico<span class="op">;</span></span>
+<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-label="7"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-label="8"></a><span class="op">};</span></span>
+<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-label="9"></a></span>
+<span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-label="10"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-6-11" class="code-annotation-target"><a href="#annotated-cell-6-11" aria-label="11"></a>    Generatore<span class="op">&amp;</span> g <span class="op">=</span> Generatore<span class="op">::</span>get<span class="op">();</span></span>
+<span id="annotated-cell-6-12"><a href="#annotated-cell-6-12" aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-6-13"><a href="#annotated-cell-6-13" aria-label="13"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="3" data-code-annotation="1">Dall’esterno, per esempio nel <code>main</code>, <code>Generatore g;</code> non compila: il costruttore è privato.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="5" data-code-annotation="2">L’unico modo per ottenere l’oggetto. I due usi di <code>static</code>, metodo senza oggetto e variabile creata una sola volta, sono l’argomento della Lezione 13.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="11" data-code-annotation="3">Un Singleton completo vieta anche la copia (<code>Generatore g2 = Generatore::get();</code> ne creerebbe un secondo). Il framework usa invece una variabile globale, <code>rng</code>.</span>
+</dd>
+</dl>
+</section>
+<section id="esercizio-veloce-il-setter" class="slide level2 smaller">
+<h2>Esercizio veloce: il setter</h2>
+<p>Scrivete una classe <code>Neurone</code> i cui dati siano protetti da un setter.</p>
+<ol type="1">
+<li>Due attributi <strong>privati</strong>: <code>peso_</code> e <code>lr_</code> (il learning rate).</li>
+<li>I due getter, <code>getPeso()</code> e <code>getLr()</code>.</li>
+<li><code>setLr(double)</code>: accetta solo valori in <span class="math inline">\((0, 1]\)</span>; altrimenti <strong>rifiuta</strong> il valore, stampa il motivo su <code>std::cerr</code> e mantiene quello precedente.</li>
+<li>Due costruttori, con la lista di inizializzazione: quello di default (peso <span class="math inline">\(0\)</span>, lr <span class="math inline">\(0{,}1\)</span>) e <code>Neurone(double peso, double lr)</code>, che assegna <code>lr_</code> passando dal setter.</li>
+<li>Nel <code>main</code>: provate ad assegnare <code>n.lr_ = 5.0;</code> e leggete il messaggio del compilatore; poi chiamate <code>n.setLr(5.0)</code> e <code>n.setLr(0.05)</code>.</li>
+</ol>
+<p>Il costruttore con parametri si presta a un errore frequente: se <code>Neurone m(0.7, 99.0);</code> stampa per <code>lr_</code> un valore privo di senso, la spiegazione è nella slide «Soluzione: <code>lr_</code> non inizializzato».</p>
+</section>
+<section id="soluzione-dellesercizio-la-classe" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio: la classe</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a></span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a><span class="kw">class</span> Neurone <span class="op">{</span></span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">peso_</span><span class="op">;</span></span>
+<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">lr_</span><span class="op">;</span></span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a></span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-label="9"></a>    Neurone<span class="op">()</span> <span class="op">:</span> <span class="va">peso_</span><span class="op">(</span><span class="fl">0.0</span><span class="op">),</span> <span class="va">lr_</span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span> <span class="op">{}</span></span>
+<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-label="10"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-11" class="code-annotation-target"><a href="#annotated-cell-7-11" aria-label="11"></a>    Neurone<span class="op">(</span><span class="dt">double</span> peso<span class="op">,</span> <span class="dt">double</span> lr<span class="op">)</span> <span class="op">:</span> <span class="va">peso_</span><span class="op">(</span>peso<span class="op">),</span> <span class="va">lr_</span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span> <span class="op">{</span> setLr<span class="op">(</span>lr<span class="op">);</span> <span class="op">}</span></span>
+<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-label="12"></a></span>
+<span id="annotated-cell-7-13"><a href="#annotated-cell-7-13" aria-label="13"></a>    <span class="dt">double</span> getPeso<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">peso_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-7-14"><a href="#annotated-cell-7-14" aria-label="14"></a>    <span class="dt">double</span> getLr<span class="op">()</span>   <span class="op">{</span> <span class="cf">return</span> <span class="va">lr_</span><span class="op">;</span>   <span class="op">}</span></span>
+<span id="annotated-cell-7-15"><a href="#annotated-cell-7-15" aria-label="15"></a></span>
+<span id="annotated-cell-7-16"><a href="#annotated-cell-7-16" aria-label="16"></a>    <span class="dt">void</span> setLr<span class="op">(</span><span class="dt">double</span> nuovo<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-17"><a href="#annotated-cell-7-17" aria-label="17"></a>        <span class="cf">if</span> <span class="op">(</span>nuovo <span class="op">&gt;</span> <span class="fl">0.0</span> <span class="op">&amp;&amp;</span> nuovo <span class="op">&lt;=</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-18"><a href="#annotated-cell-7-18" aria-label="18"></a>            <span class="va">lr_</span> <span class="op">=</span> nuovo<span class="op">;</span></span>
+<span id="annotated-cell-7-19"><a href="#annotated-cell-7-19" aria-label="19"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-20"><a href="#annotated-cell-7-20" aria-label="20"></a>            <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"[setLr] rifiutato "</span> <span class="op">&lt;&lt;</span> nuovo</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-7-21" class="code-annotation-target"><a href="#annotated-cell-7-21" aria-label="21"></a>                      <span class="op">&lt;&lt;</span> <span class="st">": deve stare in (0, 1]. Tengo "</span> <span class="op">&lt;&lt;</span> <span class="va">lr_</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-7-22"><a href="#annotated-cell-7-22" aria-label="22"></a>        <span class="op">}</span></span>
+<span id="annotated-cell-7-23"><a href="#annotated-cell-7-23" aria-label="23"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-7-24"><a href="#annotated-cell-7-24" aria-label="24"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="11" data-code-annotation="1"><code>lr_(0.1)</code> inizializza <code>lr_</code> <strong>prima</strong> della chiamata a <code>setLr</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="21" data-code-annotation="2">Se il setter rifiuta il valore, <code>lr_</code> deve già contenere un valore valido.</span>
+</dd>
+</dl>
+</section>
+<section id="soluzione-dellesercizio-il-main" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio: il <code>main</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-startfrom="25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 24;"><span id="cb2-25"><a aria-label="25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-26"><a aria-label="26"></a>    Neurone n<span class="op">;</span></span>
+<span id="cb2-27"><a aria-label="27"></a>    <span class="co">// n.lr_ = 5.0;         // &lt;- il compilatore lo rifiuta</span></span>
+<span id="cb2-28"><a aria-label="28"></a>    n<span class="op">.</span>setLr<span class="op">(</span><span class="fl">5.0</span><span class="op">);</span>           <span class="co">// rifiutato in esecuzione, con un messaggio</span></span>
+<span id="cb2-29"><a aria-label="29"></a>    n<span class="op">.</span>setLr<span class="op">(</span><span class="fl">0.05</span><span class="op">);</span>          <span class="co">// accettato</span></span>
+<span id="cb2-30"><a aria-label="30"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"n: lr "</span> <span class="op">&lt;&lt;</span> n<span class="op">.</span>getLr<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb2-31"><a aria-label="31"></a></span>
+<span id="cb2-32"><a aria-label="32"></a>    Neurone m<span class="op">(</span><span class="fl">0.7</span><span class="op">,</span> <span class="fl">99.0</span><span class="op">);</span>   <span class="co">// il costruttore passa dal setter</span></span>
+<span id="cb2-33"><a aria-label="33"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"m: peso "</span> <span class="op">&lt;&lt;</span> m<span class="op">.</span>getPeso<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">", lr "</span> <span class="op">&lt;&lt;</span> m<span class="op">.</span>getLr<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb2-34"><a aria-label="34"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>[setLr] rifiutato 5: deve stare in (0, 1]. Tengo 0.1
+n: lr 0.05
+[setLr] rifiutato 99: deve stare in (0, 1]. Tengo 0.1
+m: peso 0.7, lr 0.1</code></pre>
+<p>Togliendo il commento a <code>n.lr_ = 5.0;</code>:</p>
+<pre><code>error: 'double Neurone::lr_' is private within this context</code></pre>
+</section>
+<section id="soluzione-lr_-non-inizializzato" class="slide level2 smaller">
+<h2>Soluzione: <code>lr_</code> non inizializzato</h2>
+<p>Se dalla lista di inizializzazione si toglie <code>lr_(0.1)</code>, lasciando <code>: peso_(peso) { setLr(lr); }</code>, l’uscita diventa per esempio:</p>
+<pre><code>[setLr] rifiutato 99: deve stare in (0, 1]. Tengo 6.94378e-310
+m: peso 0.7, lr 6.94378e-310</code></pre>
+<p>Il setter rifiuta <code>99</code> e mantiene il valore di <code>lr_</code>, che nessuno ha inizializzato: il valore è indeterminato e cambia da un sistema all’altro. L’oggetto resta in uno stato non valido.</p>
+<div title="Il compilatore lo segnala solo con certe opzioni">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Il compilatore lo segnala solo con certe opzioni</strong></p>
+</div>
+<div class="callout-content">
+<pre><code>g++ -Wall        -&gt; nessun avviso
+g++ -O2 -Wall    -&gt; warning: 'm.Neurone::lr_' is used uninitialized</code></pre>
+<p>L’uso di una variabile non inizializzata si rileva con l’analisi di flusso, che <code>g++</code> esegue solo quando ottimizza: <code>-Wall</code> da solo non basta. <code>clang++</code> non lo segnala in nessuno dei due casi.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="esercizi-lampo-cosa-stampa" class="slide level2 smaller">
+<h2>Esercizi lampo: cosa stampa?</h2>
+<p>Senza portatile. Si compila con <code>-std=c++17</code>.</p>
+<p><strong>1.</strong> Quante righe vengono stampate, e quali?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb7-2"><a aria-label="2"></a></span>
+<span id="cb7-3"><a aria-label="3"></a><span class="kw">class</span> D <span class="op">{</span></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb7-5"><a aria-label="5"></a>    D<span class="op">()</span>          <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"default</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb7-6"><a aria-label="6"></a>    D<span class="op">(</span><span class="dt">double</span><span class="op">)</span>    <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"param</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb7-7"><a aria-label="7"></a>    D<span class="op">(</span><span class="at">const</span> D<span class="op">&amp;)</span>  <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"copia</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb7-8"><a aria-label="8"></a><span class="op">};</span></span>
+<span id="cb7-9"><a aria-label="9"></a></span>
+<span id="cb7-10"><a aria-label="10"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb7-11"><a aria-label="11"></a>    D a<span class="op">;</span></span>
+<span id="cb7-12"><a aria-label="12"></a>    D b<span class="op">(</span><span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb7-13"><a aria-label="13"></a>    D c <span class="op">=</span> b<span class="op">;</span></span>
+<span id="cb7-14"><a aria-label="14"></a>    D d <span class="op">=</span> D<span class="op">(</span><span class="fl">2.0</span><span class="op">);</span></span>
+<span id="cb7-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>2.</strong> La classe <code>Persona</code> della slide «Setter che verificano i dati» non ha costruttori.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>Persona p<span class="op">;</span></span>
+<span id="cb8-2"><a aria-label="2"></a>p<span class="op">.</span>setEta<span class="op">(</span><span class="dv">200</span><span class="op">);</span>          <span class="co">// l'età non supera il controllo</span></span>
+<span id="cb8-3"><a aria-label="3"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p<span class="op">.</span>getEta<span class="op">();</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="esercizi-lampo-le-risposte" class="slide level2 smaller">
+<h2>Esercizi lampo: le risposte</h2>
+<p><strong>1.</strong> Quattro righe: <code>default</code>, <code>param</code>, <code>copia</code>, <code>param</code>. <code>D d = D(2.0);</code> sembra costruire un oggetto temporaneo e poi copiarlo. Fino al C++14 il compilatore poteva eliminare la copia, ma non era obbligato; dal <strong>C++17</strong> in questo caso l’eliminazione è <strong>obbligatoria</strong>: il temporaneo non viene creato e <code>d</code> è costruito direttamente. Con <code>-std=c++11 -fno-elide-constructors</code>, che vieta l’eliminazione facoltativa, compare una quinta riga, <code>copia</code>.</p>
+<p><strong>2.</strong> Il valore stampato è indeterminato. <code>setEta(200)</code> rifiuta il valore, ma <code>eta_</code> non è mai stato inizializzato: leggerlo è <em>undefined behaviour</em>. Verificare i dati nei setter non basta se l’oggetto viene creato in uno stato non valido: per questo servono i costruttori. Incapsulamento e costruttori risolvono due parti dello stesso problema.</p>
+</section>
+<section id="esercizio-finale-i-layer-del-framework" class="slide level2 smaller">
+<h2>Esercizio finale: i layer del framework</h2>
+<p>Nel framework la rete è una sequenza di <strong>layer</strong>: un <code>DenseLayer</code> contiene i pesi da addestrare (è un layer <strong>parametrico</strong>), un <code>SigmoidLayer</code> applica la sigmoide e non ha parametri. Scrivete le due classi con i nomi del framework:</p>
+<ol type="1">
+<li><code>DenseLayer</code>: attributi privati <code>Nnodes</code> (neuroni) e <code>Nin</code> (ingressi), costruttore <code>DenseLayer(int Nn, int Ni)</code> con la lista di inizializzazione, metodo <code>numParametri()</code> che restituisce il numero dei pesi, <span class="math inline">\(N_\text{nodes} \cdot N_\text{in}\)</span> (il framework, come il libro di Rashid, non usa bias);</li>
+<li><code>SigmoidLayer</code>: senza attributi né costruttori, con <code>numParametri()</code> che restituisce <span class="math inline">\(0\)</span>.</li>
+</ol>
+</section>
+<section id="esercizio-finale-i-layer-del-framework-segue" class="slide level2 smaller">
+<h2>Esercizio finale: i layer del framework (segue)</h2>
+<ol start="3" type="1">
+<li>in entrambe, un metodo <code>descrivi()</code> che stampa il tipo del layer e il numero dei parametri;</li>
+<li>nel <code>main</code>, la rete del Laboratorio 12 per MNIST: <code>DenseLayer</code> da 784 a 200, <code>SigmoidLayer</code>, <code>DenseLayer</code> da 200 a 10, <code>SigmoidLayer</code>. Stampate le descrizioni e il numero totale dei parametri.</li>
+</ol>
+</section>
+<section id="soluzione-dellesercizio-finale-denselayer" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio finale: <code>DenseLayer</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-label="2"></a></span>
+<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-label="3"></a><span class="kw">class</span> DenseLayer <span class="op">{</span></span>
+<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-14-5" class="code-annotation-target"><a href="#annotated-cell-14-5" aria-label="5"></a>    <span class="dt">int</span> Nnodes<span class="op">;</span></span>
+<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-label="6"></a>    <span class="dt">int</span> Nin<span class="op">;</span></span>
+<span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-label="7"></a></span>
+<span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-14-9"><a href="#annotated-cell-14-9" aria-label="9"></a>    DenseLayer<span class="op">(</span><span class="dt">int</span> Nn<span class="op">,</span> <span class="dt">int</span> Ni<span class="op">)</span> <span class="op">:</span> Nnodes<span class="op">(</span>Nn<span class="op">),</span> Nin<span class="op">(</span>Ni<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-14-10"><a href="#annotated-cell-14-10" aria-label="10"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-14-11" class="code-annotation-target"><a href="#annotated-cell-14-11" aria-label="11"></a>    <span class="dt">int</span> numParametri<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> Nnodes <span class="op">*</span> Nin<span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-14-12"><a href="#annotated-cell-14-12" aria-label="12"></a></span>
+<span id="annotated-cell-14-13"><a href="#annotated-cell-14-13" aria-label="13"></a>    <span class="dt">void</span> descrivi<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-14-14"><a href="#annotated-cell-14-14" aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"DenseLayer "</span> <span class="op">&lt;&lt;</span> Nin <span class="op">&lt;&lt;</span> <span class="st">" -&gt; "</span> <span class="op">&lt;&lt;</span> Nnodes</span>
+<span id="annotated-cell-14-15"><a href="#annotated-cell-14-15" aria-label="15"></a>                  <span class="op">&lt;&lt;</span> <span class="st">": "</span> <span class="op">&lt;&lt;</span> numParametri<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" parametri</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-14-16"><a href="#annotated-cell-14-16" aria-label="16"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-14-17"><a href="#annotated-cell-14-17" aria-label="17"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-lines="5" data-code-annotation="1">Gli stessi nomi del framework, senza il suffisso <code>_</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-14" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-lines="11" data-code-annotation="2">Un peso per ogni coppia ingresso-neurone.</span>
+</dd>
+</dl>
+</section>
+<section id="soluzione-dellesercizio-finale-sigmoidlayer" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio finale: <code>SigmoidLayer</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-15" data-startfrom="18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp" style="counter-reset: source-line 17;"><a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-15-18" class="code-annotation-target"><a href="#annotated-cell-15-18" aria-label="18"></a><span class="kw">class</span> SigmoidLayer <span class="op">{</span></span>
+<span id="annotated-cell-15-19"><a href="#annotated-cell-15-19" aria-label="19"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-15-20"><a href="#annotated-cell-15-20" aria-label="20"></a>    <span class="dt">int</span> numParametri<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-15-21"><a href="#annotated-cell-15-21" aria-label="21"></a></span>
+<span id="annotated-cell-15-22"><a href="#annotated-cell-15-22" aria-label="22"></a>    <span class="dt">void</span> descrivi<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-15-23"><a href="#annotated-cell-15-23" aria-label="23"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"SigmoidLayer: "</span> <span class="op">&lt;&lt;</span> numParametri<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" parametri</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-15-24"><a href="#annotated-cell-15-24" aria-label="24"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-15-25"><a href="#annotated-cell-15-25" aria-label="25"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="18" data-code-annotation="1">Nessun costruttore: si usa quello generato dal compilatore, che qui non ha attributi da inizializzare.</span>
+</dd>
+</dl>
+<p>Nel framework le due classi hanno una base comune, <code>layer</code>, e <code>DenseLayer</code> deriva da <code>ParametricLayer</code>. Qui il totale dei parametri si somma a mano, layer per layer (slide successiva): per raccogliere layer di tipi diversi in un’unica sequenza, come fa <code>Sequential</code> nel framework, serve una classe base comune. È l’argomento della Lezione 12, l’ereditarietà.</p>
+</section>
+<section id="soluzione-dellesercizio-finale-il-main" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio finale: il <code>main</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-startfrom="26"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 25;"><span id="cb9-26"><a aria-label="26"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb9-27"><a aria-label="27"></a>    DenseLayer   d1<span class="op">(</span><span class="dv">200</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb9-28"><a aria-label="28"></a>    SigmoidLayer s1<span class="op">;</span></span>
+<span id="cb9-29"><a aria-label="29"></a>    DenseLayer   d2<span class="op">(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">200</span><span class="op">);</span></span>
+<span id="cb9-30"><a aria-label="30"></a>    SigmoidLayer s2<span class="op">;</span></span>
+<span id="cb9-31"><a aria-label="31"></a></span>
+<span id="cb9-32"><a aria-label="32"></a>    d1<span class="op">.</span>descrivi<span class="op">();</span></span>
+<span id="cb9-33"><a aria-label="33"></a>    s1<span class="op">.</span>descrivi<span class="op">();</span></span>
+<span id="cb9-34"><a aria-label="34"></a>    d2<span class="op">.</span>descrivi<span class="op">();</span></span>
+<span id="cb9-35"><a aria-label="35"></a>    s2<span class="op">.</span>descrivi<span class="op">();</span></span>
+<span id="cb9-36"><a aria-label="36"></a></span>
+<span id="cb9-37"><a aria-label="37"></a>    <span class="dt">int</span> totale <span class="op">=</span> d1<span class="op">.</span>numParametri<span class="op">()</span> <span class="op">+</span> s1<span class="op">.</span>numParametri<span class="op">()</span></span>
+<span id="cb9-38"><a aria-label="38"></a>               <span class="op">+</span> d2<span class="op">.</span>numParametri<span class="op">()</span> <span class="op">+</span> s2<span class="op">.</span>numParametri<span class="op">();</span></span>
+<span id="cb9-39"><a aria-label="39"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Totale: "</span> <span class="op">&lt;&lt;</span> totale <span class="op">&lt;&lt;</span> <span class="st">" parametri</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb9-40"><a aria-label="40"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-41"><a aria-label="41"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>DenseLayer 784 -&gt; 200: 156800 parametri
+SigmoidLayer: 0 parametri
+DenseLayer 200 -&gt; 10: 2000 parametri
+SigmoidLayer: 0 parametri
+Totale: 158800 parametri</code></pre>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true,"storage":"lavagna-lezione-07"},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'convex',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: '../mathjax/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+            let selectedAnnoteEl;
+            const selectorForAnnotation = ( cell, annotation) => {
+              let cellAttr = 'data-code-cell="' + cell + '"';
+              let lineAttr = 'data-code-annotation="' +  annotation + '"';
+              const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+              return selector;
+            }
+            const selectCodeLines = (annoteEl) => {
+              const doc = window.document;
+              const targetCell = annoteEl.getAttribute("data-target-cell");
+              const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+              const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+              const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+              const lineIds = lines.map((line) => {
+                return targetCell + "-" + line;
+              })
+              let top = null;
+              let height = null;
+              let parent = null;
+              if (lineIds.length > 0) {
+                  //compute the position of the single el (top and bottom and make a div)
+                  const el = window.document.getElementById(lineIds[0]);
+                  top = el.offsetTop;
+                  height = el.offsetHeight;
+                  parent = el.parentElement.parentElement;
+                if (lineIds.length > 1) {
+                  const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+                  const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+                  height = bottom - top;
+                }
+                if (top !== null && height !== null && parent !== null) {
+                  // cook up a div (if necessary) and position it 
+                  let div = window.document.getElementById("code-annotation-line-highlight");
+                  if (div === null) {
+                    div = window.document.createElement("div");
+                    div.setAttribute("id", "code-annotation-line-highlight");
+                    div.style.position = 'absolute';
+                    parent.appendChild(div);
+                  }
+                  div.style.top = top - 2 + "px";
+                  div.style.height = height + 4 + "px";
+                  div.style.left = 0;
+                  let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+                  if (gutterDiv === null) {
+                    gutterDiv = window.document.createElement("div");
+                    gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                    gutterDiv.style.position = 'absolute';
+                    const codeCell = window.document.getElementById(targetCell);
+                    const gutter = codeCell.querySelector('.code-annotation-gutter');
+                    gutter.appendChild(gutterDiv);
+                  }
+                  gutterDiv.style.top = top - 2 + "px";
+                  gutterDiv.style.height = height + 4 + "px";
+                }
+                selectedAnnoteEl = annoteEl;
+              }
+            };
+            const unselectCodeLines = () => {
+              const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+              elementsIds.forEach((elId) => {
+                const div = window.document.getElementById(elId);
+                if (div) {
+                  div.remove();
+                }
+              });
+              selectedAnnoteEl = undefined;
+            };
+              // Handle positioning of the toggle
+          window.addEventListener(
+            "resize",
+            throttle(() => {
+              elRect = undefined;
+              if (selectedAnnoteEl) {
+                selectCodeLines(selectedAnnoteEl);
+              }
+            }, 10)
+          );
+          function throttle(fn, ms) {
+          let throttle = false;
+          let timer;
+            return (...args) => {
+              if(!throttle) { // first call gets through
+                  fn.apply(this, args);
+                  throttle = true;
+              } else { // all the others get throttled
+                  if(timer) clearTimeout(timer); // cancel #2
+                  timer = setTimeout(() => {
+                    fn.apply(this, args);
+                    timer = throttle = false;
+                  }, ms);
+              }
+            };
+          }
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
+                  unselectCodeLines();
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
+                  }
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
+            }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
