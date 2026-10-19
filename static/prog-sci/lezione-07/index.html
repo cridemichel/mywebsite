@@ -971,7 +971,7 @@ Cristiano De Michele
 </section>
 <section id="il-costruttore-di-copia-e-lassegnazione" class="slide level2 smaller">
 <h2>Il costruttore di copia e l’assegnazione</h2>
-<p>Copiare un oggetto mentre lo si crea e assegnargli un valore dopo sono operazioni distinte:</p>
+<p>La copia alla creazione e l’assegnazione successiva sono operazioni distinte:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-label="2"></a>    Datum d1<span class="op">(</span><span class="fl">5.5</span><span class="op">);</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-label="3"></a>    Datum d2 <span class="op">=</span> d1<span class="op">;</span></span>
@@ -994,7 +994,7 @@ Cristiano De Michele
 <span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="3"><code>d4</code> esiste già: non si costruisce nulla, si chiama l’<strong>operatore di assegnazione</strong>, <code>operator=</code> (Lezione 10).</span>
 </dd>
 </dl>
-<p>Se la classe non li dichiara, il compilatore li genera entrambi: lavorano attributo per attributo, privati compresi. Di un puntatore copiano l’indirizzo, non i dati: con la memoria dinamica (Lezione 08) è un problema, risolto dalla <em>deep copy</em> (Lezione 10).</p>
+<p>Se la classe non li dichiara, il compilatore li genera entrambi: il costruttore di copia copia e l’operatore di assegnazione assegna attributo per attributo, privati compresi. Di un puntatore copiano l’indirizzo, non i dati: con la memoria dinamica (Lezione 08) è un problema, risolto dalla <em>deep copy</em> (Lezione 10).</p>
 </section>
 <section id="il-costruttore-come-conversione" class="slide level2 smaller">
 <h2>Il costruttore come conversione</h2>
@@ -1032,8 +1032,8 @@ Cristiano De Michele
 <li><code>setLr(double)</code>: accetta solo valori in <span class="math inline">\((0, 1]\)</span>; altrimenti <strong>rifiuta</strong> il valore, stampa il motivo su <code>std::cerr</code> e mantiene quello precedente.</li>
 <li>Due costruttori, con la lista di inizializzazione: quello di default (peso <span class="math inline">\(0\)</span>, lr <span class="math inline">\(0{,}1\)</span>) e <code>Neurone(double peso, double lr)</code>, che assegna <code>lr_</code> passando dal setter.</li>
 <li>Nel <code>main</code>: provate ad assegnare <code>n.lr_ = 5.0;</code> e leggete il messaggio del compilatore; poi chiamate <code>n.setLr(5.0)</code> e <code>n.setLr(0.05)</code>.</li>
+<li>Togliete <code>lr_(0.1)</code> dalla lista di inizializzazione del costruttore con parametri e create <code>Neurone m(0.7, 99.0);</code>. Che valore ha <code>lr_</code>, e perché?</li>
 </ol>
-<p>Il costruttore con parametri si presta a un errore frequente: se <code>Neurone m(0.7, 99.0);</code> stampa per <code>lr_</code> un valore privo di senso, la spiegazione è nella slide «Soluzione: <code>lr_</code> non inizializzato».</p>
 </section>
 <section id="soluzione-dellesercizio-la-classe" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio: la classe</h2>
@@ -1091,8 +1091,8 @@ m: peso 0.7, lr 0.1</code></pre>
 <p>Togliendo il commento a <code>n.lr_ = 5.0;</code>:</p>
 <pre><code>error: 'double Neurone::lr_' is private within this context</code></pre>
 </section>
-<section id="soluzione-lr_-non-inizializzato" class="slide level2 smaller">
-<h2>Soluzione: <code>lr_</code> non inizializzato</h2>
+<section id="soluzione-il-punto-6" class="slide level2 smaller">
+<h2>Soluzione: il punto 6</h2>
 <p>Se dalla lista di inizializzazione si toglie <code>lr_(0.1)</code>, lasciando <code>: peso_(peso) { setLr(lr); }</code>, l’uscita diventa per esempio:</p>
 <pre><code>[setLr] rifiutato 99: deve stare in (0, 1]. Tengo 6.94378e-310
 m: peso 0.7, lr 6.94378e-310</code></pre>
@@ -1117,7 +1117,7 @@ g++ -O2 -Wall    -&gt; warning: 'm.Neurone::lr_' is used uninitialized</code></p
 </section>
 <section id="esercizi-lampo-cosa-stampa" class="slide level2 smaller">
 <h2>Esercizi lampo: cosa stampa?</h2>
-<p>Senza portatile. Si compila con <code>-std=c++17</code>.</p>
+<p>Senza portatile.</p>
 <p><strong>1.</strong> Quante righe vengono stampate, e quali?</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb7-2"><a aria-label="2"></a></span>
@@ -1130,10 +1130,11 @@ g++ -O2 -Wall    -&gt; warning: 'm.Neurone::lr_' is used uninitialized</code></p
 <span id="cb7-9"><a aria-label="9"></a></span>
 <span id="cb7-10"><a aria-label="10"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="cb7-11"><a aria-label="11"></a>    D a<span class="op">;</span></span>
-<span id="cb7-12"><a aria-label="12"></a>    D b<span class="op">(</span><span class="fl">1.0</span><span class="op">);</span></span>
-<span id="cb7-13"><a aria-label="13"></a>    D c <span class="op">=</span> b<span class="op">;</span></span>
-<span id="cb7-14"><a aria-label="14"></a>    D d <span class="op">=</span> D<span class="op">(</span><span class="fl">2.0</span><span class="op">);</span></span>
-<span id="cb7-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-12"><a aria-label="12"></a>    D b <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb7-13"><a aria-label="13"></a>    D c<span class="op">;</span></span>
+<span id="cb7-14"><a aria-label="14"></a>    c <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb7-15"><a aria-label="15"></a>    c <span class="op">=</span> <span class="fl">3.0</span><span class="op">;</span></span>
+<span id="cb7-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>2.</strong> La classe <code>Persona</code> della slide «Setter che verificano i dati» non ha costruttori.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>Persona p<span class="op">;</span></span>
 <span id="cb8-2"><a aria-label="2"></a>p<span class="op">.</span>setEta<span class="op">(</span><span class="dv">200</span><span class="op">);</span>          <span class="co">// l'età non supera il controllo</span></span>
@@ -1141,7 +1142,7 @@ g++ -O2 -Wall    -&gt; warning: 'm.Neurone::lr_' is used uninitialized</code></p
 </section>
 <section id="esercizi-lampo-le-risposte" class="slide level2 smaller">
 <h2>Esercizi lampo: le risposte</h2>
-<p><strong>1.</strong> Quattro righe: <code>default</code>, <code>param</code>, <code>copia</code>, <code>param</code>. <code>D d = D(2.0);</code> sembra costruire un oggetto temporaneo e poi copiarlo. Fino al C++14 il compilatore poteva eliminare la copia, ma non era obbligato; dal <strong>C++17</strong> in questo caso l’eliminazione è <strong>obbligatoria</strong>: il temporaneo non viene creato e <code>d</code> è costruito direttamente. Con <code>-std=c++11 -fno-elide-constructors</code>, che vieta l’eliminazione facoltativa, compare una quinta riga, <code>copia</code>.</p>
+<p><strong>1.</strong> Quattro righe: <code>default</code>, <code>copia</code>, <code>default</code>, <code>param</code>. <code>D b = a;</code> crea <code>b</code> come copia di <code>a</code>. <code>c = a;</code> non stampa nulla: <code>c</code> esiste già, quindi non si chiama alcun costruttore ma l’operatore di assegnazione generato dal compilatore. <code>c = 3.0;</code> costruisce un <code>D</code> temporaneo con <code>D(double)</code>, la conversione della slide «Il costruttore come conversione», e poi lo assegna a <code>c</code>.</p>
 <p><strong>2.</strong> Il valore stampato è indeterminato. <code>setEta(200)</code> rifiuta il valore, ma <code>eta_</code> non è mai stato inizializzato: leggerlo è <em>undefined behaviour</em>. Verificare i dati nei setter non basta se l’oggetto viene creato in uno stato non valido: per questo servono i costruttori. Incapsulamento e costruttori risolvono due parti dello stesso problema.</p>
 </section>
 <section id="esercizio-finale-i-layer-del-framework" class="slide level2 smaller">
