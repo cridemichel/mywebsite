@@ -990,7 +990,7 @@ Cristiano De Michele
 <span data-code-cell="annotated-cell-4" data-code-lines="7" data-code-annotation="3">La lista ha la precedenza: con <code>Neurone n(0.5);</code> si ha <code>lr_</code> uguale a <code>0.5</code> e <code>peso_</code> uguale a <code>0</code>.</span>
 </dd>
 </dl>
-<p>Anche il costruttore generato dal compilatore usa questi valori: un attributo con un valore nella dichiarazione non resta mai indeterminato. Il framework lo fa, per esempio, in <code>layer.hpp</code>: <code>bool is_training = true;</code> e <code>const Matrix&lt;ntype&gt;* inputs_ptr = nullptr;</code>.</p>
+<p>Anche il costruttore generato dal compilatore usa questi valori: un attributo con un valore nella dichiarazione non resta mai indeterminato. Il framework usa questa forma per alcuni attributi dei layer: la si riprenderà nei laboratori in cui vanno scritti.</p>
 </section>
 <section id="più-costruttori-nella-stessa-classe" class="slide level2 smaller">
 <h2>Più costruttori nella stessa classe</h2>
