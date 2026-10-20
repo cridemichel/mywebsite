@@ -777,76 +777,74 @@ Cristiano De Michele
 </section>
 <section id="perché-i-dati-privati-uninterfaccia-stabile" class="slide level2 smaller">
 <h2>Perché i dati privati: un’interfaccia stabile</h2>
-<p>Chi usa una classe dovrebbe dipendere solo dalla sua <strong>interfaccia</strong> pubblica, non dai dettagli interni. Un attributo pubblico entra a far parte dell’interfaccia: se l’autore della classe lo rinomina, il codice che lo usa smette di compilare.</p>
+<p>Chi usa una classe dovrebbe dipendere solo dalla sua <strong>interfaccia</strong> pubblica, non dai dettagli interni. Un attributo pubblico ne fa parte: se viene rinominato, il codice che lo usa smette di compilare.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>La classe, dopo la modifica:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-label="1"></a><span class="kw">class</span> Neurone <span class="op">{</span></span>
-<span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-18-3" class="code-annotation-target"><a href="#annotated-cell-18-3" aria-label="3"></a>    <span class="dt">double</span> peso_sinaptico<span class="op">;</span></span>
-<span id="annotated-cell-18-4"><a href="#annotated-cell-18-4" aria-label="4"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-18" data-code-lines="3" data-code-annotation="1">Prima si chiamava <code>peso</code>.</span>
-</dd>
-</dl>
+<p><strong>La classe, prima e dopo la modifica:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="kw">class</span> Neurone <span class="op">{</span>   <span class="co">// prima</span></span>
+<span id="cb1-2"><a aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb1-3"><a aria-label="3"></a>    <span class="dt">double</span> peso<span class="op">;</span></span>
+<span id="cb1-4"><a aria-label="4"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="kw">class</span> Neurone <span class="op">{</span>   <span class="co">// dopo</span></span>
+<span id="cb2-2"><a aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb2-3"><a aria-label="3"></a>    <span class="dt">double</span> peso_sinaptico<span class="op">;</span></span>
+<span id="cb2-4"><a aria-label="4"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
 <p><strong>Il codice che la usa:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-19"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-19-2"><a href="#annotated-cell-19-2" aria-label="2"></a>    Neurone n1<span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-19-3" class="code-annotation-target"><a href="#annotated-cell-19-3" aria-label="3"></a>    n1<span class="op">.</span>peso <span class="op">=</span> <span class="fl">1.12</span><span class="op">;</span></span>
-<span id="annotated-cell-19-4"><a href="#annotated-cell-19-4" aria-label="4"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-19-5"><a href="#annotated-cell-19-5" aria-label="5"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-label="2"></a>    Neurone n1<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-3" class="code-annotation-target"><a href="#annotated-cell-20-3" aria-label="3"></a>    n1<span class="op">.</span>peso <span class="op">=</span> <span class="fl">1.12</span><span class="op">;</span></span>
+<span id="annotated-cell-20-4"><a href="#annotated-cell-20-4" aria-label="4"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-20-5"><a href="#annotated-cell-20-5" aria-label="5"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-19" data-code-lines="3" data-code-annotation="2"><em><code>error: 'class Neurone' has no member named 'peso'</code></em>.</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="3" data-code-annotation="1">Compila con la prima versione della classe; con la seconda: <em><code>error: 'class Neurone' has no member named 'peso'</code></em>.</span>
 </dd>
 </dl>
 </div></div>
-<p>Con l’attributo privato, un cambio di nome o di rappresentazione interna resta confinato nella classe: è il senso dell’<strong>incapsulamento</strong>.</p>
+<p>Con l’attributo privato la modifica resta confinata nella classe: è l’<strong>incapsulamento</strong>.</p>
 </section>
 <section id="getter-e-setter" class="slide level2 smaller">
 <h2>Getter e setter</h2>
 <p>L’accesso ai dati privati passa per metodi pubblici: un <strong>getter</strong> restituisce il valore di un attributo, un <strong>setter</strong> lo modifica.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-label="2"></a></span>
-<span id="annotated-cell-20-3"><a href="#annotated-cell-20-3" aria-label="3"></a><span class="kw">class</span> Neurone <span class="op">{</span></span>
-<span id="annotated-cell-20-4"><a href="#annotated-cell-20-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-5" class="code-annotation-target"><a href="#annotated-cell-20-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">peso_</span><span class="op">;</span></span>
-<span id="annotated-cell-20-6"><a href="#annotated-cell-20-6" aria-label="6"></a></span>
-<span id="annotated-cell-20-7"><a href="#annotated-cell-20-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-20-8" class="code-annotation-target"><a href="#annotated-cell-20-8" aria-label="8"></a>    <span class="dt">double</span> getPeso<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-20-9"><a href="#annotated-cell-20-9" aria-label="9"></a>        <span class="cf">return</span> <span class="va">peso_</span><span class="op">;</span></span>
-<span id="annotated-cell-20-10"><a href="#annotated-cell-20-10" aria-label="10"></a>    <span class="op">}</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-20-11" class="code-annotation-target"><a href="#annotated-cell-20-11" aria-label="11"></a>    <span class="dt">void</span> setPeso<span class="op">(</span><span class="dt">double</span> p<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-20-12"><a href="#annotated-cell-20-12" aria-label="12"></a>        <span class="va">peso_</span> <span class="op">=</span> p<span class="op">;</span></span>
-<span id="annotated-cell-20-13"><a href="#annotated-cell-20-13" aria-label="13"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-20-14"><a href="#annotated-cell-20-14" aria-label="14"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-21"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-21-1"><a href="#annotated-cell-21-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-label="2"></a></span>
+<span id="annotated-cell-21-3"><a href="#annotated-cell-21-3" aria-label="3"></a><span class="kw">class</span> Neurone <span class="op">{</span></span>
+<span id="annotated-cell-21-4"><a href="#annotated-cell-21-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-21-5" class="code-annotation-target"><a href="#annotated-cell-21-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">peso_</span><span class="op">;</span></span>
+<span id="annotated-cell-21-6"><a href="#annotated-cell-21-6" aria-label="6"></a></span>
+<span id="annotated-cell-21-7"><a href="#annotated-cell-21-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-21-8" class="code-annotation-target"><a href="#annotated-cell-21-8" aria-label="8"></a>    <span class="dt">double</span> getPeso<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-21-9"><a href="#annotated-cell-21-9" aria-label="9"></a>        <span class="cf">return</span> <span class="va">peso_</span><span class="op">;</span></span>
+<span id="annotated-cell-21-10"><a href="#annotated-cell-21-10" aria-label="10"></a>    <span class="op">}</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-21-11" class="code-annotation-target"><a href="#annotated-cell-21-11" aria-label="11"></a>    <span class="dt">void</span> setPeso<span class="op">(</span><span class="dt">double</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-21-12"><a href="#annotated-cell-21-12" aria-label="12"></a>        <span class="va">peso_</span> <span class="op">=</span> p<span class="op">;</span></span>
+<span id="annotated-cell-21-13"><a href="#annotated-cell-21-13" aria-label="13"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-21-14"><a href="#annotated-cell-21-14" aria-label="14"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-21" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-20" data-code-lines="5" data-code-annotation="1">Attributo privato, con il suffisso <code>_</code> (Lezione 06).</span>
+<span data-code-cell="annotated-cell-21" data-code-lines="5" data-code-annotation="1">Attributo privato, con il suffisso <code>_</code> (Lezione 06).</span>
 </dd>
-<dt data-target-cell="annotated-cell-20" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-21" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-20" data-code-lines="8" data-code-annotation="2"><strong>Getter</strong>: restituisce il valore.</span>
+<span data-code-cell="annotated-cell-21" data-code-lines="8" data-code-annotation="2"><strong>Getter</strong>: restituisce il valore.</span>
 </dd>
-<dt data-target-cell="annotated-cell-20" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-21" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-20" data-code-lines="11" data-code-annotation="3"><strong>Setter</strong>: assegna il valore.</span>
+<span data-code-cell="annotated-cell-21" data-code-lines="11" data-code-annotation="3"><strong>Setter</strong>: assegna il valore.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-startfrom="15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 14;"><span id="cb1-15"><a aria-label="15"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb1-16"><a aria-label="16"></a>    Neurone n1<span class="op">;</span></span>
-<span id="cb1-17"><a aria-label="17"></a>    n1<span class="op">.</span>setPeso<span class="op">(</span><span class="fl">1.12</span><span class="op">);</span></span>
-<span id="cb1-18"><a aria-label="18"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n1<span class="op">.</span>getPeso<span class="op">();</span></span>
-<span id="cb1-19"><a aria-label="19"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb1-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-startfrom="15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 14;"><span id="cb3-15"><a aria-label="15"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-16"><a aria-label="16"></a>    Neurone n1<span class="op">;</span></span>
+<span id="cb3-17"><a aria-label="17"></a>    n1<span class="op">.</span>setPeso<span class="op">(</span><span class="fl">1.12</span><span class="op">);</span></span>
+<span id="cb3-18"><a aria-label="18"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n1<span class="op">.</span>getPeso<span class="op">();</span></span>
+<span id="cb3-19"><a aria-label="19"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Se <code>peso_</code> cambia nome o rappresentazione, si aggiornano solo i due metodi: il <code>main</code> resta invariato.</p>
 <p>I prefissi <code>get</code> e <code>set</code> sono una convenzione, non una regola del linguaggio.</p>
 </div></div>
@@ -1074,16 +1072,16 @@ Cristiano De Michele
 </section>
 <section id="soluzione-dellesercizio-il-main" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio: il <code>main</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-startfrom="25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 24;"><span id="cb2-25"><a aria-label="25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb2-26"><a aria-label="26"></a>    Neurone n<span class="op">;</span></span>
-<span id="cb2-27"><a aria-label="27"></a>    <span class="co">// n.lr_ = 5.0;         // &lt;- il compilatore lo rifiuta</span></span>
-<span id="cb2-28"><a aria-label="28"></a>    n<span class="op">.</span>setLr<span class="op">(</span><span class="fl">5.0</span><span class="op">);</span>           <span class="co">// rifiutato in esecuzione, con un messaggio</span></span>
-<span id="cb2-29"><a aria-label="29"></a>    n<span class="op">.</span>setLr<span class="op">(</span><span class="fl">0.05</span><span class="op">);</span>          <span class="co">// accettato</span></span>
-<span id="cb2-30"><a aria-label="30"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"n: lr "</span> <span class="op">&lt;&lt;</span> n<span class="op">.</span>getLr<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb2-31"><a aria-label="31"></a></span>
-<span id="cb2-32"><a aria-label="32"></a>    Neurone m<span class="op">(</span><span class="fl">0.7</span><span class="op">,</span> <span class="fl">99.0</span><span class="op">);</span>   <span class="co">// il costruttore passa dal setter</span></span>
-<span id="cb2-33"><a aria-label="33"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"m: peso "</span> <span class="op">&lt;&lt;</span> m<span class="op">.</span>getPeso<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">", lr "</span> <span class="op">&lt;&lt;</span> m<span class="op">.</span>getLr<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb2-34"><a aria-label="34"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-startfrom="25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 24;"><span id="cb4-25"><a aria-label="25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-26"><a aria-label="26"></a>    Neurone n<span class="op">;</span></span>
+<span id="cb4-27"><a aria-label="27"></a>    <span class="co">// n.lr_ = 5.0;         // &lt;- il compilatore lo rifiuta</span></span>
+<span id="cb4-28"><a aria-label="28"></a>    n<span class="op">.</span>setLr<span class="op">(</span><span class="fl">5.0</span><span class="op">);</span>           <span class="co">// rifiutato in esecuzione, con un messaggio</span></span>
+<span id="cb4-29"><a aria-label="29"></a>    n<span class="op">.</span>setLr<span class="op">(</span><span class="fl">0.05</span><span class="op">);</span>          <span class="co">// accettato</span></span>
+<span id="cb4-30"><a aria-label="30"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"n: lr "</span> <span class="op">&lt;&lt;</span> n<span class="op">.</span>getLr<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb4-31"><a aria-label="31"></a></span>
+<span id="cb4-32"><a aria-label="32"></a>    Neurone m<span class="op">(</span><span class="fl">0.7</span><span class="op">,</span> <span class="fl">99.0</span><span class="op">);</span>   <span class="co">// il costruttore passa dal setter</span></span>
+<span id="cb4-33"><a aria-label="33"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"m: peso "</span> <span class="op">&lt;&lt;</span> m<span class="op">.</span>getPeso<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">", lr "</span> <span class="op">&lt;&lt;</span> m<span class="op">.</span>getLr<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb4-34"><a aria-label="34"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>[setLr] rifiutato 5: deve stare in (0, 1]. Tengo 0.1
 n: lr 0.05
 [setLr] rifiutato 99: deve stare in (0, 1]. Tengo 0.1
@@ -1119,26 +1117,26 @@ g++ -O2 -Wall    -&gt; warning: 'm.Neurone::lr_' is used uninitialized</code></p
 <h2>Esercizi lampo: cosa stampa?</h2>
 <p>Senza portatile.</p>
 <p><strong>1.</strong> Quante righe vengono stampate, e quali?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb7-2"><a aria-label="2"></a></span>
-<span id="cb7-3"><a aria-label="3"></a><span class="kw">class</span> D <span class="op">{</span></span>
-<span id="cb7-4"><a aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb7-5"><a aria-label="5"></a>    D<span class="op">()</span>          <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"default</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb7-6"><a aria-label="6"></a>    D<span class="op">(</span><span class="dt">double</span><span class="op">)</span>    <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"param</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb7-7"><a aria-label="7"></a>    D<span class="op">(</span><span class="at">const</span> D<span class="op">&amp;)</span>  <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"copia</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb7-8"><a aria-label="8"></a><span class="op">};</span></span>
-<span id="cb7-9"><a aria-label="9"></a></span>
-<span id="cb7-10"><a aria-label="10"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb7-11"><a aria-label="11"></a>    D a<span class="op">;</span></span>
-<span id="cb7-12"><a aria-label="12"></a>    D b <span class="op">=</span> a<span class="op">;</span></span>
-<span id="cb7-13"><a aria-label="13"></a>    D c<span class="op">;</span></span>
-<span id="cb7-14"><a aria-label="14"></a>    c <span class="op">=</span> a<span class="op">;</span></span>
-<span id="cb7-15"><a aria-label="15"></a>    c <span class="op">=</span> <span class="fl">3.0</span><span class="op">;</span></span>
-<span id="cb7-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb9-2"><a aria-label="2"></a></span>
+<span id="cb9-3"><a aria-label="3"></a><span class="kw">class</span> D <span class="op">{</span></span>
+<span id="cb9-4"><a aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb9-5"><a aria-label="5"></a>    D<span class="op">()</span>          <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"default</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb9-6"><a aria-label="6"></a>    D<span class="op">(</span><span class="dt">double</span><span class="op">)</span>    <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"param</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb9-7"><a aria-label="7"></a>    D<span class="op">(</span><span class="at">const</span> D<span class="op">&amp;)</span>  <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"copia</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb9-8"><a aria-label="8"></a><span class="op">};</span></span>
+<span id="cb9-9"><a aria-label="9"></a></span>
+<span id="cb9-10"><a aria-label="10"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb9-11"><a aria-label="11"></a>    D a<span class="op">;</span></span>
+<span id="cb9-12"><a aria-label="12"></a>    D b <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb9-13"><a aria-label="13"></a>    D c<span class="op">;</span></span>
+<span id="cb9-14"><a aria-label="14"></a>    c <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb9-15"><a aria-label="15"></a>    c <span class="op">=</span> <span class="fl">3.0</span><span class="op">;</span></span>
+<span id="cb9-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>2.</strong> La classe <code>Persona</code> della slide «Setter che verificano i dati» non ha costruttori.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>Persona p<span class="op">;</span></span>
-<span id="cb8-2"><a aria-label="2"></a>p<span class="op">.</span>setEta<span class="op">(</span><span class="dv">200</span><span class="op">);</span>          <span class="co">// l'età non supera il controllo</span></span>
-<span id="cb8-3"><a aria-label="3"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p<span class="op">.</span>getEta<span class="op">();</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a>Persona p<span class="op">;</span></span>
+<span id="cb10-2"><a aria-label="2"></a>p<span class="op">.</span>setEta<span class="op">(</span><span class="dv">200</span><span class="op">);</span>          <span class="co">// l'età non supera il controllo</span></span>
+<span id="cb10-3"><a aria-label="3"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p<span class="op">.</span>getEta<span class="op">();</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="esercizi-lampo-le-risposte" class="slide level2 smaller">
 <h2>Esercizi lampo: le risposte</h2>
@@ -1210,22 +1208,22 @@ g++ -O2 -Wall    -&gt; warning: 'm.Neurone::lr_' is used uninitialized</code></p
 </section>
 <section id="soluzione-dellesercizio-finale-il-main" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio finale: il <code>main</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-startfrom="26"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 25;"><span id="cb9-26"><a aria-label="26"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb9-27"><a aria-label="27"></a>    DenseLayer   d1<span class="op">(</span><span class="dv">200</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
-<span id="cb9-28"><a aria-label="28"></a>    SigmoidLayer s1<span class="op">;</span></span>
-<span id="cb9-29"><a aria-label="29"></a>    DenseLayer   d2<span class="op">(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">200</span><span class="op">);</span></span>
-<span id="cb9-30"><a aria-label="30"></a>    SigmoidLayer s2<span class="op">;</span></span>
-<span id="cb9-31"><a aria-label="31"></a></span>
-<span id="cb9-32"><a aria-label="32"></a>    d1<span class="op">.</span>descrivi<span class="op">();</span></span>
-<span id="cb9-33"><a aria-label="33"></a>    s1<span class="op">.</span>descrivi<span class="op">();</span></span>
-<span id="cb9-34"><a aria-label="34"></a>    d2<span class="op">.</span>descrivi<span class="op">();</span></span>
-<span id="cb9-35"><a aria-label="35"></a>    s2<span class="op">.</span>descrivi<span class="op">();</span></span>
-<span id="cb9-36"><a aria-label="36"></a></span>
-<span id="cb9-37"><a aria-label="37"></a>    <span class="dt">int</span> totale <span class="op">=</span> d1<span class="op">.</span>numParametri<span class="op">()</span> <span class="op">+</span> s1<span class="op">.</span>numParametri<span class="op">()</span></span>
-<span id="cb9-38"><a aria-label="38"></a>               <span class="op">+</span> d2<span class="op">.</span>numParametri<span class="op">()</span> <span class="op">+</span> s2<span class="op">.</span>numParametri<span class="op">();</span></span>
-<span id="cb9-39"><a aria-label="39"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Totale: "</span> <span class="op">&lt;&lt;</span> totale <span class="op">&lt;&lt;</span> <span class="st">" parametri</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb9-40"><a aria-label="40"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb9-41"><a aria-label="41"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-startfrom="26"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 25;"><span id="cb11-26"><a aria-label="26"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-27"><a aria-label="27"></a>    DenseLayer   d1<span class="op">(</span><span class="dv">200</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb11-28"><a aria-label="28"></a>    SigmoidLayer s1<span class="op">;</span></span>
+<span id="cb11-29"><a aria-label="29"></a>    DenseLayer   d2<span class="op">(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">200</span><span class="op">);</span></span>
+<span id="cb11-30"><a aria-label="30"></a>    SigmoidLayer s2<span class="op">;</span></span>
+<span id="cb11-31"><a aria-label="31"></a></span>
+<span id="cb11-32"><a aria-label="32"></a>    d1<span class="op">.</span>descrivi<span class="op">();</span></span>
+<span id="cb11-33"><a aria-label="33"></a>    s1<span class="op">.</span>descrivi<span class="op">();</span></span>
+<span id="cb11-34"><a aria-label="34"></a>    d2<span class="op">.</span>descrivi<span class="op">();</span></span>
+<span id="cb11-35"><a aria-label="35"></a>    s2<span class="op">.</span>descrivi<span class="op">();</span></span>
+<span id="cb11-36"><a aria-label="36"></a></span>
+<span id="cb11-37"><a aria-label="37"></a>    <span class="dt">int</span> totale <span class="op">=</span> d1<span class="op">.</span>numParametri<span class="op">()</span> <span class="op">+</span> s1<span class="op">.</span>numParametri<span class="op">()</span></span>
+<span id="cb11-38"><a aria-label="38"></a>               <span class="op">+</span> d2<span class="op">.</span>numParametri<span class="op">()</span> <span class="op">+</span> s2<span class="op">.</span>numParametri<span class="op">();</span></span>
+<span id="cb11-39"><a aria-label="39"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Totale: "</span> <span class="op">&lt;&lt;</span> totale <span class="op">&lt;&lt;</span> <span class="st">" parametri</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb11-40"><a aria-label="40"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-41"><a aria-label="41"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>DenseLayer 784 -&gt; 200: 156800 parametri
 SigmoidLayer: 0 parametri
 DenseLayer 200 -&gt; 10: 2000 parametri
