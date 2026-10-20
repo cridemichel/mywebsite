@@ -994,34 +994,29 @@ Cristiano De Michele
 </section>
 <section id="più-costruttori-nella-stessa-classe" class="slide level2 smaller">
 <h2>Più costruttori nella stessa classe</h2>
-<p>Come per le funzioni (Lezione 05), si può fare l’overloading dei costruttori: quale viene chiamato dipende dagli argomenti.</p>
+<p>Come per le funzioni (Lezione 05), si può fare l’overloading dei costruttori: la scelta dipende dagli argomenti.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-label="1"></a><span class="kw">class</span> Datum <span class="op">{</span></span>
 <span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
 <span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">value_</span><span class="op">;</span></span>
 <span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-5" class="code-annotation-target"><a href="#annotated-cell-5-5" aria-label="5"></a>    Datum<span class="op">()</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-label="6"></a>    Datum<span class="op">(</span><span class="dt">double</span> v<span class="op">)</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span>v<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-label="5"></a>    Datum<span class="op">()</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-label="6"></a>    Datum<span class="op">(</span><span class="dt">double</span> v<span class="op">)</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span>v<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
 <span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-label="7"></a><span class="op">};</span></span>
-<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-label="8"></a></span>
-<span id="annotated-cell-5-9"><a href="#annotated-cell-5-9" aria-label="9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-5-10" class="code-annotation-target"><a href="#annotated-cell-5-10" aria-label="10"></a>    Datum d1<span class="op">;</span></span>
-<span id="annotated-cell-5-11"><a href="#annotated-cell-5-11" aria-label="11"></a>    Datum d2<span class="op">(</span><span class="fl">5.5</span><span class="op">);</span></span>
-<span id="annotated-cell-5-12"><a href="#annotated-cell-5-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-label="8"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-9" class="code-annotation-target"><a href="#annotated-cell-5-9" aria-label="9"></a>    Datum d1<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-10" class="code-annotation-target"><a href="#annotated-cell-5-10" aria-label="10"></a>    Datum d2<span class="op">(</span><span class="fl">5.5</span><span class="op">);</span></span>
+<span id="annotated-cell-5-11"><a href="#annotated-cell-5-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="5" data-code-annotation="1">Costruttore di default, senza parametri.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="9" data-code-annotation="1">Usa il costruttore di default, senza parametri (riga 5): <code>value_</code> vale <code>0.0</code>.</span>
 </dd>
 <dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="2">Costruttore con un parametro.</span>
-</dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="10" data-code-annotation="3"><code>d1</code> usa il costruttore di default (<code>value_</code> vale <code>0.0</code>), <code>d2</code> quello con un parametro (<code>5.5</code>).</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="10" data-code-annotation="2">Usa il costruttore con un parametro (riga 6): <code>value_</code> vale <code>5.5</code>.</span>
 </dd>
 </dl>
-<p>Due costruttori hanno un ruolo particolare: il <strong>costruttore di copia</strong>, che crea un oggetto da un altro della stessa classe, e il costruttore con un solo parametro, che fa anche da <strong>costruttore di conversione</strong>. Sono l’argomento delle prossime slide.</p>
+<p>Il costruttore della riga 6, con un solo parametro, è anche un <strong>costruttore di conversione</strong> da <code>double</code> a <code>Datum</code>. La classe non dichiara invece un <strong>costruttore di copia</strong>, che crea un oggetto da un altro: lo genera il compilatore. Entrambi sono l’argomento delle prossime slide.</p>
 </section>
 <section id="il-costruttore-generato-dal-compilatore" class="slide level2 smaller">
 <h2>Il costruttore generato dal compilatore</h2>
