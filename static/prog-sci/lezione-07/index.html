@@ -947,8 +947,8 @@ Cristiano De Michele
 </dd>
 </dl>
 </section>
-<section id="attributi-che-sono-oggetti-lista-o-corpo" class="slide level2 smaller">
-<h2>Attributi che sono oggetti: lista o corpo</h2>
+<section id="approfondimento-attributi-che-sono-oggetti" class="slide level2 smaller">
+<h2>Approfondimento: attributi che sono oggetti</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
@@ -1075,8 +1075,8 @@ Cristiano De Michele
 </dl>
 <p>Se la classe non li dichiara, il compilatore genera sia il costruttore di copia sia l’operatore di assegnazione. Il primo copia ogni attributo, privati compresi, nel nuovo oggetto; il secondo assegna ogni attributo all’oggetto già esistente. Di un puntatore copiano l’indirizzo, non i dati: con la memoria dinamica (Lezione 08) è un problema, risolto dalla <em>deep copy</em> (Lezione 10).</p>
 </section>
-<section id="il-costruttore-come-conversione" class="slide level2 smaller">
-<h2>Il costruttore come conversione</h2>
+<section id="approfondimento-le-conversioni" class="slide level2 smaller">
+<h2>Approfondimento: le conversioni</h2>
 <p>Un costruttore che si può chiamare con un solo argomento definisce anche una <strong>conversione</strong>: con <code>Datum(double v)</code> il compilatore sa ottenere un <code>Datum</code> da un <code>double</code>, e lo fa anche dove non è scritto.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="dt">void</span> stampa<span class="op">(</span>Datum d<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
 <span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a></span>
@@ -1221,7 +1221,7 @@ clang++ -Wall      -&gt; nessun avviso, con o senza ottimizzazioni</code></pre>
 </section>
 <section id="esercizi-lampo-le-risposte" class="slide level2 smaller">
 <h2>Esercizi lampo: le risposte</h2>
-<p><strong>1.</strong> Quattro righe: <code>default</code>, <code>copia</code>, <code>default</code>, <code>param</code>. <code>D b = a;</code> crea <code>b</code> come copia di <code>a</code>. <code>c = a;</code> non stampa nulla: <code>c</code> esiste già, quindi non si chiama alcun costruttore ma l’operatore di assegnazione generato dal compilatore. <code>c = 3.0;</code> costruisce un <code>D</code> temporaneo con <code>D(double)</code>, la conversione della slide «Il costruttore come conversione», e poi lo assegna a <code>c</code>.</p>
+<p><strong>1.</strong> Quattro righe: <code>default</code>, <code>copia</code>, <code>default</code>, <code>param</code>. <code>D b = a;</code> crea <code>b</code> come copia di <code>a</code>. <code>c = a;</code> non stampa nulla: <code>c</code> esiste già, quindi non si chiama alcun costruttore ma l’operatore di assegnazione generato dal compilatore. <code>c = 3.0;</code> costruisce un <code>D</code> temporaneo con <code>D(double)</code>, la conversione della slide «Approfondimento: le conversioni», e poi lo assegna a <code>c</code>.</p>
 <p><strong>2.</strong> Il valore stampato è indeterminato. <code>setEta(200)</code> rifiuta il valore, ma <code>eta_</code> non è mai stato inizializzato: leggerlo è <em>undefined behaviour</em>. Verificare i dati nei setter non basta se l’oggetto viene creato in uno stato non valido: per questo servono i costruttori. Incapsulamento e costruttori risolvono due parti dello stesso problema.</p>
 </section>
 <section id="esercizio-finale-i-layer-del-framework" class="slide level2 smaller">
