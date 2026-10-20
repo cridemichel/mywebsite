@@ -791,15 +791,15 @@ Cristiano De Michele
 <span id="cb2-4"><a aria-label="4"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
 <p><strong>Il codice che la usa:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-21"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-21-1"><a href="#annotated-cell-21-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-label="2"></a>    Neurone n1<span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-21-3" class="code-annotation-target"><a href="#annotated-cell-21-3" aria-label="3"></a>    n1<span class="op">.</span>peso <span class="op">=</span> <span class="fl">1.12</span><span class="op">;</span></span>
-<span id="annotated-cell-21-4"><a href="#annotated-cell-21-4" aria-label="4"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-21-5"><a href="#annotated-cell-21-5" aria-label="5"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-22"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-22-1"><a href="#annotated-cell-22-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-22-2"><a href="#annotated-cell-22-2" aria-label="2"></a>    Neurone n1<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-22" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-22-3" class="code-annotation-target"><a href="#annotated-cell-22-3" aria-label="3"></a>    n1<span class="op">.</span>peso <span class="op">=</span> <span class="fl">1.12</span><span class="op">;</span></span>
+<span id="annotated-cell-22-4"><a href="#annotated-cell-22-4" aria-label="4"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-22-5"><a href="#annotated-cell-22-5" aria-label="5"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-21" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-22" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-21" data-code-lines="3" data-code-annotation="1">Compila con la prima versione della classe; con la seconda: <em><code>error: 'class Neurone' has no member named 'peso'</code></em>.</span>
+<span data-code-cell="annotated-cell-22" data-code-lines="3" data-code-annotation="1">Compila con la prima versione della classe; con la seconda: <em><code>error: 'class Neurone' has no member named 'peso'</code></em>.</span>
 </dd>
 </dl>
 </div></div>
@@ -810,32 +810,32 @@ Cristiano De Michele
 <p>L’accesso ai dati privati passa per metodi pubblici: un <strong>getter</strong> restituisce il valore di un attributo, un <strong>setter</strong> lo modifica.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-22"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-22-1"><a href="#annotated-cell-22-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-22-2"><a href="#annotated-cell-22-2" aria-label="2"></a></span>
-<span id="annotated-cell-22-3"><a href="#annotated-cell-22-3" aria-label="3"></a><span class="kw">class</span> Neurone <span class="op">{</span></span>
-<span id="annotated-cell-22-4"><a href="#annotated-cell-22-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-22" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-22-5" class="code-annotation-target"><a href="#annotated-cell-22-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">peso_</span><span class="op">;</span></span>
-<span id="annotated-cell-22-6"><a href="#annotated-cell-22-6" aria-label="6"></a></span>
-<span id="annotated-cell-22-7"><a href="#annotated-cell-22-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-22" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-22-8" class="code-annotation-target"><a href="#annotated-cell-22-8" aria-label="8"></a>    <span class="dt">double</span> getPeso<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-22-9"><a href="#annotated-cell-22-9" aria-label="9"></a>        <span class="cf">return</span> <span class="va">peso_</span><span class="op">;</span></span>
-<span id="annotated-cell-22-10"><a href="#annotated-cell-22-10" aria-label="10"></a>    <span class="op">}</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-22" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-22-11" class="code-annotation-target"><a href="#annotated-cell-22-11" aria-label="11"></a>    <span class="dt">void</span> setPeso<span class="op">(</span><span class="dt">double</span> p<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-22-12"><a href="#annotated-cell-22-12" aria-label="12"></a>        <span class="va">peso_</span> <span class="op">=</span> p<span class="op">;</span></span>
-<span id="annotated-cell-22-13"><a href="#annotated-cell-22-13" aria-label="13"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-22-14"><a href="#annotated-cell-22-14" aria-label="14"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-23"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-23-1"><a href="#annotated-cell-23-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-23-2"><a href="#annotated-cell-23-2" aria-label="2"></a></span>
+<span id="annotated-cell-23-3"><a href="#annotated-cell-23-3" aria-label="3"></a><span class="kw">class</span> Neurone <span class="op">{</span></span>
+<span id="annotated-cell-23-4"><a href="#annotated-cell-23-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-23" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-23-5" class="code-annotation-target"><a href="#annotated-cell-23-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">peso_</span><span class="op">;</span></span>
+<span id="annotated-cell-23-6"><a href="#annotated-cell-23-6" aria-label="6"></a></span>
+<span id="annotated-cell-23-7"><a href="#annotated-cell-23-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-23" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-23-8" class="code-annotation-target"><a href="#annotated-cell-23-8" aria-label="8"></a>    <span class="dt">double</span> getPeso<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-23-9"><a href="#annotated-cell-23-9" aria-label="9"></a>        <span class="cf">return</span> <span class="va">peso_</span><span class="op">;</span></span>
+<span id="annotated-cell-23-10"><a href="#annotated-cell-23-10" aria-label="10"></a>    <span class="op">}</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-23" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-23-11" class="code-annotation-target"><a href="#annotated-cell-23-11" aria-label="11"></a>    <span class="dt">void</span> setPeso<span class="op">(</span><span class="dt">double</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-23-12"><a href="#annotated-cell-23-12" aria-label="12"></a>        <span class="va">peso_</span> <span class="op">=</span> p<span class="op">;</span></span>
+<span id="annotated-cell-23-13"><a href="#annotated-cell-23-13" aria-label="13"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-23-14"><a href="#annotated-cell-23-14" aria-label="14"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-22" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-23" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-22" data-code-lines="5" data-code-annotation="1">Attributo privato, con il suffisso <code>_</code> (Lezione 06).</span>
+<span data-code-cell="annotated-cell-23" data-code-lines="5" data-code-annotation="1">Attributo privato, con il suffisso <code>_</code> (Lezione 06).</span>
 </dd>
-<dt data-target-cell="annotated-cell-22" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-23" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-22" data-code-lines="8" data-code-annotation="2"><strong>Getter</strong>: restituisce il valore.</span>
+<span data-code-cell="annotated-cell-23" data-code-lines="8" data-code-annotation="2"><strong>Getter</strong>: restituisce il valore.</span>
 </dd>
-<dt data-target-cell="annotated-cell-22" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-23" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-22" data-code-lines="11" data-code-annotation="3"><strong>Setter</strong>: assegna il valore.</span>
+<span data-code-cell="annotated-cell-23" data-code-lines="11" data-code-annotation="3"><strong>Setter</strong>: assegna il valore.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:50%;">
@@ -939,28 +939,28 @@ Cristiano De Michele
 <span id="cb4-12"><a aria-label="12"></a>    <span class="op">}</span></span>
 <span id="cb4-13"><a aria-label="13"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:52%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-25" data-startfrom="14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp" style="counter-reset: source-line 13;"><span id="annotated-cell-25-14"><a href="#annotated-cell-25-14" aria-label="14"></a><span class="kw">class</span> CellaA <span class="op">{</span></span>
-<span id="annotated-cell-25-15"><a href="#annotated-cell-25-15" aria-label="15"></a>    Temperatura <span class="va">t_</span><span class="op">;</span>   <span class="co">// privato</span></span>
-<span id="annotated-cell-25-16"><a href="#annotated-cell-25-16" aria-label="16"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-25-17" class="code-annotation-target"><a href="#annotated-cell-25-17" aria-label="17"></a>    CellaA<span class="op">(</span><span class="dt">double</span> k<span class="op">)</span> <span class="op">{</span> <span class="va">t_</span> <span class="op">=</span> Temperatura<span class="op">(</span>k<span class="op">);</span> <span class="op">}</span></span>
-<span id="annotated-cell-25-18"><a href="#annotated-cell-25-18" aria-label="18"></a><span class="op">};</span></span>
-<span id="annotated-cell-25-19"><a href="#annotated-cell-25-19" aria-label="19"></a><span class="kw">class</span> CellaB <span class="op">{</span></span>
-<span id="annotated-cell-25-20"><a href="#annotated-cell-25-20" aria-label="20"></a>    Temperatura <span class="va">t_</span><span class="op">;</span>   <span class="co">// privato</span></span>
-<span id="annotated-cell-25-21"><a href="#annotated-cell-25-21" aria-label="21"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-25-22" class="code-annotation-target"><a href="#annotated-cell-25-22" aria-label="22"></a>    CellaB<span class="op">(</span><span class="dt">double</span> k<span class="op">)</span> <span class="op">:</span> <span class="va">t_</span><span class="op">(</span>k<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
-<span id="annotated-cell-25-23"><a href="#annotated-cell-25-23" aria-label="23"></a><span class="op">};</span></span>
-<span id="annotated-cell-25-24"><a href="#annotated-cell-25-24" aria-label="24"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-25-25"><a href="#annotated-cell-25-25" aria-label="25"></a>    CellaA a<span class="op">(</span><span class="fl">300.0</span><span class="op">);</span></span>
-<span id="annotated-cell-25-26"><a href="#annotated-cell-25-26" aria-label="26"></a>    CellaB b<span class="op">(</span><span class="fl">300.0</span><span class="op">);</span></span>
-<span id="annotated-cell-25-27"><a href="#annotated-cell-25-27" aria-label="27"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-26" data-startfrom="14"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp" style="counter-reset: source-line 13;"><span id="annotated-cell-26-14"><a href="#annotated-cell-26-14" aria-label="14"></a><span class="kw">class</span> CellaA <span class="op">{</span></span>
+<span id="annotated-cell-26-15"><a href="#annotated-cell-26-15" aria-label="15"></a>    Temperatura <span class="va">t_</span><span class="op">;</span>   <span class="co">// privato</span></span>
+<span id="annotated-cell-26-16"><a href="#annotated-cell-26-16" aria-label="16"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-26" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-26-17" class="code-annotation-target"><a href="#annotated-cell-26-17" aria-label="17"></a>    CellaA<span class="op">(</span><span class="dt">double</span> k<span class="op">)</span> <span class="op">{</span> <span class="va">t_</span> <span class="op">=</span> Temperatura<span class="op">(</span>k<span class="op">);</span> <span class="op">}</span></span>
+<span id="annotated-cell-26-18"><a href="#annotated-cell-26-18" aria-label="18"></a><span class="op">};</span></span>
+<span id="annotated-cell-26-19"><a href="#annotated-cell-26-19" aria-label="19"></a><span class="kw">class</span> CellaB <span class="op">{</span></span>
+<span id="annotated-cell-26-20"><a href="#annotated-cell-26-20" aria-label="20"></a>    Temperatura <span class="va">t_</span><span class="op">;</span>   <span class="co">// privato</span></span>
+<span id="annotated-cell-26-21"><a href="#annotated-cell-26-21" aria-label="21"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-26" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-26-22" class="code-annotation-target"><a href="#annotated-cell-26-22" aria-label="22"></a>    CellaB<span class="op">(</span><span class="dt">double</span> k<span class="op">)</span> <span class="op">:</span> <span class="va">t_</span><span class="op">(</span>k<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-26-23"><a href="#annotated-cell-26-23" aria-label="23"></a><span class="op">};</span></span>
+<span id="annotated-cell-26-24"><a href="#annotated-cell-26-24" aria-label="24"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-26-25"><a href="#annotated-cell-26-25" aria-label="25"></a>    CellaA a<span class="op">(</span><span class="fl">300.0</span><span class="op">);</span></span>
+<span id="annotated-cell-26-26"><a href="#annotated-cell-26-26" aria-label="26"></a>    CellaB b<span class="op">(</span><span class="fl">300.0</span><span class="op">);</span></span>
+<span id="annotated-cell-26-27"><a href="#annotated-cell-26-27" aria-label="27"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-25" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-26" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-25" data-code-lines="17" data-code-annotation="1">Stampa <code>Temperatura()</code> e <code>Temperatura(double)</code>: <code>t_</code> è creato con il costruttore di default, poi riceve per assegnazione un temporaneo.</span>
+<span data-code-cell="annotated-cell-26" data-code-lines="17" data-code-annotation="1">Stampa <code>Temperatura()</code> e <code>Temperatura(double)</code>: <code>t_</code> è creato con il costruttore di default, poi riceve per assegnazione un temporaneo.</span>
 </dd>
-<dt data-target-cell="annotated-cell-25" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-26" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-25" data-code-lines="22" data-code-annotation="2">Stampa solo <code>Temperatura(double)</code>: <code>t_</code> è creato direttamente con il valore iniziale.</span>
+<span data-code-cell="annotated-cell-26" data-code-lines="22" data-code-annotation="2">Stampa solo <code>Temperatura(double)</code>: <code>t_</code> è creato direttamente con il valore iniziale.</span>
 </dd>
 </dl>
 </div></div>
@@ -998,35 +998,30 @@ Cristiano De Michele
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-label="1"></a><span class="kw">class</span> Datum <span class="op">{</span></span>
 <span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
 <span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">value_</span><span class="op">;</span></span>
-<span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-label="4"></a></span>
-<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-label="6"></a>    Datum<span class="op">()</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-7" class="code-annotation-target"><a href="#annotated-cell-5-7" aria-label="7"></a>    Datum<span class="op">(</span><span class="dt">double</span> v<span class="op">)</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span>v<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
-<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-label="8"></a><span class="op">};</span></span>
-<span id="annotated-cell-5-9"><a href="#annotated-cell-5-9" aria-label="9"></a></span>
-<span id="annotated-cell-5-10"><a href="#annotated-cell-5-10" aria-label="10"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-5-11" class="code-annotation-target"><a href="#annotated-cell-5-11" aria-label="11"></a>    Datum d1<span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-5-12" class="code-annotation-target"><a href="#annotated-cell-5-12" aria-label="12"></a>    Datum d2<span class="op">(</span><span class="fl">5.5</span><span class="op">);</span></span>
-<span id="annotated-cell-5-13"><a href="#annotated-cell-5-13" aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-5-14"><a href="#annotated-cell-5-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-5" class="code-annotation-target"><a href="#annotated-cell-5-5" aria-label="5"></a>    Datum<span class="op">()</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-label="6"></a>    Datum<span class="op">(</span><span class="dt">double</span> v<span class="op">)</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span>v<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-label="7"></a><span class="op">};</span></span>
+<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-label="8"></a></span>
+<span id="annotated-cell-5-9"><a href="#annotated-cell-5-9" aria-label="9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-5-10" class="code-annotation-target"><a href="#annotated-cell-5-10" aria-label="10"></a>    Datum d1<span class="op">;</span></span>
+<span id="annotated-cell-5-11"><a href="#annotated-cell-5-11" aria-label="11"></a>    Datum d2<span class="op">(</span><span class="fl">5.5</span><span class="op">);</span></span>
+<span id="annotated-cell-5-12"><a href="#annotated-cell-5-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="1">Costruttore di default, senza parametri.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="5" data-code-annotation="1">Costruttore di default, senza parametri.</span>
 </dd>
 <dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="7" data-code-annotation="2">Costruttore con un parametro.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="2">Costruttore con un parametro.</span>
 </dd>
 <dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="11" data-code-annotation="3">Chiama il costruttore di default: <code>value_</code> vale <code>0.0</code>.</span>
-</dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="4">4</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="12" data-code-annotation="4">Chiama il costruttore con un parametro: <code>value_</code> vale <code>5.5</code>.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="10" data-code-annotation="3"><code>d1</code> usa il costruttore di default (<code>value_</code> vale <code>0.0</code>), <code>d2</code> quello con un parametro (<code>5.5</code>).</span>
 </dd>
 </dl>
+<p>Due costruttori hanno un ruolo particolare: il <strong>costruttore di copia</strong>, che crea un oggetto da un altro della stessa classe, e il costruttore con un solo parametro, che fa anche da <strong>costruttore di conversione</strong>. Sono l’argomento delle prossime slide.</p>
 </section>
 <section id="il-costruttore-generato-dal-compilatore" class="slide level2 smaller">
 <h2>Il costruttore generato dal compilatore</h2>
@@ -1036,29 +1031,51 @@ Cristiano De Michele
 <li>Anche un costruttore può essere <code>private</code>: l’uso tipico, il <em>Singleton</em>, è nella Lezione 13.</li>
 </ul>
 </section>
-<section id="il-costruttore-di-copia-e-lassegnazione" class="slide level2 smaller">
-<h2>Il costruttore di copia e l’assegnazione</h2>
-<p>La copia alla creazione e l’assegnazione successiva sono operazioni distinte:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-label="2"></a>    Datum d1<span class="op">(</span><span class="fl">5.5</span><span class="op">);</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-3" class="code-annotation-target"><a href="#annotated-cell-6-3" aria-label="3"></a>    Datum d2 <span class="op">=</span> d1<span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4" aria-label="4"></a>    Datum d3<span class="op">(</span>d1<span class="op">);</span></span>
-<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-label="5"></a>    Datum d4<span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-6-6" class="code-annotation-target"><a href="#annotated-cell-6-6" aria-label="6"></a>    d4 <span class="op">=</span> d1<span class="op">;</span></span>
-<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-label="7"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-label="8"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="il-costruttore-di-copia" class="slide level2 smaller">
+<h2>Il costruttore di copia</h2>
+<p>Il <strong>costruttore di copia</strong> crea un oggetto come copia di un altro oggetto della stessa classe:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="kw">class</span> Datum <span class="op">{</span></span>
+<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">value_</span><span class="op">;</span></span>
+<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-label="5"></a>    Datum<span class="op">()</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-label="6"></a>    Datum<span class="op">(</span><span class="dt">double</span> v<span class="op">)</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span>v<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-7" class="code-annotation-target"><a href="#annotated-cell-6-7" aria-label="7"></a>    Datum<span class="op">(</span><span class="at">const</span> Datum<span class="op">&amp;</span> altro<span class="op">)</span> <span class="op">:</span> <span class="va">value_</span><span class="op">(</span>altro<span class="op">.</span><span class="va">value_</span><span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-label="8"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="3" data-code-annotation="1"><code>d2</code> viene creato come copia di <code>d1</code>: si chiama il <strong>costruttore di copia</strong>, <code>Datum(const Datum&amp; altro)</code>.</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="7" data-code-annotation="1">Copia gli attributi di <code>altro</code>. Un metodo accede ai membri privati di qualunque oggetto della propria classe, quindi può leggere <code>altro.value_</code>.</span>
 </dd>
-<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
+</dl>
+<ul>
+<li>Il parametro è un reference: passato per valore richiederebbe a sua volta una copia, cioè di nuovo il costruttore di copia. Il compilatore lo rifiuta: <em><code>invalid constructor; you probably meant 'Datum (const Datum&amp;)'</code></em>.</li>
+<li>È <code>const</code> perché l’originale viene soltanto letto (const reference, Lezione 05).</li>
+</ul>
+</section>
+<section id="copia-e-assegnazione" class="slide level2 smaller">
+<h2>Copia e assegnazione</h2>
+<p>La copia alla creazione e l’assegnazione successiva sono operazioni distinte:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a>    Datum d1<span class="op">(</span><span class="fl">5.5</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-3" class="code-annotation-target"><a href="#annotated-cell-7-3" aria-label="3"></a>    Datum d2 <span class="op">=</span> d1<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-7-4" class="code-annotation-target"><a href="#annotated-cell-7-4" aria-label="4"></a>    Datum d3<span class="op">(</span>d1<span class="op">);</span></span>
+<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-label="5"></a>    Datum d4<span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-7-6" class="code-annotation-target"><a href="#annotated-cell-7-6" aria-label="6"></a>    d4 <span class="op">=</span> d1<span class="op">;</span></span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="2">La stessa operazione, scritta come chiamata esplicita.</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="3" data-code-annotation="1"><code>d2</code> viene creato come copia di <code>d1</code>: si chiama il costruttore di copia.</span>
 </dd>
-<dt data-target-cell="annotated-cell-6" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="6" data-code-annotation="3"><code>d4</code> esiste già: non si costruisce nulla, si chiama l’<strong>operatore di assegnazione</strong>, <code>operator=</code> (Lezione 10).</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="4" data-code-annotation="2">La stessa operazione, scritta come chiamata esplicita.</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="6" data-code-annotation="3"><code>d4</code> esiste già: non si costruisce nulla, si chiama l’<strong>operatore di assegnazione</strong>, <code>operator=</code> (Lezione 10).</span>
 </dd>
 </dl>
 <p>Se la classe non li dichiara, il compilatore li genera entrambi: il costruttore di copia copia e l’operatore di assegnazione assegna attributo per attributo, privati compresi. Di un puntatore copiano l’indirizzo, non i dati: con la memoria dinamica (Lezione 08) è un problema, risolto dalla <em>deep copy</em> (Lezione 10).</p>
@@ -1066,26 +1083,26 @@ Cristiano De Michele
 <section id="il-costruttore-come-conversione" class="slide level2 smaller">
 <h2>Il costruttore come conversione</h2>
 <p>Un costruttore che si può chiamare con un solo argomento definisce anche una <strong>conversione</strong>: con <code>Datum(double v)</code> il compilatore sa ottenere un <code>Datum</code> da un <code>double</code>, e lo fa anche dove non è scritto.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="dt">void</span> stampa<span class="op">(</span>Datum d<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
-<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a></span>
-<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-4" class="code-annotation-target"><a href="#annotated-cell-7-4" aria-label="4"></a>    Datum d1 <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-7-5" class="code-annotation-target"><a href="#annotated-cell-7-5" aria-label="5"></a>    stampa<span class="op">(</span><span class="fl">4.0</span><span class="op">);</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-7-6" class="code-annotation-target"><a href="#annotated-cell-7-6" aria-label="6"></a>    d1 <span class="op">=</span> <span class="fl">3.0</span><span class="op">;</span></span>
-<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="dt">void</span> stampa<span class="op">(</span>Datum d<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a></span>
+<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-4" class="code-annotation-target"><a href="#annotated-cell-8-4" aria-label="4"></a>    Datum d1 <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-5" class="code-annotation-target"><a href="#annotated-cell-8-5" aria-label="5"></a>    stampa<span class="op">(</span><span class="fl">4.0</span><span class="op">);</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-8-6" class="code-annotation-target"><a href="#annotated-cell-8-6" aria-label="6"></a>    d1 <span class="op">=</span> <span class="fl">3.0</span><span class="op">;</span></span>
+<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-label="7"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-8-8"><a href="#annotated-cell-8-8" aria-label="8"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="4" data-code-annotation="1">Equivale a <code>Datum d1(2.0);</code>.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="4" data-code-annotation="1">Equivale a <code>Datum d1(2.0);</code>.</span>
 </dd>
-<dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="5" data-code-annotation="2">Dal <code>double</code> si costruisce un <code>Datum</code> temporaneo, che viene passato alla funzione.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="5" data-code-annotation="2">Dal <code>double</code> si costruisce un <code>Datum</code> temporaneo, che viene passato alla funzione.</span>
 </dd>
-<dt data-target-cell="annotated-cell-7" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="6" data-code-annotation="3">Si costruisce un temporaneo con <code>Datum(double)</code> e lo si assegna a <code>d1</code> con <code>operator=</code>.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="6" data-code-annotation="3">Si costruisce un temporaneo con <code>Datum(double)</code> e lo si assegna a <code>d1</code> con <code>operator=</code>.</span>
 </dd>
 </dl>
 <p>Le conversioni implicite possono nascondere errori. Con <code>explicit Datum(double v)</code> le tre righe sopra non compilano; restano ammessi <code>Datum d1(2.0);</code> e <code>static_cast&lt;Datum&gt;(2.0)</code>.</p>
@@ -1104,38 +1121,38 @@ Cristiano De Michele
 </section>
 <section id="soluzione-dellesercizio-la-classe" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio: la classe</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a></span>
-<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-label="3"></a><span class="kw">class</span> Neurone <span class="op">{</span></span>
-<span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">peso_</span><span class="op">;</span></span>
-<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">lr_</span><span class="op">;</span></span>
-<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-label="7"></a></span>
-<span id="annotated-cell-8-8"><a href="#annotated-cell-8-8" aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-8-9"><a href="#annotated-cell-8-9" aria-label="9"></a>    Neurone<span class="op">()</span> <span class="op">:</span> <span class="va">peso_</span><span class="op">(</span><span class="fl">0.0</span><span class="op">),</span> <span class="va">lr_</span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span> <span class="op">{}</span></span>
-<span id="annotated-cell-8-10"><a href="#annotated-cell-8-10" aria-label="10"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-11" class="code-annotation-target"><a href="#annotated-cell-8-11" aria-label="11"></a>    Neurone<span class="op">(</span><span class="dt">double</span> peso<span class="op">,</span> <span class="dt">double</span> lr<span class="op">)</span> <span class="op">:</span> <span class="va">peso_</span><span class="op">(</span>peso<span class="op">),</span> <span class="va">lr_</span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span> <span class="op">{</span> setLr<span class="op">(</span>lr<span class="op">);</span> <span class="op">}</span></span>
-<span id="annotated-cell-8-12"><a href="#annotated-cell-8-12" aria-label="12"></a></span>
-<span id="annotated-cell-8-13"><a href="#annotated-cell-8-13" aria-label="13"></a>    <span class="dt">double</span> getPeso<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">peso_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-8-14"><a href="#annotated-cell-8-14" aria-label="14"></a>    <span class="dt">double</span> getLr<span class="op">()</span>   <span class="op">{</span> <span class="cf">return</span> <span class="va">lr_</span><span class="op">;</span>   <span class="op">}</span></span>
-<span id="annotated-cell-8-15"><a href="#annotated-cell-8-15" aria-label="15"></a></span>
-<span id="annotated-cell-8-16"><a href="#annotated-cell-8-16" aria-label="16"></a>    <span class="dt">void</span> setLr<span class="op">(</span><span class="dt">double</span> nuovo<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-8-17"><a href="#annotated-cell-8-17" aria-label="17"></a>        <span class="cf">if</span> <span class="op">(</span>nuovo <span class="op">&gt;</span> <span class="fl">0.0</span> <span class="op">&amp;&amp;</span> nuovo <span class="op">&lt;=</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-8-18"><a href="#annotated-cell-8-18" aria-label="18"></a>            <span class="va">lr_</span> <span class="op">=</span> nuovo<span class="op">;</span></span>
-<span id="annotated-cell-8-19"><a href="#annotated-cell-8-19" aria-label="19"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="annotated-cell-8-20"><a href="#annotated-cell-8-20" aria-label="20"></a>            <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"[setLr] rifiutato "</span> <span class="op">&lt;&lt;</span> nuovo</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-21" class="code-annotation-target"><a href="#annotated-cell-8-21" aria-label="21"></a>                      <span class="op">&lt;&lt;</span> <span class="st">": deve stare in (0, 1]. Tengo "</span> <span class="op">&lt;&lt;</span> <span class="va">lr_</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-8-22"><a href="#annotated-cell-8-22" aria-label="22"></a>        <span class="op">}</span></span>
-<span id="annotated-cell-8-23"><a href="#annotated-cell-8-23" aria-label="23"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-8-24"><a href="#annotated-cell-8-24" aria-label="24"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-9"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-label="2"></a></span>
+<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-label="3"></a><span class="kw">class</span> Neurone <span class="op">{</span></span>
+<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">peso_</span><span class="op">;</span></span>
+<span id="annotated-cell-9-6"><a href="#annotated-cell-9-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">lr_</span><span class="op">;</span></span>
+<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-label="7"></a></span>
+<span id="annotated-cell-9-8"><a href="#annotated-cell-9-8" aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-label="9"></a>    Neurone<span class="op">()</span> <span class="op">:</span> <span class="va">peso_</span><span class="op">(</span><span class="fl">0.0</span><span class="op">),</span> <span class="va">lr_</span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span> <span class="op">{}</span></span>
+<span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-label="10"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-11" class="code-annotation-target"><a href="#annotated-cell-9-11" aria-label="11"></a>    Neurone<span class="op">(</span><span class="dt">double</span> peso<span class="op">,</span> <span class="dt">double</span> lr<span class="op">)</span> <span class="op">:</span> <span class="va">peso_</span><span class="op">(</span>peso<span class="op">),</span> <span class="va">lr_</span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span> <span class="op">{</span> setLr<span class="op">(</span>lr<span class="op">);</span> <span class="op">}</span></span>
+<span id="annotated-cell-9-12"><a href="#annotated-cell-9-12" aria-label="12"></a></span>
+<span id="annotated-cell-9-13"><a href="#annotated-cell-9-13" aria-label="13"></a>    <span class="dt">double</span> getPeso<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">peso_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-9-14"><a href="#annotated-cell-9-14" aria-label="14"></a>    <span class="dt">double</span> getLr<span class="op">()</span>   <span class="op">{</span> <span class="cf">return</span> <span class="va">lr_</span><span class="op">;</span>   <span class="op">}</span></span>
+<span id="annotated-cell-9-15"><a href="#annotated-cell-9-15" aria-label="15"></a></span>
+<span id="annotated-cell-9-16"><a href="#annotated-cell-9-16" aria-label="16"></a>    <span class="dt">void</span> setLr<span class="op">(</span><span class="dt">double</span> nuovo<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-9-17"><a href="#annotated-cell-9-17" aria-label="17"></a>        <span class="cf">if</span> <span class="op">(</span>nuovo <span class="op">&gt;</span> <span class="fl">0.0</span> <span class="op">&amp;&amp;</span> nuovo <span class="op">&lt;=</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-9-18"><a href="#annotated-cell-9-18" aria-label="18"></a>            <span class="va">lr_</span> <span class="op">=</span> nuovo<span class="op">;</span></span>
+<span id="annotated-cell-9-19"><a href="#annotated-cell-9-19" aria-label="19"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="annotated-cell-9-20"><a href="#annotated-cell-9-20" aria-label="20"></a>            <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"[setLr] rifiutato "</span> <span class="op">&lt;&lt;</span> nuovo</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-9-21" class="code-annotation-target"><a href="#annotated-cell-9-21" aria-label="21"></a>                      <span class="op">&lt;&lt;</span> <span class="st">": deve stare in (0, 1]. Tengo "</span> <span class="op">&lt;&lt;</span> <span class="va">lr_</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-9-22"><a href="#annotated-cell-9-22" aria-label="22"></a>        <span class="op">}</span></span>
+<span id="annotated-cell-9-23"><a href="#annotated-cell-9-23" aria-label="23"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-9-24"><a href="#annotated-cell-9-24" aria-label="24"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="11" data-code-annotation="1"><code>lr_(0.1)</code> inizializza <code>lr_</code> <strong>prima</strong> della chiamata a <code>setLr</code>.</span>
+<span data-code-cell="annotated-cell-9" data-code-lines="11" data-code-annotation="1"><code>lr_(0.1)</code> inizializza <code>lr_</code> <strong>prima</strong> della chiamata a <code>setLr</code>.</span>
 </dd>
-<dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="21" data-code-annotation="2">Se il setter rifiuta il valore, <code>lr_</code> deve già contenere un valore valido.</span>
+<span data-code-cell="annotated-cell-9" data-code-lines="21" data-code-annotation="2">Se il setter rifiuta il valore, <code>lr_</code> deve già contenere un valore valido.</span>
 </dd>
 </dl>
 </section>
@@ -1229,48 +1246,48 @@ g++ -O2 -Wall    -&gt; warning: 'm.Neurone::lr_' is used uninitialized</code></p
 </section>
 <section id="soluzione-dellesercizio-finale-denselayer" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio finale: <code>DenseLayer</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-15"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-label="2"></a></span>
-<span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-label="3"></a><span class="kw">class</span> DenseLayer <span class="op">{</span></span>
-<span id="annotated-cell-15-4"><a href="#annotated-cell-15-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-15-5" class="code-annotation-target"><a href="#annotated-cell-15-5" aria-label="5"></a>    <span class="dt">int</span> Nnodes<span class="op">;</span></span>
-<span id="annotated-cell-15-6"><a href="#annotated-cell-15-6" aria-label="6"></a>    <span class="dt">int</span> Nin<span class="op">;</span></span>
-<span id="annotated-cell-15-7"><a href="#annotated-cell-15-7" aria-label="7"></a></span>
-<span id="annotated-cell-15-8"><a href="#annotated-cell-15-8" aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-15-9"><a href="#annotated-cell-15-9" aria-label="9"></a>    DenseLayer<span class="op">(</span><span class="dt">int</span> Nn<span class="op">,</span> <span class="dt">int</span> Ni<span class="op">)</span> <span class="op">:</span> Nnodes<span class="op">(</span>Nn<span class="op">),</span> Nin<span class="op">(</span>Ni<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
-<span id="annotated-cell-15-10"><a href="#annotated-cell-15-10" aria-label="10"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-15-11" class="code-annotation-target"><a href="#annotated-cell-15-11" aria-label="11"></a>    <span class="dt">int</span> numParametri<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> Nnodes <span class="op">*</span> Nin<span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-15-12"><a href="#annotated-cell-15-12" aria-label="12"></a></span>
-<span id="annotated-cell-15-13"><a href="#annotated-cell-15-13" aria-label="13"></a>    <span class="dt">void</span> descrivi<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-15-14"><a href="#annotated-cell-15-14" aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"DenseLayer "</span> <span class="op">&lt;&lt;</span> Nin <span class="op">&lt;&lt;</span> <span class="st">" -&gt; "</span> <span class="op">&lt;&lt;</span> Nnodes</span>
-<span id="annotated-cell-15-15"><a href="#annotated-cell-15-15" aria-label="15"></a>                  <span class="op">&lt;&lt;</span> <span class="st">": "</span> <span class="op">&lt;&lt;</span> numParametri<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" parametri</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-15-16"><a href="#annotated-cell-15-16" aria-label="16"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-15-17"><a href="#annotated-cell-15-17" aria-label="17"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-16"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-label="2"></a></span>
+<span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-label="3"></a><span class="kw">class</span> DenseLayer <span class="op">{</span></span>
+<span id="annotated-cell-16-4"><a href="#annotated-cell-16-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-16-5" class="code-annotation-target"><a href="#annotated-cell-16-5" aria-label="5"></a>    <span class="dt">int</span> Nnodes<span class="op">;</span></span>
+<span id="annotated-cell-16-6"><a href="#annotated-cell-16-6" aria-label="6"></a>    <span class="dt">int</span> Nin<span class="op">;</span></span>
+<span id="annotated-cell-16-7"><a href="#annotated-cell-16-7" aria-label="7"></a></span>
+<span id="annotated-cell-16-8"><a href="#annotated-cell-16-8" aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-16-9"><a href="#annotated-cell-16-9" aria-label="9"></a>    DenseLayer<span class="op">(</span><span class="dt">int</span> Nn<span class="op">,</span> <span class="dt">int</span> Ni<span class="op">)</span> <span class="op">:</span> Nnodes<span class="op">(</span>Nn<span class="op">),</span> Nin<span class="op">(</span>Ni<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-16-10"><a href="#annotated-cell-16-10" aria-label="10"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-16-11" class="code-annotation-target"><a href="#annotated-cell-16-11" aria-label="11"></a>    <span class="dt">int</span> numParametri<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> Nnodes <span class="op">*</span> Nin<span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-16-12"><a href="#annotated-cell-16-12" aria-label="12"></a></span>
+<span id="annotated-cell-16-13"><a href="#annotated-cell-16-13" aria-label="13"></a>    <span class="dt">void</span> descrivi<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-16-14"><a href="#annotated-cell-16-14" aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"DenseLayer "</span> <span class="op">&lt;&lt;</span> Nin <span class="op">&lt;&lt;</span> <span class="st">" -&gt; "</span> <span class="op">&lt;&lt;</span> Nnodes</span>
+<span id="annotated-cell-16-15"><a href="#annotated-cell-16-15" aria-label="15"></a>                  <span class="op">&lt;&lt;</span> <span class="st">": "</span> <span class="op">&lt;&lt;</span> numParametri<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" parametri</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-16-16"><a href="#annotated-cell-16-16" aria-label="16"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-16-17"><a href="#annotated-cell-16-17" aria-label="17"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-15" data-code-lines="5" data-code-annotation="1">Gli stessi nomi del framework, senza il suffisso <code>_</code>.</span>
+<span data-code-cell="annotated-cell-16" data-code-lines="5" data-code-annotation="1">Gli stessi nomi del framework, senza il suffisso <code>_</code>.</span>
 </dd>
-<dt data-target-cell="annotated-cell-15" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-16" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-15" data-code-lines="11" data-code-annotation="2">Un peso per ogni coppia ingresso-neurone.</span>
+<span data-code-cell="annotated-cell-16" data-code-lines="11" data-code-annotation="2">Un peso per ogni coppia ingresso-neurone.</span>
 </dd>
 </dl>
 </section>
 <section id="soluzione-dellesercizio-finale-sigmoidlayer" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio finale: <code>SigmoidLayer</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-16" data-startfrom="18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp" style="counter-reset: source-line 17;"><a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-16-18" class="code-annotation-target"><a href="#annotated-cell-16-18" aria-label="18"></a><span class="kw">class</span> SigmoidLayer <span class="op">{</span></span>
-<span id="annotated-cell-16-19"><a href="#annotated-cell-16-19" aria-label="19"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-16-20"><a href="#annotated-cell-16-20" aria-label="20"></a>    <span class="dt">int</span> numParametri<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-16-21"><a href="#annotated-cell-16-21" aria-label="21"></a></span>
-<span id="annotated-cell-16-22"><a href="#annotated-cell-16-22" aria-label="22"></a>    <span class="dt">void</span> descrivi<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-16-23"><a href="#annotated-cell-16-23" aria-label="23"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"SigmoidLayer: "</span> <span class="op">&lt;&lt;</span> numParametri<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" parametri</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-16-24"><a href="#annotated-cell-16-24" aria-label="24"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-16-25"><a href="#annotated-cell-16-25" aria-label="25"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-17" data-startfrom="18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp" style="counter-reset: source-line 17;"><a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-17-18" class="code-annotation-target"><a href="#annotated-cell-17-18" aria-label="18"></a><span class="kw">class</span> SigmoidLayer <span class="op">{</span></span>
+<span id="annotated-cell-17-19"><a href="#annotated-cell-17-19" aria-label="19"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-17-20"><a href="#annotated-cell-17-20" aria-label="20"></a>    <span class="dt">int</span> numParametri<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-17-21"><a href="#annotated-cell-17-21" aria-label="21"></a></span>
+<span id="annotated-cell-17-22"><a href="#annotated-cell-17-22" aria-label="22"></a>    <span class="dt">void</span> descrivi<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-17-23"><a href="#annotated-cell-17-23" aria-label="23"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"SigmoidLayer: "</span> <span class="op">&lt;&lt;</span> numParametri<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" parametri</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-17-24"><a href="#annotated-cell-17-24" aria-label="24"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-17-25"><a href="#annotated-cell-17-25" aria-label="25"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-17" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-16" data-code-lines="18" data-code-annotation="1">Nessun costruttore: si usa quello generato dal compilatore, che qui non ha attributi da inizializzare.</span>
+<span data-code-cell="annotated-cell-17" data-code-lines="18" data-code-annotation="1">Nessun costruttore: si usa quello generato dal compilatore, che qui non ha attributi da inizializzare.</span>
 </dd>
 </dl>
 <p>Nel framework le due classi hanno una base comune, <code>layer</code>, e <code>DenseLayer</code> deriva da <code>ParametricLayer</code>. Qui il totale dei parametri si somma a mano, layer per layer (slide successiva): per raccogliere layer di tipi diversi in un’unica sequenza, come fa <code>Sequential</code> nel framework, serve una classe base comune. È l’argomento della Lezione 12, l’ereditarietà.</p>
