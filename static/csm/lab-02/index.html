@@ -1032,7 +1032,7 @@ v1=(0,1,2)</code></pre>
 <ul>
 <li><code>pvector()</code> sets all the <code>NT</code> components to <code>0</code>: every <code>pvector</code> starts in a known state. Uncomment the <code>std::cout</code> lines to see when the vectors are created and destroyed.</li>
 <li>The destructor has nothing to do: <code>v</code> is a fixed-size array, it disappears with the object.</li>
-<li><code>show()</code> is <code>const</code> (it only reads) and loops over <code>NT</code>: no <code>3</code> written anywhere, so it still works with <code>NT 2</code>. The comma goes between the components only.</li>
+<li><code>show()</code> is <code>const</code> (it only reads) and loops over <code>NT</code>.</li>
 </ul>
 </section>
 <section id="sum-and-operator" class="slide level2 smaller codice-intero codice-micro">
