@@ -1073,7 +1073,7 @@ Cristiano De Michele
 <span data-code-cell="annotated-cell-7" data-code-lines="6" data-code-annotation="3"><code>d4</code> esiste già: non si costruisce nulla, si chiama l’<strong>operatore di assegnazione</strong>, <code>operator=</code> (Lezione 10).</span>
 </dd>
 </dl>
-<p>Se la classe non li dichiara, il compilatore li genera entrambi: il costruttore di copia copia e l’operatore di assegnazione assegna attributo per attributo, privati compresi. Di un puntatore copiano l’indirizzo, non i dati: con la memoria dinamica (Lezione 08) è un problema, risolto dalla <em>deep copy</em> (Lezione 10).</p>
+<p>Se la classe non li dichiara, il compilatore genera sia il costruttore di copia sia l’operatore di assegnazione. Il primo copia ogni attributo, privati compresi, nel nuovo oggetto; il secondo assegna ogni attributo all’oggetto già esistente. Di un puntatore copiano l’indirizzo, non i dati: con la memoria dinamica (Lezione 08) è un problema, risolto dalla <em>deep copy</em> (Lezione 10).</p>
 </section>
 <section id="il-costruttore-come-conversione" class="slide level2 smaller">
 <h2>Il costruttore come conversione</h2>
@@ -1109,7 +1109,7 @@ Cristiano De Michele
 <li>Due attributi <strong>privati</strong>: <code>peso_</code> e <code>lr_</code> (il learning rate).</li>
 <li>I due getter, <code>getPeso()</code> e <code>getLr()</code>.</li>
 <li><code>setLr(double)</code>: accetta solo valori in <span class="math inline">\((0, 1]\)</span>; altrimenti <strong>rifiuta</strong> il valore, stampa il motivo su <code>std::cerr</code> e mantiene quello precedente.</li>
-<li>Due costruttori, con la lista di inizializzazione: quello di default (peso <span class="math inline">\(0\)</span>, lr <span class="math inline">\(0{,}1\)</span>) e <code>Neurone(double peso, double lr)</code>, che assegna <code>lr_</code> passando dal setter.</li>
+<li>Due costruttori, con la lista di inizializzazione: quello di default (peso <span class="math inline">\(0\)</span>, lr <span class="math inline">\(0{,}1\)</span>) e <code>Neurone(double peso, double lr)</code>, che inizializza <code>peso_</code> nella lista e assegna <code>lr_</code> passando dal setter.</li>
 <li>Nel <code>main</code>: provate ad assegnare <code>n.lr_ = 5.0;</code> e leggete il messaggio del compilatore; poi chiamate <code>n.setLr(5.0)</code> e <code>n.setLr(0.05)</code>.</li>
 <li>Togliete <code>lr_(0.1)</code> dalla lista di inizializzazione del costruttore con parametri e create <code>Neurone m(0.7, 99.0);</code>. Che valore ha <code>lr_</code>, e perché?</li>
 </ol>
