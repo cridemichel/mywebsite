@@ -886,17 +886,17 @@ Cristiano De Michele
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a>    <span class="dt">double</span> <span class="va">peso_</span><span class="op">;</span></span>
 <span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-label="4"></a>    <span class="dt">double</span> <span class="va">lr_</span><span class="op">;</span></span>
-<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-label="5"></a></span>
-<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-7" class="code-annotation-target"><a href="#annotated-cell-2-7" aria-label="7"></a>    Neurone<span class="op">(</span><span class="dt">double</span> peso<span class="op">,</span> <span class="dt">double</span> lr<span class="op">)</span> <span class="op">:</span> <span class="va">peso_</span><span class="op">(</span>peso<span class="op">),</span> <span class="va">lr_</span><span class="op">(</span>lr<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
-<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-label="8"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-6" class="code-annotation-target"><a href="#annotated-cell-2-6" aria-label="6"></a>    Neurone<span class="op">(</span><span class="dt">double</span> peso<span class="op">,</span> <span class="dt">double</span> lr<span class="op">)</span> <span class="op">:</span> <span class="va">peso_</span><span class="op">(</span>peso<span class="op">),</span> <span class="va">lr_</span><span class="op">(</span>lr<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-label="7"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="7" data-code-annotation="1">Dopo i <code>:</code> ogni attributo riceve il valore iniziale, nella forma <code>nome(valore)</code>; qui il corpo <code>{ }</code> è vuoto.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="6" data-code-annotation="1">Dopo i <code>:</code> ogni attributo riceve il valore iniziale, nella forma <code>nome(valore)</code>; qui il corpo <code>{ }</code> è vuoto.</span>
 </dd>
 </dl>
-<p>Per un <code>double</code> il risultato è lo stesso che assegnare nel corpo (<code>peso_ = peso;</code>, Lezione 06). Un attributo che è a sua volta un oggetto, invece, nel corpo viene prima costruito con il costruttore di default e poi riassegnato; nella lista viene costruito direttamente con il valore iniziale.</p>
+<p>Il suffisso <code>_</code> distingue l’attributo dal parametro, <code>peso_(peso)</code>: è una convenzione, non una regola. Il framework non la usa e sceglie nomi diversi: <code>DenseLayer(int Nn, int Ni) : Nnodes(Nn), Nin(Ni)</code>.</p>
+<p>Per un <code>double</code> il risultato è lo stesso che assegnare nel corpo (<code>peso_ = peso;</code>, Lezione 06). Un attributo che è a sua volta un oggetto, nel corpo viene prima costruito con il costruttore di default e poi riassegnato; nella lista è costruito direttamente con il valore iniziale.</p>
 </section>
 <section id="la-lista-di-inizializzazione-due-regole" class="slide level2 smaller">
 <h2>La lista di inizializzazione: due regole</h2>
