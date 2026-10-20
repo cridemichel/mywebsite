@@ -898,8 +898,8 @@ Cristiano De Michele
 <p>Il suffisso <code>_</code> distingue l’attributo dal parametro, <code>peso_(peso)</code>: è una convenzione, non una regola. Il framework non la usa e sceglie nomi diversi: <code>DenseLayer(int Nn, int Ni) : Nnodes(Nn), Nin(Ni)</code>.</p>
 <p>Gli attributi vengono inizializzati nell’<strong>ordine in cui sono dichiarati</strong> nella classe, non in quello della lista; se i due ordini differiscono, <code>-Wall</code> lo segnala (<code>-Wreorder</code>).</p>
 </section>
-<section id="la-lista-di-inizializzazione-quando-fa-differenza" class="slide level2 smaller">
-<h2>La lista di inizializzazione: quando fa differenza</h2>
+<section id="lista-di-inizializzazione-o-assegnazione-nel-corpo" class="slide level2 smaller">
+<h2>Lista di inizializzazione o assegnazione nel corpo</h2>
 <ul>
 <li>Per un <code>double</code> è indifferente usare la lista o assegnare nel corpo (<code>peso_ = peso;</code>, Lezione 06). Per un attributo che è un oggetto no: nel corpo viene prima creato con il costruttore di default e poi riceve il valore (esempio nella slide successiva).</li>
 <li>Gli attributi <code>const</code> e i reference <strong>devono</strong> stare nella lista: dopo la creazione non si possono assegnare (nota sullo scheduler, Lezione 06).</li>
