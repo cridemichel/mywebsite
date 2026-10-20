@@ -852,7 +852,7 @@ Cristiano De Michele
 <span id="cb2-19"><a aria-label="19"></a>  <span class="dt">int</span> c<span class="op">;</span></span>
 <span id="cb2-20"><a aria-label="20"></a>  <span class="dt">int</span> fc<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
 <span id="cb2-21"><a aria-label="21"></a>    <span class="op">{</span></span>
-<span id="cb2-22"><a aria-label="22"></a>      <span class="co">// fc() returns the value of member a</span></span>
+<span id="cb2-22"><a aria-label="22"></a>      <span class="co">// fc() returns the value of member b</span></span>
 <span id="cb2-23"><a aria-label="23"></a>      <span class="cf">return</span> b<span class="op">;</span></span>
 <span id="cb2-24"><a aria-label="24"></a>    <span class="op">}</span></span>
 <span id="cb2-25"><a aria-label="25"></a><span class="op">};</span></span>
@@ -868,7 +868,7 @@ Cristiano De Michele
 <span id="cb2-35"><a aria-label="35"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <ul>
-<li><code>basecl</code> has one member per level: <code>a</code>, <code>fa()</code> private; <code>b</code>, <code>fb()</code> protected; <code>c</code>, <code>fc()</code> public. (The comment on line 22 is wrong: <code>fc()</code> returns <code>b</code>.)</li>
+<li><code>basecl</code> has one member per level: <code>a</code>, <code>fa()</code> private; <code>b</code>, <code>fb()</code> protected; <code>c</code>, <code>fc()</code> public.</li>
 <li><code>dercl::g()</code> calls <code>fc()</code> and <code>fb()</code> and reads <code>b</code>; with <code>return a;</code> it stops: <code>error: 'int basecl::a' is private within this context</code>.</li>
 <li><code>g()</code> has no access specifier in <code>dercl</code>: it is private, the default of a <code>class</code>.</li>
 </ul>
