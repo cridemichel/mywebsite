@@ -811,10 +811,10 @@ Cristiano De Michele
 </tr>
 </tbody>
 </table>
-<p>Nelle lezioni, accanto al linguaggio, arrivano esercizi di calcolo scientifico tratti dal libro <em>Programmazione Scientifica</em> (Barone, Marinari, Organtini, Ricci-Tersenghi), a partire dalla ricerca del minimo di una funzione nella Lezione 10.</p>
+<p>Nelle prossime lezioni, accanto al linguaggio, arriveranno anche esercizi di calcolo scientifico tratti dal libro <em>Programmazione Scientifica</em> (Barone, Marinari, Organtini, Ricci-Tersenghi).</p>
 </section>
-<section id="dove-serve-nel-framework" class="slide level2 smaller">
-<h2>Dove serve nel framework</h2>
+<section id="gli-argomenti-di-oggi-nel-framework" class="slide level2 smaller">
+<h2>Gli argomenti di oggi nel framework</h2>
 <ul>
 <li><strong>File separati.</strong> Nei Laboratori 05 e 06 <code>Matrix</code> e <code>DenseLayer</code> sono divise in <code>.hpp</code> e <code>.cpp</code>, compilate insieme da CMake. Nel framework finale ogni classe ha il suo header (<code>matrix.hpp</code>, <code>layer.hpp</code>, <code>sequential.hpp</code>, …).</li>
 <li><strong>Memoria dinamica.</strong> I dati della rete non stanno nello stack, che è di pochi MB: i pesi di uno strato <span class="math inline">\(784 \times 200\)</span> sono 156 800 <code>double</code>, cioè 1,25 MB, e le 60 000 immagini di addestramento di MNIST sono 47 milioni di pixel. Nel Laboratorio 04 allocherete gli array con <code>new[]</code>; nel Laboratorio 05 la classe <code>Matrix</code> terrà i suoi dati in un blocco allocato con <code>new double[rows * cols]</code>.</li>
@@ -1260,7 +1260,7 @@ Circonferenza = 9.42478</code></pre>
 </dd>
 <dt data-target-cell="annotated-cell-13" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-13" data-code-lines="11" data-code-annotation="2">Ciò che si alloca con <code>new[]</code> si libera con <code>delete[]</code>. Usare <code>delete</code> senza parentesi è <em>undefined behaviour</em>: spesso il programma termina senza errori e lo sbaglio resta nascosto. L’AddressSanitizer lo segnala come <em><code>alloc-dealloc-mismatch</code></em>.</span>
+<span data-code-cell="annotated-cell-13" data-code-lines="11" data-code-annotation="2">Ciò che si alloca con <code>new[]</code> si libera con <code>delete[]</code>. Usare <code>delete</code> senza parentesi è <em>undefined behaviour</em>: spesso il programma termina senza errori. Se <code>new[]</code> e <code>delete</code> sono nella stessa funzione, <code>g++ -Wall</code> e <code>clang++</code> avvisano in compilazione (<em><code>-Wmismatched-new-delete</code></em>); se sono in funzioni diverse, lo segnala solo l’AddressSanitizer, come <em><code>alloc-dealloc-mismatch</code></em>.</span>
 </dd>
 </dl>
 </section>
@@ -1478,7 +1478,7 @@ Circonferenza = 9.42478</code></pre>
 <p><strong>Consiglio</strong></p>
 </div>
 <div class="callout-content">
-<p>Il rilevamento dei leak è attivo su Linux, non con il compilatore di Apple su macOS: sul Mac si usa il comando <code>leaks --atExit -- ./main</code>. L’AddressSanitizer rallenta il programma: si tiene durante lo sviluppo e si toglie per le esecuzioni lunghe.</p>
+<p>Su macOS l’AddressSanitizer non rileva i leak, e segnala <code>delete</code> al posto di <code>delete[]</code> solo con <code>ASAN_OPTIONS=alloc_dealloc_mismatch=1 ./main</code>. Per i leak si compila senza <code>-fsanitize</code> e si usa <code>leaks --atExit -- ./main</code>. L’AddressSanitizer rallenta il programma: si tiene durante lo sviluppo.</p>
 </div>
 </div>
 </div>
@@ -1490,7 +1490,7 @@ Circonferenza = 9.42478</code></pre>
 <li>Scrivete <code>double** creaMatrice(int righe, int colonne)</code>, che alloca una matrice con <code>new[]</code>: prima l’array dei puntatori, poi ogni riga.</li>
 <li>Scrivete <code>void distruggiMatrice(double** m, int righe)</code>, <strong>di proposito sbagliata</strong>: solo <code>delete[] m</code>, senza il ciclo sulle righe.</li>
 <li>Nel <code>main</code>, con <code>const int R = 3, C = 4;</code>, create <code>double** W = creaMatrice(R, C);</code>, riempitela con <code>W[i][j] = i * C + j</code>, stampate <code>W[2][3] = &lt;valore&gt;</code> e chiamate <code>distruggiMatrice(W, R)</code>.</li>
-<li>Compilate con <code>g++ -fsanitize=address -g</code> ed eseguite. Quanti byte risultano persi, in quante allocazioni, e perché proprio quei numeri?</li>
+<li>Compilate con <code>g++ -fsanitize=address -g</code> ed eseguite (su macOS: compilate con <code>g++ -g</code> ed eseguite con <code>leaks --atExit -- ./&lt;eseguibile&gt;</code>). Quanti byte risultano persi, in quante allocazioni, e perché?</li>
 <li>Correggete <code>distruggiMatrice</code> e rieseguite: l’AddressSanitizer non deve stampare nulla.</li>
 </ol>
 </section>
@@ -1527,12 +1527,12 @@ Circonferenza = 9.42478</code></pre>
 </dd>
 </dl>
 </section>
-<section id="soluzione-cosa-dice-laddresssanitizer" class="slide level2 smaller">
-<h2>Soluzione: cosa dice l’AddressSanitizer</h2>
+<section id="soluzione-il-rapporto-dei-leak" class="slide level2 smaller">
+<h2>Soluzione: il rapporto dei leak</h2>
 <p>Il programma stampa <code>W[2][3] = 11</code>. Con la <code>distruggiMatrice</code> sbagliata, che esegue solo <code>delete[] m</code>:</p>
 <pre><code>SUMMARY: AddressSanitizer: 96 byte(s) leaked in 3 allocation(s).</code></pre>
-<p>Le tre allocazioni perse sono le <strong>tre righe</strong>. Ogni riga contiene 4 <code>double</code>, cioè 32 byte: <span class="math inline">\(3 \times 4 \times 8 = 96\)</span>. L’array dei puntatori invece è stato liberato: è l’unica cosa che <code>delete[] m</code> libera.</p>
-<p>Con la versione corretta l’AddressSanitizer non stampa nulla.</p>
+<p>Le tre allocazioni perse sono le <strong>tre righe</strong>, da 4 <code>double</code> cioè 32 byte: <span class="math inline">\(3 \times 4 \times 8 = 96\)</span>. L’array dei puntatori è stato liberato: è l’unica cosa che <code>delete[] m</code> libera.</p>
+<p>Con la versione corretta l’AddressSanitizer non stampa nulla. Su macOS <code>leaks</code> riporta <em><code>3 leaks for 144 total leaked bytes</code></em>: le stesse tre righe, con la dimensione dei blocchi dell’allocatore di macOS (48 byte) invece dei 32 byte richiesti.</p>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -1542,7 +1542,7 @@ Circonferenza = 9.42478</code></pre>
 <p><strong>Importante</strong></p>
 </div>
 <div class="callout-content">
-<p>Il numero di byte indica che cosa è stato perso. Nel Laboratorio 05 la classe <code>Matrix</code> allocherà un blocco di <code>rows * cols</code> <code>double</code>: dimenticare il <code>delete[]</code> per una matrice <span class="math inline">\(784 \times 200\)</span> vuol dire perdere 1,25 MB a ogni matrice costruita, e in un ciclo di addestramento le matrici si costruiscono a ogni passo.</p>
+<p>Nel Laboratorio 05 <code>Matrix</code> allocherà un blocco di <code>rows * cols</code> <code>double</code>: senza <code>delete[]</code>, una matrice <span class="math inline">\(784 \times 200\)</span> perde 1,25 MB, e in un ciclo di addestramento le matrici si costruiscono a ogni passo.</p>
 </div>
 </div>
 </div>
