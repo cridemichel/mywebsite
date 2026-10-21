@@ -886,6 +886,7 @@ Cristiano De Michele
 <p>Contiene <em>come</em> lo fa: il corpo <code>{ ... }</code> di ogni metodo dichiarato nell’header.</p>
 </div></div>
 <p>Chi usa la classe include l’header. Come visto nella Lezione 04, <code>#include</code> è una direttiva del preprocessore: copia il testo dell’header nel file che lo include, prima della compilazione.</p>
+<p>Nel framework finale le classi sono template e stanno interamente negli header, metodi compresi: lo vedremo nella Lezione 16.</p>
 </section>
 <section id="un-esempio-header-e-file-sorgente" class="slide level2 smaller">
 <h2>Un esempio: header e file sorgente</h2>
@@ -1092,11 +1093,10 @@ Cristiano De Michele
 <section id="esercizio-in-classe-segue-2" class="slide level2 smaller">
 <h2>Esercizio in classe (segue)</h2>
 <ol start="7" type="1">
-<li>Tre domande, da verificare al calcolatore:
+<li>Due domande, da verificare al calcolatore:
 <ol type="a">
 <li>In <code>main.cpp</code> il testo di <code>Misure.hpp</code> viene incluso due volte: perché? Togliete le tre righe della header guard e ricompilate: quale errore si ottiene?</li>
 <li>Rimettete la header guard e togliete <code>Statistiche.cpp</code> da <code>add_executable</code>: quale errore si ottiene, e in quale fase?</li>
-<li><code>MAX_MISURE</code> è definita in un header incluso da tre file <code>.cpp</code>: perché il linker non segnala una definizione multipla? Che cosa succederebbe in C?</li>
 </ol></li>
 </ol>
 </section>
@@ -1223,12 +1223,11 @@ Cristiano De Michele
 </div>
 <p>Output: <code>T = 2.002 s, sigma = 0.0192354 s</code>, come nella Lezione 06.</p>
 </section>
-<section id="soluzione-le-tre-domande" class="slide level2 smaller">
-<h2>Soluzione: le tre domande</h2>
+<section id="soluzione-le-due-domande" class="slide level2 smaller">
+<h2>Soluzione: le due domande</h2>
 <ol type="a">
 <li><p><code>main.cpp</code> include <code>Misure.hpp</code> direttamente e una seconda volta attraverso <code>Statistiche.hpp</code>. Senza header guard la compilazione di <code>main.cpp</code> si ferma con <em><code>error: redefinition of 'const int MAX_MISURE'</code></em> e <em><code>error: redefinition of 'class Misure'</code></em>. Il <code>#pragma once</code> di <code>Statistiche.hpp</code> non basta: protegge solo <code>Statistiche.hpp</code>.</p></li>
 <li><p>La compilazione di <code>main.cpp</code> riesce, perché <code>Statistiche.hpp</code> dichiara tutto; il linking fallisce con <em><code>undefined reference to 'Statistiche::Statistiche(Misure&amp;)'</code></em>, e lo stesso per <code>media()</code> e <code>sigma()</code>.</p></li>
-<li><p>In C++ una variabile globale <code>const</code> è visibile solo nel file in cui è definita: ogni <code>.cpp</code> che include l’header ne ha una copia propria, e il linker non vede conflitti. In C la stessa riga, in un header incluso da due file <code>.c</code>, dà al linking <em><code>multiple definition of 'MAX_MISURE'</code></em>: in C si dichiara <code>extern const int MAX_MISURE;</code> nell’header e la si definisce in un solo file <code>.c</code>.</p></li>
 </ol>
 </section>
 <section id="la-memoria-di-un-programma" class="slide level2 smaller">
