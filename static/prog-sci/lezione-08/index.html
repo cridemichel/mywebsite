@@ -817,7 +817,7 @@ Cristiano De Michele
 <section id="gli-argomenti-di-oggi-nel-framework" class="slide level2 smaller">
 <h2>Gli argomenti di oggi nel framework</h2>
 <ul>
-<li><strong>File separati.</strong> Nei Laboratori 05 e 06 <code>Matrix</code> e <code>DenseLayer</code> sono divise in <code>.hpp</code> e <code>.cpp</code>, compilate insieme da CMake. Nel framework finale ogni classe ha il suo header (<code>layer.hpp</code>, <code>sequential.hpp</code>, …), e <code>eigen_wrap.hpp</code> definisce <code>Matrix&lt;ntype&gt;</code> come matrice di Eigen.</li>
+<li><strong>Codice in più file.</strong> Nei Laboratori 05 e 06 <code>Matrix</code> e <code>DenseLayer</code> sono divise in <code>.hpp</code> e <code>.cpp</code>, compilate insieme da CMake. Nel framework finale le classi sono template e ognuna sta per intero nel suo header (<code>layer.hpp</code>, <code>sequential.hpp</code>, …); <code>eigen_wrap.hpp</code> definisce <code>Matrix&lt;ntype&gt;</code> come matrice di Eigen.</li>
 <li><strong>Memoria dinamica.</strong> I dati della rete non stanno nello stack, che è di pochi MB: i pesi di uno strato <span class="math inline">\(784 \times 200\)</span> sono 156 800 <code>double</code>, cioè 1,25 MB, e le 60 000 immagini di addestramento di MNIST sono 47 milioni di pixel. Nel Laboratorio 04 allocherete gli array con <code>new[]</code>; nel Laboratorio 05 la classe <code>Matrix</code> terrà i suoi dati in un blocco allocato con <code>new double[rows * cols]</code>.</li>
 <li><strong>AddressSanitizer.</strong> Nel Laboratorio 04 verificherete con <code>-fsanitize=address</code> che a ogni <code>new[]</code> corrisponda un <code>delete[]</code>.</li>
 </ul>
