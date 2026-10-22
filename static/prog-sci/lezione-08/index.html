@@ -1048,6 +1048,47 @@ Cristiano De Michele
 </dl>
 <p>A ogni compilazione (<code>make</code>, o il pulsante <em>Build</em> di VS Code) vengono ricompilati solo i file modificati, e quelli che includono un header modificato.</p>
 </section>
+<section id="header-e-sorgente-o-solo-header" class="slide level2 smaller">
+<h2>Header e sorgente, o solo header</h2>
+<p>Una classe si può dividere in <code>.hpp</code> e <code>.cpp</code>, oppure scrivere tutta nell’header (<em>header-only</em>):</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 41%">
+<col style="width: 41%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;"><code>.hpp</code> e <code>.cpp</code></th>
+<th style="text-align: left;">solo header</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">compilazione</td>
+<td style="text-align: left;">si ricompila il <code>.cpp</code> modificato</td>
+<td style="text-align: left;">si ricompila chi include l’header</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">installazione</td>
+<td style="text-align: left;">va compilata e collegata</td>
+<td style="text-align: left;">basta copiare gli header</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">template</td>
+<td style="text-align: left;">compilati a parte, tipo per tipo</td>
+<td style="text-align: left;">nessun passo in più</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ottimizzazione</td>
+<td style="text-align: left;">il compilatore non vede gli altri file</td>
+<td style="text-align: left;">il compilatore vede tutto il codice</td>
+</tr>
+</tbody>
+</table>
+<p>Eigen è <em>header-only</em>: per usarla non si compila nessuna libreria. Nel corso ci sono entrambe le scelte: <code>.hpp</code> e <code>.cpp</code> nei Laboratori 05 e 06, solo header nel framework finale, le cui classi sono template (Lezione 16).</p>
+</section>
 <section id="esercizio-in-classe" class="slide level2 smaller">
 <h2>Esercizio in classe</h2>
 <p>Nella Lezione 06 <code>Misure</code> e <code>Statistiche</code> stavano in file separati dal <code>main</code>. Ora ogni classe ha un header con le dichiarazioni e un file sorgente con le definizioni.</p>
