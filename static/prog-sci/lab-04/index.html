@@ -840,7 +840,7 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-13" data-code-lines="5" data-code-annotation="1"><code>&lt;cmath&gt;</code> dichiara <code>tanh</code> anche nello spazio dei nomi globale, e <code>std::tanh(double)</code> chiama quella funzione globale, cioè questa: la funzione richiama se stessa all’infinito, finché lo stack si esaurisce.</span>
+<span data-code-cell="annotated-cell-13" data-code-lines="5" data-code-annotation="1"><code>&lt;cmath&gt;</code> dichiara la <code>tanh</code> della libreria C nello spazio dei nomi globale, e <code>std::tanh(double)</code> è quella stessa funzione. Scrivendo <code>double tanh(double)</code> non si crea una funzione nuova: si definisce quella, e il linker usa questa definizione al posto di quella della libreria. <code>std::tanh(x)</code> chiama quindi questa funzione, che richiama se stessa all’infinito.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:48%;">
@@ -1283,7 +1283,7 @@ Cristiano De Michele
 </section>
 <section id="task-6-da-un-neurone-a-uno-strato" class="slide level2 smaller scrollable">
 <h2>Task 6: da un neurone a uno strato</h2>
-<p>Con <span class="math inline">\(W\)</span> di dimensione <span class="math inline">\(M \times N\)</span>, l’uscita del neurone <span class="math inline">\(j\)</span> è <span class="math inline">\(z_j = \sum_{i} W_{ji}\, x_i + b_j\)</span>: un <strong>prodotto matrice-vettore</strong>.</p>
+<p>Con <span class="math inline">\(W\)</span> di dimensione <span class="math inline">\(M \times N\)</span>, il neurone <span class="math inline">\(j\)</span> calcola, prima dell’attivazione, <span class="math inline">\(z_j = \sum_{i} W_{ji}\, x_i + b_j\)</span>: per tutto lo strato è un <strong>prodotto matrice-vettore</strong> più il vettore dei bias. Come nel Task 5 si scrive come in C, senza classi: la <code>CMatrix</code> e una funzione libera.</p>
 <ol type="1">
 <li>Prima del <code>main</code> scrivete <code>void layer_forward(const CMatrix&amp; W, const double* x, const double* b, double* z)</code>. Per ogni neurone <code>j</code> da 0 a <code>W.rows - 1</code>, accumulate in un <code>double acc</code> inizializzato a 0 i prodotti <code>cmat_get(W, j, i) * x[i]</code> per <code>i</code> da 0 a <code>W.cols - 1</code>, poi scrivete <code>z[j] = acc + b[j]</code>. Usate <code>cmat_get</code>, non l’aritmetica degli indici.</li>
 <li>Nel <code>main</code>, dopo il Task 4: <code>int M = 3;</code> e <code>CMatrix W = cmat_alloc(M, N);</code>, con lo stesso <span class="math inline">\(N\)</span> del Task 1. Allocate con <code>new[]</code> <code>double* bias</code> e <code>double* z_out</code> di <span class="math inline">\(M\)</span> elementi e <code>double* x</code> di <span class="math inline">\(N\)</span> elementi.</li>
