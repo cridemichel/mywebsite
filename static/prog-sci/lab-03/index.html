@@ -1063,7 +1063,7 @@ gradient check: (E(w1+h) - E(w1-h)) / 2h = -0.0280308  (backprop: -0.0280307)</c
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Compila senza avvisi e termina con un errore in esecuzione</strong></p>
+<p><strong>Compila, e senza <code>-Wall</code> non dà avvisi: in esecuzione termina con un errore</strong></p>
 </div>
 <div class="callout-content">
 <p>Se scrivete <code>double tanh(double x) { return std::tanh(x); }</code>, il programma <strong>compila</strong>. In esecuzione termina con <em>Segmentation fault</em>. Il motivo: <code>&lt;cmath&gt;</code> dichiara <code>tanh</code> anche nello spazio dei nomi globale, e <code>std::tanh(double)</code> inoltra la chiamata proprio lì, cioè alla vostra funzione, che richiama se stessa all’infinito, fino all’esaurimento dello stack.</p>

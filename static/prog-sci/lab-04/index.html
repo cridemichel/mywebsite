@@ -759,9 +759,9 @@ Cristiano De Michele
 <li><strong>Task 1–2</strong>: <code>relu(x)</code> e <code>relu_derivative(x)</code>, con un <code>if/else</code></li>
 <li><strong>Task 3</strong>: <code>sigmoid(x)</code> e <code>sigmoid_derivative(x)</code>, con <code>#include &lt;cmath&gt;</code></li>
 <li><strong>Task 4</strong>: una tabella con un ciclo <code>for</code> da <span class="math inline">\(-5\)</span> a <span class="math inline">\(+5\)</span> (contatore <code>int</code>), colonne separate da <code>"\t"</code>; valori di controllo <span class="math inline">\(\sigma(0) = 0{,}5\)</span> e <span class="math inline">\(\sigma'(0) = 0{,}25\)</span></li>
-<li><strong>Task 5</strong>: <code>tanh_act(x)</code> e <code>tanh_derivative(x)</code>, <strong>non</strong> <code>tanh</code></li>
+<li><strong>Task 5</strong>: <code>tanh_act(x)</code> e <code>tanh_derivative(x)</code>, <strong>non</strong> <code>tanh</code>: con <code>&lt;cmath&gt;</code> una funzione <code>tanh</code> richiamerebbe se stessa all’infinito</li>
 <li><strong>Task 6</strong>: derivate numeriche a differenze centrali; massimo errore su <span class="math inline">\(x \in [-5, 5]\)</span> con <span class="math inline">\(h = 10^{-5}\)</span>, in <code>std::scientific</code>, e <code>[PASS]</code> sotto <span class="math inline">\(10^{-6}\)</span>; errore in <span class="math inline">\(x = 1\)</span> al variare di <span class="math inline">\(h\)</span></li>
-<li><strong>Task 7</strong> (facoltativo): la catena del Laboratorio 02 con sigmoide, tanh e ReLU, per <span class="math inline">\(y = 1\)</span> e <span class="math inline">\(y = 0{,}8\)</span>; la ReLU con i parametri del Laboratorio 02; pesi iniziali <span class="math inline">\(w_0 = 0\)</span> e <span class="math inline">\(w_0 = 5\)</span></li>
+<li><strong>Task 7</strong> (facoltativo): la catena di due neuroni del Laboratorio 02 con sigmoide, tanh e ReLU, per <span class="math inline">\(y = 1\)</span> e <span class="math inline">\(y = 0{,}8\)</span>; la ReLU con i parametri del Laboratorio 02; pesi iniziali <span class="math inline">\(w_0 = 0\)</span> e <span class="math inline">\(w_0 = 5\)</span></li>
 </ul>
 </section>
 <section id="soluzione-del-laboratorio-03-task-13-e-5-le-funzioni" class="slide level2 smaller">
@@ -820,6 +820,32 @@ Cristiano De Michele
 <span id="cb2-41"><a aria-label="41"></a>    <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">-</span> t <span class="op">*</span> t<span class="op">;</span></span>
 <span id="cb2-42"><a aria-label="42"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</div></div>
+</section>
+<section id="soluzione-del-laboratorio-03-task-5-perché-tanh_act" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 03, Task 5: perché <code>tanh_act</code></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-13"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
+<span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-label="3"></a></span>
+<span id="annotated-cell-13-4"><a href="#annotated-cell-13-4" aria-label="4"></a><span class="dt">double</span> tanh<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-13-5" class="code-annotation-target"><a href="#annotated-cell-13-5" aria-label="5"></a>    <span class="cf">return</span> <span class="bu">std::</span>tanh<span class="op">(</span>x<span class="op">);</span></span>
+<span id="annotated-cell-13-6"><a href="#annotated-cell-13-6" aria-label="6"></a><span class="op">}</span></span>
+<span id="annotated-cell-13-7"><a href="#annotated-cell-13-7" aria-label="7"></a></span>
+<span id="annotated-cell-13-8"><a href="#annotated-cell-13-8" aria-label="8"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-13-9"><a href="#annotated-cell-13-9" aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> tanh<span class="op">(</span><span class="fl">1.0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="annotated-cell-13-10"><a href="#annotated-cell-13-10" aria-label="10"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-13-11"><a href="#annotated-cell-13-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-13" data-code-lines="5" data-code-annotation="1"><code>&lt;cmath&gt;</code> dichiara <code>tanh</code> anche nello spazio dei nomi globale, e <code>std::tanh(double)</code> chiama quella funzione globale, cioè questa: la funzione richiama se stessa all’infinito, finché lo stack si esaurisce.</span>
+</dd>
+</dl>
+</div><div class="column" style="width:48%;">
+<p>Il Task 5 chiedeva di chiamare la funzione <code>tanh_act</code> e non <code>tanh</code>. Con il nome <code>tanh</code> il programma a sinistra compila, ma in esecuzione termina con <em>Segmentation fault</em> (codice di uscita 139).</p>
+<p>Con <code>-Wall</code> sia <code>g++</code> sia <code>clang++</code> lo segnalano con un avviso <code>-Winfinite-recursion</code>: è uno dei motivi per cui si compila sempre con <code>-Wall</code>.</p>
 </div></div>
 </section>
 <section id="soluzione-del-laboratorio-03-task-46-la-tabella" class="slide level2 smaller">
