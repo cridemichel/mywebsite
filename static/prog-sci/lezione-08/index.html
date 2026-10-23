@@ -1577,29 +1577,28 @@ Cristiano De Michele
 </section>
 <section id="un-leak-nascosto-il-return-anticipato" class="slide level2 smaller">
 <h2>Un leak nascosto: il <code>return</code> anticipato</h2>
-<p>Spesso un leak non è una dimenticanza: è un percorso del programma che non arriva al <code>delete</code>.</p>
+<p>Il <code>delete</code> può esserci ed essere comunque mancato: basta un’uscita anticipata dalla funzione che non ci passa.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-17"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-17-2"><a href="#annotated-cell-17-2" aria-label="2"></a></span>
 <span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-label="3"></a><span class="dt">void</span> leggiFile<span class="op">()</span> <span class="op">{</span></span>
 <span id="annotated-cell-17-4"><a href="#annotated-cell-17-4" aria-label="4"></a>    <span class="dt">int</span><span class="op">*</span> buffer <span class="op">=</span> <span class="kw">new</span> <span class="dt">int</span><span class="op">[</span><span class="dv">1000</span><span class="op">];</span></span>
-<span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-label="5"></a></span>
-<span id="annotated-cell-17-6"><a href="#annotated-cell-17-6" aria-label="6"></a>    <span class="dt">bool</span> errore_lettura <span class="op">=</span> <span class="kw">true</span><span class="op">;</span>      <span class="co">// un errore di lettura</span></span>
-<span id="annotated-cell-17-7"><a href="#annotated-cell-17-7" aria-label="7"></a></span>
-<span id="annotated-cell-17-8"><a href="#annotated-cell-17-8" aria-label="8"></a>    <span class="cf">if</span> <span class="op">(</span>errore_lettura<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-17-9"><a href="#annotated-cell-17-9" aria-label="9"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore di lettura</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-17-10" class="code-annotation-target"><a href="#annotated-cell-17-10" aria-label="10"></a>        <span class="cf">return</span><span class="op">;</span></span>
-<span id="annotated-cell-17-11"><a href="#annotated-cell-17-11" aria-label="11"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-label="5"></a>    <span class="dt">bool</span> errore_lettura <span class="op">=</span> <span class="kw">true</span><span class="op">;</span>      <span class="co">// un errore di lettura</span></span>
+<span id="annotated-cell-17-6"><a href="#annotated-cell-17-6" aria-label="6"></a>    <span class="cf">if</span> <span class="op">(</span>errore_lettura<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-17-7"><a href="#annotated-cell-17-7" aria-label="7"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore di lettura</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-17-8" class="code-annotation-target"><a href="#annotated-cell-17-8" aria-label="8"></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="annotated-cell-17-9"><a href="#annotated-cell-17-9" aria-label="9"></a>    <span class="op">}</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-17-10" class="code-annotation-target"><a href="#annotated-cell-17-10" aria-label="10"></a>    <span class="kw">delete</span><span class="op">[]</span> buffer<span class="op">;</span></span>
+<span id="annotated-cell-17-11"><a href="#annotated-cell-17-11" aria-label="11"></a><span class="op">}</span></span>
 <span id="annotated-cell-17-12"><a href="#annotated-cell-17-12" aria-label="12"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-17-13" class="code-annotation-target"><a href="#annotated-cell-17-13" aria-label="13"></a>    <span class="kw">delete</span><span class="op">[]</span> buffer<span class="op">;</span></span>
-<span id="annotated-cell-17-14"><a href="#annotated-cell-17-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-17-13"><a href="#annotated-cell-17-13" aria-label="13"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> leggiFile<span class="op">();</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span> <span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-17" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-17" data-code-lines="10" data-code-annotation="1">In caso di errore la funzione termina subito.</span>
+<span data-code-cell="annotated-cell-17" data-code-lines="8" data-code-annotation="1">In caso di errore la funzione termina subito, senza <code>delete[]</code>.</span>
 </dd>
 <dt data-target-cell="annotated-cell-17" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-17" data-code-lines="13" data-code-annotation="2">Non viene eseguita: i 1000 <code>int</code> restano allocati. Con il paradigma RAII (Lezione 09) la memoria si libera da sola a ogni uscita dalla funzione.</span>
+<span data-code-cell="annotated-cell-17" data-code-lines="10" data-code-annotation="2">Non viene eseguita: i 1000 <code>int</code> restano allocati. La correzione è un <code>delete[] buffer;</code> prima di ogni <code>return</code>. Con il paradigma RAII (Lezione 09) la memoria si libera da sola a ogni uscita dalla funzione.</span>
 </dd>
 </dl>
 </section>
@@ -1675,10 +1674,10 @@ Cristiano De Michele
 </section>
 <section id="laddresssanitizer-su-macos" class="slide level2 smaller">
 <h2>L’AddressSanitizer su macOS</h2>
-<p>Con il compilatore di Apple (sul Mac il comando <code>g++</code> è <code>clang++</code>) l’AddressSanitizer non segnala i leak, e segnala <code>delete</code> al posto di <code>delete[]</code> solo con un’opzione. Su macOS quindi:</p>
+<p>Con il compilatore di Apple (sul Mac il comando <code>g++</code> è <code>clang++</code>) l’AddressSanitizer non segnala i leak, e segnala un <code>delete</code> su memoria allocata con <code>new[]</code> solo con un’opzione. Su macOS quindi:</p>
 <ol type="1">
 <li><strong>accessi non validi</strong>: come su Linux, con <code>g++ -fsanitize=address -g</code>;</li>
-<li><strong><code>delete</code> al posto di <code>delete[]</code></strong>: lo stesso eseguibile, lanciato con <code>ASAN_OPTIONS=alloc_dealloc_mismatch=1 ./main</code>;</li>
+<li><strong><code>delete</code> su memoria allocata con <code>new[]</code></strong>: lo stesso eseguibile, lanciato con <code>ASAN_OPTIONS=alloc_dealloc_mismatch=1 ./main</code>;</li>
 <li><strong>leak</strong>: un eseguibile compilato <strong>senza</strong> <code>-fsanitize</code>, lanciato con il comando <code>leaks</code> di macOS:</li>
 </ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-g</span> main.cpp <span class="at">-o</span> main</span>
