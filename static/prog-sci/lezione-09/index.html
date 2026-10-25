@@ -1025,14 +1025,14 @@ Cristiano De Michele
 <ol type="1">
 <li>la risorsa (memoria nell’heap, un file aperto) si acquisisce nel <strong>costruttore</strong>;</li>
 <li>si rilascia nel <strong>distruttore</strong>;</li>
-<li>l’oggetto che possiede la risorsa è una <strong>variabile locale</strong>, oppure un attributo di un altro oggetto (come le matrici di Eigen dentro un layer, distrutte insieme al layer).</li>
+<li>ogni risorsa ha un <strong>proprietario</strong>, e la catena dei proprietari termina in una <strong>variabile locale</strong> (le matrici di Eigen, per esempio, sono attributi di un layer e vengono distrutte con lui).</li>
 </ol>
-<p>Con la regola 3 il distruttore viene eseguito a ogni uscita dal blocco, alla graffa di chiusura o con un <code>return</code>.</p>
+<p>Così il distruttore viene eseguito da solo a ogni uscita dal blocco.</p>
 <p>La libreria standard segue già il RAII: un <code>std::vector</code> libera la sua memoria e un <code>std::ofstream</code> chiude il suo file quando vengono distrutti. Così anche le matrici di Eigen.</p>
 </section>
 <section id="il-raii-e-new" class="slide level2 smaller">
 <h2>Il RAII e <code>new</code></h2>
-<p>Anche con <code>new</code> il costruttore viene eseguito: <code>new</code> riserva la memoria nell’heap e chiama il costruttore. Il distruttore invece è automatico solo per le variabili locali, all’uscita dal blocco; per un oggetto creato con <code>new</code> lo chiama <code>delete</code>, che poi libera la memoria.</p>
+<p>Anche con <code>new</code> il costruttore viene eseguito: <code>new</code> riserva la memoria e chiama il costruttore. Il distruttore è automatico solo per le variabili locali; per un oggetto creato con <code>new</code> lo chiama <code>delete</code>, che poi libera la memoria.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 20%">
@@ -1069,7 +1069,7 @@ Cristiano De Michele
 </tr>
 </tbody>
 </table>
-<p>Con <code>new</code> torna il <code>delete</code> da ricordare: nel RAII l’oggetto che possiede la risorsa è una variabile locale.</p>
+<p>Il RAII non vieta <code>new</code>, ma un <code>new</code> senza proprietario: l’indirizzo si affida a un oggetto che fa il <code>delete</code> nel distruttore, come <code>std::unique_ptr</code> per i layer di <code>Sequential</code>.</p>
 </section>
 <section id="approfondimento-il-raii-con-un-file" class="slide level2 smaller">
 <h2>Approfondimento: il RAII con un file</h2>
