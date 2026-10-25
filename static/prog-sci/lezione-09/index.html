@@ -756,9 +756,9 @@ Cristiano De Michele
 <h2>Argomenti di oggi</h2>
 <ul>
 <li><strong>Ripasso: puntatori e memoria</strong>, con i disegni della memoria</li>
-<li><strong>Il distruttore</strong> (<code>~Classe</code>): quando viene eseguito e in che ordine</li>
-<li><strong>Il RAII</strong> (<em>Resource Acquisition Is Initialization</em>): la memoria si libera da sola</li>
-<li><strong>Metodi <code>const</code></strong> e passaggio per <code>const</code> reference</li>
+<li><strong>Il distruttore</strong> (<code>~Classe</code>): il metodo eseguito quando un oggetto viene distrutto</li>
+<li><strong>Il RAII</strong> (<em>Resource Acquisition Is Initialization</em>): una classe che libera da sola la memoria che ha allocato</li>
+<li><strong>Metodi <code>const</code></strong>: metodi che non possono modificare l’oggetto</li>
 <li><strong>Argomenti di default</strong> nei metodi e nei costruttori</li>
 <li><strong>Esercizio in classe</strong>: un array dinamico</li>
 </ul>
@@ -766,47 +766,60 @@ Cristiano De Michele
 <section id="gli-argomenti-di-oggi-nel-framework" class="slide level2 smaller">
 <h2>Gli argomenti di oggi nel framework</h2>
 <ul>
-<li><strong>Distruttori e RAII.</strong> Nel framework non c’è nessun <code>delete</code>. Le matrici sono matrici di Eigen (<code>Matrix&lt;ntype&gt;</code>, definita in <code>eigen_wrap.hpp</code>): allocano la memoria nel costruttore e la liberano nel distruttore. Anche i layer di <code>Sequential</code> si liberano da soli: sono conservati in <code>std::unique_ptr</code>, un puntatore della libreria standard che nel distruttore esegue il <code>delete</code>.</li>
-<li><strong>Metodi <code>const</code>.</strong> I metodi che leggono soltanto sono dichiarati <code>const</code>: per esempio <code>get_type() const</code>, che restituisce il nome del layer, e <code>size() const</code> di <code>Sequential</code>, che restituisce il numero di layer.</li>
-<li><strong>Argomenti di default.</strong> Il costruttore di <code>DenseLayer</code> è <code>DenseLayer(int Nn, int Ni, int type = 0, int distro = 1)</code>: <code>type</code> e <code>distro</code> scelgono come inizializzare i pesi, e chi non li indica ottiene i valori predefiniti.</li>
+<li><strong>Distruttori e RAII.</strong> Nel framework non si scrive mai <code>delete</code>.
+<ul>
+<li>Le matrici sono matrici di Eigen (<code>Matrix&lt;ntype&gt;</code>): riservano la memoria quando vengono create e la liberano quando vengono distrutte, con il meccanismo che vediamo oggi.</li>
+<li>I layer di <code>Sequential</code> stanno in <code>std::unique_ptr</code>, un puntatore della libreria standard che libera da solo l’oggetto a cui punta.</li>
+</ul></li>
+<li><strong>Metodi <code>const</code>.</strong> I metodi che leggono soltanto sono <code>const</code>: <code>get_type() const</code> restituisce il nome del layer, <code>size() const</code> il numero di layer di <code>Sequential</code>.</li>
+<li><strong>Argomenti di default.</strong> Il costruttore è <code>DenseLayer(int Nn, int Ni, int type = 0, int distro = 1)</code>: <code>Nn</code> neuroni, <code>Ni</code> ingressi; <code>type</code> e <code>distro</code> scelgono come inizializzare i pesi. Chi indica solo <code>Nn</code> e <code>Ni</code> ottiene <code>type = 0</code> e <code>distro = 1</code>.</li>
 </ul>
 </section>
-<section id="ripasso-una-variabile-e-il-suo-indirizzo" class="slide level2 smaller">
-<h2>Ripasso: una variabile e il suo indirizzo</h2>
+<section id="ripasso-variabili-e-indirizzi" class="slide level2 smaller">
+<h2>Ripasso: variabili e indirizzi</h2>
 <div class="columns">
 <div class="column" style="width:56%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a></span>
-<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-label="4"></a>    <span class="dt">double</span> x <span class="op">=</span> <span class="fl">3.5</span><span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-5" class="code-annotation-target"><a href="#annotated-cell-7-5" aria-label="5"></a>    <span class="dt">double</span><span class="op">*</span> p <span class="op">=</span> <span class="op">&amp;</span>x<span class="op">;</span></span>
-<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-label="6"></a></span>
-<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// 3.5</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-7-8" class="code-annotation-target"><a href="#annotated-cell-7-8" aria-label="8"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// un indirizzo</span></span>
-<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="op">*</span>p <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>   <span class="co">// 3.5</span></span>
-<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-label="10"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-7-11" class="code-annotation-target"><a href="#annotated-cell-7-11" aria-label="11"></a>    <span class="op">*</span>p <span class="op">=</span> <span class="fl">7.0</span><span class="op">;</span></span>
-<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// 7</span></span>
-<span id="annotated-cell-7-13"><a href="#annotated-cell-7-13" aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-7-14"><a href="#annotated-cell-7-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a></span>
+<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-label="3"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-label="4"></a>    <span class="dt">double</span> x <span class="op">=</span> <span class="fl">3.5</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-5" class="code-annotation-target"><a href="#annotated-cell-8-5" aria-label="5"></a>    <span class="dt">double</span><span class="op">*</span> p <span class="op">=</span> <span class="op">&amp;</span>x<span class="op">;</span></span>
+<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-label="6"></a></span>
+<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-label="7"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// 3.5</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-8" class="code-annotation-target"><a href="#annotated-cell-8-8" aria-label="8"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// un indirizzo</span></span>
+<span id="annotated-cell-8-9"><a href="#annotated-cell-8-9" aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="op">*</span>p <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>   <span class="co">// 3.5</span></span>
+<span id="annotated-cell-8-10"><a href="#annotated-cell-8-10" aria-label="10"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-8-11" class="code-annotation-target"><a href="#annotated-cell-8-11" aria-label="11"></a>    <span class="op">*</span>p <span class="op">=</span> <span class="fl">7.0</span><span class="op">;</span></span>
+<span id="annotated-cell-8-12"><a href="#annotated-cell-8-12" aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// 7</span></span>
+<span id="annotated-cell-8-13"><a href="#annotated-cell-8-13" aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-8-14"><a href="#annotated-cell-8-14" aria-label="14"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="5" data-code-annotation="1"><code>&amp;x</code> è l’indirizzo di <code>x</code>; <code>p</code> è una variabile che contiene quell’indirizzo.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="5" data-code-annotation="1"><code>&amp;x</code> è l’indirizzo di <code>x</code>; <code>p</code>, di tipo <code>double*</code> (puntatore a <code>double</code>), lo contiene.</span>
 </dd>
-<dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="8" data-code-annotation="2">Stampa un numero esadecimale, per esempio <code>0x7ffd5c3a1e48</code>: cambia a ogni esecuzione.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="8" data-code-annotation="2">Un numero esadecimale, diverso a ogni esecuzione.</span>
 </dd>
-<dt data-target-cell="annotated-cell-7" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="11" data-code-annotation="3"><code>*p</code> è il valore all’indirizzo contenuto in <code>p</code>, cioè <code>x</code>: scrivere in <code>*p</code> modifica <code>x</code>.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="11" data-code-annotation="3"><code>*p</code> è il valore all’indirizzo contenuto in <code>p</code>, cioè <code>x</code>: scrivere in <code>*p</code> modifica <code>x</code>.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:44%;">
 <p><img data-src="images/memoria_puntatore.png" style="width:100.0%"></p>
-<p>Come in C (Lezione 05). Gli indirizzi nel disegno sono di esempio.</p>
+<p>Ogni riquadro è una variabile: nome sopra, valore dentro, indirizzo (di esempio) sotto. La freccia: <code>p</code> contiene l’indirizzo di <code>x</code>.</p>
 </div></div>
+</section>
+<section id="ripasso-lo-stack-e-lheap" class="slide level2 smaller">
+<h2>Ripasso: lo stack e l’heap</h2>
+<p>La memoria di un programma ha due zone (Lezione 08).</p>
+<ul>
+<li>Lo <strong>stack</strong> contiene le variabili locali, cioè quelle dichiarate dentro una funzione o dentro un blocco <code>{ }</code>. Una variabile locale viene liberata da sola quando il programma esce dal blocco in cui è dichiarata.</li>
+<li>L’<strong>heap</strong> contiene la memoria chiesta con <code>new</code>. Resta occupata finché il programma non la restituisce con <code>delete</code> (o <code>delete[]</code> per un array).</li>
+</ul>
+<p>Una variabile sullo stack può contenere l’indirizzo di memoria nell’heap: è il caso dei prossimi esempi. Quando la variabile viene liberata si perde l’indirizzo, ma la memoria nell’heap resta occupata.</p>
 </section>
 <section id="ripasso-un-array-nellheap" class="slide level2 smaller">
 <h2>Ripasso: un array nell’heap</h2>
@@ -833,50 +846,59 @@ Cristiano De Michele
 </dd>
 <dt data-target-cell="annotated-cell-1" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-1" data-code-lines="10" data-code-annotation="3">La memoria dell’heap non si libera da sola: serve <code>delete[]</code> (Lezione 08).</span>
+<span data-code-cell="annotated-cell-1" data-code-lines="10" data-code-annotation="3">L’array nell’heap non si libera da solo: serve <code>delete[]</code>.</span>
 </dd>
 </dl>
+</section>
+<section id="ripasso-il-disegno-dellarray-nellheap" class="slide level2 smaller">
+<h2>Ripasso: il disegno dell’array nell’heap</h2>
 
-<img data-src="images/memoria_array.png" class="quarto-figure quarto-figure-center r-stretch" style="width:62.0%"></section>
-<section id="ripasso-una-struct-che-contiene-un-puntatore" class="slide level2 smaller">
-<h2>Ripasso: una <code>struct</code> che contiene un puntatore</h2>
+<img data-src="images/memoria_array.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><ul>
+<li><code>v</code> è una variabile locale del <code>main</code>: sta sullo stack e contiene l’indirizzo <code>0x5600a0</code>.</li>
+<li>I quattro <code>double</code> stanno nell’heap, uno dopo l’altro, a partire da quell’indirizzo.</li>
+<li>Alla fine del <code>main</code> <code>v</code> viene liberata da sola, perché è sullo stack. L’array no: se manca <code>delete[] v;</code>, i quattro <code>double</code> restano occupati e nessuna variabile ne conosce più l’indirizzo. È un <strong>memory leak</strong> (Lezione 08).</li>
+</ul>
+</section>
+<section id="ripasso-struct-e-puntatori" class="slide level2 smaller">
+<h2>Ripasso: <code>struct</code> e puntatori</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-label="2"></a></span>
-<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-label="3"></a><span class="kw">struct</span> Buffer <span class="op">{</span></span>
-<span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-label="4"></a>    <span class="dt">int</span> size<span class="op">;</span></span>
-<span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-label="5"></a>    <span class="dt">double</span><span class="op">*</span> data<span class="op">;</span></span>
-<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-label="6"></a><span class="op">};</span></span>
-<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-label="7"></a></span>
-<span id="annotated-cell-8-8"><a href="#annotated-cell-8-8" aria-label="8"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-8-9"><a href="#annotated-cell-8-9" aria-label="9"></a>    Buffer b<span class="op">;</span></span>
-<span id="annotated-cell-8-10"><a href="#annotated-cell-8-10" aria-label="10"></a>    b<span class="op">.</span>size <span class="op">=</span> <span class="dv">4</span><span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-11" class="code-annotation-target"><a href="#annotated-cell-8-11" aria-label="11"></a>    b<span class="op">.</span>data <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>b<span class="op">.</span>size<span class="op">];</span></span>
-<span id="annotated-cell-8-12"><a href="#annotated-cell-8-12" aria-label="12"></a>    b<span class="op">.</span>data<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
-<span id="annotated-cell-8-13"><a href="#annotated-cell-8-13" aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> b<span class="op">.</span>data<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-14" class="code-annotation-target"><a href="#annotated-cell-8-14" aria-label="14"></a>    <span class="kw">delete</span><span class="op">[]</span> b<span class="op">.</span>data<span class="op">;</span></span>
-<span id="annotated-cell-8-15"><a href="#annotated-cell-8-15" aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-8-16"><a href="#annotated-cell-8-16" aria-label="16"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-9"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-label="2"></a></span>
+<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-label="3"></a><span class="kw">struct</span> Buffer <span class="op">{</span></span>
+<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-label="4"></a>    <span class="dt">int</span> size<span class="op">;</span></span>
+<span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-label="5"></a>    <span class="dt">double</span><span class="op">*</span> data<span class="op">;</span></span>
+<span id="annotated-cell-9-6"><a href="#annotated-cell-9-6" aria-label="6"></a><span class="op">};</span></span>
+<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-label="7"></a></span>
+<span id="annotated-cell-9-8"><a href="#annotated-cell-9-8" aria-label="8"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-label="9"></a>    Buffer b<span class="op">;</span></span>
+<span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-label="10"></a>    b<span class="op">.</span>size <span class="op">=</span> <span class="dv">4</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-11" class="code-annotation-target"><a href="#annotated-cell-9-11" aria-label="11"></a>    b<span class="op">.</span>data <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>b<span class="op">.</span>size<span class="op">];</span></span>
+<span id="annotated-cell-9-12"><a href="#annotated-cell-9-12" aria-label="12"></a>    b<span class="op">.</span>data<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="annotated-cell-9-13"><a href="#annotated-cell-9-13" aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> b<span class="op">.</span>data<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-9-14" class="code-annotation-target"><a href="#annotated-cell-9-14" aria-label="14"></a>    <span class="kw">delete</span><span class="op">[]</span> b<span class="op">.</span>data<span class="op">;</span></span>
+<span id="annotated-cell-9-15"><a href="#annotated-cell-9-15" aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-9-16"><a href="#annotated-cell-9-16" aria-label="16"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="11" data-code-annotation="1"><code>b</code> sta sullo stack; i 4 <code>double</code> stanno nell’heap. In <code>b</code> c’è solo il loro indirizzo.</span>
+<span data-code-cell="annotated-cell-9" data-code-lines="11" data-code-annotation="1"><code>b</code> sta sullo stack, i 4 <code>double</code> nell’heap: in <code>b.data</code> c’è solo il loro indirizzo.</span>
 </dd>
-<dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="14" data-code-annotation="2">Va scritto a mano, come per la <code>CMatrix</code> del Laboratorio 04.</span>
+<span data-code-cell="annotated-cell-9" data-code-lines="14" data-code-annotation="2">Va scritto a mano, come per la <code>CMatrix</code> del Laboratorio 04.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:50%;">
 <p><img data-src="images/memoria_struct.png" style="width:100.0%"></p>
-<p>Quando <code>b</code> esce dallo scope sparisce il puntatore <code>b.data</code>, non l’array. Se il <code>delete[]</code> manca, l’array resta allocato: è un memory leak. Il distruttore serve a non doverlo scrivere ogni volta.</p>
+<p>Alla fine del <code>main</code> viene liberata <code>b</code>, con l’indirizzo contenuto in <code>b.data</code>, ma non l’array: senza <code>delete[] b.data;</code> resta occupato.</p>
+<p>Con il distruttore il <code>delete[]</code> si scrive una volta sola, dentro la classe.</p>
 </div></div>
 </section>
 <section id="il-distruttore" class="slide level2 smaller">
 <h2>Il distruttore</h2>
 <div class="columns">
-<div class="column" style="width:54%;">
+<div class="column" style="width:55%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb1-2"><a aria-label="2"></a></span>
 <span id="cb1-3"><a aria-label="3"></a><span class="kw">class</span> Risorsa <span class="op">{</span></span>
@@ -893,19 +915,19 @@ Cristiano De Michele
 <span id="cb1-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"fine</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="cb1-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb1-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:46%;">
-<p>Il <strong>distruttore</strong> viene eseguito quando l’oggetto viene distrutto, per esempio all’uscita dallo scope.</p>
+</div><div class="column" style="width:45%;">
+<p>Il <strong>distruttore</strong> è il metodo eseguito quando l’oggetto viene distrutto:</p>
 <ul>
-<li>Nome della classe preceduto da <code>~</code> (riga 6).</li>
-<li>Nessun tipo di ritorno, nessun argomento.</li>
-<li>Non si chiama a mano.</li>
+<li>si chiama come la classe, preceduto da <code>~</code> (riga 6);</li>
+<li>non ha tipo di ritorno né argomenti;</li>
+<li>lo chiama il compilatore.</li>
 </ul>
-<p>Riga 13: <code>r</code> esce dallo scope. Output: <code>costruttore</code>, <code>dentro il blocco</code>, <code>distruttore</code>, <code>fine</code>.</p>
+<p><code>r</code> vive nel blocco delle righe 10–13 e viene distrutta alla graffa della riga 13. Output: <code>costruttore</code>, <code>dentro il blocco</code>, <code>distruttore</code>, <code>fine</code>.</p>
 </div></div>
 </section>
 <section id="lordine-di-distruzione" class="slide level2 smaller">
 <h2>L’ordine di distruzione</h2>
-<p>Gli oggetti locali vengono distrutti nell’ordine inverso a quello di creazione: l’ultimo creato è il primo distrutto (LIFO, <em>last in, first out</em>).</p>
+<p>Le variabili locali vengono distrutte nell’ordine inverso a quello di creazione: l’ultima creata è la prima distrutta (LIFO, <em>last in, first out</em>).</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-label="2"></a></span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-label="3"></a><span class="kw">class</span> Elemento <span class="op">{</span></span>
@@ -928,12 +950,12 @@ Cristiano De Michele
 <span data-code-cell="annotated-cell-2" data-code-lines="15" data-code-annotation="1">L’output è <code>creato 1</code>, <code>creato 2</code>, <code>creato 3</code>, poi <code>distrutto 3</code>, <code>distrutto 2</code>, <code>distrutto 1</code>.</span>
 </dd>
 </dl>
-<p>Un oggetto creato dopo può usare quelli creati prima: per questo viene distrutto per primo.</p>
+<p>Il motivo: un oggetto creato dopo può usare quelli creati prima. Se viene distrutto per primo, durante il suo distruttore gli altri esistono ancora.</p>
 </section>
 <section id="il-distruttore-e-la-memoria-dinamica" class="slide level2 smaller">
 <h2>Il distruttore e la memoria dinamica</h2>
 <div class="columns">
-<div class="column" style="width:54%;">
+<div class="column" style="width:55%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb2-2"><a aria-label="2"></a></span>
 <span id="cb2-3"><a aria-label="3"></a><span class="kw">class</span> Buffer <span class="op">{</span></span>
@@ -954,20 +976,20 @@ Cristiano De Michele
 <span id="cb2-18"><a aria-label="18"></a>    b<span class="op">.</span>azzera<span class="op">();</span></span>
 <span id="cb2-19"><a aria-label="19"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb2-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:46%;">
-<p>Il distruttore libera la memoria che l’oggetto ha allocato:</p>
+</div><div class="column" style="width:45%;">
+<p>La <code>struct</code> del ripasso diventa una classe:</p>
 <ul>
-<li>righe 8–9: il costruttore alloca (lista di inizializzazione, Lezione 07);</li>
-<li>riga 10: il distruttore libera;</li>
-<li>riga 19: <code>b</code> esce dallo scope, viene eseguito il <code>delete[]</code>.</li>
+<li>righe 8–9: il costruttore alloca l’array (lista di inizializzazione, Lezione 07);</li>
+<li>riga 10: il distruttore lo libera;</li>
+<li>riga 19: <code>b</code> viene distrutto, e con lui l’array.</li>
 </ul>
-<p>Nel <code>main</code> non c’è nessun <code>delete</code>; l’AddressSanitizer non segnala nulla.</p>
+<p>Nel <code>main</code> nessun <code>delete</code>; con <code>-fsanitize=address</code> nessun leak.</p>
 </div></div>
 </section>
-<section id="il-return-anticipato-della-lezione-08-con-un-distruttore" class="slide level2 smaller">
-<h2>Il return anticipato della Lezione 08, con un distruttore</h2>
+<section id="il-return-anticipato-senza-leak" class="slide level2 smaller">
+<h2>Il <code>return</code> anticipato senza leak</h2>
 <div class="columns">
-<div class="column" style="width:54%;">
+<div class="column" style="width:55%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb3-2"><a aria-label="2"></a></span>
 <span id="cb3-3"><a aria-label="3"></a><span class="kw">class</span> Buffer <span class="op">{</span></span>
@@ -988,26 +1010,66 @@ Cristiano De Michele
 <span id="cb3-18"><a aria-label="18"></a><span class="op">}</span></span>
 <span id="cb3-19"><a aria-label="19"></a></span>
 <span id="cb3-20"><a aria-label="20"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> leggiFile<span class="op">();</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span> <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:46%;">
-<p>Nella Lezione 08 il <code>delete[]</code> mancava sul ramo d’errore. Ora l’array appartiene a un oggetto:</p>
+</div><div class="column" style="width:45%;">
+<p>Nella Lezione 08 il <code>delete[]</code> mancava sul ramo d’errore. Qui l’array lo alloca il costruttore di <code>buffer</code> (riga 12), variabile locale.</p>
 <ul>
-<li>riga 12: al posto di <code>new int[1000]</code>;</li>
-<li>riga 16: all’uscita anticipata il distruttore esegue il <code>delete[]</code>;</li>
-<li>riga 18: lo stesso all’uscita normale.</li>
+<li>Riga 16: con <code>return</code> si esce dalla funzione: <code>buffer</code> viene distrutto e il distruttore libera l’array.</li>
+<li>Riga 18: senza errore la funzione finisce qui, e succede lo stesso.</li>
 </ul>
-<p>L’AddressSanitizer non segnala nulla.</p>
+<p>Il distruttore viene chiamato a ogni uscita: nessun <code>delete[]</code> da ricordare.</p>
 </div></div>
 </section>
 <section id="il-raii" class="slide level2 smaller">
 <h2>Il RAII</h2>
-<p>Questo modo di scrivere le classi si chiama <strong>RAII</strong> (<em>Resource Acquisition Is Initialization</em>, “l’acquisizione di una risorsa avviene nell’inizializzazione”). È un idioma del C++:</p>
-<ul>
+<p>Questo modo di scrivere le classi si chiama <strong>RAII</strong> (<em>Resource Acquisition Is Initialization</em>, “l’acquisizione di una risorsa avviene nell’inizializzazione”). È un idioma del C++, con tre regole:</p>
+<ol type="1">
 <li>la risorsa (memoria nell’heap, un file aperto) si acquisisce nel <strong>costruttore</strong>;</li>
 <li>si rilascia nel <strong>distruttore</strong>;</li>
-<li>l’oggetto che la possiede sta sullo stack, oppure è un attributo di un oggetto che sta sullo stack. Il distruttore viene quindi eseguito a ogni uscita dallo scope, qualunque strada prenda il programma.</li>
-</ul>
-<p>Il distruttore <strong>non</strong> viene eseguito per un oggetto creato con <code>new</code> e mai liberato con <code>delete</code>. Per questo l’oggetto che possiede la risorsa non si crea con <code>new</code>.</p>
-<p>Le classi della libreria standard seguono già questa regola (<code>std::vector</code>, <code>std::string</code>, <code>std::ofstream</code>), e così le matrici di Eigen.</p>
+<li>l’oggetto che possiede la risorsa è una <strong>variabile locale</strong>, oppure un attributo di un altro oggetto (come le matrici di Eigen dentro un layer, distrutte insieme al layer).</li>
+</ol>
+<p>Con la regola 3 il distruttore viene eseguito a ogni uscita dal blocco, alla graffa di chiusura o con un <code>return</code>.</p>
+<p>La libreria standard segue già il RAII: un <code>std::vector</code> libera la sua memoria e un <code>std::ofstream</code> chiude il suo file quando vengono distrutti. Così anche le matrici di Eigen.</p>
+</section>
+<section id="il-raii-e-new" class="slide level2 smaller">
+<h2>Il RAII e <code>new</code></h2>
+<p>Anche con <code>new</code> il costruttore viene eseguito: <code>new</code> riserva la memoria nell’heap e chiama il costruttore. Il distruttore invece è automatico solo per le variabili locali, all’uscita dal blocco; per un oggetto creato con <code>new</code> lo chiama <code>delete</code>, che poi libera la memoria.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 32%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><code>Buffer b(1000);</code></th>
+<th><code>Buffer* p = new Buffer(1000);</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dove sta</td>
+<td>sullo stack (variabile locale)</td>
+<td>nell’heap; <code>p</code> contiene il suo indirizzo</td>
+</tr>
+<tr class="even">
+<td>Costruttore</td>
+<td>eseguito alla dichiarazione</td>
+<td>eseguito da <code>new</code></td>
+</tr>
+<tr class="odd">
+<td>Distruttore</td>
+<td>all’uscita dal blocco</td>
+<td>solo con <code>delete p;</code></td>
+</tr>
+<tr class="even">
+<td>Senza <code>delete</code></td>
+<td>nessun problema</td>
+<td>oggetto e array restano allocati: leak</td>
+</tr>
+</tbody>
+</table>
+<p>Con <code>new</code> torna il <code>delete</code> da ricordare: nel RAII l’oggetto che possiede la risorsa è una variabile locale.</p>
 </section>
 <section id="approfondimento-il-raii-con-un-file" class="slide level2 smaller">
 <h2>Approfondimento: il RAII con un file</h2>
@@ -1036,18 +1098,18 @@ Cristiano De Michele
 <span id="cb4-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb4-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:46%;">
-<p>La risorsa qui è un file:</p>
+<p>La risorsa può essere un file: <code>std::ofstream</code> (da <code>&lt;fstream&gt;</code>) ci scrive con <code>&lt;&lt;</code>, come <code>std::cout</code>.</p>
 <ul>
-<li>riga 9: il costruttore lo apre;</li>
-<li>riga 11: il distruttore lo chiude;</li>
-<li>riga 21: <code>registro</code> viene distrutto, il file è chiuso.</li>
+<li>Riga 9: il costruttore apre il file.</li>
+<li>Riga 11: il distruttore lo chiude.</li>
+<li>Riga 21: <code>registro</code> viene distrutto e il file, con le due righe, è chiuso.</li>
 </ul>
-<p><code>std::ofstream</code> chiuderebbe il file da solo: <code>close()</code> rende visibile il meccanismo.</p>
+<p>Il <code>close()</code> è esplicito per mostrare il rilascio: <code>std::ofstream</code> chiuderebbe il file anche da solo.</p>
 </div></div>
 </section>
 <section id="metodi-const-il-problema" class="slide level2 smaller">
 <h2>Metodi <code>const</code>: il problema</h2>
-<p>Un metodo che legge un attributo non dovrebbe modificarlo. Il compilatore però non lo controlla:</p>
+<p>Il metodo <code>valore()</code> serve a leggere l’attributo, non a modificarlo. Se per errore lo modifica, il compilatore non lo segnala: non ha modo di sapere che il metodo doveva soltanto leggere.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-label="2"></a></span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-label="3"></a><span class="kw">class</span> Grandezza <span class="op">{</span></span>
@@ -1069,14 +1131,14 @@ Cristiano De Michele
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="9" data-code-annotation="1">Un errore: il metodo dovrebbe soltanto leggere <code>valore_</code>, invece lo modifica. Il programma compila senza avvisi, anche con <code>-Wall</code>.</span>
+<span data-code-cell="annotated-cell-3" data-code-lines="9" data-code-annotation="1">L’errore: il metodo modifica <code>valore_</code>. Il programma compila senza avvisi, anche con <code>-Wall</code>, e stampa <code>0</code> invece di <code>9.81</code>.</span>
 </dd>
 </dl>
 </section>
 <section id="metodi-const-la-soluzione" class="slide level2 smaller">
 <h2>Metodi <code>const</code>: la soluzione</h2>
 <div class="columns">
-<div class="column" style="width:54%;">
+<div class="column" style="width:47%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb5-2"><a aria-label="2"></a></span>
 <span id="cb5-3"><a aria-label="3"></a><span class="kw">class</span> Grandezza <span class="op">{</span></span>
@@ -1097,47 +1159,44 @@ Cristiano De Michele
 <span id="cb5-18"><a aria-label="18"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> g<span class="op">.</span>valore<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>  <span class="co">// 1.62</span></span>
 <span id="cb5-19"><a aria-label="19"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb5-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:46%;">
-<p>Riga 9: con <code>const</code> dopo i parametri il metodo non può modificare gli attributi.</p>
+</div><div class="column" style="width:53%;">
+<p>Riga 9: il <code>const</code> dopo la parentesi dei parametri dichiara che il metodo <strong>non modifica l’oggetto</strong>; <code>imposta()</code> (riga 8) lo modifica e non è <code>const</code>. Il compilatore lo verifica: dentro un metodo <code>const</code> gli attributi si possono leggere, non modificare.</p>
 <p>Togliendo il commento della riga 10 la compilazione si ferma (<code>assignment of member ... in read-only object</code>).</p>
-<p><code>const</code> fa parte della firma: in una definizione fuori dalla classe va ripetuto.</p>
+<p>Il <code>const</code> fa parte della firma: se il metodo è definito fuori dalla classe, si ripete, <code>double Grandezza::valore() const { ... }</code>.</p>
 </div></div>
 </section>
 <section id="metodi-const-e-const-reference" class="slide level2 smaller">
 <h2>Metodi <code>const</code> e <code>const</code> reference</h2>
 <div class="columns">
-<div class="column" style="width:54%;">
+<div class="column" style="width:55%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb6-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
-<span id="cb6-3"><a aria-label="3"></a></span>
-<span id="cb6-4"><a aria-label="4"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
-<span id="cb6-5"><a aria-label="5"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb6-6"><a aria-label="6"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
-<span id="cb6-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb6-8"><a aria-label="8"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">:</span> <span class="va">x_</span><span class="op">(</span>x<span class="op">),</span> <span class="va">y_</span><span class="op">(</span>y<span class="op">)</span> <span class="op">{}</span></span>
-<span id="cb6-9"><a aria-label="9"></a>    <span class="dt">void</span> scala<span class="op">(</span><span class="dt">double</span> f<span class="op">)</span> <span class="op">{</span> <span class="va">x_</span> <span class="op">*=</span> f<span class="op">;</span> <span class="va">y_</span> <span class="op">*=</span> f<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb6-10"><a aria-label="10"></a>    <span class="dt">double</span> norma<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb6-11"><a aria-label="11"></a>        <span class="cf">return</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="va">x_</span> <span class="op">*</span> <span class="va">x_</span> <span class="op">+</span> <span class="va">y_</span> <span class="op">*</span> <span class="va">y_</span><span class="op">);</span></span>
-<span id="cb6-12"><a aria-label="12"></a>    <span class="op">}</span></span>
-<span id="cb6-13"><a aria-label="13"></a><span class="op">};</span></span>
-<span id="cb6-14"><a aria-label="14"></a></span>
-<span id="cb6-15"><a aria-label="15"></a><span class="dt">void</span> stampaNorma<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> v<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-16"><a aria-label="16"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> v<span class="op">.</span>norma<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb6-17"><a aria-label="17"></a>    <span class="co">// v.scala(2.0);</span></span>
-<span id="cb6-18"><a aria-label="18"></a><span class="op">}</span></span>
-<span id="cb6-19"><a aria-label="19"></a></span>
-<span id="cb6-20"><a aria-label="20"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb6-21"><a aria-label="21"></a>    Vettore2D v<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
-<span id="cb6-22"><a aria-label="22"></a>    stampaNorma<span class="op">(</span>v<span class="op">);</span>                   <span class="co">// 5</span></span>
-<span id="cb6-23"><a aria-label="23"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb6-24"><a aria-label="24"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:46%;">
-<p>Su un oggetto passato per <code>const</code> reference (Lezione 05) si possono chiamare <strong>solo i metodi <code>const</code></strong>.</p>
+<span id="cb6-2"><a aria-label="2"></a></span>
+<span id="cb6-3"><a aria-label="3"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
+<span id="cb6-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb6-5"><a aria-label="5"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
+<span id="cb6-6"><a aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb6-7"><a aria-label="7"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">:</span> <span class="va">x_</span><span class="op">(</span>x<span class="op">),</span> <span class="va">y_</span><span class="op">(</span>y<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb6-8"><a aria-label="8"></a>    <span class="dt">void</span> scala<span class="op">(</span><span class="dt">double</span> f<span class="op">)</span> <span class="op">{</span> <span class="va">x_</span> <span class="op">*=</span> f<span class="op">;</span> <span class="va">y_</span> <span class="op">*=</span> f<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb6-9"><a aria-label="9"></a>    <span class="dt">double</span> norma2<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">x_</span> <span class="op">*</span> <span class="va">x_</span> <span class="op">+</span> <span class="va">y_</span> <span class="op">*</span> <span class="va">y_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb6-10"><a aria-label="10"></a><span class="op">};</span></span>
+<span id="cb6-11"><a aria-label="11"></a></span>
+<span id="cb6-12"><a aria-label="12"></a><span class="dt">void</span> stampaNorma2<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> v<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> v<span class="op">.</span>norma2<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb6-14"><a aria-label="14"></a>    <span class="co">// v.scala(2.0);</span></span>
+<span id="cb6-15"><a aria-label="15"></a><span class="op">}</span></span>
+<span id="cb6-16"><a aria-label="16"></a></span>
+<span id="cb6-17"><a aria-label="17"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-18"><a aria-label="18"></a>    Vettore2D v<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
+<span id="cb6-19"><a aria-label="19"></a>    stampaNorma2<span class="op">(</span>v<span class="op">);</span>                  <span class="co">// 25</span></span>
+<span id="cb6-20"><a aria-label="20"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-21"><a aria-label="21"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<p>Il parametro <code>const Vettore2D&amp; v</code> (riga 12, Lezione 05) evita la copia e vieta di modificare <code>v</code>: su <code>v</code> si possono chiamare <strong>solo metodi <code>const</code></strong>.</p>
 <ul>
-<li>Riga 16: <code>norma()</code> è <code>const</code>: ammessa.</li>
-<li>Riga 17: <code>scala()</code> non lo è: errore.</li>
+<li>Riga 13: <code>norma2()</code>, il quadrato della norma, è <code>const</code>: ammessa.</li>
+<li>Riga 14: <code>scala()</code> non lo è: errore, se si toglie il commento.</li>
 </ul>
-<p>Quindi <strong>tutti</strong> i metodi che non modificano l’oggetto vanno dichiarati <code>const</code>.</p>
+<p>Se <code>norma2()</code> non fosse <code>const</code>, anche la riga 13 darebbe errore: i metodi che non modificano l’oggetto vanno <strong>tutti</strong> dichiarati <code>const</code>.</p>
 </div></div>
 </section>
 <section id="argomenti-di-default-nei-metodi" class="slide level2 smaller">
@@ -1166,52 +1225,52 @@ Cristiano De Michele
 <span id="cb7-20"><a aria-label="20"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb7-21"><a aria-label="21"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:42%;">
-<p>Gli argomenti di default (Lezione 05) valgono anche per i metodi e i costruttori.</p>
-<p>Se dichiarazione e definizione sono separate (Lezione 08), il default si scrive <strong>solo nella dichiarazione</strong> (riga 7), cioè nel <code>.hpp</code> se la classe è in un header.</p>
-<p>Ripeterlo nella definizione (riga 11) è un errore di compilazione: <code>default argument given for parameter 1</code> con <code>g++</code>, <code>redefinition of default argument</code> con <code>clang++</code>.</p>
+<p>Un argomento di default (Lezione 05) è il valore usato quando l’argomento manca: <code>c.incrementa()</code> equivale a <code>c.incrementa(1)</code>.</p>
+<p>Se dichiarazione e definizione sono separate (Lezione 08), il default si scrive <strong>solo nella dichiarazione</strong> (riga 7, nel <code>.hpp</code>).</p>
+<p>Ripeterlo nella definizione (riga 11) è un errore di compilazione (<code>default argument given for parameter 1</code> con <code>g++</code>).</p>
 </div></div>
 </section>
 <section id="argomenti-di-default-e-ambiguità" class="slide level2 smaller">
 <h2>Argomenti di default e ambiguità</h2>
 <div class="columns">
 <div class="column" style="width:58%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-16"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-label="2"></a></span>
-<span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-label="3"></a><span class="kw">class</span> Grandezza <span class="op">{</span></span>
-<span id="annotated-cell-16-4"><a href="#annotated-cell-16-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-16-5"><a href="#annotated-cell-16-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">valore_</span><span class="op">;</span></span>
-<span id="annotated-cell-16-6"><a href="#annotated-cell-16-6" aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-16-7" class="code-annotation-target"><a href="#annotated-cell-16-7" aria-label="7"></a>    Grandezza<span class="op">()</span> <span class="op">:</span> <span class="va">valore_</span><span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="op">{}</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-16-8" class="code-annotation-target"><a href="#annotated-cell-16-8" aria-label="8"></a>    Grandezza<span class="op">(</span><span class="dt">double</span> v <span class="op">=</span> <span class="fl">0.0</span><span class="op">)</span> <span class="op">:</span> <span class="va">valore_</span><span class="op">(</span>v<span class="op">)</span> <span class="op">{}</span></span>
-<span id="annotated-cell-16-9"><a href="#annotated-cell-16-9" aria-label="9"></a>    <span class="dt">double</span> valore<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">valore_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-16-10"><a href="#annotated-cell-16-10" aria-label="10"></a><span class="op">};</span></span>
-<span id="annotated-cell-16-11"><a href="#annotated-cell-16-11" aria-label="11"></a></span>
-<span id="annotated-cell-16-12"><a href="#annotated-cell-16-12" aria-label="12"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-16-13" class="code-annotation-target"><a href="#annotated-cell-16-13" aria-label="13"></a>    Grandezza a<span class="op">(</span><span class="fl">2.5</span><span class="op">);</span></span>
-<span id="annotated-cell-16-14"><a href="#annotated-cell-16-14" aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> a<span class="op">.</span>valore<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-16-15" class="code-annotation-target"><a href="#annotated-cell-16-15" aria-label="15"></a>    <span class="co">// Grandezza b;</span></span>
-<span id="annotated-cell-16-16"><a href="#annotated-cell-16-16" aria-label="16"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-16-17"><a href="#annotated-cell-16-17" aria-label="17"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-17"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-17-2"><a href="#annotated-cell-17-2" aria-label="2"></a></span>
+<span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-label="3"></a><span class="kw">class</span> Grandezza <span class="op">{</span></span>
+<span id="annotated-cell-17-4"><a href="#annotated-cell-17-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-label="5"></a>    <span class="dt">double</span> <span class="va">valore_</span><span class="op">;</span></span>
+<span id="annotated-cell-17-6"><a href="#annotated-cell-17-6" aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-17-7" class="code-annotation-target"><a href="#annotated-cell-17-7" aria-label="7"></a>    Grandezza<span class="op">()</span> <span class="op">:</span> <span class="va">valore_</span><span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="op">{}</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-17-8" class="code-annotation-target"><a href="#annotated-cell-17-8" aria-label="8"></a>    Grandezza<span class="op">(</span><span class="dt">double</span> v <span class="op">=</span> <span class="fl">0.0</span><span class="op">)</span> <span class="op">:</span> <span class="va">valore_</span><span class="op">(</span>v<span class="op">)</span> <span class="op">{}</span></span>
+<span id="annotated-cell-17-9"><a href="#annotated-cell-17-9" aria-label="9"></a>    <span class="dt">double</span> valore<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">valore_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-17-10"><a href="#annotated-cell-17-10" aria-label="10"></a><span class="op">};</span></span>
+<span id="annotated-cell-17-11"><a href="#annotated-cell-17-11" aria-label="11"></a></span>
+<span id="annotated-cell-17-12"><a href="#annotated-cell-17-12" aria-label="12"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-17-13" class="code-annotation-target"><a href="#annotated-cell-17-13" aria-label="13"></a>    Grandezza a<span class="op">(</span><span class="fl">2.5</span><span class="op">);</span></span>
+<span id="annotated-cell-17-14"><a href="#annotated-cell-17-14" aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> a<span class="op">.</span>valore<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-17-15" class="code-annotation-target"><a href="#annotated-cell-17-15" aria-label="15"></a>    <span class="co">// Grandezza b;</span></span>
+<span id="annotated-cell-17-16"><a href="#annotated-cell-17-16" aria-label="16"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-17-17"><a href="#annotated-cell-17-17" aria-label="17"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-17" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-16" data-code-lines="7" data-code-annotation="1">Costruttore 1: senza argomenti.</span>
+<span data-code-cell="annotated-cell-17" data-code-lines="7" data-code-annotation="1">Costruttore 1: senza argomenti.</span>
 </dd>
-<dt data-target-cell="annotated-cell-16" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-17" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-16" data-code-lines="8" data-code-annotation="2">Costruttore 2: zero o un argomento, grazie al default.</span>
+<span data-code-cell="annotated-cell-17" data-code-lines="8" data-code-annotation="2">Costruttore 2: con zero o un argomento, grazie al default.</span>
 </dd>
-<dt data-target-cell="annotated-cell-16" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-17" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-16" data-code-lines="13" data-code-annotation="3">Con un argomento va bene solo il costruttore 2.</span>
+<span data-code-cell="annotated-cell-17" data-code-lines="13" data-code-annotation="3">Con un argomento si può usare solo il costruttore 2.</span>
 </dd>
-<dt data-target-cell="annotated-cell-16" data-target-annotation="4">4</dt>
+<dt data-target-cell="annotated-cell-17" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="annotated-cell-16" data-code-lines="15" data-code-annotation="4">Senza argomenti vanno bene entrambi: errore.</span>
+<span data-code-cell="annotated-cell-17" data-code-lines="15" data-code-annotation="4">Senza argomenti si possono usare entrambi.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:42%;">
-<p>Un costruttore con tutti gli argomenti di default si può chiamare anche senza argomenti. Se esiste anche un costruttore senza argomenti, il compilatore non sa quale scegliere.</p>
+<p>Un costruttore con tutti gli argomenti di default si può chiamare anche senza argomenti. Se nella classe c’è anche un costruttore senza argomenti, per <code>Grandezza b;</code> vanno bene tutti e due, e il compilatore non può scegliere.</p>
 <p>Togliendo il commento dalla riga di <code>b</code> la compilazione si ferma; con <code>g++</code>: <code>call of overloaded 'Grandezza()' is ambiguous</code>.</p>
 <p>Il rimedio è tenere uno solo dei due costruttori.</p>
 </div></div>
@@ -1219,7 +1278,7 @@ Cristiano De Michele
 <section id="approfondimento-overloading-o-default" class="slide level2 smaller">
 <h2>Approfondimento: overloading o default</h2>
 <div class="columns">
-<div class="column" style="width:62%;">
+<div class="column" style="width:54%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb8-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
 <span id="cb8-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
@@ -1245,28 +1304,28 @@ Cristiano De Michele
 <span id="cb8-23"><a aria-label="23"></a>    Vettore2D u<span class="op">(</span><span class="fl">0.0</span><span class="op">);</span>        <span class="co">// versore con angolo 0</span></span>
 <span id="cb8-24"><a aria-label="24"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb8-25"><a aria-label="25"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:38%;">
-<p><strong>Argomento di default</strong> (righe 4–5): la logica è la stessa e cambia solo un’opzione, come andare a capo o no.</p>
-<p><strong>Overloading</strong> (righe 13–16): le logiche sono diverse. Il primo costruttore riceve le componenti cartesiane, il secondo costruisce il versore di dato angolo. Un argomento di default non basterebbe.</p>
+</div><div class="column" style="width:46%;">
+<p><strong>Argomento di default</strong> (righe 4–5): il codice è lo stesso e cambia solo un’opzione, andare a capo o no.</p>
+<p><strong>Overloading</strong> (Lezione 05: più funzioni con lo stesso nome e parametri diversi; righe 13–16): i due costruttori calcolano <code>x_</code> e <code>y_</code> in modi diversi, dalle componenti cartesiane oppure dall’angolo di un versore. Un solo costruttore con un argomento di default non potrebbe fare entrambe le cose.</p>
 </div></div>
 </section>
 <section id="esercizio-in-classe-un-array-dinamico" class="slide level2 smaller">
 <h2>Esercizio in classe: un array dinamico</h2>
-<p>La classe <code>DynamicArray</code> possiede un array di <code>double</code> nell’heap e lo libera nel distruttore. L’header e il <code>main</code> sono dati; voi completate <code>DynamicArray.cpp</code>.</p>
+<p><code>DynamicArray</code> alloca un array di <code>double</code> nell’heap nel costruttore e lo libera nel distruttore. Header e <code>main</code> sono dati; voi completate <code>DynamicArray.cpp</code>.</p>
 <ol type="1">
-<li><p>Create una cartella con tre file: <code>DynamicArray.hpp</code>, <code>main.cpp</code> e <code>DynamicArray.cpp</code>. Copiate l’header e il <code>main</code> dalla slide seguente, lo scheletro di <code>DynamicArray.cpp</code> da quella dopo.</p></li>
+<li><p>In una cartella create <code>DynamicArray.hpp</code>, <code>main.cpp</code> e <code>DynamicArray.cpp</code>, copiando il codice dalle due slide seguenti.</p></li>
 <li><p>Compilate subito, prima di scrivere codice:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-Wall</span> <span class="at">-g</span> <span class="at">-fsanitize</span><span class="op">=</span>address main.cpp DynamicArray.cpp <span class="at">-o</span> main</span>
 <span id="cb9-2"><a aria-label="2"></a><span class="ex">./main</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Lo scheletro compila e stampa solo zeri.</p></li>
-<li><p>Completate le quattro funzioni di <code>DynamicArray.cpp</code>, seguendo i commenti <code>// da completare</code>.</p></li>
+<p>Lo scheletro compila: stampa una riga di zeri, uno <code>0</code> e la riga del distruttore.</p></li>
+<li><p>Completate <code>DynamicArray.cpp</code>: in ciascuna delle quattro funzioni manca <strong>una sola riga</strong>, indicata dal commento <code>// da completare</code>. Il controllo sugli indici è già scritto.</p></li>
 </ol>
 </section>
 <section id="esercizio-in-classe-segue-le-verifiche" class="slide level2 smaller">
 <h2>Esercizio in classe (segue): le verifiche</h2>
 <ol start="4" type="1">
 <li>Ricompilate ed eseguite: l’output deve essere quello indicato sotto il <code>main</code>, e l’AddressSanitizer non deve stampare nulla.</li>
-<li>Commentate il <code>delete[]</code> nel distruttore, ricompilate ed eseguite: l’AddressSanitizer segnala <code>40 byte(s) leaked in 1 allocation(s)</code> (5 <code>double</code> da 8 byte). Su macOS usate <code>leaks</code>, come nella Lezione 08. Poi rimettete il <code>delete[]</code>.</li>
+<li>Commentate il <code>delete[]</code> nel distruttore, ricompilate ed eseguite. L’AddressSanitizer deve segnalare <code>40 byte(s) leaked in 1 allocation(s)</code>: l’array di 5 <code>double</code> da 8 byte non è stato liberato. Su macOS usate <code>leaks</code>, come nella Lezione 08. Poi rimettete il <code>delete[]</code>.</li>
 </ol>
 </section>
 <section id="il-codice-di-partenza-header-e-main" class="slide level2 smaller">
@@ -1294,6 +1353,7 @@ Cristiano De Michele
 <pre><code>0 0.5 1 1.5 2
 0
 distruttore: liberati 5 elementi</code></pre>
+<p>La seconda riga è <code>leggi(7)</code>: gli indici validi vanno da 0 a 4, quindi <code>leggi</code> restituisce 0.</p>
 </div><div class="column" style="width:55%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1318,8 +1378,8 @@ distruttore: liberati 5 elementi</code></pre>
 </div>
 </div></div>
 </section>
-<section id="il-codice-di-partenza-dynamicarray.cpp-da-completare" class="slide level2 smaller">
-<h2>Il codice di partenza: <code>DynamicArray.cpp</code> da completare</h2>
+<section id="il-file-da-completare" class="slide level2 smaller">
+<h2>Il file da completare</h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>DynamicArray.cpp</strong></pre>
@@ -1328,25 +1388,26 @@ distruttore: liberati 5 elementi</code></pre>
 <span id="cb13-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">"DynamicArray.hpp"</span></span>
 <span id="cb13-3"><a aria-label="3"></a></span>
 <span id="cb13-4"><a aria-label="4"></a>DynamicArray<span class="op">::</span>DynamicArray<span class="op">(</span><span class="dt">int</span> size<span class="op">)</span> <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>size<span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb13-5"><a aria-label="5"></a>    <span class="co">// da completare: allocate nell'heap size_ valori double con new[]</span></span>
-<span id="cb13-6"><a aria-label="6"></a>    <span class="co">// e salvate in data_ l'indirizzo restituito</span></span>
-<span id="cb13-7"><a aria-label="7"></a><span class="op">}</span></span>
-<span id="cb13-8"><a aria-label="8"></a></span>
-<span id="cb13-9"><a aria-label="9"></a>DynamicArray<span class="op">::~</span>DynamicArray<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb13-10"><a aria-label="10"></a>    <span class="co">// da completare: liberate data_ con delete[]</span></span>
-<span id="cb13-11"><a aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"distruttore: liberati "</span> <span class="op">&lt;&lt;</span> <span class="va">size_</span> <span class="op">&lt;&lt;</span> <span class="st">" elementi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb13-12"><a aria-label="12"></a><span class="op">}</span></span>
-<span id="cb13-13"><a aria-label="13"></a></span>
-<span id="cb13-14"><a aria-label="14"></a><span class="dt">void</span> DynamicArray<span class="op">::</span>imposta<span class="op">(</span><span class="dt">int</span> indice<span class="op">,</span> <span class="dt">double</span> valore<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb13-15"><a aria-label="15"></a>    <span class="co">// da completare: se 0 &lt;= indice &lt; size_, scrivete valore in data_[indice];</span></span>
-<span id="cb13-16"><a aria-label="16"></a>    <span class="co">// altrimenti non fate nulla</span></span>
+<span id="cb13-5"><a aria-label="5"></a>    <span class="co">// da completare (una riga): data_ riceve un array di size_ double (new[])</span></span>
+<span id="cb13-6"><a aria-label="6"></a><span class="op">}</span></span>
+<span id="cb13-7"><a aria-label="7"></a></span>
+<span id="cb13-8"><a aria-label="8"></a>DynamicArray<span class="op">::~</span>DynamicArray<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb13-9"><a aria-label="9"></a>    <span class="co">// da completare (una riga): liberate data_ con delete[]</span></span>
+<span id="cb13-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"distruttore: liberati "</span> <span class="op">&lt;&lt;</span> <span class="va">size_</span> <span class="op">&lt;&lt;</span> <span class="st">" elementi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb13-11"><a aria-label="11"></a><span class="op">}</span></span>
+<span id="cb13-12"><a aria-label="12"></a></span>
+<span id="cb13-13"><a aria-label="13"></a><span class="dt">void</span> DynamicArray<span class="op">::</span>imposta<span class="op">(</span><span class="dt">int</span> indice<span class="op">,</span> <span class="dt">double</span> valore<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-14"><a aria-label="14"></a>    <span class="cf">if</span> <span class="op">(</span>indice <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> indice <span class="op">&lt;</span> <span class="va">size_</span><span class="op">)</span> <span class="op">{</span>      <span class="co">// indice valido</span></span>
+<span id="cb13-15"><a aria-label="15"></a>        <span class="co">// da completare (una riga): scrivete valore in data_[indice]</span></span>
+<span id="cb13-16"><a aria-label="16"></a>    <span class="op">}</span></span>
 <span id="cb13-17"><a aria-label="17"></a><span class="op">}</span></span>
 <span id="cb13-18"><a aria-label="18"></a></span>
 <span id="cb13-19"><a aria-label="19"></a><span class="dt">double</span> DynamicArray<span class="op">::</span>leggi<span class="op">(</span><span class="dt">int</span> indice<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb13-20"><a aria-label="20"></a>    <span class="co">// da completare: se 0 &lt;= indice &lt; size_, restituite data_[indice];</span></span>
-<span id="cb13-21"><a aria-label="21"></a>    <span class="co">// altrimenti restituite 0.0</span></span>
-<span id="cb13-22"><a aria-label="22"></a>    <span class="cf">return</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb13-23"><a aria-label="23"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-20"><a aria-label="20"></a>    <span class="cf">if</span> <span class="op">(</span>indice <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> indice <span class="op">&lt;</span> <span class="va">size_</span><span class="op">)</span> <span class="op">{</span>      <span class="co">// indice valido</span></span>
+<span id="cb13-21"><a aria-label="21"></a>        <span class="co">// da completare (una riga): restituite data_[indice]</span></span>
+<span id="cb13-22"><a aria-label="22"></a>    <span class="op">}</span></span>
+<span id="cb13-23"><a aria-label="23"></a>    <span class="cf">return</span> <span class="fl">0.0</span><span class="op">;</span>                               <span class="co">// indice non valido</span></span>
+<span id="cb13-24"><a aria-label="24"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="soluzione-dellesercizio-il-codice" class="slide level2 smaller">
@@ -1368,15 +1429,18 @@ distruttore: liberati 5 elementi</code></pre>
 <span id="cb14-11"><a aria-label="11"></a><span class="op">}</span></span>
 <span id="cb14-12"><a aria-label="12"></a></span>
 <span id="cb14-13"><a aria-label="13"></a><span class="dt">void</span> DynamicArray<span class="op">::</span>imposta<span class="op">(</span><span class="dt">int</span> indice<span class="op">,</span> <span class="dt">double</span> valore<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-14"><a aria-label="14"></a>    <span class="cf">if</span> <span class="op">(</span>indice <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> indice <span class="op">&lt;</span> <span class="va">size_</span><span class="op">)</span> <span class="va">data_</span><span class="op">[</span>indice<span class="op">]</span> <span class="op">=</span> valore<span class="op">;</span></span>
-<span id="cb14-15"><a aria-label="15"></a><span class="op">}</span></span>
-<span id="cb14-16"><a aria-label="16"></a></span>
-<span id="cb14-17"><a aria-label="17"></a><span class="dt">double</span> DynamicArray<span class="op">::</span>leggi<span class="op">(</span><span class="dt">int</span> indice<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb14-18"><a aria-label="18"></a>    <span class="cf">if</span> <span class="op">(</span>indice <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> indice <span class="op">&lt;</span> <span class="va">size_</span><span class="op">)</span> <span class="cf">return</span> <span class="va">data_</span><span class="op">[</span>indice<span class="op">];</span></span>
-<span id="cb14-19"><a aria-label="19"></a>    <span class="cf">return</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb14-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb14-14"><a aria-label="14"></a>    <span class="cf">if</span> <span class="op">(</span>indice <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> indice <span class="op">&lt;</span> <span class="va">size_</span><span class="op">)</span> <span class="op">{</span>      <span class="co">// indice valido</span></span>
+<span id="cb14-15"><a aria-label="15"></a>        <span class="va">data_</span><span class="op">[</span>indice<span class="op">]</span> <span class="op">=</span> valore<span class="op">;</span></span>
+<span id="cb14-16"><a aria-label="16"></a>    <span class="op">}</span></span>
+<span id="cb14-17"><a aria-label="17"></a><span class="op">}</span></span>
+<span id="cb14-18"><a aria-label="18"></a></span>
+<span id="cb14-19"><a aria-label="19"></a><span class="dt">double</span> DynamicArray<span class="op">::</span>leggi<span class="op">(</span><span class="dt">int</span> indice<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb14-20"><a aria-label="20"></a>    <span class="cf">if</span> <span class="op">(</span>indice <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> indice <span class="op">&lt;</span> <span class="va">size_</span><span class="op">)</span> <span class="op">{</span>      <span class="co">// indice valido</span></span>
+<span id="cb14-21"><a aria-label="21"></a>        <span class="cf">return</span> <span class="va">data_</span><span class="op">[</span>indice<span class="op">];</span></span>
+<span id="cb14-22"><a aria-label="22"></a>    <span class="op">}</span></span>
+<span id="cb14-23"><a aria-label="23"></a>    <span class="cf">return</span> <span class="fl">0.0</span><span class="op">;</span>                               <span class="co">// indice non valido</span></span>
+<span id="cb14-24"><a aria-label="24"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Allocazione nel costruttore, rilascio nel distruttore. In <code>leggi</code> il <code>const</code> si ripete nella definizione.</p>
 </section>
 <section id="soluzione-dellesercizio-i-file-dati" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio: i file dati</h2>
@@ -1399,19 +1463,6 @@ distruttore: liberati 5 elementi</code></pre>
 <span id="cb15-10"><a aria-label="10"></a>    <span class="dt">void</span> imposta<span class="op">(</span><span class="dt">int</span> indice<span class="op">,</span> <span class="dt">double</span> valore<span class="op">);</span></span>
 <span id="cb15-11"><a aria-label="11"></a>    <span class="dt">double</span> leggi<span class="op">(</span><span class="dt">int</span> indice<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
 <span id="cb15-12"><a aria-label="12"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="callout callout-warning callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Avviso</strong></p>
-</div>
-<div class="callout-content">
-<p>Non copiate questa classe: <code>DynamicArray b = a;</code> copia il puntatore, non l’array, e i due distruttori liberano lo stesso indirizzo (<em>double free</em>, Lezione 08). Il rimedio è nella Lezione 10.</p>
-</div>
-</div>
 </div>
 </div><div class="column" style="width:55%;">
 <div class="code-with-filename">
@@ -1437,28 +1488,48 @@ distruttore: liberati 5 elementi</code></pre>
 </div>
 </div></div>
 </section>
+<section id="attenzione-la-classe-non-si-può-ancora-copiare" class="slide level2 smaller">
+<h2>Attenzione: la classe non si può ancora copiare</h2>
+<p>Supponiamo di aggiungere al <code>main</code> la riga <code>DynamicArray b = a;</code>.</p>
+<ul>
+<li>Questa riga copia gli attributi di <code>a</code> in <code>b</code>: <code>size_</code> e <code>data_</code>. <code>data_</code> è un indirizzo, quindi <code>b</code> riceve lo stesso indirizzo di <code>a</code>, non una copia dell’array.</li>
+<li><code>a</code> e <code>b</code> puntano allo stesso array nell’heap.</li>
+<li>Alla fine del <code>main</code> vengono distrutti entrambi, e i due distruttori eseguono <code>delete[]</code> sullo stesso indirizzo: è il <em>double free</em> della Lezione 08, e il programma termina con un errore.</li>
+</ul>
+<p>Come scrivere una classe che si copia correttamente è l’argomento della Lezione 10.</p>
+</section>
 <section id="esercizio-lampo-cosa-stampa" class="slide level2 smaller">
 <h2>Esercizio lampo: cosa stampa?</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb17-2"><a aria-label="2"></a></span>
 <span id="cb17-3"><a aria-label="3"></a><span class="kw">struct</span> E <span class="op">{</span></span>
-<span id="cb17-4"><a aria-label="4"></a>    <span class="op">~</span>E<span class="op">()</span> <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"distrutto</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb17-5"><a aria-label="5"></a><span class="op">};</span></span>
-<span id="cb17-6"><a aria-label="6"></a></span>
-<span id="cb17-7"><a aria-label="7"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb17-8"><a aria-label="8"></a>    E sullo_stack<span class="op">;</span></span>
-<span id="cb17-9"><a aria-label="9"></a>    E<span class="op">*</span> sullo_heap <span class="op">=</span> <span class="kw">new</span> E<span class="op">;</span></span>
-<span id="cb17-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"fine main</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb17-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-4"><a aria-label="4"></a>    <span class="dt">int</span> id<span class="op">;</span></span>
+<span id="cb17-5"><a aria-label="5"></a>    E<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="op">:</span> id<span class="op">(</span>i<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb17-6"><a aria-label="6"></a>    <span class="op">~</span>E<span class="op">()</span> <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"distrutto "</span> <span class="op">&lt;&lt;</span> id <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb17-7"><a aria-label="7"></a><span class="op">};</span></span>
+<span id="cb17-8"><a aria-label="8"></a></span>
+<span id="cb17-9"><a aria-label="9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb17-10"><a aria-label="10"></a>    E a<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb17-11"><a aria-label="11"></a>    <span class="op">{</span></span>
+<span id="cb17-12"><a aria-label="12"></a>        E b<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
+<span id="cb17-13"><a aria-label="13"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"fine del blocco</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb17-14"><a aria-label="14"></a>    <span class="op">}</span></span>
+<span id="cb17-15"><a aria-label="15"></a>    E c<span class="op">(</span><span class="dv">3</span><span class="op">);</span></span>
+<span id="cb17-16"><a aria-label="16"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"fine del main</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb17-17"><a aria-label="17"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb17-18"><a aria-label="18"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="esercizio-lampo-la-risposta" class="slide level2 smaller">
 <h2>Esercizio lampo: la risposta</h2>
-<p>Stampa <code>fine main</code> e poi <strong>una sola volta</strong> <code>distrutto</code>.</p>
+<pre><code>fine del blocco
+distrutto 2
+fine del main
+distrutto 3
+distrutto 1</code></pre>
 <ul>
-<li><code>sullo_stack</code> esce dallo scope alla fine del <code>main</code>: il suo distruttore viene eseguito.</li>
-<li>L’oggetto creato con <code>new</code> non viene mai liberato con <code>delete</code>, quindi il suo distruttore non viene eseguito. A fine programma il sistema operativo recupera la memoria, ma il codice del distruttore non gira.</li>
+<li><code>b</code> è dichiarata nel blocco interno: viene distrutta alla sua graffa di chiusura, prima che venga creata <code>c</code>.</li>
+<li>Alla fine del <code>main</code> restano <code>a</code> e <code>c</code>. Vengono distrutte in ordine inverso a quello di creazione: prima <code>c</code>, poi <code>a</code>.</li>
 </ul>
-<p>È il motivo per cui, nel RAII, l’oggetto che possiede la risorsa sta sullo stack. Con <code>-Wall</code> il compilatore avvisa <code>unused variable 'sullo_heap'</code>: la variabile non viene mai usata.</p>
 
 
 </section>
