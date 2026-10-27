@@ -987,7 +987,7 @@ Cristiano De Michele
 <ul>
 <li>righe 8–9: il costruttore alloca l’array (lista di inizializzazione, Lezione 07);</li>
 <li>riga 10: il distruttore lo libera;</li>
-<li>riga 19: <code>b</code> viene distrutto, e con lui l’array.</li>
+<li>riga 19: <code>b</code> viene distrutto e il suo distruttore libera l’array.</li>
 </ul>
 <p>Nel <code>main</code> nessun <code>delete</code>; con <code>-fsanitize=address</code> nessun leak.</p>
 </div></div>
@@ -1033,7 +1033,7 @@ Cristiano De Michele
 <li>si rilascia nel <strong>distruttore</strong>;</li>
 <li>l’oggetto che possiede la risorsa si dichiara come <strong>variabile locale</strong> o come <strong>attributo</strong> di un altro oggetto, distrutto con lui (come le matrici di Eigen in un layer). Un oggetto nell’heap ha a sua volta un proprietario, che lo distrugge e ne libera la memoria quando viene distrutto: è il caso dei layer di <code>Sequential</code>.</li>
 </ol>
-<p><strong>In sintesi:</strong> chi alloca nel costruttore libera nel distruttore, e l’oggetto è una variabile locale o un attributo.</p>
+<p><strong>In sintesi, per le classi di oggi:</strong> chi alloca nel costruttore libera nel distruttore, e l’oggetto è una variabile locale o un attributo.</p>
 <p>Anche <code>std::vector</code> e <code>std::ofstream</code> della libreria standard seguono il RAII.</p>
 </section>
 <section id="il-raii-e-new" class="slide level2 smaller">
