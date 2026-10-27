@@ -898,7 +898,7 @@ Cristiano De Michele
 </div><div class="column" style="width:50%;">
 <p><img data-src="images/memoria_struct.png" style="width:100.0%"></p>
 <p>Alla fine del <code>main</code> viene distrutta <code>b</code>, con l’indirizzo contenuto in <code>b.data</code>, ma non l’array: senza <code>delete[] b.data;</code> resta occupato.</p>
-<p>Con il distruttore il <code>delete[]</code> si scrive una volta sola, dentro la classe.</p>
+<p>Nelle slide seguenti il <code>delete[]</code> passa dentro la classe e si scrive una volta sola, in un metodo nuovo: il <strong>distruttore</strong>.</p>
 </div></div>
 </section>
 <section id="il-distruttore" class="slide level2 smaller">
