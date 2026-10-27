@@ -768,11 +768,11 @@ Cristiano De Michele
 <ul>
 <li><strong>Distruttori e RAII.</strong> Nel framework non si scrive mai <code>delete</code>.
 <ul>
-<li>Le matrici (<code>Matrix</code>) sono matrici di Eigen: allocano la memoria quando vengono create e la liberano quando vengono distrutte, con il meccanismo che vediamo oggi.</li>
-<li>I layer di <code>Sequential</code> sono creati nell’heap, ma li possiede la rete, che li libera quando viene distrutta.</li>
+<li>Le matrici (<code>Matrix</code>) sono matrici di Eigen: allocano la memoria quando vengono create e la liberano quando vengono distrutte, come vediamo oggi.</li>
+<li>I layer di <code>Sequential</code> sono creati nell’heap, ma li possiede la rete: quando la rete viene distrutta, distrugge anche i suoi layer e ne libera la memoria.</li>
 </ul></li>
 <li><strong>Metodi <code>const</code>.</strong> I metodi che leggono soltanto sono <code>const</code>: <code>get_type() const</code> restituisce il nome del layer, <code>size() const</code> il numero di layer di <code>Sequential</code>.</li>
-<li><strong>Argomenti di default.</strong> Il costruttore è <code>DenseLayer(int Nn, int Ni, int type = 0, int distro = 1)</code>: <code>Nn</code> neuroni, <code>Ni</code> ingressi; <code>type</code> e <code>distro</code> scelgono come inizializzare i pesi. Chi indica solo <code>Nn</code> e <code>Ni</code> ottiene <code>type = 0</code> e <code>distro = 1</code>.</li>
+<li><strong>Argomenti di default nei costruttori</strong>, come per le funzioni della Lezione 05: in <code>DenseLayer(int Nn, int Ni, int type = 0, int distro = 1)</code> (<code>Nn</code> neuroni, <code>Ni</code> ingressi) chi non indica <code>type</code> e <code>distro</code> (come inizializzare i pesi) ottiene 0 e 1.</li>
 </ul>
 </section>
 <section id="ripasso-variabili-e-indirizzi" class="slide level2 smaller">
@@ -1025,7 +1025,7 @@ Cristiano De Michele
 <ol type="1">
 <li>la risorsa (memoria nell’heap, un file aperto) si acquisisce nel <strong>costruttore</strong>;</li>
 <li>si rilascia nel <strong>distruttore</strong>;</li>
-<li>l’oggetto che possiede la risorsa si dichiara come <strong>variabile locale</strong> o come <strong>attributo</strong> di un altro oggetto, distrutto con lui (come le matrici di Eigen in un layer). Se un oggetto deve stare nell’heap, lo possiede un altro oggetto, che lo libera nel suo distruttore: è il caso dei layer di <code>Sequential</code>.</li>
+<li>l’oggetto che possiede la risorsa si dichiara come <strong>variabile locale</strong> o come <strong>attributo</strong> di un altro oggetto, distrutto con lui (come le matrici di Eigen in un layer). Un oggetto nell’heap ha a sua volta un proprietario, che lo distrugge e ne libera la memoria quando viene distrutto: è il caso dei layer di <code>Sequential</code>.</li>
 </ol>
 <p><strong>In sintesi:</strong> chi alloca nel costruttore libera nel distruttore, e l’oggetto è una variabile locale o un attributo.</p>
 <p>Anche <code>std::vector</code> e <code>std::ofstream</code> della libreria standard seguono il RAII.</p>
