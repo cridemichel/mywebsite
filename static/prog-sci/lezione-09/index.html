@@ -816,10 +816,10 @@ Cristiano De Michele
 <h2>Ripasso: lo stack e l’heap</h2>
 <p>La memoria di un programma ha due zone (Lezione 08).</p>
 <ul>
-<li>Lo <strong>stack</strong> contiene le variabili locali, cioè quelle dichiarate dentro una funzione o dentro un blocco <code>{ }</code>. Una variabile locale viene liberata da sola quando il programma esce dal blocco in cui è dichiarata.</li>
+<li>Lo <strong>stack</strong> contiene le variabili locali, cioè quelle dichiarate dentro una funzione o dentro un blocco <code>{ }</code>. Una variabile locale viene distrutta, e la sua memoria liberata, quando il programma esce dal blocco in cui è dichiarata (Lezione 08).</li>
 <li>L’<strong>heap</strong> contiene la memoria chiesta con <code>new</code>. Resta occupata finché il programma non la restituisce con <code>delete</code> (o <code>delete[]</code> per un array).</li>
 </ul>
-<p>Una variabile sullo stack può contenere l’indirizzo di memoria nell’heap: è il caso dei prossimi esempi. Quando la variabile viene liberata si perde l’indirizzo, ma la memoria nell’heap resta occupata.</p>
+<p>Una variabile sullo stack può contenere l’indirizzo di memoria nell’heap: è il caso dei prossimi esempi. Quando la variabile viene distrutta si perde l’indirizzo, ma la memoria nell’heap resta occupata.</p>
 </section>
 <section id="ripasso-un-array-nellheap" class="slide level2 smaller">
 <h2>Ripasso: un array nell’heap</h2>
@@ -856,7 +856,7 @@ Cristiano De Michele
 <img data-src="images/memoria_array.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><ul>
 <li><code>v</code> è una variabile locale del <code>main</code>: sta sullo stack e contiene l’indirizzo <code>0x5600a0</code>.</li>
 <li>I quattro <code>double</code> stanno nell’heap, uno dopo l’altro, a partire da quell’indirizzo.</li>
-<li>Alla fine del <code>main</code> <code>v</code> viene liberata da sola, perché è sullo stack. L’array no: se manca <code>delete[] v;</code>, i quattro <code>double</code> restano occupati e nessuna variabile ne conosce più l’indirizzo. È un <strong>memory leak</strong> (Lezione 08).</li>
+<li>Alla fine del <code>main</code> <code>v</code> viene distrutta da sola, perché è sullo stack. L’array no: se manca <code>delete[] v;</code>, i quattro <code>double</code> restano occupati e nessuna variabile ne conosce più l’indirizzo. È un <strong>memory leak</strong> (Lezione 08).</li>
 </ul>
 </section>
 <section id="ripasso-struct-e-puntatori" class="slide level2 smaller">
@@ -891,7 +891,7 @@ Cristiano De Michele
 </dl>
 </div><div class="column" style="width:50%;">
 <p><img data-src="images/memoria_struct.png" style="width:100.0%"></p>
-<p>Alla fine del <code>main</code> viene liberata <code>b</code>, con l’indirizzo contenuto in <code>b.data</code>, ma non l’array: senza <code>delete[] b.data;</code> resta occupato.</p>
+<p>Alla fine del <code>main</code> viene distrutta <code>b</code>, con l’indirizzo contenuto in <code>b.data</code>, ma non l’array: senza <code>delete[] b.data;</code> resta occupato.</p>
 <p>Con il distruttore il <code>delete[]</code> si scrive una volta sola, dentro la classe.</p>
 </div></div>
 </section>
@@ -1021,11 +1021,11 @@ Cristiano De Michele
 </section>
 <section id="il-raii" class="slide level2 smaller">
 <h2>Il RAII</h2>
-<p>Questo modo di scrivere le classi si chiama <strong>RAII</strong> (<em>Resource Acquisition Is Initialization</em>, “l’acquisizione di una risorsa avviene nell’inizializzazione”). È un idioma del C++, con tre regole:</p>
+<p>Questo modo di scrivere le classi si chiama <strong>RAII</strong> (<em>Resource Acquisition Is Initialization</em>, “l’acquisizione di una risorsa avviene nell’inizializzazione”). È una <strong>tecnica di programmazione tipica del C++</strong>, con tre regole:</p>
 <ol type="1">
 <li>la risorsa (memoria nell’heap, un file aperto) si acquisisce nel <strong>costruttore</strong>;</li>
 <li>si rilascia nel <strong>distruttore</strong>;</li>
-<li>l’oggetto che possiede la risorsa si dichiara come <strong>variabile locale</strong> o come <strong>attributo</strong> di un altro oggetto, distrutto con lui (come le matrici di Eigen in un layer). Se deve stare nell’heap, lo alloca il costruttore di un altro oggetto e lo libera il suo distruttore, come l’array in <code>Buffer</code>.</li>
+<li>l’oggetto che possiede la risorsa si dichiara come <strong>variabile locale</strong> o come <strong>attributo</strong> di un altro oggetto, distrutto con lui (come le matrici di Eigen in un layer). Se un oggetto deve stare nell’heap, lo possiede un altro oggetto, che lo libera nel suo distruttore: è il caso dei layer di <code>Sequential</code>.</li>
 </ol>
 <p><strong>In sintesi:</strong> chi alloca nel costruttore libera nel distruttore, e l’oggetto è una variabile locale o un attributo.</p>
 <p>Anche <code>std::vector</code> e <code>std::ofstream</code> della libreria standard seguono il RAII.</p>
@@ -1069,7 +1069,7 @@ Cristiano De Michele
 </tr>
 </tbody>
 </table>
-<p><code>Buffer</code> è scritta secondo il RAII, ma usata così non lo rispetta. Il RAII non vieta <code>new</code>, ma un <code>new</code> senza proprietario: il <code>new</code> va nel costruttore di un oggetto che fa il <code>delete</code> nel suo distruttore, come in <code>Buffer</code>.</p>
+<p><code>Buffer</code> è scritta secondo il RAII, ma usata così non lo rispetta. Il RAII non vieta <code>new</code>: chiede che ogni <code>new</code> abbia un proprietario, un oggetto che fa il <code>delete</code> nel suo distruttore, come <code>Buffer</code> con il suo array o <code>Sequential</code> con i suoi layer.</p>
 </section>
 <section id="approfondimento-il-raii-con-un-file" class="slide level2 smaller">
 <h2>Approfondimento: il RAII con un file</h2>
