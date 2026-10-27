@@ -766,13 +766,19 @@ Cristiano De Michele
 <section id="gli-argomenti-di-oggi-nel-framework" class="slide level2 smaller">
 <h2>Gli argomenti di oggi nel framework</h2>
 <ul>
-<li><strong>Distruttori e RAII.</strong> Nel framework non si scrive mai <code>delete</code>.
+<li><strong>Distruttori e RAII.</strong> Nel framework <code>delete</code> compare una sola volta:
 <ul>
-<li>Le matrici (<code>Matrix</code>) sono matrici di Eigen: allocano la memoria quando vengono create e la liberano quando vengono distrutte, come vediamo oggi.</li>
-<li>I layer di <code>Sequential</code> sono creati nell’heap, ma li possiede la rete: quando la rete viene distrutta, distrugge anche i suoi layer e ne libera la memoria.</li>
+<li><code>randnumgen</code>, il generatore di numeri casuali, crea con <code>new</code> nel costruttore l’oggetto che produce i numeri uniformi e lo distrugge con <code>delete</code> nel distruttore: è lo schema di oggi;</li>
+<li>le matrici (<code>Matrix</code>) sono matrici di Eigen: allocano la memoria quando vengono create e la liberano quando vengono distrutte, come vediamo oggi;</li>
+<li>i layer di <code>Sequential</code> sono creati nell’heap, ma li possiede la rete: quando la rete viene distrutta, distrugge anche i suoi layer e ne libera la memoria.</li>
 </ul></li>
+</ul>
+</section>
+<section id="gli-argomenti-di-oggi-nel-framework-segue" class="slide level2 smaller">
+<h2>Gli argomenti di oggi nel framework (segue)</h2>
+<ul>
 <li><strong>Metodi <code>const</code>.</strong> I metodi che leggono soltanto sono <code>const</code>: <code>get_type() const</code> restituisce il nome del layer, <code>size() const</code> il numero di layer di <code>Sequential</code>.</li>
-<li><strong>Argomenti di default nei costruttori</strong>, come per le funzioni della Lezione 05: in <code>DenseLayer(int Nn, int Ni, int type = 0, int distro = 1)</code> (<code>Nn</code> neuroni, <code>Ni</code> ingressi) chi non indica <code>type</code> e <code>distro</code> (come inizializzare i pesi) ottiene 0 e 1.</li>
+<li><strong>Argomenti di default nei costruttori.</strong> Gli argomenti di default sono quelli delle funzioni della Lezione 05; oggi li vediamo in un costruttore. Il costruttore di <code>DenseLayer</code> è <code>DenseLayer(int Nn, int Ni, int type = 0, int distro = 1)</code>: <code>Nn</code> neuroni, <code>Ni</code> ingressi; <code>type</code> e <code>distro</code> scelgono come inizializzare i pesi. Chi indica solo <code>Nn</code> e <code>Ni</code> ottiene <code>type = 0</code> e <code>distro = 1</code>.</li>
 </ul>
 </section>
 <section id="ripasso-variabili-e-indirizzi" class="slide level2 smaller">
