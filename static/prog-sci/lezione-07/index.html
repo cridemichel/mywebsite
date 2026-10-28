@@ -1021,7 +1021,7 @@ Cristiano De Michele
 <section id="il-costruttore-generato-dal-compilatore" class="slide level2 smaller">
 <h2>Il costruttore generato dal compilatore</h2>
 <ul>
-<li>Se una classe <strong>non dichiara alcun costruttore</strong>, il compilatore ne genera uno di default, che non inizializza gli attributi dei tipi fondamentali (<code>double</code>, <code>int</code>, puntatori): il loro valore resta indeterminato.</li>
+<li>Se una classe <strong>non dichiara alcun costruttore</strong>, il compilatore ne genera uno di default, con lista di inizializzazione e corpo vuoti: gli attributi che sono oggetti vengono creati con il loro costruttore di default (come <code>t_</code> in <code>CellaA</code>), quelli dei tipi fondamentali (<code>double</code>, <code>int</code>, puntatori) restano indeterminati.</li>
 <li>Se la classe dichiara <strong>almeno un costruttore</strong>, quello di default non viene più generato. Con il solo <code>Datum(double v)</code>, la riga <code>Datum d1;</code> dà <em><code>error: no matching function for call to 'Datum::Datum()'</code></em>, come per <code>Result</code> nella Lezione 06. Se serve anche <code>Datum d1;</code>, il costruttore di default va scritto esplicitamente.</li>
 <li>Anche un costruttore può essere <code>private</code>: l’uso tipico, il <em>Singleton</em>, è nella Lezione 13.</li>
 </ul>
@@ -1287,7 +1287,7 @@ SigmoidLayer: &lt;numero&gt; parametri</code></pre></li>
 <span data-code-cell="annotated-cell-17" data-code-lines="18" data-code-annotation="1">Nessun costruttore: si usa quello generato dal compilatore, che qui non ha attributi da inizializzare.</span>
 </dd>
 </dl>
-<p>Nel framework le due classi hanno una base comune, <code>layer</code>, e <code>DenseLayer</code> deriva da <code>ParametricLayer</code>. Qui il totale dei parametri si somma a mano, layer per layer (slide successiva): per raccogliere layer di tipi diversi in un’unica sequenza, come fa <code>Sequential</code> nel framework, serve una classe base comune. È l’argomento della Lezione 12, l’ereditarietà.</p>
+<p>Nel framework le due classi hanno una base comune, <code>Layer</code>, e <code>DenseLayer</code> deriva da <code>ParametricLayer</code>. Qui il totale dei parametri si somma a mano, layer per layer (slide successiva): per raccogliere layer di tipi diversi in un’unica sequenza, come fa <code>Sequential</code> nel framework, serve una classe base comune. È l’argomento della Lezione 12, l’ereditarietà.</p>
 </section>
 <section id="soluzione-dellesercizio-finale-il-main" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio finale: il <code>main</code></h2>

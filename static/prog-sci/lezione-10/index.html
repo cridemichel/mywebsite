@@ -778,7 +778,7 @@ Cristiano De Michele
 <li><code>DynamicArray b = a;</code> crea <code>b</code> come copia di <code>a</code>: costruttore di copia.</li>
 <li><code>b = a;</code> con <code>b</code> già esistente: operatore di assegnamento.</li>
 </ul>
-<p>Entrambi copiano <strong>membro per membro</strong>: ogni attributo di <code>a</code> viene copiato nell’attributo corrispondente di <code>b</code>. Di un puntatore copiano l’indirizzo, non i dati a cui punta.</p>
+<p>Entrambi copiano <strong>membro per membro</strong>: ogni attributo di <code>a</code> viene copiato nell’attributo corrispondente di <code>b</code>, così come il costruttore di default e il distruttore generati creano e distruggono gli attributi uno per uno (Lezioni 07 e 09). Di un puntatore copiano l’indirizzo, non i dati a cui punta.</p>
 <p>Dalla Lezione 09: <code>DynamicArray</code> alloca un array nell’heap nel costruttore e lo libera nel distruttore. La Lezione 09 si chiudeva con un avvertimento: questa classe non si può ancora copiare. Oggi vediamo perché, e come si rimedia.</p>
 </section>
 <section id="la-copia-superficiale" class="slide level2 smaller">
@@ -992,6 +992,8 @@ Cristiano De Michele
 </section>
 <section id="loperatore-di-assegnamento" class="slide level2 smaller">
 <h2>L’operatore di assegnamento</h2>
+<div class="columns">
+<div class="column" style="width:62%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a>DynamicArray<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb6-2"><a aria-label="2"></a>    <span class="cf">if</span> <span class="op">(</span><span class="kw">this</span> <span class="op">==</span> <span class="op">&amp;</span>altro<span class="op">)</span> <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
 <span id="cb6-3"><a aria-label="3"></a>    <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span></span>
@@ -1000,12 +1002,14 @@ Cristiano De Michele
 <span id="cb6-6"><a aria-label="6"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
 <span id="cb6-7"><a aria-label="7"></a>    <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
 <span id="cb6-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:38%;">
 <p><code>b = a;</code> chiama <code>b.operator=(a)</code>: dentro il metodo <code>this</code> è l’indirizzo di <code>b</code>, <code>altro</code> è <code>a</code>.</p>
+</div></div>
 <ol type="1">
 <li><strong>Auto-assegnamento</strong> (<code>a = a;</code>): <code>this</code> e <code>&amp;altro</code> coincidono. Senza il controllo, il <code>delete[]</code> libererebbe l’array prima di copiarlo.</li>
 <li><strong>Il vecchio array</strong> di <code>b</code> va liberato, altrimenti è il leak visto prima.</li>
 <li><strong>Il nuovo array</strong> si alloca e si riempie come nel costruttore di copia.</li>
-<li><strong>Il valore restituito</strong> è <code>*this</code>, per reference (Lezione 05): permette <code>c = b = a;</code>.</li>
+<li><strong>Il valore restituito</strong> è <code>*this</code>: <code>c = b = a;</code> è <code>c = (b = a)</code>, e ciò che restituisce <code>b = a</code> diventa l’argomento di <code>c.operator=</code> (con <code>void</code> non compilerebbe). Per reference (Lezione 05), per non fare una copia profonda in più.</li>
 </ol>
 </section>
 <section id="overloading-degli-operatori" class="slide level2 smaller">
@@ -1357,27 +1361,27 @@ F(x, y) = x^2 + 4y^2, \qquad \nabla F = (2x,\ 8y)
 <div class="code-with-filename-file">
 <pre><strong>main.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-10" data-filename="main.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-label="2"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
-<span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-label="3"></a></span>
-<span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-label="4"></a>Vettore2D gradF<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-label="5"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> p<span class="op">.</span>getX<span class="op">(),</span> <span class="fl">8.0</span> <span class="op">*</span> p<span class="op">.</span>getY<span class="op">());</span></span>
-<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-label="6"></a><span class="op">}</span></span>
-<span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-label="7"></a></span>
-<span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-label="8"></a><span class="dt">int</span> discesa<span class="op">(</span>Vettore2D x<span class="op">,</span> <span class="dt">double</span> eta<span class="op">,</span> <span class="dt">int</span> max_passi<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> n <span class="op">&lt;=</span> max_passi<span class="op">;</span> <span class="op">++</span>n<span class="op">)</span> <span class="op">{</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-10" class="code-annotation-target"><a href="#annotated-cell-10-10" aria-label="10"></a>        x <span class="op">=</span> x <span class="op">-</span> gradF<span class="op">(</span>x<span class="op">)</span> <span class="op">*</span> eta<span class="op">;</span></span>
-<span id="annotated-cell-10-11"><a href="#annotated-cell-10-11" aria-label="11"></a>        <span class="dt">double</span> g <span class="op">=</span> gradF<span class="op">(</span>x<span class="op">).</span>norma<span class="op">();</span></span>
-<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-label="12"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&lt;</span> <span class="fl">1e-6</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
-<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-label="13"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&gt;</span> <span class="fl">1e10</span><span class="op">)</span> <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
-<span id="annotated-cell-10-14"><a href="#annotated-cell-10-14" aria-label="14"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-10-15"><a href="#annotated-cell-10-15" aria-label="15"></a>    <span class="cf">return</span> max_passi<span class="op">;</span></span>
-<span id="annotated-cell-10-16"><a href="#annotated-cell-10-16" aria-label="16"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-9" data-filename="main.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-label="2"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
+<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-label="3"></a></span>
+<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-label="4"></a>Vettore2D gradF<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-label="5"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> p<span class="op">.</span>getX<span class="op">(),</span> <span class="fl">8.0</span> <span class="op">*</span> p<span class="op">.</span>getY<span class="op">());</span></span>
+<span id="annotated-cell-9-6"><a href="#annotated-cell-9-6" aria-label="6"></a><span class="op">}</span></span>
+<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-label="7"></a></span>
+<span id="annotated-cell-9-8"><a href="#annotated-cell-9-8" aria-label="8"></a><span class="dt">int</span> discesa<span class="op">(</span>Vettore2D x<span class="op">,</span> <span class="dt">double</span> eta<span class="op">,</span> <span class="dt">int</span> max_passi<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> n <span class="op">&lt;=</span> max_passi<span class="op">;</span> <span class="op">++</span>n<span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-10" class="code-annotation-target"><a href="#annotated-cell-9-10" aria-label="10"></a>        x <span class="op">=</span> x <span class="op">-</span> gradF<span class="op">(</span>x<span class="op">)</span> <span class="op">*</span> eta<span class="op">;</span></span>
+<span id="annotated-cell-9-11"><a href="#annotated-cell-9-11" aria-label="11"></a>        <span class="dt">double</span> g <span class="op">=</span> gradF<span class="op">(</span>x<span class="op">).</span>norma<span class="op">();</span></span>
+<span id="annotated-cell-9-12"><a href="#annotated-cell-9-12" aria-label="12"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&lt;</span> <span class="fl">1e-6</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
+<span id="annotated-cell-9-13"><a href="#annotated-cell-9-13" aria-label="13"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&gt;</span> <span class="fl">1e10</span><span class="op">)</span> <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="annotated-cell-9-14"><a href="#annotated-cell-9-14" aria-label="14"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-9-15"><a href="#annotated-cell-9-15" aria-label="15"></a>    <span class="cf">return</span> max_passi<span class="op">;</span></span>
+<span id="annotated-cell-9-16"><a href="#annotated-cell-9-16" aria-label="16"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-10" data-code-lines="10" data-code-annotation="1">Prima <code>operator*</code>, poi <code>operator-</code>: il passo si scrive come la formula.</span>
+<span data-code-cell="annotated-cell-9" data-code-lines="10" data-code-annotation="1">Prima <code>operator*</code>, poi <code>operator-</code>: il passo si scrive come la formula.</span>
 </dd>
 </dl>
 <p><code>x</code> è passato per valore: <code>discesa</code> lavora su una copia del punto di partenza.</p>
