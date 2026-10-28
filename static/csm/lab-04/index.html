@@ -963,7 +963,7 @@ Cristiano De Michele
 <ul>
 <li><span class="math inline">\(F_{93} \simeq 1.2\times 10^{19}\)</span> does not fit in a <code>long int</code> (at most <span class="math inline">\(2^{63}-1 \simeq 9.2\times 10^{18}\)</span>): the largest <code>N</code> that works is 92. In a normal program the overflow would silently give a wrong (negative) number at run time; when the compiler does the computation, the overflow is an <strong>error</strong> (<code>clang++</code>: <code>constexpr variable 'value' must be initialized by a constant expression</code>).</li>
 <li>We will not write metaprograms. What we use from this example: <code>constexpr</code>, integer template parameters (<code>template&lt;int N&gt;</code>, the <code>NT</code> of <code>pmatrixq</code>), and the idea that whatever the compiler knows (sizes, constants) costs nothing at run time.</li>
-<li>The folder contains also <code>fibonacci.cpp</code>, another implementation, which prints the first number three times: can you find why?</li>
+<li>The folder also contains <code>fibonacci.cpp</code>, an alternative implementation: the sum is done by a class <code>Sum</code>, and <code>&lt;&lt;</code> is overloaded to print any <code>std::tuple</code>.</li>
 </ul>
 </section></section>
 <section>
