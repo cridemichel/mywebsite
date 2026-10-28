@@ -755,7 +755,7 @@ Cristiano De Michele
 <section id="argomenti-di-oggi" class="slide level2 smaller">
 <h2>Argomenti di oggi</h2>
 <ul>
-<li><strong>Copiare una classe che possiede memoria</strong>: la copia superficiale e il double free</li>
+<li><strong>Copiare una classe che alloca memoria con <code>new</code></strong>: la copia superficiale e il double free</li>
 <li><strong>La Regola del Tre</strong>: distruttore, costruttore di copia, operatore di assegnamento</li>
 <li><strong>Il puntatore <code>this</code></strong></li>
 <li><strong>Overloading degli operatori</strong>: <code>+</code> e <code>*</code> per i vettori</li>
@@ -766,23 +766,24 @@ Cristiano De Michele
 <section id="gli-argomenti-di-oggi-nel-framework" class="slide level2 smaller">
 <h2>Gli argomenti di oggi nel framework</h2>
 <ul>
-<li><strong>Copia.</strong> Le matrici del framework (<code>Matrix</code>) sono matrici di Eigen, che ha già scritto per loro costruttore di copia e operatore di assegnamento: copiare una matrice crea un secondo blocco di memoria con gli stessi valori. È la copia profonda che oggi scriviamo a mano.</li>
+<li><strong>Copia.</strong> Le matrici del framework (<code>Matrix</code>) sono matrici di Eigen, il cui costruttore di copia e il cui assegnamento fanno già la copia profonda che oggi scriviamo a mano.</li>
 <li><strong>Overloading degli operatori.</strong> In <code>DenseLayer::forward</code> l’uscita dello strato si calcola con <code>outputs = Wt * (*inputs_ptr);</code>: il <code>*</code> fra due matrici di Eigen è un operatore definito da Eigen, il prodotto righe per colonne.</li>
-<li><strong>Eccezioni.</strong> Lo stesso <code>forward</code> controlla che l’ingresso abbia il numero di righe atteso; se no, lancia un’eccezione <code>std::runtime_error</code> con un messaggio che indica le due dimensioni.</li>
+<li><strong>Eccezioni.</strong> Lo stesso <code>forward</code> controlla che l’ingresso abbia il numero di righe atteso; se no, lancia un’eccezione <code>std::runtime_error</code> con le due dimensioni nel messaggio.</li>
+<li><strong>Il puntatore <code>this</code>.</strong> Il messaggio usa <code>this-&gt;Nin</code>, il numero di ingressi dell’oggetto su cui <code>forward</code> è chiamato; il controllo scrive solo <code>Nin</code>, come di solito.</li>
 </ul>
 </section>
-<section id="ripasso-la-copia-generata-dal-compilatore" class="slide level2 smaller">
-<h2>Ripasso: la copia generata dal compilatore</h2>
+<section id="ripasso-la-copia-del-compilatore" class="slide level2 smaller">
+<h2>Ripasso: la copia del compilatore</h2>
 <p>Dalla Lezione 07: se una classe non li dichiara, il compilatore genera il <strong>costruttore di copia</strong> e l’<strong>operatore di assegnamento</strong>.</p>
 <ul>
 <li><code>DynamicArray b = a;</code> crea <code>b</code> come copia di <code>a</code>: costruttore di copia.</li>
 <li><code>b = a;</code> con <code>b</code> già esistente: operatore di assegnamento.</li>
 </ul>
-<p>Entrambi copiano <strong>membro per membro</strong>: ogni attributo di <code>a</code> viene copiato nell’attributo corrispondente di <code>b</code>, così come il costruttore di default e il distruttore generati creano e distruggono gli attributi uno per uno (Lezioni 07 e 09). Di un puntatore copiano l’indirizzo, non i dati a cui punta.</p>
+<p>Entrambi copiano <strong>membro per membro</strong>: ogni attributo di <code>a</code> viene copiato nell’attributo corrispondente di <code>b</code>, così come il costruttore di default e il distruttore generati creano e distruggono gli attributi uno per uno (Lezioni 07 e 09). Di un puntatore copiano l’indirizzo, non i dati a cui punta; un array dichiarato come attributo, come <code>double v[5];</code>, viene invece copiato elemento per elemento.</p>
 <p>Dalla Lezione 09: <code>DynamicArray</code> alloca un array nell’heap nel costruttore e lo libera nel distruttore. La Lezione 09 si chiudeva con un avvertimento: questa classe non si può ancora copiare. Oggi vediamo perché, e come si rimedia.</p>
 </section>
-<section id="la-copia-superficiale" class="slide level2 smaller">
-<h2>La copia superficiale</h2>
+<section id="la-copia-superficiale-shallow-copy" class="slide level2 smaller">
+<h2>La copia superficiale (<em>shallow copy</em>)</h2>
 <div class="columns">
 <div class="column" style="width:58%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
@@ -840,8 +841,8 @@ Cristiano De Michele
 <li>compilato con <code>-fsanitize=address</code>: <code>ERROR: AddressSanitizer: attempting double-free</code>, con la riga del <code>delete[]</code>.</li>
 </ul>
 </section>
-<section id="lassegnamento-un-leak-in-più" class="slide level2 smaller">
-<h2>L’assegnamento: un leak in più</h2>
+<section id="lassegnamento-double-free-e-leak" class="slide level2 smaller">
+<h2>L’assegnamento: double free e leak</h2>
 <div class="columns">
 <div class="column" style="width:55%;">
 <p><img data-src="images/assegnamento_superficiale.png" style="width:100.0%"></p>
@@ -876,13 +877,13 @@ Cristiano De Michele
 </div>
 <p>Il motivo è sempre lo stesso: la classe possiede una risorsa che il compilatore non sa duplicare. Il costruttore di copia e l’operatore di assegnamento scritti da noi devono fare una <strong>copia profonda</strong> (<em>deep copy</em>): allocare un nuovo array e copiarvi i valori.</p>
 </section>
-<section id="la-copia-profonda-il-disegno" class="slide level2 smaller">
-<h2>La copia profonda: il disegno</h2>
+<section id="la-copia-profonda-il-risultato-voluto" class="slide level2 smaller">
+<h2>La copia profonda: il risultato voluto</h2>
+<p>Le due copie di <code>DynamicArray b = a;</code>, una accanto all’altra:</p>
 
-<img data-src="images/copia_profonda.png" class="quarto-figure quarto-figure-center r-stretch" style="width:72.0%"><ul>
-<li><code>b</code> ha un suo array, a un indirizzo diverso, con gli stessi valori di quello di <code>a</code>.</li>
-<li>Modificare <code>b</code> non modifica <code>a</code>.</li>
-<li>Alla fine ogni distruttore libera il proprio array: nessun double free, nessun leak.</li>
+<img data-src="images/copia_confronto.png" style="width:100.0%" class="r-stretch"><ul>
+<li><strong>Superficiale:</strong> <code>b.data_</code> riceve l’indirizzo dell’array di <code>a</code>; un solo array per due oggetti.</li>
+<li><strong>Profonda:</strong> <code>b.data_</code> riceve l’indirizzo di un array nuovo, in cui si copiano i valori di quello di <code>a</code>. Modificare <code>b</code> non modifica <code>a</code>, e ogni distruttore libera il proprio array: nessun double free, nessun leak.</li>
 </ul>
 </section>
 <section id="la-classe-con-i-tre-membri" class="slide level2 smaller">
@@ -1037,6 +1038,7 @@ Cristiano De Michele
 <span id="cb7-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> v3<span class="op">.</span>getX<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> v3<span class="op">.</span>getY<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="cb7-20"><a aria-label="20"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb7-21"><a aria-label="21"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Riga 9: <code>Vettore2D(...)</code> crea un oggetto senza nome, un <strong>temporaneo</strong> (Lezione 07), che vive fino alla fine dell’istruzione.</p>
 </div><div class="column" style="width:44%;">
 <p>L’<code>operator=</code> è già un esempio di <strong>overloading degli operatori</strong>: una classe può definire che cosa fanno <code>=</code>, <code>+</code>, <code>-</code>, <code>*</code>, <code>==</code> e quasi tutti gli altri operatori sui suoi oggetti.</p>
 <ul>
@@ -1132,7 +1134,7 @@ Errore: indice non valido</code></pre>
 <li>solo dopo viene eseguito il <code>catch</code>.</li>
 </ul>
 <p>I distruttori vengono eseguiti anche quando si esce da un blocco per un’eccezione: per questo il RAII funziona anche con le eccezioni, e nessun <code>delete[]</code> viene saltato.</p>
-<p>Senza <code>try</code> e <code>catch</code> il programma termina, con un messaggio che riporta il tipo dell’eccezione e il testo.</p>
+<p>Senza <code>try</code> e <code>catch</code> il programma termina con un messaggio che riporta il tipo dell’eccezione e il testo (Lezione 19), e i distruttori non vengono eseguiti: <code>distruttore</code> non compare.</p>
 <p>Nel Laboratorio 05 la classe <code>Matrix</code> userà <code>throw</code> per gli indici e le dimensioni non validi. Le eccezioni si approfondiscono nella Lezione 19.</p>
 </section>
 <section id="esercizio-in-classe-vettore-per-scalare" class="slide level2 smaller">
@@ -1381,7 +1383,7 @@ F(x, y) = x^2 + 4y^2, \qquad \nabla F = (2x,\ 8y)
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-9" data-code-lines="10" data-code-annotation="1">Prima <code>operator*</code>, poi <code>operator-</code>: il passo si scrive come la formula.</span>
+<span data-code-cell="annotated-cell-9" data-code-lines="10" data-code-annotation="1">Prima <code>operator*</code>, poi <code>operator-</code>: il passo si scrive come la formula. Ogni operatore restituisce un temporaneo; l’ultimo viene assegnato a <code>x</code>.</span>
 </dd>
 </dl>
 <p><code>x</code> è passato per valore: <code>discesa</code> lavora su una copia del punto di partenza.</p>
@@ -1454,7 +1456,7 @@ eta = 0.26: diverge</code></pre>
 </tr>
 </tbody>
 </table>
-<p>La direzione più ripida (curvatura 8) fissa il massimo <span class="math inline">\(\eta\)</span>, quella più piatta (curvatura 2) la velocità. Nella rete, con tante direzioni di curvature diverse, <span class="math inline">\(\eta\)</span> va scelto con cura (Laboratorio 02). L’esercizio verrà ripreso più avanti.</p>
+<p>Il limite lo fissa la direzione più ripida, <span class="math inline">\(y\)</span>. Nella rete, con tante direzioni più o meno ripide, <span class="math inline">\(\eta\)</span> va scelto con cura (Laboratorio 02). L’esercizio verrà ripreso più avanti (Lezioni 12 e 20).</p>
 
 
 </section>
