@@ -1114,9 +1114,10 @@ Cristiano De Michele
 
 <img data-src="images/linear_congruential_generator.png" class="quarto-figure quarto-figure-center r-stretch" style="width:55.0%"><ul>
 <li>Fast and with a tiny state, but the period is at most <span class="math inline">\(m\)</span> (with <span class="math inline">\(m \leq 2^{32}\)</span>: about <span class="math inline">\(4\times10^9\)</span> numbers, less than a long simulation uses); with <span class="math inline">\(m = 2^k\)</span> the low bits are poorly random.</li>
-<li>Successive <span class="math inline">\(d\)</span>-tuples <span class="math inline">\((X_n, X_{n+1}, \dots)\)</span> lie on a small number of parallel planes: “Random numbers fall mainly in the planes” (G. Marsaglia, <em>PNAS</em> <strong>61</strong>, 25 (1968)), the same Marsaglia of the algorithm of Part 4. The C function <code>rand()</code> is often an LCG; in <code>&lt;random&gt;</code> it is <code>std::minstd_rand</code>.</li>
+<li>Consecutive numbers are correlated. Use three of them, <span class="math inline">\((X_n, X_{n+1}, X_{n+2})/m\)</span>, as the position of a point in a cube: the points do not fill the cube, they all lie on a few parallel planes (only 15 for RANDU, an LCG widely used in the 1960s).</li>
+<li>The C function <code>rand()</code> is often an LCG; in <code>&lt;random&gt;</code> it is <code>std::minstd_rand</code>.</li>
 </ul>
-<p><span style="font-size:0.7em">Figure: Wikipedia, “Linear congruential generator”.</span></p>
+<p><span style="font-size:0.7em">Figure: Wikipedia, “Linear congruential generator”. Planes: G. Marsaglia, <em>PNAS</em> <strong>61</strong>, 25 (1968), the same Marsaglia of Part 4.</span></p>
 </section>
 <section id="the-generators-of-the-c-standard-library" class="slide level2 smaller">
 <h2>The generators of the C++ standard library</h2>
