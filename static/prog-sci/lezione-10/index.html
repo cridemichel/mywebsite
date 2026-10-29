@@ -823,7 +823,7 @@ Cristiano De Michele
 <li><code>DynamicArray b = a;</code> crea <code>b</code> come copia di <code>a</code>: costruttore di copia.</li>
 <li><code>b = a;</code> con <code>b</code> già esistente: operatore di assegnamento.</li>
 </ul>
-<p>Entrambi copiano <strong>membro per membro</strong>: ogni attributo di <code>a</code> viene copiato nell’attributo corrispondente di <code>b</code>, così come il costruttore di default e il distruttore generati creano e distruggono gli attributi uno per uno (Lezioni 07 e 09). Di un puntatore copiano l’indirizzo, non i dati a cui punta; un array dichiarato come attributo, come <code>double v[5];</code>, viene invece copiato elemento per elemento.</p>
+<p>Entrambi copiano <strong>membro per membro</strong>: ogni attributo di <code>a</code> viene copiato nell’attributo corrispondente di <code>b</code>. Di un puntatore copiano l’indirizzo, non i dati a cui punta; un array dichiarato come attributo, come <code>double v[5];</code>, viene invece copiato elemento per elemento.</p>
 <p>Dalla Lezione 09: <code>DynamicArray</code> alloca un array nell’heap nel costruttore e lo libera nel distruttore. La Lezione 09 si chiudeva con un avvertimento: questa classe non si può ancora copiare. Oggi vediamo perché, e come si rimedia.</p>
 </section>
 <section id="la-copia-superficiale-shallow-copy" class="slide level2 smaller">
@@ -890,6 +890,13 @@ Cristiano De Michele
 <li>compilato con <code>-fsanitize=address</code>: <code>ERROR: AddressSanitizer: attempting double-free</code>, con la riga del <code>delete[]</code>.</li>
 </ul>
 </section>
+<section id="provate-senza-la-copia" class="slide level2 smaller">
+<h2>Provate: senza la copia</h2>
+<p>In <code>copia_superficiale.cpp</code> cambiate la riga 19, <code>DynamicArray b = a;</code>, in <code>DynamicArray b(5);</code>. Cosa stampa il programma? L’errore alla fine c’è ancora?</p>
+<div class="fragment">
+<p>Stampa <code>1</code>, senza errori: <code>b</code> ha un array suo. Il problema nasce dalla copia.</p>
+</div>
+</section>
 <section id="lassegnamento-double-free-e-leak" class="slide level2 smaller">
 <h2>L’assegnamento: double free e leak</h2>
 <div class="columns">
@@ -954,7 +961,7 @@ Cristiano De Michele
 <span id="cb5-9"><a aria-label="9"></a>        <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>size<span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>size<span class="op">])</span> <span class="op">{}</span></span>
 <span id="cb5-10"><a aria-label="10"></a>    <span class="op">~</span>DynamicArray<span class="op">()</span> <span class="op">{</span> <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span> <span class="op">}</span></span>
 <span id="cb5-11"><a aria-label="11"></a>    <span class="dt">int</span> size<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">size_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb5-12"><a aria-label="12"></a>    <span class="co">// metodo in più rispetto alla slide 5</span></span>
+<span id="cb5-12"><a aria-label="12"></a>    <span class="co">// in più rispetto a copia_superficiale.cpp</span></span>
 <span id="cb5-13"><a aria-label="13"></a>    <span class="dt">void</span> stampaIndirizzo<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
 <span id="cb5-14"><a aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="kw">this</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="cb5-15"><a aria-label="15"></a>    <span class="op">}</span></span>
@@ -976,36 +983,47 @@ Cristiano De Michele
 <p>Nella classe completa (slide seguente) serve all’<code>operator=</code>: <code>this == &amp;altro</code> e <code>return *this</code>.</p>
 </div></div>
 </section>
+<section id="provate-this-in-due-oggetti" class="slide level2 smaller">
+<h2>Provate: <code>this</code> in due oggetti</h2>
+<p>In <code>puntatore_this.cpp</code>, dopo la riga 21, aggiungete:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-startfrom="22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 21;"><span id="cb6-22"><a aria-label="22"></a>    DynamicArray b<span class="op">(</span><span class="dv">3</span><span class="op">);</span></span>
+<span id="cb6-23"><a aria-label="23"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="op">&amp;</span>b <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb6-24"><a aria-label="24"></a>    b<span class="op">.</span>stampaIndirizzo<span class="op">();</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cosa stampano le due righe nuove?</p>
+<div class="fragment">
+<p>Due volte lo stesso indirizzo, diverso da quello di <code>a</code>: in <code>b.stampaIndirizzo()</code>, <code>this</code> vale <code>&amp;b</code>. Il metodo è uno solo, <code>this</code> dipende dall’oggetto su cui lo si chiama.</p>
+</div>
+</section>
 <section id="la-classe-con-i-tre-membri" class="slide level2 smaller">
 <h2>La classe con i tre membri</h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>tre_membri.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="tre_membri.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb6-2"><a aria-label="2"></a></span>
-<span id="cb6-3"><a aria-label="3"></a><span class="kw">class</span> DynamicArray <span class="op">{</span></span>
-<span id="cb6-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb6-5"><a aria-label="5"></a>    <span class="dt">int</span> <span class="va">size_</span><span class="op">;</span></span>
-<span id="cb6-6"><a aria-label="6"></a>    <span class="dt">double</span><span class="op">*</span> <span class="va">data_</span><span class="op">;</span></span>
-<span id="cb6-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb6-8"><a aria-label="8"></a>    DynamicArray<span class="op">(</span><span class="dt">int</span> size<span class="op">)</span> <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>size<span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>size<span class="op">])</span> <span class="op">{}</span></span>
-<span id="cb6-9"><a aria-label="9"></a>    DynamicArray<span class="op">(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span></span>
-<span id="cb6-10"><a aria-label="10"></a>        <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">])</span> <span class="op">{</span></span>
-<span id="cb6-11"><a aria-label="11"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb6-12"><a aria-label="12"></a>    <span class="op">}</span></span>
-<span id="cb6-13"><a aria-label="13"></a>    DynamicArray<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-14"><a aria-label="14"></a>        <span class="cf">if</span> <span class="op">(</span><span class="kw">this</span> <span class="op">==</span> <span class="op">&amp;</span>altro<span class="op">)</span> <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
-<span id="cb6-15"><a aria-label="15"></a>        <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span></span>
-<span id="cb6-16"><a aria-label="16"></a>        <span class="va">size_</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">size_</span><span class="op">;</span></span>
-<span id="cb6-17"><a aria-label="17"></a>        <span class="va">data_</span> <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span><span class="va">size_</span><span class="op">];</span></span>
-<span id="cb6-18"><a aria-label="18"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb6-19"><a aria-label="19"></a>        <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
-<span id="cb6-20"><a aria-label="20"></a>    <span class="op">}</span></span>
-<span id="cb6-21"><a aria-label="21"></a>    <span class="op">~</span>DynamicArray<span class="op">()</span> <span class="op">{</span> <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb6-22"><a aria-label="22"></a>    <span class="dt">void</span> imposta<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">double</span> v<span class="op">)</span> <span class="op">{</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> v<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb6-23"><a aria-label="23"></a>    <span class="dt">double</span> leggi<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">];</span> <span class="op">}</span></span>
-<span id="cb6-24"><a aria-label="24"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="tre_membri.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb7-2"><a aria-label="2"></a></span>
+<span id="cb7-3"><a aria-label="3"></a><span class="kw">class</span> DynamicArray <span class="op">{</span></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb7-5"><a aria-label="5"></a>    <span class="dt">int</span> <span class="va">size_</span><span class="op">;</span></span>
+<span id="cb7-6"><a aria-label="6"></a>    <span class="dt">double</span><span class="op">*</span> <span class="va">data_</span><span class="op">;</span></span>
+<span id="cb7-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb7-8"><a aria-label="8"></a>    DynamicArray<span class="op">(</span><span class="dt">int</span> size<span class="op">)</span> <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>size<span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>size<span class="op">])</span> <span class="op">{}</span></span>
+<span id="cb7-9"><a aria-label="9"></a>    DynamicArray<span class="op">(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span></span>
+<span id="cb7-10"><a aria-label="10"></a>        <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">])</span> <span class="op">{</span></span>
+<span id="cb7-11"><a aria-label="11"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb7-12"><a aria-label="12"></a>    <span class="op">}</span></span>
+<span id="cb7-13"><a aria-label="13"></a>    DynamicArray<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-14"><a aria-label="14"></a>        <span class="cf">if</span> <span class="op">(</span><span class="kw">this</span> <span class="op">==</span> <span class="op">&amp;</span>altro<span class="op">)</span> <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
+<span id="cb7-15"><a aria-label="15"></a>        <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span></span>
+<span id="cb7-16"><a aria-label="16"></a>        <span class="va">size_</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">size_</span><span class="op">;</span></span>
+<span id="cb7-17"><a aria-label="17"></a>        <span class="va">data_</span> <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span><span class="va">size_</span><span class="op">];</span></span>
+<span id="cb7-18"><a aria-label="18"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb7-19"><a aria-label="19"></a>        <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
+<span id="cb7-20"><a aria-label="20"></a>    <span class="op">}</span></span>
+<span id="cb7-21"><a aria-label="21"></a>    <span class="op">~</span>DynamicArray<span class="op">()</span> <span class="op">{</span> <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb7-22"><a aria-label="22"></a>    <span class="dt">void</span> imposta<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">double</span> v<span class="op">)</span> <span class="op">{</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> v<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb7-23"><a aria-label="23"></a>    <span class="dt">double</span> leggi<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">];</span> <span class="op">}</span></span>
+<span id="cb7-24"><a aria-label="24"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="la-classe-con-i-tre-membri-segue-il-main" class="slide level2 smaller">
@@ -1016,18 +1034,18 @@ Cristiano De Michele
 <div class="code-with-filename-file">
 <pre><strong>tre_membri.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="tre_membri.cpp" data-startfrom="25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 24;"><span id="cb7-25"><a aria-label="25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb7-26"><a aria-label="26"></a>    DynamicArray a<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
-<span id="cb7-27"><a aria-label="27"></a>    a<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span></span>
-<span id="cb7-28"><a aria-label="28"></a>    DynamicArray b <span class="op">=</span> a<span class="op">;</span>        <span class="co">// costruttore di copia</span></span>
-<span id="cb7-29"><a aria-label="29"></a>    DynamicArray c<span class="op">(</span><span class="dv">3</span><span class="op">);</span></span>
-<span id="cb7-30"><a aria-label="30"></a>    c <span class="op">=</span> a<span class="op">;</span>                     <span class="co">// operatore di assegnamento</span></span>
-<span id="cb7-31"><a aria-label="31"></a>    b<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">9.0</span><span class="op">);</span></span>
-<span id="cb7-32"><a aria-label="32"></a>    c<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">7.0</span><span class="op">);</span></span>
-<span id="cb7-33"><a aria-label="33"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> a<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> b<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span></span>
-<span id="cb7-34"><a aria-label="34"></a>              <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> c<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb7-35"><a aria-label="35"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb7-36"><a aria-label="36"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="tre_membri.cpp" data-startfrom="25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 24;"><span id="cb8-25"><a aria-label="25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-26"><a aria-label="26"></a>    DynamicArray a<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb8-27"><a aria-label="27"></a>    a<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb8-28"><a aria-label="28"></a>    DynamicArray b <span class="op">=</span> a<span class="op">;</span>        <span class="co">// costruttore di copia</span></span>
+<span id="cb8-29"><a aria-label="29"></a>    DynamicArray c<span class="op">(</span><span class="dv">3</span><span class="op">);</span></span>
+<span id="cb8-30"><a aria-label="30"></a>    c <span class="op">=</span> a<span class="op">;</span>                     <span class="co">// operatore di assegnamento</span></span>
+<span id="cb8-31"><a aria-label="31"></a>    b<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">9.0</span><span class="op">);</span></span>
+<span id="cb8-32"><a aria-label="32"></a>    c<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">7.0</span><span class="op">);</span></span>
+<span id="cb8-33"><a aria-label="33"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> a<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> b<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span></span>
+<span id="cb8-34"><a aria-label="34"></a>              <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> c<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb8-35"><a aria-label="35"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-36"><a aria-label="36"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:40%;">
 <p>Stampa <code>1 9 7</code>: <code>a</code>, <code>b</code> e <code>c</code> hanno tre array distinti.</p>
@@ -1037,10 +1055,10 @@ Cristiano De Michele
 </section>
 <section id="il-costruttore-di-copia" class="slide level2 smaller">
 <h2>Il costruttore di copia</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>DynamicArray<span class="op">(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span></span>
-<span id="cb8-2"><a aria-label="2"></a>    <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">])</span> <span class="op">{</span></span>
-<span id="cb8-3"><a aria-label="3"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb8-4"><a aria-label="4"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a>DynamicArray<span class="op">(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span></span>
+<span id="cb9-2"><a aria-label="2"></a>    <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">])</span> <span class="op">{</span></span>
+<span id="cb9-3"><a aria-label="3"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb9-4"><a aria-label="4"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>La firma è quella della Lezione 07: un costruttore che riceve un oggetto della stessa classe per <code>const</code> reference.</li>
 <li>Nella lista di inizializzazione copia la dimensione e <strong>alloca un nuovo array</strong>, invece di copiare l’indirizzo.</li>
@@ -1053,14 +1071,14 @@ Cristiano De Michele
 <h2>L’operatore di assegnamento</h2>
 <div class="columns">
 <div class="column" style="width:62%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a>DynamicArray<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb9-2"><a aria-label="2"></a>    <span class="cf">if</span> <span class="op">(</span><span class="kw">this</span> <span class="op">==</span> <span class="op">&amp;</span>altro<span class="op">)</span> <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
-<span id="cb9-3"><a aria-label="3"></a>    <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span></span>
-<span id="cb9-4"><a aria-label="4"></a>    <span class="va">size_</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">size_</span><span class="op">;</span></span>
-<span id="cb9-5"><a aria-label="5"></a>    <span class="va">data_</span> <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span><span class="va">size_</span><span class="op">];</span></span>
-<span id="cb9-6"><a aria-label="6"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb9-7"><a aria-label="7"></a>    <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
-<span id="cb9-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a>DynamicArray<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a aria-label="2"></a>    <span class="cf">if</span> <span class="op">(</span><span class="kw">this</span> <span class="op">==</span> <span class="op">&amp;</span>altro<span class="op">)</span> <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
+<span id="cb10-3"><a aria-label="3"></a>    <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span></span>
+<span id="cb10-4"><a aria-label="4"></a>    <span class="va">size_</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">size_</span><span class="op">;</span></span>
+<span id="cb10-5"><a aria-label="5"></a>    <span class="va">data_</span> <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span><span class="va">size_</span><span class="op">];</span></span>
+<span id="cb10-6"><a aria-label="6"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb10-7"><a aria-label="7"></a>    <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
+<span id="cb10-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:38%;">
 <p><code>b = a;</code> chiama <code>b.operator=(a)</code>: dentro il metodo <code>this</code> è l’indirizzo di <code>b</code>, <code>altro</code> è <code>a</code>.</p>
 </div></div>
@@ -1071,6 +1089,18 @@ Cristiano De Michele
 <li><strong>Il valore restituito</strong> è <code>*this</code>: <code>c = b = a;</code> è <code>c = (b = a)</code>, e ciò che restituisce <code>b = a</code> diventa l’argomento di <code>c.operator=</code> (con <code>void</code> non compilerebbe). Per reference (Lezione 05), per non fare una copia profonda in più.</li>
 </ol>
 </section>
+<section id="provate-la-regola-del-tre" class="slide level2 smaller">
+<h2>Provate: la Regola del Tre</h2>
+<p>In <code>tre_membri.cpp</code> togliete un membro alla volta, ricompilate ed eseguite; poi rimettetelo.</p>
+<ol type="1">
+<li>Togliete il costruttore di copia (righe 9–12). Cosa stampa il programma?<br>
+<span class="fragment"><code>9 9 7</code>, poi <em>attempting double-free</em>: senza il nostro costruttore di copia, <code>a</code> e <code>b</code> condividono l’array.</span></li>
+<li>Togliete l’operatore di assegnamento (righe 13–20). Cosa stampa?<br>
+<span class="fragment"><code>7 9 7</code>, poi <em>attempting double-free</em>: <code>c = a;</code> copia l’indirizzo, quindi <code>c</code> scrive nell’array di <code>a</code>, e il vecchio array di <code>c</code> è perso.</span></li>
+<li>Togliete il controllo dell’auto-assegnamento (riga 14) e aggiungete <code>a = a;</code> dopo la riga 27. Cosa stampa?<br>
+<span class="fragment"><code>-1.83255e-06 9 7</code>: il <code>delete[]</code> libera l’array di <code>a</code>, e il nuovo array si riempie copiando da <code>altro</code>, cioè da se stesso, mai inizializzato. Il numero è il valore con cui l’AddressSanitizer riempie la memoria appena allocata.</span></li>
+</ol>
+</section>
 <section id="overloading-degli-operatori" class="slide level2 smaller">
 <h2>Overloading degli operatori</h2>
 <div class="columns">
@@ -1079,25 +1109,25 @@ Cristiano De Michele
 <div class="code-with-filename-file">
 <pre><strong>vettore_somma.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="vettore_somma.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb10-2"><a aria-label="2"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
-<span id="cb10-3"><a aria-label="3"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb10-4"><a aria-label="4"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
-<span id="cb10-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb10-6"><a aria-label="6"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">:</span> <span class="va">x_</span><span class="op">(</span>x<span class="op">),</span> <span class="va">y_</span><span class="op">(</span>y<span class="op">)</span> <span class="op">{}</span></span>
-<span id="cb10-7"><a aria-label="7"></a>    Vettore2D <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb10-8"><a aria-label="8"></a>        <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">x_</span><span class="op">,</span> <span class="va">y_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">y_</span><span class="op">);</span></span>
-<span id="cb10-9"><a aria-label="9"></a>    <span class="op">}</span></span>
-<span id="cb10-10"><a aria-label="10"></a>    <span class="dt">double</span> getX<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">x_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb10-11"><a aria-label="11"></a>    <span class="dt">double</span> getY<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">y_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb10-12"><a aria-label="12"></a><span class="op">};</span></span>
-<span id="cb10-13"><a aria-label="13"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb10-14"><a aria-label="14"></a>    Vettore2D v1<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
-<span id="cb10-15"><a aria-label="15"></a>    Vettore2D v2<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
-<span id="cb10-16"><a aria-label="16"></a>    Vettore2D v3 <span class="op">=</span> v1 <span class="op">+</span> v2<span class="op">;</span></span>
-<span id="cb10-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> v3<span class="op">.</span>getX<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> v3<span class="op">.</span>getY<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb10-18"><a aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb10-19"><a aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="vettore_somma.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb11-2"><a aria-label="2"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
+<span id="cb11-3"><a aria-label="3"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb11-4"><a aria-label="4"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
+<span id="cb11-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb11-6"><a aria-label="6"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">:</span> <span class="va">x_</span><span class="op">(</span>x<span class="op">),</span> <span class="va">y_</span><span class="op">(</span>y<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb11-7"><a aria-label="7"></a>    Vettore2D <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb11-8"><a aria-label="8"></a>        <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">x_</span><span class="op">,</span> <span class="va">y_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">y_</span><span class="op">);</span></span>
+<span id="cb11-9"><a aria-label="9"></a>    <span class="op">}</span></span>
+<span id="cb11-10"><a aria-label="10"></a>    <span class="dt">double</span> getX<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">x_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb11-11"><a aria-label="11"></a>    <span class="dt">double</span> getY<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">y_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb11-12"><a aria-label="12"></a><span class="op">};</span></span>
+<span id="cb11-13"><a aria-label="13"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-14"><a aria-label="14"></a>    Vettore2D v1<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
+<span id="cb11-15"><a aria-label="15"></a>    Vettore2D v2<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
+<span id="cb11-16"><a aria-label="16"></a>    Vettore2D v3 <span class="op">=</span> v1 <span class="op">+</span> v2<span class="op">;</span></span>
+<span id="cb11-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> v3<span class="op">.</span>getX<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> v3<span class="op">.</span>getY<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb11-18"><a aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-19"><a aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Riga 8: <code>Vettore2D(...)</code> crea un oggetto senza nome, un <strong>temporaneo</strong> (Lezione 07), che vive fino alla fine dell’istruzione.</p>
 </div><div class="column" style="width:44%;">
@@ -1131,6 +1161,13 @@ Cristiano De Michele
 </div>
 </div>
 </section>
+<section id="provate-un-operatore-che-manca" class="slide level2 smaller">
+<h2>Provate: un operatore che manca</h2>
+<p>In <code>vettore_somma.cpp</code>, dopo la riga 16, aggiungete <code>Vettore2D v4 = v1 - v2;</code>. Compila?</p>
+<div class="fragment">
+<p>No: <em>no match for ‘operator-’ (operand types are ‘Vettore2D’ and ‘Vettore2D’)</em>. Ogni operatore va definito a parte: <code>operator+</code> non dà <code>-</code>.</p>
+</div>
+</section>
 <section id="le-eccezioni-throw" class="slide level2 smaller">
 <h2>Le eccezioni: <code>throw</code></h2>
 <div class="columns">
@@ -1139,27 +1176,27 @@ Cristiano De Michele
 <div class="code-with-filename-file">
 <pre><strong>eccezioni.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="eccezioni.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb11-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
-<span id="cb11-3"><a aria-label="3"></a></span>
-<span id="cb11-4"><a aria-label="4"></a><span class="kw">class</span> DynamicArray <span class="op">{</span></span>
-<span id="cb11-5"><a aria-label="5"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb11-6"><a aria-label="6"></a>    <span class="dt">int</span> <span class="va">size_</span><span class="op">;</span></span>
-<span id="cb11-7"><a aria-label="7"></a>    <span class="dt">double</span><span class="op">*</span> <span class="va">data_</span><span class="op">;</span></span>
-<span id="cb11-8"><a aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb11-9"><a aria-label="9"></a>    DynamicArray<span class="op">(</span><span class="dt">int</span> size<span class="op">)</span></span>
-<span id="cb11-10"><a aria-label="10"></a>        <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>size<span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>size<span class="op">])</span> <span class="op">{}</span></span>
-<span id="cb11-11"><a aria-label="11"></a>    <span class="op">~</span>DynamicArray<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb11-12"><a aria-label="12"></a>        <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span></span>
-<span id="cb11-13"><a aria-label="13"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"distruttore</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb11-14"><a aria-label="14"></a>    <span class="op">}</span></span>
-<span id="cb11-15"><a aria-label="15"></a>    <span class="dt">double</span> leggi<span class="op">(</span><span class="dt">int</span> indice<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb11-16"><a aria-label="16"></a>        <span class="cf">if</span> <span class="op">(</span>indice <span class="op">&lt;</span> <span class="dv">0</span> <span class="op">||</span> indice <span class="op">&gt;=</span> <span class="va">size_</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb11-17"><a aria-label="17"></a>            <span class="cf">throw</span> <span class="bu">std::</span>out_of_range<span class="op">(</span><span class="st">"indice non valido"</span><span class="op">);</span></span>
-<span id="cb11-18"><a aria-label="18"></a>        <span class="op">}</span></span>
-<span id="cb11-19"><a aria-label="19"></a>        <span class="cf">return</span> <span class="va">data_</span><span class="op">[</span>indice<span class="op">];</span></span>
-<span id="cb11-20"><a aria-label="20"></a>    <span class="op">}</span></span>
-<span id="cb11-21"><a aria-label="21"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="eccezioni.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb12-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
+<span id="cb12-3"><a aria-label="3"></a></span>
+<span id="cb12-4"><a aria-label="4"></a><span class="kw">class</span> DynamicArray <span class="op">{</span></span>
+<span id="cb12-5"><a aria-label="5"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb12-6"><a aria-label="6"></a>    <span class="dt">int</span> <span class="va">size_</span><span class="op">;</span></span>
+<span id="cb12-7"><a aria-label="7"></a>    <span class="dt">double</span><span class="op">*</span> <span class="va">data_</span><span class="op">;</span></span>
+<span id="cb12-8"><a aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb12-9"><a aria-label="9"></a>    DynamicArray<span class="op">(</span><span class="dt">int</span> size<span class="op">)</span></span>
+<span id="cb12-10"><a aria-label="10"></a>        <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>size<span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>size<span class="op">])</span> <span class="op">{}</span></span>
+<span id="cb12-11"><a aria-label="11"></a>    <span class="op">~</span>DynamicArray<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-12"><a aria-label="12"></a>        <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span></span>
+<span id="cb12-13"><a aria-label="13"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"distruttore</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb12-14"><a aria-label="14"></a>    <span class="op">}</span></span>
+<span id="cb12-15"><a aria-label="15"></a>    <span class="dt">double</span> leggi<span class="op">(</span><span class="dt">int</span> indice<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb12-16"><a aria-label="16"></a>        <span class="cf">if</span> <span class="op">(</span>indice <span class="op">&lt;</span> <span class="dv">0</span> <span class="op">||</span> indice <span class="op">&gt;=</span> <span class="va">size_</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-17"><a aria-label="17"></a>            <span class="cf">throw</span> <span class="bu">std::</span>out_of_range<span class="op">(</span><span class="st">"indice non valido"</span><span class="op">);</span></span>
+<span id="cb12-18"><a aria-label="18"></a>        <span class="op">}</span></span>
+<span id="cb12-19"><a aria-label="19"></a>        <span class="cf">return</span> <span class="va">data_</span><span class="op">[</span>indice<span class="op">];</span></span>
+<span id="cb12-20"><a aria-label="20"></a>    <span class="op">}</span></span>
+<span id="cb12-21"><a aria-label="21"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:42%;">
 <p>Nella Lezione 09 <code>leggi</code> restituiva <code>0.0</code> per un indice non valido: un valore che può essere anche un dato.</p>
@@ -1175,16 +1212,16 @@ Cristiano De Michele
 <div class="code-with-filename-file">
 <pre><strong>eccezioni.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="eccezioni.cpp" data-startfrom="22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 21;"><span id="cb12-22"><a aria-label="22"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-23"><a aria-label="23"></a>    <span class="cf">try</span> <span class="op">{</span></span>
-<span id="cb12-24"><a aria-label="24"></a>        DynamicArray a<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
-<span id="cb12-25"><a aria-label="25"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> a<span class="op">.</span>leggi<span class="op">(</span><span class="dv">7</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb12-26"><a aria-label="26"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"non stampato</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb12-27"><a aria-label="27"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>out_of_range<span class="op">&amp;</span> e<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-28"><a aria-label="28"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore: "</span> <span class="op">&lt;&lt;</span> e<span class="op">.</span>what<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb12-29"><a aria-label="29"></a>    <span class="op">}</span></span>
-<span id="cb12-30"><a aria-label="30"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb12-31"><a aria-label="31"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-filename="eccezioni.cpp" data-startfrom="22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 21;"><span id="cb13-22"><a aria-label="22"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb13-23"><a aria-label="23"></a>    <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb13-24"><a aria-label="24"></a>        DynamicArray a<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb13-25"><a aria-label="25"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> a<span class="op">.</span>leggi<span class="op">(</span><span class="dv">7</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb13-26"><a aria-label="26"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"non stampato</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb13-27"><a aria-label="27"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>out_of_range<span class="op">&amp;</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-28"><a aria-label="28"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore: "</span> <span class="op">&lt;&lt;</span> e<span class="op">.</span>what<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb13-29"><a aria-label="29"></a>    <span class="op">}</span></span>
+<span id="cb13-30"><a aria-label="30"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb13-31"><a aria-label="31"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Output:</p>
 <pre><code>distruttore
@@ -1205,8 +1242,17 @@ Errore: indice non valido</code></pre>
 <li>solo dopo viene eseguito il <code>catch</code>.</li>
 </ul>
 <p>I distruttori vengono eseguiti anche quando si esce da un blocco per un’eccezione: per questo il RAII funziona anche con le eccezioni, e nessun <code>delete[]</code> viene saltato.</p>
-<p>Senza <code>try</code> e <code>catch</code> il programma termina con un messaggio che riporta il tipo dell’eccezione e il testo (Lezione 19), e i distruttori non vengono eseguiti: <code>distruttore</code> non compare.</p>
 <p>Nel Laboratorio 05 la classe <code>Matrix</code> userà <code>throw</code> per gli indici e le dimensioni non validi. Le eccezioni si approfondiscono nella Lezione 19.</p>
+</section>
+<section id="provate-le-eccezioni-senza-catch" class="slide level2 smaller">
+<h2>Provate: le eccezioni senza <code>catch</code></h2>
+<p>In <code>eccezioni.cpp</code>, un esperimento alla volta:</p>
+<ol type="1">
+<li>Togliete <code>try</code> e il blocco <code>catch</code> (righe 23 e 27–29). Cosa stampa?<br>
+<span class="fragment"><em>terminate called after throwing an instance of ‘std::out_of_range’</em>, <em>what(): indice non valido</em>, poi <code>Aborted</code>. Un’eccezione che nessun <code>catch</code> riceve termina il programma (Lezione 19), e i distruttori non vengono eseguiti: <code>distruttore</code> non compare.</span></li>
+<li>Rimettete <code>try</code> e <code>catch</code>, e alla riga 27 scrivete <code>std::invalid_argument</code> al posto di <code>std::out_of_range</code>. Cosa succede?<br>
+<span class="fragment">Lo stesso: un <code>catch</code> riceve solo il tipo di eccezione che indica, e qui nessun <code>catch</code> riceve <code>std::out_of_range</code>.</span></li>
+</ol>
 </section>
 <section id="esercizio-in-classe-vettore-per-scalare" class="slide level2 smaller">
 <h2>Esercizio in classe: vettore per scalare</h2>
@@ -1216,7 +1262,7 @@ Errore: indice non valido</code></pre>
 <li><p>Create <code>Vettore2D.hpp</code>, <code>Vettore2D.cpp</code> e <code>scalare.cpp</code> con il codice delle due slide seguenti, «Il file da completare» ed «Esercizio: header e <code>main</code> dati».</p></li>
 <li><p>Completate <code>operator*</code>: restituisce un nuovo <code>Vettore2D</code> con le due componenti moltiplicate per <code>scalare</code>.</p></li>
 <li><p>Aggiungete al <code>CMakeLists.txt</code> la riga <code>add_executable(scalare scalare.cpp Vettore2D.cpp)</code>, poi compilate ed eseguite (l’output deve essere <code>15 20</code>):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> scalare <span class="kw">&amp;&amp;</span> <span class="ex">./build/scalare</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> scalare <span class="kw">&amp;&amp;</span> <span class="ex">./build/scalare</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ol>
 </section>
 <section id="il-file-da-completare" class="slide level2 smaller">
@@ -1225,17 +1271,17 @@ Errore: indice non valido</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>Vettore2D.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-filename="Vettore2D.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
-<span id="cb15-2"><a aria-label="2"></a></span>
-<span id="cb15-3"><a aria-label="3"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb15-4"><a aria-label="4"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">x_</span><span class="op">,</span> <span class="va">y_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">y_</span><span class="op">);</span></span>
-<span id="cb15-5"><a aria-label="5"></a><span class="op">}</span></span>
-<span id="cb15-6"><a aria-label="6"></a></span>
-<span id="cb15-7"><a aria-label="7"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> scalare<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb15-8"><a aria-label="8"></a>    <span class="co">// da completare (una riga): restituite un Vettore2D con</span></span>
-<span id="cb15-9"><a aria-label="9"></a>    <span class="co">// componenti x_ * scalare e y_ * scalare</span></span>
-<span id="cb15-10"><a aria-label="10"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">);</span></span>
-<span id="cb15-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="Vettore2D.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
+<span id="cb16-2"><a aria-label="2"></a></span>
+<span id="cb16-3"><a aria-label="3"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb16-4"><a aria-label="4"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">x_</span><span class="op">,</span> <span class="va">y_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">y_</span><span class="op">);</span></span>
+<span id="cb16-5"><a aria-label="5"></a><span class="op">}</span></span>
+<span id="cb16-6"><a aria-label="6"></a></span>
+<span id="cb16-7"><a aria-label="7"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> scalare<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb16-8"><a aria-label="8"></a>    <span class="co">// da completare (una riga): restituite un Vettore2D con</span></span>
+<span id="cb16-9"><a aria-label="9"></a>    <span class="co">// componenti x_ * scalare e y_ * scalare</span></span>
+<span id="cb16-10"><a aria-label="10"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">);</span></span>
+<span id="cb16-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Come lo scheletro della Lezione 09, il file compila già: prima di completarlo stampa <code>0 0</code>.</p>
 </section>
@@ -1247,34 +1293,34 @@ Errore: indice non valido</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>Vettore2D.hpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="Vettore2D.hpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="pp">#pragma once</span></span>
-<span id="cb16-2"><a aria-label="2"></a></span>
-<span id="cb16-3"><a aria-label="3"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
-<span id="cb16-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb16-5"><a aria-label="5"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
-<span id="cb16-6"><a aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb16-7"><a aria-label="7"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">:</span> <span class="va">x_</span><span class="op">(</span>x<span class="op">),</span> <span class="va">y_</span><span class="op">(</span>y<span class="op">)</span> <span class="op">{}</span></span>
-<span id="cb16-8"><a aria-label="8"></a>    Vettore2D <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
-<span id="cb16-9"><a aria-label="9"></a>    Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> scalare<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
-<span id="cb16-10"><a aria-label="10"></a>    <span class="dt">double</span> getX<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">x_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb16-11"><a aria-label="11"></a>    <span class="dt">double</span> getY<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">y_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb16-12"><a aria-label="12"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-filename="Vettore2D.hpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a aria-label="1"></a><span class="pp">#pragma once</span></span>
+<span id="cb17-2"><a aria-label="2"></a></span>
+<span id="cb17-3"><a aria-label="3"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
+<span id="cb17-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb17-5"><a aria-label="5"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
+<span id="cb17-6"><a aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb17-7"><a aria-label="7"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">:</span> <span class="va">x_</span><span class="op">(</span>x<span class="op">),</span> <span class="va">y_</span><span class="op">(</span>y<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb17-8"><a aria-label="8"></a>    Vettore2D <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb17-9"><a aria-label="9"></a>    Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> scalare<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb17-10"><a aria-label="10"></a>    <span class="dt">double</span> getX<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">x_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb17-11"><a aria-label="11"></a>    <span class="dt">double</span> getY<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">y_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb17-12"><a aria-label="12"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:45%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>scalare.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-filename="scalare.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb17-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
-<span id="cb17-3"><a aria-label="3"></a></span>
-<span id="cb17-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb17-5"><a aria-label="5"></a>    Vettore2D v1<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
-<span id="cb17-6"><a aria-label="6"></a>    Vettore2D v2 <span class="op">=</span> v1 <span class="op">*</span> <span class="fl">5.0</span><span class="op">;</span></span>
-<span id="cb17-7"><a aria-label="7"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> v2<span class="op">.</span>getX<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span></span>
-<span id="cb17-8"><a aria-label="8"></a>              <span class="op">&lt;&lt;</span> v2<span class="op">.</span>getY<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb17-9"><a aria-label="9"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb17-10"><a aria-label="10"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="scalare.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb18-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
+<span id="cb18-3"><a aria-label="3"></a></span>
+<span id="cb18-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb18-5"><a aria-label="5"></a>    Vettore2D v1<span class="op">(</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">);</span></span>
+<span id="cb18-6"><a aria-label="6"></a>    Vettore2D v2 <span class="op">=</span> v1 <span class="op">*</span> <span class="fl">5.0</span><span class="op">;</span></span>
+<span id="cb18-7"><a aria-label="7"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> v2<span class="op">.</span>getX<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span></span>
+<span id="cb18-8"><a aria-label="8"></a>              <span class="op">&lt;&lt;</span> v2<span class="op">.</span>getY<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb18-9"><a aria-label="9"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb18-10"><a aria-label="10"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div></div>
 <p><code>v1 * 5.0</code> si traduce in <code>v1.operator*(5.0)</code>: a sinistra c’è il vettore, a destra il <code>double</code>.</p>
@@ -1285,15 +1331,15 @@ Errore: indice non valido</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>Vettore2D.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="Vettore2D.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
-<span id="cb18-2"><a aria-label="2"></a></span>
-<span id="cb18-3"><a aria-label="3"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb18-4"><a aria-label="4"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">x_</span><span class="op">,</span> <span class="va">y_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">y_</span><span class="op">);</span></span>
-<span id="cb18-5"><a aria-label="5"></a><span class="op">}</span></span>
-<span id="cb18-6"><a aria-label="6"></a></span>
-<span id="cb18-7"><a aria-label="7"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> scalare<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb18-8"><a aria-label="8"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">*</span> scalare<span class="op">,</span> <span class="va">y_</span> <span class="op">*</span> scalare<span class="op">);</span></span>
-<span id="cb18-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" data-filename="Vettore2D.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb19-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
+<span id="cb19-2"><a aria-label="2"></a></span>
+<span id="cb19-3"><a aria-label="3"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb19-4"><a aria-label="4"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">x_</span><span class="op">,</span> <span class="va">y_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">y_</span><span class="op">);</span></span>
+<span id="cb19-5"><a aria-label="5"></a><span class="op">}</span></span>
+<span id="cb19-6"><a aria-label="6"></a></span>
+<span id="cb19-7"><a aria-label="7"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> scalare<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb19-8"><a aria-label="8"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">*</span> scalare<span class="op">,</span> <span class="va">y_</span> <span class="op">*</span> scalare<span class="op">);</span></span>
+<span id="cb19-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>L’output è <code>15 20</code>: entrambe le componenti sono state moltiplicate per 5.</p>
 <p><code>5.0 * v1</code> invece non compila: un metodo ha sempre l’oggetto della classe a sinistra dell’operatore. Per scriverlo serve una funzione libera, fuori dalla classe: <code>Vettore2D operator*(double s, const Vettore2D&amp; v) { return v * s; }</code>.</p>
@@ -1304,21 +1350,21 @@ Errore: indice non valido</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>lampo.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" data-filename="lampo.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb19-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb19-2"><a aria-label="2"></a></span>
-<span id="cb19-3"><a aria-label="3"></a><span class="kw">struct</span> S <span class="op">{</span></span>
-<span id="cb19-4"><a aria-label="4"></a>    <span class="dt">double</span><span class="op">*</span> p<span class="op">;</span></span>
-<span id="cb19-5"><a aria-label="5"></a><span class="op">};</span></span>
-<span id="cb19-6"><a aria-label="6"></a></span>
-<span id="cb19-7"><a aria-label="7"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb19-8"><a aria-label="8"></a>    <span class="dt">double</span> x <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
-<span id="cb19-9"><a aria-label="9"></a>    S a<span class="op">;</span></span>
-<span id="cb19-10"><a aria-label="10"></a>    a<span class="op">.</span>p <span class="op">=</span> <span class="op">&amp;</span>x<span class="op">;</span></span>
-<span id="cb19-11"><a aria-label="11"></a>    S b <span class="op">=</span> a<span class="op">;</span></span>
-<span id="cb19-12"><a aria-label="12"></a>    <span class="op">*</span>b<span class="op">.</span>p <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span></span>
-<span id="cb19-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> <span class="op">*</span>a<span class="op">.</span>p <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb19-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb19-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-filename="lampo.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb20-2"><a aria-label="2"></a></span>
+<span id="cb20-3"><a aria-label="3"></a><span class="kw">struct</span> S <span class="op">{</span></span>
+<span id="cb20-4"><a aria-label="4"></a>    <span class="dt">double</span><span class="op">*</span> p<span class="op">;</span></span>
+<span id="cb20-5"><a aria-label="5"></a><span class="op">};</span></span>
+<span id="cb20-6"><a aria-label="6"></a></span>
+<span id="cb20-7"><a aria-label="7"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb20-8"><a aria-label="8"></a>    <span class="dt">double</span> x <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb20-9"><a aria-label="9"></a>    S a<span class="op">;</span></span>
+<span id="cb20-10"><a aria-label="10"></a>    a<span class="op">.</span>p <span class="op">=</span> <span class="op">&amp;</span>x<span class="op">;</span></span>
+<span id="cb20-11"><a aria-label="11"></a>    S b <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb20-12"><a aria-label="12"></a>    <span class="op">*</span>b<span class="op">.</span>p <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span></span>
+<span id="cb20-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> <span class="op">*</span>a<span class="op">.</span>p <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb20-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb20-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="esercizio-lampo-la-risposta" class="slide level2 smaller">
@@ -1363,15 +1409,15 @@ F(x, y) = x^2 + 4y^2, \qquad \nabla F = (2x,\ 8y)
 <div class="code-with-filename-file">
 <pre><strong>discesa.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-filename="discesa.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a><span class="dt">int</span> discesa<span class="op">(</span>Vettore2D x<span class="op">,</span> <span class="dt">double</span> eta<span class="op">,</span> <span class="dt">int</span> max_passi<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb20-2"><a aria-label="2"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> n <span class="op">&lt;=</span> max_passi<span class="op">;</span> <span class="op">++</span>n<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb20-3"><a aria-label="3"></a>        <span class="co">// da completare: il passo, x = x - gradF(x) * eta;</span></span>
-<span id="cb20-4"><a aria-label="4"></a>        <span class="dt">double</span> g <span class="op">=</span> gradF<span class="op">(</span>x<span class="op">).</span>norma<span class="op">();</span></span>
-<span id="cb20-5"><a aria-label="5"></a>        <span class="co">// da completare: se g &lt; 1e-6 restituite n (convergenza)</span></span>
-<span id="cb20-6"><a aria-label="6"></a>        <span class="co">// da completare: se g &gt; 1e10 restituite -1 (divergenza)</span></span>
-<span id="cb20-7"><a aria-label="7"></a>    <span class="op">}</span></span>
-<span id="cb20-8"><a aria-label="8"></a>    <span class="cf">return</span> max_passi<span class="op">;</span></span>
-<span id="cb20-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-filename="discesa.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb21-1"><a aria-label="1"></a><span class="dt">int</span> discesa<span class="op">(</span>Vettore2D x<span class="op">,</span> <span class="dt">double</span> eta<span class="op">,</span> <span class="dt">int</span> max_passi<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-2"><a aria-label="2"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> n <span class="op">&lt;=</span> max_passi<span class="op">;</span> <span class="op">++</span>n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-3"><a aria-label="3"></a>        <span class="co">// da completare: il passo, x = x - gradF(x) * eta;</span></span>
+<span id="cb21-4"><a aria-label="4"></a>        <span class="dt">double</span> g <span class="op">=</span> gradF<span class="op">(</span>x<span class="op">).</span>norma<span class="op">();</span></span>
+<span id="cb21-5"><a aria-label="5"></a>        <span class="co">// da completare: se g &lt; 1e-6 restituite n (convergenza)</span></span>
+<span id="cb21-6"><a aria-label="6"></a>        <span class="co">// da completare: se g &gt; 1e10 restituite -1 (divergenza)</span></span>
+<span id="cb21-7"><a aria-label="7"></a>    <span class="op">}</span></span>
+<span id="cb21-8"><a aria-label="8"></a>    <span class="cf">return</span> max_passi<span class="op">;</span></span>
+<span id="cb21-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Se esaurisce i <code>max_passi</code> passi senza convergere né divergere, la funzione restituisce <code>max_passi</code>.</p>
 </section>
@@ -1381,7 +1427,7 @@ F(x, y) = x^2 + 4y^2, \qquad \nabla F = (2x,\ 8y)
 <li><p>Completate la funzione <code>discesa</code> della slide precedente.</p></li>
 <li><p>Nel <code>main</code> definite <code>double etas[4] = {0.1, 0.2, 0.24, 0.26};</code> e per ciascun <code>eta</code> chiamate <code>discesa(Vettore2D(2.0, 1.0), eta, 100000)</code>. Stampate una riga <code>eta = &lt;valore&gt;: &lt;passi&gt; passi</code>, oppure <code>eta = &lt;valore&gt;: diverge</code>.</p></li>
 <li><p>Aggiungete <code>add_executable(discesa discesa.cpp Vettore2D.cpp)</code> al <code>CMakeLists.txt</code>, poi compilate ed eseguite:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> discesa <span class="kw">&amp;&amp;</span> <span class="ex">./build/discesa</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> discesa <span class="kw">&amp;&amp;</span> <span class="ex">./build/discesa</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Perché con <code>eta</code> = 0.26 la discesa diverge, mentre su <span class="math inline">\(x^2\)</span> (Laboratorio 02) convergeva? Scrivete <span class="math inline">\(x^{(n+1)}\)</span> e <span class="math inline">\(y^{(n+1)}\)</span> in funzione di <span class="math inline">\(x^{(n)}\)</span> e <span class="math inline">\(y^{(n)}\)</span>.</p></li>
 </ol>
 </section>
@@ -1391,23 +1437,23 @@ F(x, y) = x^2 + 4y^2, \qquad \nabla F = (2x,\ 8y)
 <div class="code-with-filename-file">
 <pre><strong>Vettore2D.hpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-filename="Vettore2D.hpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a><span class="pp">#pragma once</span></span>
-<span id="cb22-2"><a aria-label="2"></a></span>
-<span id="cb22-3"><a aria-label="3"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
-<span id="cb22-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb22-5"><a aria-label="5"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
-<span id="cb22-6"><a aria-label="6"></a></span>
-<span id="cb22-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb22-8"><a aria-label="8"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">:</span> <span class="va">x_</span><span class="op">(</span>x<span class="op">),</span> <span class="va">y_</span><span class="op">(</span>y<span class="op">)</span> <span class="op">{}</span></span>
-<span id="cb22-9"><a aria-label="9"></a></span>
-<span id="cb22-10"><a aria-label="10"></a>    Vettore2D <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
-<span id="cb22-11"><a aria-label="11"></a>    Vettore2D <span class="kw">operator</span><span class="op">-(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
-<span id="cb22-12"><a aria-label="12"></a>    Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> scalare<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
-<span id="cb22-13"><a aria-label="13"></a>    <span class="dt">double</span> norma<span class="op">()</span> <span class="at">const</span><span class="op">;</span></span>
-<span id="cb22-14"><a aria-label="14"></a></span>
-<span id="cb22-15"><a aria-label="15"></a>    <span class="dt">double</span> getX<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">x_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb22-16"><a aria-label="16"></a>    <span class="dt">double</span> getY<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">y_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb22-17"><a aria-label="17"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-filename="Vettore2D.hpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb23-1"><a aria-label="1"></a><span class="pp">#pragma once</span></span>
+<span id="cb23-2"><a aria-label="2"></a></span>
+<span id="cb23-3"><a aria-label="3"></a><span class="kw">class</span> Vettore2D <span class="op">{</span></span>
+<span id="cb23-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb23-5"><a aria-label="5"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">,</span> <span class="va">y_</span><span class="op">;</span></span>
+<span id="cb23-6"><a aria-label="6"></a></span>
+<span id="cb23-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb23-8"><a aria-label="8"></a>    Vettore2D<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">:</span> <span class="va">x_</span><span class="op">(</span>x<span class="op">),</span> <span class="va">y_</span><span class="op">(</span>y<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb23-9"><a aria-label="9"></a></span>
+<span id="cb23-10"><a aria-label="10"></a>    Vettore2D <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb23-11"><a aria-label="11"></a>    Vettore2D <span class="kw">operator</span><span class="op">-(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb23-12"><a aria-label="12"></a>    Vettore2D <span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> scalare<span class="op">)</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb23-13"><a aria-label="13"></a>    <span class="dt">double</span> norma<span class="op">()</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb23-14"><a aria-label="14"></a></span>
+<span id="cb23-15"><a aria-label="15"></a>    <span class="dt">double</span> getX<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">x_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb23-16"><a aria-label="16"></a>    <span class="dt">double</span> getY<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">y_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb23-17"><a aria-label="17"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Due dichiarazioni nuove: <code>operator-</code> e <code>norma()</code>. Entrambe sono <code>const</code>, perché leggono le componenti senza modificarle.</p>
 </section>
@@ -1417,24 +1463,24 @@ F(x, y) = x^2 + 4y^2, \qquad \nabla F = (2x,\ 8y)
 <div class="code-with-filename-file">
 <pre><strong>Vettore2D.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-filename="Vettore2D.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb23-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
-<span id="cb23-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
-<span id="cb23-3"><a aria-label="3"></a></span>
-<span id="cb23-4"><a aria-label="4"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb23-5"><a aria-label="5"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">x_</span><span class="op">,</span> <span class="va">y_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">y_</span><span class="op">);</span></span>
-<span id="cb23-6"><a aria-label="6"></a><span class="op">}</span></span>
-<span id="cb23-7"><a aria-label="7"></a></span>
-<span id="cb23-8"><a aria-label="8"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">-(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb23-9"><a aria-label="9"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">-</span> altro<span class="op">.</span><span class="va">x_</span><span class="op">,</span> <span class="va">y_</span> <span class="op">-</span> altro<span class="op">.</span><span class="va">y_</span><span class="op">);</span></span>
-<span id="cb23-10"><a aria-label="10"></a><span class="op">}</span></span>
-<span id="cb23-11"><a aria-label="11"></a></span>
-<span id="cb23-12"><a aria-label="12"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> scalare<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb23-13"><a aria-label="13"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">*</span> scalare<span class="op">,</span> <span class="va">y_</span> <span class="op">*</span> scalare<span class="op">);</span></span>
-<span id="cb23-14"><a aria-label="14"></a><span class="op">}</span></span>
-<span id="cb23-15"><a aria-label="15"></a></span>
-<span id="cb23-16"><a aria-label="16"></a><span class="dt">double</span> Vettore2D<span class="op">::</span>norma<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb23-17"><a aria-label="17"></a>    <span class="cf">return</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="va">x_</span> <span class="op">*</span> <span class="va">x_</span> <span class="op">+</span> <span class="va">y_</span> <span class="op">*</span> <span class="va">y_</span><span class="op">);</span></span>
-<span id="cb23-18"><a aria-label="18"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-filename="Vettore2D.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb24-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
+<span id="cb24-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
+<span id="cb24-3"><a aria-label="3"></a></span>
+<span id="cb24-4"><a aria-label="4"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb24-5"><a aria-label="5"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">x_</span><span class="op">,</span> <span class="va">y_</span> <span class="op">+</span> altro<span class="op">.</span><span class="va">y_</span><span class="op">);</span></span>
+<span id="cb24-6"><a aria-label="6"></a><span class="op">}</span></span>
+<span id="cb24-7"><a aria-label="7"></a></span>
+<span id="cb24-8"><a aria-label="8"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">-(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> altro<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb24-9"><a aria-label="9"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">-</span> altro<span class="op">.</span><span class="va">x_</span><span class="op">,</span> <span class="va">y_</span> <span class="op">-</span> altro<span class="op">.</span><span class="va">y_</span><span class="op">);</span></span>
+<span id="cb24-10"><a aria-label="10"></a><span class="op">}</span></span>
+<span id="cb24-11"><a aria-label="11"></a></span>
+<span id="cb24-12"><a aria-label="12"></a>Vettore2D Vettore2D<span class="op">::</span><span class="kw">operator</span><span class="op">*(</span><span class="dt">double</span> scalare<span class="op">)</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb24-13"><a aria-label="13"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="va">x_</span> <span class="op">*</span> scalare<span class="op">,</span> <span class="va">y_</span> <span class="op">*</span> scalare<span class="op">);</span></span>
+<span id="cb24-14"><a aria-label="14"></a><span class="op">}</span></span>
+<span id="cb24-15"><a aria-label="15"></a></span>
+<span id="cb24-16"><a aria-label="16"></a><span class="dt">double</span> Vettore2D<span class="op">::</span>norma<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb24-17"><a aria-label="17"></a>    <span class="cf">return</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="va">x_</span> <span class="op">*</span> <span class="va">x_</span> <span class="op">+</span> <span class="va">y_</span> <span class="op">*</span> <span class="va">y_</span><span class="op">);</span></span>
+<span id="cb24-18"><a aria-label="18"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>operator-</code> ricalca <code>operator+</code>.</p>
 </section>
@@ -1444,27 +1490,27 @@ F(x, y) = x^2 + 4y^2, \qquad \nabla F = (2x,\ 8y)
 <div class="code-with-filename-file">
 <pre><strong>discesa.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11" data-filename="discesa.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
-<span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-label="3"></a></span>
-<span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-label="4"></a>Vettore2D gradF<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> p<span class="op">.</span>getX<span class="op">(),</span> <span class="fl">8.0</span> <span class="op">*</span> p<span class="op">.</span>getY<span class="op">());</span></span>
-<span id="annotated-cell-11-6"><a href="#annotated-cell-11-6" aria-label="6"></a><span class="op">}</span></span>
-<span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-label="7"></a></span>
-<span id="annotated-cell-11-8"><a href="#annotated-cell-11-8" aria-label="8"></a><span class="dt">int</span> discesa<span class="op">(</span>Vettore2D x<span class="op">,</span> <span class="dt">double</span> eta<span class="op">,</span> <span class="dt">int</span> max_passi<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-11-9"><a href="#annotated-cell-11-9" aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> n <span class="op">&lt;=</span> max_passi<span class="op">;</span> <span class="op">++</span>n<span class="op">)</span> <span class="op">{</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-10" class="code-annotation-target"><a href="#annotated-cell-11-10" aria-label="10"></a>        x <span class="op">=</span> x <span class="op">-</span> gradF<span class="op">(</span>x<span class="op">)</span> <span class="op">*</span> eta<span class="op">;</span></span>
-<span id="annotated-cell-11-11"><a href="#annotated-cell-11-11" aria-label="11"></a>        <span class="dt">double</span> g <span class="op">=</span> gradF<span class="op">(</span>x<span class="op">).</span>norma<span class="op">();</span></span>
-<span id="annotated-cell-11-12"><a href="#annotated-cell-11-12" aria-label="12"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&lt;</span> <span class="fl">1e-6</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
-<span id="annotated-cell-11-13"><a href="#annotated-cell-11-13" aria-label="13"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&gt;</span> <span class="fl">1e10</span><span class="op">)</span> <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
-<span id="annotated-cell-11-14"><a href="#annotated-cell-11-14" aria-label="14"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-11-15"><a href="#annotated-cell-11-15" aria-label="15"></a>    <span class="cf">return</span> max_passi<span class="op">;</span></span>
-<span id="annotated-cell-11-16"><a href="#annotated-cell-11-16" aria-label="16"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12" data-filename="discesa.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-label="2"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
+<span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-label="3"></a></span>
+<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-label="4"></a>Vettore2D gradF<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-12-5"><a href="#annotated-cell-12-5" aria-label="5"></a>    <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> p<span class="op">.</span>getX<span class="op">(),</span> <span class="fl">8.0</span> <span class="op">*</span> p<span class="op">.</span>getY<span class="op">());</span></span>
+<span id="annotated-cell-12-6"><a href="#annotated-cell-12-6" aria-label="6"></a><span class="op">}</span></span>
+<span id="annotated-cell-12-7"><a href="#annotated-cell-12-7" aria-label="7"></a></span>
+<span id="annotated-cell-12-8"><a href="#annotated-cell-12-8" aria-label="8"></a><span class="dt">int</span> discesa<span class="op">(</span>Vettore2D x<span class="op">,</span> <span class="dt">double</span> eta<span class="op">,</span> <span class="dt">int</span> max_passi<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-12-9"><a href="#annotated-cell-12-9" aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> n <span class="op">&lt;=</span> max_passi<span class="op">;</span> <span class="op">++</span>n<span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-10" class="code-annotation-target"><a href="#annotated-cell-12-10" aria-label="10"></a>        x <span class="op">=</span> x <span class="op">-</span> gradF<span class="op">(</span>x<span class="op">)</span> <span class="op">*</span> eta<span class="op">;</span></span>
+<span id="annotated-cell-12-11"><a href="#annotated-cell-12-11" aria-label="11"></a>        <span class="dt">double</span> g <span class="op">=</span> gradF<span class="op">(</span>x<span class="op">).</span>norma<span class="op">();</span></span>
+<span id="annotated-cell-12-12"><a href="#annotated-cell-12-12" aria-label="12"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&lt;</span> <span class="fl">1e-6</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
+<span id="annotated-cell-12-13"><a href="#annotated-cell-12-13" aria-label="13"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&gt;</span> <span class="fl">1e10</span><span class="op">)</span> <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="annotated-cell-12-14"><a href="#annotated-cell-12-14" aria-label="14"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-12-15"><a href="#annotated-cell-12-15" aria-label="15"></a>    <span class="cf">return</span> max_passi<span class="op">;</span></span>
+<span id="annotated-cell-12-16"><a href="#annotated-cell-12-16" aria-label="16"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="10" data-code-annotation="1">Prima <code>operator*</code>, poi <code>operator-</code>: il passo si scrive come la formula. Ogni operatore restituisce un temporaneo; l’ultimo viene assegnato a <code>x</code>.</span>
+<span data-code-cell="annotated-cell-12" data-code-lines="10" data-code-annotation="1">Prima <code>operator*</code>, poi <code>operator-</code>: il passo si scrive come la formula. Ogni operatore restituisce un temporaneo; l’ultimo viene assegnato a <code>x</code>.</span>
 </dd>
 </dl>
 <p><code>x</code> è passato per valore: <code>discesa</code> lavora su una copia del punto di partenza.</p>
@@ -1477,16 +1523,16 @@ F(x, y) = x^2 + 4y^2, \qquad \nabla F = (2x,\ 8y)
 <div class="code-with-filename-file">
 <pre><strong>discesa.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-filename="discesa.cpp" data-startfrom="18"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 17;"><span id="cb24-18"><a aria-label="18"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb24-19"><a aria-label="19"></a>    <span class="dt">double</span> etas<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">0.1</span><span class="op">,</span> <span class="fl">0.2</span><span class="op">,</span> <span class="fl">0.24</span><span class="op">,</span> <span class="fl">0.26</span><span class="op">};</span></span>
-<span id="cb24-20"><a aria-label="20"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb24-21"><a aria-label="21"></a>        <span class="dt">double</span> eta <span class="op">=</span> etas<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb24-22"><a aria-label="22"></a>        <span class="dt">int</span> passi <span class="op">=</span> discesa<span class="op">(</span>Vettore2D<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">),</span> eta<span class="op">,</span> <span class="dv">100000</span><span class="op">);</span></span>
-<span id="cb24-23"><a aria-label="23"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"eta = "</span> <span class="op">&lt;&lt;</span> eta <span class="op">&lt;&lt;</span> <span class="st">": "</span><span class="op">;</span></span>
-<span id="cb24-24"><a aria-label="24"></a>        <span class="cf">if</span> <span class="op">(</span>passi <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"diverge</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb24-25"><a aria-label="25"></a>        <span class="cf">else</span>           <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> passi <span class="op">&lt;&lt;</span> <span class="st">" passi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb24-26"><a aria-label="26"></a>    <span class="op">}</span></span>
-<span id="cb24-27"><a aria-label="27"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25" data-filename="discesa.cpp" data-startfrom="18"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 17;"><span id="cb25-18"><a aria-label="18"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb25-19"><a aria-label="19"></a>    <span class="dt">double</span> etas<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">0.1</span><span class="op">,</span> <span class="fl">0.2</span><span class="op">,</span> <span class="fl">0.24</span><span class="op">,</span> <span class="fl">0.26</span><span class="op">};</span></span>
+<span id="cb25-20"><a aria-label="20"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">4</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-21"><a aria-label="21"></a>        <span class="dt">double</span> eta <span class="op">=</span> etas<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb25-22"><a aria-label="22"></a>        <span class="dt">int</span> passi <span class="op">=</span> discesa<span class="op">(</span>Vettore2D<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">),</span> eta<span class="op">,</span> <span class="dv">100000</span><span class="op">);</span></span>
+<span id="cb25-23"><a aria-label="23"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"eta = "</span> <span class="op">&lt;&lt;</span> eta <span class="op">&lt;&lt;</span> <span class="st">": "</span><span class="op">;</span></span>
+<span id="cb25-24"><a aria-label="24"></a>        <span class="cf">if</span> <span class="op">(</span>passi <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"diverge</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb25-25"><a aria-label="25"></a>        <span class="cf">else</span>           <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> passi <span class="op">&lt;&lt;</span> <span class="st">" passi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb25-26"><a aria-label="26"></a>    <span class="op">}</span></span>
+<span id="cb25-27"><a aria-label="27"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:38%;">
 <p>Output:</p>
