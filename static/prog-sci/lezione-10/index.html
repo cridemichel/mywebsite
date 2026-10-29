@@ -1080,7 +1080,7 @@ Cristiano De Michele
 <span id="cb10-7"><a aria-label="7"></a>    <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
 <span id="cb10-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:38%;">
-<p><code>b = a;</code> chiama <code>b.operator=(a)</code>: dentro il metodo <code>this</code> è l’indirizzo di <code>b</code>, <code>altro</code> è <code>a</code>.</p>
+<p>Con <code>b</code> già creato, <code>b = a;</code> chiama <code>b.operator=(a)</code>, non il costruttore di copia: nel metodo <code>this</code> è <code>&amp;b</code> e <code>altro</code> è <code>a</code>.</p>
 </div></div>
 <ol type="1">
 <li><strong>Auto-assegnamento</strong> (<code>a = a;</code>): <code>this</code> e <code>&amp;altro</code> coincidono. Senza il controllo, il <code>delete[]</code> libererebbe l’array prima di copiarlo.</li>
@@ -1200,7 +1200,7 @@ Cristiano De Michele
 </div>
 </div><div class="column" style="width:42%;">
 <p>Nella Lezione 09 <code>leggi</code> restituiva <code>0.0</code> per un indice non valido: un valore che può essere anche un dato.</p>
-<p>Riga 17: <strong><code>throw</code></strong> interrompe la funzione e lancia un oggetto che descrive l’errore, un’<strong>eccezione</strong>: qui <code>std::out_of_range</code> (da <code>&lt;stdexcept&gt;</code>), con il suo messaggio.</p>
+<p>Riga 17: <strong><code>throw</code></strong> interrompe la funzione e lancia un oggetto della classe <code>std::out_of_range</code> (da <code>&lt;stdexcept&gt;</code>), costruito con il suo messaggio: un’<strong>eccezione</strong>.</p>
 <p>Copia e assegnamento sono omessi: qui l’oggetto non si copia.</p>
 </div></div>
 </section>
