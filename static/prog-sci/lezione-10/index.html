@@ -886,36 +886,72 @@ Cristiano De Michele
 <li><strong>Profonda:</strong> <code>b.data_</code> riceve l’indirizzo di un array nuovo, in cui si copiano i valori di quello di <code>a</code>. Modificare <code>b</code> non modifica <code>a</code>, e ogni distruttore libera il proprio array: nessun double free, nessun leak.</li>
 </ul>
 </section>
-<section id="la-classe-con-i-tre-membri" class="slide level2 smaller">
-<h2>La classe con i tre membri</h2>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>main.cpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="main.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<section id="il-puntatore-this" class="slide level2 smaller">
+<h2>Il puntatore <code>this</code></h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
 <span id="cb2-2"><a aria-label="2"></a></span>
 <span id="cb2-3"><a aria-label="3"></a><span class="kw">class</span> DynamicArray <span class="op">{</span></span>
 <span id="cb2-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
 <span id="cb2-5"><a aria-label="5"></a>    <span class="dt">int</span> <span class="va">size_</span><span class="op">;</span></span>
 <span id="cb2-6"><a aria-label="6"></a>    <span class="dt">double</span><span class="op">*</span> <span class="va">data_</span><span class="op">;</span></span>
 <span id="cb2-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb2-8"><a aria-label="8"></a>    DynamicArray<span class="op">(</span><span class="dt">int</span> size<span class="op">)</span> <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>size<span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>size<span class="op">])</span> <span class="op">{}</span></span>
-<span id="cb2-9"><a aria-label="9"></a>    DynamicArray<span class="op">(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span></span>
-<span id="cb2-10"><a aria-label="10"></a>        <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">])</span> <span class="op">{</span></span>
-<span id="cb2-11"><a aria-label="11"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb2-12"><a aria-label="12"></a>    <span class="op">}</span></span>
-<span id="cb2-13"><a aria-label="13"></a>    DynamicArray<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-14"><a aria-label="14"></a>        <span class="cf">if</span> <span class="op">(</span><span class="kw">this</span> <span class="op">==</span> <span class="op">&amp;</span>altro<span class="op">)</span> <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
-<span id="cb2-15"><a aria-label="15"></a>        <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span></span>
-<span id="cb2-16"><a aria-label="16"></a>        <span class="va">size_</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">size_</span><span class="op">;</span></span>
-<span id="cb2-17"><a aria-label="17"></a>        <span class="va">data_</span> <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span><span class="va">size_</span><span class="op">];</span></span>
-<span id="cb2-18"><a aria-label="18"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb2-19"><a aria-label="19"></a>        <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
-<span id="cb2-20"><a aria-label="20"></a>    <span class="op">}</span></span>
-<span id="cb2-21"><a aria-label="21"></a>    <span class="op">~</span>DynamicArray<span class="op">()</span> <span class="op">{</span> <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb2-22"><a aria-label="22"></a>    <span class="dt">void</span> imposta<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">double</span> v<span class="op">)</span> <span class="op">{</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> v<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb2-23"><a aria-label="23"></a>    <span class="dt">double</span> leggi<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">];</span> <span class="op">}</span></span>
-<span id="cb2-24"><a aria-label="24"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-8"><a aria-label="8"></a>    DynamicArray<span class="op">(</span><span class="dt">int</span> size<span class="op">)</span></span>
+<span id="cb2-9"><a aria-label="9"></a>        <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>size<span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>size<span class="op">])</span> <span class="op">{}</span></span>
+<span id="cb2-10"><a aria-label="10"></a>    <span class="op">~</span>DynamicArray<span class="op">()</span> <span class="op">{</span> <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb2-11"><a aria-label="11"></a>    <span class="dt">int</span> size<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">size_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb2-12"><a aria-label="12"></a>    <span class="co">// metodo in più rispetto alla slide 5</span></span>
+<span id="cb2-13"><a aria-label="13"></a>    <span class="dt">void</span> stampaIndirizzo<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb2-14"><a aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="kw">this</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb2-15"><a aria-label="15"></a>    <span class="op">}</span></span>
+<span id="cb2-16"><a aria-label="16"></a><span class="op">};</span></span>
+<span id="cb2-17"><a aria-label="17"></a></span>
+<span id="cb2-18"><a aria-label="18"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-19"><a aria-label="19"></a>    DynamicArray a<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb2-20"><a aria-label="20"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="op">&amp;</span>a <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb2-21"><a aria-label="21"></a>    a<span class="op">.</span>stampaIndirizzo<span class="op">();</span></span>
+<span id="cb2-22"><a aria-label="22"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-23"><a aria-label="23"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:48%;">
+<p>In ogni metodo <strong><code>this</code></strong> è un puntatore che contiene l’indirizzo dell’oggetto su cui il metodo è chiamato.</p>
+<ul>
+<li>Righe 20 e 21: stesso indirizzo; in <code>a.stampaIndirizzo()</code>, <code>this</code> vale <code>&amp;a</code>.</li>
+<li><code>*this</code> è l’oggetto stesso; <code>this-&gt;size_</code> è l’attributo <code>size_</code>, di solito scritto solo <code>size_</code> (<code>-&gt;</code>: Lezione 06).</li>
+</ul>
+<p>Nella classe completa (slide seguente) serve all’<code>operator=</code>: <code>this == &amp;altro</code> e <code>return *this</code>.</p>
+</div></div>
+</section>
+<section id="la-classe-con-i-tre-membri" class="slide level2 smaller">
+<h2>La classe con i tre membri</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>main.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="main.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb3-2"><a aria-label="2"></a></span>
+<span id="cb3-3"><a aria-label="3"></a><span class="kw">class</span> DynamicArray <span class="op">{</span></span>
+<span id="cb3-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb3-5"><a aria-label="5"></a>    <span class="dt">int</span> <span class="va">size_</span><span class="op">;</span></span>
+<span id="cb3-6"><a aria-label="6"></a>    <span class="dt">double</span><span class="op">*</span> <span class="va">data_</span><span class="op">;</span></span>
+<span id="cb3-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb3-8"><a aria-label="8"></a>    DynamicArray<span class="op">(</span><span class="dt">int</span> size<span class="op">)</span> <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>size<span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>size<span class="op">])</span> <span class="op">{}</span></span>
+<span id="cb3-9"><a aria-label="9"></a>    DynamicArray<span class="op">(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span></span>
+<span id="cb3-10"><a aria-label="10"></a>        <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">])</span> <span class="op">{</span></span>
+<span id="cb3-11"><a aria-label="11"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb3-12"><a aria-label="12"></a>    <span class="op">}</span></span>
+<span id="cb3-13"><a aria-label="13"></a>    DynamicArray<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-14"><a aria-label="14"></a>        <span class="cf">if</span> <span class="op">(</span><span class="kw">this</span> <span class="op">==</span> <span class="op">&amp;</span>altro<span class="op">)</span> <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
+<span id="cb3-15"><a aria-label="15"></a>        <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span></span>
+<span id="cb3-16"><a aria-label="16"></a>        <span class="va">size_</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">size_</span><span class="op">;</span></span>
+<span id="cb3-17"><a aria-label="17"></a>        <span class="va">data_</span> <span class="op">=</span> <span class="kw">new</span> <span class="dt">double</span><span class="op">[</span><span class="va">size_</span><span class="op">];</span></span>
+<span id="cb3-18"><a aria-label="18"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb3-19"><a aria-label="19"></a>        <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span></span>
+<span id="cb3-20"><a aria-label="20"></a>    <span class="op">}</span></span>
+<span id="cb3-21"><a aria-label="21"></a>    <span class="op">~</span>DynamicArray<span class="op">()</span> <span class="op">{</span> <span class="kw">delete</span><span class="op">[]</span> <span class="va">data_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb3-22"><a aria-label="22"></a>    <span class="dt">void</span> imposta<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">double</span> v<span class="op">)</span> <span class="op">{</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> v<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb3-23"><a aria-label="23"></a>    <span class="dt">double</span> leggi<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">];</span> <span class="op">}</span></span>
+<span id="cb3-24"><a aria-label="24"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="la-classe-con-i-tre-membri-segue-il-main" class="slide level2 smaller">
@@ -926,18 +962,18 @@ Cristiano De Michele
 <div class="code-with-filename-file">
 <pre><strong>main.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="main.cpp" data-startfrom="25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 24;"><span id="cb3-25"><a aria-label="25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb3-26"><a aria-label="26"></a>    DynamicArray a<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
-<span id="cb3-27"><a aria-label="27"></a>    a<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span></span>
-<span id="cb3-28"><a aria-label="28"></a>    DynamicArray b <span class="op">=</span> a<span class="op">;</span>        <span class="co">// costruttore di copia</span></span>
-<span id="cb3-29"><a aria-label="29"></a>    DynamicArray c<span class="op">(</span><span class="dv">3</span><span class="op">);</span></span>
-<span id="cb3-30"><a aria-label="30"></a>    c <span class="op">=</span> a<span class="op">;</span>                     <span class="co">// operatore di assegnamento</span></span>
-<span id="cb3-31"><a aria-label="31"></a>    b<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">9.0</span><span class="op">);</span></span>
-<span id="cb3-32"><a aria-label="32"></a>    c<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">7.0</span><span class="op">);</span></span>
-<span id="cb3-33"><a aria-label="33"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> a<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> b<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span></span>
-<span id="cb3-34"><a aria-label="34"></a>              <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> c<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb3-35"><a aria-label="35"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb3-36"><a aria-label="36"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="main.cpp" data-startfrom="25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 24;"><span id="cb4-25"><a aria-label="25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-26"><a aria-label="26"></a>    DynamicArray a<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb4-27"><a aria-label="27"></a>    a<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb4-28"><a aria-label="28"></a>    DynamicArray b <span class="op">=</span> a<span class="op">;</span>        <span class="co">// costruttore di copia</span></span>
+<span id="cb4-29"><a aria-label="29"></a>    DynamicArray c<span class="op">(</span><span class="dv">3</span><span class="op">);</span></span>
+<span id="cb4-30"><a aria-label="30"></a>    c <span class="op">=</span> a<span class="op">;</span>                     <span class="co">// operatore di assegnamento</span></span>
+<span id="cb4-31"><a aria-label="31"></a>    b<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">9.0</span><span class="op">);</span></span>
+<span id="cb4-32"><a aria-label="32"></a>    c<span class="op">.</span>imposta<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">7.0</span><span class="op">);</span></span>
+<span id="cb4-33"><a aria-label="33"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> a<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> b<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span></span>
+<span id="cb4-34"><a aria-label="34"></a>              <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> c<span class="op">.</span>leggi<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb4-35"><a aria-label="35"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-36"><a aria-label="36"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:40%;">
 <p>Stampa <code>1 9 7</code>: <code>a</code>, <code>b</code> e <code>c</code> hanno tre array distinti.</p>
@@ -947,10 +983,10 @@ Cristiano De Michele
 </section>
 <section id="il-costruttore-di-copia" class="slide level2 smaller">
 <h2>Il costruttore di copia</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a>DynamicArray<span class="op">(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span></span>
-<span id="cb4-2"><a aria-label="2"></a>    <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">])</span> <span class="op">{</span></span>
-<span id="cb4-3"><a aria-label="3"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb4-4"><a aria-label="4"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a>DynamicArray<span class="op">(</span><span class="at">const</span> DynamicArray<span class="op">&amp;</span> altro<span class="op">)</span></span>
+<span id="cb5-2"><a aria-label="2"></a>    <span class="op">:</span> <span class="va">size_</span><span class="op">(</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">),</span> <span class="va">data_</span><span class="op">(</span><span class="kw">new</span> <span class="dt">double</span><span class="op">[</span>altro<span class="op">.</span><span class="va">size_</span><span class="op">])</span> <span class="op">{</span></span>
+<span id="cb5-3"><a aria-label="3"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="va">size_</span><span class="op">;</span> i<span class="op">++)</span> <span class="va">data_</span><span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> altro<span class="op">.</span><span class="va">data_</span><span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb5-4"><a aria-label="4"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>La firma è quella della Lezione 07: un costruttore che riceve un oggetto della stessa classe per <code>const</code> reference.</li>
 <li>Nella lista di inizializzazione copia la dimensione e <strong>alloca un nuovo array</strong>, invece di copiare l’indirizzo.</li>
@@ -958,38 +994,6 @@ Cristiano De Michele
 <li>Un metodo può leggere gli attributi privati di un altro oggetto della stessa classe (Lezione 07): per questo può usare <code>altro.data_</code>.</li>
 </ul>
 <p>È l’unico punto in cui il costruttore di copia scritto da noi differisce da quello del compilatore: <code>data_</code> riceve un indirizzo nuovo.</p>
-</section>
-<section id="il-puntatore-this" class="slide level2 smaller">
-<h2>Il puntatore <code>this</code></h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb5-2"><a aria-label="2"></a></span>
-<span id="cb5-3"><a aria-label="3"></a><span class="kw">class</span> Punto <span class="op">{</span></span>
-<span id="cb5-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb5-5"><a aria-label="5"></a>    <span class="dt">double</span> <span class="va">x_</span><span class="op">;</span></span>
-<span id="cb5-6"><a aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb5-7"><a aria-label="7"></a>    Punto<span class="op">(</span><span class="dt">double</span> x<span class="op">)</span> <span class="op">:</span> <span class="va">x_</span><span class="op">(</span>x<span class="op">)</span> <span class="op">{}</span></span>
-<span id="cb5-8"><a aria-label="8"></a>    <span class="dt">double</span> x<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">x_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb5-9"><a aria-label="9"></a>    <span class="dt">void</span> stampaIndirizzo<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
-<span id="cb5-10"><a aria-label="10"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="kw">this</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb5-11"><a aria-label="11"></a>    <span class="op">}</span></span>
-<span id="cb5-12"><a aria-label="12"></a><span class="op">};</span></span>
-<span id="cb5-13"><a aria-label="13"></a></span>
-<span id="cb5-14"><a aria-label="14"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb5-15"><a aria-label="15"></a>    Punto p<span class="op">(</span><span class="fl">1.0</span><span class="op">);</span></span>
-<span id="cb5-16"><a aria-label="16"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="op">&amp;</span>p <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb5-17"><a aria-label="17"></a>    p<span class="op">.</span>stampaIndirizzo<span class="op">();</span></span>
-<span id="cb5-18"><a aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb5-19"><a aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:45%;">
-<p>In ogni metodo c’è un puntatore, <strong><code>this</code></strong>, che contiene l’indirizzo dell’oggetto su cui il metodo è chiamato.</p>
-<ul>
-<li>Righe 16 e 17: stesso indirizzo; in <code>p.stampaIndirizzo()</code>, <code>this</code> vale <code>&amp;p</code>.</li>
-<li><code>*this</code> è l’oggetto stesso.</li>
-<li><code>this-&gt;x_</code> è l’attributo <code>x_</code>, che di solito si scrive solo <code>x_</code> (<code>-&gt;</code>: Lezione 06).</li>
-</ul>
-</div></div>
 </section>
 <section id="loperatore-di-assegnamento" class="slide level2 smaller">
 <h2>L’operatore di assegnamento</h2>
