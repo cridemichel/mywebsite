@@ -812,9 +812,9 @@ Cristiano De Michele
 <span id="cb2-6"><a aria-label="6"></a><span class="kw">add_executable</span>(<span class="bn">scalare</span> scalare.cpp Vettore2D.cpp)    <span class="co"># esercizio</span></span>
 <span id="cb2-7"><a aria-label="7"></a><span class="kw">add_executable</span>(<span class="bn">lampo</span> lampo.cpp)                      <span class="co"># esercizio lampo</span></span>
 <span id="cb2-8"><a aria-label="8"></a><span class="kw">add_executable</span>(<span class="bn">discesa</span> discesa.cpp Vettore2D.cpp)    <span class="co"># esercizio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Poi, dalla cartella <code>LEZIONE_10</code>, compilate ed eseguite solo quell’esempio, per esempio:</p>
+<p>Poi, dalla cartella <code>LEZIONE_10</code>, compilate ed eseguite solo quell’esempio:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> copia_superficiale <span class="kw">&amp;&amp;</span> <span class="ex">./build/copia_superficiale</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>cmake -B build</code> rilegge il <code>CMakeLists.txt</code>: senza, <code>--target</code> non trova un esempio appena aggiunto. Con <code>--target</code> si compila solo l’esempio indicato: un esercizio non ancora finito non blocca gli altri.</p>
+<p><code>cmake -B build</code> rilegge il <code>CMakeLists.txt</code>: senza, <code>--target</code> non trova un esempio appena aggiunto. Con <code>--target</code> si compila solo l’esempio indicato: un esercizio non ancora finito non blocca gli altri. I messaggi citati sono quelli di g++ su Linux; con clang (macOS) il testo cambia, il significato no.</p>
 </section>
 <section id="ripasso-la-copia-del-compilatore" class="slide level2 smaller">
 <h2>Ripasso: la copia del compilatore</h2>
@@ -886,7 +886,7 @@ Cristiano De Michele
 </ol>
 <p>Liberare due volte la stessa memoria è il <strong>double free</strong> della Lezione 08. Il programma si interrompe:</p>
 <ul>
-<li>compilato con <code>g++</code> senza opzioni: <code>free(): double free detected in tcache 2</code>, poi <code>Aborted</code>;</li>
+<li>compilato senza opzioni: <code>free(): double free detected in tcache 2</code> e <code>Aborted</code> (Linux), <code>pointer being freed was not allocated</code> (macOS);</li>
 <li>compilato con <code>-fsanitize=address</code>: <code>ERROR: AddressSanitizer: attempting double-free</code>, con la riga del <code>delete[]</code>.</li>
 </ul>
 </section>
@@ -1249,7 +1249,7 @@ Errore: indice non valido</code></pre>
 <p>In <code>eccezioni.cpp</code>, un esperimento alla volta:</p>
 <ol type="1">
 <li>Togliete <code>try</code> e il blocco <code>catch</code> (righe 23 e 27–29). Cosa stampa?<br>
-<span class="fragment"><em>terminate called after throwing an instance of ‘std::out_of_range’</em>, <em>what(): indice non valido</em>, poi <code>Aborted</code>. Un’eccezione che nessun <code>catch</code> riceve termina il programma (Lezione 19), e i distruttori non vengono eseguiti: <code>distruttore</code> non compare.</span></li>
+<span class="fragment"><em>terminate called after throwing an instance of ‘std::out_of_range’</em>, <em>what(): indice non valido</em>, poi <code>Aborted</code> (con clang su macOS: <em>libc++abi: terminating due to uncaught exception of type std::out_of_range</em>). Un’eccezione che nessun <code>catch</code> riceve termina il programma (Lezione 19), e i distruttori non vengono eseguiti: <code>distruttore</code> non compare.</span></li>
 <li>Rimettete <code>try</code> e <code>catch</code>, e alla riga 27 scrivete <code>std::invalid_argument</code> al posto di <code>std::out_of_range</code>. Cosa succede?<br>
 <span class="fragment">Lo stesso: un <code>catch</code> riceve solo il tipo di eccezione che indica, e qui nessun <code>catch</code> riceve <code>std::out_of_range</code>.</span></li>
 </ol>
