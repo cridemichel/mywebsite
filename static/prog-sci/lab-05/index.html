@@ -1111,7 +1111,7 @@ Cristiano De Michele
 <span id="cb11-9"><a aria-label="9"></a><span class="dt">int</span> Matrix<span class="op">::</span>getRows<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> rows<span class="op">;</span> <span class="op">}</span></span>
 <span id="cb11-10"><a aria-label="10"></a><span class="dt">int</span> Matrix<span class="op">::</span>getCols<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> cols<span class="op">;</span> <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Da scrivere:</strong> il metodo <code>set</code>, con l’intestazione <code>void Matrix::set(int r, int c, double val)</code>. Il controllo degli indici è lo stesso di <code>get</code>, con il messaggio <code>"Matrix::set: indici fuori dai limiti"</code>; dopo il controllo, invece di restituire <code>data[r * cols + c]</code>, gli assegna <code>val</code>. È il <code>cmat_set</code> del Laboratorio 04 con il controllo in più.</p>
+<p><strong>Da scrivere:</strong> la definizione di <code>set</code>, il cui prototipo è in <code>matrix.hpp</code>. In <code>matrix.cpp</code>, come per <code>get</code>, la definizione comincia con <code>void Matrix::set(int r, int c, double val)</code>. Il controllo degli indici è lo stesso di <code>get</code>, con il messaggio <code>"Matrix::set: indici fuori dai limiti"</code>; dopo il controllo, invece di restituire <code>data[r * cols + c]</code>, gli assegna <code>val</code>. È il <code>cmat_set</code> del Laboratorio 04 con il controllo in più.</p>
 </section>
 <section id="task-3-il-costruttore-di-copia" class="slide level2 smaller">
 <h2>Task 3: il costruttore di copia</h2>
@@ -1146,12 +1146,12 @@ Cristiano De Michele
 <span id="cb13-5"><a aria-label="5"></a>    <span class="cf">return</span> <span class="op">*</span><span class="kw">this</span><span class="op">;</span>                      <span class="co">// d. restituire l'oggetto stesso</span></span>
 <span id="cb13-6"><a aria-label="6"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Da completare:</strong> sono i quattro passi della Lezione 10; a e d sono scritti.</p>
+<p><strong>Da completare:</strong> i passi b e c (Lezione 10).</p>
 <ul>
-<li>Al posto del commento b: <code>delete[] data;</code></li>
-<li>Al posto del commento c: <code>rows = altra.rows;</code>, <code>cols = altra.cols;</code>, <code>data = new double[rows * cols];</code> e lo stesso ciclo <code>for</code> del costruttore di copia.</li>
+<li>Al posto del commento b: liberate con <code>delete[]</code> il blocco a cui punta <code>data</code>.</li>
+<li>Al posto del commento c: assegnate a <code>rows</code> e <code>cols</code> quelli di <code>altra</code>, allocate con <code>new</code> un blocco di <code>rows * cols</code> <code>double</code> e copiatevi i valori con il ciclo <code>for</code> del costruttore di copia.</li>
 </ul>
-<p>L’ordine conta: senza il passo a, <code>m = m</code> libererebbe il blocco che sta per copiare.</p>
+<p>È l’<code>operator=</code> di <code>DynamicArray</code> (Lezione 10) con <code>rows * cols</code> elementi. Senza il passo a, <code>m = m</code> libererebbe il blocco che sta per copiare.</p>
 </section>
 <section id="task-4-la-prova-di-matrix" class="slide level2 smaller">
 <h2>Task 4: la prova di <code>Matrix</code></h2>
