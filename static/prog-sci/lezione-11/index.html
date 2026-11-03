@@ -901,7 +901,7 @@ Cristiano De Michele
 <ul>
 <li><strong>Il dataset.</strong> MNIST arriva in due file CSV, <code>mnist_train.csv</code> (60 000 immagini) e <code>mnist_test.csv</code> (10 000), con una riga per immagine: l’etichetta e i 784 pixel. La classe del framework che li carica, <code>MnistDataset</code>, apre il file con uno stream, lo legge riga per riga con <code>std::getline</code>, spezza ogni riga sulle virgole e converte i campi in numeri con <code>std::stoi</code>: sono gli strumenti di oggi.</li>
 <li><strong>Il modello addestrato.</strong> <code>Sequential</code> salva i pesi della rete in un file di testo con <code>std::ofstream</code>, con 17 cifre significative, e li rilegge con <code>std::ifstream</code>. Con i <code>float</code> del framework finale ne basteranno 9.</li>
-<li><strong>Il percorso dei file.</strong> I programmi del framework aprono <code>../../MNIST_DATASETS/mnist_train.csv</code>: un percorso relativo, che dipende dalla cartella da cui si lancia il programma.</li>
+<li><strong>Il percorso dei file.</strong> Anche nei laboratori i CSV staranno nella cartella del progetto, <code>basic_neural_plusplus</code>, e <code>MnistDataset</code> li aprirà con il solo nome, come <code>"mnist_train.csv"</code>: è la regola di oggi.</li>
 </ul>
 </section>
 <section id="la-cartella-della-lezione" class="slide level2 smaller">
@@ -1121,7 +1121,7 @@ Cristiano De Michele
 <li>La prima riga fa partire il ▷ in basso dalla cartella del progetto.</li>
 <li>La seconda fa usare a IntelliSense le opzioni del <code>CMakeLists.txt</code> (C++17, Eigen): senza, IntelliSense usa uno standard suo, spesso C++14, e segna in rosso codice che compila.</li>
 </ul>
-<p>Provate: lanciate <code>apri_file</code> con il ▷ in basso, prima e dopo aver creato il file.</p>
+<p>Provate: lanciate <code>apri_file</code> con il ▷ in basso, prima e dopo aver creato <code>settings.json</code>. Cosa stampa? <span class="fragment">Prima l’errore, perché parte da <code>build</code>; dopo <em>File aperto</em>.</span></p>
 </section>
 <section id="leggere-riga-per-riga-stdgetline" class="slide level2 smaller">
 <h2>Leggere riga per riga: <code>std::getline</code></h2>
@@ -1164,12 +1164,14 @@ Cristiano De Michele
 </section>
 <section id="provate-la-cartella-di-lavoro" class="slide level2 smaller">
 <h2>Provate: la cartella di lavoro</h2>
-<p>Le parentesi eseguono i comandi in una shell a parte: alla fine si resta nella cartella <code>LEZIONE_11</code>.</p>
 <ol type="1">
-<li><p>Lanciate <code>apri_file</code> dalla cartella <code>build</code>; <code>echo $?</code> stampa il valore restituito dal <code>main</code>. Cosa compare?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a aria-label="1"></a><span class="kw">(</span><span class="bu">cd</span> build <span class="kw">&amp;&amp;</span> <span class="ex">./apri_file</span><span class="kw">);</span> <span class="bu">echo</span> <span class="va">$?</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p><span class="fragment"><em>Errore: impossibile aprire mnist_test.csv</em>, poi <code>1</code>: la cartella di lavoro è <code>build</code>, e lì <code>mnist_test.csv</code> non c’è.</span></p></li>
-<li><p>In <code>leggi_righe.cpp</code> togliete il controllo di <code>is_open()</code> (righe 7–11), ricompilate e lanciatelo da <code>build</code>: <code>(cd build &amp;&amp; ./leggi_righe)</code>. Cosa stampa?<br>
+<li><p>Entrate nella cartella <code>build</code>, lanciate <code>apri_file</code> da lì e tornate nella cartella <code>LEZIONE_11</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a aria-label="1"></a><span class="bu">cd</span> build</span>
+<span id="cb7-2"><a aria-label="2"></a><span class="ex">./apri_file</span></span>
+<span id="cb7-3"><a aria-label="3"></a><span class="bu">cd</span> ..</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cosa stampa?<br>
+<span class="fragment"><em>Errore: impossibile aprire mnist_test.csv</em>: la cartella di lavoro è <code>build</code>, e lì <code>mnist_test.csv</code> non c’è.</span></p></li>
+<li><p>In <code>leggi_righe.cpp</code> togliete il controllo di <code>is_open()</code> (righe 7–11), ricompilate e lanciatelo allo stesso modo, da <code>build</code>. Cosa stampa?<br>
 <span class="fragment"><code>Lette 0 righe</code>, senza alcun messaggio: le letture da un file che non si è aperto falliscono in silenzio. Per questo si controlla <code>is_open()</code>.</span></p></li>
 </ol>
 </section>
@@ -1362,7 +1364,7 @@ eccezione: stoi</code></pre>
 <section id="provate-scrivere-e-precisione" class="slide level2 smaller">
 <h2>Provate: scrivere e precisione</h2>
 <ol type="1">
-<li>Lanciate <code>scrivi_file</code> dalla cartella <code>build</code>: <code>(cd build &amp;&amp; ./scrivi_file)</code>. Dove compare <code>loss.csv</code>?<br>
+<li>Lanciate <code>scrivi_file</code> dalla cartella <code>build</code>, come nella slide «Provate: la cartella di lavoro». Dove compare <code>loss.csv</code>?<br>
 <span class="fragment">In <code>build</code>: <code>std::ofstream</code> crea il file nella cartella di lavoro, come <code>std::ifstream</code> lo cerca lì.</span></li>
 <li>In <code>precisione.cpp</code>, alla riga 4, scrivete <code>float w = 1.0f / 3.0f;</code>. Cosa stampa?<br>
 <span class="fragment"><code>0.333333</code> e <code>0.3333333432674408</code>: un <code>float</code> ha circa 7 cifre significative, e le successive vengono dalla sua rappresentazione in binario. Per rileggerlo identico ne bastano 9.</span></li>
