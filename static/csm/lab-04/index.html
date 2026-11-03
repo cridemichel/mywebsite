@@ -759,7 +759,7 @@ Cristiano De Michele
 <li><strong>Introduction to C++ (part IV)</strong> — generic programming: class templates (example N8) and a glimpse of template metaprogramming (example N9).</li>
 <li><strong>Lab #3: the solution</strong> — <code>operator()</code>, the <em>friend</em> functions and <code>&lt;&lt;</code>.</li>
 <li><strong>Random numbers</strong> — what a pseudo-random number generator is, how the generators of the C++ standard library compare, and why we use the <strong>Mersenne Twister</strong> through the class <code>randnumgen</code>, which you get complete.</li>
-<li><strong>Task: random vectors</strong> — <code>random(L)</code>, a random vector in a box, and <code>random_orient()</code>, a random unit vector uniformly distributed on the sphere (<strong>Marsaglia’s algorithm</strong>).</li>
+<li><strong>Tasks for <code>pvector</code></strong> — first it becomes a <strong>class template</strong>, <code>pvector&lt;double,3&gt;</code>; then <code>random(L)</code>, a random vector in a box, and <code>random_orient()</code>, a random unit vector uniformly distributed on the sphere (<strong>Marsaglia’s algorithm</strong>).</li>
 <li><strong>Task: a class for matrices</strong> — the first methods of <code>pmatrixq</code>, a class template that follows <code>pvector</code> closely.</li>
 </ol>
 </section>
@@ -1110,15 +1110,23 @@ Cristiano De Michele
 <li>Correlated numbers make the simulation sample the wrong distribution, silently.</li>
 </ul>
 </section>
-<section id="the-simplest-generator-linear-congruential" class="slide level2 smaller">
-<h2>The simplest generator: linear congruential</h2>
-
-<img data-src="images/linear_congruential_generator.png" class="quarto-figure quarto-figure-center r-stretch" style="width:55.0%"><ul>
+<section id="the-simplest-generator-linear-congruential-lcg" class="slide level2 smaller">
+<h2>The simplest generator: linear congruential (LCG)</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/linear_congruential_generator.png" class="quarto-figure quarto-figure-center" style="width:76.0%"></p>
+</figure>
+</div>
+<p><span style="font-size:0.7em">Figure: Wikipedia, “Linear congruential generator”.</span></p>
+</section>
+<section id="limits-of-the-lcg-and-rand" class="slide level2 smaller">
+<h2>Limits of the LCG, and <code>rand()</code></h2>
+<ul>
 <li>Fast and with a tiny state, but the period is at most <span class="math inline">\(m\)</span> (with <span class="math inline">\(m \leq 2^{32}\)</span>: about <span class="math inline">\(4\times10^9\)</span> numbers, less than a long simulation uses); with <span class="math inline">\(m = 2^k\)</span> the low bits are poorly random.</li>
 <li>Consecutive numbers are correlated. Use three of them, <span class="math inline">\((X_n, X_{n+1}, X_{n+2})/m\)</span>, as the position of a point in a cube: the points do not fill the cube, they all lie on a few parallel planes (only 15 for RANDU, an LCG widely used in the 1960s).</li>
-<li>The C function <code>rand()</code> is often an LCG; in <code>&lt;random&gt;</code> it is <code>std::minstd_rand</code>.</li>
+<li>The C function <code>rand()</code> uses an algorithm that depends on the library: an LCG on Windows and macOS, a different generator on Linux. In <code>&lt;random&gt;</code> the LCG is <code>std::minstd_rand</code> (<span class="math inline">\(a = 48271\)</span>, <span class="math inline">\(m = 2^{31}-1\)</span>).</li>
 </ul>
-<p><span style="font-size:0.7em">Figure: Wikipedia, “Linear congruential generator”. Planes: G. Marsaglia, <em>PNAS</em> <strong>61</strong>, 25 (1968), the same Marsaglia of Part 4.</span></p>
+<p><span style="font-size:0.7em">Planes: G. Marsaglia, <em>PNAS</em> <strong>61</strong>, 25 (1968), the same Marsaglia of Part 4.</span></p>
 </section>
 <section id="the-generators-of-the-c-standard-library" class="slide level2 smaller">
 <h2>The generators of the C++ standard library</h2>
@@ -1228,25 +1236,27 @@ Cristiano De Michele
 <span id="cb20-3"><a aria-label="3"></a><span class="dt">double</span> xi <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span>   <span class="co">// uniform in [0,1)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>randnumgen</code> is a class template (Part 1) with two type parameters: the number type (<code>double</code>) and the <strong>engine</strong> (<code>std::mt19937_64</code>, the 64-bit Mersenne Twister). The engine produces random integers; <code>std::uniform_real_distribution</code> turns them into numbers in <span class="math inline">\([0,1)\)</span>.</li>
-<li>Line 59 defines <strong>one</strong> global object <code>rng</code>: every file that includes <code>randnumgen.hpp</code> (<code>pvector.hpp</code> now does, line 39) uses the same generator, hence one sequence for the whole program. This works because our programs have a single <code>.cpp</code> file.</li>
+<li>Line 59 defines <strong>one</strong> global object <code>rng</code>: every file that includes <code>randnumgen.hpp</code> (<code>pvector.hpp</code> now does, line 41) uses the same generator, hence one sequence for the whole program. This works because our programs have a single <code>.cpp</code> file.</li>
 <li><code>unidst</code>: created with <code>new</code> in the constructor, freed with <code>delete</code> in the destructor (N6).</li>
 <li>Without <code>seed()</code> or <code>rseed()</code> the engine starts from its default seed: every run gives the same numbers. Seed <strong>once</strong>, at the beginning of <code>main</code>, never inside a loop.</li>
 <li>The standard does not fix the algorithm of the distributions: with the same seed, another compiler may give other numbers. Only the statistics must agree.</li>
 </ul>
 </section></section>
 <section>
-<section id="part-4-new-tasks-for-pvector-random-vectors" class="title-slide slide level1 center">
-<h1>Part 4<br>New tasks for <code>pvector</code>: random vectors</h1>
+<section id="part-4-new-tasks-for-pvector-a-template-random-vectors" class="title-slide slide level1 center">
+<h1>Part 4<br>New tasks for <code>pvector</code>: a template, random vectors</h1>
 
 </section>
-<section id="the-task" class="slide level2 smaller">
-<h2>The task</h2>
+<section id="the-tasks" class="slide level2 smaller">
+<h2>The tasks</h2>
 <p>Download again <code>project_classes.zip</code> (unzip it elsewhere, not over your files): <code>project/pvector.hpp</code> has the methods of Lab #3 (Part 2) and the skeleton of <code>random()</code> and <code>random_orient()</code>; <code>project/randnumgen.hpp</code> is new.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb21-1"><a aria-label="1"></a><span class="co">// [X] overloading of &lt;&lt; for output (friend function)</span></span>
-<span id="cb21-2"><a aria-label="2"></a><span class="co">//</span></span>
-<span id="cb21-3"><a aria-label="3"></a><span class="co">// Discuss random number generator class with Mersenne-Twister</span></span>
-<span id="cb21-4"><a aria-label="4"></a><span class="co">// [*] random(L), random vector inside a box of length L</span></span>
-<span id="cb21-5"><a aria-label="5"></a><span class="co">// [*] random_orient() random unit on unit sphere (marsaglia) </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-2"><a aria-label="2"></a><span class="co">// [*] make pvector a class template: template &lt;typename ntype, int NT&gt; class pvector</span></span>
+<span id="cb21-3"><a aria-label="3"></a><span class="co">//     (then comment out the global NT and ntype defined below)</span></span>
+<span id="cb21-4"><a aria-label="4"></a><span class="co">//</span></span>
+<span id="cb21-5"><a aria-label="5"></a><span class="co">// Discuss random number generator class with Mersenne-Twister</span></span>
+<span id="cb21-6"><a aria-label="6"></a><span class="co">// [*] random(L), random vector inside a box of length L</span></span>
+<span id="cb21-7"><a aria-label="7"></a><span class="co">// [*] random_orient() random unit on unit sphere (marsaglia) </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a>  <span class="co">// ============== LAB #4: skeletons, fill the bodies</span></span>
 <span id="cb22-2"><a aria-label="2"></a></span>
 <span id="cb22-3"><a aria-label="3"></a>  <span class="co">// generate a random vector inside a box and assign it to (*this) object</span></span>
@@ -1261,6 +1271,31 @@ Cristiano De Michele
 <span id="cb22-12"><a aria-label="12"></a></span>
 <span id="cb22-13"><a aria-label="13"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The goal: <code>project/pvector.cpp</code> (in the zip) must print the output at the end of this part.</p>
+</section>
+<section id="task-1-pvector-becomes-a-class-template" class="slide level2 smaller">
+<h2>Task 1: <code>pvector</code> becomes a class template</h2>
+<p>In <code>project/pvector.hpp</code>, as <code>genvec</code> (N8) but with two parameters, like <code>pmatrixq</code>: comment out the global <code>NT</code> and <code>ntype</code>, and write <code>template &lt;typename ntype, int NT&gt;</code> on the line before <code>class pvector</code>. The result:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb23-1"><a aria-label="1"></a><span class="co">//constexpr int NT=3;</span></span>
+<span id="cb23-2"><a aria-label="2"></a></span>
+<span id="cb23-3"><a aria-label="3"></a><span class="co">//typedef float ntype; // as in C</span></span>
+<span id="cb23-4"><a aria-label="4"></a><span class="co">//using ntype=double; // use "using" to define an alias for the keyword "double"</span></span>
+<span id="cb23-5"><a aria-label="5"></a></span>
+<span id="cb23-6"><a aria-label="6"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">,</span> <span class="dt">int</span> NT<span class="op">&gt;</span></span>
+<span id="cb23-7"><a aria-label="7"></a><span class="kw">class</span> pvector</span>
+<span id="cb23-8"><a aria-label="8"></a><span class="op">{</span></span>
+<span id="cb23-9"><a aria-label="9"></a>  ntype v<span class="op">[</span>NT<span class="op">];</span> <span class="co">// private member</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Nothing else changes: inside the template, <code>pvector</code> alone means <code>pvector&lt;ntype,NT&gt;</code>, so the methods, the operators and the friend functions stay as they are.</li>
+</ul>
+</section>
+<section id="task-1-the-template-arguments" class="slide level2 smaller">
+<h2>Task 1: the template arguments</h2>
+<ul>
+<li>Where the vectors are used, the template arguments are needed: <code>pvector.cpp</code> declares <code>using ntype = double;</code>, <code>constexpr int NT = 3;</code> and then <code>pvector&lt;ntype,NT&gt; R, U;</code>. Without them, <code>pvector R, U;</code> gives <code>error: class template argument deduction failed</code>.</li>
+<li>Check: <code>pvector.cpp</code> must compile (its output is meaningless until <code>random()</code> and <code>random_orient()</code> are written). Before the change: <code>error: 'pvector' is not a template</code>.</li>
+<li>If you comment out <code>NT</code> and <code>ntype</code> but forget the <code>template</code> line: <code>error: 'ntype' does not name a type</code>.</li>
+<li><code>pmatrix.hpp</code> includes <code>pvector.hpp</code>: it compiles both before and after Task 1.</li>
+</ul>
 </section>
 <section id="randoml-a-random-vector-in-a-box" class="slide level2 smaller">
 <h2><code>random(L)</code>: a random vector in a box</h2>
@@ -1313,51 +1348,52 @@ Cristiano De Michele
 </section>
 <section id="the-goal-pvector.cpp" class="slide level2 smaller codice-intero codice-micro">
 <h2>The goal: <code>pvector.cpp</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb23-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./pvector.hpp"</span></span>
-<span id="cb23-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb23-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb23-4"><a aria-label="4"></a>  rng<span class="op">.</span>seed<span class="op">(</span><span class="dv">1</span><span class="op">);</span>                <span class="co">// fixed seed: the same random numbers at every run</span></span>
-<span id="cb23-5"><a aria-label="5"></a>  <span class="at">const</span> <span class="dt">int</span> M <span class="op">=</span> <span class="dv">1000000</span><span class="op">;</span>      <span class="co">// number of random vectors</span></span>
-<span id="cb23-6"><a aria-label="6"></a>  <span class="at">const</span> ntype L <span class="op">=</span> <span class="fl">10.0</span><span class="op">;</span>       <span class="co">// side of the box</span></span>
-<span id="cb23-7"><a aria-label="7"></a>  pvector R<span class="op">,</span> U<span class="op">;</span></span>
-<span id="cb23-8"><a aria-label="8"></a></span>
-<span id="cb23-9"><a aria-label="9"></a>  <span class="co">// random(L): each component uniform in [-L/2, L/2)</span></span>
-<span id="cb23-10"><a aria-label="10"></a>  ntype rmin <span class="op">=</span> L<span class="op">,</span> rmax <span class="op">=</span> <span class="op">-</span>L<span class="op">,</span> x2 <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb23-11"><a aria-label="11"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> M<span class="op">;</span> k<span class="op">++)</span></span>
-<span id="cb23-12"><a aria-label="12"></a>    <span class="op">{</span></span>
-<span id="cb23-13"><a aria-label="13"></a>      R<span class="op">.</span>random<span class="op">(</span>L<span class="op">);</span></span>
-<span id="cb23-14"><a aria-label="14"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb23-15"><a aria-label="15"></a>        <span class="op">{</span></span>
-<span id="cb23-16"><a aria-label="16"></a>          <span class="cf">if</span> <span class="op">(</span>R<span class="op">(</span>i<span class="op">)</span> <span class="op">&lt;</span> rmin<span class="op">)</span> rmin <span class="op">=</span> R<span class="op">(</span>i<span class="op">);</span></span>
-<span id="cb23-17"><a aria-label="17"></a>          <span class="cf">if</span> <span class="op">(</span>R<span class="op">(</span>i<span class="op">)</span> <span class="op">&gt;</span> rmax<span class="op">)</span> rmax <span class="op">=</span> R<span class="op">(</span>i<span class="op">);</span></span>
-<span id="cb23-18"><a aria-label="18"></a>        <span class="op">}</span></span>
-<span id="cb23-19"><a aria-label="19"></a>      x2 <span class="op">+=</span> R<span class="op">(</span><span class="dv">0</span><span class="op">)*</span>R<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
-<span id="cb23-20"><a aria-label="20"></a>    <span class="op">}</span></span>
-<span id="cb23-21"><a aria-label="21"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"random(L): min="</span> <span class="op">&lt;&lt;</span> rmin <span class="op">&lt;&lt;</span> <span class="st">" max="</span> <span class="op">&lt;&lt;</span> rmax</span>
-<span id="cb23-22"><a aria-label="22"></a>            <span class="op">&lt;&lt;</span> <span class="st">" &lt;x^2&gt;="</span> <span class="op">&lt;&lt;</span> x2<span class="op">/</span>M <span class="op">&lt;&lt;</span> <span class="st">" (exact L^2/12="</span> <span class="op">&lt;&lt;</span> L<span class="op">*</span>L<span class="op">/</span><span class="dv">12</span> <span class="op">&lt;&lt;</span> <span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb23-23"><a aria-label="23"></a></span>
-<span id="cb23-24"><a aria-label="24"></a>  <span class="co">// random_orient(): uniform on the unit sphere</span></span>
-<span id="cb23-25"><a aria-label="25"></a>  ntype dnmax <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> z <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> z2 <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> cap <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb23-26"><a aria-label="26"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> M<span class="op">;</span> k<span class="op">++)</span></span>
-<span id="cb23-27"><a aria-label="27"></a>    <span class="op">{</span></span>
-<span id="cb23-28"><a aria-label="28"></a>      U<span class="op">.</span>random_orient<span class="op">();</span></span>
-<span id="cb23-29"><a aria-label="29"></a>      ntype dn <span class="op">=</span> fabs<span class="op">(</span>U<span class="op">.</span>norm<span class="op">()</span> <span class="op">-</span> <span class="fl">1.0</span><span class="op">);</span></span>
-<span id="cb23-30"><a aria-label="30"></a>      <span class="cf">if</span> <span class="op">(</span>dn <span class="op">&gt;</span> dnmax<span class="op">)</span> dnmax <span class="op">=</span> dn<span class="op">;</span></span>
-<span id="cb23-31"><a aria-label="31"></a>      z  <span class="op">+=</span> U<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
-<span id="cb23-32"><a aria-label="32"></a>      z2 <span class="op">+=</span> U<span class="op">(</span><span class="dv">2</span><span class="op">)*</span>U<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
-<span id="cb23-33"><a aria-label="33"></a>      <span class="cf">if</span> <span class="op">(</span>U<span class="op">(</span><span class="dv">2</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0.5</span><span class="op">)</span> cap<span class="op">++;</span>  <span class="co">// spherical cap z &gt; 1/2: a quarter of the sphere</span></span>
-<span id="cb23-34"><a aria-label="34"></a>    <span class="op">}</span></span>
-<span id="cb23-35"><a aria-label="35"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"random_orient(): max|norm-1|="</span> <span class="op">&lt;&lt;</span> dnmax <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
-<span id="cb23-36"><a aria-label="36"></a>            <span class="op">&lt;&lt;</span> <span class="st">"  &lt;z&gt;="</span> <span class="op">&lt;&lt;</span> z<span class="op">/</span>M <span class="op">&lt;&lt;</span> <span class="st">" (exact 0)  &lt;z^2&gt;="</span> <span class="op">&lt;&lt;</span> z2<span class="op">/</span>M <span class="op">&lt;&lt;</span> <span class="st">" (exact 1/3)"</span></span>
-<span id="cb23-37"><a aria-label="37"></a>            <span class="op">&lt;&lt;</span> <span class="st">"  P(z&gt;1/2)="</span> <span class="op">&lt;&lt;</span> cap<span class="op">/</span>M <span class="op">&lt;&lt;</span> <span class="st">" (exact 1/4)</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb23-38"><a aria-label="38"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb23-39"><a aria-label="39"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb24-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./pvector.hpp"</span></span>
+<span id="cb24-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb24-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb24-4"><a aria-label="4"></a>  <span class="kw">using</span> ntype <span class="op">=</span> <span class="dt">double</span><span class="op">;</span>       <span class="co">// type of the components (first template argument)</span></span>
+<span id="cb24-5"><a aria-label="5"></a>  <span class="kw">constexpr</span> <span class="dt">int</span> NT <span class="op">=</span> <span class="dv">3</span><span class="op">;</span>       <span class="co">// number of components (second template argument)</span></span>
+<span id="cb24-6"><a aria-label="6"></a>  rng<span class="op">.</span>seed<span class="op">(</span><span class="dv">1</span><span class="op">);</span>                <span class="co">// fixed seed: the same random numbers at every run</span></span>
+<span id="cb24-7"><a aria-label="7"></a>  <span class="at">const</span> <span class="dt">int</span> M <span class="op">=</span> <span class="dv">1000000</span><span class="op">;</span>      <span class="co">// number of random vectors</span></span>
+<span id="cb24-8"><a aria-label="8"></a>  <span class="at">const</span> ntype L <span class="op">=</span> <span class="fl">10.0</span><span class="op">;</span>       <span class="co">// side of the box</span></span>
+<span id="cb24-9"><a aria-label="9"></a>  pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> R<span class="op">,</span> U<span class="op">;</span></span>
+<span id="cb24-10"><a aria-label="10"></a>  <span class="co">// random(L): each component uniform in [-L/2, L/2)</span></span>
+<span id="cb24-11"><a aria-label="11"></a>  ntype rmin <span class="op">=</span> L<span class="op">,</span> rmax <span class="op">=</span> <span class="op">-</span>L<span class="op">,</span> x2 <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb24-12"><a aria-label="12"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> M<span class="op">;</span> k<span class="op">++)</span></span>
+<span id="cb24-13"><a aria-label="13"></a>    <span class="op">{</span></span>
+<span id="cb24-14"><a aria-label="14"></a>      R<span class="op">.</span>random<span class="op">(</span>L<span class="op">);</span></span>
+<span id="cb24-15"><a aria-label="15"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb24-16"><a aria-label="16"></a>        <span class="op">{</span></span>
+<span id="cb24-17"><a aria-label="17"></a>          <span class="cf">if</span> <span class="op">(</span>R<span class="op">(</span>i<span class="op">)</span> <span class="op">&lt;</span> rmin<span class="op">)</span> rmin <span class="op">=</span> R<span class="op">(</span>i<span class="op">);</span></span>
+<span id="cb24-18"><a aria-label="18"></a>          <span class="cf">if</span> <span class="op">(</span>R<span class="op">(</span>i<span class="op">)</span> <span class="op">&gt;</span> rmax<span class="op">)</span> rmax <span class="op">=</span> R<span class="op">(</span>i<span class="op">);</span></span>
+<span id="cb24-19"><a aria-label="19"></a>        <span class="op">}</span></span>
+<span id="cb24-20"><a aria-label="20"></a>      x2 <span class="op">+=</span> R<span class="op">(</span><span class="dv">0</span><span class="op">)*</span>R<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb24-21"><a aria-label="21"></a>    <span class="op">}</span></span>
+<span id="cb24-22"><a aria-label="22"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"random(L): min="</span> <span class="op">&lt;&lt;</span> rmin <span class="op">&lt;&lt;</span> <span class="st">" max="</span> <span class="op">&lt;&lt;</span> rmax</span>
+<span id="cb24-23"><a aria-label="23"></a>            <span class="op">&lt;&lt;</span> <span class="st">" &lt;x^2&gt;="</span> <span class="op">&lt;&lt;</span> x2<span class="op">/</span>M <span class="op">&lt;&lt;</span> <span class="st">" (exact L^2/12="</span> <span class="op">&lt;&lt;</span> L<span class="op">*</span>L<span class="op">/</span><span class="dv">12</span> <span class="op">&lt;&lt;</span> <span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb24-24"><a aria-label="24"></a></span>
+<span id="cb24-25"><a aria-label="25"></a>  <span class="co">// random_orient(): uniform on the unit sphere</span></span>
+<span id="cb24-26"><a aria-label="26"></a>  ntype dnmax <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> z <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> z2 <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> cap <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb24-27"><a aria-label="27"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> M<span class="op">;</span> k<span class="op">++)</span></span>
+<span id="cb24-28"><a aria-label="28"></a>    <span class="op">{</span></span>
+<span id="cb24-29"><a aria-label="29"></a>      U<span class="op">.</span>random_orient<span class="op">();</span></span>
+<span id="cb24-30"><a aria-label="30"></a>      ntype dn <span class="op">=</span> fabs<span class="op">(</span>U<span class="op">.</span>norm<span class="op">()</span> <span class="op">-</span> <span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb24-31"><a aria-label="31"></a>      <span class="cf">if</span> <span class="op">(</span>dn <span class="op">&gt;</span> dnmax<span class="op">)</span> dnmax <span class="op">=</span> dn<span class="op">;</span></span>
+<span id="cb24-32"><a aria-label="32"></a>      z  <span class="op">+=</span> U<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
+<span id="cb24-33"><a aria-label="33"></a>      z2 <span class="op">+=</span> U<span class="op">(</span><span class="dv">2</span><span class="op">)*</span>U<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
+<span id="cb24-34"><a aria-label="34"></a>      <span class="cf">if</span> <span class="op">(</span>U<span class="op">(</span><span class="dv">2</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0.5</span><span class="op">)</span> cap<span class="op">++;</span>  <span class="co">// spherical cap z &gt; 1/2: a quarter of the sphere</span></span>
+<span id="cb24-35"><a aria-label="35"></a>    <span class="op">}</span></span>
+<span id="cb24-36"><a aria-label="36"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"random_orient(): max|norm-1|="</span> <span class="op">&lt;&lt;</span> dnmax <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb24-37"><a aria-label="37"></a>            <span class="op">&lt;&lt;</span> <span class="st">"  &lt;z&gt;="</span> <span class="op">&lt;&lt;</span> z<span class="op">/</span>M <span class="op">&lt;&lt;</span> <span class="st">" (exact 0)  &lt;z^2&gt;="</span> <span class="op">&lt;&lt;</span> z2<span class="op">/</span>M <span class="op">&lt;&lt;</span> <span class="st">" (exact 1/3)"</span></span>
+<span id="cb24-38"><a aria-label="38"></a>            <span class="op">&lt;&lt;</span> <span class="st">"  P(z&gt;1/2)="</span> <span class="op">&lt;&lt;</span> cap<span class="op">/</span>M <span class="op">&lt;&lt;</span> <span class="st">" (exact 1/4)</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb24-39"><a aria-label="39"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb24-40"><a aria-label="40"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="compile-run-compare" class="slide level2 smaller">
 <h2>Compile, run, compare</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
-<span id="cb24-2"><a aria-label="2"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> pvector pvector.cpp</span>
-<span id="cb24-3"><a aria-label="3"></a><span class="ex">./pvector</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
+<span id="cb25-2"><a aria-label="2"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> pvector pvector.cpp</span>
+<span id="cb25-3"><a aria-label="3"></a><span class="ex">./pvector</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>random(L): min=-5 max=4.99999 &lt;x^2&gt;=8.32859 (exact L^2/12=8.33333)
 random_orient(): max|norm-1|=3.33067e-16
   &lt;z&gt;=0.000468512 (exact 0)  &lt;z^2&gt;=0.333328 (exact 1/3)  P(z&gt;1/2)=0.250128 (exact 1/4)</code></pre>
@@ -1374,26 +1410,26 @@ random_orient(): max|norm-1|=3.33067e-16
 <section id="pmatrixq-a-class-template" class="slide level2 smaller codice-intero codice-micro">
 <h2><code>pmatrixq</code>: a class template</h2>
 <p><code>project/pmatrix.hpp</code>: a class for <strong>square</strong> matrices <span class="math inline">\(NT \times NT\)</span> (hence the <code>q</code>).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb26-1"><a aria-label="1"></a><span class="co">// [*] constructor with initializer_list</span></span>
-<span id="cb26-2"><a aria-label="2"></a><span class="co">// [*] overloading of () operator (m(i,j))</span></span>
-<span id="cb26-3"><a aria-label="3"></a><span class="co">// [*] overloading of &lt;&lt; operator to print a matrix</span></span>
-<span id="cb26-4"><a aria-label="4"></a><span class="co">// [*] matrix addition and subtraction</span></span>
-<span id="cb26-5"><a aria-label="5"></a><span class="co">// [ ] += and -= operators</span></span>
-<span id="cb26-6"><a aria-label="6"></a><span class="co">// [ ] matrix times scalar (also *=)</span></span>
-<span id="cb26-7"><a aria-label="7"></a><span class="co">// [ ] matrix divided by scalar (also /=) </span></span>
-<span id="cb26-8"><a aria-label="8"></a><span class="co">// [ ] scalar times matrix &lt;--- with friend function</span></span>
-<span id="cb26-9"><a aria-label="9"></a><span class="co">// [ ] matrix times vector </span></span>
-<span id="cb26-10"><a aria-label="10"></a><span class="co">// [ ] vector times matrix &lt;--- with friend function</span></span>
-<span id="cb26-11"><a aria-label="11"></a><span class="co">// [ ] matrix times matrix (also *=)</span></span>
-<span id="cb26-12"><a aria-label="12"></a><span class="co">// [ ] transpose</span></span>
-<span id="cb26-13"><a aria-label="13"></a><span class="co">// [ ] operator == to pmatrix class</span></span>
-<span id="cb26-14"><a aria-label="14"></a><span class="co">// </span></span>
-<span id="cb26-15"><a aria-label="15"></a><span class="pp">#include </span><span class="im">"./pvector.hpp"</span></span>
-<span id="cb26-16"><a aria-label="16"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">,</span> <span class="dt">int</span> NT<span class="op">&gt;</span></span>
-<span id="cb26-17"><a aria-label="17"></a><span class="kw">class</span> pmatrixq</span>
-<span id="cb26-18"><a aria-label="18"></a><span class="op">{</span></span>
-<span id="cb26-19"><a aria-label="19"></a>  ntype m<span class="op">[</span>NT<span class="op">][</span>NT<span class="op">];</span></span>
-<span id="cb26-20"><a aria-label="20"></a><span class="kw">public</span><span class="op">:</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb27-1"><a aria-label="1"></a><span class="co">// [*] constructor with initializer_list</span></span>
+<span id="cb27-2"><a aria-label="2"></a><span class="co">// [*] overloading of () operator (m(i,j))</span></span>
+<span id="cb27-3"><a aria-label="3"></a><span class="co">// [*] overloading of &lt;&lt; operator to print a matrix</span></span>
+<span id="cb27-4"><a aria-label="4"></a><span class="co">// [*] matrix addition and subtraction</span></span>
+<span id="cb27-5"><a aria-label="5"></a><span class="co">// [ ] += and -= operators</span></span>
+<span id="cb27-6"><a aria-label="6"></a><span class="co">// [ ] matrix times scalar (also *=)</span></span>
+<span id="cb27-7"><a aria-label="7"></a><span class="co">// [ ] matrix divided by scalar (also /=) </span></span>
+<span id="cb27-8"><a aria-label="8"></a><span class="co">// [ ] scalar times matrix &lt;--- with friend function</span></span>
+<span id="cb27-9"><a aria-label="9"></a><span class="co">// [ ] matrix times vector </span></span>
+<span id="cb27-10"><a aria-label="10"></a><span class="co">// [ ] vector times matrix &lt;--- with friend function</span></span>
+<span id="cb27-11"><a aria-label="11"></a><span class="co">// [ ] matrix times matrix (also *=)</span></span>
+<span id="cb27-12"><a aria-label="12"></a><span class="co">// [ ] transpose</span></span>
+<span id="cb27-13"><a aria-label="13"></a><span class="co">// [ ] operator == to pmatrix class</span></span>
+<span id="cb27-14"><a aria-label="14"></a><span class="co">// </span></span>
+<span id="cb27-15"><a aria-label="15"></a><span class="pp">#include </span><span class="im">"./pvector.hpp"</span></span>
+<span id="cb27-16"><a aria-label="16"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">,</span> <span class="dt">int</span> NT<span class="op">&gt;</span></span>
+<span id="cb27-17"><a aria-label="17"></a><span class="kw">class</span> pmatrixq</span>
+<span id="cb27-18"><a aria-label="18"></a><span class="op">{</span></span>
+<span id="cb27-19"><a aria-label="19"></a>  ntype m<span class="op">[</span>NT<span class="op">][</span>NT<span class="op">];</span></span>
+<span id="cb27-20"><a aria-label="20"></a><span class="kw">public</span><span class="op">:</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>template &lt;typename ntype, int NT&gt;</code>: type and size are parameters (N8, plus an integer parameter): <code>pmatrixq&lt;double,3&gt;</code>, <code>pmatrixq&lt;float,2&gt;</code>, … Inside the class, <code>pmatrixq</code> alone means <code>pmatrixq&lt;ntype,NT&gt;</code>.</li>
 <li><code>ntype m[NT][NT];</code>: a C 2D array, <code>m[i][j]</code> is row <code>i</code>, column <code>j</code>. Today the <code>[*]</code> methods.</li>
@@ -1402,43 +1438,44 @@ random_orient(): max|norm-1|=3.33067e-16
 <section id="why-nt-is-now-constexpr" class="slide level2 smaller">
 <h2>Why <code>NT</code> is now <code>constexpr</code></h2>
 <p><code>pmatrix.hpp</code> includes <code>pvector.hpp</code> (it will need vectors for matrix times vector). With the macro of Lab #1, <code>#define NT 3</code>, it does not compile:</p>
-<pre><code>pvector.hpp:41:12: error: expected '&gt;' before numeric constant
+<pre><code>pvector.hpp:43:12: error: expected '&gt;' before numeric constant
 pmatrix.hpp:25:31: note: in expansion of macro 'NT'</code></pre>
 <ul>
 <li>The preprocessor replaces <strong>every</strong> <code>NT</code> with <code>3</code>, also the template parameter: <code>template &lt;typename ntype, int 3&gt;</code> is not C++. A macro has no type and no scope (Lab #1).</li>
-<li>With <code>constexpr int NT=3;</code> (<code>pvector.hpp</code>, lines 40–43) the global constant and the template parameter <code>NT</code> of <code>pmatrixq</code> can coexist: inside the class the parameter hides the global name. The same happens for <code>ntype</code>.</li>
+<li>With <code>constexpr int NT=3;</code> (<code>pvector.hpp</code>, lines 42–45) the global constant and the template parameter <code>NT</code> of <code>pmatrixq</code> can coexist: inside the class the parameter hides the global name. The same happens for <code>ntype</code>.</li>
+<li>After Task 1 the two global definitions are commented out: <code>pvector</code> and <code>pmatrixq</code> both get <code>NT</code> and <code>ntype</code> as template parameters.</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb28-1"><a aria-label="1"></a><span class="co">// STRATEGIES TO MAKE CLASS GENERIC</span></span>
-<span id="cb28-2"><a aria-label="2"></a><span class="co">//#define NT 3</span></span>
-<span id="cb28-3"><a aria-label="3"></a><span class="co">// constexpr tells compiler that NT can be calculated at compile time</span></span>
-<span id="cb28-4"><a aria-label="4"></a><span class="kw">constexpr</span> <span class="dt">int</span> NT<span class="op">=</span><span class="dv">3</span><span class="op">;</span></span>
-<span id="cb28-5"><a aria-label="5"></a></span>
-<span id="cb28-6"><a aria-label="6"></a><span class="co">//typedef float ntype; // as in C</span></span>
-<span id="cb28-7"><a aria-label="7"></a><span class="kw">using</span> ntype<span class="op">=</span><span class="dt">double</span><span class="op">;</span> <span class="co">// use "using" to define an alias for the keyword "double"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb29-1"><a aria-label="1"></a><span class="co">// STRATEGIES TO MAKE CLASS GENERIC</span></span>
+<span id="cb29-2"><a aria-label="2"></a><span class="co">//#define NT 3</span></span>
+<span id="cb29-3"><a aria-label="3"></a><span class="co">// constexpr tells compiler that NT can be calculated at compile time</span></span>
+<span id="cb29-4"><a aria-label="4"></a><span class="kw">constexpr</span> <span class="dt">int</span> NT<span class="op">=</span><span class="dv">3</span><span class="op">;</span></span>
+<span id="cb29-5"><a aria-label="5"></a></span>
+<span id="cb29-6"><a aria-label="6"></a><span class="co">//typedef float ntype; // as in C</span></span>
+<span id="cb29-7"><a aria-label="7"></a><span class="kw">using</span> ntype<span class="op">=</span><span class="dt">double</span><span class="op">;</span> <span class="co">// use "using" to define an alias for the keyword "double"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="constructors" class="slide level2 smaller codice-intero codice-micro">
 <h2>Constructors</h2>
 <p><code>project/pmatrix.hpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb29-1"><a aria-label="1"></a>  <span class="op">~</span>pmatrixq<span class="op">()</span></span>
-<span id="cb29-2"><a aria-label="2"></a>    <span class="op">{</span></span>
-<span id="cb29-3"><a aria-label="3"></a></span>
-<span id="cb29-4"><a aria-label="4"></a>    <span class="op">}</span></span>
-<span id="cb29-5"><a aria-label="5"></a>  pmatrixq<span class="op">()</span></span>
-<span id="cb29-6"><a aria-label="6"></a>    <span class="op">{</span></span>
-<span id="cb29-7"><a aria-label="7"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb29-8"><a aria-label="8"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb29-9"><a aria-label="9"></a>          m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]=</span><span class="dv">0</span><span class="op">;</span></span>
-<span id="cb29-10"><a aria-label="10"></a>    <span class="op">}</span></span>
-<span id="cb29-11"><a aria-label="11"></a></span>
-<span id="cb29-12"><a aria-label="12"></a>  <span class="co">// to initialize a matrix as follows: pmatrixq&lt;double,2&gt; M={1,2,3,4};</span></span>
-<span id="cb29-13"><a aria-label="13"></a>  pmatrixq<span class="op">(</span><span class="bu">std::</span>initializer_list<span class="op">&lt;</span>ntype<span class="op">&gt;</span> list<span class="op">)</span></span>
-<span id="cb29-14"><a aria-label="14"></a>    <span class="op">{</span></span>
-<span id="cb29-15"><a aria-label="15"></a>    <span class="op">}</span> </span>
-<span id="cb29-16"><a aria-label="16"></a></span>
-<span id="cb29-17"><a aria-label="17"></a>  <span class="co">// to initialize a matrix as follows: pmatrixq&lt;double,2&gt; M={{1,2},{3,4}};</span></span>
-<span id="cb29-18"><a aria-label="18"></a>  pmatrixq<span class="op">(</span><span class="bu">std::</span>initializer_list<span class="op">&lt;</span><span class="bu">std::</span>initializer_list<span class="op">&lt;</span>ntype<span class="op">&gt;&gt;</span> list<span class="op">)</span></span>
-<span id="cb29-19"><a aria-label="19"></a>    <span class="op">{</span></span>
-<span id="cb29-20"><a aria-label="20"></a>    <span class="op">}</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb30-1"><a aria-label="1"></a>  <span class="op">~</span>pmatrixq<span class="op">()</span></span>
+<span id="cb30-2"><a aria-label="2"></a>    <span class="op">{</span></span>
+<span id="cb30-3"><a aria-label="3"></a></span>
+<span id="cb30-4"><a aria-label="4"></a>    <span class="op">}</span></span>
+<span id="cb30-5"><a aria-label="5"></a>  pmatrixq<span class="op">()</span></span>
+<span id="cb30-6"><a aria-label="6"></a>    <span class="op">{</span></span>
+<span id="cb30-7"><a aria-label="7"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb30-8"><a aria-label="8"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb30-9"><a aria-label="9"></a>          m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]=</span><span class="dv">0</span><span class="op">;</span></span>
+<span id="cb30-10"><a aria-label="10"></a>    <span class="op">}</span></span>
+<span id="cb30-11"><a aria-label="11"></a></span>
+<span id="cb30-12"><a aria-label="12"></a>  <span class="co">// to initialize a matrix as follows: pmatrixq&lt;double,2&gt; M={1,2,3,4};</span></span>
+<span id="cb30-13"><a aria-label="13"></a>  pmatrixq<span class="op">(</span><span class="bu">std::</span>initializer_list<span class="op">&lt;</span>ntype<span class="op">&gt;</span> list<span class="op">)</span></span>
+<span id="cb30-14"><a aria-label="14"></a>    <span class="op">{</span></span>
+<span id="cb30-15"><a aria-label="15"></a>    <span class="op">}</span> </span>
+<span id="cb30-16"><a aria-label="16"></a></span>
+<span id="cb30-17"><a aria-label="17"></a>  <span class="co">// to initialize a matrix as follows: pmatrixq&lt;double,2&gt; M={{1,2},{3,4}};</span></span>
+<span id="cb30-18"><a aria-label="18"></a>  pmatrixq<span class="op">(</span><span class="bu">std::</span>initializer_list<span class="op">&lt;</span><span class="bu">std::</span>initializer_list<span class="op">&lt;</span>ntype<span class="op">&gt;&gt;</span> list<span class="op">)</span></span>
+<span id="cb30-19"><a aria-label="19"></a>    <span class="op">{</span></span>
+<span id="cb30-20"><a aria-label="20"></a>    <span class="op">}</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>{1,2,3,4}</code>: a list of <span class="math inline">\(NT^2\)</span> numbers, row by row: element <span class="math inline">\(k\)</span> goes to <code>m[k/NT][k%NT]</code> (integer division and remainder).</li>
 <li><code>{{1,2},{3,4}}</code>: a list of rows (an <code>initializer_list</code> of <code>initializer_list</code>): a range-based <code>for</code> over the rows, with another one inside over the elements of the row. Never write outside the array if the lists are too long.</li>
@@ -1447,31 +1484,31 @@ pmatrix.hpp:25:31: note: in expansion of macro 'NT'</code></pre>
 <section id="operator--" class="slide level2 smaller codice-intero codice-micro">
 <h2><code>operator()</code>, <code>&lt;&lt;</code>, <code>+</code>, <code>-</code></h2>
 <p><code>project/pmatrix.hpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb30-1"><a aria-label="1"></a>  <span class="co">// ============================================================</span></span>
-<span id="cb30-2"><a aria-label="2"></a>  <span class="co">// overloading of () operator to get/set (i,j)-th element</span></span>
-<span id="cb30-3"><a aria-label="3"></a>  <span class="co">// m(i,j)=2.0;</span></span>
-<span id="cb30-4"><a aria-label="4"></a>  <span class="co">// std::cout &lt;&lt; m(i, j);</span></span>
-<span id="cb30-5"><a aria-label="5"></a>  ntype<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">()(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">)</span></span>
-<span id="cb30-6"><a aria-label="6"></a>    <span class="op">{</span></span>
-<span id="cb30-7"><a aria-label="7"></a>     <span class="op">}</span></span>
-<span id="cb30-8"><a aria-label="8"></a>  </span>
-<span id="cb30-9"><a aria-label="9"></a>  ntype <span class="kw">operator</span><span class="op">()(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">)</span> <span class="at">const</span></span>
-<span id="cb30-10"><a aria-label="10"></a>    <span class="op">{</span></span>
-<span id="cb30-11"><a aria-label="11"></a>    <span class="op">}</span></span>
-<span id="cb30-12"><a aria-label="12"></a></span>
-<span id="cb30-13"><a aria-label="13"></a>  <span class="co">// output (std::cout &lt;&lt; M) &lt;&lt; "\n";</span></span>
-<span id="cb30-14"><a aria-label="14"></a>  <span class="kw">friend</span> <span class="bu">std::</span>ostream<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&lt;&lt;(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">,</span> <span class="at">const</span> pmatrixq<span class="op">&amp;</span> M1<span class="op">)</span></span>
-<span id="cb30-15"><a aria-label="15"></a>    <span class="op">{</span></span>
-<span id="cb30-16"><a aria-label="16"></a>    <span class="op">}</span></span>
-<span id="cb30-17"><a aria-label="17"></a></span>
-<span id="cb30-18"><a aria-label="18"></a>  <span class="co">// addition </span></span>
-<span id="cb30-19"><a aria-label="19"></a>  pmatrixq <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
-<span id="cb30-20"><a aria-label="20"></a>    <span class="op">{</span></span>
-<span id="cb30-21"><a aria-label="21"></a>    <span class="op">}</span></span>
-<span id="cb30-22"><a aria-label="22"></a>  <span class="co">// subtraction</span></span>
-<span id="cb30-23"><a aria-label="23"></a>  pmatrixq <span class="kw">operator</span><span class="op">-(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
-<span id="cb30-24"><a aria-label="24"></a>    <span class="op">{</span></span>
-<span id="cb30-25"><a aria-label="25"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb31-1"><a aria-label="1"></a>  <span class="co">// ============================================================</span></span>
+<span id="cb31-2"><a aria-label="2"></a>  <span class="co">// overloading of () operator to get/set (i,j)-th element</span></span>
+<span id="cb31-3"><a aria-label="3"></a>  <span class="co">// m(i,j)=2.0;</span></span>
+<span id="cb31-4"><a aria-label="4"></a>  <span class="co">// std::cout &lt;&lt; m(i, j);</span></span>
+<span id="cb31-5"><a aria-label="5"></a>  ntype<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">()(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">)</span></span>
+<span id="cb31-6"><a aria-label="6"></a>    <span class="op">{</span></span>
+<span id="cb31-7"><a aria-label="7"></a>     <span class="op">}</span></span>
+<span id="cb31-8"><a aria-label="8"></a>  </span>
+<span id="cb31-9"><a aria-label="9"></a>  ntype <span class="kw">operator</span><span class="op">()(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">)</span> <span class="at">const</span></span>
+<span id="cb31-10"><a aria-label="10"></a>    <span class="op">{</span></span>
+<span id="cb31-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb31-12"><a aria-label="12"></a></span>
+<span id="cb31-13"><a aria-label="13"></a>  <span class="co">// output (std::cout &lt;&lt; M) &lt;&lt; "\n";</span></span>
+<span id="cb31-14"><a aria-label="14"></a>  <span class="kw">friend</span> <span class="bu">std::</span>ostream<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">&lt;&lt;(</span><span class="bu">std::</span>ostream<span class="op">&amp;</span> os<span class="op">,</span> <span class="at">const</span> pmatrixq<span class="op">&amp;</span> M1<span class="op">)</span></span>
+<span id="cb31-15"><a aria-label="15"></a>    <span class="op">{</span></span>
+<span id="cb31-16"><a aria-label="16"></a>    <span class="op">}</span></span>
+<span id="cb31-17"><a aria-label="17"></a></span>
+<span id="cb31-18"><a aria-label="18"></a>  <span class="co">// addition </span></span>
+<span id="cb31-19"><a aria-label="19"></a>  pmatrixq <span class="kw">operator</span><span class="op">+(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
+<span id="cb31-20"><a aria-label="20"></a>    <span class="op">{</span></span>
+<span id="cb31-21"><a aria-label="21"></a>    <span class="op">}</span></span>
+<span id="cb31-22"><a aria-label="22"></a>  <span class="co">// subtraction</span></span>
+<span id="cb31-23"><a aria-label="23"></a>  pmatrixq <span class="kw">operator</span><span class="op">-(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
+<span id="cb31-24"><a aria-label="24"></a>    <span class="op">{</span></span>
+<span id="cb31-25"><a aria-label="25"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>As in <code>pvector</code>, with two indices: <code>M(i,j)</code> returns <code>m[i][j]</code> (by reference if not <code>const</code>).</li>
 <li><code>&lt;&lt;</code> prints row by row, <code>{{1,2,3},{4,5,6},{7,8,9}}</code>, and returns <code>os</code>. <code>+</code> and <code>-</code>: a local <code>MT</code> filled with two nested loops, returned by value.</li>
@@ -1480,25 +1517,25 @@ pmatrix.hpp:25:31: note: in expansion of macro 'NT'</code></pre>
 <section id="the-goal-pmatrix.cpp" class="slide level2 smaller codice-intero">
 <h2>The goal: <code>pmatrix.cpp</code></h2>
 <p><code>project/pmatrix.cpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb31-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./pmatrix.hpp"</span></span>
-<span id="cb31-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb31-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb31-4"><a aria-label="4"></a>  pmatrixq<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> A <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">9</span><span class="op">};</span>        <span class="co">// NT*NT numbers, row by row</span></span>
-<span id="cb31-5"><a aria-label="5"></a>  pmatrixq<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> B <span class="op">=</span> <span class="op">{{</span><span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">2</span><span class="op">},</span> <span class="op">{</span><span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">},</span> <span class="op">{</span><span class="dv">8</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">}};</span>  <span class="co">// a list of rows</span></span>
-<span id="cb31-6"><a aria-label="6"></a>  pmatrixq<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> C<span class="op">;</span>                                       <span class="co">// void constructor: all 0</span></span>
-<span id="cb31-7"><a aria-label="7"></a>  <span class="at">const</span> pmatrixq<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> K <span class="op">=</span> <span class="op">{{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">},</span> <span class="op">{</span><span class="dv">0</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">0</span><span class="op">},</span> <span class="op">{</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">3</span><span class="op">}};</span></span>
-<span id="cb31-8"><a aria-label="8"></a></span>
-<span id="cb31-9"><a aria-label="9"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A="</span> <span class="op">&lt;&lt;</span> A <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb31-10"><a aria-label="10"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"B="</span> <span class="op">&lt;&lt;</span> B <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb31-11"><a aria-label="11"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A(1,2)="</span> <span class="op">&lt;&lt;</span> A<span class="op">(</span><span class="dv">1</span><span class="op">,</span><span class="dv">2</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// operator(): read</span></span>
-<span id="cb31-12"><a aria-label="12"></a>  C<span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">)</span> <span class="op">=</span> <span class="fl">5.0</span><span class="op">;</span>                                 <span class="co">// operator(): write</span></span>
-<span id="cb31-13"><a aria-label="13"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"C="</span> <span class="op">&lt;&lt;</span> C <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb31-14"><a aria-label="14"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"K(2,2)="</span> <span class="op">&lt;&lt;</span> K<span class="op">(</span><span class="dv">2</span><span class="op">,</span><span class="dv">2</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// const operator()</span></span>
-<span id="cb31-15"><a aria-label="15"></a>  C <span class="op">=</span> A <span class="op">+</span> B<span class="op">;</span>   <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A+B="</span> <span class="op">&lt;&lt;</span> C <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb31-16"><a aria-label="16"></a>  C <span class="op">=</span> A <span class="op">-</span> B<span class="op">;</span>   <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A-B="</span> <span class="op">&lt;&lt;</span> C <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb31-17"><a aria-label="17"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A="</span> <span class="op">&lt;&lt;</span> A <span class="op">&lt;&lt;</span> <span class="st">" K="</span> <span class="op">&lt;&lt;</span> K <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="co">// chained &lt;&lt;</span></span>
-<span id="cb31-18"><a aria-label="18"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb31-19"><a aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb32-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./pmatrix.hpp"</span></span>
+<span id="cb32-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb32-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb32-4"><a aria-label="4"></a>  pmatrixq<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> A <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">9</span><span class="op">};</span>        <span class="co">// NT*NT numbers, row by row</span></span>
+<span id="cb32-5"><a aria-label="5"></a>  pmatrixq<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> B <span class="op">=</span> <span class="op">{{</span><span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">2</span><span class="op">},</span> <span class="op">{</span><span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">},</span> <span class="op">{</span><span class="dv">8</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">}};</span>  <span class="co">// a list of rows</span></span>
+<span id="cb32-6"><a aria-label="6"></a>  pmatrixq<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> C<span class="op">;</span>                                       <span class="co">// void constructor: all 0</span></span>
+<span id="cb32-7"><a aria-label="7"></a>  <span class="at">const</span> pmatrixq<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> K <span class="op">=</span> <span class="op">{{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">},</span> <span class="op">{</span><span class="dv">0</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">0</span><span class="op">},</span> <span class="op">{</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">3</span><span class="op">}};</span></span>
+<span id="cb32-8"><a aria-label="8"></a></span>
+<span id="cb32-9"><a aria-label="9"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A="</span> <span class="op">&lt;&lt;</span> A <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb32-10"><a aria-label="10"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"B="</span> <span class="op">&lt;&lt;</span> B <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb32-11"><a aria-label="11"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A(1,2)="</span> <span class="op">&lt;&lt;</span> A<span class="op">(</span><span class="dv">1</span><span class="op">,</span><span class="dv">2</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// operator(): read</span></span>
+<span id="cb32-12"><a aria-label="12"></a>  C<span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">)</span> <span class="op">=</span> <span class="fl">5.0</span><span class="op">;</span>                                 <span class="co">// operator(): write</span></span>
+<span id="cb32-13"><a aria-label="13"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"C="</span> <span class="op">&lt;&lt;</span> C <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb32-14"><a aria-label="14"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"K(2,2)="</span> <span class="op">&lt;&lt;</span> K<span class="op">(</span><span class="dv">2</span><span class="op">,</span><span class="dv">2</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// const operator()</span></span>
+<span id="cb32-15"><a aria-label="15"></a>  C <span class="op">=</span> A <span class="op">+</span> B<span class="op">;</span>   <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A+B="</span> <span class="op">&lt;&lt;</span> C <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb32-16"><a aria-label="16"></a>  C <span class="op">=</span> A <span class="op">-</span> B<span class="op">;</span>   <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A-B="</span> <span class="op">&lt;&lt;</span> C <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb32-17"><a aria-label="17"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"A="</span> <span class="op">&lt;&lt;</span> A <span class="op">&lt;&lt;</span> <span class="st">" K="</span> <span class="op">&lt;&lt;</span> K <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="co">// chained &lt;&lt;</span></span>
+<span id="cb32-18"><a aria-label="18"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb32-19"><a aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>A={{1,2,3},{4,5,6},{7,8,9}}
 B={{2,3,2},{3,4,5},{8,0,1}}
 A(1,2)=6
@@ -1515,7 +1552,7 @@ A={{1,2,3},{4,5,6},{7,8,9}} K={{1,0,0},{0,2,0},{0,0,3}}</code></pre>
 <li><strong>No seed at all</strong>: every run gives the same numbers (the default seed). Fine for debugging, wrong for independent runs.</li>
 <li><strong>Spherical coordinates</strong> with <span class="math inline">\(\theta\)</span> uniform: points crowd at the poles. Also normalizing a random vector of the cube <span class="math inline">\([-1,1)^3\)</span> is <strong>not</strong> uniform (the directions of the corners are favoured), unless the points outside the unit sphere are rejected first.</li>
 <li><strong>Forgetting the rejection</strong> in Marsaglia’s algorithm: the pairs <span class="math inline">\((V_1,V_2)\)</span> must be uniform inside the circle, not in the square.</li>
-<li><strong>A template used without its arguments</strong>: <code>pmatrixq M;</code> does not compile, write <code>pmatrixq&lt;double,3&gt; M;</code>.</li>
+<li><strong>A template used without its arguments</strong>: <code>pvector R;</code> or <code>pmatrixq M;</code> does not compile, write <code>pvector&lt;double,3&gt; R;</code> and <code>pmatrixq&lt;double,3&gt; M;</code>.</li>
 <li><strong><code>m[k/NT][k%NT]</code> with a list longer than <span class="math inline">\(NT^2\)</span></strong>: writes outside the matrix.</li>
 </ul>
 </section>
@@ -1524,6 +1561,7 @@ A={{1,2,3},{4,5,6},{7,8,9}} K={{1,0,0},{0,2,0},{0,0,3}}</code></pre>
 <ul class="task-list">
 <li><label><input type="checkbox">Examples N8 and N9 compiled and run; tried <code>genvec gv;</code> and <code>N = 100</code>; read the errors</label></li>
 <li><label><input type="checkbox">Your Lab #3 methods compared with the solution; new <code>project/</code> files downloaded (<code>pvector.hpp</code>, <code>pvector.cpp</code>, <code>randnumgen.hpp</code>, <code>pmatrix.hpp</code>, <code>pmatrix.cpp</code>)</label></li>
+<li><label><input type="checkbox"><code>pvector</code> is a class template, <code>template &lt;typename ntype, int NT&gt;</code>, and <code>project/pvector.cpp</code> compiles</label></li>
 <li><label><input type="checkbox"><code>random(L)</code> with components in <span class="math inline">\([-L/2, L/2)\)</span></label></li>
 <li><label><input type="checkbox"><code>random_orient()</code> with Marsaglia’s algorithm</label></li>
 <li><label><input type="checkbox"><code>project/pvector.cpp</code> gives averages close to the exact values, <strong>no warnings</strong></label></li>
