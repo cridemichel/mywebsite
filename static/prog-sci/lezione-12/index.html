@@ -809,7 +809,7 @@ Cristiano De Michele
 <section id="argomenti-di-oggi" class="slide level2 smaller">
 <h2>Argomenti di oggi</h2>
 <ul>
-<li><strong>L’ereditarietà</strong>: una classe derivata riceve attributi e metodi da una classe base; <code>protected</code></li>
+<li><strong>L’ereditarietà</strong>: una classe derivata riceve attributi e metodi da una classe base; i membri <code>protected</code></li>
 <li><strong>La classe <code>std::vector</code></strong>: un array che gestisce da sé la sua memoria</li>
 <li><strong>Il polimorfismo</strong>: metodi <code>virtual</code> e <code>override</code>, un vettore di puntatori alla classe base</li>
 <li><strong>Il distruttore virtuale</strong>: oggetti creati con <code>new</code> e distrutti attraverso la classe base</li>
@@ -882,8 +882,8 @@ Cristiano De Michele
 <li><code>DenseLayer</code>: moltiplica l’ingresso per la matrice dei pesi, <span class="math inline">\(z = W x + b\)</span> (Laboratorio 05);</li>
 <li><code>SigmoidLayer</code>: applica a ogni componente la funzione di attivazione <span class="math inline">\(\sigma\)</span>.</li>
 </ul>
-<p>I calcoli sono diversi, ma i due tipi hanno una parte in comune: entrambi hanno un tipo, ricevono un ingresso e producono un’uscita con un metodo <code>forward</code>, e la rete deve chiamarli uno dopo l’altro.</p>
-<p>In C si scriverebbero due <code>struct</code> e due gruppi di funzioni, ripetendo le parti comuni; un errore in una parte comune andrebbe corretto in ogni copia. Il C++ permette di scrivere la parte comune <strong>una volta sola</strong>, in una classe da cui le altre derivano.</p>
+<p>I calcoli sono diversi, ma i due tipi hanno una parte in comune: entrambi hanno un nome che ne indica il tipo, come <code>"DenseLayer"</code>, ricevono un ingresso e producono un’uscita con un metodo <code>forward</code>, e la rete deve chiamarli uno dopo l’altro.</p>
+<p>Il C++ permette di scrivere la parte comune <strong>una volta sola</strong>, in una classe da cui le altre derivano: un errore nella parte comune si corregge in un solo punto.</p>
 </section>
 <section id="lereditarietà" class="slide level2 smaller">
 <h2>L’ereditarietà</h2>
@@ -893,7 +893,7 @@ Cristiano De Michele
 <span id="cb4-3"><a aria-label="3"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>DenseLayer</code> è la classe derivata, <code>Layer</code> la classe base.</li>
-<li><code>public Layer</code>: i metodi pubblici di <code>Layer</code> restano pubblici anche in <code>DenseLayer</code>. È la forma che si usa quasi sempre.</li>
+<li><code>public Layer</code>: i membri pubblici di <code>Layer</code> restano pubblici anche in <code>DenseLayer</code>. Nel corso si usa sempre questa forma. Senza <code>public</code>, in una <code>class</code> la derivazione è <code>private</code>, come i membri (Lezione 06): un <code>DenseLayer</code> non si può più usare come <code>Layer</code>.</li>
 </ul>
 <p>L’ereditarietà descrive la relazione <strong>“è un”</strong>: un <code>DenseLayer</code> è un <code>Layer</code>. Quando la relazione è <strong>“ha un”</strong>, si usa un attributo: una rete ha dei layer, come un oggetto può avere un altro oggetto come attributo (Lezione 07).</p>
 </section>
@@ -1102,7 +1102,7 @@ SigmoidLayer: sigma(z)</code></pre>
 <section id="virtual-e-override" class="slide level2 smaller">
 <h2><code>virtual</code> e <code>override</code></h2>
 <ul>
-<li><strong>Senza <code>virtual</code></strong> il compilatore sceglie il metodo in compilazione, in base al tipo del puntatore.</li>
+<li><strong>Senza <code>virtual</code></strong> il compilatore sceglie il metodo in compilazione, in base al tipo del puntatore, non a quello dell’oggetto a cui si riferisce.</li>
 <li><strong>Con <code>virtual</code></strong> la scelta avviene in esecuzione, in base al tipo vero dell’oggetto a cui il puntatore si riferisce.</li>
 <li><strong><code>override</code></strong> protegge dai refusi: il compilatore controlla che il metodo sostituisca davvero un metodo virtuale della classe base.</li>
 </ul>
@@ -1256,40 +1256,6 @@ SigmoidLayer
 <p>Output atteso: <code>MSELoss: 0.25</code> e <code>AbsLoss: 0.5</code>, su due righe. Il codice è nelle due slide seguenti; si compila ed esegue con:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> loss <span class="kw">&amp;&amp;</span> <span class="ex">./build/loss</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="le-loss-il-file-da-completare" class="slide level2 smaller">
-<h2>Le loss: il file da completare</h2>
-<div class="columns">
-<div class="column" style="width:64%;">
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>loss.cpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="loss.cpp" data-startfrom="22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 21;"><span id="cb11-22"><a aria-label="22"></a><span class="co">// da completare: la classe AbsLoss, derivata</span></span>
-<span id="cb11-23"><a aria-label="23"></a><span class="co">// pubblicamente da Loss, con due metodi:</span></span>
-<span id="cb11-24"><a aria-label="24"></a><span class="co">// - double forward(double p, double t) const override,</span></span>
-<span id="cb11-25"><a aria-label="25"></a><span class="co">//   che restituisce std::abs(p - t);</span></span>
-<span id="cb11-26"><a aria-label="26"></a><span class="co">// - std::string get_type() const override,</span></span>
-<span id="cb11-27"><a aria-label="27"></a><span class="co">//   che restituisce "AbsLoss".</span></span>
-<span id="cb11-28"><a aria-label="28"></a></span>
-<span id="cb11-29"><a aria-label="29"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb11-30"><a aria-label="30"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span>Loss<span class="op">*&gt;</span> losses<span class="op">;</span></span>
-<span id="cb11-31"><a aria-label="31"></a>    losses<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> MSELoss<span class="op">());</span></span>
-<span id="cb11-32"><a aria-label="32"></a>    losses<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> AbsLoss<span class="op">());</span></span>
-<span id="cb11-33"><a aria-label="33"></a>    <span class="cf">for</span> <span class="op">(</span>Loss<span class="op">*</span> l <span class="op">:</span> losses<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb11-34"><a aria-label="34"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> l<span class="op">-&gt;</span><span class="dt">get_type</span><span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">": "</span></span>
-<span id="cb11-35"><a aria-label="35"></a>                  <span class="op">&lt;&lt;</span> l<span class="op">-&gt;</span>forward<span class="op">(</span><span class="fl">0.5</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb11-36"><a aria-label="36"></a>    <span class="op">}</span></span>
-<span id="cb11-37"><a aria-label="37"></a>    <span class="cf">for</span> <span class="op">(</span>Loss<span class="op">*</span> l <span class="op">:</span> losses<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb11-38"><a aria-label="38"></a>        <span class="kw">delete</span> l<span class="op">;</span></span>
-<span id="cb11-39"><a aria-label="39"></a>    <span class="op">}</span></span>
-<span id="cb11-40"><a aria-label="40"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb11-41"><a aria-label="41"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:36%;">
-<p><code>AbsLoss</code> va scritta dopo <code>MSELoss</code>, che fa da modello: stessa struttura, un’altra formula e un altro nome.</p>
-<p>Il <code>main</code> crea gli oggetti con <code>new</code> e li distrugge con <code>delete</code> attraverso il <code>Loss*</code>, come i layer della slide “Layer creati con <code>new</code>”.</p>
-</div></div>
-</section>
 <section id="esercizio-sulle-loss-le-classi-date" class="slide level2 smaller">
 <h2>Esercizio sulle loss: le classi date</h2>
 <div class="columns">
@@ -1298,31 +1264,66 @@ SigmoidLayer
 <div class="code-with-filename-file">
 <pre><strong>loss.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="loss.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
-<span id="cb12-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb12-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb12-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
-<span id="cb12-5"><a aria-label="5"></a></span>
-<span id="cb12-6"><a aria-label="6"></a><span class="kw">class</span> Loss <span class="op">{</span></span>
-<span id="cb12-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb12-8"><a aria-label="8"></a>    <span class="kw">virtual</span> <span class="op">~</span>Loss<span class="op">()</span> <span class="op">{}</span></span>
-<span id="cb12-9"><a aria-label="9"></a>    <span class="kw">virtual</span> <span class="dt">double</span> forward<span class="op">(</span><span class="dt">double</span> p<span class="op">,</span> <span class="dt">double</span> t<span class="op">)</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb12-10"><a aria-label="10"></a>    <span class="kw">virtual</span> <span class="bu">std::</span>string <span class="dt">get_type</span><span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb12-11"><a aria-label="11"></a><span class="op">};</span></span>
-<span id="cb12-12"><a aria-label="12"></a></span>
-<span id="cb12-13"><a aria-label="13"></a><span class="kw">class</span> MSELoss <span class="op">:</span> <span class="kw">public</span> Loss <span class="op">{</span></span>
-<span id="cb12-14"><a aria-label="14"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb12-15"><a aria-label="15"></a>    <span class="dt">double</span> forward<span class="op">(</span><span class="dt">double</span> p<span class="op">,</span> <span class="dt">double</span> t<span class="op">)</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
-<span id="cb12-16"><a aria-label="16"></a>        <span class="cf">return</span> <span class="op">(</span>p <span class="op">-</span> t<span class="op">)</span> <span class="op">*</span> <span class="op">(</span>p <span class="op">-</span> t<span class="op">);</span></span>
-<span id="cb12-17"><a aria-label="17"></a>    <span class="op">}</span></span>
-<span id="cb12-18"><a aria-label="18"></a>    <span class="bu">std::</span>string <span class="dt">get_type</span><span class="op">()</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
-<span id="cb12-19"><a aria-label="19"></a>        <span class="cf">return</span> <span class="st">"MSELoss"</span><span class="op">;</span></span>
-<span id="cb12-20"><a aria-label="20"></a>    <span class="op">}</span></span>
-<span id="cb12-21"><a aria-label="21"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="loss.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
+<span id="cb11-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb11-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb11-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb11-5"><a aria-label="5"></a></span>
+<span id="cb11-6"><a aria-label="6"></a><span class="kw">class</span> Loss <span class="op">{</span></span>
+<span id="cb11-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb11-8"><a aria-label="8"></a>    <span class="kw">virtual</span> <span class="op">~</span>Loss<span class="op">()</span> <span class="op">{}</span></span>
+<span id="cb11-9"><a aria-label="9"></a>    <span class="kw">virtual</span> <span class="dt">double</span> forward<span class="op">(</span><span class="dt">double</span> p<span class="op">,</span> <span class="dt">double</span> t<span class="op">)</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-10"><a aria-label="10"></a>    <span class="kw">virtual</span> <span class="bu">std::</span>string <span class="dt">get_type</span><span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-11"><a aria-label="11"></a><span class="op">};</span></span>
+<span id="cb11-12"><a aria-label="12"></a></span>
+<span id="cb11-13"><a aria-label="13"></a><span class="kw">class</span> MSELoss <span class="op">:</span> <span class="kw">public</span> Loss <span class="op">{</span></span>
+<span id="cb11-14"><a aria-label="14"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb11-15"><a aria-label="15"></a>    <span class="dt">double</span> forward<span class="op">(</span><span class="dt">double</span> p<span class="op">,</span> <span class="dt">double</span> t<span class="op">)</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb11-16"><a aria-label="16"></a>        <span class="cf">return</span> <span class="op">(</span>p <span class="op">-</span> t<span class="op">)</span> <span class="op">*</span> <span class="op">(</span>p <span class="op">-</span> t<span class="op">);</span></span>
+<span id="cb11-17"><a aria-label="17"></a>    <span class="op">}</span></span>
+<span id="cb11-18"><a aria-label="18"></a>    <span class="bu">std::</span>string <span class="dt">get_type</span><span class="op">()</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb11-19"><a aria-label="19"></a>        <span class="cf">return</span> <span class="st">"MSELoss"</span><span class="op">;</span></span>
+<span id="cb11-20"><a aria-label="20"></a>    <span class="op">}</span></span>
+<span id="cb11-21"><a aria-label="21"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:36%;">
 <p>Sono le prime righe di <code>loss.cpp</code>.</p>
 <p><code>Loss</code> è astratta: ha due metodi virtuali puri e il distruttore virtuale, perché gli oggetti si distruggono attraverso un <code>Loss*</code>.</p>
+</div></div>
+</section>
+<section id="le-loss-il-file-da-completare" class="slide level2 smaller">
+<h2>Le loss: il file da completare</h2>
+<div class="columns">
+<div class="column" style="width:64%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>loss.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="loss.cpp" data-startfrom="22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 21;"><span id="cb12-22"><a aria-label="22"></a><span class="co">// da completare: la classe AbsLoss, derivata</span></span>
+<span id="cb12-23"><a aria-label="23"></a><span class="co">// pubblicamente da Loss, con due metodi:</span></span>
+<span id="cb12-24"><a aria-label="24"></a><span class="co">// - double forward(double p, double t) const override,</span></span>
+<span id="cb12-25"><a aria-label="25"></a><span class="co">//   che restituisce il valore assoluto di p - t;</span></span>
+<span id="cb12-26"><a aria-label="26"></a><span class="co">// - std::string get_type() const override,</span></span>
+<span id="cb12-27"><a aria-label="27"></a><span class="co">//   che restituisce "AbsLoss".</span></span>
+<span id="cb12-28"><a aria-label="28"></a></span>
+<span id="cb12-29"><a aria-label="29"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-30"><a aria-label="30"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span>Loss<span class="op">*&gt;</span> losses<span class="op">;</span></span>
+<span id="cb12-31"><a aria-label="31"></a>    losses<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> MSELoss<span class="op">());</span></span>
+<span id="cb12-32"><a aria-label="32"></a>    <span class="co">// scommentate quando AbsLoss è scritta:</span></span>
+<span id="cb12-33"><a aria-label="33"></a>    <span class="co">// losses.push_back(new AbsLoss());</span></span>
+<span id="cb12-34"><a aria-label="34"></a>    <span class="cf">for</span> <span class="op">(</span>Loss<span class="op">*</span> l <span class="op">:</span> losses<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-35"><a aria-label="35"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> l<span class="op">-&gt;</span><span class="dt">get_type</span><span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">": "</span></span>
+<span id="cb12-36"><a aria-label="36"></a>                  <span class="op">&lt;&lt;</span> l<span class="op">-&gt;</span>forward<span class="op">(</span><span class="fl">0.5</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb12-37"><a aria-label="37"></a>    <span class="op">}</span></span>
+<span id="cb12-38"><a aria-label="38"></a>    <span class="cf">for</span> <span class="op">(</span>Loss<span class="op">*</span> l <span class="op">:</span> losses<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-39"><a aria-label="39"></a>        <span class="kw">delete</span> l<span class="op">;</span></span>
+<span id="cb12-40"><a aria-label="40"></a>    <span class="op">}</span></span>
+<span id="cb12-41"><a aria-label="41"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-42"><a aria-label="42"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:36%;">
+<p><code>AbsLoss</code> va scritta dopo <code>MSELoss</code>, che fa da modello: stessa struttura, un’altra formula e un altro nome.</p>
+<p>Il <code>main</code> crea gli oggetti con <code>new</code> e li distrugge con <code>delete</code> attraverso il <code>Loss*</code>, come i layer della slide “Layer creati con <code>new</code>”.</p>
 </div></div>
 </section>
 <section id="soluzione-dellesercizio" class="slide level2 smaller">
@@ -1420,7 +1421,7 @@ AbsLoss: 0.5</code></pre>
 <section id="discesa-su-una-funzione-qualsiasi" class="slide level2 smaller">
 <h2>Discesa su una funzione qualsiasi</h2>
 <p>Nella Lezione 10 la discesa conosceva una sola funzione, perché chiamava <code>gradF</code>. Per minimizzare una funzione qualsiasi, <span class="math inline">\(F\)</span> diventa una <strong>classe astratta</strong>, come la loss dell’esercizio precedente: la discesa usa solo i metodi virtuali <code>valore</code> e <code>gradiente</code>.</p>
-<p>La seconda funzione di prova è quella di Rosenbrock, che il libro del Laboratorio di Calcolo (<em>Programmazione Scientifica</em>, capitolo «Metodi di ottimizzazione») usa come banco di prova:</p>
+<p>La seconda funzione di prova è quella di Rosenbrock, un banco di prova classico per i metodi di minimizzazione:</p>
 <p><span class="math display">\[
 F(x, y) = (1 - x)^2 + 100\,(y - x^2)^2
 \]</span></p>
@@ -1433,11 +1434,10 @@ F(x, y) = (1 - x)^2 + 100\,(y - x^2)^2
 <h2>Esercizio: la discesa per una funzione qualsiasi</h2>
 <p><strong>Scopo:</strong> usare una classe astratta come schema comune: la stessa funzione <code>discesa</code> minimizza due funzioni diverse.</p>
 <ol type="1">
-<li>Copiate <code>Vettore2D.hpp</code> e <code>Vettore2D.cpp</code> dalla cartella <code>LEZIONE_10</code>, senza modifiche.</li>
+<li>Copiate <code>Vettore2D.hpp</code> e <code>Vettore2D.cpp</code> da <code>LEZIONE_10</code>, oppure dalle slide di soluzione in fondo.</li>
 <li>In <code>Funzione2D.hpp</code> sono date la classe astratta <code>Funzione2D</code> e la classe <code>Paraboloide</code>, la <span class="math inline">\(F = x^2 + 4y^2\)</span> della Lezione 10. Scrivete in fondo la classe <code>Rosenbrock</code>, sul modello di <code>Paraboloide</code>.</li>
-<li>In <code>discesa.cpp</code> scrivete per prima la funzione <code>discesa</code>: è quella della Lezione 10 con un argomento in più, <code>const Funzione2D&amp; f</code>, e con <code>f.gradiente(x)</code> al posto di <code>gradF(x)</code>. Le funzioni <code>prova</code> e <code>main</code>, che la seguono, sono date.</li>
+<li>In <code>discesa.cpp</code> scrivete per prima la funzione <code>discesa</code>: è quella della Lezione 10 con un argomento in più, <code>const Funzione2D&amp; f</code>, e con <code>f.gradiente(x)</code> al posto di <code>gradF(x)</code>. Le funzioni <code>prova</code> e <code>main</code>, che la seguono, sono date. Le parti date e quelle da scrivere sono nelle slide seguenti.</li>
 </ol>
-<p>Le parti da scrivere e quelle date sono nelle slide seguenti.</p>
 </section>
 <section id="esercizio-la-discesa-per-una-funzione-qualsiasi-segue" class="slide level2 smaller">
 <h2>Esercizio: la discesa per una funzione qualsiasi (segue)</h2>
@@ -1448,7 +1448,42 @@ F(x, y) = (1 - x)^2 + 100\,(y - x^2)^2
 Rosenbrock, eta = 0.001: 32076 passi, x = (0.999999, 0.999998), F = 1.25172e-12
 Rosenbrock, eta = 0.0019: 16851 passi, x = (0.999999, 0.999998), F = 1.25181e-12
 Rosenbrock, eta = 0.002: non converge, x = (1.00041, 0.997295), F = 0.00124955</code></pre>
-<p>Domanda: perché con <code>eta</code> = 0,002 la discesa non converge, mentre con 0,0019 sì? Come nella Lezione 10, conviene confrontare <span class="math inline">\(\eta\)</span> con le curvature di <span class="math inline">\(F\)</span> nel minimo.</p>
+</section>
+<section id="esercizio-sulla-discesa-i-file-dati" class="slide level2 smaller">
+<h2>Esercizio sulla discesa: i file dati</h2>
+<div class="columns">
+<div class="column" style="width:64%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Funzione2D.hpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="Funzione2D.hpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a aria-label="1"></a><span class="pp">#pragma once</span></span>
+<span id="cb18-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
+<span id="cb18-3"><a aria-label="3"></a></span>
+<span id="cb18-4"><a aria-label="4"></a><span class="kw">class</span> Funzione2D <span class="op">{</span></span>
+<span id="cb18-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb18-6"><a aria-label="6"></a>    <span class="kw">virtual</span> <span class="op">~</span>Funzione2D<span class="op">()</span> <span class="op">{}</span></span>
+<span id="cb18-7"><a aria-label="7"></a>    <span class="kw">virtual</span> <span class="dt">double</span> valore<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb18-8"><a aria-label="8"></a>    <span class="kw">virtual</span> Vettore2D gradiente<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb18-9"><a aria-label="9"></a><span class="op">};</span></span>
+<span id="cb18-10"><a aria-label="10"></a></span>
+<span id="cb18-11"><a aria-label="11"></a><span class="kw">class</span> Paraboloide <span class="op">:</span> <span class="kw">public</span> Funzione2D <span class="op">{</span></span>
+<span id="cb18-12"><a aria-label="12"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb18-13"><a aria-label="13"></a>    <span class="dt">double</span> valore<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb18-14"><a aria-label="14"></a>        <span class="dt">double</span> x <span class="op">=</span> p<span class="op">.</span>getX<span class="op">(),</span> y <span class="op">=</span> p<span class="op">.</span>getY<span class="op">();</span></span>
+<span id="cb18-15"><a aria-label="15"></a>        <span class="cf">return</span> x <span class="op">*</span> x <span class="op">+</span> <span class="fl">4.0</span> <span class="op">*</span> y <span class="op">*</span> y<span class="op">;</span></span>
+<span id="cb18-16"><a aria-label="16"></a>    <span class="op">}</span></span>
+<span id="cb18-17"><a aria-label="17"></a>    Vettore2D gradiente<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb18-18"><a aria-label="18"></a>        <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> p<span class="op">.</span>getX<span class="op">(),</span> <span class="fl">8.0</span> <span class="op">*</span> p<span class="op">.</span>getY<span class="op">());</span></span>
+<span id="cb18-19"><a aria-label="19"></a>    <span class="op">}</span></span>
+<span id="cb18-20"><a aria-label="20"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Da <code>Vettore2D</code> servono <code>getX</code>, <code>getY</code>, <code>operator-</code>, <code>operator*</code> (vettore per scalare) e <code>norma</code>.</p>
+</div><div class="column" style="width:36%;">
+<p><code>Funzione2D</code> è astratta: stabilisce che ogni funzione abbia <code>valore</code> e <code>gradiente</code>, senza scriverli.</p>
+<p><code>Paraboloide</code> li scrive per <span class="math inline">\(F = x^2 + 4y^2\)</span>, con <span class="math inline">\(\nabla F = (2x,\ 8y)\)</span>: è la <span class="math inline">\(F\)</span> e la <code>gradF</code> della Lezione 10.</p>
+<p><code>Vettore2D.hpp</code> e <code>Vettore2D.cpp</code> sono quelli della Lezione 10, nelle slide seguenti.</p>
+</div></div>
 </section>
 <section id="funzione2d-il-codice-da-scrivere" class="slide level2 smaller">
 <h2>Funzione2D: il codice da scrivere</h2>
@@ -1458,37 +1493,39 @@ Rosenbrock, eta = 0.002: non converge, x = (1.00041, 0.997295), F = 0.00124955</
 <div class="code-with-filename-file">
 <pre><strong>Funzione2D.hpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="Funzione2D.hpp" data-startfrom="21"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 20;"><span id="cb18-21"><a aria-label="21"></a><span class="kw">class</span> Rosenbrock <span class="op">:</span> <span class="kw">public</span> Funzione2D <span class="op">{</span></span>
-<span id="cb18-22"><a aria-label="22"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb18-23"><a aria-label="23"></a>    <span class="co">// da completare: valore(p) restituisce</span></span>
-<span id="cb18-24"><a aria-label="24"></a>    <span class="co">//   (1 - x)^2 + 100 (y - x^2)^2</span></span>
-<span id="cb18-25"><a aria-label="25"></a>    <span class="co">// da completare: gradiente(p) restituisce</span></span>
-<span id="cb18-26"><a aria-label="26"></a>    <span class="co">//   Vettore2D(-2 (1 - x) - 400 x (y - x^2),</span></span>
-<span id="cb18-27"><a aria-label="27"></a>    <span class="co">//             200 (y - x^2))</span></span>
-<span id="cb18-28"><a aria-label="28"></a>    <span class="co">// con x = p.getX() e y = p.getY()</span></span>
-<span id="cb18-29"><a aria-label="29"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" data-filename="Funzione2D.hpp" data-startfrom="21"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 20;"><span id="cb19-21"><a aria-label="21"></a><span class="kw">class</span> Rosenbrock <span class="op">:</span> <span class="kw">public</span> Funzione2D <span class="op">{</span></span>
+<span id="cb19-22"><a aria-label="22"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb19-23"><a aria-label="23"></a>    <span class="dt">double</span> valore<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb19-24"><a aria-label="24"></a>        <span class="co">// da completare: (1 - x)^2 + 100 (y - x^2)^2</span></span>
+<span id="cb19-25"><a aria-label="25"></a>        <span class="cf">return</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb19-26"><a aria-label="26"></a>    <span class="op">}</span></span>
+<span id="cb19-27"><a aria-label="27"></a>    Vettore2D gradiente<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb19-28"><a aria-label="28"></a>        <span class="co">// da completare: (-2 (1-x) - 400 x (y-x^2), 200 (y-x^2))</span></span>
+<span id="cb19-29"><a aria-label="29"></a>        <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">);</span></span>
+<span id="cb19-30"><a aria-label="30"></a>    <span class="op">}</span></span>
+<span id="cb19-31"><a aria-label="31"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>discesa.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" data-filename="discesa.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb19-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb19-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb19-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">"Funzione2D.hpp"</span></span>
-<span id="cb19-4"><a aria-label="4"></a></span>
-<span id="cb19-5"><a aria-label="5"></a><span class="dt">int</span> discesa<span class="op">(</span><span class="at">const</span> Funzione2D<span class="op">&amp;</span> f<span class="op">,</span> Vettore2D<span class="op">&amp;</span> x<span class="op">,</span></span>
-<span id="cb19-6"><a aria-label="6"></a>            <span class="dt">double</span> eta<span class="op">,</span> <span class="dt">int</span> max_passi<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb19-7"><a aria-label="7"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> n <span class="op">&lt;=</span> max_passi<span class="op">;</span> <span class="op">++</span>n<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb19-8"><a aria-label="8"></a>        <span class="co">// da completare: il passo, con f.gradiente(x)</span></span>
-<span id="cb19-9"><a aria-label="9"></a>        <span class="co">// da completare: g = norma di f.gradiente(x)</span></span>
-<span id="cb19-10"><a aria-label="10"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&lt;</span> <span class="fl">1e-6</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
-<span id="cb19-11"><a aria-label="11"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&gt;</span> <span class="fl">1e10</span><span class="op">)</span> <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
-<span id="cb19-12"><a aria-label="12"></a>    <span class="op">}</span></span>
-<span id="cb19-13"><a aria-label="13"></a>    <span class="cf">return</span> max_passi<span class="op">;</span></span>
-<span id="cb19-14"><a aria-label="14"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-filename="discesa.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb20-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb20-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">"Funzione2D.hpp"</span></span>
+<span id="cb20-4"><a aria-label="4"></a><span class="dt">int</span> discesa<span class="op">(</span><span class="at">const</span> Funzione2D<span class="op">&amp;</span> f<span class="op">,</span> Vettore2D<span class="op">&amp;</span> x<span class="op">,</span></span>
+<span id="cb20-5"><a aria-label="5"></a>            <span class="dt">double</span> eta<span class="op">,</span> <span class="dt">int</span> max_passi<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-6"><a aria-label="6"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> n <span class="op">&lt;=</span> max_passi<span class="op">;</span> <span class="op">++</span>n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-7"><a aria-label="7"></a>        <span class="co">// da completare: il passo (x meno gradiente per eta) e g,</span></span>
+<span id="cb20-8"><a aria-label="8"></a>        <span class="co">// la norma del gradiente nel nuovo punto</span></span>
+<span id="cb20-9"><a aria-label="9"></a>        <span class="dt">double</span> g <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb20-10"><a aria-label="10"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&lt;</span> <span class="fl">1e-6</span><span class="op">)</span> <span class="cf">return</span> n<span class="op">;</span></span>
+<span id="cb20-11"><a aria-label="11"></a>        <span class="cf">if</span> <span class="op">(</span>g <span class="op">&gt;</span> <span class="fl">1e10</span><span class="op">)</span> <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb20-12"><a aria-label="12"></a>    <span class="op">}</span></span>
+<span id="cb20-13"><a aria-label="13"></a>    <span class="cf">return</span> max_passi<span class="op">;</span></span>
+<span id="cb20-14"><a aria-label="14"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:36%;">
-<p><code>Rosenbrock</code> va in fondo a <code>Funzione2D.hpp</code>, dopo <code>Paraboloide</code>; i due metodi sono <code>const</code> e <code>override</code>, come in <code>Paraboloide</code>.</p>
+<p><code>Rosenbrock</code> va in fondo a <code>Funzione2D.hpp</code>, dopo <code>Paraboloide</code>: completate i due metodi al posto dei <code>return</code> provvisori, con <code>x = p.getX()</code> e <code>y = p.getY()</code>.</p>
 <p><code>discesa</code> va all’inizio di <code>discesa.cpp</code>, prima di <code>prova</code> e del <code>main</code>.</p>
 <p><code>x</code> è passato per riferimento: alla fine della chiamata contiene l’ultimo punto raggiunto, che <code>prova</code> stampa.</p>
 </div></div>
@@ -1499,65 +1536,30 @@ Rosenbrock, eta = 0.002: non converge, x = (1.00041, 0.997295), F = 0.00124955</
 <div class="code-with-filename-file">
 <pre><strong>discesa.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-filename="discesa.cpp" data-startfrom="15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 14;"><span id="cb20-15"><a aria-label="15"></a><span class="dt">void</span> prova<span class="op">(</span><span class="at">const</span> Funzione2D<span class="op">&amp;</span> f<span class="op">,</span> <span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> nome<span class="op">,</span> Vettore2D x<span class="op">,</span> <span class="dt">double</span> eta<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb20-16"><a aria-label="16"></a>    <span class="at">const</span> <span class="dt">int</span> max_passi <span class="op">=</span> <span class="dv">1000000</span><span class="op">;</span></span>
-<span id="cb20-17"><a aria-label="17"></a>    <span class="dt">int</span> passi <span class="op">=</span> discesa<span class="op">(</span>f<span class="op">,</span> x<span class="op">,</span> eta<span class="op">,</span> max_passi<span class="op">);</span></span>
-<span id="cb20-18"><a aria-label="18"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> nome <span class="op">&lt;&lt;</span> <span class="st">", eta = "</span> <span class="op">&lt;&lt;</span> eta <span class="op">&lt;&lt;</span> <span class="st">": "</span><span class="op">;</span></span>
-<span id="cb20-19"><a aria-label="19"></a>    <span class="cf">if</span> <span class="op">(</span>passi <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb20-20"><a aria-label="20"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"diverge</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb20-21"><a aria-label="21"></a>        <span class="cf">return</span><span class="op">;</span></span>
-<span id="cb20-22"><a aria-label="22"></a>    <span class="op">}</span></span>
-<span id="cb20-23"><a aria-label="23"></a>    <span class="cf">if</span> <span class="op">(</span>passi <span class="op">==</span> max_passi<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"non converge"</span><span class="op">;</span></span>
-<span id="cb20-24"><a aria-label="24"></a>    <span class="cf">else</span>                    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> passi <span class="op">&lt;&lt;</span> <span class="st">" passi"</span><span class="op">;</span></span>
-<span id="cb20-25"><a aria-label="25"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">", x = ("</span> <span class="op">&lt;&lt;</span> x<span class="op">.</span>getX<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">", "</span> <span class="op">&lt;&lt;</span> x<span class="op">.</span>getY<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"), F = "</span> <span class="op">&lt;&lt;</span> f<span class="op">.</span>valore<span class="op">(</span>x<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb20-26"><a aria-label="26"></a><span class="op">}</span></span>
-<span id="cb20-27"><a aria-label="27"></a></span>
-<span id="cb20-28"><a aria-label="28"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb20-29"><a aria-label="29"></a>    Paraboloide p<span class="op">;</span></span>
-<span id="cb20-30"><a aria-label="30"></a>    Rosenbrock r<span class="op">;</span></span>
-<span id="cb20-31"><a aria-label="31"></a>    prova<span class="op">(</span>p<span class="op">,</span> <span class="st">"Paraboloide"</span><span class="op">,</span> Vettore2D<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">),</span> <span class="fl">0.2</span><span class="op">);</span></span>
-<span id="cb20-32"><a aria-label="32"></a>    prova<span class="op">(</span>r<span class="op">,</span> <span class="st">"Rosenbrock"</span><span class="op">,</span> Vettore2D<span class="op">(-</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">),</span> <span class="fl">0.001</span><span class="op">);</span></span>
-<span id="cb20-33"><a aria-label="33"></a>    prova<span class="op">(</span>r<span class="op">,</span> <span class="st">"Rosenbrock"</span><span class="op">,</span> Vettore2D<span class="op">(-</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">),</span> <span class="fl">0.0019</span><span class="op">);</span></span>
-<span id="cb20-34"><a aria-label="34"></a>    prova<span class="op">(</span>r<span class="op">,</span> <span class="st">"Rosenbrock"</span><span class="op">,</span> Vettore2D<span class="op">(-</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">),</span> <span class="fl">0.002</span><span class="op">);</span></span>
-<span id="cb20-35"><a aria-label="35"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb20-36"><a aria-label="36"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-filename="discesa.cpp" data-startfrom="15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 14;"><span id="cb21-15"><a aria-label="15"></a><span class="dt">void</span> prova<span class="op">(</span><span class="at">const</span> Funzione2D<span class="op">&amp;</span> f<span class="op">,</span> <span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> nome<span class="op">,</span> Vettore2D x<span class="op">,</span> <span class="dt">double</span> eta<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-16"><a aria-label="16"></a>    <span class="at">const</span> <span class="dt">int</span> max_passi <span class="op">=</span> <span class="dv">1000000</span><span class="op">;</span></span>
+<span id="cb21-17"><a aria-label="17"></a>    <span class="dt">int</span> passi <span class="op">=</span> discesa<span class="op">(</span>f<span class="op">,</span> x<span class="op">,</span> eta<span class="op">,</span> max_passi<span class="op">);</span></span>
+<span id="cb21-18"><a aria-label="18"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> nome <span class="op">&lt;&lt;</span> <span class="st">", eta = "</span> <span class="op">&lt;&lt;</span> eta <span class="op">&lt;&lt;</span> <span class="st">": "</span><span class="op">;</span></span>
+<span id="cb21-19"><a aria-label="19"></a>    <span class="cf">if</span> <span class="op">(</span>passi <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-20"><a aria-label="20"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"diverge</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb21-21"><a aria-label="21"></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb21-22"><a aria-label="22"></a>    <span class="op">}</span></span>
+<span id="cb21-23"><a aria-label="23"></a>    <span class="cf">if</span> <span class="op">(</span>passi <span class="op">==</span> max_passi<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"non converge"</span><span class="op">;</span></span>
+<span id="cb21-24"><a aria-label="24"></a>    <span class="cf">else</span>                    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> passi <span class="op">&lt;&lt;</span> <span class="st">" passi"</span><span class="op">;</span></span>
+<span id="cb21-25"><a aria-label="25"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">", x = ("</span> <span class="op">&lt;&lt;</span> x<span class="op">.</span>getX<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">", "</span> <span class="op">&lt;&lt;</span> x<span class="op">.</span>getY<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"), F = "</span> <span class="op">&lt;&lt;</span> f<span class="op">.</span>valore<span class="op">(</span>x<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb21-26"><a aria-label="26"></a><span class="op">}</span></span>
+<span id="cb21-27"><a aria-label="27"></a></span>
+<span id="cb21-28"><a aria-label="28"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb21-29"><a aria-label="29"></a>    Paraboloide p<span class="op">;</span></span>
+<span id="cb21-30"><a aria-label="30"></a>    Rosenbrock r<span class="op">;</span></span>
+<span id="cb21-31"><a aria-label="31"></a>    prova<span class="op">(</span>p<span class="op">,</span> <span class="st">"Paraboloide"</span><span class="op">,</span> Vettore2D<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">),</span> <span class="fl">0.2</span><span class="op">);</span></span>
+<span id="cb21-32"><a aria-label="32"></a>    prova<span class="op">(</span>r<span class="op">,</span> <span class="st">"Rosenbrock"</span><span class="op">,</span> Vettore2D<span class="op">(-</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">),</span> <span class="fl">0.001</span><span class="op">);</span></span>
+<span id="cb21-33"><a aria-label="33"></a>    prova<span class="op">(</span>r<span class="op">,</span> <span class="st">"Rosenbrock"</span><span class="op">,</span> Vettore2D<span class="op">(-</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">),</span> <span class="fl">0.0019</span><span class="op">);</span></span>
+<span id="cb21-34"><a aria-label="34"></a>    prova<span class="op">(</span>r<span class="op">,</span> <span class="st">"Rosenbrock"</span><span class="op">,</span> Vettore2D<span class="op">(-</span><span class="fl">1.2</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">),</span> <span class="fl">0.002</span><span class="op">);</span></span>
+<span id="cb21-35"><a aria-label="35"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb21-36"><a aria-label="36"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Sono date: vanno copiate in <code>discesa.cpp</code> dopo <code>discesa</code>.</p>
-</section>
-<section id="esercizio-sulla-discesa-i-file-dati" class="slide level2 smaller">
-<h2>Esercizio sulla discesa: i file dati</h2>
-<div class="columns">
-<div class="column" style="width:64%;">
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>Funzione2D.hpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-filename="Funzione2D.hpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb21-1"><a aria-label="1"></a><span class="pp">#pragma once</span></span>
-<span id="cb21-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">"Vettore2D.hpp"</span></span>
-<span id="cb21-3"><a aria-label="3"></a></span>
-<span id="cb21-4"><a aria-label="4"></a><span class="kw">class</span> Funzione2D <span class="op">{</span></span>
-<span id="cb21-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb21-6"><a aria-label="6"></a>    <span class="kw">virtual</span> <span class="op">~</span>Funzione2D<span class="op">()</span> <span class="op">{}</span></span>
-<span id="cb21-7"><a aria-label="7"></a>    <span class="kw">virtual</span> <span class="dt">double</span> valore<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb21-8"><a aria-label="8"></a>    <span class="kw">virtual</span> Vettore2D gradiente<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb21-9"><a aria-label="9"></a><span class="op">};</span></span>
-<span id="cb21-10"><a aria-label="10"></a></span>
-<span id="cb21-11"><a aria-label="11"></a><span class="kw">class</span> Paraboloide <span class="op">:</span> <span class="kw">public</span> Funzione2D <span class="op">{</span></span>
-<span id="cb21-12"><a aria-label="12"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb21-13"><a aria-label="13"></a>    <span class="dt">double</span> valore<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
-<span id="cb21-14"><a aria-label="14"></a>        <span class="dt">double</span> x <span class="op">=</span> p<span class="op">.</span>getX<span class="op">(),</span> y <span class="op">=</span> p<span class="op">.</span>getY<span class="op">();</span></span>
-<span id="cb21-15"><a aria-label="15"></a>        <span class="cf">return</span> x <span class="op">*</span> x <span class="op">+</span> <span class="fl">4.0</span> <span class="op">*</span> y <span class="op">*</span> y<span class="op">;</span></span>
-<span id="cb21-16"><a aria-label="16"></a>    <span class="op">}</span></span>
-<span id="cb21-17"><a aria-label="17"></a>    Vettore2D gradiente<span class="op">(</span><span class="at">const</span> Vettore2D<span class="op">&amp;</span> p<span class="op">)</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span></span>
-<span id="cb21-18"><a aria-label="18"></a>        <span class="cf">return</span> Vettore2D<span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> p<span class="op">.</span>getX<span class="op">(),</span> <span class="fl">8.0</span> <span class="op">*</span> p<span class="op">.</span>getY<span class="op">());</span></span>
-<span id="cb21-19"><a aria-label="19"></a>    <span class="op">}</span></span>
-<span id="cb21-20"><a aria-label="20"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:36%;">
-<p><code>Funzione2D</code> è astratta: stabilisce che ogni funzione abbia <code>valore</code> e <code>gradiente</code>, senza scriverli.</p>
-<p><code>Paraboloide</code> li scrive per <span class="math inline">\(F = x^2 + 4y^2\)</span>, con <span class="math inline">\(\nabla F = (2x,\ 8y)\)</span>: è la <span class="math inline">\(F\)</span> e la <code>gradF</code> della Lezione 10.</p>
-<p><code>Vettore2D.hpp</code> e <code>Vettore2D.cpp</code> sono quelli della Lezione 10, nelle slide seguenti.</p>
-</div></div>
 </section>
 <section id="soluzione-dellesercizio-vettore2d.hpp" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio: <code>Vettore2D.hpp</code></h2>
@@ -1704,45 +1706,6 @@ Rosenbrock, eta = 0.001: 32076 passi, x = (0.999999, 0.999998), F = 1.25172e-12
 Rosenbrock, eta = 0.0019: 16851 passi, x = (0.999999, 0.999998), F = 1.25181e-12
 Rosenbrock, eta = 0.002: non converge, x = (1.00041, 0.997295), F = 0.00124955</code></pre>
 <p>Lo stesso codice di discesa minimizza le due funzioni: è il polimorfismo. Il paraboloide converge in 32 passi, come nella Lezione 10. La funzione di Rosenbrock richiede decine di migliaia di passi, e con <code>eta</code> = 0,002 la discesa oscilla vicino al minimo, senza convergere né divergere.</p>
-</section>
-<section id="soluzione-perché-rosenbrock-è-lenta" class="slide level2 smaller">
-<h2>Soluzione: perché Rosenbrock è lenta</h2>
-<p>Le curvature sono gli autovalori della matrice delle derivate seconde (hessiana). Come nella Lezione 10, <span class="math inline">\(\eta_{\max} = 2/\text{curvatura massima}\)</span>.</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 21%">
-<col style="width: 26%">
-<col style="width: 26%">
-<col style="width: 26%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: center;">hessiana nel minimo</th>
-<th style="text-align: center;">curvature</th>
-<th style="text-align: center;"><span class="math inline">\(\eta_{\max}\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">paraboloide</td>
-<td style="text-align: center;"><span class="math inline">\(\begin{pmatrix} 2 &amp; 0 \\ 0 &amp; 8 \end{pmatrix}\)</span></td>
-<td style="text-align: center;">2 e 8</td>
-<td style="text-align: center;">0,25</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Rosenbrock</td>
-<td style="text-align: center;"><span class="math inline">\(\begin{pmatrix} 802 &amp; -400 \\ -400 &amp; 200 \end{pmatrix}\)</span></td>
-<td style="text-align: center;">0,40 e 1001,6</td>
-<td style="text-align: center;">0,0020</td>
-</tr>
-</tbody>
-</table>
-<p>Per Rosenbrock 0,002 è appena sopra il limite, 0,0019 appena sotto. La curvatura minima fissa la velocità: con <span class="math inline">\(\eta = 0{,}0019\)</span> ogni passo lungo il fondo della valle riduce la distanza dal minimo di un fattore <span class="math inline">\(1 - 0{,}40\,\eta \approx 0{,}9992\)</span>.</p>
-</section>
-<section id="soluzione-il-passo-fisso" class="slide level2 smaller">
-<h2>Soluzione: il passo fisso</h2>
-<p>Con il passo fisso, una sola <span class="math inline">\(\eta\)</span> deve andare bene per tutte le direzioni: la più ripida ne fissa il massimo, la più piatta decide quanti passi servono. Nelle reti la situazione è la stessa, con tante direzioni quanti sono i pesi.</p>
 <p>L’esercizio verrà ripreso più avanti.</p>
 
 
