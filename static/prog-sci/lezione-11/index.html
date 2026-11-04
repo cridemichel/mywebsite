@@ -1368,7 +1368,7 @@ eccezione: stoi</code></pre>
 <ol type="1">
 <li>Lanciate <code>scrivi_file</code> dalla cartella <code>build</code>, come nella slide «Provate: la cartella di lavoro». Dove compare <code>loss.csv</code>?<br>
 <span class="fragment">In <code>build</code>: <code>std::ofstream</code> crea il file nella cartella di lavoro, come <code>std::ifstream</code> lo cerca lì.</span></li>
-<li>In <code>precisione.cpp</code>, alla riga 4, scrivete <code>float w = 1.0f / 3.0f;</code>. Cosa stampa?<br>
+<li>In <code>precisione.cpp</code>, alla riga 4, scrivete <code>float w = 1.0f / 3.0f;</code> (con il suffisso <code>f</code> le costanti sono <code>float</code>, come in C; senza sarebbero <code>double</code>). Cosa stampa?<br>
 <span class="fragment"><code>0.333333</code> e <code>0.3333333432674408</code>: un <code>float</code> ha circa 7 cifre significative, e le successive vengono dalla sua rappresentazione in binario. Per rileggerlo identico ne bastano 9.</span></li>
 </ol>
 </section>
