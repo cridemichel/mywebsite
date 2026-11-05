@@ -1422,7 +1422,7 @@ AbsLoss: 0.5</code></pre>
 <section id="discesa-su-una-funzione-qualsiasi" class="slide level2 smaller">
 <h2>Discesa su una funzione qualsiasi</h2>
 <p>Nella Lezione 10 la discesa conosceva una sola funzione, perché chiamava <code>gradF</code>. Per minimizzare una funzione qualsiasi, <span class="math inline">\(F\)</span> diventa una <strong>classe astratta</strong>, come la loss dell’esercizio precedente: la discesa usa solo i metodi virtuali <code>valore</code> e <code>gradiente</code>.</p>
-<p>La seconda funzione di prova è quella di Rosenbrock, un banco di prova classico per i metodi di minimizzazione:</p>
+<p>La seconda funzione di prova è quella di Rosenbrock, introdotta nel 1960 proprio per mettere alla prova la convergenza dei metodi di minimizzazione:</p>
 <p><span class="math display">\[
 F(x, y) = (1 - x)^2 + 100\,(y - x^2)^2
 \]</span></p>
@@ -1707,6 +1707,7 @@ Rosenbrock, eta = 0.001: 32076 passi, x = (0.999999, 0.999998), F = 1.25172e-12
 Rosenbrock, eta = 0.0019: 16851 passi, x = (0.999999, 0.999998), F = 1.25181e-12
 Rosenbrock, eta = 0.002: non converge, x = (1.00041, 0.997295), F = 0.00124955</code></pre>
 <p>Lo stesso codice di discesa minimizza le due funzioni: è il polimorfismo. Il paraboloide converge in 32 passi, come nella Lezione 10. La funzione di Rosenbrock richiede decine di migliaia di passi, e con <code>eta</code> = 0,002 la discesa oscilla vicino al minimo, senza convergere né divergere.</p>
+<p>È la difficoltà per cui Rosenbrock si usa come prova: da <span class="math inline">\((-1{,}2;\ 1)\)</span> la discesa arriva in 5 passi sul fondo della valle (<span class="math inline">\(F\)</span> scende da 24,2 a 4,1), ma lungo il fondo la pendenza è piccola e ogni passo avanza di poco verso il minimo. Con <code>eta</code> = 0,002 i passi sono troppo lunghi, e la discesa rimbalza da una parete all’altra della valle.</p>
 <p>L’esercizio verrà ripreso più avanti.</p>
 
 
