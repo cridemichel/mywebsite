@@ -1222,6 +1222,7 @@ SigmoidLayer
 <li><code>-Wall</code> avvisa: <em><code>deleting object of abstract class type 'Layer' which has non-virtual destructor will cause undefined behavior</code></em>;</li>
 <li>dopo i due <code>forward</code> compare solo <code>~Layer</code>, poi l’AddressSanitizer si ferma con <em><code>new-delete-type-mismatch</code></em>: <code>delete</code> ha liberato un <code>DenseLayer</code> come se fosse un <code>Layer</code>;</li>
 <li>senza l’AddressSanitizer il programma stamperebbe <code>~Layer</code> due volte e uscirebbe con codice 0: i distruttori di <code>DenseLayer</code> e <code>SigmoidLayer</code> non vengono eseguiti. Se <code>DenseLayer</code> liberasse i suoi pesi nel distruttore, quella memoria resterebbe occupata.</li>
+<li>con clang su macOS: subito <em><code>trace trap</code></em>, senza <code>~Layer</code> (<code>Layer</code> è astratta, e clang compila il suo distruttore come un’istruzione di arresto).</li>
 </ul>
 </div>
 </section>
