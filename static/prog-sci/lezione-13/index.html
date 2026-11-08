@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c2b08e7e9e4d0725d7c99c9a799ba6e7.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.11.9">
+
+  <meta name="author" content="Cristiano De Michele">
+  <title>Programmazione Scientifica++ – Programmazione Scientifica++: Lezione 13</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-00ad5a49dff614330cd349bcec985ec3.css">
+  <link rel="stylesheet" href="../annotazioni.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="text/x-mathjax-config">
+  // Solo i font TeX serviti dal sito (mathjax/, 30/9/2026). Sul Mac sono installati
+  // i font STIX: MathJax li preferiva, chiedeva fonts/STIX/fontdata.js, che la copia
+  // ridotta non ha, e mostrava "Math Processing Error" (slide "Piegare lo spazio").
+  MathJax.Hub.Config({"HTML-CSS": {availableFonts: ["TeX"], preferredFont: "TeX",
+                                   webFont: "TeX", imageFont: null}});
+  // Anteprime della speaker view (8/10/2026): formule viste DOPPIE con schermo esteso.
+  // Solo li' si spengono la copia MathML nascosta (per i lettori di schermo) e la
+  // bozza veloce che precede il disegno definitivo: le slide proiettate e il sito
+  // degli studenti restano come prima.
+  if (/receiver/i.test(window.location.search))
+    MathJax.Hub.Config({menuSettings: {assistiveMML: false, FastPreview: false},
+                        AssistiveMML: {disabled: true}, "fast-preview": {disabled: true}});
+  </script>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
+  <style>
+  /* pulsanti "gomma" e "schermo intero" accanto a lavagna e notes canvas (29/9/2026) */
+  .reveal .slide-chalkboard-buttons .fa-eraser::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-schermo-intero::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-esci-schermo::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/></svg>')}
+  </style>
+  <script>
+  // Due pulsanti in piu' in basso a sinistra, per chi presenta dal tablet
+  // senza tastiera:
+  //  - la gomma cancella in un colpo i disegni della slide corrente, nel modo
+  //    attivo (la lavagna se e' aperta, altrimenti il notes canvas): e' il
+  //    tasto Canc. Le altre slide non si toccano;
+  //  - schermo intero, entra ed esce (il tasto F); l'icona segue lo stato.
+  window.addEventListener('load', function () {
+    var tentativi = 0;
+    (function aggiungi() {
+      var div = document.querySelector('.reveal .slide-chalkboard-buttons');
+      if (!div || typeof RevealChalkboard === 'undefined') {
+        if (++tentativi < 50) setTimeout(aggiungi, 100);
+        return;
+      }
+      if (div.querySelector('.fa-eraser')) return;
+      var span = document.createElement('span');
+      span.title = 'Cancella i disegni di questa slide (Canc)';
+      var icona = document.createElement('i');
+      icona.className = 'fas fa-eraser';
+      span.appendChild(icona);
+      span.onclick = function (ev) { ev.preventDefault(); RevealChalkboard.clear(); };
+      div.appendChild(span);
+
+      var doc = document.documentElement;
+      if (!doc.requestFullscreen) return;       // browser senza schermo intero
+      var fs = document.createElement('span');
+      var ifs = document.createElement('i');
+      fs.appendChild(ifs);
+      function aggiorna() {
+        var dentro = !!document.fullscreenElement;
+        ifs.className = 'fas ' + (dentro ? 'fa-esci-schermo' : 'fa-schermo-intero');
+        fs.title = dentro ? 'Esci dallo schermo intero (F)' : 'Schermo intero (F)';
+      }
+      fs.onclick = function (ev) {
+        ev.preventDefault();
+        if (document.fullscreenElement) document.exitFullscreen();
+        else doc.requestFullscreen().catch(function () {});
+      };
+      document.addEventListener('fullscreenchange', aggiorna);
+      aggiorna();
+      div.appendChild(fs);
+    })();
+  });
+  </script>
+  <script>
+  // Swipe a DUE dita per cambiare slide (29/9/2026). Lo swipe a un dito resta
+  // quello di reveal.js, che pero' non funziona se il dito parte su qualcosa che
+  // scorre (slide .scrollable, blocchi di codice): li' il browser si prende il
+  // gesto per lo scorrimento. Con due dita si cambia slide ovunque, anche con la
+  // matita attiva. Un pinch (dita che si allontanano) resta uno zoom.
+  (function () {
+    var SOGLIA = 60;            // px di spostamento del punto medio delle due dita
+    var g = null;               // gesto a due dita in corso
+    var tocchi = new Set();     // pointer "touch" attivi
+    var muto = false;           // da quando posi il secondo dito a quando li togli tutti
+
+    function medio(t) {
+      return { x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2,
+               d: Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) };
+    }
+    document.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) { var m = medio(e.touches); g = { x: m.x, y: m.y, d: m.d, fatto: false }; }
+      else if (e.touches.length > 2) g = null;
+    }, { capture: true, passive: true });
+
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches.length < 2) return;
+      e.stopPropagation();                      // la lavagna non disegna col secondo dito
+      if (!g || e.touches.length !== 2) return;
+      if (g.fatto) { if (e.cancelable) e.preventDefault(); return; }
+      var m = medio(e.touches), dx = m.x - g.x, dy = m.y - g.y;
+      if (Math.abs(m.d - g.d) > 0.35 * g.d) { g = null; return; }      // pinch: al browser
+      if (Math.abs(dx) > SOGLIA && Math.abs(dx) > 1.5 * Math.abs(dy)) {
+        g.fatto = true;
+        if (e.cancelable) e.preventDefault();
+        if (dx < 0) Reveal.next(); else Reveal.prev();
+      } else if (Math.abs(dy) > SOGLIA && Math.abs(dy) > 1.5 * Math.abs(dx)) {
+        g = null;                                // due dita in verticale: scorrimento
+      }
+    }, { capture: true, passive: false });
+
+    document.addEventListener('touchend', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+    document.addEventListener('touchcancel', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+
+    // reveal.js legge lo swipe dai pointer events, dito per dito: con due dita
+    // vedrebbe anche uno swipe a un dito e salterebbe due slide. Dal secondo dito
+    // in poi, e finche' non si alzano tutti, i suoi pointermove non gli arrivano.
+    function conta(e) {
+      if (e.pointerType !== 'touch') return;
+      if (e.type === 'pointerdown') { tocchi.add(e.pointerId); if (tocchi.size >= 2) muto = true; }
+      else { tocchi.delete(e.pointerId); if (tocchi.size === 0) muto = false; }
+    }
+    ['pointerdown', 'pointerup', 'pointercancel'].forEach(function (t) {
+      document.addEventListener(t, conta, true);
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch' && muto) e.stopPropagation();
+    }, true);
+  })();
+  </script>
+  <script>
+  // Speaker view su schermo esteso (8/10/2026): quello che si fa sull'anteprima
+  // della slide CORRENTE nella speaker view (tasto S) si vede anche sulla finestra
+  // proiettata, che il cursore non raggiunge.
+  //  - Puntatore: muovendo il mouse sull'anteprima compare un pallino rosso nello
+  //    stesso punto della vista proiettata; resta finche' il mouse e' sull'anteprima
+  //    e sparisce uscendo (8/10: tolto lo spegnimento dopo 4 s fermo, e il pallino
+  //    remoto non risente piu' di clic o cambi di finestra su quella proiettata).
+  //    Tasto R premuto nella speaker view: spegne/riaccende questo pallino (all'apertura
+  //    e' acceso; la conferma compare solo nell'anteprima, non sul proiettore).
+  //  - Evidenziatore: il testo selezionato nell'anteprima si colora di giallo sulla
+  //    vista proiettata (8/10/2026). Non usa la selezione vera (in una finestra senza
+  //    fuoco e' grigio chiaro) ma la CSS Custom Highlight API; le formule si saltano.
+  //  - Annotazioni del codice (i numerini): quella accesa nell'anteprima, passandoci
+  //    sopra o con un clic, si accende anche sulla vista proiettata, con la sua riga
+  //    di codice (12/10/2026).
+  //  - Lavagna e penna: i disegni fatti sull'anteprima (tasti C e B, gomma, Canc)
+  //    passano alla vista proiettata, e viceversa; aprendo la speaker view
+  //    l'anteprima riceve i disegni gia' fatti.
+  // Usa i messaggi "broadcast"/"received" previsti dal plugin chalkboard per le
+  // presentazioni condivise; l'anteprima della slide successiva e' esclusa.
+  //  - Senza speaker view il pallino segue il mouse sulla slide e la freccia viene
+  //    nascosta; tornano manina/freccia sugli elementi cliccabili (pulsanti, link,
+  //    callout richiudibili, menu, footer), il cursore di disegno con penna e lavagna,
+  //    il cursore normale tenendo premuto il tasto (selezione del testo).
+  //    Dopo 3 s fermo spariscono pallino e freccia: basta muovere il mouse.
+  //    Questo pallino parte SPENTO: si accende e si spegne col tasto R. Riguarda solo
+  //    l'uso senza speaker view: il pallino comandato dall'anteprima funziona sempre.
+  (function () {
+    var NS = 'speaker-view-ponte';
+    function area() {                    // dove stanno le slide in questa finestra
+      var v = document.querySelector('.reveal');
+      if (!v || typeof Reveal === 'undefined' || !Reveal.isReady()) return null;
+      var r = v.getBoundingClientRect(), c = Reveal.getConfig(), s = Reveal.getScale();
+      var w = c.width * s, h = c.height * s;
+      return { x: r.left + (r.width - w) / 2, y: r.top + (r.height - h) / 2, w: w, h: h };
+    }
+    function manda(dest, m) { m.namespace = NS; try { dest.postMessage(JSON.stringify(m), '*'); } catch (e) {} }
+    function leggi(ev) {
+      var m; try { m = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data; } catch (e) { return null; }
+      return (m && m.namespace === NS) ? m : null;
+    }
+    // Testo di una slide come sequenza di caratteri, saltando formule e script: le due
+    // finestre caricano la stessa pagina, quindi le posizioni coincidono.
+    var SALTA = 'script, style, .MathJax, .MathJax_Display, .MathJax_Preview, .MJX_Assistive_MathML, mjx-container';
+    function testi(sez) {
+      var w = document.createTreeWalker(sez, NodeFilter.SHOW_TEXT, null), n, l = [], tot = 0;
+      while ((n = w.nextNode())) {
+        if (n.parentElement && n.parentElement.closest(SALTA)) continue;
+        l.push({ n: n, da: tot }); tot += n.length;
+      }
+      return l;
+    }
+    function ricevuto(contenuto) {       // consegna al plugin chalkboard
+      var e = new CustomEvent('received'); e.content = contenuto; document.dispatchEvent(e);
+    }
+
+    if (/receiver/i.test(window.location.search)) {
+      // anteprima dentro la speaker view: solo quella della slide corrente
+      var cornice = null, dest = null;
+      try { cornice = window.frameElement; dest = window.parent.opener; } catch (e) {}
+      if (!cornice || !dest || !cornice.closest('#current-slide')) return;
+      var invia = true, scritta = null, timerScritta = null;   // acceso all'apertura
+      function conferma(testo) {         // scritta solo nell'anteprima
+        if (!scritta) {
+          scritta = document.createElement('div');
+          scritta.style.cssText = 'position:fixed;left:50%;bottom:60px;transform:translateX(-50%);' +
+            'padding:6px 18px;border-radius:8px;background:rgba(0,0,0,.75);color:#fff;' +
+            'font:28px sans-serif;pointer-events:none;z-index:100001;display:none';
+          document.body.appendChild(scritta);
+        }
+        scritta.textContent = testo; scritta.style.display = 'block';
+        clearTimeout(timerScritta);
+        timerScritta = setTimeout(function () { scritta.style.display = 'none'; }, 1500);
+      }
+      window.addEventListener('load', function () {   // la speaker view gira qui i tasti premuti
+        if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+          Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Pallino sulla vista proiettata acceso/spento' },
+            function () {
+              invia = !invia;
+              if (!invia) manda(dest, { via: true });
+              conferma('Pallino sul proiettore ' + (invia ? 'acceso' : 'spento') + ' (tasto R)');
+            });
+      });
+      document.addEventListener('mousemove', function (e) {
+        if (!invia) return;
+        var a = area(); if (!a) return;
+        manda(dest, { x: (e.clientX - a.x) / a.w, y: (e.clientY - a.y) / a.h });
+      });
+      document.documentElement.addEventListener('mouseleave', function () { manda(dest, { via: true }); });
+      document.addEventListener('broadcast', function (e) {
+        if (e.content && e.content.sender === 'chalkboard-plugin') manda(dest, { lavagna: e.content });
+      });
+      window.addEventListener('message', function (ev) {
+        var m = leggi(ev); if (m && m.lavagna) ricevuto(m.lavagna);
+      });
+      window.addEventListener('load', function () { setTimeout(function () { manda(dest, { ciao: true }); }, 500); });
+      var ultimeAnn = '', attesaAnn = null;
+      function mandaAnn() {              // annotazioni accese nella slide corrente
+        attesaAnn = null;
+        var sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide(), l = [];
+        if (sez) sez.querySelectorAll('dd > span[data-code-annotation].ann-on').forEach(function (sp) {
+          l.push([sp.dataset.codeCell, sp.dataset.codeAnnotation]);
+        });
+        var k = JSON.stringify(l); if (k === ultimeAnn) return; ultimeAnn = k;
+        var i = Reveal.getIndices();
+        manda(dest, { ann: l, h: i.h, v: i.v });
+      }
+      window.addEventListener('load', function () {
+        new MutationObserver(function () {
+          if (!attesaAnn) attesaAnn = setTimeout(mandaAnn, 0);
+        }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+      });
+      var ultimaSel = '';
+      document.addEventListener('selectionchange', function () {   // evidenziatore
+        var sel = document.getSelection(), sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide();
+        var ev = null;
+        if (sel && sel.rangeCount && !sel.isCollapsed && sez) {
+          var r = sel.getRangeAt(0), da = null, a = null;
+          testi(sez).forEach(function (t) {
+            if (!r.intersectsNode(t.n)) return;
+            if (da === null) da = t.da + (t.n === r.startContainer ? r.startOffset : 0);
+            a = t.da + (t.n === r.endContainer ? r.endOffset : t.n.length);
+          });
+          if (da !== null && a > da) ev = [da, a];
+        }
+        var k = JSON.stringify(ev); if (k === ultimaSel) return; ultimaSel = k;
+        var i = Reveal.getIndices();
+        manda(dest, { evid: ev, h: i.h, v: i.v });
+      });
+      return;
+    }
+
+    // finestra proiettata
+    var punto = null, puntoRemoto = null, timer = null, timerRemoto = null, anteprime = [];
+    function nuovoPallino() {
+      var d = document.createElement('div');
+      d.style.cssText = 'position:fixed;width:18px;height:18px;margin:-9px 0 0 -9px;' +
+        'border-radius:50%;background:rgba(220,30,30,.85);box-shadow:0 0 10px 3px rgba(220,30,30,.5);' +
+        'pointer-events:none;z-index:100000;display:none';
+      document.body.appendChild(d);
+      return d;
+    }
+    function pallino() { return punto || (punto = nuovoPallino()); }               // mouse qui
+    function pallinoRemoto() { return puntoRemoto || (puntoRemoto = nuovoPallino()); } // speaker view
+    document.addEventListener('broadcast', function (e) {
+      if (!e.content || e.content.sender !== 'chalkboard-plugin') return;
+      anteprime = anteprime.filter(function (w) { return !w.closed; });
+      anteprime.forEach(function (w) { manda(w, { lavagna: e.content }); });
+    });
+    // anche senza speaker view: il pallino segue il mouse sulla slide al posto della freccia
+    var stile = document.createElement('style');
+    stile.textContent = 'html.laser-attivo, html.laser-attivo * { cursor: none !important; }';
+    document.head.appendChild(stile);
+    var radice = document.documentElement, premuto = false, ultimo = null, ultimoCliccabile = false;
+    var laserAcceso = false, avviso = null, timerAvviso = null;   // spento all'avvio
+    function mostraAvviso(testo) {     // piccola scritta in basso, per un secondo e mezzo
+      if (!avviso) {
+        avviso = document.createElement('div');
+        avviso.style.cssText = 'position:fixed;left:50%;bottom:48px;transform:translateX(-50%);' +
+          'padding:4px 12px;border-radius:6px;background:rgba(0,0,0,.7);color:#fff;' +
+          'font:15px sans-serif;pointer-events:none;z-index:100001;display:none';
+        document.body.appendChild(avviso);
+      }
+      avviso.textContent = testo; avviso.style.display = 'block';
+      clearTimeout(timerAvviso);
+      timerAvviso = setTimeout(function () { avviso.style.display = 'none'; }, 1500);
+    }
+    function cambiaLaser() {
+      laserAcceso = !laserAcceso;
+      if (!laserAcceso) { clearTimeout(timer); spegni(true); }
+      mostraAvviso('Puntatore laser ' + (laserAcceso ? 'acceso' : 'spento') + ' (tasto R)');
+    }
+    window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+        Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Puntatore laser acceso/spento' }, cambiaLaser);
+    });
+    var CLICCABILI = 'a, button, summary, label, input, select, textarea, [role="button"], [onclick],' +
+      ' .controls, .progress, .slide-number, .footer, .slide-menu-button, .slide-menu,' +
+      ' .slide-chalkboard-buttons, .chalkboard-buttons';
+    function cliccabile(t) {            // elemento con manina, o comunque interattivo
+      if (!t || t.nodeType !== 1) return false;
+      if (t === ultimo) return ultimoCliccabile;
+      var c = radice.classList.contains('laser-attivo');
+      if (c) radice.classList.remove('laser-attivo');   // per leggere il cursore vero
+      var cur = getComputedStyle(t).cursor;
+      if (c) radice.classList.add('laser-attivo');
+      ultimo = t;
+      ultimoCliccabile = !!t.closest(CLICCABILI) || cur === 'pointer' ||
+        (t.tagName === 'CANVAS' && !!t.closest('#notescanvas, #chalkboard'));
+      return ultimoCliccabile;
+    }
+    function spegni(anchefreccia) {     // nasconde il pallino; con true ridà la freccia
+      if (punto) punto.style.display = 'none';
+      if (anchefreccia) radice.classList.remove('laser-attivo');
+    }
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || premuto || !laserAcceso) return;
+      var a = area();
+      clearTimeout(timer);
+      var fuori = !a || e.clientX < a.x || e.clientX > a.x + a.w || e.clientY < a.y || e.clientY > a.y + a.h;
+      if (fuori || cliccabile(e.target)) { spegni(true); return; }
+      var p = pallino();
+      p.style.left = e.clientX + 'px'; p.style.top = e.clientY + 'px'; p.style.display = 'block';
+      radice.classList.add('laser-attivo');
+      timer = setTimeout(function () { spegni(false); }, 3000);   // fermo: sparisce tutto
+    });
+    document.addEventListener('pointerdown', function (e) {   // clic, selezione, doppio clic
+      if (e.pointerType !== 'mouse') return;
+      premuto = true; clearTimeout(timer); spegni(true);
+    }, true);
+    function rilascia() { premuto = false; }
+    document.addEventListener('pointerup', rilascia, true);
+    window.addEventListener('blur', function () { premuto = false; spegni(true); });
+    radice.addEventListener('mouseleave', function () { spegni(true); });
+
+    // evidenziatore: stessa porzione di testo selezionata nell'anteprima
+    var EVIDENZIA = !!(window.CSS && CSS.highlights && window.Highlight);
+    if (EVIDENZIA) {
+      var stileEv = document.createElement('style');
+      stileEv.textContent = '::highlight(speaker-view) { background-color: rgba(255, 220, 0, .6); }';
+      document.head.appendChild(stileEv);
+    }
+    function evidenzia(m) {
+      if (!EVIDENZIA) return;
+      CSS.highlights.delete('speaker-view');
+      var i = Reveal.getIndices();
+      if (!m.evid || m.h !== i.h || m.v !== i.v) return;
+      var l = testi(Reveal.getCurrentSlide()), r = document.createRange(), ok = 0;
+      for (var k = 0; k < l.length; k++) {
+        var t = l[k], fine = t.da + t.n.length;
+        if (!(ok & 1) && m.evid[0] < fine) { r.setStart(t.n, m.evid[0] - t.da); ok |= 1; }
+        if (!(ok & 2) && m.evid[1] <= fine) { r.setEnd(t.n, m.evid[1] - t.da); ok |= 2; break; }
+      }
+      if (ok === 3) CSS.highlights.set('speaker-view', new Highlight(r));
+    }
+    if (EVIDENZIA) window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { CSS.highlights.delete('speaker-view'); });
+    });
+    // annotazioni del codice accese dall'anteprima: stessi elementi dello script delle
+    // annotazioni (spiegazione, numerino, marcatore nel codice, righe di codice)
+    var annRemote = [];
+    function annotazioni(m) {
+      annRemote.forEach(function (e) { e.classList.remove('ann-on'); });
+      annRemote = [];
+      var i = Reveal.getIndices();
+      if (!m.ann || m.h !== i.h || m.v !== i.v) return;
+      m.ann.forEach(function (c) {
+        var cella = c[0], n = c[1];
+        var span = document.querySelector('dd > span[data-code-cell="' + cella + '"][data-code-annotation="' + n + '"]');
+        if (!span) return;
+        var dd = span.parentElement, dl = dd.parentElement, g = [span, dd];
+        var dds = Array.prototype.slice.call(dl.querySelectorAll('dd')), dts = dl.querySelectorAll('dt');
+        if (dts[dds.indexOf(dd)]) g.push(dts[dds.indexOf(dd)]);
+        var anchor = document.querySelector('.code-annotation-anchor[data-target-cell="' + cella +
+                                            '"][data-target-annotation="' + n + '"]');
+        if (anchor) g.push(anchor);
+        String(span.dataset.codeLines || '').split(',').forEach(function (p) {
+          var r = p.trim().match(/^(\d+)(?:-(\d+))?$/); if (!r) return;
+          for (var j = +r[1], b = r[2] ? +r[2] : +r[1]; j <= b; j++) {
+            var el = document.getElementById(cella + '-' + j); if (el) g.push(el);
+          }
+        });
+        g.forEach(function (e) { if (!e.classList.contains('ann-on')) { e.classList.add('ann-on'); annRemote.push(e); } });
+      });
+    }
+    window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { annotazioni({}); });
+    });
+
+    window.addEventListener('message', function (ev) {
+      var m = leggi(ev); if (!m) return;
+      if (m.ciao) {                      // nuova anteprima: le mando i disegni gia' fatti
+        if (anteprime.indexOf(ev.source) < 0) anteprime.push(ev.source);
+        var w = new CustomEvent('welcome'); w.id = 'speaker-view'; document.dispatchEvent(w);
+        return;
+      }
+      if (m.lavagna) { ricevuto(m.lavagna); return; }
+      if ('evid' in m) { evidenzia(m); return; }
+      if ('ann' in m) { annotazioni(m); return; }
+      var p = pallinoRemoto();
+      clearTimeout(timerRemoto);
+      if (m.via || m.x < 0 || m.x > 1 || m.y < 0 || m.y > 1) { p.style.display = 'none'; return; }
+      var a = area(); if (!a) return;
+      p.style.left = (a.x + m.x * a.w) + 'px';
+      p.style.top = (a.y + m.y * a.h) + 'px';
+      p.style.display = 'block';
+      // sicurezza: se l'uscita dall'anteprima andasse persa, sparisce dopo 30 s fermo
+      timerRemoto = setTimeout(function () { p.style.display = 'none'; }, 30000);
+    });
+  })();
+  </script>
+  <script>
+  // File di codice divisi in piu' blocchi (13/10/2026). Un blocco con startFrom="..."
+  // (numerazione che prosegue) e' la continuazione del blocco precedente: sulla stessa
+  // slide (due colonne) o, se e' il primo blocco della slide, dell'ultimo blocco della
+  // slide precedente (con lo stesso filename, se indicato). Il pulsante "copia" copia
+  // l'INTERO file; sulla stessa slide resta solo il pulsante del primo pezzo.
+  (function () {
+    var it = /^it/i.test(document.documentElement.lang || '');
+    function testo(div) {                      // testo di un blocco, senza i cerchietti delle annotazioni
+      var code = div.querySelector('pre code');
+      if (!code) return '';
+      var c = code.cloneNode(true);
+      c.querySelectorAll('.code-annotation-anchor').forEach(function (a) { a.remove(); });
+      var righe = c.querySelectorAll(':scope > span');   // una <span> per riga: conserva anche le righe vuote
+      if (righe.length) return Array.prototype.map.call(righe, function (r) { return r.textContent; }).join('\n');
+      return c.textContent.replace(/\n$/, '');
+    }
+    function copia(t, btn) {
+      function ok() {
+        btn.classList.add('code-copy-button-checked');
+        setTimeout(function () { btn.classList.remove('code-copy-button-checked'); }, 1500);
+      }
+      function ripiego() {                     // senza https (es. file aperto in locale)
+        var ta = document.createElement('textarea');
+        ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { if (document.execCommand('copy')) ok(); } catch (e) {}
+        ta.remove();
+      }
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, ripiego);
+      else ripiego();
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      var sezioni = Array.prototype.filter.call(document.querySelectorAll('.reveal .slides section'),
+                                                function (s) { return !s.querySelector('section'); });
+      var tutti = [], prec = null;
+      sezioni.forEach(function (sez) {
+        var g = null;
+        sez.querySelectorAll('div.sourceCode').forEach(function (div) {
+          var segue = div.hasAttribute('data-startfrom');
+          if (segue && g) g.push(div);
+          else if (segue && prec && (div.dataset.filename || '') === (prec[0].dataset.filename || '')) {
+            prec.push(div); g = prec;                // continua dalla slide precedente
+          } else { g = [div]; tutti.push(g); }
+        });
+        prec = g;                                    // null se la slide non ha codice
+      });
+      tutti.forEach(function (gr) {
+        if (gr.length < 2) return;
+        var piuSlide = gr[0].closest('section') !== gr[gr.length - 1].closest('section');
+        gr.forEach(function (div, k) {
+          var b = div.parentElement.querySelector('.code-copy-button');
+          if (!b) return;
+          if (k > 0 && div.closest('section') === gr[k - 1].closest('section')) { b.style.display = 'none'; return; }
+          b.title = it ? (piuSlide ? "Copia l'intero file (tutte le parti)" : "Copia l'intero file")
+                       : (piuSlide ? 'Copy the whole file (all its parts)' : 'Copy the whole file');
+          b._gruppo = gr;
+        });
+      });
+      // in cattura: arriva prima del gestore di Quarto (ClipboardJS) e lo sostituisce
+      document.addEventListener('click', function (ev) {
+        var b = ev.target.closest && ev.target.closest('.code-copy-button');
+        if (!b || !b._gruppo) return;
+        ev.preventDefault(); ev.stopImmediatePropagation();
+        copia(b._gruppo.map(testo).join('\n'), b);
+      }, true);
+    });
+  })();
+  </script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Programmazione Scientifica++: Lezione 13</h1>
+  <p class="subtitle">Membri e metodi statici</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Cristiano De Michele
+</div>
+</div>
+</div>
+
+</section>
+<section id="come-funziona-un-modello-linguistico" class="slide level2 smaller">
+<h2>Come funziona un modello linguistico</h2>
+<!--
+  Blocco motivazionale indipendente (7/11/2026), chiesto da Cristiano: gli studenti vogliono capire come
+  funzionano i transformer, anche per immagini, suoni e ricerche sul web. Cinque slide, con figure e poco testo;
+  i dettagli sono nel deck facoltativo approfondimento-transformer/ (che include _transformer_approfondimento.qmd),
+  a cui rimanda l'ultima slide.
+  Figure: figure/make_transformer_figure.py -> images/transformer_*.png (figure/transformer_cifra7.csv e' la
+  prima immagine di mnist_test.csv; lo spettrogramma e' di un suono sintetico). Le divisioni in token e le
+  probabilita' sono illustrative; l'esempio della ricerca sul web e' inventato.
+  Vocabolari: GPT-2 50 257 token; i modelli recenti oltre 100 000 (cl100k di OpenAI, 128 000 in Llama 3).
+  Token di addestramento: GPT-3 circa 300 miliardi (Brown et al. 2020); Llama 3 oltre 15 000 miliardi (Meta 2024).
+  Parametri: rete dei laboratori 784 -> 128 -> 10: 784*128 + 128 + 128*10 + 10 = 101 770; GPT-2 1,5 miliardi
+  (Radford et al. 2019, modello piu' grande); GPT-3 175 miliardi (Brown et al. 2020): 1,7 milioni di volte.
+  Immagini: Vision Transformer, quadrati 16 x 16 (Dosovitskiy et al. 2020).
+  Assistente e strumenti: secondo addestramento su conversazioni e preferenze umane (Ouyang et al. 2022).
+-->
+
+<img data-src="../images/transformer_prossimo_token.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>Un modello linguistico, come quelli degli assistenti tipo ChatGPT, fa una cosa sola: data una sequenza di <strong>token</strong>, pezzi di parola, calcola le probabilità del token successivo. Il programma che lo usa ne sceglie uno, lo aggiunge alla sequenza e ripete: una risposta intera è questo ciclo, un token alla volta.</p>
+</section>
+<section id="come-impara" class="slide level2 smaller">
+<h2>Come impara</h2>
+
+<img data-src="../images/transformer_addestramento.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
+<li>È un classificatore, come la rete MNIST dei laboratori: là 10 classi e l’etichetta è la cifra, qui una classe per ogni token e l’etichetta è il token che segue, già scritto nel testo.</li>
+<li>Backpropagation e discesa del gradiente alzano la probabilità del token giusto, su centinaia di miliardi di token. Un secondo addestramento, su conversazioni, ne fa un assistente.</li>
+</ul>
+</section>
+<section id="tutto-diventa-una-sequenza-di-token" class="slide level2 smaller">
+<h2>Tutto diventa una sequenza di token</h2>
+
+<img data-src="../images/transformer_tutto_token.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
+<li><strong>Testo:</strong> l’indice del token sceglie una riga di una matrice: un vettore.</li>
+<li><strong>Immagini:</strong> ogni quadrato, letto riga per riga, è un vettore (nei modelli veri, quadrati di 16&nbsp;×&nbsp;16 pixel).</li>
+<li><strong>Suoni:</strong> l’intensità delle frequenze in un istante, una colonna dello spettrogramma ogni 10 ms, è un vettore.</li>
+</ul>
+<p>Qualunque sia l’origine, il modello riceve una sequenza di vettori, e il calcolo è lo stesso.</p>
+</section>
+<section id="come-cerca-sul-web" class="slide level2 smaller">
+<h2>Come cerca sul web</h2>
+
+<img data-src="../images/transformer_strumenti.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>Il modello non naviga da solo. La riga 1, scritta dal programma, descrive lo strumento; nel secondo addestramento il modello ha imparato a usarlo, e genera token dopo token una richiesta in quel formato (riga 3). Il programma la esegue e aggiunge il risultato alla sequenza (riga 4), e il modello continua. Allo stesso modo si aprono pagine, si eseguono programmi o si leggono schermate, che diventano token come le immagini.</p>
+</section>
+<section id="gli-stessi-ingredienti-del-corso" class="slide level2 smaller">
+<h2>Gli stessi ingredienti del corso</h2>
+
+<img data-src="../images/transformer_parametri.png" class="quarto-figure quarto-figure-center r-stretch" style="width:62.0%"><p>Dentro ci sono gli strumenti del corso: prodotti di matrici come in <code>DenseLayer</code>, funzioni non lineari, backpropagation e discesa del gradiente. Cambiano la scala (GPT-3 ha 1,7 milioni di volte i pesi della rete dei laboratori) e un ingrediente in più, l’<strong>attenzione</strong>, che permette a ogni token di usare l’informazione degli altri. I dettagli, con la matematica, sono nelle <a href="../approfondimento-transformer/index.html">slide di approfondimento</a>.</p>
+</section>
+<section id="argomenti-di-oggi" class="slide level2 smaller">
+<h2>Argomenti di oggi</h2>
+<!--
+  Audit dell'8/11/2026 con le linee guida di ottobre (cartella della lezione, un eseguibile per esempio, slide
+  "Provate", messaggi di g++ su Linux, esercizio con scopo e file da completare, registro sobrio, titoli in
+  sentence case). Backup del Mac: lezione-13/index.qmd.pre-audit0811. In apertura il blocco motivazionale sui
+  transformer (../_transformer.qmd). Programmi e messaggi verificati con g++ 13 (-Wall, AddressSanitizer) e,
+  per gli avvisi, con clang 18.
+-->
+<ul>
+<li><strong>I membri <code>static</code></strong>: un attributo che esiste una sola volta, condiviso da tutti gli oggetti della classe</li>
+<li><strong>I metodi <code>static</code></strong>: metodi della classe, che si chiamano senza un oggetto</li>
+<li><strong>Le variabili locali <code>static</code></strong>: una variabile di una funzione che conserva il suo valore fra una chiamata e l’altra</li>
+<li><strong>Il Singleton</strong>: una classe di cui esiste un solo oggetto</li>
+<li><strong>Esercizio</strong>: un contatore di oggetti che resta corretto anche con le copie</li>
+</ul>
+</section>
+<section id="gli-argomenti-di-oggi-nel-framework" class="slide level2 smaller">
+<h2>Gli argomenti di oggi nel framework</h2>
+<ul>
+<li><strong>Metodi <code>static</code>.</strong> Ogni layer ha un metodo <code>static</code>, <code>create_from_stream</code>, che legge da un file i dati di un layer salvato e crea l’oggetto. È <code>static</code> perché si chiama quando l’oggetto non esiste ancora: è il metodo a crearlo.</li>
+<li><strong>Un oggetto unico.</strong> Il generatore di numeri casuali, che inizializza i pesi della rete, deve essere uno solo in tutto il programma: nel framework <code>randnumgen</code> è un <em>Singleton</em>, l’ultimo argomento di oggi, e <code>rng</code> è un reference all’unico oggetto.</li>
+</ul>
+</section>
+<section id="la-cartella-della-lezione" class="slide level2 smaller">
+<h2>La cartella della lezione</h2>
+<p>Oggi ogni esempio si scrive e si compila durante la lezione, in un progetto CMake come quello dei laboratori, ma in una cartella a parte.</p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>CMakeLists.txt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="CMakeLists.txt"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb1-1"><a aria-label="1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> <span class="dt">3.15</span>)</span>
+<span id="cb1-2"><a aria-label="2"></a><span class="kw">project</span>(Lezione13)</span>
+<span id="cb1-3"><a aria-label="3"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 17)</span>
+<span id="cb1-4"><a aria-label="4"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="ot">ON</span>)</span>
+<span id="cb1-5"><a aria-label="5"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_FLAGS</span> <span class="st">"</span><span class="dv">${CMAKE_CXX_FLAGS}</span><span class="st"> -Wall"</span>)</span>
+<span id="cb1-6"><a aria-label="6"></a><span class="co"># AddressSanitizer (Lezione 08)</span></span>
+<span id="cb1-7"><a aria-label="7"></a><span class="kw">add_compile_options</span>(-fsanitize=address -g)</span>
+<span id="cb1-8"><a aria-label="8"></a><span class="kw">add_link_options</span>(-fsanitize=address)</span>
+<span id="cb1-9"><a aria-label="9"></a><span class="co"># qui una riga add_executable per esempio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:45%;">
+<ol type="1">
+<li>Create la cartella <code>LEZIONE_13</code>, fuori da <code>basic_neural_plusplus</code>, e apritela in VS Code.</li>
+<li>Createvi il file <code>CMakeLists.txt</code> qui a sinistra.</li>
+<li>Dalla cartella <code>LEZIONE_13</code>:<br>
+<code>cmake -B build</code>.</li>
+</ol>
+<p>Il <code>CMakeLists.txt</code> è quello delle lezioni precedenti, con <code>-Wall</code> e l’AddressSanitizer.</p>
+</div></div>
+</section>
+<section id="un-eseguibile-per-esempio" class="slide level2 smaller">
+<h2>Un eseguibile per esempio</h2>
+<p>Sopra ogni esempio c’è il nome del suo file. Quando lo incontrate, create il file, copiatevi il codice e aggiungete al <code>CMakeLists.txt</code> la sua riga:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb2-1"><a aria-label="1"></a><span class="kw">add_executable</span>(<span class="bn">globale</span> globale.cpp)</span>
+<span id="cb2-2"><a aria-label="2"></a><span class="kw">add_executable</span>(<span class="bn">contatore</span> contatore.cpp)</span>
+<span id="cb2-3"><a aria-label="3"></a><span class="kw">add_executable</span>(<span class="bn">metodo_static</span> metodo_static.cpp)</span>
+<span id="cb2-4"><a aria-label="4"></a><span class="kw">add_executable</span>(<span class="bn">utility</span> utility.cpp)</span>
+<span id="cb2-5"><a aria-label="5"></a><span class="kw">add_executable</span>(<span class="bn">lampo</span> lampo.cpp)                                <span class="co"># esercizio veloce</span></span>
+<span id="cb2-6"><a aria-label="6"></a><span class="kw">add_executable</span>(<span class="bn">singleton</span> singleton.cpp)</span>
+<span id="cb2-7"><a aria-label="7"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_contatore</span> esercizio_contatore.cpp)    <span class="co"># esercizio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Poi, dalla cartella <code>LEZIONE_13</code>, compilate ed eseguite solo quell’esempio:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> globale <span class="kw">&amp;&amp;</span> <span class="ex">./build/globale</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>cmake -B build</code> rilegge il <code>CMakeLists.txt</code>: senza, <code>--target</code> non trova un esempio appena aggiunto. Con <code>--target</code> si compila solo l’esempio indicato: un esercizio non ancora finito non blocca gli altri. I messaggi citati sono quelli di g++ su Linux; con clang (macOS) il testo cambia, il significato no.</p>
+</section>
+<section id="contare-gli-oggetti-di-una-classe" class="slide level2 smaller">
+<h2>Contare gli oggetti di una classe</h2>
+<p>Ogni oggetto ha i suoi attributi: in due oggetti della classe <code>Particella</code>, l’attributo <code>massa_</code> ha due valori indipendenti, e modificarne uno non cambia l’altro.</p>
+<p>Alcune informazioni riguardano invece la classe nel suo insieme. Un esempio: <strong>quanti</strong> oggetti <code>Particella</code> esistono in un certo momento del programma.</p>
+<p>Un attributo normale, <code>int totale_</code>, non basta: ogni oggetto ne avrebbe una copia, che parte da 0 e non tiene conto degli altri oggetti.</p>
+</section>
+<section id="con-una-variabile-globale" class="slide level2 smaller">
+<h2>Con una variabile globale</h2>
+<p>Come in C, il contatore può essere una variabile globale, definita fuori da ogni funzione:</p>
+<div class="columns">
+<div class="column" style="width:62%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>globale.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="globale.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb4-2"><a aria-label="2"></a></span>
+<span id="cb4-3"><a aria-label="3"></a><span class="dt">int</span> totale_particelle <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>           <span class="co">// variabile globale</span></span>
+<span id="cb4-4"><a aria-label="4"></a></span>
+<span id="cb4-5"><a aria-label="5"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
+<span id="cb4-6"><a aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb4-7"><a aria-label="7"></a>    Particella<span class="op">()</span> <span class="op">{</span> totale_particelle<span class="op">++;</span> <span class="op">}</span></span>
+<span id="cb4-8"><a aria-label="8"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span> totale_particelle<span class="op">--;</span> <span class="op">}</span></span>
+<span id="cb4-9"><a aria-label="9"></a><span class="op">};</span></span>
+<span id="cb4-10"><a aria-label="10"></a></span>
+<span id="cb4-11"><a aria-label="11"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-12"><a aria-label="12"></a>    Particella p1<span class="op">;</span></span>
+<span id="cb4-13"><a aria-label="13"></a>    Particella p2<span class="op">;</span></span>
+<span id="cb4-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"particelle: "</span> <span class="op">&lt;&lt;</span> totale_particelle <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb4-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:38%;">
+<p>Output:</p>
+<pre><code>particelle: 2</code></pre>
+<p>Il costruttore incrementa il contatore, il distruttore lo decrementa: il valore è il numero di oggetti che esistono in quel momento.</p>
+</div></div>
+</section>
+<section id="provate-la-variabile-globale" class="slide level2 smaller">
+<h2>Provate: la variabile globale</h2>
+<p>In <code>globale.cpp</code>, prima della stampa (riga 14), aggiungete <code>totale_particelle = -999;</code>. Compila?</p>
+<div class="fragment">
+<p>Sì, e stampa <code>particelle: -999</code>. Una variabile globale si può modificare da qualunque punto del programma: niente garantisce che il contatore resti corretto.</p>
+<p>C’è anche un secondo problema: il nome occupa lo spazio dei nomi globale. Se un altro file del programma, per esempio di una libreria, definisse una variabile globale con lo stesso nome, il linker segnalerebbe una definizione multipla.</p>
+<p>Serve un contatore condiviso da tutti gli oggetti, come una variabile globale, ma dentro la classe e <code>private</code>.</p>
+</div>
+</section>
+<section id="i-membri-static" class="slide level2 smaller">
+<h2>I membri <code>static</code></h2>
+<div class="columns">
+<div class="column" style="width:61%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>contatore.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11" data-filename="contatore.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a></span>
+<span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
+<span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_</span><span class="op">;</span></span>
+<span id="annotated-cell-11-6"><a href="#annotated-cell-11-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span></span>
+<span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-11-8"><a href="#annotated-cell-11-8" aria-label="8"></a>    Particella<span class="op">(</span><span class="dt">double</span> massa<span class="op">)</span> <span class="op">:</span> <span class="va">massa_</span><span class="op">(</span>massa<span class="op">)</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">++;</span> <span class="op">}</span></span>
+<span id="annotated-cell-11-9"><a href="#annotated-cell-11-9" aria-label="9"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">--;</span> <span class="op">}</span></span>
+<span id="annotated-cell-11-10"><a href="#annotated-cell-11-10" aria-label="10"></a>    <span class="dt">int</span> totale<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">totale_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-11-11"><a href="#annotated-cell-11-11" aria-label="11"></a>    <span class="dt">double</span> massa<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">massa_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-11-12"><a href="#annotated-cell-11-12" aria-label="12"></a><span class="op">};</span></span>
+<span id="annotated-cell-11-13"><a href="#annotated-cell-11-13" aria-label="13"></a></span>
+<span id="annotated-cell-11-14"><a href="#annotated-cell-11-14" aria-label="14"></a><span class="dt">int</span> Particella<span class="op">::</span><span class="va">totale_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-11-15"><a href="#annotated-cell-11-15" aria-label="15"></a></span>
+<span id="annotated-cell-11-16"><a href="#annotated-cell-11-16" aria-label="16"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-11-17"><a href="#annotated-cell-11-17" aria-label="17"></a>    Particella p1<span class="op">(</span><span class="fl">1.0</span><span class="op">);</span></span>
+<span id="annotated-cell-11-18"><a href="#annotated-cell-11-18" aria-label="18"></a>    Particella p2<span class="op">(</span><span class="fl">2.0</span><span class="op">);</span></span>
+<span id="annotated-cell-11-19"><a href="#annotated-cell-11-19" aria-label="19"></a>    <span class="op">{</span></span>
+<span id="annotated-cell-11-20"><a href="#annotated-cell-11-20" aria-label="20"></a>        Particella p3<span class="op">(</span><span class="fl">3.0</span><span class="op">);</span></span>
+<span id="annotated-cell-11-21"><a href="#annotated-cell-11-21" aria-label="21"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"nel blocco: "</span> <span class="op">&lt;&lt;</span> p1<span class="op">.</span>totale<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-11-22"><a href="#annotated-cell-11-22" aria-label="22"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-11-23"><a href="#annotated-cell-11-23" aria-label="23"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"dopo il blocco: "</span> <span class="op">&lt;&lt;</span> p1<span class="op">.</span>totale<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-11-24"><a href="#annotated-cell-11-24" aria-label="24"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"massa di p2: "</span> <span class="op">&lt;&lt;</span> p2<span class="op">.</span>massa<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-11-25"><a href="#annotated-cell-11-25" aria-label="25"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-11-26"><a href="#annotated-cell-11-26" aria-label="26"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:39%;">
+<ol type="1">
+<li><code>static</code>: un solo <code>totale_</code> per la classe, condiviso da tutti gli oggetti; <code>massa_</code> è uno per oggetto.</li>
+<li>La <strong>definizione</strong>, fuori dalla classe e senza <code>static</code>, riserva la memoria e dà il valore iniziale. Il membro esiste per tutta l’esecuzione, come le variabili globali (Lezione 08).</li>
+</ol>
+<p>Output:</p>
+<pre><code>nel blocco: 3
+dopo il blocco: 2
+massa di p2: 2</code></pre>
+</div></div>
+</section>
+<section id="provate-i-membri-static" class="slide level2 smaller">
+<h2>Provate: i membri <code>static</code></h2>
+<p>In <code>contatore.cpp</code>, un esperimento alla volta:</p>
+<ol type="1">
+<li>Togliete la riga 14, la definizione. Compila?<br>
+<span class="fragment">Il compilatore sì, il linker no: <em>undefined reference to `Particella::totale_’</em>. La dichiarazione nella classe annuncia il membro; la memoria la riserva solo la definizione.</span></li>
+<li>Rimettete la riga 14 e all’inizio del <code>main</code>, prima della riga 17, aggiungete <code>Particella::totale_ = -999;</code>. Compila?<br>
+<span class="fragment">No: <em>‘int Particella::totale_’ is private within this context</em>. Il contatore è condiviso come una variabile globale, ma protetto come un attributo <code>private</code>.</span></li>
+</ol>
+</section>
+<section id="provate-una-copia" class="slide level2 smaller">
+<h2>Provate: una copia</h2>
+<p>In <code>contatore.cpp</code>, nel blocco, dopo <code>p3</code> (riga 20), aggiungete <code>Particella p4 = p3;</code>. Cosa stampa?</p>
+<div class="fragment">
+<p><code>nel blocco: 3</code> e <code>dopo il blocco: 1</code>, invece di 4 e 2.</p>
+<p>Il costruttore di copia generato dal compilatore copia <code>massa_</code> e non incrementa <code>totale_</code>; il distruttore di <code>p4</code> invece lo decrementa.</p>
+<p>È la Regola del Tre (Lezione 10): un distruttore che fa qualcosa richiede anche il costruttore di copia. Lo scriverete nell’esercizio di fine lezione.</p>
+</div>
+</section>
+<section id="approfondimento-un-membro-static-con-più-file" class="slide level2 smaller">
+<h2>Approfondimento: un membro <code>static</code> con più file</h2>
+<p>Con la classe in un header (Lezione 08), la dichiarazione sta nella classe, nell’<code>.hpp</code>, e la definizione in <strong>un solo</strong> <code>.cpp</code>:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Particella.hpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="Particella.hpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="pp">#pragma once</span></span>
+<span id="cb7-2"><a aria-label="2"></a></span>
+<span id="cb7-3"><a aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb7-5"><a aria-label="5"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_</span><span class="op">;</span></span>
+<span id="cb7-6"><a aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb7-7"><a aria-label="7"></a>    Particella<span class="op">();</span></span>
+<span id="cb7-8"><a aria-label="8"></a>    <span class="op">~</span>Particella<span class="op">();</span></span>
+<span id="cb7-9"><a aria-label="9"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Particella.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="Particella.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"Particella.hpp"</span></span>
+<span id="cb8-2"><a aria-label="2"></a></span>
+<span id="cb8-3"><a aria-label="3"></a><span class="dt">int</span> Particella<span class="op">::</span><span class="va">totale_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-4"><a aria-label="4"></a></span>
+<span id="cb8-5"><a aria-label="5"></a>Particella<span class="op">::</span>Particella<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-6"><a aria-label="6"></a>    <span class="va">totale_</span><span class="op">++;</span></span>
+<span id="cb8-7"><a aria-label="7"></a><span class="op">}</span></span>
+<span id="cb8-8"><a aria-label="8"></a></span>
+<span id="cb8-9"><a aria-label="9"></a>Particella<span class="op">::~</span>Particella<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-10"><a aria-label="10"></a>    <span class="va">totale_</span><span class="op">--;</span></span>
+<span id="cb8-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div></div>
+<p>Se la definizione stesse nell’header, ogni <code>.cpp</code> che lo include ne avrebbe una, e il linker si fermerebbe con <em>multiple definition of `Particella::totale_’</em>.</p>
+</section>
+<section id="i-metodi-static" class="slide level2 smaller">
+<h2>I metodi <code>static</code></h2>
+<p>Un metodo normale si chiama su un oggetto, come <code>p1.totale()</code>. Un metodo <code>static</code> appartiene alla classe: si chiama anche prima che esista un oggetto.</p>
+<div class="columns">
+<div class="column" style="width:62%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>metodo_static.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-17" data-filename="metodo_static.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-17-2"><a href="#annotated-cell-17-2" aria-label="2"></a></span>
+<span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
+<span id="annotated-cell-17-4"><a href="#annotated-cell-17-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-label="5"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_</span><span class="op">;</span></span>
+<span id="annotated-cell-17-6"><a href="#annotated-cell-17-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span></span>
+<span id="annotated-cell-17-7"><a href="#annotated-cell-17-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-17-8"><a href="#annotated-cell-17-8" aria-label="8"></a>    Particella<span class="op">(</span><span class="dt">double</span> massa<span class="op">)</span> <span class="op">:</span> <span class="va">massa_</span><span class="op">(</span>massa<span class="op">)</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">++;</span> <span class="op">}</span></span>
+<span id="annotated-cell-17-9"><a href="#annotated-cell-17-9" aria-label="9"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">--;</span> <span class="op">}</span></span>
+<span id="annotated-cell-17-10"><a href="#annotated-cell-17-10" aria-label="10"></a>    <span class="at">static</span> <span class="dt">int</span> totale<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">totale_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-17-11"><a href="#annotated-cell-17-11" aria-label="11"></a>    <span class="dt">double</span> massa<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">massa_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-17-12"><a href="#annotated-cell-17-12" aria-label="12"></a><span class="op">};</span></span>
+<span id="annotated-cell-17-13"><a href="#annotated-cell-17-13" aria-label="13"></a></span>
+<span id="annotated-cell-17-14"><a href="#annotated-cell-17-14" aria-label="14"></a><span class="dt">int</span> Particella<span class="op">::</span><span class="va">totale_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-17-15"><a href="#annotated-cell-17-15" aria-label="15"></a></span>
+<span id="annotated-cell-17-16"><a href="#annotated-cell-17-16" aria-label="16"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-17-17"><a href="#annotated-cell-17-17" aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"prima: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>totale<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-17-18"><a href="#annotated-cell-17-18" aria-label="18"></a>    Particella p1<span class="op">(</span><span class="fl">1.0</span><span class="op">);</span></span>
+<span id="annotated-cell-17-19"><a href="#annotated-cell-17-19" aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"dopo: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>totale<span class="op">()</span></span>
+<span id="annotated-cell-17-20"><a href="#annotated-cell-17-20" aria-label="20"></a>              <span class="op">&lt;&lt;</span> <span class="st">", massa "</span> <span class="op">&lt;&lt;</span> p1<span class="op">.</span>massa<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-17-21"><a href="#annotated-cell-17-21" aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-17-22"><a href="#annotated-cell-17-22" aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:38%;">
+<ol type="1">
+<li><code>static</code>: il metodo appartiene alla classe, non a un oggetto.</li>
+<li>Il nome della classe e <code>::</code>, come per i namespace (Lezione 04): nessun oggetto esiste ancora.</li>
+</ol>
+<p>Output:</p>
+<pre><code>prima: 0
+dopo: 1, massa 1</code></pre>
+</div></div>
+</section>
+<section id="cosa-manca-in-un-metodo-static" class="slide level2 smaller">
+<h2>Cosa manca in un metodo <code>static</code></h2>
+<p>Un metodo <code>static</code> non è chiamato su un oggetto, quindi:</p>
+<ul>
+<li><strong>non ha <code>this</code></strong> (Lezione 10): non c’è un oggetto corrente;</li>
+<li><strong>non legge gli attributi normali</strong>, come <code>massa_</code>, perché non c’è un oggetto a cui appartengono: usa direttamente solo i membri <code>static</code>. Se però riceve un oggetto come parametro, per esempio <code>static double energia(const Particella&amp; p)</code>, ne legge gli attributi, anche quelli <code>private</code>, come ogni metodo della classe;</li>
+<li><strong>non può essere <code>const</code></strong>: il <code>const</code> in fondo a un metodo dice che il metodo non modifica l’oggetto su cui è chiamato (Lezione 09), e qui l’oggetto non c’è.</li>
+</ul>
+</section>
+<section id="provate-i-metodi-static" class="slide level2 smaller">
+<h2>Provate: i metodi <code>static</code></h2>
+<p>In <code>metodo_static.cpp</code>, alla riga 10, un esperimento alla volta:</p>
+<ol type="1">
+<li>Scrivete <code>static int totale() const { return totale_; }</code>. Compila?<br>
+<span class="fragment">No: <em>static member function ‘static int Particella::totale()’ cannot have cv-qualifier</em>. I <em>cv-qualifier</em> sono <code>const</code> e <code>volatile</code>.</span></li>
+<li>Scrivete <code>static int totale() { return massa_; }</code>. Compila?<br>
+<span class="fragment">No: <em>invalid use of member ‘Particella::massa_’ in static member function</em>.</span></li>
+</ol>
+</section>
+<section id="classi-di-soli-metodi-static" class="slide level2 smaller">
+<h2>Classi di soli metodi <code>static</code></h2>
+<p>Alcune funzioni non dipendono da uno stato: la sigmoide <span class="math inline">\(\sigma(z) = 1/(1 + e^{-z})\)</span> dipende solo da <span class="math inline">\(z\)</span>. Si possono raccogliere in una classe di soli metodi <code>static</code>, che si chiamano senza creare oggetti:</p>
+<div class="columns">
+<div class="column" style="width:62%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>utility.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="utility.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
+<span id="cb10-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb10-3"><a aria-label="3"></a></span>
+<span id="cb10-4"><a aria-label="4"></a><span class="kw">class</span> Attivazioni <span class="op">{</span></span>
+<span id="cb10-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb10-6"><a aria-label="6"></a>    <span class="at">static</span> <span class="dt">double</span> relu<span class="op">(</span><span class="dt">double</span> z<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> z <span class="op">&gt;</span> <span class="fl">0.0</span> <span class="op">?</span> z <span class="op">:</span> <span class="fl">0.0</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb10-7"><a aria-label="7"></a>    <span class="at">static</span> <span class="dt">double</span> sigmoide<span class="op">(</span><span class="dt">double</span> z<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-8"><a aria-label="8"></a>        <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>z<span class="op">));</span></span>
+<span id="cb10-9"><a aria-label="9"></a>    <span class="op">}</span></span>
+<span id="cb10-10"><a aria-label="10"></a><span class="op">};</span></span>
+<span id="cb10-11"><a aria-label="11"></a></span>
+<span id="cb10-12"><a aria-label="12"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb10-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> Attivazioni<span class="op">::</span>relu<span class="op">(-</span><span class="fl">5.0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span></span>
+<span id="cb10-14"><a aria-label="14"></a>              <span class="op">&lt;&lt;</span> Attivazioni<span class="op">::</span>sigmoide<span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb10-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:38%;">
+<p>Output:</p>
+<pre><code>0 0.5</code></pre>
+<p>Lo stesso raggruppamento si ottiene con un namespace (Lezione 04), ed è la scelta della libreria standard: <code>std::exp</code> è una funzione del namespace <code>std</code>. La classe permette in più di avere membri <code>private</code>, usati solo dai suoi metodi.</p>
+</div></div>
+</section>
+<section id="esercizio-veloce-cosa-stampa" class="slide level2 smaller">
+<h2>Esercizio veloce: cosa stampa?</h2>
+<p><strong>Scopo:</strong> un terzo uso di <code>static</code>, dentro una funzione; serve per il Singleton della slide successiva.</p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>lampo.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="lampo.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb12-2"><a aria-label="2"></a></span>
+<span id="cb12-3"><a aria-label="3"></a><span class="dt">void</span> conta<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-4"><a aria-label="4"></a>    <span class="at">static</span> <span class="dt">int</span> n <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-5"><a aria-label="5"></a>    n<span class="op">++;</span></span>
+<span id="cb12-6"><a aria-label="6"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb12-7"><a aria-label="7"></a><span class="op">}</span></span>
+<span id="cb12-8"><a aria-label="8"></a></span>
+<span id="cb12-9"><a aria-label="9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-10"><a aria-label="10"></a>    conta<span class="op">();</span></span>
+<span id="cb12-11"><a aria-label="11"></a>    conta<span class="op">();</span></span>
+<span id="cb12-12"><a aria-label="12"></a>    conta<span class="op">();</span></span>
+<span id="cb12-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb12-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:45%;">
+<p>Senza eseguirlo: cosa stampa? E cosa stamperebbe senza <code>static</code> alla riga 4?</p>
+<p>Poi verificate con il comando qui sotto.</p>
+</div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> lampo <span class="kw">&amp;&amp;</span> <span class="ex">./build/lampo</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="esercizio-veloce-la-risposta" class="slide level2 smaller">
+<h2>Esercizio veloce: la risposta</h2>
+<p>Stampa <code>1 2 3</code>; senza <code>static</code>, <code>1 1 1</code>.</p>
+<p>Una variabile locale normale nasce e muore a ogni chiamata. Una variabile locale <code>static</code>:</p>
+<ul>
+<li>nasce <strong>una volta sola</strong>, la prima volta che l’esecuzione arriva alla sua definizione;</li>
+<li><strong>resta in memoria</strong> dopo l’uscita dalla funzione, fino alla fine del programma;</li>
+<li>è <strong>visibile solo dentro la funzione</strong>: nessun’altra parte del programma la può modificare.</li>
+</ul>
+<p>Ha quindi la durata di una variabile globale e la visibilità di una variabile locale.</p>
+</section>
+<section id="il-singleton" class="slide level2 smaller">
+<h2>Il Singleton</h2>
+<p>Un solo oggetto per tutto il programma, come il generatore di numeri casuali del framework: è il <em>design pattern</em> <strong>Singleton</strong>.</p>
+<div class="columns">
+<div class="column" style="width:56%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>singleton.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-24" data-filename="singleton.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-24-1"><a href="#annotated-cell-24-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-24-2"><a href="#annotated-cell-24-2" aria-label="2"></a></span>
+<span id="annotated-cell-24-3"><a href="#annotated-cell-24-3" aria-label="3"></a><span class="kw">class</span> Generatore <span class="op">{</span></span>
+<span id="annotated-cell-24-4"><a href="#annotated-cell-24-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-24-5"><a href="#annotated-cell-24-5" aria-label="5"></a>    <span class="dt">int</span> <span class="va">n_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-24-6"><a href="#annotated-cell-24-6" aria-label="6"></a>    Generatore<span class="op">()</span> <span class="op">{}</span></span>
+<span id="annotated-cell-24-7"><a href="#annotated-cell-24-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-24-8"><a href="#annotated-cell-24-8" aria-label="8"></a>    Generatore<span class="op">(</span><span class="at">const</span> Generatore<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="annotated-cell-24-9"><a href="#annotated-cell-24-9" aria-label="9"></a>    Generatore<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> Generatore<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="annotated-cell-24-10"><a href="#annotated-cell-24-10" aria-label="10"></a>    <span class="at">static</span> Generatore<span class="op">&amp;</span> get<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-24-11"><a href="#annotated-cell-24-11" aria-label="11"></a>        <span class="at">static</span> Generatore unico<span class="op">;</span></span>
+<span id="annotated-cell-24-12"><a href="#annotated-cell-24-12" aria-label="12"></a>        <span class="cf">return</span> unico<span class="op">;</span></span>
+<span id="annotated-cell-24-13"><a href="#annotated-cell-24-13" aria-label="13"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-24-14"><a href="#annotated-cell-24-14" aria-label="14"></a>    <span class="dt">int</span> prossimo<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="op">++</span><span class="va">n_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-24-15"><a href="#annotated-cell-24-15" aria-label="15"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:44%;">
+<ol type="1">
+<li>Costruttore <code>private</code> (Lezione 07): fuori dalla classe non si crea un <code>Generatore</code>.</li>
+<li>Copia e assegnamento vietati con <code>= delete</code>, come per <code>Sequential</code> (Laboratorio 06).</li>
+<li><code>get()</code> è <code>static</code>: restituisce un reference a <code>unico</code>, variabile locale <code>static</code> che nasce alla prima chiamata. Le chiamate successive restituiscono lo stesso oggetto.</li>
+</ol>
+</div></div>
+</section>
+<section id="il-singleton-il-main" class="slide level2 smaller">
+<h2>Il Singleton: il <code>main</code></h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>singleton.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-filename="singleton.cpp" data-startfrom="16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 15;"><span id="cb14-16"><a aria-label="16"></a><span class="dt">void</span> altra_funzione<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb14-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> Generatore<span class="op">::</span>get<span class="op">().</span>prossimo<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb14-18"><a aria-label="18"></a><span class="op">}</span></span>
+<span id="cb14-19"><a aria-label="19"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb14-20"><a aria-label="20"></a>    Generatore<span class="op">&amp;</span> g <span class="op">=</span> Generatore<span class="op">::</span>get<span class="op">();</span></span>
+<span id="cb14-21"><a aria-label="21"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> g<span class="op">.</span>prossimo<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb14-22"><a aria-label="22"></a>    altra_funzione<span class="op">();</span></span>
+<span id="cb14-23"><a aria-label="23"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> g<span class="op">.</span>prossimo<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb14-24"><a aria-label="24"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb14-25"><a aria-label="25"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:44%;">
+<p>Output:</p>
+<pre><code>1
+2
+3</code></pre>
+<p>Il <code>main</code> e <code>altra_funzione</code> chiamano <code>prossimo()</code> sullo stesso oggetto: il contatore <code>n_</code> è uno solo.</p>
+</div></div>
+</section>
+<section id="provate-il-singleton" class="slide level2 smaller">
+<h2>Provate: il Singleton</h2>
+<p>In <code>singleton.cpp</code>, un esperimento alla volta:</p>
+<ol type="1">
+<li>All’inizio del <code>main</code>, prima della riga 20, aggiungete <code>Generatore h;</code>. Compila?<br>
+<span class="fragment">No: <em>‘Generatore::Generatore()’ is private within this context</em>.</span></li>
+<li>Togliete la riga aggiunta e alla riga 20 togliete <code>&amp;</code>: <code>Generatore g = Generatore::get();</code>. Compila?<br>
+<span class="fragment">No: <em>use of deleted function ‘Generatore::Generatore(const Generatore&amp;)’</em>. Senza <code>&amp;</code>, <code>g</code> sarebbe una copia, cioè un secondo oggetto.</span></li>
+</ol>
+</section>
+<section id="esercizio-il-contatore-con-le-copie" class="slide level2 smaller">
+<h2>Esercizio: il contatore con le copie</h2>
+<p><strong>Scopo:</strong> completare la Regola del Tre in una classe con un membro <code>static</code>, e scrivere un metodo <code>static</code>.</p>
+<p>Nel terzo esperimento su <code>contatore.cpp</code> una copia rendeva sbagliato il contatore. Nel file <code>esercizio_contatore.cpp</code> (slide seguenti):</p>
+<ol type="1">
+<li>scrivete il costruttore di copia <code>Particella(const Particella&amp; altra)</code>, che copia <code>massa_</code> da <code>altra</code> e incrementa <code>totale_</code>;</li>
+<li>scrivete il metodo <code>static int quante()</code>, che restituisce <code>totale_</code>;</li>
+<li>nel <code>main</code>, scommentate le quattro stampe.</li>
+</ol>
+<p>Output atteso, su quattro righe: <code>all'inizio: 0</code>, <code>dopo tre: 3</code>, <code>dopo la copia: 4</code>, <code>alla fine: 0</code>. Si compila ed esegue con:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_contatore <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_contatore</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="il-contatore-il-file-da-completare" class="slide level2 smaller">
+<h2>Il contatore: il file da completare</h2>
+<div class="columns">
+<div class="column" style="width:62%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_contatore.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-filename="esercizio_contatore.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb17-2"><a aria-label="2"></a></span>
+<span id="cb17-3"><a aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
+<span id="cb17-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb17-5"><a aria-label="5"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_</span><span class="op">;</span></span>
+<span id="cb17-6"><a aria-label="6"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span></span>
+<span id="cb17-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb17-8"><a aria-label="8"></a>    Particella<span class="op">(</span><span class="dt">double</span> massa<span class="op">)</span> <span class="op">:</span> <span class="va">massa_</span><span class="op">(</span>massa<span class="op">)</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">++;</span> <span class="op">}</span></span>
+<span id="cb17-9"><a aria-label="9"></a>    <span class="co">// da completare: il costruttore di copia, che riceve</span></span>
+<span id="cb17-10"><a aria-label="10"></a>    <span class="co">// const Particella&amp; altra, copia massa_ da altra</span></span>
+<span id="cb17-11"><a aria-label="11"></a>    <span class="co">// e incrementa totale_</span></span>
+<span id="cb17-12"><a aria-label="12"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">--;</span> <span class="op">}</span></span>
+<span id="cb17-13"><a aria-label="13"></a>    <span class="dt">double</span> massa<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">massa_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb17-14"><a aria-label="14"></a>    <span class="co">// da completare: il metodo static int quante(),</span></span>
+<span id="cb17-15"><a aria-label="15"></a>    <span class="co">// che restituisce totale_</span></span>
+<span id="cb17-16"><a aria-label="16"></a><span class="op">};</span></span>
+<span id="cb17-17"><a aria-label="17"></a></span>
+<span id="cb17-18"><a aria-label="18"></a><span class="dt">int</span> Particella<span class="op">::</span><span class="va">totale_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:38%;">
+<p>Il file compila così com’è: le stampe del <code>main</code>, nella slide seguente, sono commentate.</p>
+<p>Il costruttore di copia si scrive con una lista di inizializzazione, come il costruttore della riga 8.</p>
+</div></div>
+</section>
+<section id="il-contatore-il-main-da-completare" class="slide level2 smaller">
+<h2>Il contatore: il <code>main</code> da completare</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_contatore.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="esercizio_contatore.cpp" data-startfrom="19"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 18;"><span id="cb18-19"><a aria-label="19"></a></span>
+<span id="cb18-20"><a aria-label="20"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb18-21"><a aria-label="21"></a>    <span class="co">// scommentate le stampe quando quante() è scritto</span></span>
+<span id="cb18-22"><a aria-label="22"></a>    <span class="co">// std::cout &lt;&lt; "all'inizio: " &lt;&lt; Particella::quante() &lt;&lt; "\n";</span></span>
+<span id="cb18-23"><a aria-label="23"></a>    <span class="op">{</span></span>
+<span id="cb18-24"><a aria-label="24"></a>        Particella p1<span class="op">(</span><span class="fl">1.0</span><span class="op">),</span> p2<span class="op">(</span><span class="fl">2.0</span><span class="op">),</span> p3<span class="op">(</span><span class="fl">3.0</span><span class="op">);</span></span>
+<span id="cb18-25"><a aria-label="25"></a>        <span class="co">// std::cout &lt;&lt; "dopo tre: " &lt;&lt; Particella::quante() &lt;&lt; "\n";</span></span>
+<span id="cb18-26"><a aria-label="26"></a>        Particella p4 <span class="op">=</span> p1<span class="op">;</span></span>
+<span id="cb18-27"><a aria-label="27"></a>        <span class="co">// std::cout &lt;&lt; "dopo la copia: " &lt;&lt; Particella::quante() &lt;&lt; "\n";</span></span>
+<span id="cb18-28"><a aria-label="28"></a>    <span class="op">}</span></span>
+<span id="cb18-29"><a aria-label="29"></a>    <span class="co">// std::cout &lt;&lt; "alla fine: " &lt;&lt; Particella::quante() &lt;&lt; "\n";</span></span>
+<span id="cb18-30"><a aria-label="30"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb18-31"><a aria-label="31"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="soluzione-dellesercizio-sul-contatore" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio sul contatore</h2>
+<div class="columns">
+<div class="column" style="width:64%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_contatore.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-31" data-filename="esercizio_contatore.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-31-1"><a href="#annotated-cell-31-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-31-2"><a href="#annotated-cell-31-2" aria-label="2"></a></span>
+<span id="annotated-cell-31-3"><a href="#annotated-cell-31-3" aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
+<span id="annotated-cell-31-4"><a href="#annotated-cell-31-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-31-5"><a href="#annotated-cell-31-5" aria-label="5"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_</span><span class="op">;</span></span>
+<span id="annotated-cell-31-6"><a href="#annotated-cell-31-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span></span>
+<span id="annotated-cell-31-7"><a href="#annotated-cell-31-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-31-8"><a href="#annotated-cell-31-8" aria-label="8"></a>    Particella<span class="op">(</span><span class="dt">double</span> massa<span class="op">)</span> <span class="op">:</span> <span class="va">massa_</span><span class="op">(</span>massa<span class="op">)</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">++;</span> <span class="op">}</span></span>
+<span id="annotated-cell-31-9"><a href="#annotated-cell-31-9" aria-label="9"></a>    Particella<span class="op">(</span><span class="at">const</span> Particella<span class="op">&amp;</span> altra<span class="op">)</span></span>
+<span id="annotated-cell-31-10"><a href="#annotated-cell-31-10" aria-label="10"></a>        <span class="op">:</span> <span class="va">massa_</span><span class="op">(</span>altra<span class="op">.</span><span class="va">massa_</span><span class="op">)</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">++;</span> <span class="op">}</span></span>
+<span id="annotated-cell-31-11"><a href="#annotated-cell-31-11" aria-label="11"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">--;</span> <span class="op">}</span></span>
+<span id="annotated-cell-31-12"><a href="#annotated-cell-31-12" aria-label="12"></a>    <span class="dt">double</span> massa<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">massa_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-31-13"><a href="#annotated-cell-31-13" aria-label="13"></a>    <span class="at">static</span> <span class="dt">int</span> quante<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">totale_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-31-14"><a href="#annotated-cell-31-14" aria-label="14"></a><span class="op">};</span></span>
+<span id="annotated-cell-31-15"><a href="#annotated-cell-31-15" aria-label="15"></a></span>
+<span id="annotated-cell-31-16"><a href="#annotated-cell-31-16" aria-label="16"></a><span class="dt">int</span> Particella<span class="op">::</span><span class="va">totale_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:36%;">
+<ol type="1">
+<li>Il costruttore di copia che mancava: incrementa il contatore, come il distruttore lo decrementa.</li>
+<li><code>static</code>: si chiama con <code>Particella::quante()</code>, anche quando non esiste nessun oggetto.</li>
+</ol>
+</div></div>
+</section>
+<section id="soluzione-il-main" class="slide level2 smaller">
+<h2>Soluzione: il <code>main</code></h2>
+<div class="columns">
+<div class="column" style="width:68%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_contatore.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" data-filename="esercizio_contatore.cpp" data-startfrom="17"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 16;"><span id="cb19-17"><a aria-label="17"></a></span>
+<span id="cb19-18"><a aria-label="18"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb19-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"all'inizio: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>quante<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb19-20"><a aria-label="20"></a>    <span class="op">{</span></span>
+<span id="cb19-21"><a aria-label="21"></a>        Particella p1<span class="op">(</span><span class="fl">1.0</span><span class="op">),</span> p2<span class="op">(</span><span class="fl">2.0</span><span class="op">),</span> p3<span class="op">(</span><span class="fl">3.0</span><span class="op">);</span></span>
+<span id="cb19-22"><a aria-label="22"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"dopo tre: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>quante<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb19-23"><a aria-label="23"></a>        Particella p4 <span class="op">=</span> p1<span class="op">;</span></span>
+<span id="cb19-24"><a aria-label="24"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"dopo la copia: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>quante<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb19-25"><a aria-label="25"></a>    <span class="op">}</span></span>
+<span id="cb19-26"><a aria-label="26"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"alla fine: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>quante<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb19-27"><a aria-label="27"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb19-28"><a aria-label="28"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:32%;">
+<p>Con e senza il costruttore di copia:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>con</th>
+<th>senza</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>all’inizio</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>dopo tre</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>dopo la copia</td>
+<td><strong>4</strong></td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>alla fine</td>
+<td><strong>0</strong></td>
+<td><strong>−1</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Il conto torna solo con il costruttore di copia: è la Regola del Tre della Lezione 10.</p>
+</div></div>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\">\u003ckbd>b\u003c/kbd> Toggle Chalkboard\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"6\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\">\u003ckbd>c\u003c/kbd> Toggle Notes Canvas\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"7\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\">\u003ckbd>d\u003c/kbd> Download Drawings\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"8\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":true,"openButtonLabel":"Slide menu"},
+'chalkboard': {"buttons":true,"storage":"lavagna-lezione-13"},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'convex',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: '../mathjax/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+          window.quartoDecorateExternalLinks = function (root) {
+         var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+              if (!link.classList.contains('no-external-icon')) {
+              }
+            }
+          }
+          };
+          window.quartoDecorateExternalLinks(window.document);
+        // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+        // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+        const hideOnEscAndFocusOut = {
+          name: 'hideOnEscAndFocusOut',
+          defaultValue: true,
+          fn(instance) {
+            const dismiss = () => {
+              // A show scheduled by the trigger delay would otherwise reopen it
+              instance.clearDelayTimeouts();
+              instance.hide();
+            };
+            const onKeyDown = (event) => {
+              if (event.key !== 'Escape') {
+                return;
+              }
+              // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+              // except an open reveal.js slide menu, which Esc should close too.
+              // The menu handles keys only when its keyboard option is on.
+              const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+                window.Reveal.getConfig().menu?.keyboard !== false;
+              if (!menuHandlesEsc) {
+                event.stopPropagation();
+              }
+              if (instance.popper.contains(window.document.activeElement)) {
+                // Disabled while refocusing so the focus trigger does not reopen it
+                instance.disable();
+                instance.reference.focus();
+                instance.enable();
+              }
+              dismiss();
+            };
+            const onFocusOut = (event) => {
+              const target = event.relatedTarget;
+              if (target && !instance.reference.contains(target) &&
+                  !instance.popper.contains(target)) {
+                dismiss();
+              }
+            };
+            // On the trigger too: a click trigger (code-annotations: select) has no
+            // blur handling. Attached for the instance's lifetime so leaving the
+            // trigger also cancels a show still pending on the trigger delay.
+            instance.reference.addEventListener('focusout', onFocusOut);
+            return {
+              onShow() {
+                window.document.addEventListener('keydown', onKeyDown, true);
+                instance.popper.addEventListener('focusout', onFocusOut);
+              },
+              onHide() {
+                window.document.removeEventListener('keydown', onKeyDown, true);
+                instance.popper.removeEventListener('focusout', onFocusOut);
+              },
+              onDestroy() {
+                instance.reference.removeEventListener('focusout', onFocusOut);
+              },
+            };
+          },
+        };
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+            plugins: [hideOnEscAndFocusOut],
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+            let selectedAnnoteEl;
+            const selectorForAnnotation = ( cell, annotation) => {
+              let cellAttr = 'data-code-cell="' + cell + '"';
+              let lineAttr = 'data-code-annotation="' +  annotation + '"';
+              const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+              return selector;
+            }
+            const selectCodeLines = (annoteEl) => {
+              const doc = window.document;
+              const targetCell = annoteEl.getAttribute("data-target-cell");
+              const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+              const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+              const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+              const lineIds = lines.map((line) => {
+                return targetCell + "-" + line;
+              })
+              // Each band is positioned against its own containing block, which is
+              // not the offsetParent of the lines, so place it from client rects.
+              const placeBand = (band, firstEl, lastEl, codeBlock) => {
+                const container = band.offsetParent;
+                if (container === null) {
+                  return;
+                }
+                const containerRect = container.getBoundingClientRect();
+                // Reveal.js scales slides with a transform, so convert client
+                // pixels back to the CSS pixels of the container.
+                const scale = containerRect.height / container.offsetHeight || 1;
+                const firstRect = firstEl.getBoundingClientRect();
+                const lastRect = lastEl.getBoundingClientRect();
+                const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+                const height = (lastRect.bottom - firstRect.top) / scale;
+                band.style.top = top - 2 + "px";
+                band.style.height = height + 4 + "px";
+                if (codeBlock) {
+                  // Without the copy button wrapper, the containing block is wider
+                  // than the code block, so span the code block explicitly.
+                  const blockRect = codeBlock.getBoundingClientRect();
+                  band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+                  band.style.width = blockRect.width / scale + "px";
+                }
+              };
+              if (lineIds.length > 0) {
+                const el = window.document.getElementById(lineIds[0]);
+                const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+                const parent = el.parentElement.parentElement;
+                // cook up a div (if necessary) and position it
+                let div = window.document.getElementById("code-annotation-line-highlight");
+                if (div === null) {
+                  div = window.document.createElement("div");
+                  div.setAttribute("id", "code-annotation-line-highlight");
+                  div.style.position = 'absolute';
+                  parent.appendChild(div);
+                }
+                placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+                let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+                if (gutterDiv === null) {
+                  gutterDiv = window.document.createElement("div");
+                  gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                  gutterDiv.style.position = 'absolute';
+                  const codeCell = window.document.getElementById(targetCell);
+                  const gutter = codeCell.querySelector('.code-annotation-gutter');
+                  gutter.appendChild(gutterDiv);
+                }
+                placeBand(gutterDiv, el, lastEl);
+                selectedAnnoteEl = annoteEl;
+              }
+            };
+            const unselectCodeLines = () => {
+              const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+              elementsIds.forEach((elId) => {
+                const div = window.document.getElementById(elId);
+                if (div) {
+                  div.remove();
+                }
+              });
+              selectedAnnoteEl = undefined;
+            };
+              // Handle positioning of the toggle
+          window.addEventListener(
+            "resize",
+            throttle(() => {
+              elRect = undefined;
+              if (selectedAnnoteEl) {
+                selectCodeLines(selectedAnnoteEl);
+              }
+            }, 10)
+          );
+          function throttle(fn, ms) {
+          let throttle = false;
+          let timer;
+            return (...args) => {
+              if(!throttle) { // first call gets through
+                  fn.apply(this, args);
+                  throttle = true;
+              } else { // all the others get throttled
+                  if(timer) clearTimeout(timer); // cancel #2
+                  timer = setTimeout(() => {
+                    fn.apply(this, args);
+                    timer = throttle = false;
+                  }, ms);
+              }
+            };
+          }
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
+                  unselectCodeLines();
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
+                  }
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
+            }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
