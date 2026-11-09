@@ -756,7 +756,7 @@ Cristiano De Michele
 <h2>Come funziona un modello linguistico</h2>
 <!--
   Blocco motivazionale indipendente (7/11/2026), chiesto da Cristiano: gli studenti vogliono capire come
-  funzionano i transformer, anche per immagini, suoni e ricerche sul web. Sei slide, con figure e poco testo;
+  funzionano i transformer, anche per immagini, suoni e ricerche sul web. Nove slide, con figure e poco testo;
   i dettagli sono nel deck facoltativo approfondimento-transformer/ (che include _transformer_approfondimento.qmd),
   a cui rimanda l'ultima slide.
   Figure: figure/make_transformer_figure.py -> images/transformer_*.png (figure/transformer_cifra7.csv e' la
@@ -776,6 +776,15 @@ Cristiano De Michele
   9/11/2026, seconda richiesta: la slide 4 divisa in due. "Dal token al vettore" (figura transformer_testo_vettore:
   la tabella dell'embedding senza la lettera E, numeri illustrativi positivi e negativi, ␣reti simile a ␣rete) e
   "Immagini e suoni diventano vettori" (figura transformer_tutto_token senza la riga del testo).
+  9/11/2026, quarta richiesta (Cristiano: piu' dettagli, soprattutto sul suono, e dire esplicitamente che
+  immagini e suoni non sono nel vocabolario): al posto di "Immagini e suoni diventano vettori" tre slide,
+  "Un'immagine diventa una sequenza di token" (transformer_immagine: 16 quadrati numerati = 16 token),
+  "Un suono diventa una sequenza di token" (transformer_suono: segnale, Fourier su 25 ms, vettore, spettrogramma)
+  e "Una sola sequenza" (transformer_sequenza: token speciali, 16 quadrati, domanda; vocabolario solo per il
+  testo). Fatti: ViT 224x224, quadrati 16x16, 196 token da 768 numeri (Dosovitskiy et al. 2020); Whisper 16 kHz,
+  finestre di 25 ms ogni 10 ms, 80 bande mel, 30 s -> 3000 colonne -> 1500 vettori (Radford et al. 2022);
+  immagini come codici di un vocabolario e generate token per token: per esempio Chameleon (Meta 2024).
+  Il blocco ha ora 9 slide (il suono in due: transformer_suono e transformer_spettrogramma).
 -->
 
 <img data-src="../images/transformer_prossimo_token.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>Un modello linguistico, come quelli degli assistenti tipo ChatGPT, fa una cosa sola: data una sequenza di <strong>token</strong>, pezzi di parola, calcola le probabilità del token successivo. Il programma che lo usa ne sceglie uno, lo aggiunge alla sequenza e ripete: una risposta intera è questo ciclo, un token alla volta.</p>
@@ -788,12 +797,27 @@ Cristiano De Michele
 <section id="dal-token-al-vettore" class="slide level2 smaller">
 <h2>Dal token al vettore</h2>
 
-<img data-src="../images/transformer_testo_vettore.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Una parola non ha numeri suoi: 3121 è solo la sua posizione nel vocabolario. Il modello tiene una tabella con una riga di numeri per ogni voce: il token sceglie la sua riga, e quella riga è il vettore che entra nella rete. I numeri della tabella sono pesi, come quelli della rete MNIST: all’inizio casuali, li fissa l’addestramento. Alla fine parole usate in modo simile, come ␣rete e ␣reti, hanno righe simili.</p>
+<img data-src="../images/transformer_testo_vettore.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Una parola non ha numeri suoi: 3121 è solo la sua posizione nel vocabolario. Il modello tiene una tabella con una riga di <em>d</em> numeri per ogni voce (<em>d</em> = 768 in GPT-2): il token sceglie la sua riga, e quella riga è il vettore che entra nella rete. I numeri della tabella sono pesi, come quelli della rete MNIST: all’inizio casuali, li fissa l’addestramento. Alla fine parole usate in modo simile, come ␣rete e ␣reti, hanno righe simili.</p>
 </section>
-<section id="immagini-e-suoni-diventano-vettori" class="slide level2 smaller">
-<h2>Immagini e suoni diventano vettori</h2>
+<section id="unimmagine-diventa-16-token" class="slide level2 smaller">
+<h2>Un’immagine diventa 16 token</h2>
 
-<img data-src="../images/transformer_tutto_token.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><p>Qui i numeri ci sono già: i grigi dei pixel, le intensità delle frequenze. Nei modelli veri passano poi per una matrice di pesi imparata, che li porta a <em>d</em> numeri come per il testo: cambia solo il punto di partenza.</p>
+<img data-src="../images/transformer_immagine.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Ogni quadrato è un token: 16 token, in fila come le parole di un testo, e i loro numeri, i grigi dei pixel, ci sono già. Come per il testo, una matrice di pesi imparata porta poi ogni vettore a <em>d</em> numeri, e vi aggiunge la posizione del quadrato nell’immagine. Nei modelli veri (<em>Vision Transformer</em>): immagini 224&nbsp;×&nbsp;224 a colori, 196 quadrati 16&nbsp;×&nbsp;16 da 16&nbsp;·&nbsp;16&nbsp;·&nbsp;3 = 768 numeri.</p>
+</section>
+<section id="un-suono-diventa-token" class="slide level2 smaller">
+<h2>Un suono diventa token</h2>
+
+<img data-src="../images/transformer_suono.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Il microfono dà già numeri, ma uno da solo non dice niente: un suono si riconosce dalle sue frequenze, e per questo si passa per la trasformata di Fourier. Le intensità delle frequenze in 25 ms di segnale sono il vettore di un token.</p>
+</section>
+<section id="un-suono-100-token-al-secondo" class="slide level2 smaller">
+<h2>Un suono: 100 token al secondo</h2>
+
+<img data-src="../images/transformer_spettrogramma.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>La finestra di 25 ms avanza di 10 ms, quindi due finestre vicine hanno 15 ms in comune: un token ogni 10 ms. Nei modelli veri (<em>Whisper</em>): 16&nbsp;000 numeri al secondo e 80 bande di frequenza per token; pesi imparati portano i 3000 vettori di 30 s di audio a 1500 vettori da <em>d</em> numeri.</p>
+</section>
+<section id="una-sola-sequenza" class="slide level2 smaller">
+<h2>Una sola sequenza</h2>
+
+<img data-src="../images/transformer_sequenza.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Immagini e suoni non passano dal vocabolario: il loro vettore si calcola dai loro numeri. Il vocabolario contiene solo i token del testo e quelli speciali, e la rete dà le probabilità solo su quelli: l’assistente legge immagini e suoni, ma risponde con del testo. Per produrre un’immagine chiede a un modello separato, come per la ricerca nella slide seguente; alcuni modelli invece trasformano le immagini in simboli di un vocabolario e le generano token per token.</p>
 </section>
 <section id="come-cerca-sul-web" class="slide level2 smaller">
 <h2>Come cerca sul web</h2>
@@ -813,13 +837,19 @@ Cristiano De Michele
   sentence case). Backup del Mac: lezione-13/index.qmd.pre-audit0811. In apertura il blocco motivazionale sui
   transformer (../_transformer.qmd). Programmi e messaggi verificati con g++ 13 (-Wall, AddressSanitizer) e,
   per gli avvisi, con clang 18.
+  9/11/2026 (Cristiano: "spiegare solo cio' che usiamo"; backup .pre-ridotta): la lezione tratta solo gli usi di
+  static del framework, cioe' il metodo static create_from_stream (DenseLayer ridotto, letto da uno
+  std::stringstream) e il Singleton di randnumgen (variabile locale static, get() static). Tolti il contatore
+  di Particella (variabile globale, attributo static, copie, due sistemi, .hpp/.cpp, static inline), le classi di
+  soli metodi static e l'esercizio sul contatore; gli attributi static in una sola slide, dopo i metodi.
+  Nuovo esercizio: il Registro come Singleton. Programmi verificati con g++ 13 (-Wall -Wextra, ASan) e clang 18.
 -->
 <ul>
-<li><strong>I membri <code>static</code></strong>: un attributo che esiste una sola volta, condiviso da tutti gli oggetti della classe</li>
-<li><strong>I metodi <code>static</code></strong>: metodi della classe, che si chiamano senza un oggetto</li>
+<li><strong>I metodi <code>static</code></strong>: metodi della classe, che si chiamano senza un oggetto, per esempio per crearlo</li>
+<li><strong>Gli attributi <code>static</code></strong>: un attributo condiviso da tutti gli oggetti della classe</li>
 <li><strong>Le variabili locali <code>static</code></strong>: una variabile di una funzione che conserva il suo valore fra una chiamata e l’altra</li>
 <li><strong>Il Singleton</strong>: una classe di cui esiste un solo oggetto</li>
-<li><strong>Esercizio</strong>: un contatore di oggetti che resta corretto anche con le copie</li>
+<li><strong>Esercizio</strong>: un registro dei messaggi come Singleton</li>
 </ul>
 </section>
 <section id="gli-argomenti-di-oggi-nel-framework" class="slide level2 smaller">
@@ -861,208 +891,67 @@ Cristiano De Michele
 <section id="un-eseguibile-per-esempio" class="slide level2 smaller">
 <h2>Un eseguibile per esempio</h2>
 <p>Sopra ogni esempio c’è il nome del suo file. Quando lo incontrate, create il file, copiatevi il codice e aggiungete al <code>CMakeLists.txt</code> la sua riga:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb2-1"><a aria-label="1"></a><span class="kw">add_executable</span>(<span class="bn">globale</span> globale.cpp)</span>
-<span id="cb2-2"><a aria-label="2"></a><span class="kw">add_executable</span>(<span class="bn">contatore</span> contatore.cpp)</span>
-<span id="cb2-3"><a aria-label="3"></a><span class="kw">add_executable</span>(<span class="bn">metodo_static</span> metodo_static.cpp)</span>
-<span id="cb2-4"><a aria-label="4"></a><span class="kw">add_executable</span>(<span class="bn">utility</span> utility.cpp)</span>
-<span id="cb2-5"><a aria-label="5"></a><span class="kw">add_executable</span>(<span class="bn">lampo</span> lampo.cpp)                                <span class="co"># esercizio veloce</span></span>
-<span id="cb2-6"><a aria-label="6"></a><span class="kw">add_executable</span>(<span class="bn">singleton</span> singleton.cpp)</span>
-<span id="cb2-7"><a aria-label="7"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_contatore</span> esercizio_contatore.cpp)    <span class="co"># esercizio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb2-1"><a aria-label="1"></a><span class="kw">add_executable</span>(<span class="bn">fabbrica</span> fabbrica.cpp)</span>
+<span id="cb2-2"><a aria-label="2"></a><span class="kw">add_executable</span>(<span class="bn">lampo</span> lampo.cpp)                                <span class="co"># esercizio veloce</span></span>
+<span id="cb2-3"><a aria-label="3"></a><span class="kw">add_executable</span>(<span class="bn">singleton</span> singleton.cpp)</span>
+<span id="cb2-4"><a aria-label="4"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_registro</span> esercizio_registro.cpp)      <span class="co"># esercizio</span></span>
+<span id="cb2-5"><a aria-label="5"></a><span class="kw">add_executable</span>(<span class="bn">attributo_static</span> attributo_static.cpp)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Poi, dalla cartella <code>LEZIONE_13</code>, compilate ed eseguite solo quell’esempio:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> globale <span class="kw">&amp;&amp;</span> <span class="ex">./build/globale</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> fabbrica <span class="kw">&amp;&amp;</span> <span class="ex">./build/fabbrica</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>cmake -B build</code> rilegge il <code>CMakeLists.txt</code>: senza, <code>--target</code> non trova un esempio appena aggiunto. Con <code>--target</code> si compila solo l’esempio indicato: un esercizio non ancora finito non blocca gli altri. I messaggi citati sono quelli di g++ su Linux; con clang (macOS) il testo cambia, il significato no.</p>
 </section>
-<section id="contare-gli-oggetti-di-una-classe" class="slide level2 smaller">
-<h2>Contare gli oggetti di una classe</h2>
-<p>Ogni oggetto ha i suoi attributi: in due oggetti della classe <code>Particella</code>, l’attributo <code>massa_</code> ha due valori indipendenti, e modificarne uno non cambia l’altro.</p>
-<p>Alcune informazioni riguardano invece la classe nel suo insieme. Un esempio: <strong>quanti</strong> oggetti <code>Particella</code> esistono in un certo momento del programma.</p>
-<p>Un attributo normale, <code>int totale_</code>, non basta: ogni oggetto ne avrebbe una copia, che parte da 0 e non tiene conto degli altri oggetti.</p>
-</section>
-<section id="con-una-variabile-globale" class="slide level2 smaller">
-<h2>Con una variabile globale</h2>
-<p>Come in C, il contatore può essere una variabile globale, definita fuori da ogni funzione:</p>
-<div class="columns">
-<div class="column" style="width:62%;">
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>globale.cpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="globale.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb4-2"><a aria-label="2"></a></span>
-<span id="cb4-3"><a aria-label="3"></a><span class="dt">int</span> totale_particelle <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>           <span class="co">// variabile globale</span></span>
-<span id="cb4-4"><a aria-label="4"></a></span>
-<span id="cb4-5"><a aria-label="5"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="cb4-6"><a aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb4-7"><a aria-label="7"></a>    Particella<span class="op">()</span> <span class="op">{</span> totale_particelle<span class="op">++;</span> <span class="op">}</span></span>
-<span id="cb4-8"><a aria-label="8"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span> totale_particelle<span class="op">--;</span> <span class="op">}</span></span>
-<span id="cb4-9"><a aria-label="9"></a><span class="op">};</span></span>
-<span id="cb4-10"><a aria-label="10"></a></span>
-<span id="cb4-11"><a aria-label="11"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb4-12"><a aria-label="12"></a>    Particella p1<span class="op">;</span></span>
-<span id="cb4-13"><a aria-label="13"></a>    Particella p2<span class="op">;</span></span>
-<span id="cb4-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"particelle: "</span> <span class="op">&lt;&lt;</span> totale_particelle <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb4-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb4-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:38%;">
-<p>Output:</p>
-<pre><code>particelle: 2</code></pre>
-<p>Il costruttore incrementa il contatore, il distruttore lo decrementa: il valore è il numero di oggetti che esistono in quel momento.</p>
-</div></div>
-</section>
-<section id="provate-la-variabile-globale" class="slide level2 smaller">
-<h2>Provate: la variabile globale</h2>
-<p>In <code>globale.cpp</code>, prima della stampa (riga 14), aggiungete <code>totale_particelle = -999;</code>. Compila?</p>
-<div class="fragment">
-<p>Sì, e stampa <code>particelle: -999</code>. Una variabile globale si può modificare da qualunque punto del programma: niente garantisce che il contatore resti corretto.</p>
-<p>C’è anche un secondo problema: il nome occupa lo spazio dei nomi globale. Se un altro file del programma, per esempio di una libreria, definisse una variabile globale con lo stesso nome, il linker segnalerebbe una definizione multipla.</p>
-<p>Serve un contatore condiviso da tutti gli oggetti, come una variabile globale, ma dentro la classe e <code>private</code>.</p>
-</div>
-</section>
-<section id="i-membri-static" class="slide level2 smaller">
-<h2>I membri <code>static</code></h2>
-<div class="columns">
-<div class="column" style="width:61%;">
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>contatore.cpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11" data-filename="contatore.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-label="2"></a></span>
-<span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-label="5"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_</span><span class="op">;</span></span>
-<span id="annotated-cell-11-6"><a href="#annotated-cell-11-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span></span>
-<span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-11-8"><a href="#annotated-cell-11-8" aria-label="8"></a>    Particella<span class="op">(</span><span class="dt">double</span> massa<span class="op">)</span> <span class="op">:</span> <span class="va">massa_</span><span class="op">(</span>massa<span class="op">)</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">++;</span> <span class="op">}</span></span>
-<span id="annotated-cell-11-9"><a href="#annotated-cell-11-9" aria-label="9"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">--;</span> <span class="op">}</span></span>
-<span id="annotated-cell-11-10"><a href="#annotated-cell-11-10" aria-label="10"></a>    <span class="dt">int</span> totale<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">totale_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-11-11"><a href="#annotated-cell-11-11" aria-label="11"></a>    <span class="dt">double</span> massa<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">massa_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-11-12"><a href="#annotated-cell-11-12" aria-label="12"></a><span class="op">};</span></span>
-<span id="annotated-cell-11-13"><a href="#annotated-cell-11-13" aria-label="13"></a></span>
-<span id="annotated-cell-11-14"><a href="#annotated-cell-11-14" aria-label="14"></a><span class="dt">int</span> Particella<span class="op">::</span><span class="va">totale_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-11-15"><a href="#annotated-cell-11-15" aria-label="15"></a></span>
-<span id="annotated-cell-11-16"><a href="#annotated-cell-11-16" aria-label="16"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-11-17"><a href="#annotated-cell-11-17" aria-label="17"></a>    Particella p1<span class="op">(</span><span class="fl">1.0</span><span class="op">);</span></span>
-<span id="annotated-cell-11-18"><a href="#annotated-cell-11-18" aria-label="18"></a>    Particella p2<span class="op">(</span><span class="fl">2.0</span><span class="op">);</span></span>
-<span id="annotated-cell-11-19"><a href="#annotated-cell-11-19" aria-label="19"></a>    <span class="op">{</span></span>
-<span id="annotated-cell-11-20"><a href="#annotated-cell-11-20" aria-label="20"></a>        Particella p3<span class="op">(</span><span class="fl">3.0</span><span class="op">);</span></span>
-<span id="annotated-cell-11-21"><a href="#annotated-cell-11-21" aria-label="21"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"nel blocco: "</span> <span class="op">&lt;&lt;</span> p1<span class="op">.</span>totale<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-11-22"><a href="#annotated-cell-11-22" aria-label="22"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-11-23"><a href="#annotated-cell-11-23" aria-label="23"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"dopo il blocco: "</span> <span class="op">&lt;&lt;</span> p1<span class="op">.</span>totale<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-11-24"><a href="#annotated-cell-11-24" aria-label="24"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"massa di p2: "</span> <span class="op">&lt;&lt;</span> p2<span class="op">.</span>massa<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-11-25"><a href="#annotated-cell-11-25" aria-label="25"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-11-26"><a href="#annotated-cell-11-26" aria-label="26"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:39%;">
-<ol type="1">
-<li><code>static</code>: un solo <code>totale_</code> per la classe, condiviso da tutti gli oggetti; <code>massa_</code> è uno per oggetto.</li>
-<li>La <strong>definizione</strong>, fuori dalla classe e senza <code>static</code>, riserva la memoria e dà il valore iniziale. Il membro esiste per tutta l’esecuzione, come le variabili globali (Lezione 08).</li>
-</ol>
-<p>Output:</p>
-<pre><code>nel blocco: 3
-dopo il blocco: 2
-massa di p2: 2</code></pre>
-</div></div>
-</section>
-<section id="provate-i-membri-static" class="slide level2 smaller">
-<h2>Provate: i membri <code>static</code></h2>
-<p>In <code>contatore.cpp</code>, un esperimento alla volta:</p>
-<ol type="1">
-<li>Togliete la riga 14, la definizione. Compila?<br>
-<span class="fragment">Il compilatore sì, il linker no: <em>undefined reference to `Particella::totale_’</em>. La dichiarazione nella classe annuncia il membro; la memoria la riserva solo la definizione.</span></li>
-<li>Rimettete la riga 14 e all’inizio del <code>main</code>, prima della riga 17, aggiungete <code>Particella::totale_ = -999;</code>. Compila?<br>
-<span class="fragment">No: <em>‘int Particella::totale_’ is private within this context</em>. Il contatore è condiviso come una variabile globale, ma protetto come un attributo <code>private</code>.</span></li>
-</ol>
-</section>
-<section id="provate-una-copia" class="slide level2 smaller">
-<h2>Provate: una copia</h2>
-<p>In <code>contatore.cpp</code>, nel blocco, dopo <code>p3</code> (riga 20), aggiungete <code>Particella p4 = p3;</code>. Cosa stampa?</p>
-<div class="fragment">
-<p><code>nel blocco: 3</code> e <code>dopo il blocco: 1</code>, invece di 4 e 2.</p>
-<p>Il costruttore di copia generato dal compilatore copia <code>massa_</code> e non incrementa <code>totale_</code>; il distruttore di <code>p4</code> invece lo decrementa.</p>
-<p>È la Regola del Tre (Lezione 10): un distruttore che fa qualcosa richiede anche il costruttore di copia. Lo scriverete nell’esercizio di fine lezione.</p>
-</div>
-</section>
-<section id="approfondimento-un-membro-static-con-più-file" class="slide level2 smaller">
-<h2>Approfondimento: un membro <code>static</code> con più file</h2>
-<p>Con la classe in un header (Lezione 08), la dichiarazione sta nella classe, nell’<code>.hpp</code>, e la definizione in <strong>un solo</strong> <code>.cpp</code>:</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>Particella.hpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="Particella.hpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="pp">#pragma once</span></span>
-<span id="cb7-2"><a aria-label="2"></a></span>
-<span id="cb7-3"><a aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="cb7-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb7-5"><a aria-label="5"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_</span><span class="op">;</span></span>
-<span id="cb7-6"><a aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb7-7"><a aria-label="7"></a>    Particella<span class="op">();</span></span>
-<span id="cb7-8"><a aria-label="8"></a>    <span class="op">~</span>Particella<span class="op">();</span></span>
-<span id="cb7-9"><a aria-label="9"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>Particella.cpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="Particella.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"Particella.hpp"</span></span>
-<span id="cb8-2"><a aria-label="2"></a></span>
-<span id="cb8-3"><a aria-label="3"></a><span class="dt">int</span> Particella<span class="op">::</span><span class="va">totale_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb8-4"><a aria-label="4"></a></span>
-<span id="cb8-5"><a aria-label="5"></a>Particella<span class="op">::</span>Particella<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb8-6"><a aria-label="6"></a>    <span class="va">totale_</span><span class="op">++;</span></span>
-<span id="cb8-7"><a aria-label="7"></a><span class="op">}</span></span>
-<span id="cb8-8"><a aria-label="8"></a></span>
-<span id="cb8-9"><a aria-label="9"></a>Particella<span class="op">::~</span>Particella<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb8-10"><a aria-label="10"></a>    <span class="va">totale_</span><span class="op">--;</span></span>
-<span id="cb8-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-<p>Se la definizione stesse nell’header, ogni <code>.cpp</code> che lo include ne avrebbe una, e il linker si fermerebbe con <em>multiple definition of `Particella::totale_’</em>.</p>
+<section id="creare-un-oggetto-da-un-file" class="slide level2 smaller">
+<h2>Creare un oggetto da un file</h2>
+<p>Nel framework una rete addestrata si salva su un file, e si rilegge per usarla senza riaddestrarla. Per ogni layer il file contiene il tipo e le dimensioni, per esempio <code>DenseLayer</code> seguito da <code>128 784</code>.</p>
+<p>Per rileggere la rete serve, per ogni tipo di layer, una funzione che legga le dimensioni e crei il layer. Dove scriverla?</p>
+<ul>
+<li>Un metodo normale si chiama su un oggetto, come <code>l.stampa()</code>. Qui però l’oggetto non esiste ancora: è proprio quello da creare.</li>
+<li>Serve un metodo che appartenga alla classe e si chiami <strong>senza un oggetto</strong>: un metodo <code>static</code>.</li>
+</ul>
+<p>Nel framework è <code>create_from_stream</code>, in ogni layer.</p>
 </section>
 <section id="i-metodi-static" class="slide level2 smaller">
 <h2>I metodi <code>static</code></h2>
-<p>Un metodo normale si chiama su un oggetto, come <code>p1.totale()</code>. Un metodo <code>static</code> appartiene alla classe: si chiama anche prima che esista un oggetto.</p>
 <div class="columns">
 <div class="column" style="width:62%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>metodo_static.cpp</strong></pre>
+<pre><strong>fabbrica.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-17" data-filename="metodo_static.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-17-2"><a href="#annotated-cell-17-2" aria-label="2"></a></span>
-<span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="annotated-cell-17-4"><a href="#annotated-cell-17-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-label="5"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_</span><span class="op">;</span></span>
-<span id="annotated-cell-17-6"><a href="#annotated-cell-17-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span></span>
-<span id="annotated-cell-17-7"><a href="#annotated-cell-17-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-17-8"><a href="#annotated-cell-17-8" aria-label="8"></a>    Particella<span class="op">(</span><span class="dt">double</span> massa<span class="op">)</span> <span class="op">:</span> <span class="va">massa_</span><span class="op">(</span>massa<span class="op">)</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">++;</span> <span class="op">}</span></span>
-<span id="annotated-cell-17-9"><a href="#annotated-cell-17-9" aria-label="9"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">--;</span> <span class="op">}</span></span>
-<span id="annotated-cell-17-10"><a href="#annotated-cell-17-10" aria-label="10"></a>    <span class="at">static</span> <span class="dt">int</span> totale<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">totale_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-17-11"><a href="#annotated-cell-17-11" aria-label="11"></a>    <span class="dt">double</span> massa<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">massa_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-17-12"><a href="#annotated-cell-17-12" aria-label="12"></a><span class="op">};</span></span>
-<span id="annotated-cell-17-13"><a href="#annotated-cell-17-13" aria-label="13"></a></span>
-<span id="annotated-cell-17-14"><a href="#annotated-cell-17-14" aria-label="14"></a><span class="dt">int</span> Particella<span class="op">::</span><span class="va">totale_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-17-15"><a href="#annotated-cell-17-15" aria-label="15"></a></span>
-<span id="annotated-cell-17-16"><a href="#annotated-cell-17-16" aria-label="16"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-17-17"><a href="#annotated-cell-17-17" aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"prima: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>totale<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-17-18"><a href="#annotated-cell-17-18" aria-label="18"></a>    Particella p1<span class="op">(</span><span class="fl">1.0</span><span class="op">);</span></span>
-<span id="annotated-cell-17-19"><a href="#annotated-cell-17-19" aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"dopo: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>totale<span class="op">()</span></span>
-<span id="annotated-cell-17-20"><a href="#annotated-cell-17-20" aria-label="20"></a>              <span class="op">&lt;&lt;</span> <span class="st">", massa "</span> <span class="op">&lt;&lt;</span> p1<span class="op">.</span>massa<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-17-21"><a href="#annotated-cell-17-21" aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-17-22"><a href="#annotated-cell-17-22" aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7" data-filename="fabbrica.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;sstream&gt;</span></span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-label="3"></a></span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-label="4"></a><span class="kw">class</span> DenseLayer <span class="op">{</span></span>
+<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-label="5"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-label="6"></a>    <span class="dt">int</span> Nnodes<span class="op">,</span> Nin<span class="op">;</span></span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-label="8"></a>    DenseLayer<span class="op">(</span><span class="dt">int</span> Nn<span class="op">,</span> <span class="dt">int</span> Ni<span class="op">)</span> <span class="op">:</span> Nnodes<span class="op">(</span>Nn<span class="op">),</span> Nin<span class="op">(</span>Ni<span class="op">)</span> <span class="op">{}</span></span>
+<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-label="9"></a>    <span class="dt">void</span> stampa<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-label="10"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> Nnodes <span class="op">&lt;&lt;</span> <span class="st">" x "</span> <span class="op">&lt;&lt;</span> Nin <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-label="11"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-label="12"></a>    <span class="at">static</span> DenseLayer<span class="op">*</span> create_from_stream<span class="op">(</span><span class="bu">std::</span>istream<span class="op">&amp;</span> is<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-13"><a href="#annotated-cell-7-13" aria-label="13"></a>        <span class="dt">int</span> nodes<span class="op">,</span> in_features<span class="op">;</span></span>
+<span id="annotated-cell-7-14"><a href="#annotated-cell-7-14" aria-label="14"></a>        is <span class="op">&gt;&gt;</span> nodes <span class="op">&gt;&gt;</span> in_features<span class="op">;</span></span>
+<span id="annotated-cell-7-15"><a href="#annotated-cell-7-15" aria-label="15"></a>        <span class="cf">return</span> <span class="kw">new</span> DenseLayer<span class="op">(</span>nodes<span class="op">,</span> in_features<span class="op">);</span></span>
+<span id="annotated-cell-7-16"><a href="#annotated-cell-7-16" aria-label="16"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-7-17"><a href="#annotated-cell-7-17" aria-label="17"></a><span class="op">};</span></span>
+<span id="annotated-cell-7-18"><a href="#annotated-cell-7-18" aria-label="18"></a></span>
+<span id="annotated-cell-7-19"><a href="#annotated-cell-7-19" aria-label="19"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-7-20"><a href="#annotated-cell-7-20" aria-label="20"></a>    <span class="bu">std::</span>stringstream file<span class="op">(</span><span class="st">"128 784"</span><span class="op">);</span></span>
+<span id="annotated-cell-7-21"><a href="#annotated-cell-7-21" aria-label="21"></a>    DenseLayer<span class="op">*</span> l <span class="op">=</span> DenseLayer<span class="op">::</span>create_from_stream<span class="op">(</span>file<span class="op">);</span></span>
+<span id="annotated-cell-7-22"><a href="#annotated-cell-7-22" aria-label="22"></a>    l<span class="op">-&gt;</span>stampa<span class="op">();</span></span>
+<span id="annotated-cell-7-23"><a href="#annotated-cell-7-23" aria-label="23"></a>    <span class="kw">delete</span> l<span class="op">;</span></span>
+<span id="annotated-cell-7-24"><a href="#annotated-cell-7-24" aria-label="24"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-7-25"><a href="#annotated-cell-7-25" aria-label="25"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:38%;">
+<p>Un <code>DenseLayer</code> ridotto, con il metodo del framework. Stampa <code>128 x 784</code>.</p>
 <ol type="1">
-<li><code>static</code>: il metodo appartiene alla classe, non a un oggetto.</li>
-<li>Il nome della classe e <code>::</code>, come per i namespace (Lezione 04): nessun oggetto esiste ancora.</li>
+<li>Il metodo è della classe, non di un oggetto.</li>
+<li>Crea l’oggetto con <code>new</code>; il <code>delete</code> lo fa chi chiama (riga 23).</li>
+<li>Al posto del file, uno <code>std::stringstream</code> (Lezione 11).</li>
+<li>Classe e <code>::</code>, come per i namespace (Lezione 04).</li>
 </ol>
-<p>Output:</p>
-<pre><code>prima: 0
-dopo: 1, massa 1</code></pre>
 </div></div>
 </section>
 <section id="cosa-manca-in-un-metodo-static" class="slide level2 smaller">
@@ -1070,82 +959,87 @@ dopo: 1, massa 1</code></pre>
 <p>Un metodo <code>static</code> non è chiamato su un oggetto, quindi:</p>
 <ul>
 <li><strong>non ha <code>this</code></strong> (Lezione 10): non c’è un oggetto corrente;</li>
-<li><strong>non legge gli attributi normali</strong>, come <code>massa_</code>, perché non c’è un oggetto a cui appartengono: usa direttamente solo i membri <code>static</code>. Se però riceve un oggetto come parametro, per esempio <code>static double energia(const Particella&amp; p)</code>, ne legge gli attributi, anche quelli <code>private</code>, come ogni metodo della classe;</li>
+<li><strong>non legge gli attributi</strong>, come <code>Nnodes</code>: non c’è un oggetto a cui appartengano. Può però creare oggetti, come <code>create_from_stream</code>, e leggere gli attributi, anche <code>private</code>, di un oggetto che riceve come parametro, come ogni metodo della classe;</li>
 <li><strong>non può essere <code>const</code></strong>: il <code>const</code> in fondo a un metodo dice che il metodo non modifica l’oggetto su cui è chiamato (Lezione 09), e qui l’oggetto non c’è.</li>
 </ul>
 </section>
 <section id="provate-i-metodi-static" class="slide level2 smaller">
 <h2>Provate: i metodi <code>static</code></h2>
-<p>In <code>metodo_static.cpp</code>, alla riga 10, un esperimento alla volta:</p>
+<p>In <code>fabbrica.cpp</code>, un esperimento alla volta:</p>
 <ol type="1">
-<li>Scrivete <code>static int totale() const { return totale_; }</code>. Compila?<br>
-<span class="fragment">No: <em>static member function ‘static int Particella::totale()’ cannot have cv-qualifier</em>. I <em>cv-qualifier</em> sono <code>const</code> e <code>volatile</code>.</span></li>
-<li>Scrivete <code>static int totale() { return massa_; }</code>. Compila?<br>
-<span class="fragment">No: <em>invalid use of member ‘Particella::massa_’ in static member function</em>.</span></li>
+<li>Alla riga 12 aggiungete <code>const</code> prima di <code>{</code>. Compila?<br>
+<span class="fragment">No: <em>static member function ‘static DenseLayer* DenseLayer::create_from_stream(std::istream&amp;)’ cannot have cv-qualifier</em>. I <em>cv-qualifier</em> sono <code>const</code> e <code>volatile</code>.</span></li>
+<li>Alla riga 15 scrivete <code>return new DenseLayer(Nnodes, Nin);</code>. Compila?<br>
+<span class="fragment">No: <em>invalid use of member ‘DenseLayer::Nnodes’ in static member function</em>: <code>Nnodes</code> di quale oggetto?</span></li>
+<li>Togliete <code>delete l;</code> (riga 23). Cosa dice l’AddressSanitizer?<br>
+<span class="fragment"><em>detected memory leaks</em>, 8 byte: l’oggetto creato da <code>create_from_stream</code> non è mai stato distrutto.</span></li>
 </ol>
 </section>
-<section id="classi-di-soli-metodi-static" class="slide level2 smaller">
-<h2>Classi di soli metodi <code>static</code></h2>
-<p>Alcune funzioni non dipendono da uno stato: la sigmoide <span class="math inline">\(\sigma(z) = 1/(1 + e^{-z})\)</span> dipende solo da <span class="math inline">\(z\)</span>. Si possono raccogliere in una classe di soli metodi <code>static</code>, che si chiamano senza creare oggetti:</p>
+<section id="gli-attributi-static" class="slide level2 smaller">
+<h2>Gli attributi <code>static</code></h2>
+<p>Anche un attributo può essere <code>static</code>: esiste <strong>una volta sola per tutta la classe</strong>, condiviso da tutti gli oggetti. Il framework non ne usa.</p>
 <div class="columns">
-<div class="column" style="width:62%;">
+<div class="column" style="width:52%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>utility.cpp</strong></pre>
+<pre><strong>attributo_static.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="utility.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
-<span id="cb10-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb10-3"><a aria-label="3"></a></span>
-<span id="cb10-4"><a aria-label="4"></a><span class="kw">class</span> Attivazioni <span class="op">{</span></span>
-<span id="cb10-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb10-6"><a aria-label="6"></a>    <span class="at">static</span> <span class="dt">double</span> relu<span class="op">(</span><span class="dt">double</span> z<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> z <span class="op">&gt;</span> <span class="fl">0.0</span> <span class="op">?</span> z <span class="op">:</span> <span class="fl">0.0</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb10-7"><a aria-label="7"></a>    <span class="at">static</span> <span class="dt">double</span> sigmoide<span class="op">(</span><span class="dt">double</span> z<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-8"><a aria-label="8"></a>        <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>z<span class="op">));</span></span>
-<span id="cb10-9"><a aria-label="9"></a>    <span class="op">}</span></span>
-<span id="cb10-10"><a aria-label="10"></a><span class="op">};</span></span>
-<span id="cb10-11"><a aria-label="11"></a></span>
-<span id="cb10-12"><a aria-label="12"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb10-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> Attivazioni<span class="op">::</span>relu<span class="op">(-</span><span class="fl">5.0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span></span>
-<span id="cb10-14"><a aria-label="14"></a>              <span class="op">&lt;&lt;</span> Attivazioni<span class="op">::</span>sigmoide<span class="op">(</span><span class="fl">0.0</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb10-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb10-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="attributo_static.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb4-2"><a aria-label="2"></a></span>
+<span id="cb4-3"><a aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
+<span id="cb4-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb4-5"><a aria-label="5"></a>    <span class="at">static</span> <span class="kw">inline</span> <span class="dt">int</span> <span class="va">totale_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-6"><a aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb4-7"><a aria-label="7"></a>    Particella<span class="op">()</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">++;</span> <span class="op">}</span></span>
+<span id="cb4-8"><a aria-label="8"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">--;</span> <span class="op">}</span></span>
+<span id="cb4-9"><a aria-label="9"></a>    <span class="at">static</span> <span class="dt">int</span> quante<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">totale_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb4-10"><a aria-label="10"></a><span class="op">};</span></span>
+<span id="cb4-11"><a aria-label="11"></a></span>
+<span id="cb4-12"><a aria-label="12"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-13"><a aria-label="13"></a>    Particella a<span class="op">,</span> b<span class="op">;</span></span>
+<span id="cb4-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>quante<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb4-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div><div class="column" style="width:38%;">
-<p>Output:</p>
-<pre><code>0 0.5</code></pre>
-<p>Lo stesso raggruppamento si ottiene con un namespace (Lezione 04), ed è la scelta della libreria standard: <code>std::exp</code> è una funzione del namespace <code>std</code>. La classe permette in più di avere membri <code>private</code>, usati solo dai suoi metodi.</p>
+</div><div class="column" style="width:48%;">
+<ul>
+<li>Stampa <code>2</code>, gli oggetti che esistono. <code>quante()</code> è un metodo <code>static</code>: legge un attributo <code>static</code>.</li>
+<li><code>inline</code> (C++17) dà il valore nella classe; senza, si scrive fuori: <code>int Particella::totale_ = 0;</code>.</li>
+<li>È uno per programma: due sistemi di particelle avrebbero lo stesso contatore.</li>
+<li>Una copia non lo incrementa: serve il costruttore di copia (Lezione 10).</li>
+</ul>
 </div></div>
 </section>
 <section id="esercizio-veloce-cosa-stampa" class="slide level2 smaller">
 <h2>Esercizio veloce: cosa stampa?</h2>
-<p><strong>Scopo:</strong> un terzo uso di <code>static</code>, dentro una funzione; serve per il Singleton della slide successiva.</p>
+<p><strong>Scopo:</strong> un altro uso di <code>static</code>, dentro una funzione; serve per il Singleton delle slide successive.</p>
 <div class="columns">
 <div class="column" style="width:55%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>lampo.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="lampo.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb12-2"><a aria-label="2"></a></span>
-<span id="cb12-3"><a aria-label="3"></a><span class="dt">void</span> conta<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-4"><a aria-label="4"></a>    <span class="at">static</span> <span class="dt">int</span> n <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb12-5"><a aria-label="5"></a>    n<span class="op">++;</span></span>
-<span id="cb12-6"><a aria-label="6"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
-<span id="cb12-7"><a aria-label="7"></a><span class="op">}</span></span>
-<span id="cb12-8"><a aria-label="8"></a></span>
-<span id="cb12-9"><a aria-label="9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-10"><a aria-label="10"></a>    conta<span class="op">();</span></span>
-<span id="cb12-11"><a aria-label="11"></a>    conta<span class="op">();</span></span>
-<span id="cb12-12"><a aria-label="12"></a>    conta<span class="op">();</span></span>
-<span id="cb12-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb12-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb12-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="lampo.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb5-2"><a aria-label="2"></a></span>
+<span id="cb5-3"><a aria-label="3"></a><span class="dt">void</span> conta<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb5-4"><a aria-label="4"></a>    <span class="at">static</span> <span class="dt">int</span> n <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-5"><a aria-label="5"></a>    n<span class="op">++;</span></span>
+<span id="cb5-6"><a aria-label="6"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb5-7"><a aria-label="7"></a><span class="op">}</span></span>
+<span id="cb5-8"><a aria-label="8"></a></span>
+<span id="cb5-9"><a aria-label="9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb5-10"><a aria-label="10"></a>    conta<span class="op">();</span></span>
+<span id="cb5-11"><a aria-label="11"></a>    conta<span class="op">();</span></span>
+<span id="cb5-12"><a aria-label="12"></a>    conta<span class="op">();</span></span>
+<span id="cb5-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb5-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:45%;">
 <p>Senza eseguirlo: cosa stampa? E cosa stamperebbe senza <code>static</code> alla riga 4?</p>
 <p>Poi verificate con il comando qui sotto.</p>
 </div></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> lampo <span class="kw">&amp;&amp;</span> <span class="ex">./build/lampo</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> lampo <span class="kw">&amp;&amp;</span> <span class="ex">./build/lampo</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="esercizio-veloce-la-risposta" class="slide level2 smaller">
 <h2>Esercizio veloce: la risposta</h2>
@@ -1167,21 +1061,21 @@ dopo: 1, massa 1</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>singleton.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-24" data-filename="singleton.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-24-1"><a href="#annotated-cell-24-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-24-2"><a href="#annotated-cell-24-2" aria-label="2"></a></span>
-<span id="annotated-cell-24-3"><a href="#annotated-cell-24-3" aria-label="3"></a><span class="kw">class</span> Generatore <span class="op">{</span></span>
-<span id="annotated-cell-24-4"><a href="#annotated-cell-24-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-24-5"><a href="#annotated-cell-24-5" aria-label="5"></a>    <span class="dt">int</span> <span class="va">n_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-24-6"><a href="#annotated-cell-24-6" aria-label="6"></a>    Generatore<span class="op">()</span> <span class="op">{}</span></span>
-<span id="annotated-cell-24-7"><a href="#annotated-cell-24-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-24-8"><a href="#annotated-cell-24-8" aria-label="8"></a>    Generatore<span class="op">(</span><span class="at">const</span> Generatore<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
-<span id="annotated-cell-24-9"><a href="#annotated-cell-24-9" aria-label="9"></a>    Generatore<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> Generatore<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
-<span id="annotated-cell-24-10"><a href="#annotated-cell-24-10" aria-label="10"></a>    <span class="at">static</span> Generatore<span class="op">&amp;</span> get<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-24-11"><a href="#annotated-cell-24-11" aria-label="11"></a>        <span class="at">static</span> Generatore unico<span class="op">;</span></span>
-<span id="annotated-cell-24-12"><a href="#annotated-cell-24-12" aria-label="12"></a>        <span class="cf">return</span> unico<span class="op">;</span></span>
-<span id="annotated-cell-24-13"><a href="#annotated-cell-24-13" aria-label="13"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-24-14"><a href="#annotated-cell-24-14" aria-label="14"></a>    <span class="dt">int</span> prossimo<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="op">++</span><span class="va">n_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-24-15"><a href="#annotated-cell-24-15" aria-label="15"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-12" data-filename="singleton.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-label="2"></a></span>
+<span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-label="3"></a><span class="kw">class</span> Generatore <span class="op">{</span></span>
+<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-12-5"><a href="#annotated-cell-12-5" aria-label="5"></a>    <span class="dt">int</span> <span class="va">n_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-12-6"><a href="#annotated-cell-12-6" aria-label="6"></a>    Generatore<span class="op">()</span> <span class="op">{}</span></span>
+<span id="annotated-cell-12-7"><a href="#annotated-cell-12-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-12-8"><a href="#annotated-cell-12-8" aria-label="8"></a>    Generatore<span class="op">(</span><span class="at">const</span> Generatore<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="annotated-cell-12-9"><a href="#annotated-cell-12-9" aria-label="9"></a>    Generatore<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> Generatore<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="annotated-cell-12-10"><a href="#annotated-cell-12-10" aria-label="10"></a>    <span class="at">static</span> Generatore<span class="op">&amp;</span> get<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-12-11"><a href="#annotated-cell-12-11" aria-label="11"></a>        <span class="at">static</span> Generatore unico<span class="op">;</span></span>
+<span id="annotated-cell-12-12"><a href="#annotated-cell-12-12" aria-label="12"></a>        <span class="cf">return</span> unico<span class="op">;</span></span>
+<span id="annotated-cell-12-13"><a href="#annotated-cell-12-13" aria-label="13"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-12-14"><a href="#annotated-cell-12-14" aria-label="14"></a>    <span class="dt">int</span> prossimo<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="op">++</span><span class="va">n_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="annotated-cell-12-15"><a href="#annotated-cell-12-15" aria-label="15"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:44%;">
 <ol type="1">
@@ -1199,16 +1093,16 @@ dopo: 1, massa 1</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>singleton.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-filename="singleton.cpp" data-startfrom="16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 15;"><span id="cb14-16"><a aria-label="16"></a><span class="dt">void</span> altra_funzione<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb14-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> Generatore<span class="op">::</span>get<span class="op">().</span>prossimo<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb14-18"><a aria-label="18"></a><span class="op">}</span></span>
-<span id="cb14-19"><a aria-label="19"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb14-20"><a aria-label="20"></a>    Generatore<span class="op">&amp;</span> g <span class="op">=</span> Generatore<span class="op">::</span>get<span class="op">();</span></span>
-<span id="cb14-21"><a aria-label="21"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> g<span class="op">.</span>prossimo<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb14-22"><a aria-label="22"></a>    altra_funzione<span class="op">();</span></span>
-<span id="cb14-23"><a aria-label="23"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> g<span class="op">.</span>prossimo<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb14-24"><a aria-label="24"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb14-25"><a aria-label="25"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="singleton.cpp" data-startfrom="16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 15;"><span id="cb7-16"><a aria-label="16"></a><span class="dt">void</span> altra_funzione<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb7-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> Generatore<span class="op">::</span>get<span class="op">().</span>prossimo<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb7-18"><a aria-label="18"></a><span class="op">}</span></span>
+<span id="cb7-19"><a aria-label="19"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb7-20"><a aria-label="20"></a>    Generatore<span class="op">&amp;</span> g <span class="op">=</span> Generatore<span class="op">::</span>get<span class="op">();</span></span>
+<span id="cb7-21"><a aria-label="21"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> g<span class="op">.</span>prossimo<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb7-22"><a aria-label="22"></a>    altra_funzione<span class="op">();</span></span>
+<span id="cb7-23"><a aria-label="23"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> g<span class="op">.</span>prossimo<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb7-24"><a aria-label="24"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-25"><a aria-label="25"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:44%;">
 <p>Output:</p>
@@ -1228,158 +1122,121 @@ dopo: 1, massa 1</code></pre>
 <span class="fragment">No: <em>use of deleted function ‘Generatore::Generatore(const Generatore&amp;)’</em>. Senza <code>&amp;</code>, <code>g</code> sarebbe una copia, cioè un secondo oggetto.</span></li>
 </ol>
 </section>
-<section id="esercizio-il-contatore-con-le-copie" class="slide level2 smaller">
-<h2>Esercizio: il contatore con le copie</h2>
-<p><strong>Scopo:</strong> completare la Regola del Tre in una classe con un membro <code>static</code>, e scrivere un metodo <code>static</code>.</p>
-<p>Nel terzo esperimento su <code>contatore.cpp</code> una copia rendeva sbagliato il contatore. Nel file <code>esercizio_contatore.cpp</code> (slide seguenti):</p>
+<section id="esercizio-il-registro-come-singleton" class="slide level2 smaller">
+<h2>Esercizio: il registro come Singleton</h2>
+<p><strong>Scopo:</strong> scrivere un Singleton, come <code>randnumgen</code> nel framework.</p>
+<p>Il registro numera i messaggi e deve essere <strong>uno solo</strong>. In <code>esercizio_registro.cpp</code> (slide seguente), nella classe <code>Registro</code>:</p>
 <ol type="1">
-<li>scrivete il costruttore di copia <code>Particella(const Particella&amp; altra)</code>, che copia <code>massa_</code> da <code>altra</code> e incrementa <code>totale_</code>;</li>
-<li>scrivete il metodo <code>static int quante()</code>, che restituisce <code>totale_</code>;</li>
-<li>nel <code>main</code>, scommentate le quattro stampe.</li>
+<li>spostate il costruttore <code>Registro() {}</code> nella parte <code>private</code>;</li>
+<li>vietate copia e assegnamento con <code>= delete</code>, come nel <code>Generatore</code>;</li>
+<li>scrivete <code>static Registro&amp; get()</code>, che restituisce la variabile locale <code>static Registro unico;</code>;</li>
+<li>scommentate le tre chiamate a <code>Registro::get().scrivi(...)</code>.</li>
 </ol>
-<p>Output atteso, su quattro righe: <code>all'inizio: 0</code>, <code>dopo tre: 3</code>, <code>dopo la copia: 4</code>, <code>alla fine: 0</code>. Si compila ed esegue con:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_contatore <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_contatore</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output atteso: <code>[1] inizio</code>, <code>[2] dati caricati</code>, <code>[3] fine</code>, su tre righe.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_registro <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_registro</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="il-contatore-il-file-da-completare" class="slide level2 smaller">
-<h2>Il contatore: il file da completare</h2>
+<section id="il-registro-il-file-da-completare" class="slide level2 smaller">
+<h2>Il registro: il file da completare</h2>
+<div class="columns">
+<div class="column" style="width:68%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_registro.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="esercizio_registro.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb10-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb10-3"><a aria-label="3"></a></span>
+<span id="cb10-4"><a aria-label="4"></a><span class="kw">class</span> Registro <span class="op">{</span></span>
+<span id="cb10-5"><a aria-label="5"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb10-6"><a aria-label="6"></a>    <span class="dt">int</span> <span class="va">n_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb10-8"><a aria-label="8"></a>    <span class="co">// da completare: costruttore private, copia e</span></span>
+<span id="cb10-9"><a aria-label="9"></a>    <span class="co">// assegnamento vietati, metodo static get()</span></span>
+<span id="cb10-10"><a aria-label="10"></a>    Registro<span class="op">()</span> <span class="op">{}</span></span>
+<span id="cb10-11"><a aria-label="11"></a>    <span class="dt">void</span> scrivi<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> messaggio<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-12"><a aria-label="12"></a>        <span class="va">n_</span><span class="op">++;</span></span>
+<span id="cb10-13"><a aria-label="13"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"["</span> <span class="op">&lt;&lt;</span> <span class="va">n_</span> <span class="op">&lt;&lt;</span> <span class="st">"] "</span> <span class="op">&lt;&lt;</span> messaggio <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb10-14"><a aria-label="14"></a>    <span class="op">}</span></span>
+<span id="cb10-15"><a aria-label="15"></a><span class="op">};</span></span>
+<span id="cb10-16"><a aria-label="16"></a></span>
+<span id="cb10-17"><a aria-label="17"></a><span class="dt">void</span> carica_dati<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb10-18"><a aria-label="18"></a>    <span class="co">// Registro::get().scrivi("dati caricati");  // da scommentare</span></span>
+<span id="cb10-19"><a aria-label="19"></a><span class="op">}</span></span>
+<span id="cb10-20"><a aria-label="20"></a></span>
+<span id="cb10-21"><a aria-label="21"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb10-22"><a aria-label="22"></a>    <span class="co">// Registro::get().scrivi("inizio");         // da scommentare</span></span>
+<span id="cb10-23"><a aria-label="23"></a>    carica_dati<span class="op">();</span></span>
+<span id="cb10-24"><a aria-label="24"></a>    <span class="co">// Registro::get().scrivi("fine");           // da scommentare</span></span>
+<span id="cb10-25"><a aria-label="25"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-26"><a aria-label="26"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:32%;">
+<p>Il file compila così com’è e non stampa niente.</p>
+<p><code>n_</code> conta i messaggi: è un attributo normale, ma dell’unico oggetto, quindi la numerazione prosegue fra <code>main</code> e <code>carica_dati</code>.</p>
+</div></div>
+</section>
+<section id="soluzione-dellesercizio-sul-registro" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio sul registro</h2>
 <div class="columns">
 <div class="column" style="width:62%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>esercizio_contatore.cpp</strong></pre>
+<pre><strong>esercizio_registro.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-filename="esercizio_contatore.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb17-2"><a aria-label="2"></a></span>
-<span id="cb17-3"><a aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="cb17-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb17-5"><a aria-label="5"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_</span><span class="op">;</span></span>
-<span id="cb17-6"><a aria-label="6"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span></span>
-<span id="cb17-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb17-8"><a aria-label="8"></a>    Particella<span class="op">(</span><span class="dt">double</span> massa<span class="op">)</span> <span class="op">:</span> <span class="va">massa_</span><span class="op">(</span>massa<span class="op">)</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">++;</span> <span class="op">}</span></span>
-<span id="cb17-9"><a aria-label="9"></a>    <span class="co">// da completare: il costruttore di copia, che riceve</span></span>
-<span id="cb17-10"><a aria-label="10"></a>    <span class="co">// const Particella&amp; altra, copia massa_ da altra</span></span>
-<span id="cb17-11"><a aria-label="11"></a>    <span class="co">// e incrementa totale_</span></span>
-<span id="cb17-12"><a aria-label="12"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">--;</span> <span class="op">}</span></span>
-<span id="cb17-13"><a aria-label="13"></a>    <span class="dt">double</span> massa<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">massa_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb17-14"><a aria-label="14"></a>    <span class="co">// da completare: il metodo static int quante(),</span></span>
-<span id="cb17-15"><a aria-label="15"></a>    <span class="co">// che restituisce totale_</span></span>
-<span id="cb17-16"><a aria-label="16"></a><span class="op">};</span></span>
-<span id="cb17-17"><a aria-label="17"></a></span>
-<span id="cb17-18"><a aria-label="18"></a><span class="dt">int</span> Particella<span class="op">::</span><span class="va">totale_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-18" data-filename="esercizio_registro.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-label="3"></a></span>
+<span id="annotated-cell-18-4"><a href="#annotated-cell-18-4" aria-label="4"></a><span class="kw">class</span> Registro <span class="op">{</span></span>
+<span id="annotated-cell-18-5"><a href="#annotated-cell-18-5" aria-label="5"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="annotated-cell-18-6"><a href="#annotated-cell-18-6" aria-label="6"></a>    <span class="dt">int</span> <span class="va">n_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-18-7"><a href="#annotated-cell-18-7" aria-label="7"></a>    Registro<span class="op">()</span> <span class="op">{}</span></span>
+<span id="annotated-cell-18-8"><a href="#annotated-cell-18-8" aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-18-9"><a href="#annotated-cell-18-9" aria-label="9"></a>    Registro<span class="op">(</span><span class="at">const</span> Registro<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="annotated-cell-18-10"><a href="#annotated-cell-18-10" aria-label="10"></a>    Registro<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> Registro<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="annotated-cell-18-11"><a href="#annotated-cell-18-11" aria-label="11"></a>    <span class="at">static</span> Registro<span class="op">&amp;</span> get<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-18-12"><a href="#annotated-cell-18-12" aria-label="12"></a>        <span class="at">static</span> Registro unico<span class="op">;</span></span>
+<span id="annotated-cell-18-13"><a href="#annotated-cell-18-13" aria-label="13"></a>        <span class="cf">return</span> unico<span class="op">;</span></span>
+<span id="annotated-cell-18-14"><a href="#annotated-cell-18-14" aria-label="14"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-18-15"><a href="#annotated-cell-18-15" aria-label="15"></a>    <span class="dt">void</span> scrivi<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> messaggio<span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-18-16"><a href="#annotated-cell-18-16" aria-label="16"></a>        <span class="va">n_</span><span class="op">++;</span></span>
+<span id="annotated-cell-18-17"><a href="#annotated-cell-18-17" aria-label="17"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"["</span> <span class="op">&lt;&lt;</span> <span class="va">n_</span> <span class="op">&lt;&lt;</span> <span class="st">"] "</span> <span class="op">&lt;&lt;</span> messaggio <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-18-18"><a href="#annotated-cell-18-18" aria-label="18"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-18-19"><a href="#annotated-cell-18-19" aria-label="19"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:38%;">
-<p>Il file compila così com’è: le stampe del <code>main</code>, nella slide seguente, sono commentate.</p>
-<p>Il costruttore di copia si scrive con una lista di inizializzazione, come il costruttore della riga 8.</p>
-</div></div>
-</section>
-<section id="il-contatore-il-main-da-completare" class="slide level2 smaller">
-<h2>Il contatore: il <code>main</code> da completare</h2>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>esercizio_contatore.cpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="esercizio_contatore.cpp" data-startfrom="19"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 18;"><span id="cb18-19"><a aria-label="19"></a></span>
-<span id="cb18-20"><a aria-label="20"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb18-21"><a aria-label="21"></a>    <span class="co">// scommentate le stampe quando quante() è scritto</span></span>
-<span id="cb18-22"><a aria-label="22"></a>    <span class="co">// std::cout &lt;&lt; "all'inizio: " &lt;&lt; Particella::quante() &lt;&lt; "\n";</span></span>
-<span id="cb18-23"><a aria-label="23"></a>    <span class="op">{</span></span>
-<span id="cb18-24"><a aria-label="24"></a>        Particella p1<span class="op">(</span><span class="fl">1.0</span><span class="op">),</span> p2<span class="op">(</span><span class="fl">2.0</span><span class="op">),</span> p3<span class="op">(</span><span class="fl">3.0</span><span class="op">);</span></span>
-<span id="cb18-25"><a aria-label="25"></a>        <span class="co">// std::cout &lt;&lt; "dopo tre: " &lt;&lt; Particella::quante() &lt;&lt; "\n";</span></span>
-<span id="cb18-26"><a aria-label="26"></a>        Particella p4 <span class="op">=</span> p1<span class="op">;</span></span>
-<span id="cb18-27"><a aria-label="27"></a>        <span class="co">// std::cout &lt;&lt; "dopo la copia: " &lt;&lt; Particella::quante() &lt;&lt; "\n";</span></span>
-<span id="cb18-28"><a aria-label="28"></a>    <span class="op">}</span></span>
-<span id="cb18-29"><a aria-label="29"></a>    <span class="co">// std::cout &lt;&lt; "alla fine: " &lt;&lt; Particella::quante() &lt;&lt; "\n";</span></span>
-<span id="cb18-30"><a aria-label="30"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb18-31"><a aria-label="31"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="soluzione-dellesercizio-sul-contatore" class="slide level2 smaller">
-<h2>Soluzione dell’esercizio sul contatore</h2>
-<div class="columns">
-<div class="column" style="width:64%;">
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>esercizio_contatore.cpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-31" data-filename="esercizio_contatore.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-31-1"><a href="#annotated-cell-31-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-31-2"><a href="#annotated-cell-31-2" aria-label="2"></a></span>
-<span id="annotated-cell-31-3"><a href="#annotated-cell-31-3" aria-label="3"></a><span class="kw">class</span> Particella <span class="op">{</span></span>
-<span id="annotated-cell-31-4"><a href="#annotated-cell-31-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-31-5"><a href="#annotated-cell-31-5" aria-label="5"></a>    <span class="at">static</span> <span class="dt">int</span> <span class="va">totale_</span><span class="op">;</span></span>
-<span id="annotated-cell-31-6"><a href="#annotated-cell-31-6" aria-label="6"></a>    <span class="dt">double</span> <span class="va">massa_</span><span class="op">;</span></span>
-<span id="annotated-cell-31-7"><a href="#annotated-cell-31-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-31-8"><a href="#annotated-cell-31-8" aria-label="8"></a>    Particella<span class="op">(</span><span class="dt">double</span> massa<span class="op">)</span> <span class="op">:</span> <span class="va">massa_</span><span class="op">(</span>massa<span class="op">)</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">++;</span> <span class="op">}</span></span>
-<span id="annotated-cell-31-9"><a href="#annotated-cell-31-9" aria-label="9"></a>    Particella<span class="op">(</span><span class="at">const</span> Particella<span class="op">&amp;</span> altra<span class="op">)</span></span>
-<span id="annotated-cell-31-10"><a href="#annotated-cell-31-10" aria-label="10"></a>        <span class="op">:</span> <span class="va">massa_</span><span class="op">(</span>altra<span class="op">.</span><span class="va">massa_</span><span class="op">)</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">++;</span> <span class="op">}</span></span>
-<span id="annotated-cell-31-11"><a href="#annotated-cell-31-11" aria-label="11"></a>    <span class="op">~</span>Particella<span class="op">()</span> <span class="op">{</span> <span class="va">totale_</span><span class="op">--;</span> <span class="op">}</span></span>
-<span id="annotated-cell-31-12"><a href="#annotated-cell-31-12" aria-label="12"></a>    <span class="dt">double</span> massa<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">massa_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-31-13"><a href="#annotated-cell-31-13" aria-label="13"></a>    <span class="at">static</span> <span class="dt">int</span> quante<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">totale_</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-31-14"><a href="#annotated-cell-31-14" aria-label="14"></a><span class="op">};</span></span>
-<span id="annotated-cell-31-15"><a href="#annotated-cell-31-15" aria-label="15"></a></span>
-<span id="annotated-cell-31-16"><a href="#annotated-cell-31-16" aria-label="16"></a><span class="dt">int</span> Particella<span class="op">::</span><span class="va">totale_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:36%;">
 <ol type="1">
-<li>Il costruttore di copia che mancava: incrementa il contatore, come il distruttore lo decrementa.</li>
-<li><code>static</code>: si chiama con <code>Particella::quante()</code>, anche quando non esiste nessun oggetto.</li>
+<li>Nessuno, fuori dalla classe, può creare un <code>Registro</code>.</li>
+<li>Nessuno può copiarlo: un secondo oggetto avrebbe la sua numerazione.</li>
+<li><code>get()</code> è <code>static</code>, quindi si chiama senza un oggetto; <code>unico</code> nasce alla prima chiamata e resta fino alla fine del programma.</li>
 </ol>
 </div></div>
 </section>
 <section id="soluzione-il-main" class="slide level2 smaller">
 <h2>Soluzione: il <code>main</code></h2>
 <div class="columns">
-<div class="column" style="width:68%;">
+<div class="column" style="width:62%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>esercizio_contatore.cpp</strong></pre>
+<pre><strong>esercizio_registro.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" data-filename="esercizio_contatore.cpp" data-startfrom="17"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 16;"><span id="cb19-17"><a aria-label="17"></a></span>
-<span id="cb19-18"><a aria-label="18"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb19-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"all'inizio: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>quante<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb19-20"><a aria-label="20"></a>    <span class="op">{</span></span>
-<span id="cb19-21"><a aria-label="21"></a>        Particella p1<span class="op">(</span><span class="fl">1.0</span><span class="op">),</span> p2<span class="op">(</span><span class="fl">2.0</span><span class="op">),</span> p3<span class="op">(</span><span class="fl">3.0</span><span class="op">);</span></span>
-<span id="cb19-22"><a aria-label="22"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"dopo tre: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>quante<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb19-23"><a aria-label="23"></a>        Particella p4 <span class="op">=</span> p1<span class="op">;</span></span>
-<span id="cb19-24"><a aria-label="24"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"dopo la copia: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>quante<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb19-25"><a aria-label="25"></a>    <span class="op">}</span></span>
-<span id="cb19-26"><a aria-label="26"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"alla fine: "</span> <span class="op">&lt;&lt;</span> Particella<span class="op">::</span>quante<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb19-27"><a aria-label="27"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb19-28"><a aria-label="28"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="esercizio_registro.cpp" data-startfrom="20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 19;"><span id="cb11-20"><a aria-label="20"></a></span>
+<span id="cb11-21"><a aria-label="21"></a><span class="dt">void</span> carica_dati<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-22"><a aria-label="22"></a>    Registro<span class="op">::</span>get<span class="op">().</span>scrivi<span class="op">(</span><span class="st">"dati caricati"</span><span class="op">);</span></span>
+<span id="cb11-23"><a aria-label="23"></a><span class="op">}</span></span>
+<span id="cb11-24"><a aria-label="24"></a></span>
+<span id="cb11-25"><a aria-label="25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-26"><a aria-label="26"></a>    Registro<span class="op">::</span>get<span class="op">().</span>scrivi<span class="op">(</span><span class="st">"inizio"</span><span class="op">);</span></span>
+<span id="cb11-27"><a aria-label="27"></a>    carica_dati<span class="op">();</span></span>
+<span id="cb11-28"><a aria-label="28"></a>    Registro<span class="op">::</span>get<span class="op">().</span>scrivi<span class="op">(</span><span class="st">"fine"</span><span class="op">);</span></span>
+<span id="cb11-29"><a aria-label="29"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-30"><a aria-label="30"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div><div class="column" style="width:32%;">
-<p>Con e senza il costruttore di copia:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th></th>
-<th>con</th>
-<th>senza</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>all’inizio</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td>dopo tre</td>
-<td>3</td>
-<td>3</td>
-</tr>
-<tr class="odd">
-<td>dopo la copia</td>
-<td><strong>4</strong></td>
-<td>3</td>
-</tr>
-<tr class="even">
-<td>alla fine</td>
-<td><strong>0</strong></td>
-<td><strong>−1</strong></td>
-</tr>
-</tbody>
-</table>
-<p>Il conto torna solo con il costruttore di copia: è la Regola del Tre della Lezione 10.</p>
+</div><div class="column" style="width:38%;">
+<p>Output:</p>
+<pre><code>[1] inizio
+[2] dati caricati
+[3] fine</code></pre>
+<p>Le tre chiamate usano lo stesso oggetto, quindi la numerazione prosegue.</p>
 </div></div>
 
 

@@ -1047,8 +1047,9 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
 <h2>Immagini e suoni</h2>
 <ul>
 <li><strong>Immagini</strong> (<em>Vision Transformer</em>, 2020). Un’immagine <span class="math inline">\(224 \times 224\)</span> a colori dà <span class="math inline">\(14 \times 14 = 196\)</span> quadrati di <span class="math inline">\(16 \times 16 \times 3 = 768\)</span> numeri; un <code>DenseLayer</code> li porta a dimensione <span class="math inline">\(d\)</span>, si sommano le posizioni, poi lo stesso transformer, senza maschera.</li>
-<li><strong>Suoni</strong> (<em>Whisper</em>, 2022). 30 s di audio danno uno spettrogramma con 80 frequenze e una colonna ogni 10 ms: 3000 colonne, che due strati convoluzionali riducono a 1500 vettori. Un transformer (<em>encoder</em>) li elabora; un secondo (<em>decoder</em>) genera il testo.</li>
+<li><strong>Suoni</strong> (<em>Whisper</em>, 2022). 30 s di audio a 16 kHz; Fourier su 25 ms ogni 10 ms, in 80 bande: 3000 colonne, che due strati convoluzionali riducono a 1500 vettori. Un transformer (<em>encoder</em>) li elabora, un secondo (<em>decoder</em>) genera il testo.</li>
 <li><strong>Cross-attention.</strong> Nel decoder alcune attenzioni prendono le query dal testo, e key e value dall’audio: <span class="math inline">\(Q = X_\text{testo} W_Q^\mathsf{T}\)</span>, <span class="math inline">\(K = X_\text{audio} W_K^\mathsf{T}\)</span>, <span class="math inline">\(V = X_\text{audio} W_V^\mathsf{T}\)</span>. È la stessa formula, con <span class="math inline">\(S\)</span> di dimensione <span class="math inline">\(n_\text{testo} \times n_\text{audio}\)</span>.</li>
+<li><strong>Il vocabolario.</strong> Quadrati e colonne non vi passano, e il softmax sulle <span class="math inline">\(M\)</span> voci genera solo testo; alcuni modelli (<em>Chameleon</em>, 2024) trasformano le immagini in codici di un vocabolario.</li>
 </ul>
 </section>
 <section id="strumenti-e-web" class="slide level2 smaller">
