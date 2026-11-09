@@ -1060,6 +1060,17 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
 </ul>
 <p>Il modello non naviga e non vede: riceve sequenze di vettori e produce probabilità sul token successivo. Il resto lo fanno i programmi intorno.</p>
 </section>
+<section id="chi-esegue-le-richieste" class="slide level2 smaller">
+<h2>Chi esegue le richieste</h2>
+<p>Fra i due token speciali il modello scrive la richiesta in un formato strutturato, di solito JSON. Il programma la legge e chiama il codice dello strumento:</p>
+<pre><code>«inizio richiesta» {"strumento": "cerca", "testo": "previsioni meteo Roma domani"} «fine richiesta»</code></pre>
+<ul>
+<li><strong>ricerca:</strong> il servizio di un motore di ricerca, senza browser; i risultati tornano come testo;</li>
+<li><strong>una pagina:</strong> una richiesta HTTP, e il testo estratto dall’HTML;</li>
+<li><strong>un browser vero:</strong> azioni come <code>clicca(412, 230)</code> o <code>scrivi("Roma")</code>, tradotte in comandi per il browser (per esempio con Playwright); dopo ogni azione uno screenshot torna nella sequenza come token d’immagine.</li>
+</ul>
+<p>Il modello produce solo testo: se e come eseguirlo lo decide il programma, con i suoi controlli di sicurezza.</p>
+</section>
 <section id="per-saperne-di-più" class="slide level2 smaller">
 <h2>Per saperne di più</h2>
 <ul>

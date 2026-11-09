@@ -756,7 +756,7 @@ Cristiano De Michele
 <h2>Come funziona un modello linguistico</h2>
 <!--
   Blocco motivazionale indipendente (7/11/2026), chiesto da Cristiano: gli studenti vogliono capire come
-  funzionano i transformer, anche per immagini, suoni e ricerche sul web. Cinque slide, con figure e poco testo;
+  funzionano i transformer, anche per immagini, suoni e ricerche sul web. Sei slide, con figure e poco testo;
   i dettagli sono nel deck facoltativo approfondimento-transformer/ (che include _transformer_approfondimento.qmd),
   a cui rimanda l'ultima slide.
   Figure: figure/make_transformer_figure.py -> images/transformer_*.png (figure/transformer_cifra7.csv e' la
@@ -768,6 +768,14 @@ Cristiano De Michele
   (Radford et al. 2019, modello piu' grande); GPT-3 175 miliardi (Brown et al. 2020): 1,7 milioni di volte.
   Immagini: Vision Transformer, quadrati 16 x 16 (Dosovitskiy et al. 2020).
   Assistente e strumenti: secondo addestramento su conversazioni e preferenze umane (Ouyang et al. 2022).
+  9/11/2026 (Cristiano): figure delle slide 1-4 rese piu' chiare. Didascalia del vocabolario su due righe; "Come impara"
+  con la probabilita' dell'etichetta in tutti e quattro gli esempi (in addestramento non si genera niente); "Tutto
+  diventa..." in tre righe dato -> numeri -> vettore (indice 3121 illustrativo, pixel veri del 7, colonna dello
+  spettrogramma normalizzata al massimo); web con i token speciali (nomi illustrativi, come nell'approfondimento).
+  Le figure si generano sul Mac: nel cloud il font predefinito di matplotlib e' Inter, sul Mac DejaVu Sans.
+  9/11/2026, seconda richiesta: la slide 4 divisa in due. "Dal token al vettore" (figura transformer_testo_vettore:
+  la tabella dell'embedding senza la lettera E, numeri illustrativi positivi e negativi, ␣reti simile a ␣rete) e
+  "Immagini e suoni diventano vettori" (figura transformer_tutto_token senza la riga del testo).
 -->
 
 <img data-src="../images/transformer_prossimo_token.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>Un modello linguistico, come quelli degli assistenti tipo ChatGPT, fa una cosa sola: data una sequenza di <strong>token</strong>, pezzi di parola, calcola le probabilità del token successivo. Il programma che lo usa ne sceglie uno, lo aggiunge alla sequenza e ripete: una risposta intera è questo ciclo, un token alla volta.</p>
@@ -775,25 +783,22 @@ Cristiano De Michele
 <section id="come-impara" class="slide level2 smaller">
 <h2>Come impara</h2>
 
-<img data-src="../images/transformer_addestramento.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><ul>
-<li>È un classificatore, come la rete MNIST dei laboratori: là 10 classi e l’etichetta è la cifra, qui una classe per ogni token e l’etichetta è il token che segue, già scritto nel testo.</li>
-<li>Backpropagation e discesa del gradiente alzano la probabilità del token giusto, su centinaia di miliardi di token. Un secondo addestramento, su conversazioni, ne fa un assistente.</li>
-</ul>
+<img data-src="../images/transformer_addestramento.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>È un classificatore, come la rete MNIST dei laboratori: là 10 classi e l’etichetta è la cifra, qui una classe per ogni token e l’etichetta è il token che segue. Backpropagation e discesa del gradiente alzano la probabilità dell’etichetta in ogni esempio, su centinaia di miliardi di token. Un secondo addestramento, su conversazioni, ne fa un assistente.</p>
 </section>
-<section id="tutto-diventa-una-sequenza-di-token" class="slide level2 smaller">
-<h2>Tutto diventa una sequenza di token</h2>
+<section id="dal-token-al-vettore" class="slide level2 smaller">
+<h2>Dal token al vettore</h2>
 
-<img data-src="../images/transformer_tutto_token.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><ul>
-<li><strong>Testo:</strong> l’indice del token sceglie una riga di una matrice: un vettore.</li>
-<li><strong>Immagini:</strong> ogni quadrato, letto riga per riga, è un vettore (nei modelli veri, quadrati di 16&nbsp;×&nbsp;16 pixel).</li>
-<li><strong>Suoni:</strong> l’intensità delle frequenze in un istante, una colonna dello spettrogramma ogni 10 ms, è un vettore.</li>
-</ul>
-<p>Qualunque sia l’origine, il modello riceve una sequenza di vettori, e il calcolo è lo stesso.</p>
+<img data-src="../images/transformer_testo_vettore.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Una parola non ha numeri suoi: 3121 è solo la sua posizione nel vocabolario. Il modello tiene una tabella con una riga di numeri per ogni voce: il token sceglie la sua riga, e quella riga è il vettore che entra nella rete. I numeri della tabella sono pesi, come quelli della rete MNIST: all’inizio casuali, li fissa l’addestramento. Alla fine parole usate in modo simile, come ␣rete e ␣reti, hanno righe simili.</p>
+</section>
+<section id="immagini-e-suoni-diventano-vettori" class="slide level2 smaller">
+<h2>Immagini e suoni diventano vettori</h2>
+
+<img data-src="../images/transformer_tutto_token.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"><p>Qui i numeri ci sono già: i grigi dei pixel, le intensità delle frequenze. Nei modelli veri passano poi per una matrice di pesi imparata, che li porta a <em>d</em> numeri come per il testo: cambia solo il punto di partenza.</p>
 </section>
 <section id="come-cerca-sul-web" class="slide level2 smaller">
 <h2>Come cerca sul web</h2>
 
-<img data-src="../images/transformer_strumenti.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>Il modello non naviga da solo. La riga 1, scritta dal programma, descrive lo strumento; nel secondo addestramento il modello ha imparato a usarlo, e genera token dopo token una richiesta in quel formato (riga 3). Il programma la esegue e aggiunge il risultato alla sequenza (riga 4), e il modello continua. Allo stesso modo si aprono pagine, si eseguono programmi o si leggono schermate, che diventano token come le immagini.</p>
+<img data-src="../images/transformer_strumenti.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>Tutto parte dalla domanda dell’utente (riga 2); la riga 1 c’è già, in testa a ogni conversazione. Quando serve, il modello scrive una richiesta fra due token speciali (riga 3), come ha imparato nel secondo addestramento; la ricerca la esegue il programma, poi la generazione riprende.</p>
 </section>
 <section id="gli-stessi-ingredienti-del-corso" class="slide level2 smaller">
 <h2>Gli stessi ingredienti del corso</h2>
