@@ -797,32 +797,36 @@ Cristiano De Michele
 <section id="dal-token-al-vettore" class="slide level2 smaller">
 <h2>Dal token al vettore</h2>
 
-<img data-src="../images/transformer_testo_vettore.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Una parola non ha numeri suoi: 3121 è solo la sua posizione nel vocabolario. Il modello tiene una tabella con una riga di <em>d</em> numeri per ogni voce (<em>d</em> = 768 in GPT-2): il token sceglie la sua riga, e quella riga è il vettore che entra nella rete. I numeri della tabella sono pesi, come quelli della rete MNIST: all’inizio casuali, li fissa l’addestramento. Alla fine parole usate in modo simile, come ␣rete e ␣reti, hanno righe simili.</p>
+<img data-src="../images/transformer_testo_vettore.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Una parola non ha numeri suoi: 3121 è solo la sua posizione nel vocabolario. Per il token <span class="math inline">\(i\)</span> del testo, con <span class="math inline">\(\mathbf{u}_i\)</span> tutto 0 tranne un 1 in posizione 3121:</p>
+<p><span class="math display">\[\mathbf{x}_i = W\,\mathbf{u}_i + \mathbf{r}_i\]</span></p>
+<p><span class="math inline">\(W\,\mathbf{u}_i\)</span> è la riga di ␣rete, di <em>d</em> numeri (<span class="math inline">\(W\)</span> è la tabella trasposta); <span class="math inline">\(\mathbf{r}_i\)</span>, imparato anch’esso, dice dove sta il token nel testo: è un bias che dipende dalla posizione. È il primo strato della rete, un <code>DenseLayer</code>. Alla fine parole usate in modo simile, come ␣rete e ␣reti, hanno righe simili.</p>
 </section>
 <section id="unimmagine-diventa-16-token" class="slide level2 smaller">
 <h2>Un’immagine diventa 16 token</h2>
 
-<img data-src="../images/transformer_immagine.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Ogni quadrato è un token: 16 token, in fila come le parole di un testo, e i loro numeri, i grigi dei pixel, ci sono già. Come per il testo, una matrice di pesi imparata porta poi ogni vettore a <em>d</em> numeri, e vi aggiunge la posizione del quadrato nell’immagine. Nei modelli veri (<em>Vision Transformer</em>): immagini 224&nbsp;×&nbsp;224 a colori, 196 quadrati 16&nbsp;×&nbsp;16 da 16&nbsp;·&nbsp;16&nbsp;·&nbsp;3 = 768 numeri.</p>
+<img data-src="../images/transformer_immagine.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Ogni quadrato è un token, in fila come le parole di un testo. Come per il testo si moltiplica per una <span class="math inline">\(W\)</span>, ma ora <span class="math inline">\(\mathbf{u}_k\)</span>, i 49 grigi del quadrato <span class="math inline">\(k\)</span>, ha molti numeri diversi da 0:</p>
+<p><span class="math display">\[\mathbf{x}_k = W\,\mathbf{u}_k + \mathbf{r}_k \qquad (k = 1, \dots, 16)\]</span></p>
+<p><span class="math inline">\(W\)</span> (<span class="math inline">\(d \times 49\)</span>) e <span class="math inline">\(\mathbf{r}_k\)</span>, il vettore della posizione <span class="math inline">\(k\)</span> (come per le parole del testo), sono pesi imparati. Niente vocabolario: i quadrati possibili sono <span class="math inline">\(256^{49} \approx 10^{118}\)</span>, troppi per una tabella, ma <span class="math inline">\(W\,\mathbf{u}_k\)</span> si calcola per ognuno. Nei modelli veri (<em>Vision Transformer</em>): 224&nbsp;×&nbsp;224 a colori, 196 quadrati 16&nbsp;×&nbsp;16, <span class="math inline">\(\mathbf{u}_k\)</span> di 16&nbsp;·&nbsp;16&nbsp;·&nbsp;3 = 768 numeri.</p>
 </section>
 <section id="un-suono-diventa-token" class="slide level2 smaller">
 <h2>Un suono diventa token</h2>
 
-<img data-src="../images/transformer_suono.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Il microfono dà già numeri, ma uno da solo non dice niente: un suono si riconosce dalle sue frequenze, e per questo si passa per la trasformata di Fourier. Le intensità delle frequenze in 25 ms di segnale sono il vettore di un token.</p>
+<img data-src="../images/transformer_suono.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Il microfono dà già numeri, ma uno da solo non dice niente: un suono si riconosce dalle sue frequenze, e per questo si passa per la trasformata di Fourier. Le 60 intensità in 25 ms di segnale sono il vettore <span class="math inline">\(\mathbf{u}_k\)</span> del token <span class="math inline">\(k\)</span>, e come per i quadrati <span class="math inline">\(\mathbf{x}_k = W\,\mathbf{u}_k + \mathbf{r}_k\)</span>, ora con <span class="math inline">\(W\)</span> di <span class="math inline">\(d \times 60\)</span>. Niente vocabolario: le intensità sono numeri reali, e i vettori possibili non si possono elencare in una tabella.</p>
 </section>
 <section id="un-suono-100-token-al-secondo" class="slide level2 smaller">
 <h2>Un suono: 100 token al secondo</h2>
 
-<img data-src="../images/transformer_spettrogramma.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>La finestra di 25 ms avanza di 10 ms, quindi due finestre vicine hanno 15 ms in comune: un token ogni 10 ms. Nei modelli veri (<em>Whisper</em>): 16&nbsp;000 numeri al secondo e 80 bande di frequenza per token; pesi imparati portano i 3000 vettori di 30 s di audio a 1500 vettori da <em>d</em> numeri.</p>
+<img data-src="../images/transformer_spettrogramma.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>La finestra di 25 ms avanza di 10 ms, quindi due finestre vicine hanno 15 ms in comune: un token ogni 10 ms. Nei modelli veri (<em>Whisper</em>): 16&nbsp;000 numeri al secondo e <span class="math inline">\(\mathbf{u}_k\)</span> di 80 bande di frequenza.</p>
 </section>
 <section id="una-sola-sequenza" class="slide level2 smaller">
 <h2>Una sola sequenza</h2>
 
-<img data-src="../images/transformer_sequenza.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Immagini e suoni non passano dal vocabolario: il loro vettore si calcola dai loro numeri. Il vocabolario contiene solo i token del testo e quelli speciali, e la rete dà le probabilità solo su quelli: l’assistente legge immagini e suoni, ma risponde con del testo. Per produrre un’immagine chiede a un modello separato, come per la ricerca nella slide seguente; alcuni modelli invece trasformano le immagini in simboli di un vocabolario e le generano token per token.</p>
+<img data-src="../images/transformer_sequenza.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Dopo il primo strato tutti i token, di testo, d’immagine e di suono, sono vettori di <em>d</em> numeri in uno <strong>stesso spazio</strong>, che la rete può confrontare fra loro. In ogni posizione la rete dà le probabilità del token che segue: nell’addestramento ogni posizione è un esempio (i quattro di «Come impara», in un solo passaggio); nell’uso serve solo l’ultima, che dà il token nuovo.</p>
 </section>
 <section id="come-cerca-sul-web" class="slide level2 smaller">
 <h2>Come cerca sul web</h2>
 
-<img data-src="../images/transformer_strumenti.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>Tutto parte dalla domanda dell’utente (riga 2); la riga 1 c’è già, in testa a ogni conversazione. Quando serve, il modello scrive una richiesta fra due token speciali (riga 3), come ha imparato nel secondo addestramento; la ricerca la esegue il programma, poi la generazione riprende.</p>
+<img data-src="../images/transformer_strumenti.png" class="quarto-figure quarto-figure-center r-stretch" style="width:92.0%"><p>Tutto parte dalla domanda dell’utente (riga 2); la riga 1 c’è già, in testa a ogni conversazione. Quando serve, il modello scrive una richiesta fra due token speciali (riga 3): lo ha imparato nel secondo addestramento, quello su conversazioni, perché fra gli esempi ci sono anche conversazioni con richieste di questo tipo; la ricerca la esegue il programma, poi la generazione riprende.</p>
 </section>
 <section id="gli-stessi-ingredienti-del-corso" class="slide level2 smaller">
 <h2>Gli stessi ingredienti del corso</h2>
@@ -843,13 +847,20 @@ Cristiano De Michele
   di Particella (variabile globale, attributo static, copie, due sistemi, .hpp/.cpp, static inline), le classi di
   soli metodi static e l'esercizio sul contatore; gli attributi static in una sola slide, dopo i metodi.
   Nuovo esercizio: il Registro come Singleton. Programmi verificati con g++ 13 (-Wall -Wextra, ASan) e clang 18.
+  9/11/2026 (backup .pre-generatore): l'esercizio sul Registro, che non mostrava un vantaggio del Singleton, diventa
+  "due generatori o uno solo?": due Strato con un generatore ciascuno hanno lo stesso peso (stesso seme), con il
+  Singleton Casuale e un solo seed(42) pesi diversi e riproducibili; prepara randnumgen del Laboratorio 08.
+  9/11/2026 (backup .pre-crismi): nella slide sugli attributi la definizione in un solo .cpp e le costanti static
+  constexpr (MPU6050 dei progetti); nella slide del main del Singleton il suo prezzo (stato globale, un solo flusso).
+  9/11/2026 (backup .pre-constexpr): tolto il rimando ai microcontrollori; un attributo constexpr deve essere static
+  (g++: non-static data member 'g' declared 'constexpr').
 -->
 <ul>
 <li><strong>I metodi <code>static</code></strong>: metodi della classe, che si chiamano senza un oggetto, per esempio per crearlo</li>
 <li><strong>Gli attributi <code>static</code></strong>: un attributo condiviso da tutti gli oggetti della classe</li>
 <li><strong>Le variabili locali <code>static</code></strong>: una variabile di una funzione che conserva il suo valore fra una chiamata e l’altra</li>
 <li><strong>Il Singleton</strong>: una classe di cui esiste un solo oggetto</li>
-<li><strong>Esercizio</strong>: un registro dei messaggi come Singleton</li>
+<li><strong>Esercizio</strong>: un generatore di numeri casuali come Singleton</li>
 </ul>
 </section>
 <section id="gli-argomenti-di-oggi-nel-framework" class="slide level2 smaller">
@@ -894,7 +905,7 @@ Cristiano De Michele
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb2-1"><a aria-label="1"></a><span class="kw">add_executable</span>(<span class="bn">fabbrica</span> fabbrica.cpp)</span>
 <span id="cb2-2"><a aria-label="2"></a><span class="kw">add_executable</span>(<span class="bn">lampo</span> lampo.cpp)                                <span class="co"># esercizio veloce</span></span>
 <span id="cb2-3"><a aria-label="3"></a><span class="kw">add_executable</span>(<span class="bn">singleton</span> singleton.cpp)</span>
-<span id="cb2-4"><a aria-label="4"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_registro</span> esercizio_registro.cpp)      <span class="co"># esercizio</span></span>
+<span id="cb2-4"><a aria-label="4"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_generatore</span> esercizio_generatore.cpp)  <span class="co"># esercizio</span></span>
 <span id="cb2-5"><a aria-label="5"></a><span class="kw">add_executable</span>(<span class="bn">attributo_static</span> attributo_static.cpp)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Poi, dalla cartella <code>LEZIONE_13</code>, compilate ed eseguite solo quell’esempio:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> fabbrica <span class="kw">&amp;&amp;</span> <span class="ex">./build/fabbrica</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
@@ -948,7 +959,7 @@ Cristiano De Michele
 <p>Un <code>DenseLayer</code> ridotto, con il metodo del framework. Stampa <code>128 x 784</code>.</p>
 <ol type="1">
 <li>Il metodo è della classe, non di un oggetto.</li>
-<li>Crea l’oggetto con <code>new</code>; il <code>delete</code> lo fa chi chiama (riga 23).</li>
+<li>Crea l’oggetto con <code>new</code> e ne restituisce l’indirizzo; il <code>delete</code> lo fa il <code>main</code> (riga 23).</li>
 <li>Al posto del file, uno <code>std::stringstream</code> (Lezione 11).</li>
 <li>Classe e <code>::</code>, come per i namespace (Lezione 04).</li>
 </ol>
@@ -979,7 +990,7 @@ Cristiano De Michele
 <h2>Gli attributi <code>static</code></h2>
 <p>Anche un attributo può essere <code>static</code>: esiste <strong>una volta sola per tutta la classe</strong>, condiviso da tutti gli oggetti. Il framework non ne usa.</p>
 <div class="columns">
-<div class="column" style="width:52%;">
+<div class="column" style="width:48%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>attributo_static.cpp</strong></pre>
@@ -1001,12 +1012,12 @@ Cristiano De Michele
 <span id="cb4-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb4-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div><div class="column" style="width:48%;">
+</div><div class="column" style="width:52%;">
 <ul>
-<li>Stampa <code>2</code>, gli oggetti che esistono. <code>quante()</code> è un metodo <code>static</code>: legge un attributo <code>static</code>.</li>
-<li><code>inline</code> (C++17) dà il valore nella classe; senza, si scrive fuori: <code>int Particella::totale_ = 0;</code>.</li>
-<li>È uno per programma: due sistemi di particelle avrebbero lo stesso contatore.</li>
+<li>Stampa <code>2</code>. Il metodo <code>static</code> <code>quante()</code> legge l’attributo <code>static</code>.</li>
+<li><code>inline</code> (C++17) dà il valore nella classe. Senza, <span style="white-space: nowrap"><code>int Particella::totale_ = 0;</code></span> va in <strong>un solo</strong> <code>.cpp</code>, non nell’header.</li>
 <li>Una copia non lo incrementa: serve il costruttore di copia (Lezione 10).</li>
+<li>L’uso più comune sono le <strong>costanti</strong>, come <code>static constexpr double g = 9.81;</code>: un attributo <code>constexpr</code> (Lezione 06) deve essere <code>static</code>.</li>
 </ul>
 </div></div>
 </section>
@@ -1109,8 +1120,10 @@ Cristiano De Michele
 <pre><code>1
 2
 3</code></pre>
-<p>Il <code>main</code> e <code>altra_funzione</code> chiamano <code>prossimo()</code> sullo stesso oggetto: il contatore <code>n_</code> è uno solo.</p>
+<p>Riga 20: <code>g</code> è un reference, cioè un <em>alias</em> dell’unico oggetto (Lezione 05), non una copia, che del resto è vietata.</p>
+<p><code>altra_funzione</code> non riceve <code>g</code>: con <code>get()</code> ottiene lo stesso oggetto, e il contatore prosegue.</p>
 </div></div>
+<p>Serve quando un oggetto deve essere <strong>uno solo</strong> in tutto il programma, come il generatore di numeri casuali del framework (esercizio a fine lezione); non per evitare di passare un parametro.</p>
 </section>
 <section id="provate-il-singleton" class="slide level2 smaller">
 <h2>Provate: il Singleton</h2>
@@ -1122,121 +1135,119 @@ Cristiano De Michele
 <span class="fragment">No: <em>use of deleted function ‘Generatore::Generatore(const Generatore&amp;)’</em>. Senza <code>&amp;</code>, <code>g</code> sarebbe una copia, cioè un secondo oggetto.</span></li>
 </ol>
 </section>
-<section id="esercizio-il-registro-come-singleton" class="slide level2 smaller">
-<h2>Esercizio: il registro come Singleton</h2>
-<p><strong>Scopo:</strong> scrivere un Singleton, come <code>randnumgen</code> nel framework.</p>
-<p>Il registro numera i messaggi e deve essere <strong>uno solo</strong>. In <code>esercizio_registro.cpp</code> (slide seguente), nella classe <code>Registro</code>:</p>
+<section id="esercizio-due-generatori-o-uno-solo" class="slide level2 smaller">
+<h2>Esercizio: due generatori o uno solo?</h2>
+<p><strong>Scopo:</strong> capire perché <code>randnumgen</code>, il generatore del framework, è un Singleton.</p>
+<p>In <code>esercizio_generatore.cpp</code> (slide seguente) ogni <code>Strato</code> si crea il suo generatore <code>Casuale</code>: i due pesi iniziali sono <strong>uguali</strong>, perché i generatori partono dallo stesso seme. Rendete <code>Casuale</code> un Singleton:</p>
 <ol type="1">
-<li>spostate il costruttore <code>Registro() {}</code> nella parte <code>private</code>;</li>
-<li>vietate copia e assegnamento con <code>= delete</code>, come nel <code>Generatore</code>;</li>
-<li>scrivete <code>static Registro&amp; get()</code>, che restituisce la variabile locale <code>static Registro unico;</code>;</li>
-<li>scommentate le tre chiamate a <code>Registro::get().scrivi(...)</code>.</li>
+<li>costruttore <code>private</code>, copia e assegnamento vietati con <code>= delete</code>;</li>
+<li><code>static Casuale&amp; get()</code>, che restituisce la variabile locale <code>static Casuale unico;</code>;</li>
+<li>in <code>Strato</code> usate <code>Casuale::get()</code>; nel <code>main</code> scommentate il <code>seed(42)</code>.</li>
 </ol>
-<p>Output atteso: <code>[1] inizio</code>, <code>[2] dati caricati</code>, <code>[3] fine</code>, su tre righe.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_registro <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_registro</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output atteso: due pesi <strong>diversi</strong>, gli stessi a ogni esecuzione.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_generatore <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_generatore</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="il-registro-il-file-da-completare" class="slide level2 smaller">
-<h2>Il registro: il file da completare</h2>
+<section id="il-generatore-il-file-da-completare" class="slide level2 smaller">
+<h2>Il generatore: il file da completare</h2>
 <div class="columns">
-<div class="column" style="width:68%;">
+<div class="column" style="width:66%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>esercizio_registro.cpp</strong></pre>
+<pre><strong>esercizio_generatore.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="esercizio_registro.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb10-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="esercizio_generatore.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb10-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;random&gt;</span></span>
 <span id="cb10-3"><a aria-label="3"></a></span>
-<span id="cb10-4"><a aria-label="4"></a><span class="kw">class</span> Registro <span class="op">{</span></span>
+<span id="cb10-4"><a aria-label="4"></a><span class="kw">class</span> Casuale <span class="op">{</span></span>
 <span id="cb10-5"><a aria-label="5"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb10-6"><a aria-label="6"></a>    <span class="dt">int</span> <span class="va">n_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb10-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb10-8"><a aria-label="8"></a>    <span class="co">// da completare: costruttore private, copia e</span></span>
-<span id="cb10-9"><a aria-label="9"></a>    <span class="co">// assegnamento vietati, metodo static get()</span></span>
-<span id="cb10-10"><a aria-label="10"></a>    Registro<span class="op">()</span> <span class="op">{}</span></span>
-<span id="cb10-11"><a aria-label="11"></a>    <span class="dt">void</span> scrivi<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> messaggio<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-12"><a aria-label="12"></a>        <span class="va">n_</span><span class="op">++;</span></span>
-<span id="cb10-13"><a aria-label="13"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"["</span> <span class="op">&lt;&lt;</span> <span class="va">n_</span> <span class="op">&lt;&lt;</span> <span class="st">"] "</span> <span class="op">&lt;&lt;</span> messaggio <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb10-14"><a aria-label="14"></a>    <span class="op">}</span></span>
-<span id="cb10-15"><a aria-label="15"></a><span class="op">};</span></span>
-<span id="cb10-16"><a aria-label="16"></a></span>
-<span id="cb10-17"><a aria-label="17"></a><span class="dt">void</span> carica_dati<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb10-18"><a aria-label="18"></a>    <span class="co">// Registro::get().scrivi("dati caricati");  // da scommentare</span></span>
-<span id="cb10-19"><a aria-label="19"></a><span class="op">}</span></span>
+<span id="cb10-6"><a aria-label="6"></a>    <span class="bu">std::</span>mt19937 motore<span class="op">;</span></span>
+<span id="cb10-7"><a aria-label="7"></a>    <span class="bu">std::</span>uniform_real_distribution<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> uniforme<span class="op">;</span></span>
+<span id="cb10-8"><a aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb10-9"><a aria-label="9"></a>    <span class="co">// da completare: punti 1 e 2 dell'esercizio</span></span>
+<span id="cb10-10"><a aria-label="10"></a>    Casuale<span class="op">()</span> <span class="op">{}</span></span>
+<span id="cb10-11"><a aria-label="11"></a>    <span class="dt">void</span> seed<span class="op">(</span><span class="dt">int</span> s<span class="op">)</span> <span class="op">{</span> motore<span class="op">.</span>seed<span class="op">(</span>s<span class="op">);</span> <span class="op">}</span></span>
+<span id="cb10-12"><a aria-label="12"></a>    <span class="dt">double</span> ranf<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> uniforme<span class="op">(</span>motore<span class="op">);</span> <span class="op">}</span></span>
+<span id="cb10-13"><a aria-label="13"></a><span class="op">};</span></span>
+<span id="cb10-14"><a aria-label="14"></a></span>
+<span id="cb10-15"><a aria-label="15"></a><span class="kw">class</span> Strato <span class="op">{</span></span>
+<span id="cb10-16"><a aria-label="16"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb10-17"><a aria-label="17"></a>    <span class="dt">double</span> w<span class="op">;</span>                              <span class="co">// un solo peso</span></span>
+<span id="cb10-18"><a aria-label="18"></a>    Strato<span class="op">()</span> <span class="op">{</span> Casuale c<span class="op">;</span> w <span class="op">=</span> c<span class="op">.</span>ranf<span class="op">();</span> <span class="op">}</span>  <span class="co">// da cambiare: punto 3</span></span>
+<span id="cb10-19"><a aria-label="19"></a><span class="op">};</span></span>
 <span id="cb10-20"><a aria-label="20"></a></span>
 <span id="cb10-21"><a aria-label="21"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb10-22"><a aria-label="22"></a>    <span class="co">// Registro::get().scrivi("inizio");         // da scommentare</span></span>
-<span id="cb10-23"><a aria-label="23"></a>    carica_dati<span class="op">();</span></span>
-<span id="cb10-24"><a aria-label="24"></a>    <span class="co">// Registro::get().scrivi("fine");           // da scommentare</span></span>
+<span id="cb10-22"><a aria-label="22"></a>    <span class="co">// Casuale::get().seed(42);   // da scommentare</span></span>
+<span id="cb10-23"><a aria-label="23"></a>    Strato a<span class="op">,</span> b<span class="op">;</span></span>
+<span id="cb10-24"><a aria-label="24"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> a<span class="op">.</span>w <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> b<span class="op">.</span>w <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="cb10-25"><a aria-label="25"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb10-26"><a aria-label="26"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div><div class="column" style="width:32%;">
-<p>Il file compila così com’è e non stampa niente.</p>
-<p><code>n_</code> conta i messaggi: è un attributo normale, ma dell’unico oggetto, quindi la numerazione prosegue fra <code>main</code> e <code>carica_dati</code>.</p>
+</div><div class="column" style="width:34%;">
+<p>Il file compila così com’è e stampa due pesi uguali (con g++ su Linux <code>0.135477 0.135477</code>).</p>
+<p><code>std::mt19937</code> è il generatore <em>Mersenne Twister</em> della libreria standard, come in <code>randnumgen</code>; con <code>uniforme</code>, <code>ranf()</code> dà un <code>double</code> in [0, 1), come <code>rng.ranf()</code> nel framework.</p>
 </div></div>
 </section>
-<section id="soluzione-dellesercizio-sul-registro" class="slide level2 smaller">
-<h2>Soluzione dell’esercizio sul registro</h2>
+<section id="soluzione-dellesercizio-casuale" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio: <code>Casuale</code></h2>
 <div class="columns">
 <div class="column" style="width:62%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>esercizio_registro.cpp</strong></pre>
+<pre><strong>esercizio_generatore.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-18" data-filename="esercizio_registro.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-18" data-filename="esercizio_generatore.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;random&gt;</span></span>
 <span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-label="3"></a></span>
-<span id="annotated-cell-18-4"><a href="#annotated-cell-18-4" aria-label="4"></a><span class="kw">class</span> Registro <span class="op">{</span></span>
+<span id="annotated-cell-18-4"><a href="#annotated-cell-18-4" aria-label="4"></a><span class="kw">class</span> Casuale <span class="op">{</span></span>
 <span id="annotated-cell-18-5"><a href="#annotated-cell-18-5" aria-label="5"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-18-6"><a href="#annotated-cell-18-6" aria-label="6"></a>    <span class="dt">int</span> <span class="va">n_</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-18-7"><a href="#annotated-cell-18-7" aria-label="7"></a>    Registro<span class="op">()</span> <span class="op">{}</span></span>
-<span id="annotated-cell-18-8"><a href="#annotated-cell-18-8" aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-18-9"><a href="#annotated-cell-18-9" aria-label="9"></a>    Registro<span class="op">(</span><span class="at">const</span> Registro<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
-<span id="annotated-cell-18-10"><a href="#annotated-cell-18-10" aria-label="10"></a>    Registro<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> Registro<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
-<span id="annotated-cell-18-11"><a href="#annotated-cell-18-11" aria-label="11"></a>    <span class="at">static</span> Registro<span class="op">&amp;</span> get<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-18-12"><a href="#annotated-cell-18-12" aria-label="12"></a>        <span class="at">static</span> Registro unico<span class="op">;</span></span>
-<span id="annotated-cell-18-13"><a href="#annotated-cell-18-13" aria-label="13"></a>        <span class="cf">return</span> unico<span class="op">;</span></span>
-<span id="annotated-cell-18-14"><a href="#annotated-cell-18-14" aria-label="14"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-18-15"><a href="#annotated-cell-18-15" aria-label="15"></a>    <span class="dt">void</span> scrivi<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> messaggio<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-18-16"><a href="#annotated-cell-18-16" aria-label="16"></a>        <span class="va">n_</span><span class="op">++;</span></span>
-<span id="annotated-cell-18-17"><a href="#annotated-cell-18-17" aria-label="17"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"["</span> <span class="op">&lt;&lt;</span> <span class="va">n_</span> <span class="op">&lt;&lt;</span> <span class="st">"] "</span> <span class="op">&lt;&lt;</span> messaggio <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-18-18"><a href="#annotated-cell-18-18" aria-label="18"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-18-19"><a href="#annotated-cell-18-19" aria-label="19"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-18-6"><a href="#annotated-cell-18-6" aria-label="6"></a>    <span class="bu">std::</span>mt19937 motore<span class="op">;</span></span>
+<span id="annotated-cell-18-7"><a href="#annotated-cell-18-7" aria-label="7"></a>    <span class="bu">std::</span>uniform_real_distribution<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> uniforme<span class="op">;</span></span>
+<span id="annotated-cell-18-8"><a href="#annotated-cell-18-8" aria-label="8"></a>    Casuale<span class="op">()</span> <span class="op">{}</span></span>
+<span id="annotated-cell-18-9"><a href="#annotated-cell-18-9" aria-label="9"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="annotated-cell-18-10"><a href="#annotated-cell-18-10" aria-label="10"></a>    Casuale<span class="op">(</span><span class="at">const</span> Casuale<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="annotated-cell-18-11"><a href="#annotated-cell-18-11" aria-label="11"></a>    Casuale<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> Casuale<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="annotated-cell-18-12"><a href="#annotated-cell-18-12" aria-label="12"></a>    <span class="at">static</span> Casuale<span class="op">&amp;</span> get<span class="op">()</span> <span class="op">{</span></span>
+<span id="annotated-cell-18-13"><a href="#annotated-cell-18-13" aria-label="13"></a>        <span class="at">static</span> Casuale unico<span class="op">;</span></span>
+<span id="annotated-cell-18-14"><a href="#annotated-cell-18-14" aria-label="14"></a>        <span class="cf">return</span> unico<span class="op">;</span></span>
+<span id="annotated-cell-18-15"><a href="#annotated-cell-18-15" aria-label="15"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-18-16"><a href="#annotated-cell-18-16" aria-label="16"></a>    <span class="dt">void</span> seed<span class="op">(</span><span class="dt">int</span> s<span class="op">)</span> <span class="op">{</span> motore<span class="op">.</span>seed<span class="op">(</span>s<span class="op">);</span> <span class="op">}</span></span>
+<span id="annotated-cell-18-17"><a href="#annotated-cell-18-17" aria-label="17"></a>    <span class="dt">double</span> ranf<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> uniforme<span class="op">(</span>motore<span class="op">);</span> <span class="op">}</span></span>
+<span id="annotated-cell-18-18"><a href="#annotated-cell-18-18" aria-label="18"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:38%;">
 <ol type="1">
-<li>Nessuno, fuori dalla classe, può creare un <code>Registro</code>.</li>
-<li>Nessuno può copiarlo: un secondo oggetto avrebbe la sua numerazione.</li>
+<li>Nessuno, fuori dalla classe, può creare un <code>Casuale</code>: uno strato non può più farsi il suo.</li>
+<li>Nessuno può copiarlo: una copia ripeterebbe gli stessi numeri dell’originale.</li>
 <li><code>get()</code> è <code>static</code>, quindi si chiama senza un oggetto; <code>unico</code> nasce alla prima chiamata e resta fino alla fine del programma.</li>
 </ol>
 </div></div>
 </section>
-<section id="soluzione-il-main" class="slide level2 smaller">
-<h2>Soluzione: il <code>main</code></h2>
+<section id="soluzione-strato-e-main" class="slide level2 smaller">
+<h2>Soluzione: <code>Strato</code> e <code>main</code></h2>
 <div class="columns">
 <div class="column" style="width:62%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>esercizio_registro.cpp</strong></pre>
+<pre><strong>esercizio_generatore.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="esercizio_registro.cpp" data-startfrom="20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 19;"><span id="cb11-20"><a aria-label="20"></a></span>
-<span id="cb11-21"><a aria-label="21"></a><span class="dt">void</span> carica_dati<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb11-22"><a aria-label="22"></a>    Registro<span class="op">::</span>get<span class="op">().</span>scrivi<span class="op">(</span><span class="st">"dati caricati"</span><span class="op">);</span></span>
-<span id="cb11-23"><a aria-label="23"></a><span class="op">}</span></span>
-<span id="cb11-24"><a aria-label="24"></a></span>
-<span id="cb11-25"><a aria-label="25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb11-26"><a aria-label="26"></a>    Registro<span class="op">::</span>get<span class="op">().</span>scrivi<span class="op">(</span><span class="st">"inizio"</span><span class="op">);</span></span>
-<span id="cb11-27"><a aria-label="27"></a>    carica_dati<span class="op">();</span></span>
-<span id="cb11-28"><a aria-label="28"></a>    Registro<span class="op">::</span>get<span class="op">().</span>scrivi<span class="op">(</span><span class="st">"fine"</span><span class="op">);</span></span>
-<span id="cb11-29"><a aria-label="29"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb11-30"><a aria-label="30"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="esercizio_generatore.cpp" data-startfrom="19"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 18;"><span id="cb11-19"><a aria-label="19"></a></span>
+<span id="cb11-20"><a aria-label="20"></a><span class="kw">class</span> Strato <span class="op">{</span></span>
+<span id="cb11-21"><a aria-label="21"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb11-22"><a aria-label="22"></a>    <span class="dt">double</span> w<span class="op">;</span></span>
+<span id="cb11-23"><a aria-label="23"></a>    Strato<span class="op">()</span> <span class="op">{</span> w <span class="op">=</span> Casuale<span class="op">::</span>get<span class="op">().</span>ranf<span class="op">();</span> <span class="op">}</span></span>
+<span id="cb11-24"><a aria-label="24"></a><span class="op">};</span></span>
+<span id="cb11-25"><a aria-label="25"></a></span>
+<span id="cb11-26"><a aria-label="26"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-27"><a aria-label="27"></a>    Casuale<span class="op">::</span>get<span class="op">().</span>seed<span class="op">(</span><span class="dv">42</span><span class="op">);</span></span>
+<span id="cb11-28"><a aria-label="28"></a>    Strato a<span class="op">,</span> b<span class="op">;</span></span>
+<span id="cb11-29"><a aria-label="29"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> a<span class="op">.</span>w <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> b<span class="op">.</span>w <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb11-30"><a aria-label="30"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-31"><a aria-label="31"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:38%;">
-<p>Output:</p>
-<pre><code>[1] inizio
-[2] dati caricati
-[3] fine</code></pre>
-<p>Le tre chiamate usano lo stesso oggetto, quindi la numerazione prosegue.</p>
+<p>Output (g++ su Linux):</p>
+<pre><code>0.796543 0.183435</code></pre>
+<p>I due strati prendono numeri successivi dell’unica sequenza, e il seme si fissa una volta sola, nel <code>main</code>. Nel Laboratorio 08 farete lo stesso con <code>randnumgen</code>: <code>rng.seed(42)</code> in cima al <code>main</code>, <code>rng.ranf()</code> nei layer.</p>
 </div></div>
 
 
