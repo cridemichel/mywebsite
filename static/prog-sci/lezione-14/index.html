@@ -1253,7 +1253,8 @@ tempo: 320 ms</code></pre>
 <span id="cb16-5"><a aria-label="5"></a>        C<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> s<span class="op">;</span></span>
 <span id="cb16-6"><a aria-label="6"></a>    <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>Stesso risultato, ma più lento: da 40 a 65 ms con g++ 13, a 105 ms con clang 18, da 34 a 135 ms sull’M3 Max. Il ciclo interno ora legge <span style="white-space: nowrap"><code>B[0][j]</code>, <code>B[1][j]</code>, …</span>, lungo la colonna <code>j</code>, ma il motivo non è questo: le matrici, 2 MB l’una, restano nella cache. È la somma su <code>s</code>: ogni somma aspetta la precedente, e riordinarle cambierebbe l’arrotondamento, quindi niente vettorizzazione. g++ perde meno perché calcola insieme <code>C[i][j]</code> e <code>C[i][j+1]</code>, due somme indipendenti.</p>
+<p>Stesso risultato, ma più lento: da 40 a 65 ms con g++ 13, da 34 a 135 ms sull’M3 Max. Non è colpa della colonna di <code>B</code>: le matrici, 2 MB l’una, restano nella cache. È la somma su <code>s</code>: ogni somma aspetta la precedente, e riordinarle cambierebbe l’arrotondamento, quindi niente vettorizzazione.</p>
+<p>La regola: nel ciclo interno, elementi contigui e somme indipendenti, come nell’ordine <span style="white-space: nowrap"><code>i</code>, <code>k</code>, <code>j</code></span>.</p>
 </div>
 </section>
 <section id="ripasso-eigen-e-i-suoi-header" class="slide level2 smaller">
@@ -1302,7 +1303,7 @@ tempo: 320 ms</code></pre>
 <p>Output, a <code>-O3</code>:</p>
 <pre><code>C(1,2) = 41.416
 tempo: 20 ms</code></pre>
-<p>Stesso risultato, in 20 ms invece di 40. Eigen organizza il prodotto per riusare i dati appena letti, come vedremo con il batching, e usa le istruzioni SIMD.</p>
+<p>Stesso risultato, in 20 ms invece di 40, e senza pensare all’ordine dei cicli: ci pensa Eigen, che sfrutta la cache e le istruzioni SIMD.</p>
 </div></div>
 </section>
 <section id="provate-i-comandi-di-cmake" class="slide level2 smaller">
