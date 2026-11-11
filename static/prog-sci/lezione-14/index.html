@@ -781,6 +781,8 @@ Cristiano De Michele
   con 128 neuroni, misure di Cristiano; nel cloud con -march=native 480 contro 290 ms, senza 960 contro 960).
   10/11/2026 (backup .pre-finale): controllo approfondito delle slide 24-38 (programmi compilati e lanciati con gli argomenti delle
   slide): risposta 1 di "argomenti sbagliati" riscritta, titolo "Soluzione dell'esercizio sugli iperparametri", pippo -> abc.
+  11/11/2026 (backup .pre-colonna): slide 21, B[0][j], B[1][j], ... lungo la colonna j (Cristiano lo leggeva "per righe");
+  slide 7, il Vettore2D della slide seguente non ha getter (quello della Lezione 10 si').
 -->
 <ul>
 <li><strong>Le funzioni <code>friend</code></strong>: una funzione, non un metodo, a cui una classe permette di leggere i suoi membri <code>private</code></li>
@@ -867,7 +869,7 @@ Cristiano De Michele
 <li>Restituisce <code>os</code>, per poter scrivere <code>std::cout &lt;&lt; v &lt;&lt; "\n"</code>: prima <code>std::cout &lt;&lt; v</code>, che restituisce <code>std::cout</code>, poi <code>std::cout &lt;&lt; "\n"</code>.</li>
 <li>Così funziona <code>std::cout &lt;&lt; M</code> del Laboratorio 05: Eigen definisce una funzione <code>operator&lt;&lt;</code> per le sue matrici.</li>
 </ul>
-<p>Qui, a differenza di <code>5.0 * v1</code>, non c’è un metodo da riusare: il corpo <strong>deve</strong> leggere <code>x_</code> e <code>y_</code>, che sono <code>private</code>, e in questo <code>Vettore2D</code> non ci sono getter.</p>
+<p>Qui, a differenza di <code>5.0 * v1</code>, il corpo <strong>deve</strong> leggere <code>x_</code> e <code>y_</code>, <code>private</code>: il <code>Vettore2D</code> della prossima slide non ha getter (quello della Lezione 10 sì).</p>
 </section>
 <section id="le-funzioni-friend" class="slide level2 smaller">
 <h2>Le funzioni <code>friend</code></h2>
@@ -1190,8 +1192,8 @@ tempo: 320 ms</code></pre>
 </section>
 <section id="provate-lordine-dei-cicli" class="slide level2 smaller">
 <h2>Provate: l’ordine dei cicli</h2>
-<p>In C e in C++ una matrice <code>double B[N][N]</code> è memorizzata <strong>per righe</strong> (<em>row-major</em>): gli elementi di una riga sono contigui, mentre <code>B[k][j]</code> e <code>B[k+1][j]</code> distano 4000 byte.</p>
-<p>A <code>-O3</code>, sostituite il corpo di <code>prodotto()</code> con l’ordine <code>i</code>, <code>j</code>, <code>k</code> della formula <span class="math inline">\(C_{ij} = \sum_k A_{ik} B_{kj}\)</span>. Cosa succede al tempo?</p>
+<p>Come in C, una matrice <code>double B[N][N]</code> è memorizzata <strong>per righe</strong> (<em>row-major</em>): una riga è contigua, mentre <code>B[k][j]</code> e <code>B[k+1][j]</code> distano 4000 byte.</p>
+<p>A <code>-O3</code>, riscrivete <code>prodotto()</code> con l’ordine <code>i</code>, <code>j</code>, <code>k</code> della formula: cosa succede al tempo?</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span></span>
 <span id="cb15-2"><a aria-label="2"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
 <span id="cb15-3"><a aria-label="3"></a>        <span class="dt">double</span> s <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
@@ -1199,7 +1201,7 @@ tempo: 320 ms</code></pre>
 <span id="cb15-5"><a aria-label="5"></a>        C<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> s<span class="op">;</span></span>
 <span id="cb15-6"><a aria-label="6"></a>    <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>Stesso risultato, ma più lento: da 40 a 65 ms con g++ 13, da 40 a 105 ms con clang 18, da 34 a 135 ms sull’M3 Max. Il ciclo interno legge <code>B</code> <strong>per colonne</strong>: ogni accesso salta 4000 byte, e la cache non aiuta. In più le somme su <code>s</code> sono in catena, e riordinarle cambierebbe l’arrotondamento: niente vettorizzazione. Le matrici di Eigen, invece, sono memorizzate per colonne (<em>column-major</em>): lì vale il contrario.</p>
+<p>Stesso risultato, ma più lento: da 40 a 65 ms con g++ 13, a 105 ms con clang 18, da 34 a 135 ms sull’M3 Max. Il ciclo interno fa variare il primo indice di <code>B</code>: legge <span style="white-space: nowrap"><code>B[0][j]</code>, <code>B[1][j]</code>, …</span>, cioè scende lungo la <strong>colonna</strong> <code>j</code>, e ogni accesso salta 4000 byte. In più le somme su <code>s</code> sono in catena, e riordinarle cambierebbe l’arrotondamento: niente vettorizzazione. Le matrici di Eigen, invece, sono memorizzate per colonne (<em>column-major</em>): lì vale il contrario.</p>
 </div>
 </section>
 <section id="ripasso-eigen-e-i-suoi-header" class="slide level2 smaller">

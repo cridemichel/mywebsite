@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c2b08e7e9e4d0725d7c99c9a799ba6e7.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.11.9">
+
+  <meta name="author" content="Cristiano De Michele">
+  <title>Programmazione Scientifica++ – Laboratorio 07</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-00ad5a49dff614330cd349bcec985ec3.css">
+  <link rel="stylesheet" href="../annotazioni.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="text/x-mathjax-config">
+  // Solo i font TeX serviti dal sito (mathjax/, 30/9/2026). Sul Mac sono installati
+  // i font STIX: MathJax li preferiva, chiedeva fonts/STIX/fontdata.js, che la copia
+  // ridotta non ha, e mostrava "Math Processing Error" (slide "Piegare lo spazio").
+  MathJax.Hub.Config({"HTML-CSS": {availableFonts: ["TeX"], preferredFont: "TeX",
+                                   webFont: "TeX", imageFont: null}});
+  // Anteprime della speaker view (8/10/2026): formule viste DOPPIE con schermo esteso.
+  // Solo li' si spengono la copia MathML nascosta (per i lettori di schermo) e la
+  // bozza veloce che precede il disegno definitivo: le slide proiettate e il sito
+  // degli studenti restano come prima.
+  if (/receiver/i.test(window.location.search))
+    MathJax.Hub.Config({menuSettings: {assistiveMML: false, FastPreview: false},
+                        AssistiveMML: {disabled: true}, "fast-preview": {disabled: true}});
+  </script>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
+  <style>
+  /* pulsanti "gomma" e "schermo intero" accanto a lavagna e notes canvas (29/9/2026) */
+  .reveal .slide-chalkboard-buttons .fa-eraser::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-schermo-intero::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-esci-schermo::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/></svg>')}
+  </style>
+  <script>
+  // Due pulsanti in piu' in basso a sinistra, per chi presenta dal tablet
+  // senza tastiera:
+  //  - la gomma cancella in un colpo i disegni della slide corrente, nel modo
+  //    attivo (la lavagna se e' aperta, altrimenti il notes canvas): e' il
+  //    tasto Canc. Le altre slide non si toccano;
+  //  - schermo intero, entra ed esce (il tasto F); l'icona segue lo stato.
+  window.addEventListener('load', function () {
+    var tentativi = 0;
+    (function aggiungi() {
+      var div = document.querySelector('.reveal .slide-chalkboard-buttons');
+      if (!div || typeof RevealChalkboard === 'undefined') {
+        if (++tentativi < 50) setTimeout(aggiungi, 100);
+        return;
+      }
+      if (div.querySelector('.fa-eraser')) return;
+      var span = document.createElement('span');
+      span.title = 'Cancella i disegni di questa slide (Canc)';
+      var icona = document.createElement('i');
+      icona.className = 'fas fa-eraser';
+      span.appendChild(icona);
+      span.onclick = function (ev) { ev.preventDefault(); RevealChalkboard.clear(); };
+      div.appendChild(span);
+
+      var doc = document.documentElement;
+      if (!doc.requestFullscreen) return;       // browser senza schermo intero
+      var fs = document.createElement('span');
+      var ifs = document.createElement('i');
+      fs.appendChild(ifs);
+      function aggiorna() {
+        var dentro = !!document.fullscreenElement;
+        ifs.className = 'fas ' + (dentro ? 'fa-esci-schermo' : 'fa-schermo-intero');
+        fs.title = dentro ? 'Esci dallo schermo intero (F)' : 'Schermo intero (F)';
+      }
+      fs.onclick = function (ev) {
+        ev.preventDefault();
+        if (document.fullscreenElement) document.exitFullscreen();
+        else doc.requestFullscreen().catch(function () {});
+      };
+      document.addEventListener('fullscreenchange', aggiorna);
+      aggiorna();
+      div.appendChild(fs);
+    })();
+  });
+  </script>
+  <script>
+  // Swipe a DUE dita per cambiare slide (29/9/2026). Lo swipe a un dito resta
+  // quello di reveal.js, che pero' non funziona se il dito parte su qualcosa che
+  // scorre (slide .scrollable, blocchi di codice): li' il browser si prende il
+  // gesto per lo scorrimento. Con due dita si cambia slide ovunque, anche con la
+  // matita attiva. Un pinch (dita che si allontanano) resta uno zoom.
+  (function () {
+    var SOGLIA = 60;            // px di spostamento del punto medio delle due dita
+    var g = null;               // gesto a due dita in corso
+    var tocchi = new Set();     // pointer "touch" attivi
+    var muto = false;           // da quando posi il secondo dito a quando li togli tutti
+
+    function medio(t) {
+      return { x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2,
+               d: Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) };
+    }
+    document.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) { var m = medio(e.touches); g = { x: m.x, y: m.y, d: m.d, fatto: false }; }
+      else if (e.touches.length > 2) g = null;
+    }, { capture: true, passive: true });
+
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches.length < 2) return;
+      e.stopPropagation();                      // la lavagna non disegna col secondo dito
+      if (!g || e.touches.length !== 2) return;
+      if (g.fatto) { if (e.cancelable) e.preventDefault(); return; }
+      var m = medio(e.touches), dx = m.x - g.x, dy = m.y - g.y;
+      if (Math.abs(m.d - g.d) > 0.35 * g.d) { g = null; return; }      // pinch: al browser
+      if (Math.abs(dx) > SOGLIA && Math.abs(dx) > 1.5 * Math.abs(dy)) {
+        g.fatto = true;
+        if (e.cancelable) e.preventDefault();
+        if (dx < 0) Reveal.next(); else Reveal.prev();
+      } else if (Math.abs(dy) > SOGLIA && Math.abs(dy) > 1.5 * Math.abs(dx)) {
+        g = null;                                // due dita in verticale: scorrimento
+      }
+    }, { capture: true, passive: false });
+
+    document.addEventListener('touchend', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+    document.addEventListener('touchcancel', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+
+    // reveal.js legge lo swipe dai pointer events, dito per dito: con due dita
+    // vedrebbe anche uno swipe a un dito e salterebbe due slide. Dal secondo dito
+    // in poi, e finche' non si alzano tutti, i suoi pointermove non gli arrivano.
+    function conta(e) {
+      if (e.pointerType !== 'touch') return;
+      if (e.type === 'pointerdown') { tocchi.add(e.pointerId); if (tocchi.size >= 2) muto = true; }
+      else { tocchi.delete(e.pointerId); if (tocchi.size === 0) muto = false; }
+    }
+    ['pointerdown', 'pointerup', 'pointercancel'].forEach(function (t) {
+      document.addEventListener(t, conta, true);
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch' && muto) e.stopPropagation();
+    }, true);
+  })();
+  </script>
+  <script>
+  // Speaker view su schermo esteso (8/10/2026): quello che si fa sull'anteprima
+  // della slide CORRENTE nella speaker view (tasto S) si vede anche sulla finestra
+  // proiettata, che il cursore non raggiunge.
+  //  - Puntatore: muovendo il mouse sull'anteprima compare un pallino rosso nello
+  //    stesso punto della vista proiettata; resta finche' il mouse e' sull'anteprima
+  //    e sparisce uscendo (8/10: tolto lo spegnimento dopo 4 s fermo, e il pallino
+  //    remoto non risente piu' di clic o cambi di finestra su quella proiettata).
+  //    Tasto R premuto nella speaker view: spegne/riaccende questo pallino (all'apertura
+  //    e' acceso; la conferma compare solo nell'anteprima, non sul proiettore).
+  //  - Evidenziatore: il testo selezionato nell'anteprima si colora di giallo sulla
+  //    vista proiettata (8/10/2026). Non usa la selezione vera (in una finestra senza
+  //    fuoco e' grigio chiaro) ma la CSS Custom Highlight API; le formule si saltano.
+  //  - Annotazioni del codice (i numerini): quella accesa nell'anteprima, passandoci
+  //    sopra o con un clic, si accende anche sulla vista proiettata, con la sua riga
+  //    di codice (12/10/2026).
+  //  - Lavagna e penna: i disegni fatti sull'anteprima (tasti C e B, gomma, Canc)
+  //    passano alla vista proiettata, e viceversa; aprendo la speaker view
+  //    l'anteprima riceve i disegni gia' fatti.
+  // Usa i messaggi "broadcast"/"received" previsti dal plugin chalkboard per le
+  // presentazioni condivise; l'anteprima della slide successiva e' esclusa.
+  //  - Senza speaker view il pallino segue il mouse sulla slide e la freccia viene
+  //    nascosta; tornano manina/freccia sugli elementi cliccabili (pulsanti, link,
+  //    callout richiudibili, menu, footer), il cursore di disegno con penna e lavagna,
+  //    il cursore normale tenendo premuto il tasto (selezione del testo).
+  //    Dopo 3 s fermo spariscono pallino e freccia: basta muovere il mouse.
+  //    Questo pallino parte SPENTO: si accende e si spegne col tasto R. Riguarda solo
+  //    l'uso senza speaker view: il pallino comandato dall'anteprima funziona sempre.
+  (function () {
+    var NS = 'speaker-view-ponte';
+    function area() {                    // dove stanno le slide in questa finestra
+      var v = document.querySelector('.reveal');
+      if (!v || typeof Reveal === 'undefined' || !Reveal.isReady()) return null;
+      var r = v.getBoundingClientRect(), c = Reveal.getConfig(), s = Reveal.getScale();
+      var w = c.width * s, h = c.height * s;
+      return { x: r.left + (r.width - w) / 2, y: r.top + (r.height - h) / 2, w: w, h: h };
+    }
+    function manda(dest, m) { m.namespace = NS; try { dest.postMessage(JSON.stringify(m), '*'); } catch (e) {} }
+    function leggi(ev) {
+      var m; try { m = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data; } catch (e) { return null; }
+      return (m && m.namespace === NS) ? m : null;
+    }
+    // Testo di una slide come sequenza di caratteri, saltando formule e script: le due
+    // finestre caricano la stessa pagina, quindi le posizioni coincidono.
+    var SALTA = 'script, style, .MathJax, .MathJax_Display, .MathJax_Preview, .MJX_Assistive_MathML, mjx-container';
+    function testi(sez) {
+      var w = document.createTreeWalker(sez, NodeFilter.SHOW_TEXT, null), n, l = [], tot = 0;
+      while ((n = w.nextNode())) {
+        if (n.parentElement && n.parentElement.closest(SALTA)) continue;
+        l.push({ n: n, da: tot }); tot += n.length;
+      }
+      return l;
+    }
+    function ricevuto(contenuto) {       // consegna al plugin chalkboard
+      var e = new CustomEvent('received'); e.content = contenuto; document.dispatchEvent(e);
+    }
+
+    if (/receiver/i.test(window.location.search)) {
+      // anteprima dentro la speaker view: solo quella della slide corrente
+      var cornice = null, dest = null;
+      try { cornice = window.frameElement; dest = window.parent.opener; } catch (e) {}
+      if (!cornice || !dest || !cornice.closest('#current-slide')) return;
+      var invia = true, scritta = null, timerScritta = null;   // acceso all'apertura
+      function conferma(testo) {         // scritta solo nell'anteprima
+        if (!scritta) {
+          scritta = document.createElement('div');
+          scritta.style.cssText = 'position:fixed;left:50%;bottom:60px;transform:translateX(-50%);' +
+            'padding:6px 18px;border-radius:8px;background:rgba(0,0,0,.75);color:#fff;' +
+            'font:28px sans-serif;pointer-events:none;z-index:100001;display:none';
+          document.body.appendChild(scritta);
+        }
+        scritta.textContent = testo; scritta.style.display = 'block';
+        clearTimeout(timerScritta);
+        timerScritta = setTimeout(function () { scritta.style.display = 'none'; }, 1500);
+      }
+      window.addEventListener('load', function () {   // la speaker view gira qui i tasti premuti
+        if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+          Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Pallino sulla vista proiettata acceso/spento' },
+            function () {
+              invia = !invia;
+              if (!invia) manda(dest, { via: true });
+              conferma('Pallino sul proiettore ' + (invia ? 'acceso' : 'spento') + ' (tasto R)');
+            });
+      });
+      document.addEventListener('mousemove', function (e) {
+        if (!invia) return;
+        var a = area(); if (!a) return;
+        manda(dest, { x: (e.clientX - a.x) / a.w, y: (e.clientY - a.y) / a.h });
+      });
+      document.documentElement.addEventListener('mouseleave', function () { manda(dest, { via: true }); });
+      document.addEventListener('broadcast', function (e) {
+        if (e.content && e.content.sender === 'chalkboard-plugin') manda(dest, { lavagna: e.content });
+      });
+      window.addEventListener('message', function (ev) {
+        var m = leggi(ev); if (m && m.lavagna) ricevuto(m.lavagna);
+      });
+      window.addEventListener('load', function () { setTimeout(function () { manda(dest, { ciao: true }); }, 500); });
+      var ultimeAnn = '', attesaAnn = null;
+      function mandaAnn() {              // annotazioni accese nella slide corrente
+        attesaAnn = null;
+        var sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide(), l = [];
+        if (sez) sez.querySelectorAll('dd > span[data-code-annotation].ann-on').forEach(function (sp) {
+          l.push([sp.dataset.codeCell, sp.dataset.codeAnnotation]);
+        });
+        var k = JSON.stringify(l); if (k === ultimeAnn) return; ultimeAnn = k;
+        var i = Reveal.getIndices();
+        manda(dest, { ann: l, h: i.h, v: i.v });
+      }
+      window.addEventListener('load', function () {
+        new MutationObserver(function () {
+          if (!attesaAnn) attesaAnn = setTimeout(mandaAnn, 0);
+        }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+      });
+      var ultimaSel = '';
+      document.addEventListener('selectionchange', function () {   // evidenziatore
+        var sel = document.getSelection(), sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide();
+        var ev = null;
+        if (sel && sel.rangeCount && !sel.isCollapsed && sez) {
+          var r = sel.getRangeAt(0), da = null, a = null;
+          testi(sez).forEach(function (t) {
+            if (!r.intersectsNode(t.n)) return;
+            if (da === null) da = t.da + (t.n === r.startContainer ? r.startOffset : 0);
+            a = t.da + (t.n === r.endContainer ? r.endOffset : t.n.length);
+          });
+          if (da !== null && a > da) ev = [da, a];
+        }
+        var k = JSON.stringify(ev); if (k === ultimaSel) return; ultimaSel = k;
+        var i = Reveal.getIndices();
+        manda(dest, { evid: ev, h: i.h, v: i.v });
+      });
+      return;
+    }
+
+    // finestra proiettata
+    var punto = null, puntoRemoto = null, timer = null, timerRemoto = null, anteprime = [];
+    function nuovoPallino() {
+      var d = document.createElement('div');
+      d.style.cssText = 'position:fixed;width:18px;height:18px;margin:-9px 0 0 -9px;' +
+        'border-radius:50%;background:rgba(220,30,30,.85);box-shadow:0 0 10px 3px rgba(220,30,30,.5);' +
+        'pointer-events:none;z-index:100000;display:none';
+      document.body.appendChild(d);
+      return d;
+    }
+    function pallino() { return punto || (punto = nuovoPallino()); }               // mouse qui
+    function pallinoRemoto() { return puntoRemoto || (puntoRemoto = nuovoPallino()); } // speaker view
+    document.addEventListener('broadcast', function (e) {
+      if (!e.content || e.content.sender !== 'chalkboard-plugin') return;
+      anteprime = anteprime.filter(function (w) { return !w.closed; });
+      anteprime.forEach(function (w) { manda(w, { lavagna: e.content }); });
+    });
+    // anche senza speaker view: il pallino segue il mouse sulla slide al posto della freccia
+    var stile = document.createElement('style');
+    stile.textContent = 'html.laser-attivo, html.laser-attivo * { cursor: none !important; }';
+    document.head.appendChild(stile);
+    var radice = document.documentElement, premuto = false, ultimo = null, ultimoCliccabile = false;
+    var laserAcceso = false, avviso = null, timerAvviso = null;   // spento all'avvio
+    function mostraAvviso(testo) {     // piccola scritta in basso, per un secondo e mezzo
+      if (!avviso) {
+        avviso = document.createElement('div');
+        avviso.style.cssText = 'position:fixed;left:50%;bottom:48px;transform:translateX(-50%);' +
+          'padding:4px 12px;border-radius:6px;background:rgba(0,0,0,.7);color:#fff;' +
+          'font:15px sans-serif;pointer-events:none;z-index:100001;display:none';
+        document.body.appendChild(avviso);
+      }
+      avviso.textContent = testo; avviso.style.display = 'block';
+      clearTimeout(timerAvviso);
+      timerAvviso = setTimeout(function () { avviso.style.display = 'none'; }, 1500);
+    }
+    function cambiaLaser() {
+      laserAcceso = !laserAcceso;
+      if (!laserAcceso) { clearTimeout(timer); spegni(true); }
+      mostraAvviso('Puntatore laser ' + (laserAcceso ? 'acceso' : 'spento') + ' (tasto R)');
+    }
+    window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+        Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Puntatore laser acceso/spento' }, cambiaLaser);
+    });
+    var CLICCABILI = 'a, button, summary, label, input, select, textarea, [role="button"], [onclick],' +
+      ' .controls, .progress, .slide-number, .footer, .slide-menu-button, .slide-menu,' +
+      ' .slide-chalkboard-buttons, .chalkboard-buttons';
+    function cliccabile(t) {            // elemento con manina, o comunque interattivo
+      if (!t || t.nodeType !== 1) return false;
+      if (t === ultimo) return ultimoCliccabile;
+      var c = radice.classList.contains('laser-attivo');
+      if (c) radice.classList.remove('laser-attivo');   // per leggere il cursore vero
+      var cur = getComputedStyle(t).cursor;
+      if (c) radice.classList.add('laser-attivo');
+      ultimo = t;
+      ultimoCliccabile = !!t.closest(CLICCABILI) || cur === 'pointer' ||
+        (t.tagName === 'CANVAS' && !!t.closest('#notescanvas, #chalkboard'));
+      return ultimoCliccabile;
+    }
+    function spegni(anchefreccia) {     // nasconde il pallino; con true ridà la freccia
+      if (punto) punto.style.display = 'none';
+      if (anchefreccia) radice.classList.remove('laser-attivo');
+    }
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || premuto || !laserAcceso) return;
+      var a = area();
+      clearTimeout(timer);
+      var fuori = !a || e.clientX < a.x || e.clientX > a.x + a.w || e.clientY < a.y || e.clientY > a.y + a.h;
+      if (fuori || cliccabile(e.target)) { spegni(true); return; }
+      var p = pallino();
+      p.style.left = e.clientX + 'px'; p.style.top = e.clientY + 'px'; p.style.display = 'block';
+      radice.classList.add('laser-attivo');
+      timer = setTimeout(function () { spegni(false); }, 3000);   // fermo: sparisce tutto
+    });
+    document.addEventListener('pointerdown', function (e) {   // clic, selezione, doppio clic
+      if (e.pointerType !== 'mouse') return;
+      premuto = true; clearTimeout(timer); spegni(true);
+    }, true);
+    function rilascia() { premuto = false; }
+    document.addEventListener('pointerup', rilascia, true);
+    window.addEventListener('blur', function () { premuto = false; spegni(true); });
+    radice.addEventListener('mouseleave', function () { spegni(true); });
+
+    // evidenziatore: stessa porzione di testo selezionata nell'anteprima
+    var EVIDENZIA = !!(window.CSS && CSS.highlights && window.Highlight);
+    if (EVIDENZIA) {
+      var stileEv = document.createElement('style');
+      stileEv.textContent = '::highlight(speaker-view) { background-color: rgba(255, 220, 0, .6); }';
+      document.head.appendChild(stileEv);
+    }
+    function evidenzia(m) {
+      if (!EVIDENZIA) return;
+      CSS.highlights.delete('speaker-view');
+      var i = Reveal.getIndices();
+      if (!m.evid || m.h !== i.h || m.v !== i.v) return;
+      var l = testi(Reveal.getCurrentSlide()), r = document.createRange(), ok = 0;
+      for (var k = 0; k < l.length; k++) {
+        var t = l[k], fine = t.da + t.n.length;
+        if (!(ok & 1) && m.evid[0] < fine) { r.setStart(t.n, m.evid[0] - t.da); ok |= 1; }
+        if (!(ok & 2) && m.evid[1] <= fine) { r.setEnd(t.n, m.evid[1] - t.da); ok |= 2; break; }
+      }
+      if (ok === 3) CSS.highlights.set('speaker-view', new Highlight(r));
+    }
+    if (EVIDENZIA) window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { CSS.highlights.delete('speaker-view'); });
+    });
+    // annotazioni del codice accese dall'anteprima: stessi elementi dello script delle
+    // annotazioni (spiegazione, numerino, marcatore nel codice, righe di codice)
+    var annRemote = [];
+    function annotazioni(m) {
+      annRemote.forEach(function (e) { e.classList.remove('ann-on'); });
+      annRemote = [];
+      var i = Reveal.getIndices();
+      if (!m.ann || m.h !== i.h || m.v !== i.v) return;
+      m.ann.forEach(function (c) {
+        var cella = c[0], n = c[1];
+        var span = document.querySelector('dd > span[data-code-cell="' + cella + '"][data-code-annotation="' + n + '"]');
+        if (!span) return;
+        var dd = span.parentElement, dl = dd.parentElement, g = [span, dd];
+        var dds = Array.prototype.slice.call(dl.querySelectorAll('dd')), dts = dl.querySelectorAll('dt');
+        if (dts[dds.indexOf(dd)]) g.push(dts[dds.indexOf(dd)]);
+        var anchor = document.querySelector('.code-annotation-anchor[data-target-cell="' + cella +
+                                            '"][data-target-annotation="' + n + '"]');
+        if (anchor) g.push(anchor);
+        String(span.dataset.codeLines || '').split(',').forEach(function (p) {
+          var r = p.trim().match(/^(\d+)(?:-(\d+))?$/); if (!r) return;
+          for (var j = +r[1], b = r[2] ? +r[2] : +r[1]; j <= b; j++) {
+            var el = document.getElementById(cella + '-' + j); if (el) g.push(el);
+          }
+        });
+        g.forEach(function (e) { if (!e.classList.contains('ann-on')) { e.classList.add('ann-on'); annRemote.push(e); } });
+      });
+    }
+    window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { annotazioni({}); });
+    });
+
+    window.addEventListener('message', function (ev) {
+      var m = leggi(ev); if (!m) return;
+      if (m.ciao) {                      // nuova anteprima: le mando i disegni gia' fatti
+        if (anteprime.indexOf(ev.source) < 0) anteprime.push(ev.source);
+        var w = new CustomEvent('welcome'); w.id = 'speaker-view'; document.dispatchEvent(w);
+        return;
+      }
+      if (m.lavagna) { ricevuto(m.lavagna); return; }
+      if ('evid' in m) { evidenzia(m); return; }
+      if ('ann' in m) { annotazioni(m); return; }
+      var p = pallinoRemoto();
+      clearTimeout(timerRemoto);
+      if (m.via || m.x < 0 || m.x > 1 || m.y < 0 || m.y > 1) { p.style.display = 'none'; return; }
+      var a = area(); if (!a) return;
+      p.style.left = (a.x + m.x * a.w) + 'px';
+      p.style.top = (a.y + m.y * a.h) + 'px';
+      p.style.display = 'block';
+      // sicurezza: se l'uscita dall'anteprima andasse persa, sparisce dopo 30 s fermo
+      timerRemoto = setTimeout(function () { p.style.display = 'none'; }, 30000);
+    });
+  })();
+  </script>
+  <script>
+  // File di codice divisi in piu' blocchi (13/10/2026). Un blocco con startFrom="..."
+  // (numerazione che prosegue) e' la continuazione del blocco precedente: sulla stessa
+  // slide (due colonne) o, se e' il primo blocco della slide, dell'ultimo blocco della
+  // slide precedente (con lo stesso filename, se indicato). Il pulsante "copia" copia
+  // l'INTERO file; sulla stessa slide resta solo il pulsante del primo pezzo.
+  (function () {
+    var it = /^it/i.test(document.documentElement.lang || '');
+    function testo(div) {                      // testo di un blocco, senza i cerchietti delle annotazioni
+      var code = div.querySelector('pre code');
+      if (!code) return '';
+      var c = code.cloneNode(true);
+      c.querySelectorAll('.code-annotation-anchor').forEach(function (a) { a.remove(); });
+      var righe = c.querySelectorAll(':scope > span');   // una <span> per riga: conserva anche le righe vuote
+      if (righe.length) return Array.prototype.map.call(righe, function (r) { return r.textContent; }).join('\n');
+      return c.textContent.replace(/\n$/, '');
+    }
+    function copia(t, btn) {
+      function ok() {
+        btn.classList.add('code-copy-button-checked');
+        setTimeout(function () { btn.classList.remove('code-copy-button-checked'); }, 1500);
+      }
+      function ripiego() {                     // senza https (es. file aperto in locale)
+        var ta = document.createElement('textarea');
+        ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { if (document.execCommand('copy')) ok(); } catch (e) {}
+        ta.remove();
+      }
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, ripiego);
+      else ripiego();
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      var sezioni = Array.prototype.filter.call(document.querySelectorAll('.reveal .slides section'),
+                                                function (s) { return !s.querySelector('section'); });
+      var tutti = [], prec = null;
+      sezioni.forEach(function (sez) {
+        var g = null;
+        sez.querySelectorAll('div.sourceCode').forEach(function (div) {
+          var segue = div.hasAttribute('data-startfrom');
+          if (segue && g) g.push(div);
+          else if (segue && prec && (div.dataset.filename || '') === (prec[0].dataset.filename || '')) {
+            prec.push(div); g = prec;                // continua dalla slide precedente
+          } else { g = [div]; tutti.push(g); }
+        });
+        prec = g;                                    // null se la slide non ha codice
+      });
+      tutti.forEach(function (gr) {
+        if (gr.length < 2) return;
+        var piuSlide = gr[0].closest('section') !== gr[gr.length - 1].closest('section');
+        gr.forEach(function (div, k) {
+          var b = div.parentElement.querySelector('.code-copy-button');
+          if (!b) return;
+          if (k > 0 && div.closest('section') === gr[k - 1].closest('section')) { b.style.display = 'none'; return; }
+          b.title = it ? (piuSlide ? "Copia l'intero file (tutte le parti)" : "Copia l'intero file")
+                       : (piuSlide ? 'Copy the whole file (all its parts)' : 'Copy the whole file');
+          b._gruppo = gr;
+        });
+      });
+      // in cattura: arriva prima del gestore di Quarto (ClipboardJS) e lo sostituisce
+      document.addEventListener('click', function (ev) {
+        var b = ev.target.closest && ev.target.closest('.code-copy-button');
+        if (!b || !b._gruppo) return;
+        ev.preventDefault(); ev.stopImmediatePropagation();
+        copia(b._gruppo.map(testo).join('\n'), b);
+      }, true);
+    });
+  })();
+  </script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Laboratorio 07</h1>
+  <p class="subtitle">La sigmoide e le ottimizzazioni del compilatore</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Cristiano De Michele
+</div>
+</div>
+</div>
+
+</section>
+<section id="soluzione-del-laboratorio-06-task-4" class="slide level2 smaller">
+<h2>Soluzione del Laboratorio 06, Task 4</h2>
+<p><strong>Il task.</strong> Nei Task 3 e 4 la rete <code>Sequential</code> diventava proprietaria dei suoi layer, in un <code>std::vector&lt;Layer*&gt;</code>, con la copia vietata da <code>= delete</code>. Da completare c’erano il distruttore, un <code>for</code> con <code>delete l;</code>, e <code>add</code>, un <code>push_back</code>. La prova del Task 5 stampa <code>layer: 2, z: 10 x 1</code>.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>sequential.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="sequential.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a>Sequential<span class="op">::~</span>Sequential<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-2"><a aria-label="2"></a>    <span class="cf">for</span> <span class="op">(</span>Layer<span class="op">*</span> l <span class="op">:</span> layers<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-3"><a aria-label="3"></a>        <span class="kw">delete</span> l<span class="op">;</span>              <span class="co">// il proprietario distrugge i layer</span></span>
+<span id="cb1-4"><a aria-label="4"></a>    <span class="op">}</span></span>
+<span id="cb1-5"><a aria-label="5"></a><span class="op">}</span></span>
+<span id="cb1-6"><a aria-label="6"></a></span>
+<span id="cb1-7"><a aria-label="7"></a><span class="dt">void</span> Sequential<span class="op">::</span>add<span class="op">(</span>Layer<span class="op">*</span> layer<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-8"><a aria-label="8"></a>    layers<span class="op">.</span>push_back<span class="op">(</span>layer<span class="op">);</span>   <span class="co">// da qui il proprietario è la rete</span></span>
+<span id="cb1-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Il distruttore di <code>Layer</code> è virtuale: <code>delete l</code> esegue prima il distruttore di <code>DenseLayer</code>, poi quello di <code>Layer</code>.</p>
+</section>
+<section id="obiettivo-di-oggi" class="slide level2 smaller scrollable">
+<h2>Obiettivo di oggi</h2>
+<p>Due strati lineari uno dopo l’altro equivalgono a un solo strato lineare: è il collasso della slide “Piegare lo spazio” della Lezione 02. Perché la rete non collassi serve una funzione di attivazione non lineare dopo ogni <code>DenseLayer</code>.</p>
+<p>Oggi:</p>
+<ol type="1">
+<li><code>Matrix</code>, l’esercizio del Laboratorio 05, esce dal progetto: da qui in avanti le matrici sono quelle di Eigen;</li>
+<li>si scrive <code>SigmoidLayer</code>, un layer senza pesi che applica la sigmoide a ogni elemento, e lo si mette dopo ogni <code>DenseLayer</code>;</li>
+<li>si misura il tempo di 10 000 forward della rete, prima senza e poi con le ottimizzazioni del compilatore della Lezione 14.</li>
+</ol>
+<p>Come nel framework, <code>SigmoidLayer</code> sta in <code>activation_layers.hpp</code> e calcola la sigmoide con la stessa riga che scriverete nel Task 2.</p>
+</section>
+<section id="task-1-il-progetto-senza-matrix" class="slide level2 smaller scrollable">
+<h2>Task 1: il progetto senza <code>Matrix</code></h2>
+<p><strong>Scopo:</strong> togliere <code>Matrix</code> dal progetto e preparare i file di <code>SigmoidLayer</code>.</p>
+<ol type="1">
+<li>Nella cartella di <code>main.cpp</code> create due file vuoti: <code>activation_layers.hpp</code> e <code>activation_layers.cpp</code>.</li>
+<li>Nel <code>CMakeLists.txt</code> la riga di <code>basic_neural</code> diventa, senza <code>matrix.cpp</code> e con <code>activation_layers.cpp</code> (il file completo è nella slide seguente):</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb2-1"><a aria-label="1"></a><span class="kw">add_executable</span>(<span class="bn">basic_neural</span> main.cpp parametricLayer.cpp sequential.cpp activation_layers.cpp)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li>In <code>main.cpp</code> togliete <code>#include "matrix.hpp"</code>, la funzione <code>prova_matrix</code> e la sua chiamata nel <code>main</code>.</li>
+<li>Compilate ed eseguite: restano le righe di <code>prova_dense_layer</code> e di <code>prova_sequential</code> (<code>z: 128 x 1</code>, i due numeri uguali, <code>layer: 2, z: 10 x 1</code>).</li>
+</ol>
+<p><code>matrix.hpp</code> e <code>matrix.cpp</code> possono restare nella cartella: non vengono più compilati.</p>
+</section>
+<section id="task-1-segue-il-cmakelists.txt" class="slide level2 smaller">
+<h2>Task 1 (segue): il <code>CMakeLists.txt</code></h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>CMakeLists.txt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="CMakeLists.txt"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb3-1"><a aria-label="1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> <span class="dt">3.15</span>)</span>
+<span id="cb3-2"><a aria-label="2"></a><span class="kw">project</span>(BasicNeuralPlusPlus)</span>
+<span id="cb3-3"><a aria-label="3"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 17)</span>
+<span id="cb3-4"><a aria-label="4"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="ot">ON</span>)</span>
+<span id="cb3-5"><a aria-label="5"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_FLAGS</span> <span class="st">"</span><span class="dv">${CMAKE_CXX_FLAGS}</span><span class="st"> -Wall"</span>)</span>
+<span id="cb3-6"><a aria-label="6"></a><span class="kw">find_package</span>(Eigen3 <span class="ot">QUIET</span>)</span>
+<span id="cb3-7"><a aria-label="7"></a><span class="kw">find_package</span>(OpenCV <span class="ot">REQUIRED</span>)</span>
+<span id="cb3-8"><a aria-label="8"></a><span class="kw">message</span>(<span class="ot">STATUS</span> <span class="st">"OpenCV </span><span class="dv">${OpenCV_VERSION}</span><span class="st"> trovata"</span>)</span>
+<span id="cb3-9"><a aria-label="9"></a><span class="co"># AddressSanitizer (Laboratorio 04)</span></span>
+<span id="cb3-10"><a aria-label="10"></a><span class="kw">add_compile_options</span>(-fsanitize=address -g)</span>
+<span id="cb3-11"><a aria-label="11"></a><span class="kw">add_link_options</span>(-fsanitize=address)</span>
+<span id="cb3-12"><a aria-label="12"></a><span class="kw">add_executable</span>(<span class="bn">basic_neural</span> main.cpp parametricLayer.cpp sequential.cpp activation_layers.cpp)</span>
+<span id="cb3-13"><a aria-label="13"></a><span class="cf">if</span>(<span class="dv">Eigen3_FOUND</span>)</span>
+<span id="cb3-14"><a aria-label="14"></a>    <span class="kw">target_link_libraries</span>(<span class="bn">basic_neural</span> <span class="bn">Eigen3::Eigen</span>)</span>
+<span id="cb3-15"><a aria-label="15"></a><span class="cf">else</span>()</span>
+<span id="cb3-16"><a aria-label="16"></a>    <span class="kw">message</span>(<span class="ot">STATUS</span> <span class="st">"Eigen non trovata: uso libs/eigen"</span>)</span>
+<span id="cb3-17"><a aria-label="17"></a>    <span class="kw">target_include_directories</span>(<span class="bn">basic_neural</span> <span class="ot">PRIVATE</span> libs/eigen)</span>
+<span id="cb3-18"><a aria-label="18"></a><span class="cf">endif</span>()</span>
+<span id="cb3-19"><a aria-label="19"></a><span class="kw">target_link_libraries</span>(<span class="bn">basic_neural</span> <span class="dv">${OpenCV_LIBS}</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>È il file del Laboratorio 06: cambia solo la riga 12.</p>
+</section>
+<section id="task-2-la-classe-sigmoidlayer" class="slide level2 smaller">
+<h2>Task 2: la classe <code>SigmoidLayer</code></h2>
+<p><strong>Scopo:</strong> scrivere il primo layer senza pesi, che applica la sigmoide <span class="math inline">\(\sigma(z) = 1/(1+e^{-z})\)</span> a ogni elemento dell’ingresso.</p>
+<div class="columns">
+<div class="column" style="width:56%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>activation_layers.hpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="activation_layers.hpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="pp">#ifndef ACTIVATION_LAYERS_HPP</span></span>
+<span id="cb4-2"><a aria-label="2"></a><span class="pp">#define ACTIVATION_LAYERS_HPP</span></span>
+<span id="cb4-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">"layer.hpp"</span></span>
+<span id="cb4-4"><a aria-label="4"></a></span>
+<span id="cb4-5"><a aria-label="5"></a><span class="kw">class</span> SigmoidLayer <span class="op">:</span> <span class="kw">public</span> Layer <span class="op">{</span></span>
+<span id="cb4-6"><a aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb4-7"><a aria-label="7"></a>    Eigen<span class="op">::</span>MatrixXd forward<span class="op">(</span></span>
+<span id="cb4-8"><a aria-label="8"></a>        <span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> input<span class="op">)</span> <span class="kw">override</span><span class="op">;</span></span>
+<span id="cb4-9"><a aria-label="9"></a><span class="op">};</span></span>
+<span id="cb4-10"><a aria-label="10"></a><span class="pp">#endif</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>activation_layers.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="activation_layers.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"activation_layers.hpp"</span></span>
+<span id="cb5-2"><a aria-label="2"></a></span>
+<span id="cb5-3"><a aria-label="3"></a>Eigen<span class="op">::</span>MatrixXd SigmoidLayer<span class="op">::</span>forward<span class="op">(</span></span>
+<span id="cb5-4"><a aria-label="4"></a>        <span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> input<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-5"><a aria-label="5"></a>    Eigen<span class="op">::</span>MatrixXd output <span class="op">=</span> input<span class="op">;</span>   <span class="co">// da completare</span></span>
+<span id="cb5-6"><a aria-label="6"></a>    <span class="cf">return</span> output<span class="op">;</span></span>
+<span id="cb5-7"><a aria-label="7"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:44%;">
+<p>Copiate i due file.</p>
+<p><code>SigmoidLayer</code> non ha attributi: niente pesi né bias, quindi niente costruttore né distruttore da scrivere.</p>
+<p>Con <code>output = input</code> il programma compila già, ma <code>forward</code> restituisce l’ingresso invariato: la riga segnata va completata, come nella slide seguente.</p>
+</div></div>
+</section>
+<section id="task-2-segue-elemento-per-elemento" class="slide level2 smaller">
+<h2>Task 2 (segue): elemento per elemento</h2>
+<p><strong>Da scrivere:</strong> nella riga segnata, al posto di <code>input</code>, la sigmoide di ogni elemento di <code>input</code>. È la riga del Laboratorio 01, <code>1.0f / (1.0f + (-z.array()).exp())</code>, con <code>input</code> al posto di <code>z</code> e <code>1.0</code> al posto di <code>1.0f</code>, perché qui gli elementi sono <code>double</code>.</p>
+<p>Come nel Laboratorio 01, <code>input.array()</code> tratta la matrice come una tabella di numeri: il segno <code>-</code>, <code>exp()</code>, la somma con <code>1.0</code> e la divisione di <code>1.0</code> agiscono su ogni elemento. Il risultato è un array di Eigen; assegnato a <code>output</code>, una <code>Eigen::MatrixXd</code>, diventa una matrice con le dimensioni di <code>input</code>.</p>
+<p>Senza <code>.array()</code>, per una matrice <code>exp()</code> è l’<strong>esponenziale di matrice</strong>, <span class="math inline">\(e^{M} = \sum_k M^k/k!\)</span>, e la compilazione si ferma con un errore che contiene <code>MatrixExponentialReturnValue</code>.</p>
+</section>
+<section id="task-3-la-rete-non-lineare" class="slide level2 smaller">
+<h2>Task 3: la rete non lineare</h2>
+<p><strong>Scopo:</strong> mettere una sigmoide dopo ogni <code>DenseLayer</code> e verificare che le uscite della rete stiano fra 0 e 1.</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>main.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="main.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="co">// Task 3: 784 -&gt; 128 -&gt; 10, sigmoide dopo ogni DenseLayer</span></span>
+<span id="cb6-2"><a aria-label="2"></a><span class="dt">void</span> costruisci_rete<span class="op">(</span>Sequential<span class="op">&amp;</span> rete<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-3"><a aria-label="3"></a>    rete<span class="op">.</span>add<span class="op">(</span><span class="kw">new</span> DenseLayer<span class="op">(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">));</span></span>
+<span id="cb6-4"><a aria-label="4"></a>    rete<span class="op">.</span>add<span class="op">(</span><span class="kw">new</span> SigmoidLayer<span class="op">());</span></span>
+<span id="cb6-5"><a aria-label="5"></a>    rete<span class="op">.</span>add<span class="op">(</span><span class="kw">new</span> DenseLayer<span class="op">(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">128</span><span class="op">));</span></span>
+<span id="cb6-6"><a aria-label="6"></a>    rete<span class="op">.</span>add<span class="op">(</span><span class="kw">new</span> SigmoidLayer<span class="op">());</span></span>
+<span id="cb6-7"><a aria-label="7"></a><span class="op">}</span></span>
+<span id="cb6-8"><a aria-label="8"></a></span>
+<span id="cb6-9"><a aria-label="9"></a><span class="dt">void</span> prova_rete<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-10"><a aria-label="10"></a>    Eigen<span class="op">::</span>MatrixXd x <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb6-11"><a aria-label="11"></a>    Sequential rete<span class="op">;</span></span>
+<span id="cb6-12"><a aria-label="12"></a>    costruisci_rete<span class="op">(</span>rete<span class="op">);</span></span>
+<span id="cb6-13"><a aria-label="13"></a>    Eigen<span class="op">::</span>MatrixXd y <span class="op">=</span> rete<span class="op">.</span>forward<span class="op">(</span>x<span class="op">);</span></span>
+<span id="cb6-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"y: "</span> <span class="op">&lt;&lt;</span> y<span class="op">.</span>rows<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" x "</span> <span class="op">&lt;&lt;</span> y<span class="op">.</span>cols<span class="op">()</span></span>
+<span id="cb6-15"><a aria-label="15"></a>              <span class="op">&lt;&lt;</span> <span class="st">", min "</span> <span class="op">&lt;&lt;</span> y<span class="op">.</span>minCoeff<span class="op">()</span></span>
+<span id="cb6-16"><a aria-label="16"></a>              <span class="op">&lt;&lt;</span> <span class="st">", max "</span> <span class="op">&lt;&lt;</span> y<span class="op">.</span>maxCoeff<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb6-17"><a aria-label="17"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:40%;">
+<p>In <code>main.cpp</code>: <code>#include "activation_layers.hpp"</code>, le due funzioni dopo <code>prova_sequential</code> e <code>prova_rete();</code> nel <code>main</code>.</p>
+<p>La rete passa per riferimento: la copia di <code>Sequential</code> è vietata (Laboratorio 06).</p>
+<p><code>minCoeff()</code> e <code>maxCoeff()</code>: il più piccolo e il più grande elemento di <code>y</code>.</p>
+</div></div>
+</section>
+<section id="task-3-segue-loutput" class="slide level2 smaller">
+<h2>Task 3 (segue): l’output</h2>
+<p>Dopo le righe del Task 1 compare una riga come questa, ottenuta su Linux con g++:</p>
+<pre><code>y: 10 x 1, min 2.67228e-05, max 0.996831</code></pre>
+<p>Su altri sistemi i numeri cambiano, perché cambiano i valori casuali di <code>Random</code>. In ogni caso il minimo deve essere maggiore di 0 e il massimo minore di 1: lo garantisce la sigmoide dopo l’ultimo <code>DenseLayer</code>.</p>
+<p>Molti valori sono vicini a 0 o a 1: con 784 ingressi e pesi fra −1 e 1, <span class="math inline">\(z\)</span> è grande in modulo, e lì la sigmoide è quasi costante.</p>
+</section>
+<section id="task-4-misurare-il-tempo" class="slide level2 smaller">
+<h2>Task 4: misurare il tempo</h2>
+<p><strong>Scopo:</strong> misurare la durata di 10 000 forward della rete, con il cronometro della Lezione 14.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>main.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="main.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="co">// Task 4: il tempo di n forward della rete</span></span>
+<span id="cb8-2"><a aria-label="2"></a><span class="dt">void</span> misura_tempo<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb8-3"><a aria-label="3"></a>    Eigen<span class="op">::</span>MatrixXd x <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb8-4"><a aria-label="4"></a>    Sequential rete<span class="op">;</span></span>
+<span id="cb8-5"><a aria-label="5"></a>    costruisci_rete<span class="op">(</span>rete<span class="op">);</span></span>
+<span id="cb8-6"><a aria-label="6"></a>    <span class="dt">int</span> n <span class="op">=</span> <span class="dv">10000</span><span class="op">;</span>   <span class="co">// una sola forward e' troppo breve da misurare</span></span>
+<span id="cb8-7"><a aria-label="7"></a>    <span class="kw">auto</span> inizio <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb8-8"><a aria-label="8"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb8-9"><a aria-label="9"></a>        rete<span class="op">.</span>forward<span class="op">(</span>x<span class="op">);</span></span>
+<span id="cb8-10"><a aria-label="10"></a>    <span class="op">}</span></span>
+<span id="cb8-11"><a aria-label="11"></a>    <span class="kw">auto</span> fine <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb8-12"><a aria-label="12"></a>    <span class="kw">auto</span> ms <span class="op">=</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span><span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span></span>
+<span id="cb8-13"><a aria-label="13"></a>        fine <span class="op">-</span> inizio<span class="op">).</span>count<span class="op">();</span></span>
+<span id="cb8-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" forward: "</span> <span class="op">&lt;&lt;</span> ms <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb8-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>auto</code>, <code>now()</code> e <code>duration_cast</code> sono quelli della Lezione 14.</p>
+</section>
+<section id="task-4-segue-la-prima-misura" class="slide level2 smaller scrollable">
+<h2>Task 4 (segue): la prima misura</h2>
+<ol type="1">
+<li>Nel <code>CMakeLists.txt</code> commentate con <code>#</code> le due righe dell’AddressSanitizer:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb9-1"><a aria-label="1"></a><span class="co"># add_compile_options(-fsanitize=address -g)</span></span>
+<span id="cb9-2"><a aria-label="2"></a><span class="co"># add_link_options(-fsanitize=address)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>L’AddressSanitizer controlla ogni accesso alla memoria e rallenta il programma: con le due righe attive la stessa misura dura circa 4 volte di più.</p>
+<ol start="2" type="1">
+<li>In <code>main.cpp</code>: <code>#include &lt;chrono&gt;</code> dopo gli altri <code>#include</code>, <code>misura_tempo</code> dopo <code>prova_rete</code>, e <code>misura_tempo();</code> nel <code>main</code>.</li>
+<li>Compilate ed eseguite. L’ultima riga è <code>10000 forward: ... ms</code>: annotate il tempo, è quello del codice senza ottimizzazioni.</li>
+</ol>
+<p>Le righe dell’AddressSanitizer si possono riattivare quando si cercano errori di memoria.</p>
+</section>
+<section id="task-5-compilare-con--o3" class="slide level2 smaller scrollable">
+<h2>Task 5: compilare con <code>-O3</code></h2>
+<p><strong>Scopo:</strong> misurare quanto cambia il tempo con le opzioni <code>-O</code> della Lezione 14.</p>
+<p>Il <code>CMakeLists.txt</code> non chiede ottimizzazioni: il compilatore usa <code>-O0</code>, e il tempo del Task 4 è quello del codice non ottimizzato.</p>
+<ol type="1">
+<li>Nel <code>CMakeLists.txt</code> la riga di <code>CMAKE_CXX_FLAGS</code> diventa:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb10-1"><a aria-label="1"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_FLAGS</span> <span class="st">"</span><span class="dv">${CMAKE_CXX_FLAGS}</span><span class="st"> -O3 -Wall"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="2" type="1">
+<li><code>cmake --build build &amp;&amp; ./build/basic_neural</code>: CMake vede che il <code>CMakeLists.txt</code> è cambiato e ricompila tutti i file. Annotate il tempo.</li>
+<li>Ripetete con <code>-O1</code> e con <code>-O2</code> al posto di <code>-O3</code>; alla fine rimettete <code>-O3</code>.</li>
+</ol>
+<p>Con i quattro tempi annotati (<code>-O0</code>, <code>-O1</code>, <code>-O2</code>, <code>-O3</code>) confrontate i rapporti con quelli della slide seguente.</p>
+</section>
+<section id="il-cmakelists.txt-finale" class="slide level2 smaller">
+<h2>Il <code>CMakeLists.txt</code> finale</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>CMakeLists.txt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="CMakeLists.txt"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb11-1"><a aria-label="1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> <span class="dt">3.15</span>)</span>
+<span id="cb11-2"><a aria-label="2"></a><span class="kw">project</span>(BasicNeuralPlusPlus)</span>
+<span id="cb11-3"><a aria-label="3"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 17)</span>
+<span id="cb11-4"><a aria-label="4"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="ot">ON</span>)</span>
+<span id="cb11-5"><a aria-label="5"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_FLAGS</span> <span class="st">"</span><span class="dv">${CMAKE_CXX_FLAGS}</span><span class="st"> -O3 -Wall"</span>)</span>
+<span id="cb11-6"><a aria-label="6"></a><span class="kw">find_package</span>(Eigen3 <span class="ot">QUIET</span>)</span>
+<span id="cb11-7"><a aria-label="7"></a><span class="kw">find_package</span>(OpenCV <span class="ot">REQUIRED</span>)</span>
+<span id="cb11-8"><a aria-label="8"></a><span class="kw">message</span>(<span class="ot">STATUS</span> <span class="st">"OpenCV </span><span class="dv">${OpenCV_VERSION}</span><span class="st"> trovata"</span>)</span>
+<span id="cb11-9"><a aria-label="9"></a><span class="co"># AddressSanitizer (Laboratorio 04)</span></span>
+<span id="cb11-10"><a aria-label="10"></a><span class="co"># add_compile_options(-fsanitize=address -g)</span></span>
+<span id="cb11-11"><a aria-label="11"></a><span class="co"># add_link_options(-fsanitize=address)</span></span>
+<span id="cb11-12"><a aria-label="12"></a><span class="kw">add_executable</span>(<span class="bn">basic_neural</span> main.cpp parametricLayer.cpp sequential.cpp activation_layers.cpp)</span>
+<span id="cb11-13"><a aria-label="13"></a><span class="cf">if</span>(<span class="dv">Eigen3_FOUND</span>)</span>
+<span id="cb11-14"><a aria-label="14"></a>    <span class="kw">target_link_libraries</span>(<span class="bn">basic_neural</span> <span class="bn">Eigen3::Eigen</span>)</span>
+<span id="cb11-15"><a aria-label="15"></a><span class="cf">else</span>()</span>
+<span id="cb11-16"><a aria-label="16"></a>    <span class="kw">message</span>(<span class="ot">STATUS</span> <span class="st">"Eigen non trovata: uso libs/eigen"</span>)</span>
+<span id="cb11-17"><a aria-label="17"></a>    <span class="kw">target_include_directories</span>(<span class="bn">basic_neural</span> <span class="ot">PRIVATE</span> libs/eigen)</span>
+<span id="cb11-18"><a aria-label="18"></a><span class="cf">endif</span>()</span>
+<span id="cb11-19"><a aria-label="19"></a><span class="kw">target_link_libraries</span>(<span class="bn">basic_neural</span> <span class="dv">${OpenCV_LIBS}</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Rispetto al Task 1: riga 5 con <code>-O3</code>, righe 10 e 11 commentate (Task 4). Il Laboratorio 08 parte da qui.</p>
+</section>
+<section id="i-tempi-misurati" class="slide level2 smaller">
+<h2>I tempi misurati</h2>
+<p>La stessa rete, 10 000 forward, su un computer Linux x86-64 con g++ 13 ed Eigen 3.4 (mediana di 5 esecuzioni):</p>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 35%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Opzione</th>
+<th style="text-align: right;">Tempo</th>
+<th style="text-align: right;">Rispetto a <code>-O0</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>-O0</code></td>
+<td style="text-align: right;">10 250 ms</td>
+<td style="text-align: right;">1×</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>-O1</code></td>
+<td style="text-align: right;">273 ms</td>
+<td style="text-align: right;">38×</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>-O2</code></td>
+<td style="text-align: right;">257 ms</td>
+<td style="text-align: right;">40×</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>-O3</code></td>
+<td style="text-align: right;">243 ms</td>
+<td style="text-align: right;">42×</td>
+</tr>
+</tbody>
+</table>
+<p>Quasi tutto il guadagno arriva con <code>-O1</code>. Eigen è scritta con molte funzioni piccole; da <code>-O1</code> il compilatore sostituisce le chiamate con il corpo delle funzioni (<em>inlining</em>, come il getter della Lezione 14) e ne ottiene cicli semplici. Con <code>-O1 -fno-inline</code>, cioè senza inlining, il tempo torna a 5 070 ms.</p>
+<p>Sul vostro computer i tempi saranno diversi: confrontate i rapporti.</p>
+</section>
+<section id="approfondimento--marchnative" class="slide level2 smaller">
+<h2>Approfondimento: <code>-march=native</code></h2>
+<p>Il framework compila con <code>-O3 -march=native</code>: <code>-march=native</code> permette al compilatore di usare tutte le istruzioni della CPU su cui compila.</p>
+<p>Su x86-64, senza questa opzione, si usano solo le istruzioni vettoriali SSE2, che elaborano 2 <code>double</code> per volta; con <code>-march=native</code> anche AVX (4 <code>double</code>) o AVX-512 (8), se la CPU le ha. Sulla stessa rete: <code>-O3</code> 243 ms, <code>-O3 -march=native</code> 105 ms.</p>
+<p>Per provarlo: <code>-O3 -march=native -Wall</code> nella riga di <code>CMAKE_CXX_FLAGS</code>. Avvertenze:</p>
+<ul>
+<li>l’eseguibile funziona solo su CPU con le stesse istruzioni;</li>
+<li>su Apple Silicon il guadagno è piccolo o nullo (le istruzioni vettoriali NEON sono sempre attive); se il compilatore risponde <code>unsupported argument 'native'</code>, l’opzione non c’è e <code>-O3</code> basta;</li>
+<li>su x86-64 Eigen 3.4 può stampare avvisi <code>unused variable 'r'</code> dai suoi header: non riguardano il vostro codice.</li>
+</ul>
+</section>
+<section id="approfondimento-dove-va-il-tempo" class="slide level2 smaller">
+<h2>Approfondimento: dove va il tempo</h2>
+<p><strong>Scopo:</strong> misurare separatamente un <code>DenseLayer</code> e un <code>SigmoidLayer</code>, per sapere quale parte della rete conviene ottimizzare.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>main.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="main.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="co">// Approfondimento: il tempo di n forward di un solo layer</span></span>
+<span id="cb12-2"><a aria-label="2"></a><span class="dt">void</span> tempo_layer<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> nome<span class="op">,</span> Layer<span class="op">*</span> l<span class="op">,</span></span>
+<span id="cb12-3"><a aria-label="3"></a>                 <span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> x<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-4"><a aria-label="4"></a>    <span class="dt">int</span> n <span class="op">=</span> <span class="dv">10000</span><span class="op">;</span></span>
+<span id="cb12-5"><a aria-label="5"></a>    <span class="kw">auto</span> inizio <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb12-6"><a aria-label="6"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb12-7"><a aria-label="7"></a>        l<span class="op">-&gt;</span>forward<span class="op">(</span>x<span class="op">);</span></span>
+<span id="cb12-8"><a aria-label="8"></a>    <span class="op">}</span></span>
+<span id="cb12-9"><a aria-label="9"></a>    <span class="kw">auto</span> fine <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb12-10"><a aria-label="10"></a>    <span class="kw">auto</span> ms <span class="op">=</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span><span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span></span>
+<span id="cb12-11"><a aria-label="11"></a>        fine <span class="op">-</span> inizio<span class="op">).</span>count<span class="op">();</span></span>
+<span id="cb12-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> nome <span class="op">&lt;&lt;</span> <span class="st">": "</span> <span class="op">&lt;&lt;</span> ms <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb12-13"><a aria-label="13"></a><span class="op">}</span></span>
+<span id="cb12-14"><a aria-label="14"></a></span>
+<span id="cb12-15"><a aria-label="15"></a><span class="dt">void</span> dove_va_il_tempo<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-16"><a aria-label="16"></a>    DenseLayer denso<span class="op">(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb12-17"><a aria-label="17"></a>    SigmoidLayer sigmoide<span class="op">;</span></span>
+<span id="cb12-18"><a aria-label="18"></a>    tempo_layer<span class="op">(</span><span class="st">"DenseLayer"</span><span class="op">,</span> <span class="op">&amp;</span>denso<span class="op">,</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">));</span></span>
+<span id="cb12-19"><a aria-label="19"></a>    tempo_layer<span class="op">(</span><span class="st">"SigmoidLayer"</span><span class="op">,</span> <span class="op">&amp;</span>sigmoide<span class="op">,</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">1</span><span class="op">));</span></span>
+<span id="cb12-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="approfondimento-i-due-tempi" class="slide level2 smaller">
+<h2>Approfondimento: i due tempi</h2>
+<p>In <code>main.cpp</code>: <code>#include &lt;string&gt;</code>, le due funzioni dopo <code>misura_tempo</code> e <code>dove_va_il_tempo();</code> nel <code>main</code>. <code>tempo_layer</code> riceve un <code>Layer*</code>: misura un layer qualsiasi, e <code>l-&gt;forward</code> esegue il <code>forward</code> del layer vero (Lezione 12).</p>
+<p>Confrontate i due tempi fra loro e con quello della rete nel Task 4. Sul computer della slide “I tempi misurati”:</p>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 35%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Opzione</th>
+<th style="text-align: right;"><code>DenseLayer(128, 784)</code></th>
+<th style="text-align: right;"><code>SigmoidLayer</code>, 128 valori</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>-O0</code></td>
+<td style="text-align: right;">9 800 ms</td>
+<td style="text-align: right;">220 ms</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>-O3</code></td>
+<td style="text-align: right;">220 ms</td>
+<td style="text-align: right;">11 ms</td>
+</tr>
+</tbody>
+</table>
+<p>Il <code>DenseLayer</code> fa circa 100 000 moltiplicazioni e somme (128 × 784), la sigmoide 128 esponenziali: il tempo della rete è quasi tutto nei prodotti, e riscrivere la sigmoide non lo cambierebbe. Prima di ottimizzare, si misura dove va il tempo.</p>
+</section>
+<section id="task-da-completare" class="slide level2 smaller scrollable">
+<h2>Task da completare</h2>
+<ul class="task-list">
+<li><label><input type="checkbox"><code>activation_layers.hpp</code> e <code>activation_layers.cpp</code> creati; <code>add_executable</code> senza <code>matrix.cpp</code> e con <code>activation_layers.cpp</code></label></li>
+<li><label><input type="checkbox"><code>#include "matrix.hpp"</code> e <code>prova_matrix</code> tolti da <code>main.cpp</code></label></li>
+<li><label><input type="checkbox"><code>SigmoidLayer::forward</code> scritto con <code>.array()</code></label></li>
+<li><label><input type="checkbox"><code>prova_rete</code> stampa <code>y: 10 x 1</code>, con min maggiore di 0 e max minore di 1</label></li>
+<li><label><input type="checkbox">Righe dell’AddressSanitizer commentate; <code>misura_tempo</code> stampa il tempo di 10 000 forward</label></li>
+<li><label><input type="checkbox">Tempi annotati con <code>-O0</code>, <code>-O1</code>, <code>-O2</code> e <code>-O3</code>; il <code>CMakeLists.txt</code> resta con <code>-O3 -Wall</code></label></li>
+</ul>
+<p><strong>La soluzione verrà discussa all’inizio del prossimo laboratorio.</strong></p>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\">\u003ckbd>b\u003c/kbd> Toggle Chalkboard\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"6\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\">\u003ckbd>c\u003c/kbd> Toggle Notes Canvas\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"7\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\">\u003ckbd>d\u003c/kbd> Download Drawings\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"8\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":true,"openButtonLabel":"Slide menu"},
+'chalkboard': {"buttons":true,"storage":"lavagna-lab-07"},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'convex',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: '../mathjax/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+          window.quartoDecorateExternalLinks = function (root) {
+         var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+              if (!link.classList.contains('no-external-icon')) {
+              }
+            }
+          }
+          };
+          window.quartoDecorateExternalLinks(window.document);
+        // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+        // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+        const hideOnEscAndFocusOut = {
+          name: 'hideOnEscAndFocusOut',
+          defaultValue: true,
+          fn(instance) {
+            const dismiss = () => {
+              // A show scheduled by the trigger delay would otherwise reopen it
+              instance.clearDelayTimeouts();
+              instance.hide();
+            };
+            const onKeyDown = (event) => {
+              if (event.key !== 'Escape') {
+                return;
+              }
+              // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+              // except an open reveal.js slide menu, which Esc should close too.
+              // The menu handles keys only when its keyboard option is on.
+              const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+                window.Reveal.getConfig().menu?.keyboard !== false;
+              if (!menuHandlesEsc) {
+                event.stopPropagation();
+              }
+              if (instance.popper.contains(window.document.activeElement)) {
+                // Disabled while refocusing so the focus trigger does not reopen it
+                instance.disable();
+                instance.reference.focus();
+                instance.enable();
+              }
+              dismiss();
+            };
+            const onFocusOut = (event) => {
+              const target = event.relatedTarget;
+              if (target && !instance.reference.contains(target) &&
+                  !instance.popper.contains(target)) {
+                dismiss();
+              }
+            };
+            // On the trigger too: a click trigger (code-annotations: select) has no
+            // blur handling. Attached for the instance's lifetime so leaving the
+            // trigger also cancels a show still pending on the trigger delay.
+            instance.reference.addEventListener('focusout', onFocusOut);
+            return {
+              onShow() {
+                window.document.addEventListener('keydown', onKeyDown, true);
+                instance.popper.addEventListener('focusout', onFocusOut);
+              },
+              onHide() {
+                window.document.removeEventListener('keydown', onKeyDown, true);
+                instance.popper.removeEventListener('focusout', onFocusOut);
+              },
+              onDestroy() {
+                instance.reference.removeEventListener('focusout', onFocusOut);
+              },
+            };
+          },
+        };
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+            plugins: [hideOnEscAndFocusOut],
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+            let selectedAnnoteEl;
+            const selectorForAnnotation = ( cell, annotation) => {
+              let cellAttr = 'data-code-cell="' + cell + '"';
+              let lineAttr = 'data-code-annotation="' +  annotation + '"';
+              const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+              return selector;
+            }
+            const selectCodeLines = (annoteEl) => {
+              const doc = window.document;
+              const targetCell = annoteEl.getAttribute("data-target-cell");
+              const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+              const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+              const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+              const lineIds = lines.map((line) => {
+                return targetCell + "-" + line;
+              })
+              // Each band is positioned against its own containing block, which is
+              // not the offsetParent of the lines, so place it from client rects.
+              const placeBand = (band, firstEl, lastEl, codeBlock) => {
+                const container = band.offsetParent;
+                if (container === null) {
+                  return;
+                }
+                const containerRect = container.getBoundingClientRect();
+                // Reveal.js scales slides with a transform, so convert client
+                // pixels back to the CSS pixels of the container.
+                const scale = containerRect.height / container.offsetHeight || 1;
+                const firstRect = firstEl.getBoundingClientRect();
+                const lastRect = lastEl.getBoundingClientRect();
+                const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+                const height = (lastRect.bottom - firstRect.top) / scale;
+                band.style.top = top - 2 + "px";
+                band.style.height = height + 4 + "px";
+                if (codeBlock) {
+                  // Without the copy button wrapper, the containing block is wider
+                  // than the code block, so span the code block explicitly.
+                  const blockRect = codeBlock.getBoundingClientRect();
+                  band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+                  band.style.width = blockRect.width / scale + "px";
+                }
+              };
+              if (lineIds.length > 0) {
+                const el = window.document.getElementById(lineIds[0]);
+                const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+                const parent = el.parentElement.parentElement;
+                // cook up a div (if necessary) and position it
+                let div = window.document.getElementById("code-annotation-line-highlight");
+                if (div === null) {
+                  div = window.document.createElement("div");
+                  div.setAttribute("id", "code-annotation-line-highlight");
+                  div.style.position = 'absolute';
+                  parent.appendChild(div);
+                }
+                placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+                let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+                if (gutterDiv === null) {
+                  gutterDiv = window.document.createElement("div");
+                  gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                  gutterDiv.style.position = 'absolute';
+                  const codeCell = window.document.getElementById(targetCell);
+                  const gutter = codeCell.querySelector('.code-annotation-gutter');
+                  gutter.appendChild(gutterDiv);
+                }
+                placeBand(gutterDiv, el, lastEl);
+                selectedAnnoteEl = annoteEl;
+              }
+            };
+            const unselectCodeLines = () => {
+              const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+              elementsIds.forEach((elId) => {
+                const div = window.document.getElementById(elId);
+                if (div) {
+                  div.remove();
+                }
+              });
+              selectedAnnoteEl = undefined;
+            };
+              // Handle positioning of the toggle
+          window.addEventListener(
+            "resize",
+            throttle(() => {
+              elRect = undefined;
+              if (selectedAnnoteEl) {
+                selectCodeLines(selectedAnnoteEl);
+              }
+            }, 10)
+          );
+          function throttle(fn, ms) {
+          let throttle = false;
+          let timer;
+            return (...args) => {
+              if(!throttle) { // first call gets through
+                  fn.apply(this, args);
+                  throttle = true;
+              } else { // all the others get throttled
+                  if(timer) clearTimeout(timer); // cancel #2
+                  timer = setTimeout(() => {
+                    fn.apply(this, args);
+                    timer = throttle = false;
+                  }, ms);
+              }
+            };
+          }
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
+                  unselectCodeLines();
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
+                  }
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
+            }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
