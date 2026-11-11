@@ -836,13 +836,14 @@ Cristiano De Michele
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb2-1"><a aria-label="1"></a><span class="kw">add_executable</span>(<span class="bn">stampa</span> stampa.cpp)</span>
 <span id="cb2-2"><a aria-label="2"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_complesso</span> esercizio_complesso.cpp)    <span class="co"># esercizio</span></span>
 <span id="cb2-3"><a aria-label="3"></a><span class="kw">add_executable</span>(<span class="bn">prodotto</span> prodotto.cpp)</span>
-<span id="cb2-4"><a aria-label="4"></a><span class="kw">add_executable</span>(<span class="bn">prodotto_eigen</span> prodotto_eigen.cpp)</span>
-<span id="cb2-5"><a aria-label="5"></a><span class="kw">target_link_libraries</span>(<span class="bn">prodotto_eigen</span> <span class="bn">Eigen3::Eigen</span>)</span>
-<span id="cb2-6"><a aria-label="6"></a><span class="kw">add_executable</span>(<span class="bn">batching</span> batching.cpp)</span>
-<span id="cb2-7"><a aria-label="7"></a><span class="kw">target_link_libraries</span>(<span class="bn">batching</span> <span class="bn">Eigen3::Eigen</span>)</span>
-<span id="cb2-8"><a aria-label="8"></a><span class="kw">add_executable</span>(<span class="bn">argomenti</span> argomenti.cpp)</span>
-<span id="cb2-9"><a aria-label="9"></a><span class="kw">add_executable</span>(<span class="bn">parametri</span> parametri.cpp)</span>
-<span id="cb2-10"><a aria-label="10"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_iperparametri</span> esercizio_iperparametri.cpp)    <span class="co"># esercizio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-4"><a aria-label="4"></a><span class="kw">add_executable</span>(<span class="bn">somma</span> somma.cpp)</span>
+<span id="cb2-5"><a aria-label="5"></a><span class="kw">add_executable</span>(<span class="bn">prodotto_eigen</span> prodotto_eigen.cpp)</span>
+<span id="cb2-6"><a aria-label="6"></a><span class="kw">target_link_libraries</span>(<span class="bn">prodotto_eigen</span> <span class="bn">Eigen3::Eigen</span>)</span>
+<span id="cb2-7"><a aria-label="7"></a><span class="kw">add_executable</span>(<span class="bn">batching</span> batching.cpp)</span>
+<span id="cb2-8"><a aria-label="8"></a><span class="kw">target_link_libraries</span>(<span class="bn">batching</span> <span class="bn">Eigen3::Eigen</span>)</span>
+<span id="cb2-9"><a aria-label="9"></a><span class="kw">add_executable</span>(<span class="bn">argomenti</span> argomenti.cpp)</span>
+<span id="cb2-10"><a aria-label="10"></a><span class="kw">add_executable</span>(<span class="bn">parametri</span> parametri.cpp)</span>
+<span id="cb2-11"><a aria-label="11"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_iperparametri</span> esercizio_iperparametri.cpp)    <span class="co"># esercizio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Poi, dalla cartella <code>LEZIONE_14</code>, compilate ed eseguite solo quell’esempio:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> stampa <span class="kw">&amp;&amp;</span> <span class="ex">./build/stampa</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Le righe <code>target_link_libraries</code> servono agli esempi con Eigen: le spiegheremo con l’opzione <code>-I</code>. I messaggi citati sono quelli di g++ su Linux; con clang (macOS) il testo cambia, il significato no.</p>
@@ -1190,24 +1191,75 @@ tempo: 320 ms</code></pre>
 <p>Il risultato, <code>C[1][2] = 41.416</code>, è lo stesso: cambia solo il tempo. Il guadagno maggiore arriva con <code>-O1</code>; <code>-O2</code> e <code>-O3</code> vettorizzano anche il ciclo interno. Su un MacBook Pro M3 Max, con il clang di Apple: 158 ms a <code>-O0</code>, 34 ms a <code>-O3</code>. Sul vostro computer i tempi saranno diversi: confrontate i rapporti.</p>
 </div>
 </section>
+<section id="provate-righe-o-colonne" class="slide level2 smaller">
+<h2>Provate: righe o colonne</h2>
+<div class="columns">
+<div class="column" style="width:62%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>somma.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-filename="somma.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
+<span id="cb15-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb15-3"><a aria-label="3"></a></span>
+<span id="cb15-4"><a aria-label="4"></a><span class="at">const</span> <span class="dt">int</span> N <span class="op">=</span> <span class="dv">4000</span><span class="op">;</span></span>
+<span id="cb15-5"><a aria-label="5"></a><span class="dt">double</span> M<span class="op">[</span>N<span class="op">][</span>N<span class="op">];</span>                    <span class="co">// 128 MB, globale</span></span>
+<span id="cb15-6"><a aria-label="6"></a></span>
+<span id="cb15-7"><a aria-label="7"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb15-8"><a aria-label="8"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb15-9"><a aria-label="9"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb15-10"><a aria-label="10"></a>            M<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> <span class="fl">0.001</span> <span class="op">*</span> <span class="op">(</span>i <span class="op">+</span> j<span class="op">);</span></span>
+<span id="cb15-11"><a aria-label="11"></a>    <span class="kw">auto</span> inizio <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb15-12"><a aria-label="12"></a>    <span class="dt">double</span> s <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb15-13"><a aria-label="13"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb15-14"><a aria-label="14"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb15-15"><a aria-label="15"></a>            s <span class="op">+=</span> M<span class="op">[</span>i<span class="op">][</span>j<span class="op">];</span></span>
+<span id="cb15-16"><a aria-label="16"></a>    <span class="kw">auto</span> fine <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb15-17"><a aria-label="17"></a>    <span class="kw">auto</span> ms <span class="op">=</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span></span>
+<span id="cb15-18"><a aria-label="18"></a>        <span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span>fine <span class="op">-</span> inizio<span class="op">).</span>count<span class="op">();</span></span>
+<span id="cb15-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"somma = "</span> <span class="op">&lt;&lt;</span> s <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb15-20"><a aria-label="20"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"tempo: "</span> <span class="op">&lt;&lt;</span> ms <span class="op">&lt;&lt;</span> <span class="st">" ms</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb15-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb15-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:38%;">
+<p>Come in C, <code>M</code> è memorizzata <strong>per righe</strong> (<em>row-major</em>): una riga è contigua, mentre <code>M[i][j]</code> e <code>M[i+1][j]</code> distano 32 000 byte.</p>
+<ol type="1">
+<li>A <code>-O3</code>, eseguite <code>somma</code> e annotate il tempo.</li>
+<li>Scambiate le righe 13 e 14, per leggere <code>M</code> per colonne: cosa succede al tempo?</li>
+</ol>
+<div class="fragment">
+<p>Stessa somma, ma da 19 a 165 ms con g++ 13, da 10 a 59 ms sull’M3 Max.</p>
+</div>
+</div></div>
+</section>
+<section id="righe-colonne-e-cache" class="slide level2 smaller">
+<h2>Righe, colonne e cache</h2>
+<p>La CPU tiene i dati letti di recente nella <em>cache</em>, una piccola memoria veloce al suo interno, e ce li porta dalla memoria principale a blocchi contigui, per esempio di 64 byte, cioè 8 <code>double</code>:</p>
+<ul>
+<li><strong>per righe</strong> gli 8 numeri di un blocco servono uno dopo l’altro, e intanto la CPU porta già il blocco successivo;</li>
+<li><strong>per colonne</strong> ogni lettura cade in un blocco diverso, 32 000 byte più in là, e la CPU aspetta la memoria.</li>
+</ul>
+<p>Se la matrice sta tutta nella cache, l’ordine conta poco: con <code>N = 500</code>, 2 MB come in <code>prodotto</code>, i due ordini impiegano lo stesso tempo.</p>
+<p>Le matrici di Eigen sono memorizzate per colonne (<em>column-major</em>): lì vale il contrario.</p>
+</section>
 <section id="provate-lordine-dei-cicli" class="slide level2 smaller">
 <h2>Provate: l’ordine dei cicli</h2>
-<p>Come in C, una matrice <code>double B[N][N]</code> è memorizzata <strong>per righe</strong> (<em>row-major</em>): una riga è contigua, mentre <code>B[k][j]</code> e <code>B[k+1][j]</code> distano 4000 byte.</p>
 <p>A <code>-O3</code>, riscrivete <code>prodotto()</code> con l’ordine <code>i</code>, <code>j</code>, <code>k</code> della formula: cosa succede al tempo?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb15-2"><a aria-label="2"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb15-3"><a aria-label="3"></a>        <span class="dt">double</span> s <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb15-4"><a aria-label="4"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> N<span class="op">;</span> k<span class="op">++)</span> s <span class="op">+=</span> A<span class="op">[</span>i<span class="op">][</span>k<span class="op">]</span> <span class="op">*</span> B<span class="op">[</span>k<span class="op">][</span>j<span class="op">];</span></span>
-<span id="cb15-5"><a aria-label="5"></a>        C<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> s<span class="op">;</span></span>
-<span id="cb15-6"><a aria-label="6"></a>    <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb16-2"><a aria-label="2"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb16-3"><a aria-label="3"></a>        <span class="dt">double</span> s <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb16-4"><a aria-label="4"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> N<span class="op">;</span> k<span class="op">++)</span> s <span class="op">+=</span> A<span class="op">[</span>i<span class="op">][</span>k<span class="op">]</span> <span class="op">*</span> B<span class="op">[</span>k<span class="op">][</span>j<span class="op">];</span></span>
+<span id="cb16-5"><a aria-label="5"></a>        C<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> s<span class="op">;</span></span>
+<span id="cb16-6"><a aria-label="6"></a>    <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>Stesso risultato, ma più lento: da 40 a 65 ms con g++ 13, a 105 ms con clang 18, da 34 a 135 ms sull’M3 Max. Il ciclo interno fa variare il primo indice di <code>B</code>: legge <span style="white-space: nowrap"><code>B[0][j]</code>, <code>B[1][j]</code>, …</span>, cioè scende lungo la <strong>colonna</strong> <code>j</code>, e ogni accesso salta 4000 byte. In più le somme su <code>s</code> sono in catena, e riordinarle cambierebbe l’arrotondamento: niente vettorizzazione. Le matrici di Eigen, invece, sono memorizzate per colonne (<em>column-major</em>): lì vale il contrario.</p>
+<p>Stesso risultato, ma più lento: da 40 a 65 ms con g++ 13, a 105 ms con clang 18, da 34 a 135 ms sull’M3 Max. Il ciclo interno ora legge <span style="white-space: nowrap"><code>B[0][j]</code>, <code>B[1][j]</code>, …</span>, lungo la colonna <code>j</code>, ma il motivo non è questo: le matrici, 2 MB l’una, restano nella cache. È la somma su <code>s</code>: ogni somma aspetta la precedente, e riordinarle cambierebbe l’arrotondamento, quindi niente vettorizzazione. g++ perde meno perché calcola insieme <code>C[i][j]</code> e <code>C[i][j+1]</code>, due somme indipendenti.</p>
 </div>
 </section>
 <section id="ripasso-eigen-e-i-suoi-header" class="slide level2 smaller">
 <h2>Ripasso: Eigen e i suoi header</h2>
 <p>Eigen è <em>header-only</em> (Laboratorio 01, Lezione 08): basta che il compilatore trovi i suoi header. Con <code>#include &lt;Eigen/Dense&gt;</code> il preprocessore (Lezione 04) cerca <code>Eigen/Dense</code> nelle cartelle di sistema, come <code>/usr/include</code>, ma Eigen sta in <code>/usr/include/eigen3</code> (Ubuntu) o <code>/opt/homebrew/include/eigen3</code> (macOS). L’opzione <strong><code>-I</code></strong> aggiunge una cartella a quelle in cui cercare, prima di quelle di sistema:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-I</span>/usr/include/eigen3 <span class="at">-O3</span> <span class="at">-Wall</span> prodotto_eigen.cpp <span class="at">-o</span> prodotto_eigen</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-I</span>/usr/include/eigen3 <span class="at">-O3</span> <span class="at">-Wall</span> prodotto_eigen.cpp <span class="at">-o</span> prodotto_eigen</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In un progetto CMake l’opzione la aggiunge CMake:</p>
 <ul>
 <li><code>target_link_libraries(... Eigen3::Eigen)</code> aggiunge <code>-isystem /usr/include/eigen3</code>: come <code>-I</code>, ma di norma non si stampano gli avvisi dentro quegli header;</li>
@@ -1222,28 +1274,28 @@ tempo: 320 ms</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>prodotto_eigen.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-filename="prodotto_eigen.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
-<span id="cb17-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb17-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;Eigen/Dense&gt;</span></span>
-<span id="cb17-4"><a aria-label="4"></a></span>
-<span id="cb17-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb17-6"><a aria-label="6"></a>    <span class="at">const</span> <span class="dt">int</span> N <span class="op">=</span> <span class="dv">500</span><span class="op">;</span></span>
-<span id="cb17-7"><a aria-label="7"></a>    Eigen<span class="op">::</span>MatrixXd A<span class="op">(</span>N<span class="op">,</span> N<span class="op">),</span> B<span class="op">(</span>N<span class="op">,</span> N<span class="op">);</span></span>
-<span id="cb17-8"><a aria-label="8"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb17-9"><a aria-label="9"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb17-10"><a aria-label="10"></a>            A<span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">=</span> <span class="fl">0.001</span> <span class="op">*</span> <span class="op">(</span>i <span class="op">+</span> j<span class="op">);</span></span>
-<span id="cb17-11"><a aria-label="11"></a>            B<span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">=</span> <span class="fl">0.001</span> <span class="op">*</span> <span class="op">(</span>i <span class="op">-</span> j<span class="op">);</span></span>
-<span id="cb17-12"><a aria-label="12"></a>        <span class="op">}</span></span>
-<span id="cb17-13"><a aria-label="13"></a>    <span class="op">}</span></span>
-<span id="cb17-14"><a aria-label="14"></a>    <span class="kw">auto</span> inizio <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
-<span id="cb17-15"><a aria-label="15"></a>    Eigen<span class="op">::</span>MatrixXd C <span class="op">=</span> A <span class="op">*</span> B<span class="op">;</span></span>
-<span id="cb17-16"><a aria-label="16"></a>    <span class="kw">auto</span> fine <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
-<span id="cb17-17"><a aria-label="17"></a>    <span class="kw">auto</span> ms <span class="op">=</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span></span>
-<span id="cb17-18"><a aria-label="18"></a>        <span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span>fine <span class="op">-</span> inizio<span class="op">).</span>count<span class="op">();</span></span>
-<span id="cb17-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"C(1,2) = "</span> <span class="op">&lt;&lt;</span> C<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb17-20"><a aria-label="20"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"tempo: "</span> <span class="op">&lt;&lt;</span> ms <span class="op">&lt;&lt;</span> <span class="st">" ms</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb17-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb17-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="prodotto_eigen.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
+<span id="cb18-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb18-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;Eigen/Dense&gt;</span></span>
+<span id="cb18-4"><a aria-label="4"></a></span>
+<span id="cb18-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb18-6"><a aria-label="6"></a>    <span class="at">const</span> <span class="dt">int</span> N <span class="op">=</span> <span class="dv">500</span><span class="op">;</span></span>
+<span id="cb18-7"><a aria-label="7"></a>    Eigen<span class="op">::</span>MatrixXd A<span class="op">(</span>N<span class="op">,</span> N<span class="op">),</span> B<span class="op">(</span>N<span class="op">,</span> N<span class="op">);</span></span>
+<span id="cb18-8"><a aria-label="8"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb18-9"><a aria-label="9"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb18-10"><a aria-label="10"></a>            A<span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">=</span> <span class="fl">0.001</span> <span class="op">*</span> <span class="op">(</span>i <span class="op">+</span> j<span class="op">);</span></span>
+<span id="cb18-11"><a aria-label="11"></a>            B<span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">=</span> <span class="fl">0.001</span> <span class="op">*</span> <span class="op">(</span>i <span class="op">-</span> j<span class="op">);</span></span>
+<span id="cb18-12"><a aria-label="12"></a>        <span class="op">}</span></span>
+<span id="cb18-13"><a aria-label="13"></a>    <span class="op">}</span></span>
+<span id="cb18-14"><a aria-label="14"></a>    <span class="kw">auto</span> inizio <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb18-15"><a aria-label="15"></a>    Eigen<span class="op">::</span>MatrixXd C <span class="op">=</span> A <span class="op">*</span> B<span class="op">;</span></span>
+<span id="cb18-16"><a aria-label="16"></a>    <span class="kw">auto</span> fine <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb18-17"><a aria-label="17"></a>    <span class="kw">auto</span> ms <span class="op">=</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span></span>
+<span id="cb18-18"><a aria-label="18"></a>        <span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span>fine <span class="op">-</span> inizio<span class="op">).</span>count<span class="op">();</span></span>
+<span id="cb18-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"C(1,2) = "</span> <span class="op">&lt;&lt;</span> C<span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb18-20"><a aria-label="20"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"tempo: "</span> <span class="op">&lt;&lt;</span> ms <span class="op">&lt;&lt;</span> <span class="st">" ms</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb18-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb18-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:38%;">
 <p>Le stesse matrici di <code>prodotto.cpp</code>, con le operazioni di Eigen del Laboratorio 05: <code>A(i, j)</code> e <code>A * B</code>.</p>
@@ -1281,7 +1333,7 @@ tempo: 20 ms</code></pre>
 <h2>Il batching</h2>
 <p>Le formule della backpropagation (Lezione 03) elaborano un’immagine alla volta, un vettore colonna <span class="math inline">\(\mathbf{x}\)</span>: predizione, errore, aggiornamento dei pesi. È lo <em>stochastic gradient descent</em> (SGD), e il framework fa così.</p>
 <p>Per ogni immagine il prodotto <span class="math inline">\(\mathbf{W}\mathbf{x}\)</span> di un <code>DenseLayer(128, 784)</code> legge tutta la matrice dei pesi, <span class="math inline">\(128 \times 784 \approx 100\,000\)</span> numeri, e usa ogni peso per una sola moltiplicazione e una somma.</p>
-<p>La CPU tiene i dati letti di recente nella <em>cache</em>, una piccola memoria veloce al suo interno. Se i pesi non ci stanno, a ogni immagine vanno riletti dalla memoria principale, e la CPU passa più tempo ad aspettare i dati che a calcolare.</p>
+<p>Come per la somma per colonne, se i pesi non stanno nella <em>cache</em> a ogni immagine vanno riletti dalla memoria principale, e la CPU passa più tempo ad aspettare i dati che a calcolare.</p>
 <p>Si possono elaborare 64 immagini <strong>insieme</strong>?</p>
 </section>
 <section id="matrici-invece-di-vettori" class="slide level2 smaller">
@@ -1309,28 +1361,28 @@ tempo: 20 ms</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>batching.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-filename="batching.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
-<span id="cb20-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb20-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;Eigen/Dense&gt;</span></span>
-<span id="cb20-4"><a aria-label="4"></a></span>
-<span id="cb20-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb20-6"><a aria-label="6"></a>    <span class="dt">int</span> neuroni <span class="op">=</span> <span class="dv">128</span><span class="op">;</span>          <span class="co">// come in DenseLayer(128, 784)</span></span>
-<span id="cb20-7"><a aria-label="7"></a>    <span class="dt">int</span> n <span class="op">=</span> <span class="dv">1000</span><span class="op">;</span>               <span class="co">// ripetizioni</span></span>
-<span id="cb20-8"><a aria-label="8"></a>    Eigen<span class="op">::</span>MatrixXd W <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span>neuroni<span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
-<span id="cb20-9"><a aria-label="9"></a>    Eigen<span class="op">::</span>MatrixXd x <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span>   <span class="co">// 1 immagine</span></span>
-<span id="cb20-10"><a aria-label="10"></a>    Eigen<span class="op">::</span>MatrixXd X <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">64</span><span class="op">);</span>  <span class="co">// 64 immagini</span></span>
-<span id="cb20-11"><a aria-label="11"></a>    Eigen<span class="op">::</span>MatrixXd z<span class="op">,</span> Z<span class="op">;</span></span>
-<span id="cb20-12"><a aria-label="12"></a>    <span class="kw">auto</span> t0 <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
-<span id="cb20-13"><a aria-label="13"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> r <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> r <span class="op">&lt;</span> <span class="dv">64</span> <span class="op">*</span> n<span class="op">;</span> r<span class="op">++)</span> <span class="op">{</span> z <span class="op">=</span> W <span class="op">*</span> x<span class="op">;</span> <span class="op">}</span>   <span class="co">// una alla volta</span></span>
-<span id="cb20-14"><a aria-label="14"></a>    <span class="kw">auto</span> t1 <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
-<span id="cb20-15"><a aria-label="15"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> r <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> r <span class="op">&lt;</span> n<span class="op">;</span> r<span class="op">++)</span> <span class="op">{</span> Z <span class="op">=</span> W <span class="op">*</span> X<span class="op">;</span> <span class="op">}</span>        <span class="co">// 64 insieme</span></span>
-<span id="cb20-16"><a aria-label="16"></a>    <span class="kw">auto</span> t2 <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
-<span id="cb20-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"una alla volta: "</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span></span>
-<span id="cb20-18"><a aria-label="18"></a>        <span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span>t1 <span class="op">-</span> t0<span class="op">).</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb20-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"64 insieme: "</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span></span>
-<span id="cb20-20"><a aria-label="20"></a>        <span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span>t2 <span class="op">-</span> t1<span class="op">).</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb20-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb20-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-filename="batching.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb21-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
+<span id="cb21-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb21-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;Eigen/Dense&gt;</span></span>
+<span id="cb21-4"><a aria-label="4"></a></span>
+<span id="cb21-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb21-6"><a aria-label="6"></a>    <span class="dt">int</span> neuroni <span class="op">=</span> <span class="dv">128</span><span class="op">;</span>          <span class="co">// come in DenseLayer(128, 784)</span></span>
+<span id="cb21-7"><a aria-label="7"></a>    <span class="dt">int</span> n <span class="op">=</span> <span class="dv">1000</span><span class="op">;</span>               <span class="co">// ripetizioni</span></span>
+<span id="cb21-8"><a aria-label="8"></a>    Eigen<span class="op">::</span>MatrixXd W <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span>neuroni<span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb21-9"><a aria-label="9"></a>    Eigen<span class="op">::</span>MatrixXd x <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span>   <span class="co">// 1 immagine</span></span>
+<span id="cb21-10"><a aria-label="10"></a>    Eigen<span class="op">::</span>MatrixXd X <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Random<span class="op">(</span><span class="dv">784</span><span class="op">,</span> <span class="dv">64</span><span class="op">);</span>  <span class="co">// 64 immagini</span></span>
+<span id="cb21-11"><a aria-label="11"></a>    Eigen<span class="op">::</span>MatrixXd z<span class="op">,</span> Z<span class="op">;</span></span>
+<span id="cb21-12"><a aria-label="12"></a>    <span class="kw">auto</span> t0 <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb21-13"><a aria-label="13"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> r <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> r <span class="op">&lt;</span> <span class="dv">64</span> <span class="op">*</span> n<span class="op">;</span> r<span class="op">++)</span> <span class="op">{</span> z <span class="op">=</span> W <span class="op">*</span> x<span class="op">;</span> <span class="op">}</span>   <span class="co">// una alla volta</span></span>
+<span id="cb21-14"><a aria-label="14"></a>    <span class="kw">auto</span> t1 <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb21-15"><a aria-label="15"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> r <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> r <span class="op">&lt;</span> n<span class="op">;</span> r<span class="op">++)</span> <span class="op">{</span> Z <span class="op">=</span> W <span class="op">*</span> X<span class="op">;</span> <span class="op">}</span>        <span class="co">// 64 insieme</span></span>
+<span id="cb21-16"><a aria-label="16"></a>    <span class="kw">auto</span> t2 <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb21-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"una alla volta: "</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span></span>
+<span id="cb21-18"><a aria-label="18"></a>        <span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span>t1 <span class="op">-</span> t0<span class="op">).</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb21-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"64 insieme: "</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span></span>
+<span id="cb21-20"><a aria-label="20"></a>        <span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span>t2 <span class="op">-</span> t1<span class="op">).</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb21-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb21-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Gli stessi prodotti, <span class="math inline">\(64\,000\)</span> immagini, nei due modi: righe 13 e 15. Il bias non c’è: non cambia il confronto.</p>
 </section>
@@ -1380,15 +1432,15 @@ tempo: 20 ms</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>argomenti.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-filename="argomenti.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb21-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb21-2"><a aria-label="2"></a></span>
-<span id="cb21-3"><a aria-label="3"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
-<span id="cb21-4"><a aria-label="4"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"argc = "</span> <span class="op">&lt;&lt;</span> argc <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb21-5"><a aria-label="5"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> argc<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb21-6"><a aria-label="6"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"argv["</span> <span class="op">&lt;&lt;</span> i <span class="op">&lt;&lt;</span> <span class="st">"] = "</span> <span class="op">&lt;&lt;</span> argv<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb21-7"><a aria-label="7"></a>    <span class="op">}</span></span>
-<span id="cb21-8"><a aria-label="8"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb21-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-filename="argomenti.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb22-2"><a aria-label="2"></a></span>
+<span id="cb22-3"><a aria-label="3"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
+<span id="cb22-4"><a aria-label="4"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"argc = "</span> <span class="op">&lt;&lt;</span> argc <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb22-5"><a aria-label="5"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> argc<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb22-6"><a aria-label="6"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"argv["</span> <span class="op">&lt;&lt;</span> i <span class="op">&lt;&lt;</span> <span class="st">"] = "</span> <span class="op">&lt;&lt;</span> argv<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb22-7"><a aria-label="7"></a>    <span class="op">}</span></span>
+<span id="cb22-8"><a aria-label="8"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb22-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li><strong><code>argc</code></strong> (<em>argument count</em>): il numero di parole della riga di comando, separate da spazi, compreso il nome del programma.</li>
@@ -1421,30 +1473,30 @@ argv[2] = 0.01</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>parametri.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-35" data-filename="parametri.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-35-1"><a href="#annotated-cell-35-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-35-2"><a href="#annotated-cell-35-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="annotated-cell-35-3"><a href="#annotated-cell-35-3" aria-label="3"></a></span>
-<span id="annotated-cell-35-4"><a href="#annotated-cell-35-4" aria-label="4"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-35" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-35-5" class="code-annotation-target"><a href="#annotated-cell-35-5" aria-label="5"></a>    <span class="cf">if</span> <span class="op">(</span>argc <span class="op">&lt;</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-35-6"><a href="#annotated-cell-35-6" aria-label="6"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Uso: "</span> <span class="op">&lt;&lt;</span> argv<span class="op">[</span><span class="dv">0</span><span class="op">]</span></span>
-<span id="annotated-cell-35-7"><a href="#annotated-cell-35-7" aria-label="7"></a>                  <span class="op">&lt;&lt;</span> <span class="st">" &lt;epoche&gt; &lt;learning_rate&gt;</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-35" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-35-8" class="code-annotation-target"><a href="#annotated-cell-35-8" aria-label="8"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="annotated-cell-35-9"><a href="#annotated-cell-35-9" aria-label="9"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-35-10"><a href="#annotated-cell-35-10" aria-label="10"></a>    <span class="dt">int</span> epoche <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>argv<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
-<span id="annotated-cell-35-11"><a href="#annotated-cell-35-11" aria-label="11"></a>    <span class="dt">double</span> lr <span class="op">=</span> <span class="bu">std::</span>stod<span class="op">(</span>argv<span class="op">[</span><span class="dv">2</span><span class="op">]);</span></span>
-<span id="annotated-cell-35-12"><a href="#annotated-cell-35-12" aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"epoche: "</span> <span class="op">&lt;&lt;</span> epoche <span class="op">&lt;&lt;</span> <span class="st">", lr: "</span> <span class="op">&lt;&lt;</span> lr <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-35-13"><a href="#annotated-cell-35-13" aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"doppio delle epoche: "</span> <span class="op">&lt;&lt;</span> <span class="dv">2</span> <span class="op">*</span> epoche <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-35-14"><a href="#annotated-cell-35-14" aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="annotated-cell-35-15"><a href="#annotated-cell-35-15" aria-label="15"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-37" data-filename="parametri.cpp"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-37-1"><a href="#annotated-cell-37-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="annotated-cell-37-2"><a href="#annotated-cell-37-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="annotated-cell-37-3"><a href="#annotated-cell-37-3" aria-label="3"></a></span>
+<span id="annotated-cell-37-4"><a href="#annotated-cell-37-4" aria-label="4"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-37" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-37-5" class="code-annotation-target"><a href="#annotated-cell-37-5" aria-label="5"></a>    <span class="cf">if</span> <span class="op">(</span>argc <span class="op">&lt;</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-37-6"><a href="#annotated-cell-37-6" aria-label="6"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Uso: "</span> <span class="op">&lt;&lt;</span> argv<span class="op">[</span><span class="dv">0</span><span class="op">]</span></span>
+<span id="annotated-cell-37-7"><a href="#annotated-cell-37-7" aria-label="7"></a>                  <span class="op">&lt;&lt;</span> <span class="st">" &lt;epoche&gt; &lt;learning_rate&gt;</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-37" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-37-8" class="code-annotation-target"><a href="#annotated-cell-37-8" aria-label="8"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="annotated-cell-37-9"><a href="#annotated-cell-37-9" aria-label="9"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-37-10"><a href="#annotated-cell-37-10" aria-label="10"></a>    <span class="dt">int</span> epoche <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>argv<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="annotated-cell-37-11"><a href="#annotated-cell-37-11" aria-label="11"></a>    <span class="dt">double</span> lr <span class="op">=</span> <span class="bu">std::</span>stod<span class="op">(</span>argv<span class="op">[</span><span class="dv">2</span><span class="op">]);</span></span>
+<span id="annotated-cell-37-12"><a href="#annotated-cell-37-12" aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"epoche: "</span> <span class="op">&lt;&lt;</span> epoche <span class="op">&lt;&lt;</span> <span class="st">", lr: "</span> <span class="op">&lt;&lt;</span> lr <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-37-13"><a href="#annotated-cell-37-13" aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"doppio delle epoche: "</span> <span class="op">&lt;&lt;</span> <span class="dv">2</span> <span class="op">*</span> epoche <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="annotated-cell-37-14"><a href="#annotated-cell-37-14" aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="annotated-cell-37-15"><a href="#annotated-cell-37-15" aria-label="15"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-35" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-37" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-35" data-code-lines="5" data-code-annotation="1">Prima di leggere <code>argv[1]</code> e <code>argv[2]</code> si controlla che ci siano.</span>
+<span data-code-cell="annotated-cell-37" data-code-lines="5" data-code-annotation="1">Prima di leggere <code>argv[1]</code> e <code>argv[2]</code> si controlla che ci siano.</span>
 </dd>
-<dt data-target-cell="annotated-cell-35" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-37" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-35" data-code-lines="8" data-code-annotation="2"><code>1</code>, non <code>-1</code>: la shell tiene gli 8 bit bassi del valore restituito, e <code>-1</code> le arriva come <code>255</code>.</span>
+<span data-code-cell="annotated-cell-37" data-code-lines="8" data-code-annotation="2"><code>1</code>, non <code>-1</code>: la shell tiene gli 8 bit bassi del valore restituito, e <code>-1</code> le arriva come <code>255</code>.</span>
 </dd>
 </dl>
 </div><div class="column" style="width:36%;">
@@ -1473,27 +1525,27 @@ doppio delle epoche: 200</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>parametri.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-filename="parametri.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb24-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb24-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
-<span id="cb24-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb24-4"><a aria-label="4"></a></span>
-<span id="cb24-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
-<span id="cb24-6"><a aria-label="6"></a>    <span class="cf">if</span> <span class="op">(</span>argc <span class="op">&lt;</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb24-7"><a aria-label="7"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Uso: "</span> <span class="op">&lt;&lt;</span> argv<span class="op">[</span><span class="dv">0</span><span class="op">]</span></span>
-<span id="cb24-8"><a aria-label="8"></a>                  <span class="op">&lt;&lt;</span> <span class="st">" &lt;epoche&gt; &lt;learning_rate&gt;</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb24-9"><a aria-label="9"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb24-10"><a aria-label="10"></a>    <span class="op">}</span></span>
-<span id="cb24-11"><a aria-label="11"></a>    <span class="cf">try</span> <span class="op">{</span></span>
-<span id="cb24-12"><a aria-label="12"></a>        <span class="dt">int</span> epoche <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>argv<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
-<span id="cb24-13"><a aria-label="13"></a>        <span class="dt">double</span> lr <span class="op">=</span> <span class="bu">std::</span>stod<span class="op">(</span>argv<span class="op">[</span><span class="dv">2</span><span class="op">]);</span></span>
-<span id="cb24-14"><a aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"epoche: "</span> <span class="op">&lt;&lt;</span> epoche <span class="op">&lt;&lt;</span> <span class="st">", lr: "</span> <span class="op">&lt;&lt;</span> lr <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb24-15"><a aria-label="15"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"doppio delle epoche: "</span> <span class="op">&lt;&lt;</span> <span class="dv">2</span> <span class="op">*</span> epoche <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb24-16"><a aria-label="16"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>invalid_argument<span class="op">&amp;</span> e<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb24-17"><a aria-label="17"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Argomento non numerico ("</span> <span class="op">&lt;&lt;</span> e<span class="op">.</span>what<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb24-18"><a aria-label="18"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb24-19"><a aria-label="19"></a>    <span class="op">}</span></span>
-<span id="cb24-20"><a aria-label="20"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb24-21"><a aria-label="21"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25" data-filename="parametri.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb25-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb25-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
+<span id="cb25-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb25-4"><a aria-label="4"></a></span>
+<span id="cb25-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
+<span id="cb25-6"><a aria-label="6"></a>    <span class="cf">if</span> <span class="op">(</span>argc <span class="op">&lt;</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-7"><a aria-label="7"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Uso: "</span> <span class="op">&lt;&lt;</span> argv<span class="op">[</span><span class="dv">0</span><span class="op">]</span></span>
+<span id="cb25-8"><a aria-label="8"></a>                  <span class="op">&lt;&lt;</span> <span class="st">" &lt;epoche&gt; &lt;learning_rate&gt;</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb25-9"><a aria-label="9"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb25-10"><a aria-label="10"></a>    <span class="op">}</span></span>
+<span id="cb25-11"><a aria-label="11"></a>    <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb25-12"><a aria-label="12"></a>        <span class="dt">int</span> epoche <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>argv<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb25-13"><a aria-label="13"></a>        <span class="dt">double</span> lr <span class="op">=</span> <span class="bu">std::</span>stod<span class="op">(</span>argv<span class="op">[</span><span class="dv">2</span><span class="op">]);</span></span>
+<span id="cb25-14"><a aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"epoche: "</span> <span class="op">&lt;&lt;</span> epoche <span class="op">&lt;&lt;</span> <span class="st">", lr: "</span> <span class="op">&lt;&lt;</span> lr <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb25-15"><a aria-label="15"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"doppio delle epoche: "</span> <span class="op">&lt;&lt;</span> <span class="dv">2</span> <span class="op">*</span> epoche <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb25-16"><a aria-label="16"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>invalid_argument<span class="op">&amp;</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-17"><a aria-label="17"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Argomento non numerico ("</span> <span class="op">&lt;&lt;</span> e<span class="op">.</span>what<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb25-18"><a aria-label="18"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb25-19"><a aria-label="19"></a>    <span class="op">}</span></span>
+<span id="cb25-20"><a aria-label="20"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-21"><a aria-label="21"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:30%;">
 <p>Come nella Lezione 11, il <code>catch</code> riceve <code>std::invalid_argument</code>, da <code>&lt;stdexcept&gt;</code>: con <code>100 abc</code> si legge <code>Argomento non numerico (stod)</code>.</p>
@@ -1518,21 +1570,21 @@ doppio delle epoche: 200</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>esercizio_iperparametri.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25" data-filename="esercizio_iperparametri.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb25-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb25-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
-<span id="cb25-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb25-4"><a aria-label="4"></a></span>
-<span id="cb25-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
-<span id="cb25-6"><a aria-label="6"></a>    <span class="co">// da completare: se gli argomenti sono meno di tre, stampate su std::cerr</span></span>
-<span id="cb25-7"><a aria-label="7"></a>    <span class="co">// come si usa il programma e restituite 1</span></span>
-<span id="cb25-8"><a aria-label="8"></a></span>
-<span id="cb25-9"><a aria-label="9"></a>    <span class="co">// da completare: batch (int) da argv[1], lr (double) da argv[2],</span></span>
-<span id="cb25-10"><a aria-label="10"></a>    <span class="co">// dataset (std::string) da argv[3]</span></span>
-<span id="cb25-11"><a aria-label="11"></a></span>
-<span id="cb25-12"><a aria-label="12"></a>    <span class="co">// da completare: la stampa del risultato</span></span>
-<span id="cb25-13"><a aria-label="13"></a></span>
-<span id="cb25-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb25-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26" data-filename="esercizio_iperparametri.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb26-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb26-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
+<span id="cb26-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb26-4"><a aria-label="4"></a></span>
+<span id="cb26-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
+<span id="cb26-6"><a aria-label="6"></a>    <span class="co">// da completare: se gli argomenti sono meno di tre, stampate su std::cerr</span></span>
+<span id="cb26-7"><a aria-label="7"></a>    <span class="co">// come si usa il programma e restituite 1</span></span>
+<span id="cb26-8"><a aria-label="8"></a></span>
+<span id="cb26-9"><a aria-label="9"></a>    <span class="co">// da completare: batch (int) da argv[1], lr (double) da argv[2],</span></span>
+<span id="cb26-10"><a aria-label="10"></a>    <span class="co">// dataset (std::string) da argv[3]</span></span>
+<span id="cb26-11"><a aria-label="11"></a></span>
+<span id="cb26-12"><a aria-label="12"></a>    <span class="co">// da completare: la stampa del risultato</span></span>
+<span id="cb26-13"><a aria-label="13"></a></span>
+<span id="cb26-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb26-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Il file compila così com’è e non stampa niente. Il punto 4 si scrive per ultimo: prima il programma deve funzionare con argomenti corretti.</p>
 </section>
@@ -1544,28 +1596,28 @@ doppio delle epoche: 200</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>esercizio_iperparametri.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26" data-filename="esercizio_iperparametri.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb26-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb26-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
-<span id="cb26-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb26-4"><a aria-label="4"></a></span>
-<span id="cb26-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
-<span id="cb26-6"><a aria-label="6"></a>    <span class="cf">if</span> <span class="op">(</span>argc <span class="op">&lt;</span> <span class="dv">4</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb26-7"><a aria-label="7"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Uso: "</span> <span class="op">&lt;&lt;</span> argv<span class="op">[</span><span class="dv">0</span><span class="op">]</span></span>
-<span id="cb26-8"><a aria-label="8"></a>                  <span class="op">&lt;&lt;</span> <span class="st">" &lt;batch_size&gt; &lt;learning_rate&gt; &lt;dataset&gt;</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb26-9"><a aria-label="9"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb26-10"><a aria-label="10"></a>    <span class="op">}</span></span>
-<span id="cb26-11"><a aria-label="11"></a>    <span class="cf">try</span> <span class="op">{</span></span>
-<span id="cb26-12"><a aria-label="12"></a>        <span class="dt">int</span> batch <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>argv<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
-<span id="cb26-13"><a aria-label="13"></a>        <span class="dt">double</span> lr <span class="op">=</span> <span class="bu">std::</span>stod<span class="op">(</span>argv<span class="op">[</span><span class="dv">2</span><span class="op">]);</span></span>
-<span id="cb26-14"><a aria-label="14"></a>        <span class="bu">std::</span>string dataset <span class="op">=</span> argv<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
-<span id="cb26-15"><a aria-label="15"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Training sul dataset: "</span> <span class="op">&lt;&lt;</span> dataset</span>
-<span id="cb26-16"><a aria-label="16"></a>                  <span class="op">&lt;&lt;</span> <span class="st">". Batch: "</span> <span class="op">&lt;&lt;</span> batch <span class="op">&lt;&lt;</span> <span class="st">", LR: "</span> <span class="op">&lt;&lt;</span> lr <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb26-17"><a aria-label="17"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>invalid_argument<span class="op">&amp;</span> e<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb26-18"><a aria-label="18"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Argomento non numerico ("</span> <span class="op">&lt;&lt;</span> e<span class="op">.</span>what<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb26-19"><a aria-label="19"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb26-20"><a aria-label="20"></a>    <span class="op">}</span></span>
-<span id="cb26-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb26-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27" data-filename="esercizio_iperparametri.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb27-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb27-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
+<span id="cb27-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb27-4"><a aria-label="4"></a></span>
+<span id="cb27-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span> <span class="op">{</span></span>
+<span id="cb27-6"><a aria-label="6"></a>    <span class="cf">if</span> <span class="op">(</span>argc <span class="op">&lt;</span> <span class="dv">4</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb27-7"><a aria-label="7"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Uso: "</span> <span class="op">&lt;&lt;</span> argv<span class="op">[</span><span class="dv">0</span><span class="op">]</span></span>
+<span id="cb27-8"><a aria-label="8"></a>                  <span class="op">&lt;&lt;</span> <span class="st">" &lt;batch_size&gt; &lt;learning_rate&gt; &lt;dataset&gt;</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb27-9"><a aria-label="9"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb27-10"><a aria-label="10"></a>    <span class="op">}</span></span>
+<span id="cb27-11"><a aria-label="11"></a>    <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb27-12"><a aria-label="12"></a>        <span class="dt">int</span> batch <span class="op">=</span> <span class="bu">std::</span>stoi<span class="op">(</span>argv<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb27-13"><a aria-label="13"></a>        <span class="dt">double</span> lr <span class="op">=</span> <span class="bu">std::</span>stod<span class="op">(</span>argv<span class="op">[</span><span class="dv">2</span><span class="op">]);</span></span>
+<span id="cb27-14"><a aria-label="14"></a>        <span class="bu">std::</span>string dataset <span class="op">=</span> argv<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
+<span id="cb27-15"><a aria-label="15"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Training sul dataset: "</span> <span class="op">&lt;&lt;</span> dataset</span>
+<span id="cb27-16"><a aria-label="16"></a>                  <span class="op">&lt;&lt;</span> <span class="st">". Batch: "</span> <span class="op">&lt;&lt;</span> batch <span class="op">&lt;&lt;</span> <span class="st">", LR: "</span> <span class="op">&lt;&lt;</span> lr <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb27-17"><a aria-label="17"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>invalid_argument<span class="op">&amp;</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb27-18"><a aria-label="18"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Argomento non numerico ("</span> <span class="op">&lt;&lt;</span> e<span class="op">.</span>what<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">")</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb27-19"><a aria-label="19"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb27-20"><a aria-label="20"></a>    <span class="op">}</span></span>
+<span id="cb27-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb27-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:32%;">
 <p>Riga 6: con il nome del programma, <code>argv[0]</code>, <code>argc</code> deve valere almeno <strong>4</strong>, non 3.</p>
