@@ -1204,8 +1204,8 @@ tempo: 320 ms</code></pre>
 <p>Stesso risultato, ma più lento: da 40 a 65 ms con g++ 13, da 34 a 135 ms sull’M3 Max. Il motivo è la somma su <code>s</code>: ogni passo usa il risultato del precedente, quindi il compilatore non può vettorizzare <span style="white-space: nowrap">il ciclo interno</span>.</p>
 </div>
 </section>
-<section id="provate-lordine-nella-somma" class="slide level2 smaller">
-<h2>Provate: l’ordine nella somma</h2>
+<section id="provate-lordine-nel-sommare-m" class="slide level2 smaller">
+<h2>Provate: l’ordine nel sommare <code>M</code></h2>
 <div class="columns">
 <div class="column" style="width:62%;">
 <div class="code-with-filename">
