@@ -1191,36 +1191,49 @@ tempo: 320 ms</code></pre>
 <p>Il risultato, <code>C[1][2] = 41.416</code>, è lo stesso: cambia solo il tempo. Il guadagno maggiore arriva con <code>-O1</code>; <code>-O2</code> e <code>-O3</code> vettorizzano anche il ciclo interno. Su un MacBook Pro M3 Max, con il clang di Apple: 158 ms a <code>-O0</code>, 34 ms a <code>-O3</code>. Sul vostro computer i tempi saranno diversi: confrontate i rapporti.</p>
 </div>
 </section>
-<section id="provate-righe-o-colonne" class="slide level2 smaller">
-<h2>Provate: righe o colonne</h2>
+<section id="provate-lordine-nel-prodotto" class="slide level2 smaller">
+<h2>Provate: l’ordine nel prodotto</h2>
+<p>A <code>-O3</code>, riscrivete <code>prodotto()</code> con l’ordine <code>i</code>, <code>j</code>, <code>k</code> della formula: cosa succede al tempo?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb15-2"><a aria-label="2"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb15-3"><a aria-label="3"></a>        <span class="dt">double</span> s <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb15-4"><a aria-label="4"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> N<span class="op">;</span> k<span class="op">++)</span> s <span class="op">+=</span> A<span class="op">[</span>i<span class="op">][</span>k<span class="op">]</span> <span class="op">*</span> B<span class="op">[</span>k<span class="op">][</span>j<span class="op">];</span></span>
+<span id="cb15-5"><a aria-label="5"></a>        C<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> s<span class="op">;</span></span>
+<span id="cb15-6"><a aria-label="6"></a>    <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Stesso risultato, ma più lento: da 40 a 65 ms con g++ 13, da 34 a 135 ms sull’M3 Max. Il motivo è la somma su <code>s</code>: ogni passo usa il risultato del precedente, quindi il compilatore non può vettorizzare <span style="white-space: nowrap">il ciclo interno</span>.</p>
+</div>
+</section>
+<section id="provate-lordine-nella-somma" class="slide level2 smaller">
+<h2>Provate: l’ordine nella somma</h2>
 <div class="columns">
 <div class="column" style="width:62%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>somma.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-filename="somma.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
-<span id="cb15-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb15-3"><a aria-label="3"></a></span>
-<span id="cb15-4"><a aria-label="4"></a><span class="at">const</span> <span class="dt">int</span> N <span class="op">=</span> <span class="dv">4000</span><span class="op">;</span></span>
-<span id="cb15-5"><a aria-label="5"></a><span class="dt">double</span> M<span class="op">[</span>N<span class="op">][</span>N<span class="op">];</span>                    <span class="co">// 128 MB, globale</span></span>
-<span id="cb15-6"><a aria-label="6"></a></span>
-<span id="cb15-7"><a aria-label="7"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb15-8"><a aria-label="8"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb15-9"><a aria-label="9"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb15-10"><a aria-label="10"></a>            M<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> <span class="fl">0.001</span> <span class="op">*</span> <span class="op">(</span>i <span class="op">+</span> j<span class="op">);</span></span>
-<span id="cb15-11"><a aria-label="11"></a>    <span class="kw">auto</span> inizio <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
-<span id="cb15-12"><a aria-label="12"></a>    <span class="dt">double</span> s <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb15-13"><a aria-label="13"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb15-14"><a aria-label="14"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb15-15"><a aria-label="15"></a>            s <span class="op">+=</span> M<span class="op">[</span>i<span class="op">][</span>j<span class="op">];</span></span>
-<span id="cb15-16"><a aria-label="16"></a>    <span class="kw">auto</span> fine <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
-<span id="cb15-17"><a aria-label="17"></a>    <span class="kw">auto</span> ms <span class="op">=</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span></span>
-<span id="cb15-18"><a aria-label="18"></a>        <span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span>fine <span class="op">-</span> inizio<span class="op">).</span>count<span class="op">();</span></span>
-<span id="cb15-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"somma = "</span> <span class="op">&lt;&lt;</span> s <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb15-20"><a aria-label="20"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"tempo: "</span> <span class="op">&lt;&lt;</span> ms <span class="op">&lt;&lt;</span> <span class="st">" ms</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb15-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb15-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="somma.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
+<span id="cb16-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb16-3"><a aria-label="3"></a></span>
+<span id="cb16-4"><a aria-label="4"></a><span class="at">const</span> <span class="dt">int</span> N <span class="op">=</span> <span class="dv">4000</span><span class="op">;</span></span>
+<span id="cb16-5"><a aria-label="5"></a><span class="dt">double</span> M<span class="op">[</span>N<span class="op">][</span>N<span class="op">];</span>                    <span class="co">// 128 MB, globale</span></span>
+<span id="cb16-6"><a aria-label="6"></a></span>
+<span id="cb16-7"><a aria-label="7"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb16-8"><a aria-label="8"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb16-9"><a aria-label="9"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb16-10"><a aria-label="10"></a>            M<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> <span class="fl">0.001</span> <span class="op">*</span> <span class="op">(</span>i <span class="op">+</span> j<span class="op">);</span></span>
+<span id="cb16-11"><a aria-label="11"></a>    <span class="kw">auto</span> inizio <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb16-12"><a aria-label="12"></a>    <span class="dt">double</span> s <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb16-13"><a aria-label="13"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb16-14"><a aria-label="14"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb16-15"><a aria-label="15"></a>            s <span class="op">+=</span> M<span class="op">[</span>i<span class="op">][</span>j<span class="op">];</span></span>
+<span id="cb16-16"><a aria-label="16"></a>    <span class="kw">auto</span> fine <span class="op">=</span> <span class="bu">std::</span>chrono::high_resolution_clock::now<span class="op">();</span></span>
+<span id="cb16-17"><a aria-label="17"></a>    <span class="kw">auto</span> ms <span class="op">=</span> <span class="bu">std::</span>chrono::duration_cast<span class="op">&lt;</span></span>
+<span id="cb16-18"><a aria-label="18"></a>        <span class="bu">std::</span>chrono::milliseconds<span class="op">&gt;(</span>fine <span class="op">-</span> inizio<span class="op">).</span>count<span class="op">();</span></span>
+<span id="cb16-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"somma = "</span> <span class="op">&lt;&lt;</span> s <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb16-20"><a aria-label="20"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"tempo: "</span> <span class="op">&lt;&lt;</span> ms <span class="op">&lt;&lt;</span> <span class="st">" ms</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb16-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb16-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:38%;">
 <p>Come in C, <code>M</code> è memorizzata <strong>per righe</strong> (<em>row-major</em>): una riga è contigua, mentre <code>M[i][j]</code> e <code>M[i+1][j]</code> distano 32 000 byte.</p>
@@ -1233,29 +1246,16 @@ tempo: 320 ms</code></pre>
 </div>
 </div></div>
 </section>
-<section id="righe-colonne-e-cache" class="slide level2 smaller">
-<h2>Righe, colonne e cache</h2>
+<section id="lordine-dei-cicli-e-la-cache" class="slide level2 smaller">
+<h2>L’ordine dei cicli e la cache</h2>
 <p>La CPU tiene i dati letti di recente nella <em>cache</em>, una piccola memoria veloce al suo interno, e ce li porta dalla memoria principale a blocchi contigui, per esempio di 64 byte, cioè 8 <code>double</code>:</p>
 <ul>
 <li><strong>per righe</strong> (l’indice di colonna cresce nel ciclo interno) gli 8 numeri di un blocco servono uno dopo l’altro, e intanto la CPU porta già il blocco successivo;</li>
 <li><strong>per colonne</strong> (l’indice di riga cresce nel ciclo interno) ogni lettura cade in un blocco diverso, 32 000 byte più in là, e la CPU aspetta la memoria.</li>
 </ul>
-<p>Se la matrice sta tutta nella cache, l’ordine conta poco: con <code>N = 500</code>, 2 MB come in <code>prodotto</code>, i due ordini impiegano lo stesso tempo.</p>
-<p>Le matrici di Eigen sono memorizzate per colonne (<em>column-major</em>): lì vale il contrario.</p>
-</section>
-<section id="provate-lordine-dei-cicli" class="slide level2 smaller">
-<h2>Provate: l’ordine dei cicli</h2>
-<p>A <code>-O3</code>, riscrivete <code>prodotto()</code> con l’ordine <code>i</code>, <code>j</code>, <code>k</code> della formula: cosa succede al tempo?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb16-2"><a aria-label="2"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb16-3"><a aria-label="3"></a>        <span class="dt">double</span> s <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb16-4"><a aria-label="4"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> N<span class="op">;</span> k<span class="op">++)</span> s <span class="op">+=</span> A<span class="op">[</span>i<span class="op">][</span>k<span class="op">]</span> <span class="op">*</span> B<span class="op">[</span>k<span class="op">][</span>j<span class="op">];</span></span>
-<span id="cb16-5"><a aria-label="5"></a>        C<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> s<span class="op">;</span></span>
-<span id="cb16-6"><a aria-label="6"></a>    <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p>Stesso risultato, ma più lento: da 40 a 65 ms con g++ 13, da 34 a 135 ms sull’M3 Max. Non è colpa della colonna di <code>B</code>: le matrici, 2 MB l’una, restano nella cache. È la somma su <code>s</code>: ogni passo dipende dal precedente, così il compilatore non può sovrapporre le iterazioni.</p>
+<p>Se la matrice sta tutta nella cache, l’ordine conta poco: con <code>N = 500</code>, 2 MB come in <code>prodotto</code>, i due ordini impiegano lo stesso tempo. Per questo nel prodotto leggere <code>B</code> per colonne pesava poco: a rallentarlo era la somma su <code>s</code>.</p>
+<p>Eigen memorizza le matrici per colonne (<em>column-major</em>): lì vale il contrario.</p>
 <p>La regola: nel ciclo interno, elementi contigui e somme indipendenti, come nell’ordine <span style="white-space: nowrap"><code>i</code>, <code>k</code>, <code>j</code></span>.</p>
-</div>
 </section>
 <section id="ripasso-eigen-e-i-suoi-header" class="slide level2 smaller">
 <h2>Ripasso: Eigen e i suoi header</h2>
