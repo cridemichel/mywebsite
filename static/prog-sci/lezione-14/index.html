@@ -1237,8 +1237,8 @@ tempo: 320 ms</code></pre>
 <h2>Righe, colonne e cache</h2>
 <p>La CPU tiene i dati letti di recente nella <em>cache</em>, una piccola memoria veloce al suo interno, e ce li porta dalla memoria principale a blocchi contigui, per esempio di 64 byte, cioè 8 <code>double</code>:</p>
 <ul>
-<li><strong>per righe</strong> gli 8 numeri di un blocco servono uno dopo l’altro, e intanto la CPU porta già il blocco successivo;</li>
-<li><strong>per colonne</strong> ogni lettura cade in un blocco diverso, 32 000 byte più in là, e la CPU aspetta la memoria.</li>
+<li><strong>per righe</strong> (l’indice di colonna cresce nel ciclo interno) gli 8 numeri di un blocco servono uno dopo l’altro, e intanto la CPU porta già il blocco successivo;</li>
+<li><strong>per colonne</strong> (l’indice di riga cresce nel ciclo interno) ogni lettura cade in un blocco diverso, 32 000 byte più in là, e la CPU aspetta la memoria.</li>
 </ul>
 <p>Se la matrice sta tutta nella cache, l’ordine conta poco: con <code>N = 500</code>, 2 MB come in <code>prodotto</code>, i due ordini impiegano lo stesso tempo.</p>
 <p>Le matrici di Eigen sono memorizzate per colonne (<em>column-major</em>): lì vale il contrario.</p>
@@ -1253,7 +1253,7 @@ tempo: 320 ms</code></pre>
 <span id="cb16-5"><a aria-label="5"></a>        C<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">=</span> s<span class="op">;</span></span>
 <span id="cb16-6"><a aria-label="6"></a>    <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>Stesso risultato, ma più lento: da 40 a 65 ms con g++ 13, da 34 a 135 ms sull’M3 Max. Non è colpa della colonna di <code>B</code>: le matrici, 2 MB l’una, restano nella cache. È la somma su <code>s</code>: ogni somma aspetta la precedente, e riordinarle cambierebbe l’arrotondamento, quindi niente vettorizzazione.</p>
+<p>Stesso risultato, ma più lento: da 40 a 65 ms con g++ 13, da 34 a 135 ms sull’M3 Max. Non è colpa della colonna di <code>B</code>: le matrici, 2 MB l’una, restano nella cache. È la somma su <code>s</code>: ogni passo dipende dal precedente, così il compilatore non può sovrapporre le iterazioni.</p>
 <p>La regola: nel ciclo interno, elementi contigui e somme indipendenti, come nell’ordine <span style="white-space: nowrap"><code>i</code>, <code>k</code>, <code>j</code></span>.</p>
 </div>
 </section>
