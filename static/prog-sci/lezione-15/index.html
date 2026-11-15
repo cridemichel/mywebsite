@@ -825,7 +825,7 @@ Cristiano De Michele
 <h2>I filtri si imparano</h2>
 
 <img data-src="../images/cnn_filtri_imparati.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Nessuno sceglie i pesi dei filtri: partono casuali e li fissa la backpropagation, come quelli di un <code>DenseLayer</code>. Sopra, gli 8 filtri dello strato 1 della rete di due slide fa, dopo l’addestramento; sotto, le loro mappe sul 7.</p>
-<p>Ogni filtro fa una domanda su 3 × 3 pixel, e la sua mappa dice dove la risposta è sì. Con 8 filtri le domande sono semplici: quasi tutti rispondono al tratto, chi più sul lato di sopra, chi su quello di destra, e uno allo sfondo; sono meno netti del filtro scelto a mano nella slide 4. Più in profondità le domande riguardano forme più grandi: tratti nello strato 1, spigoli e curve nello strato 2. Il <code>DenseLayer</code> decide la cifra in base a quali forme ci sono e, a grandi linee, dove.</p>
+<p>Ogni filtro fa una domanda su 3 × 3 pixel, e la sua mappa dice dove la risposta è sì. Con 8 filtri le domande sono semplici: quasi tutti rispondono al tratto, chi più sul lato di sopra, chi su quello di destra, e uno allo sfondo; sono meno netti del filtro scelto a mano nella slide 4. Più in profondità le domande riguardano zone più grandi e combinano le risposte dello strato precedente: lo strato 1 trova pezzi di tratto, lo strato 2 li mette insieme in spigoli e curve.</p>
 </section>
 <section id="argomenti-di-oggi" class="slide level2 smaller">
 <h2>Argomenti di oggi</h2>
