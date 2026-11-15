@@ -1417,7 +1417,7 @@ AbsLoss: 0.5</code></pre>
 <p><strong>Avviso</strong></p>
 </div>
 <div class="callout-content">
-<p>Se un metodo virtuale ha argomenti di default, si scrivono gli stessi valori in tutte le classi. Il framework fa così con il metodo virtuale <code>init_weights(int type = 0, int distro = 1)</code>: stessi default nella classe base <code>Layer</code>, in <code>DenseLayer</code> e in <code>Sequential</code>.</p>
+<p>Se un metodo virtuale ha argomenti di default, si scrivono gli stessi valori in tutte le classi. Il framework fa così con il metodo virtuale <code>init_weights</code>, che sceglie come inizializzare i pesi: stessi default nella classe base <code>Layer</code>, in <code>DenseLayer</code> e in <code>Sequential</code>.</p>
 </div>
 </div>
 </div>

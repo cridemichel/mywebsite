@@ -778,7 +778,7 @@ Cristiano De Michele
 <h2>Gli argomenti di oggi nel framework (segue)</h2>
 <ul>
 <li><strong>Metodi <code>const</code>.</strong> I metodi che leggono soltanto sono <code>const</code>: <code>get_type() const</code> restituisce il nome del layer, <code>size() const</code> il numero di layer di <code>Sequential</code>.</li>
-<li><strong>Argomenti di default nei costruttori.</strong> Gli argomenti di default sono quelli delle funzioni della Lezione 05; oggi li vediamo in un costruttore. Il costruttore di <code>DenseLayer</code> è <code>DenseLayer(int Nn, int Ni, int type = 0, int distro = 1)</code>: <code>Nn</code> neuroni, <code>Ni</code> ingressi; <code>type</code> e <code>distro</code> scelgono come inizializzare i pesi. Chi indica solo <code>Nn</code> e <code>Ni</code> ottiene <code>type = 0</code> e <code>distro = 1</code>.</li>
+<li><strong>Argomenti di default nei costruttori.</strong> Gli argomenti di default sono quelli delle funzioni della Lezione 05; oggi li vediamo in un costruttore. Il costruttore di <code>DenseLayer</code> ha quattro argomenti: <code>Nn</code> neuroni, <code>Ni</code> ingressi, e due che scelgono come inizializzare i pesi. Gli ultimi due hanno un valore di default: chi indica solo <code>Nn</code> e <code>Ni</code> ottiene l’inizializzazione di He con pesi gaussiani.</li>
 </ul>
 </section>
 <section id="ripasso-variabili-e-indirizzi" class="slide level2 smaller">
