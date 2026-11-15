@@ -805,7 +805,7 @@ Cristiano De Michele
 </section>
 <section id="quanti-filtri" class="slide level2 smaller">
 <h2>Quanti filtri</h2>
-<p>Il numero di filtri di uno strato si sceglie, come il numero di neuroni di un <code>DenseLayer</code>. Ogni filtro produce una mappa, quindi i canali in uscita sono tanti quanti i filtri; i canali in ingresso, le mappe dello strato precedente, fissano invece la profondità di ogni filtro.</p>
+<p>Il numero di filtri di uno strato si sceglie, come il numero di neuroni di un <code>DenseLayer</code>. Ogni filtro produce una mappa, quindi i canali in uscita sono tanti quanti i filtri; i canali in ingresso, le mappe dello strato precedente, fissano invece quanti quadrati di pesi ha ogni filtro: uno per canale, <span class="math inline">\(C \times K \times K\)</span> pesi in tutto.</p>
 <p>Uno strato con <span class="math inline">\(F\)</span> filtri <span class="math inline">\(K \times K\)</span> su <span class="math inline">\(C\)</span> canali ha <span class="math display">\[F\,(C K^2 + 1)\]</span> parametri: <span class="math inline">\(8\,(1 \cdot 9 + 1) = 80\)</span> nello strato 1, <span class="math inline">\(16\,(8 \cdot 9 + 1) = 1168\)</span> nello strato 2.</p>
 <p>Di solito i canali crescono mentre le mappe si rimpiccioliscono: dopo lo strato 1 ci sono <span style="white-space: nowrap">8 × 26 × 26 = 5408</span> valori, dopo lo strato 2 sono <span style="white-space: nowrap">16 × 11 × 11 = 1936</span>. Più domande, su zone più grandi, in meno posizioni.</p>
 </section>
@@ -890,7 +890,7 @@ Cristiano De Michele
 <!-- Figura: images/cnn_appr_pool_backprop.png (figura_pool_backprop): il riquadro 4 x 4 della slide "Il max pooling"
      della Lezione 15; i delta in arrivo sono illustrativi. -->
 
-<img data-src="../images/cnn_appr_pool_backprop.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><p>Il max pooling non ha pesi: nella backpropagation fa solo passare il segnale d’errore. Ogni valore in uscita è il massimo di quattro, e cambia solo se cambia il massimo: il <span class="math inline">\(\delta\)</span> va tutto al massimo, gli altri tre ricevono 0. Per questo nel passo in avanti si ricorda dove stava il massimo. Poi la ReLU azzera il <span class="math inline">\(\delta\)</span> dove <span class="math inline">\(z &lt; 0\)</span>, come in un MLP.</p>
+<img data-src="../images/cnn_appr_pool_backprop.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><p>Il pooling calcola <span class="math inline">\(y = \max(a_1, a_2, a_3, a_4)\)</span> per ogni quadrato. Nel quadrato in alto a destra <span class="math inline">\(y = 2{,}91\)</span>: se 2,91 cresce di 0,01, <span class="math inline">\(y\)</span> cresce di 0,01; se cresce 2,32, <span class="math inline">\(y\)</span> non cambia. Quindi <span class="math display">\[\frac{\partial y}{\partial a_j} = \begin{cases} 1 &amp; \text{se } a_j \text{ è il massimo} \\ 0 &amp; \text{altrimenti} \end{cases} \qquad\qquad \frac{\partial E}{\partial a_j} = \delta \, \frac{\partial y}{\partial a_j}\]</span> dove <span class="math inline">\(\delta = \partial E / \partial y\)</span> arriva dallo strato successivo. Il <span class="math inline">\(\delta\)</span> va tutto al massimo e gli altri tre ricevono 0; per questo nel passo in avanti si ricorda dove stava il massimo. Il pooling non ha pesi da aggiornare.</p>
 </section>
 <section id="convoluzione-o-correlazione" class="slide level2 smaller">
 <h2>Convoluzione o correlazione?</h2>
