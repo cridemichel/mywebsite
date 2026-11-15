@@ -808,7 +808,7 @@ Cristiano De Michele
 <li>Più filtri danno più mappe, i <strong>canali</strong>: qui 8. Il max pooling ne riduce i valori a un quarto.</li>
 <li>Ogni filtro dello strato 2 pesa 3 × 3 pixel di <strong>tutte</strong> le 8 mappe, con pesi diversi per ogni mappa (<span class="math inline">\(8 \cdot 9 = 72\)</span> pesi): combina i bordi in forme più grandi.</li>
 <li>Il <strong>flatten</strong> mette i 16 × 5 × 5 valori in un vettore di 400 (una matrice con una colonna), come i pixel di MNIST. Nei diagrammi uno strato è un gruppo di <code>Layer</code> del framework: qui i pesi con la loro attivazione.</li>
-<li>Questa CNN è una fra le tante possibili: 5258 parametri, 98,4-98,6% sul test, contro il 97,8% della rete 784 → 128 → 10 (101 770 parametri), con lo stesso addestramento.</li>
+<li>Questa CNN è una fra le tante possibili (<a href="../approfondimento-cnn/index.html">approfondimento</a>): 5258 parametri, 98,4-98,6% sul test, contro il 97,8% della 784 → 128 → 10 (101 770 parametri, stesso addestramento).</li>
 </ul>
 </section>
 <section id="il-max-pooling" class="slide level2 smaller">
