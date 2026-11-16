@@ -855,6 +855,33 @@ Y = A\, V,
 <li>Dividendo per <span class="math inline">\(\sqrt{d_k}\)</span> la varianza è 1 per ogni <span class="math inline">\(d_k\)</span>: i pesi partono distribuiti, e l’addestramento decide quali token contano.</li>
 </ul>
 </section>
+<section id="altre-misure-di-somiglianza" class="slide level2 smaller">
+<h2>Altre misure di somiglianza</h2>
+<!-- Fonti verificate il 16/11/2026: Bahdanau, Cho, Bengio 2014 (additiva); Kim, Papamakarios, Mnih, "The Lipschitz
+     constant of self-attention" (arXiv:2006.04710): dot-product non lipschitziana, L2 lipschitziana con W_Q = W_K;
+     Swin Transformer V2 (arXiv:2111.09883): cos(q, k)/tau + B, tau appreso, addestramento piu' stabile; ViT-22B
+     (Dehghani et al., ICML 2023): LayerNorm su query e key contro la crescita dei logit; Katharopoulos et al.,
+     "Transformers are RNNs" (arXiv:2006.16236): phi(q)^T phi(k), da O(N^2) a O(N). -->
+<p><span class="math inline">\(s_{ij} = \mathbf{x}_i^\mathsf{T} W_Q^\mathsf{T} W_K\, \mathbf{x}_j / \sqrt{d_k}\)</span> è una forma bilineare appresa, di rango al più <span class="math inline">\(d_k\)</span>, non una distanza: in generale <span class="math inline">\(s_{ij} \ne s_{ji}\)</span>, e <span class="math inline">\(s_{ii}\)</span> non è il massimo della riga. Come misurare la somiglianza lo impara la rete. Si usano anche:</p>
+<ul>
+<li><strong>additiva</strong> (Bahdanau e altri, 2014): <span class="math inline">\(s_{ij} = \mathbf{w}^\mathsf{T} \tanh(A\, \mathbf{q}_i + B\, \mathbf{k}_j)\)</span>, un piccolo MLP; più flessibile, ma non è un solo prodotto di matrici;</li>
+<li><strong>distanza</strong>: <span class="math inline">\(s_{ij} = -\|\mathbf{q}_i - \mathbf{k}_j\|^2\)</span>; il termine <span class="math inline">\(-\|\mathbf{q}_i\|^2\)</span> si semplifica nella softmax. Con <span class="math inline">\(W_Q = W_K\)</span> l’attenzione è lipschitziana, con il prodotto scalare no (Kim e altri, 2021);</li>
+<li><strong>coseno</strong> con una temperatura appresa, <span class="math inline">\(s_{ij} = \cos(\mathbf{q}_i, \mathbf{k}_j)/\tau\)</span> (Swin V2), o una Norm su query e key (ViT-22B): i punteggi non crescono senza limite, e l’addestramento dei modelli grandi resta stabile.</li>
+</ul>
+</section>
+<section id="attenzione-lineare" class="slide level2 smaller">
+<h2>Attenzione lineare</h2>
+<p>Con un kernel <span class="math inline">\(e^{\mathbf{q} \cdot \mathbf{k}} \to \phi(\mathbf{q})^\mathsf{T} \phi(\mathbf{k})\)</span> (Katharopoulos e altri, 2020, con <span class="math inline">\(\phi(x) = \mathrm{elu}(x) + 1\)</span> componente per componente) i pesi non normalizzati sono <span class="math inline">\(\phi(Q)\, \phi(K)^\mathsf{T}\)</span> e, per l’associatività del prodotto, <span class="math display">\[\big(\phi(Q)\, \phi(K)^\mathsf{T}\big)\, V = \phi(Q)\, \big(\phi(K)^\mathsf{T}\, V\big)\]</span> A sinistra si costruisce una matrice <span class="math inline">\(n \times n\)</span>, a destra solo una <span class="math inline">\(d_k \times d_k\)</span>: il costo passa da <span class="math inline">\(O(n^2)\)</span> a <span class="math inline">\(O(n)\)</span> nella lunghezza della sequenza. Al posto della softmax, la riga <span class="math inline">\(i\)</span> si divide per <span class="math inline">\(\phi(\mathbf{q}_i)^\mathsf{T} \sum_j \phi(\mathbf{k}_j)\)</span>.</p>
+<p>Il prodotto scalare con la softmax resta il più usato: per sequenze non troppo lunghe è un solo prodotto di matrici, il più veloce sulle GPU.</p>
+</section>
+<section id="attenzione-e-reti-di-hopfield" class="slide level2 smaller">
+<h2>Attenzione e reti di Hopfield</h2>
+<!-- H. Ramsauer et al., "Hopfield Networks is All You Need" (arXiv:2008.02217): E = -lse(beta, X^T xi) + xi^T xi / 2
+     + beta^-1 log N + M^2 / 2, xi_new = X softmax(beta X^T xi), beta = 1/sqrt(d_k); punti fissi: media di tutti i
+     pattern, stati metastabili (media di un sottoinsieme), un solo pattern. Il gradiente di E si annulla proprio
+     in xi = X softmax(beta X^T xi). -->
+<p>Una rete di Hopfield memorizza <span class="math inline">\(N\)</span> pattern, le colonne di <span class="math inline">\(X\)</span>, e da uno stato <span class="math inline">\(\boldsymbol{\xi}\)</span> scende verso il pattern più simile; nella versione moderna, a stati continui (Ramsauer e altri, 2020), l’energia e l’aggiornamento, i cui punti fissi annullano il gradiente di <span class="math inline">\(E\)</span>, sono <span class="math display">\[E(\boldsymbol{\xi}) = -\frac{1}{\beta} \ln \sum_{\mu=1}^{N} e^{\beta\, \mathbf{x}_\mu \cdot \boldsymbol{\xi}} + \frac{1}{2}\, \boldsymbol{\xi} \cdot \boldsymbol{\xi} + \text{cost.}, \qquad \boldsymbol{\xi}^{\text{nuovo}} = X\, \mathrm{softmax}\big(\beta\, X^\mathsf{T} \boldsymbol{\xi}\big)\]</span> Con lo stato dato dalla query e i pattern dalle key, e moltiplicando per <span class="math inline">\(W_V\)</span>, è l’attenzione, con <span class="math inline">\(\beta = 1/\sqrt{d_k}\)</span> nel ruolo dell’inverso della temperatura. A <span class="math inline">\(\beta\)</span> grande lo stato va su un solo pattern, a <span class="math inline">\(\beta\)</span> piccolo su una media di più pattern o di tutti. Scegliere la misura di somiglianza vuol dire scegliere l’energia di interazione fra query e pattern.</p>
+</section>
 <section id="la-maschera-causale" class="slide level2 smaller">
 <h2>La maschera causale</h2>
 <div class="columns">
@@ -1166,7 +1193,7 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
 <!-- Risultati del prototipo in NEURAL++ (PROGETTI/prova_vit/LEGGIMI.txt, 12/11/2026, M3 Max, 3 semi): ViT 10 698
      parametri 97,66 +- 0,09 (AdamW, lr a coseno, 30 epoche); 96,4-96,5 con lr costante; SGD un'immagine per passo
      97,59 (coseno); senza posizioni 92,5; MLP 784-13-10 (10 345 parametri) 95,0; senza attenzione a pari parametri
-     97,76; uscita da un solo token: angolo 93,5 contro 13,7 senza attenzione, centro 95,9 contro 71,1. -->
+     97,76; uscita da un solo token (LEGGIMI, 3 semi): angolo 93,56 contro 13,75 senza attenzione, centro 95,89 contro 70,95. -->
 <p>Con <span class="math inline">\(d = d_k = 32\)</span>, un MLP <span class="math inline">\(32 \to 64 \to 32\)</span> e la ReLU i parametri sono 10 698: <span class="math inline">\(W\)</span> 1568, <span class="math inline">\(R\)</span> 512, <span class="math inline">\(W_Q, W_K, W_V, W_O\)</span> 4096, MLP 4192, testa 330. Sul test di MNIST:</p>
 <table class="caption-top">
 <thead>
@@ -1199,7 +1226,7 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
 </tr>
 </tbody>
 </table>
-<p>Senza le posizioni il modello non sa da quale quadrato viene un token. Con la media dei token l’attenzione non aiuta: senza, a pari parametri, l’MLP per token arriva al 97,8%. Si vede quando l’uscita legge <strong>un solo</strong> token: da un quadrato d’angolo 93,5% con l’attenzione e 13,7% senza, da uno centrale 95,9% e 71,1%.</p>
+<p>Senza le posizioni il modello non sa da quale quadrato viene un token. Con la media dei token l’attenzione non aiuta: senza, a pari parametri, l’MLP per token arriva al 97,8%. Si vede quando l’uscita legge <strong>un solo</strong> token: da un quadrato d’angolo 93,6% con l’attenzione e 13,8% senza, da uno centrale 95,9% e 71,0%.</p>
 </section>
 <section id="strumenti-e-web" class="slide level2 smaller">
 <h2>Strumenti e web</h2>
