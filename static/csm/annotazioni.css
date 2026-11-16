@@ -127,3 +127,7 @@
 /* Un file lungo con righe di commento larghe (es. N3 overloading.hpp, 13/10/2026):
    un filo piu' piccolo di .codice-mini, per farlo stare in due colonne.     */
 .reveal .codice-micro pre code { font-size: 0.74em; }
+
+/* Un esempio di 42 righe a tutta larghezza (N13, lab 6, 16/11/2026): un filo piu'
+   piccolo di .codice-micro, per farlo stare in altezza senza dividerlo.           */
+.reveal .codice-nano pre code { font-size: 0.66em; }
