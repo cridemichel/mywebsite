@@ -835,9 +835,10 @@ a_{ij} = \frac{e^{s_{ij}}}{\sum_{j'} e^{s_{ij'}}}, \qquad
 <section id="lattenzione-in-forma-matriciale" class="slide level2 smaller">
 <h2>L’attenzione in forma matriciale</h2>
 <p>Con <span class="math inline">\(X\)</span> che ha per righe i token, la riga <span class="math inline">\(i\)</span> di <span class="math inline">\(X W_Q^\mathsf{T}\)</span> è <span class="math inline">\((W_Q \mathbf{x}_i)^\mathsf{T} = \mathbf{q}_i^\mathsf{T}\)</span>; quindi <span class="math display">\[
-Q = X W_Q^\mathsf{T}, \quad K = X W_K^\mathsf{T}, \quad V = X W_V^\mathsf{T} \ \ (n \times d_k), \qquad
-S = \frac{Q K^\mathsf{T}}{\sqrt{d_k}} \ \ (n \times n), \qquad
-Y = A\, V,
+\begin{gathered}
+Q = X W_Q^\mathsf{T}, \quad K = X W_K^\mathsf{T}, \quad V = X W_V^\mathsf{T} \ \ (n \times d_k) \\
+S = \frac{Q K^\mathsf{T}}{\sqrt{d_k}} \ \ (n \times n), \qquad Y = A\, V
+\end{gathered}
 \]</span> con <span class="math inline">\(A\)</span> la softmax di <span class="math inline">\(S\)</span> riga per riga: l’elemento <span class="math inline">\((i, j)\)</span> di <span class="math inline">\(Q K^\mathsf{T}\)</span> è proprio <span class="math inline">\(\mathbf{q}_i \cdot \mathbf{k}_j\)</span>.</p>
 <ul>
 <li><strong>Costo.</strong> <span class="math inline">\(S\)</span> ha <span class="math inline">\(n^2\)</span> elementi: raddoppiando la sequenza il costo dell’attenzione quadruplica. Per questo il contesto è limitato (2048 token in GPT-3).</li>
@@ -982,7 +983,10 @@ Y =
  1.67284 0.836421</code></pre>
 </div><div class="column" style="width:66%;">
 <p><strong>A mano, il primo token:</strong> <span class="math inline">\(\mathbf{q}_1 = (1, 0)\)</span>, <span class="math inline">\(\mathbf{k}_j = (2, 0), (0, 1), (2, 1)\)</span>, quindi <span class="math inline">\(s_{1j} = (\sqrt2, 0, \sqrt2)\)</span> e <span class="math inline">\(a_{1j} = (e^{\sqrt2}, 1, e^{\sqrt2}) / (2 e^{\sqrt2} + 1) = (0.446, 0.108, 0.446)\)</span>, la prima riga di <code>A</code>. Con <span class="math inline">\(\mathbf{v}_j = (1, 0), (1, 1), (2, 1)\)</span>: <span class="math display">\[
-\mathbf{y}_1 = 0.446\,(1, 0) + 0.108\,(1, 1) + 0.446\,(2, 1) = (1.446,\ 0.554).
+\begin{aligned}
+\mathbf{y}_1 &amp;= 0.446\,(1, 0) + 0.108\,(1, 1) + 0.446\,(2, 1) \\
+&amp;= (1.446,\ 0.554)
+\end{aligned}
 \]</span></p>
 <p><strong>Provate:</strong> prima della softmax, negli elementi di <code>S</code> sopra la diagonale mettete <span style="white-space:nowrap"><code>-INFINITY</code></span> (da <code>&lt;cmath&gt;</code>). Cosa diventa la prima riga di <code>A</code>?</p>
 <p><span class="fragment"><code>1 0 0</code>: il primo token guarda solo se stesso. La seconda riga diventa <code>0.19557 0.80443 0</code>, la terza non cambia.</span></p>
