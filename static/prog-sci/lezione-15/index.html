@@ -825,7 +825,7 @@ Cristiano De Michele
 <h2>I filtri si imparano</h2>
 
 <img data-src="../images/cnn_filtri_imparati.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p>Nessuno sceglie i pesi dei filtri: partono casuali e li fissa la backpropagation, come quelli di un <code>DenseLayer</code>. Sopra, gli 8 filtri dello strato 1 della rete di due slide fa, dopo l’addestramento; sotto, le loro mappe sul 7.</p>
-<p>Ogni filtro fa una domanda su 3 × 3 pixel, e la sua mappa dice dove la risposta è sì. Con 8 filtri le domande sono semplici: quasi tutti rispondono al tratto, chi più sul lato di sopra, chi su quello di destra, e uno allo sfondo; sono meno netti del filtro scelto a mano nella slide 4. Più in profondità le domande riguardano zone più grandi e combinano le risposte dello strato precedente: lo strato 1 trova pezzi di tratto, lo strato 2 li mette insieme in spigoli e curve.</p>
+<p>Ogni filtro dello strato 1 fa una domanda su 3 × 3 pixel, e la sua mappa dice dove la risposta è sì. Le domande di questi 8 filtri sono semplici: quasi tutti rispondono al tratto, chi più sul lato di sopra, chi su quello di destra, e uno allo sfondo; sono meno netti del filtro scelto a mano nella slide 4. Più in profondità le domande riguardano zone più grandi e combinano le risposte dello strato precedente: lo strato 1 trova pezzi di tratto, lo strato 2 li mette insieme in spigoli e curve.</p>
 </section>
 <section id="argomenti-di-oggi" class="slide level2 smaller">
 <h2>Argomenti di oggi</h2>
@@ -935,12 +935,14 @@ Cristiano De Michele
 </section>
 <section id="provate-i-numeri-magici" class="slide level2 smaller">
 <h2>Provate: i numeri magici</h2>
-<p>In <code>magici.cpp</code>, alla riga 13:</p>
+<p>In <code>magici.cpp</code>:</p>
 <ol type="1">
+<li>Coprite i commenti e leggete solo la riga 13, <code>init_weights(0, 1);</code>. Cosa sceglie?<br>
+<span class="fragment">Non si sa: il significato di <code>0</code> e <code>1</code> sta solo nelle righe 3 e 4.</span></li>
 <li>Scambiate i due argomenti: <code>init_weights(1, 0);</code>. Compila? Cosa stampa?<br>
-<span class="fragment">Compila senza avvisi e stampa <code>Xavier, uniforme</code>: per il compilatore sono due <code>int</code> come prima.</span></li>
-<li>Scrivete <code>init_weights(7, 1);</code>. Compila? Cosa stampa?<br>
-<span class="fragment">Compila e stampa <code>Xavier, gaussiana</code>: ogni valore diverso da 0 diventa Xavier, e nessuno se ne accorge.</span></li>
+<span class="fragment">Compila senza avvisi e stampa <code>Xavier, uniforme</code>.</span></li>
+<li>Un controllo nella funzione che rifiuti i valori diversi da 0 e 1 scoprirebbe <code>init_weights(7, 1)</code>, ma solo all’esecuzione. Scoprirebbe lo scambio del punto 2?<br>
+<span class="fragment">No: <code>1</code> e <code>0</code> sono valori validi per tutti e due gli argomenti.</span></li>
 </ol>
 <div class="fragment">
 <p>Il compilatore non può aiutare: per lui <code>type</code> e <code>distro</code> sono due interi qualsiasi. Serve un tipo che ammetta solo i valori previsti, e che li chiami per nome.</p>
@@ -974,11 +976,11 @@ Cristiano De Michele
 <span id="cb5-18"><a aria-label="18"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:45%;">
-<p>Come in C, un <code>enum</code> è un tipo nuovo, un’<strong>enumerazione</strong>, che elenca i suoi valori, gli <strong>enumeratori</strong>, numerati da 0. In C++ si scrive <code>InitType</code>, senza <code>enum</code> davanti.</p>
+<p>Come in C, un <code>enum</code> è un tipo nuovo, un’<strong>enumerazione</strong>, che elenca i suoi valori, gli <strong>enumeratori</strong>, numerati da 0. Per usare il tipo, in C++ basta <code>InitType</code> (riga 6), senza <code>enum</code> davanti.</p>
 <p>Due difetti:</p>
 <ul>
-<li>gli enumeratori stanno nello scope dell’<code>enum</code>, qui globale: un altro <code>enum</code> non può avere un valore <code>UNIFORM</code>;</li>
-<li>un <code>enum</code> si converte da solo in <code>int</code>: la riga 15 stampa <code>1</code>.</li>
+<li>gli enumeratori stanno nello scope che contiene l’<code>enum</code>, qui quello globale: un altro <code>enum</code> non può avere un valore <code>UNIFORM</code>;</li>
+<li>un <code>enum</code> si converte da solo in <code>int</code>: la riga 16 stampa <code>1</code>.</li>
 </ul>
 </div></div>
 </section>
