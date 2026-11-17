@@ -1200,35 +1200,35 @@ particle position is (4,5,6)</code></pre>
 <section id="the-skeletons-2" class="slide level2 smaller codice-intero codice-micro">
 <h2>The skeletons (2)</h2>
 <p><code>project/pmatrix.hpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a aria-label="1"></a>  <span class="co">// matrix times vector: (M*V)(i) = sum over j of M(i,j)*V(j)</span></span>
-<span id="cb18-2"><a aria-label="2"></a>  pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="op">&amp;</span>V2<span class="op">)</span> <span class="at">const</span></span>
-<span id="cb18-3"><a aria-label="3"></a>    <span class="op">{</span></span>
-<span id="cb18-4"><a aria-label="4"></a>    <span class="op">}</span></span>
-<span id="cb18-5"><a aria-label="5"></a></span>
-<span id="cb18-6"><a aria-label="6"></a>  <span class="co">// vector times matrix: (V*M)(j) = sum over i of V(i)*M(i,j) (friend function)</span></span>
-<span id="cb18-7"><a aria-label="7"></a>  <span class="kw">friend</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;&amp;</span> V1<span class="op">,</span> <span class="at">const</span> pmatrixq<span class="op">&amp;</span> M2<span class="op">)</span></span>
-<span id="cb18-8"><a aria-label="8"></a>    <span class="op">{</span></span>
-<span id="cb18-9"><a aria-label="9"></a>    <span class="op">}</span></span>
-<span id="cb18-10"><a aria-label="10"></a></span>
-<span id="cb18-11"><a aria-label="11"></a>  <span class="co">// matrix times matrix: (M1*M2)(i,j) = sum over k of M1(i,k)*M2(k,j)</span></span>
-<span id="cb18-12"><a aria-label="12"></a>  pmatrixq <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
-<span id="cb18-13"><a aria-label="13"></a>    <span class="op">{</span></span>
-<span id="cb18-14"><a aria-label="14"></a>    <span class="op">}</span></span>
-<span id="cb18-15"><a aria-label="15"></a></span>
-<span id="cb18-16"><a aria-label="16"></a>  <span class="co">// M1 *= M2, i.e. M1 = M1*M2</span></span>
-<span id="cb18-17"><a aria-label="17"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">*=(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span></span>
-<span id="cb18-18"><a aria-label="18"></a>    <span class="op">{</span></span>
-<span id="cb18-19"><a aria-label="19"></a>    <span class="op">}</span></span>
-<span id="cb18-20"><a aria-label="20"></a></span>
-<span id="cb18-21"><a aria-label="21"></a>  <span class="co">// transpose: MT(i,j) = M(j,i)</span></span>
-<span id="cb18-22"><a aria-label="22"></a>  pmatrixq transpose<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span></span>
-<span id="cb18-23"><a aria-label="23"></a>    <span class="op">{</span></span>
-<span id="cb18-24"><a aria-label="24"></a>    <span class="op">}</span></span>
-<span id="cb18-25"><a aria-label="25"></a></span>
-<span id="cb18-26"><a aria-label="26"></a>  <span class="co">// M1 == M2: true if all the elements are equal</span></span>
-<span id="cb18-27"><a aria-label="27"></a>  <span class="dt">bool</span> <span class="kw">operator</span><span class="op">==(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
-<span id="cb18-28"><a aria-label="28"></a>    <span class="op">{</span></span>
-<span id="cb18-29"><a aria-label="29"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-startfrom="37"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 36;"><span id="cb18-37"><a aria-label="37"></a>  <span class="co">// matrix times vector: (M*V)(i) = sum over j of M(i,j)*V(j)</span></span>
+<span id="cb18-38"><a aria-label="38"></a>  pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="op">&amp;</span>V2<span class="op">)</span> <span class="at">const</span></span>
+<span id="cb18-39"><a aria-label="39"></a>    <span class="op">{</span></span>
+<span id="cb18-40"><a aria-label="40"></a>    <span class="op">}</span></span>
+<span id="cb18-41"><a aria-label="41"></a></span>
+<span id="cb18-42"><a aria-label="42"></a>  <span class="co">// vector times matrix: (V*M)(j) = sum over i of V(i)*M(i,j) (friend function)</span></span>
+<span id="cb18-43"><a aria-label="43"></a>  <span class="kw">friend</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;&amp;</span> V1<span class="op">,</span> <span class="at">const</span> pmatrixq<span class="op">&amp;</span> M2<span class="op">)</span></span>
+<span id="cb18-44"><a aria-label="44"></a>    <span class="op">{</span></span>
+<span id="cb18-45"><a aria-label="45"></a>    <span class="op">}</span></span>
+<span id="cb18-46"><a aria-label="46"></a></span>
+<span id="cb18-47"><a aria-label="47"></a>  <span class="co">// matrix times matrix: (M1*M2)(i,j) = sum over k of M1(i,k)*M2(k,j)</span></span>
+<span id="cb18-48"><a aria-label="48"></a>  pmatrixq <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
+<span id="cb18-49"><a aria-label="49"></a>    <span class="op">{</span></span>
+<span id="cb18-50"><a aria-label="50"></a>    <span class="op">}</span></span>
+<span id="cb18-51"><a aria-label="51"></a></span>
+<span id="cb18-52"><a aria-label="52"></a>  <span class="co">// M1 *= M2, i.e. M1 = M1*M2</span></span>
+<span id="cb18-53"><a aria-label="53"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">*=(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span></span>
+<span id="cb18-54"><a aria-label="54"></a>    <span class="op">{</span></span>
+<span id="cb18-55"><a aria-label="55"></a>    <span class="op">}</span></span>
+<span id="cb18-56"><a aria-label="56"></a></span>
+<span id="cb18-57"><a aria-label="57"></a>  <span class="co">// transpose: MT(i,j) = M(j,i)</span></span>
+<span id="cb18-58"><a aria-label="58"></a>  pmatrixq transpose<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span></span>
+<span id="cb18-59"><a aria-label="59"></a>    <span class="op">{</span></span>
+<span id="cb18-60"><a aria-label="60"></a>    <span class="op">}</span></span>
+<span id="cb18-61"><a aria-label="61"></a></span>
+<span id="cb18-62"><a aria-label="62"></a>  <span class="co">// M1 == M2: true if all the elements are equal</span></span>
+<span id="cb18-63"><a aria-label="63"></a>  <span class="dt">bool</span> <span class="kw">operator</span><span class="op">==(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
+<span id="cb18-64"><a aria-label="64"></a>    <span class="op">{</span></span>
+<span id="cb18-65"><a aria-label="65"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="hints-assignments-and-scalars" class="slide level2 smaller">
 <h2>Hints: assignments and scalars</h2>

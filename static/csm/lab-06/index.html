@@ -1424,36 +1424,36 @@ Cristiano De Michele
 <p><code>project/simtest.cpp</code></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a>      <span class="co">// save_mgl_snapshot(): one line for each particle</span></span>
-<span id="cb22-2"><a aria-label="2"></a>      save_mgl_snapshot<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
-<span id="cb22-3"><a aria-label="3"></a>      <span class="bu">std::</span>ifstream f<span class="op">(</span><span class="st">"cnf-0.mgl"</span><span class="op">);</span> <span class="co">// a file for reading</span></span>
-<span id="cb22-4"><a aria-label="4"></a>      <span class="bu">std::</span>string first<span class="op">,</span> line<span class="op">;</span></span>
-<span id="cb22-5"><a aria-label="5"></a>      <span class="dt">int</span> nl <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb22-6"><a aria-label="6"></a>      <span class="cf">if</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> first<span class="op">))</span> <span class="co">// false at the end</span></span>
-<span id="cb22-7"><a aria-label="7"></a>        nl <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb22-8"><a aria-label="8"></a>      <span class="cf">while</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> line<span class="op">))</span></span>
-<span id="cb22-9"><a aria-label="9"></a>        nl<span class="op">++;</span></span>
-<span id="cb22-10"><a aria-label="10"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"cnf-0.mgl: "</span> <span class="op">&lt;&lt;</span> nl</span>
-<span id="cb22-11"><a aria-label="11"></a>                <span class="op">&lt;&lt;</span> <span class="st">" lines, the first one is: "</span> <span class="op">&lt;&lt;</span> first <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb22-12"><a aria-label="12"></a>    <span class="op">}</span></span>
-<span id="cb22-13"><a aria-label="13"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-startfrom="50"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 49;"><span id="cb22-50"><a aria-label="50"></a>      <span class="co">// save_mgl_snapshot(): one line for each particle</span></span>
+<span id="cb22-51"><a aria-label="51"></a>      save_mgl_snapshot<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb22-52"><a aria-label="52"></a>      <span class="bu">std::</span>ifstream f<span class="op">(</span><span class="st">"cnf-0.mgl"</span><span class="op">);</span> <span class="co">// a file for reading</span></span>
+<span id="cb22-53"><a aria-label="53"></a>      <span class="bu">std::</span>string first<span class="op">,</span> line<span class="op">;</span></span>
+<span id="cb22-54"><a aria-label="54"></a>      <span class="dt">int</span> nl <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb22-55"><a aria-label="55"></a>      <span class="cf">if</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> first<span class="op">))</span> <span class="co">// false at the end</span></span>
+<span id="cb22-56"><a aria-label="56"></a>        nl <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb22-57"><a aria-label="57"></a>      <span class="cf">while</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> line<span class="op">))</span></span>
+<span id="cb22-58"><a aria-label="58"></a>        nl<span class="op">++;</span></span>
+<span id="cb22-59"><a aria-label="59"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"cnf-0.mgl: "</span> <span class="op">&lt;&lt;</span> nl</span>
+<span id="cb22-60"><a aria-label="60"></a>                <span class="op">&lt;&lt;</span> <span class="st">" lines, the first one is: "</span> <span class="op">&lt;&lt;</span> first <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb22-61"><a aria-label="61"></a>    <span class="op">}</span></span>
+<span id="cb22-62"><a aria-label="62"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-startfrom="15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 14;"><span id="cb23-15"><a aria-label="15"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb23-16"><a aria-label="16"></a><span class="op">{</span></span>
-<span id="cb23-17"><a aria-label="17"></a>  simtest<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span> particleLJ<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;</span> st<span class="op">;</span></span>
-<span id="cb23-18"><a aria-label="18"></a>  <span class="co">// init_rng(): the same seed gives the same random numbers</span></span>
-<span id="cb23-19"><a aria-label="19"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
-<span id="cb23-20"><a aria-label="20"></a>  <span class="dt">double</span> x1 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
-<span id="cb23-21"><a aria-label="21"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
-<span id="cb23-22"><a aria-label="22"></a>  <span class="dt">double</span> x2 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
-<span id="cb23-23"><a aria-label="23"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"init_rng(5) twice, the same number: "</span></span>
-<span id="cb23-24"><a aria-label="24"></a>            <span class="op">&lt;&lt;</span> <span class="op">(</span>x1 <span class="op">==</span> x2<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb23-25"><a aria-label="25"></a></span>
-<span id="cb23-26"><a aria-label="26"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
-<span id="cb23-27"><a aria-label="27"></a>  st<span class="op">.</span>prepare_initial_conf<span class="op">();</span> <span class="co">// simple cubic lattice</span></span>
-<span id="cb23-28"><a aria-label="28"></a>  st<span class="op">.</span>run<span class="op">();</span></span>
-<span id="cb23-29"><a aria-label="29"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb23-30"><a aria-label="30"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-startfrom="64"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 63;"><span id="cb23-64"><a aria-label="64"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb23-65"><a aria-label="65"></a><span class="op">{</span></span>
+<span id="cb23-66"><a aria-label="66"></a>  simtest<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span> particleLJ<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;</span> st<span class="op">;</span></span>
+<span id="cb23-67"><a aria-label="67"></a>  <span class="co">// init_rng(): the same seed gives the same random numbers</span></span>
+<span id="cb23-68"><a aria-label="68"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb23-69"><a aria-label="69"></a>  <span class="dt">double</span> x1 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
+<span id="cb23-70"><a aria-label="70"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb23-71"><a aria-label="71"></a>  <span class="dt">double</span> x2 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
+<span id="cb23-72"><a aria-label="72"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"init_rng(5) twice, the same number: "</span></span>
+<span id="cb23-73"><a aria-label="73"></a>            <span class="op">&lt;&lt;</span> <span class="op">(</span>x1 <span class="op">==</span> x2<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb23-74"><a aria-label="74"></a></span>
+<span id="cb23-75"><a aria-label="75"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb23-76"><a aria-label="76"></a>  st<span class="op">.</span>prepare_initial_conf<span class="op">();</span> <span class="co">// simple cubic lattice</span></span>
+<span id="cb23-77"><a aria-label="77"></a>  st<span class="op">.</span>run<span class="op">();</span></span>
+<span id="cb23-78"><a aria-label="78"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-79"><a aria-label="79"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </section>
 <section id="simtest.cpp-how-it-works" class="slide level2 smaller">
