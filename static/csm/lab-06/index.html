@@ -759,7 +759,7 @@ Cristiano De Michele
 <li><strong>Introduction to C++ (part VI)</strong> — virtual functions (example N13).</li>
 <li><strong>Lab #5: the solution</strong> — the methods of <code>pmatrixq</code>.</li>
 <li><strong>The simulation framework</strong> — the files of the Monte Carlo and molecular dynamics code: parameters, particles, and the class <code>sim</code>, the part common to MC and MD.</li>
-<li><strong>Task: the particles and the base class <code>sim</code></strong> — moves of a particle, Lennard-Jones potential and force; energy of a particle and total energy, periodic boundary conditions, initial configuration on a lattice, snapshots, random seed.</li>
+<li><strong>Task: the particles and the base class <code>sim</code></strong> — moves of a particle, Lennard-Jones potential; energy of a particle and total energy, periodic boundary conditions, initial configuration on a lattice, snapshots, random seed.</li>
 </ol>
 </section>
 <section>
@@ -1221,21 +1221,10 @@ Cristiano De Michele
 <span id="cb14-9"><a aria-label="9"></a>  ntype vij<span class="op">(</span>particleLJ P<span class="op">,</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> L<span class="op">)</span></span>
 <span id="cb14-10"><a aria-label="10"></a>    <span class="op">{</span></span>
 <span id="cb14-11"><a aria-label="11"></a>    <span class="op">}</span></span>
-<span id="cb14-12"><a aria-label="12"></a>  <span class="co">// L is a vector with box dimensions</span></span>
-<span id="cb14-13"><a aria-label="13"></a>  <span class="co">// vij will be the interaction potential between i and j</span></span>
-<span id="cb14-14"><a aria-label="14"></a>  <span class="co">// vijs will be the shifted interaction potential</span></span>
-<span id="cb14-15"><a aria-label="15"></a>  <span class="co">// wij is the virial (i.e. rij*fij) for calculating the pressure</span></span>
-<span id="cb14-16"><a aria-label="16"></a>  pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> fij<span class="op">(</span>particleLJ P<span class="op">,</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> L<span class="op">,</span> ntype <span class="op">&amp;</span>vij<span class="op">,</span> ntype<span class="op">&amp;</span> vijs<span class="op">,</span> ntype <span class="op">&amp;</span>wij<span class="op">)</span></span>
-<span id="cb14-17"><a aria-label="17"></a>    <span class="op">{</span></span>
-<span id="cb14-18"><a aria-label="18"></a>    <span class="op">}</span></span>
-<span id="cb14-19"><a aria-label="19"></a>  <span class="co">// vcut = vLJ(rc), i.e. the value of LJ potential at r=rc</span></span>
-<span id="cb14-20"><a aria-label="20"></a>  <span class="co">// this method should be called when initializing particles</span></span>
-<span id="cb14-21"><a aria-label="21"></a>  <span class="dt">void</span> set_vcut<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb14-22"><a aria-label="22"></a>    <span class="op">{</span></span>
-<span id="cb14-23"><a aria-label="23"></a>    <span class="op">}</span></span>
-<span id="cb14-24"><a aria-label="24"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb14-12"><a aria-label="12"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li><code>vij()</code>, <code>fij()</code>, <code>set_vcut()</code>: today’s task. <code>using pt::r, ...</code>: the base class depends on the template parameter (N10); <code>vcut</code> is <code>protected</code> in <code>particle</code>.</li>
+<li><code>vij()</code>: today’s task. The force, <code>fij()</code>, and the shifted potential, <code>set_vcut()</code>, will come with molecular dynamics.</li>
+<li><code>using pt::r, ...</code>: the base class depends on the template parameter (example N10).</li>
 </ul>
 </section>
 <section id="sim.hpp-the-base-class" class="slide level2 smaller codice-intero codice-micro">
@@ -1330,9 +1319,9 @@ Cristiano De Michele
 <span id="cb17-16"><a aria-label="16"></a> <span class="op">*</span></span>
 <span id="cb17-17"><a aria-label="17"></a> <span class="op">*</span> <span class="op">[*]</span> vij<span class="op">()</span></span>
 <span id="cb17-18"><a aria-label="18"></a> <span class="op">*</span> </span>
-<span id="cb17-19"><a aria-label="19"></a> <span class="op">*</span> <span class="op">[*]</span> set_vcut<span class="op">()</span></span>
+<span id="cb17-19"><a aria-label="19"></a> <span class="op">*</span> <span class="op">[</span> <span class="op">]</span> set_vcut<span class="op">()</span></span>
 <span id="cb17-20"><a aria-label="20"></a> <span class="op">*</span></span>
-<span id="cb17-21"><a aria-label="21"></a> <span class="op">*</span> <span class="op">[*]</span> fij<span class="op">()</span>  <span class="op">&lt;----</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-21"><a aria-label="21"></a> <span class="op">*</span> <span class="op">[</span> <span class="op">]</span> fij<span class="op">()</span>  <span class="op">&lt;----</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a aria-label="1"></a> <span class="op">*</span>  <span class="op">=====</span> base <span class="kw">class</span> <span class="op">(</span>common stuff <span class="cf">for</span> MC <span class="kw">and</span> MD<span class="op">)</span> <span class="op">=====</span>  </span>
 <span id="cb18-2"><a aria-label="2"></a> <span class="op">*</span></span>
@@ -1351,9 +1340,7 @@ Cristiano De Michele
 <ul>
 <li><code>store()</code> saves <code>r</code> in <code>rold</code>, <code>restore()</code> puts it back (a rejected Monte Carlo move); <code>tra_move(delr)</code>: <span class="math inline">\(\mathbf{r} \to \mathbf{r} + \delta\mathbf{r}\)</span>.</li>
 <li><code>vij(P, L)</code>: <span class="math inline">\(\mathbf{r}_{ij} = \mathbf{r} - \mathbf{r}_P\)</span>, then its minimum image (Lab #3), <span class="math inline">\(r = |\mathbf{r}_{ij}|\)</span>, and <span class="math inline">\(v(r) = 4\epsilon\left[(\sigma/r)^{12} - (\sigma/r)^6\right]\)</span> for <span class="math inline">\(r &lt; r_c\)</span>, 0 otherwise. Correct if <span class="math inline">\(r_c \le L/2\)</span> (here <span class="math inline">\(r_c = 5\)</span>, <span class="math inline">\(L/2 \simeq 6.3\)</span>).</li>
-<li><code>set_vcut()</code>: <code>vcut</code> <span class="math inline">\(= v(r_c)\)</span>.</li>
-<li><code>fij(P, L, vij, vijs, wij)</code> returns the force on this particle due to <code>P</code>, <span class="math display">\[\mathbf{F}_{ij} = -\nabla_i v = 24\epsilon\left[2(\sigma/r)^{12} - (\sigma/r)^6\right]
-\frac{\mathbf{r}_{ij}}{r^2}\]</span> and, through the arguments passed by reference, <code>vij</code> <span class="math inline">\(= v(r)\)</span>, <code>vijs</code> <span class="math inline">\(= v(r) - v(r_c)\)</span> (the shifted potential, continuous at <span class="math inline">\(r_c\)</span>) and the virial <code>wij</code> <span class="math inline">\(= \mathbf{r}_{ij} \cdot \mathbf{F}_{ij}\)</span>. For <span class="math inline">\(r \ge r_c\)</span> all of them are 0.</li>
+<li>The Monte Carlo needs only the energy, <code>vij()</code>: the force will be needed by molecular dynamics.</li>
 </ul>
 </section>
 <section id="hints-energy-and-pbc" class="slide level2 smaller">
@@ -1409,27 +1396,27 @@ Cristiano De Michele
 <span id="cb20-25"><a aria-label="25"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"tra_move: "</span> <span class="op">&lt;&lt;</span> moved</span>
 <span id="cb20-26"><a aria-label="26"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  store/restore: "</span> <span class="op">&lt;&lt;</span> back <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-startfrom="28"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 27;"><span id="cb21-28"><a aria-label="28"></a>      <span class="co">// vij(), fij() and set_vcut(): particles 0 and 1 are</span></span>
-<span id="cb21-29"><a aria-label="29"></a>      <span class="co">// nearest neighbours, at distance a; F must be equal to</span></span>
-<span id="cb21-30"><a aria-label="30"></a>      <span class="co">// -grad v (by finite differences), w to r.F</span></span>
-<span id="cb21-31"><a aria-label="31"></a>      ntype v<span class="op">,</span> vs<span class="op">,</span> w<span class="op">,</span> h <span class="op">=</span> <span class="fl">1e-6</span><span class="op">;</span></span>
-<span id="cb21-32"><a aria-label="32"></a>      parts<span class="op">[</span><span class="dv">0</span><span class="op">].</span>set_vcut<span class="op">();</span></span>
-<span id="cb21-33"><a aria-label="33"></a>      <span class="kw">auto</span> F <span class="op">=</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">].</span>fij<span class="op">(</span>parts<span class="op">[</span><span class="dv">1</span><span class="op">],</span> pars<span class="op">.</span>L<span class="op">,</span> v<span class="op">,</span> vs<span class="op">,</span> w<span class="op">);</span></span>
-<span id="cb21-34"><a aria-label="34"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> G<span class="op">,</span> Dr <span class="op">=</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">].</span>r <span class="op">-</span> parts<span class="op">[</span><span class="dv">1</span><span class="op">].</span>r<span class="op">;</span></span>
-<span id="cb21-35"><a aria-label="35"></a>      Dr <span class="op">=</span> Dr <span class="op">-</span> mulcw<span class="op">(</span>pars<span class="op">.</span>L<span class="op">,</span> rint<span class="op">(</span>divcw<span class="op">(</span>Dr<span class="op">,</span> pars<span class="op">.</span>L<span class="op">)));</span></span>
-<span id="cb21-36"><a aria-label="36"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> k<span class="op">++)</span></span>
-<span id="cb21-37"><a aria-label="37"></a>        <span class="op">{</span></span>
-<span id="cb21-38"><a aria-label="38"></a>          <span class="dt">particle_type</span> P <span class="op">=</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">],</span> M <span class="op">=</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
-<span id="cb21-39"><a aria-label="39"></a>          P<span class="op">.</span>r<span class="op">(</span>k<span class="op">)</span> <span class="op">+=</span> h<span class="op">;</span></span>
-<span id="cb21-40"><a aria-label="40"></a>          M<span class="op">.</span>r<span class="op">(</span>k<span class="op">)</span> <span class="op">-=</span> h<span class="op">;</span></span>
-<span id="cb21-41"><a aria-label="41"></a>          G<span class="op">(</span>k<span class="op">)</span> <span class="op">=</span> <span class="op">-(</span>P<span class="op">.</span>vij<span class="op">(</span>parts<span class="op">[</span><span class="dv">1</span><span class="op">],</span> pars<span class="op">.</span>L<span class="op">)</span></span>
-<span id="cb21-42"><a aria-label="42"></a>                   <span class="op">-</span> M<span class="op">.</span>vij<span class="op">(</span>parts<span class="op">[</span><span class="dv">1</span><span class="op">],</span> pars<span class="op">.</span>L<span class="op">))/(</span><span class="dv">2</span><span class="op">*</span>h<span class="op">);</span></span>
-<span id="cb21-43"><a aria-label="43"></a>        <span class="op">}</span></span>
-<span id="cb21-44"><a aria-label="44"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"vij(0,1)="</span> <span class="op">&lt;&lt;</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">].</span>vij<span class="op">(</span>parts<span class="op">[</span><span class="dv">1</span><span class="op">],</span> pars<span class="op">.</span>L<span class="op">)</span></span>
-<span id="cb21-45"><a aria-label="45"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  fij: v="</span> <span class="op">&lt;&lt;</span> v <span class="op">&lt;&lt;</span> <span class="st">" v-vs="</span> <span class="op">&lt;&lt;</span> v<span class="op">-</span>vs</span>
-<span id="cb21-46"><a aria-label="46"></a>                <span class="op">&lt;&lt;</span> <span class="st">" w="</span> <span class="op">&lt;&lt;</span> w <span class="op">&lt;&lt;</span> <span class="st">" |F|="</span> <span class="op">&lt;&lt;</span> F<span class="op">.</span>norm<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb21-47"><a aria-label="47"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"F=-grad v: "</span> <span class="op">&lt;&lt;</span> <span class="op">((</span>F <span class="op">-</span> G<span class="op">).</span>norm<span class="op">()</span> <span class="op">&lt;</span> <span class="fl">1e-6</span><span class="op">)</span></span>
-<span id="cb21-48"><a aria-label="48"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  w=r.F: "</span> <span class="op">&lt;&lt;</span> <span class="op">(</span>fabs<span class="op">(</span>w <span class="op">-</span> Dr<span class="op">*</span>F<span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1e-12</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-startfrom="28"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 27;"><span id="cb21-28"><a aria-label="28"></a>      <span class="co">// vij(): particles 0 and 1 are nearest neighbours, at</span></span>
+<span id="cb21-29"><a aria-label="29"></a>      <span class="co">// distance a = rho^(-1/3); so are 0 and 9, through the</span></span>
+<span id="cb21-30"><a aria-label="30"></a>      <span class="co">// minimum image (the lattice has 10 sites along each side)</span></span>
+<span id="cb21-31"><a aria-label="31"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"vij(0,1)="</span> <span class="op">&lt;&lt;</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">].</span>vij<span class="op">(</span>parts<span class="op">[</span><span class="dv">1</span><span class="op">],</span> pars<span class="op">.</span>L<span class="op">)</span></span>
+<span id="cb21-32"><a aria-label="32"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  vij(0,9)="</span> <span class="op">&lt;&lt;</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">].</span>vij<span class="op">(</span>parts<span class="op">[</span><span class="dv">9</span><span class="op">],</span> pars<span class="op">.</span>L<span class="op">)</span></span>
+<span id="cb21-33"><a aria-label="33"></a>                <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb21-34"><a aria-label="34"></a></span>
+<span id="cb21-35"><a aria-label="35"></a>      <span class="co">// totenergy() and calcenergyi(): on the lattice all the</span></span>
+<span id="cb21-36"><a aria-label="36"></a>      <span class="co">// particles are equivalent, each one has energy 2U/Np</span></span>
+<span id="cb21-37"><a aria-label="37"></a>      ntype U <span class="op">=</span> totenergy<span class="op">();</span></span>
+<span id="cb21-38"><a aria-label="38"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"U/Np="</span> <span class="op">&lt;&lt;</span> U<span class="op">/</span>pars<span class="op">.</span>Np</span>
+<span id="cb21-39"><a aria-label="39"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  E_0/2="</span> <span class="op">&lt;&lt;</span> calcenergyi<span class="op">(</span><span class="dv">0</span><span class="op">)/</span><span class="dv">2</span></span>
+<span id="cb21-40"><a aria-label="40"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  E_555/2="</span> <span class="op">&lt;&lt;</span> calcenergyi<span class="op">(</span><span class="dv">555</span><span class="op">)/</span><span class="dv">2</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb21-41"><a aria-label="41"></a></span>
+<span id="cb21-42"><a aria-label="42"></a>      <span class="co">// pbc(): move particle 555 by (L, -L, 2L), then bring</span></span>
+<span id="cb21-43"><a aria-label="43"></a>      <span class="co">// it back into the box</span></span>
+<span id="cb21-44"><a aria-label="44"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> r0 <span class="op">=</span> parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>r<span class="op">;</span></span>
+<span id="cb21-45"><a aria-label="45"></a>      parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>tra_move<span class="op">({</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">0</span><span class="op">),</span> <span class="op">-</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">1</span><span class="op">),</span> <span class="dv">2</span><span class="op">*</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">2</span><span class="op">)});</span></span>
+<span id="cb21-46"><a aria-label="46"></a>      pbc<span class="op">(</span><span class="dv">555</span><span class="op">);</span></span>
+<span id="cb21-47"><a aria-label="47"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"pbc: particle 555 back to its site: "</span></span>
+<span id="cb21-48"><a aria-label="48"></a>                <span class="op">&lt;&lt;</span> <span class="op">((</span>parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>r <span class="op">-</span> r0<span class="op">).</span>norm<span class="op">()</span> <span class="op">&lt;</span> <span class="fl">1e-10</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </section>
 <section id="the-goal-simtest.cpp-2" class="slide level2 smaller codice-intero codice-micro">
@@ -1437,52 +1424,36 @@ Cristiano De Michele
 <p><code>project/simtest.cpp</code></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a>      <span class="co">// totenergy() and calcenergyi(): on the lattice all the</span></span>
-<span id="cb22-2"><a aria-label="2"></a>      <span class="co">// particles are equivalent, each one has energy 2U/Np</span></span>
-<span id="cb22-3"><a aria-label="3"></a>      ntype U <span class="op">=</span> totenergy<span class="op">();</span></span>
-<span id="cb22-4"><a aria-label="4"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"U/Np="</span> <span class="op">&lt;&lt;</span> U<span class="op">/</span>pars<span class="op">.</span>Np</span>
-<span id="cb22-5"><a aria-label="5"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  E_0/2="</span> <span class="op">&lt;&lt;</span> calcenergyi<span class="op">(</span><span class="dv">0</span><span class="op">)/</span><span class="dv">2</span></span>
-<span id="cb22-6"><a aria-label="6"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  E_555/2="</span> <span class="op">&lt;&lt;</span> calcenergyi<span class="op">(</span><span class="dv">555</span><span class="op">)/</span><span class="dv">2</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb22-7"><a aria-label="7"></a></span>
-<span id="cb22-8"><a aria-label="8"></a>      <span class="co">// pbc(): move particle 555 by (L, -L, 2L), then bring</span></span>
-<span id="cb22-9"><a aria-label="9"></a>      <span class="co">// it back into the box</span></span>
-<span id="cb22-10"><a aria-label="10"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> r0 <span class="op">=</span> parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>r<span class="op">;</span></span>
-<span id="cb22-11"><a aria-label="11"></a>      parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>tra_move<span class="op">({</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">0</span><span class="op">),</span> <span class="op">-</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">1</span><span class="op">),</span> <span class="dv">2</span><span class="op">*</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">2</span><span class="op">)});</span></span>
-<span id="cb22-12"><a aria-label="12"></a>      pbc<span class="op">(</span><span class="dv">555</span><span class="op">);</span></span>
-<span id="cb22-13"><a aria-label="13"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"pbc: particle 555 back to its site: "</span></span>
-<span id="cb22-14"><a aria-label="14"></a>                <span class="op">&lt;&lt;</span> <span class="op">((</span>parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>r <span class="op">-</span> r0<span class="op">).</span>norm<span class="op">()</span> <span class="op">&lt;</span> <span class="fl">1e-10</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb22-15"><a aria-label="15"></a></span>
-<span id="cb22-16"><a aria-label="16"></a>      <span class="co">// save_mgl_snapshot(): one line for each particle</span></span>
-<span id="cb22-17"><a aria-label="17"></a>      save_mgl_snapshot<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
-<span id="cb22-18"><a aria-label="18"></a>      <span class="bu">std::</span>ifstream f<span class="op">(</span><span class="st">"cnf-0.mgl"</span><span class="op">);</span> <span class="co">// a file for reading</span></span>
-<span id="cb22-19"><a aria-label="19"></a>      <span class="bu">std::</span>string first<span class="op">,</span> line<span class="op">;</span></span>
-<span id="cb22-20"><a aria-label="20"></a>      <span class="dt">int</span> nl <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb22-21"><a aria-label="21"></a>      <span class="cf">if</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> first<span class="op">))</span> <span class="co">// false at the end</span></span>
-<span id="cb22-22"><a aria-label="22"></a>        nl <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb22-23"><a aria-label="23"></a>      <span class="cf">while</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> line<span class="op">))</span></span>
-<span id="cb22-24"><a aria-label="24"></a>        nl<span class="op">++;</span></span>
-<span id="cb22-25"><a aria-label="25"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"cnf-0.mgl: "</span> <span class="op">&lt;&lt;</span> nl</span>
-<span id="cb22-26"><a aria-label="26"></a>                <span class="op">&lt;&lt;</span> <span class="st">" lines, the first one is: "</span> <span class="op">&lt;&lt;</span> first <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb22-27"><a aria-label="27"></a>    <span class="op">}</span></span>
-<span id="cb22-28"><a aria-label="28"></a><span class="op">};</span></span>
-<span id="cb22-29"><a aria-label="29"></a></span>
-<span id="cb22-30"><a aria-label="30"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a>      <span class="co">// save_mgl_snapshot(): one line for each particle</span></span>
+<span id="cb22-2"><a aria-label="2"></a>      save_mgl_snapshot<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb22-3"><a aria-label="3"></a>      <span class="bu">std::</span>ifstream f<span class="op">(</span><span class="st">"cnf-0.mgl"</span><span class="op">);</span> <span class="co">// a file for reading</span></span>
+<span id="cb22-4"><a aria-label="4"></a>      <span class="bu">std::</span>string first<span class="op">,</span> line<span class="op">;</span></span>
+<span id="cb22-5"><a aria-label="5"></a>      <span class="dt">int</span> nl <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb22-6"><a aria-label="6"></a>      <span class="cf">if</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> first<span class="op">))</span> <span class="co">// false at the end</span></span>
+<span id="cb22-7"><a aria-label="7"></a>        nl <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb22-8"><a aria-label="8"></a>      <span class="cf">while</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> line<span class="op">))</span></span>
+<span id="cb22-9"><a aria-label="9"></a>        nl<span class="op">++;</span></span>
+<span id="cb22-10"><a aria-label="10"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"cnf-0.mgl: "</span> <span class="op">&lt;&lt;</span> nl</span>
+<span id="cb22-11"><a aria-label="11"></a>                <span class="op">&lt;&lt;</span> <span class="st">" lines, the first one is: "</span> <span class="op">&lt;&lt;</span> first <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb22-12"><a aria-label="12"></a>    <span class="op">}</span></span>
+<span id="cb22-13"><a aria-label="13"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-startfrom="31"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 30;"><span id="cb23-31"><a aria-label="31"></a><span class="op">{</span></span>
-<span id="cb23-32"><a aria-label="32"></a>  simtest<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span> particleLJ<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;</span> st<span class="op">;</span></span>
-<span id="cb23-33"><a aria-label="33"></a>  <span class="co">// init_rng(): the same seed gives the same random numbers</span></span>
-<span id="cb23-34"><a aria-label="34"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
-<span id="cb23-35"><a aria-label="35"></a>  <span class="dt">double</span> x1 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
-<span id="cb23-36"><a aria-label="36"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
-<span id="cb23-37"><a aria-label="37"></a>  <span class="dt">double</span> x2 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
-<span id="cb23-38"><a aria-label="38"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"init_rng(5) twice, the same number: "</span></span>
-<span id="cb23-39"><a aria-label="39"></a>            <span class="op">&lt;&lt;</span> <span class="op">(</span>x1 <span class="op">==</span> x2<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb23-40"><a aria-label="40"></a></span>
-<span id="cb23-41"><a aria-label="41"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
-<span id="cb23-42"><a aria-label="42"></a>  st<span class="op">.</span>prepare_initial_conf<span class="op">();</span> <span class="co">// simple cubic lattice</span></span>
-<span id="cb23-43"><a aria-label="43"></a>  st<span class="op">.</span>run<span class="op">();</span></span>
-<span id="cb23-44"><a aria-label="44"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb23-45"><a aria-label="45"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-startfrom="15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 14;"><span id="cb23-15"><a aria-label="15"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb23-16"><a aria-label="16"></a><span class="op">{</span></span>
+<span id="cb23-17"><a aria-label="17"></a>  simtest<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span> particleLJ<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;</span> st<span class="op">;</span></span>
+<span id="cb23-18"><a aria-label="18"></a>  <span class="co">// init_rng(): the same seed gives the same random numbers</span></span>
+<span id="cb23-19"><a aria-label="19"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb23-20"><a aria-label="20"></a>  <span class="dt">double</span> x1 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
+<span id="cb23-21"><a aria-label="21"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb23-22"><a aria-label="22"></a>  <span class="dt">double</span> x2 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
+<span id="cb23-23"><a aria-label="23"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"init_rng(5) twice, the same number: "</span></span>
+<span id="cb23-24"><a aria-label="24"></a>            <span class="op">&lt;&lt;</span> <span class="op">(</span>x1 <span class="op">==</span> x2<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb23-25"><a aria-label="25"></a></span>
+<span id="cb23-26"><a aria-label="26"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb23-27"><a aria-label="27"></a>  st<span class="op">.</span>prepare_initial_conf<span class="op">();</span> <span class="co">// simple cubic lattice</span></span>
+<span id="cb23-28"><a aria-label="28"></a>  st<span class="op">.</span>run<span class="op">();</span></span>
+<span id="cb23-29"><a aria-label="29"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-30"><a aria-label="30"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </section>
 <section id="simtest.cpp-how-it-works" class="slide level2 smaller">
@@ -1490,7 +1461,7 @@ Cristiano De Michele
 <ul>
 <li><code>simtest</code> is derived from <code>sim</code> only to reach its <code>protected</code> members (<code>using</code> as in N10); <code>simtest::run()</code> hides <code>sim::run()</code>. <code>virtual</code> is not needed: <code>st.run()</code> is called on a <code>simtest</code> object.</li>
 <li><strong><code>init_rng()</code></strong>: the same seed twice, the same first number. <strong>Lattice</strong>: <span class="math inline">\(N_p = 1000\)</span>, <span class="math inline">\(L = 10\,a = 10 \cdot 0.5^{-1/3} \simeq 12.599\)</span>.</li>
-<li><strong>Particles</strong>: particle 7 moved and put back. Particles 0 and 1 are nearest neighbours, <span class="math inline">\(r = a\)</span> and <span class="math inline">\(a^6 = 1/\rho^2 = 4\)</span>: <span class="math inline">\(v = 4(1/16 - 1/4) = -0.75\)</span>, <span class="math inline">\(w = 24(2/16 - 1/4) = -3\)</span>, <span class="math inline">\(|\mathbf{F}| = |w|/a\)</span>. The force is compared with <span class="math inline">\(-\nabla v\)</span> computed with <code>vij()</code> by finite differences.</li>
+<li><strong>Particles</strong>: particle 7 moved and put back. Particles 0 and 1 are nearest neighbours, <span class="math inline">\(r = a\)</span> and <span class="math inline">\(a^6 = 1/\rho^2 = 4\)</span>: <span class="math inline">\(v = 4(1/16 - 1/4) = -0.75\)</span>. So are 0 and 9, at the two ends of a row of 10 sites, through the minimum image.</li>
 <li><strong>Energy</strong>: on the lattice all the particles are equivalent, so each one has energy <span class="math inline">\(E_i = 2U/N_p\)</span> (each pair counted for both particles).</li>
 <li><strong>PBC</strong>: particle 555 is moved by <span class="math inline">\((L, -L, 2L)\)</span>, and <code>pbc()</code> must bring it back.</li>
 <li><strong>Snapshot</strong>: <code>cnf-0.mgl</code> is read back (<code>std::ifstream</code>, a file for reading; <code>std::getline()</code> reads one line, <code>false</code> at the end of the file).</li>
@@ -1506,20 +1477,19 @@ Box size is (12.5992,12.5992,12.5992)
 Initial density is 0.5
 Np=1000  L=(12.5992,12.5992,12.5992)  density=0.5
 tra_move: 1  store/restore: 1
-vij(0,1)=-0.75  fij: v=-0.75 v-vs=-0.000255984 w=-3 |F|=2.3811
-F=-grad v: 1  w=r.F: 1
+vij(0,1)=-0.75  vij(0,9)=-0.75
 U/Np=-3.39114  E_0/2=-3.39114  E_555/2=-3.39114
 pbc: particle 555 back to its site: 1
 cnf-0.mgl: 1000 lines, the first one is: -6.29961 -6.29961 -6.29961 @ 0.5</code></pre>
 <ul>
 <li>The second and third lines are printed by our <code>prepare_initial_conf()</code>: print the box and the density there too, it is a useful check.</li>
-<li>With the skeletons, 4 warnings: <code>no return statement in function returning non-void</code> (<code>vij()</code>, <code>fij()</code>, <code>calcenergyi()</code>, <code>totenergy()</code>). Do not run the program before they are gone.</li>
+<li>With the skeletons, 3 warnings: <code>no return statement in function returning non-void</code> (<code>vij()</code>, <code>calcenergyi()</code>, <code>totenergy()</code>). Do not run the program before they are gone.</li>
 </ul>
 </section>
 <section id="classic-pitfalls" class="slide level2 smaller">
 <h2>Classic pitfalls</h2>
 <ul>
-<li><strong>The sign of the force</strong>: <span class="math inline">\(\mathbf{r}_{ij} = \mathbf{r}_i - \mathbf{r}_j\)</span>, with <code>this</code> as <span class="math inline">\(i\)</span>. With <code>P.r - r</code> the force has the wrong sign: <code>F=-grad v: 0  w=r.F: 0</code>.</li>
+<li><strong>No minimum image</strong> in <code>vij()</code>: particles 0 and 9 are <span class="math inline">\(9a\)</span> apart, beyond <span class="math inline">\(r_c\)</span>: <code>vij(0,9)=0</code>, and the particles on the faces of the box lose neighbours: <code>U/Np=-2.90398  E_0/2=-1.39314</code>.</li>
 <li><strong>Each pair counted twice</strong> in <code>totenergy()</code> (<code>calcenergyi(i)</code> with <code>opt=0</code>): <code>U/Np</code> is <span class="math inline">\(-6.78229\)</span>, twice the right value.</li>
 <li><strong>Forgetting <code>j != i</code></strong> in <code>calcenergyi()</code>: particle <code>i</code> interacts with itself at <span class="math inline">\(r = 0\)</span>, and <code>E_0/2</code> is <code>nan</code> (<code>-nan</code> with some compilers).</li>
 <li><strong>Forgetting <code>parts.resize()</code></strong>: <code>parts</code> is empty, <code>parts[i]</code> writes outside it: <code>Segmentation fault</code>.</li>
@@ -1532,7 +1502,7 @@ cnf-0.mgl: 1000 lines, the first one is: -6.29961 -6.29961 -6.29961 @ 0.5</code>
 <li><label><input type="checkbox">Examples N13 compiled and run; tried <code>override</code> with another signature; read the error</label></li>
 <li><label><input type="checkbox">Your Lab #5 methods compared with the solution; new <code>project/</code> files downloaded (<code>params.hpp</code>, <code>particle.hpp</code>, <code>sim.hpp</code>, <code>simtest.cpp</code>, <code>pmatrix.hpp</code>)</label></li>
 <li><label><input type="checkbox"><code>particle</code>: <code>tra_move()</code>, <code>store()</code>, <code>restore()</code></label></li>
-<li><label><input type="checkbox"><code>particleLJ</code>: <code>vij()</code>, <code>set_vcut()</code>, <code>fij()</code></label></li>
+<li><label><input type="checkbox"><code>particleLJ</code>: <code>vij()</code></label></li>
 <li><label><input type="checkbox"><code>sim</code>: <code>calcenergyi()</code> and <code>totenergy()</code>, <code>pbc()</code></label></li>
 <li><label><input type="checkbox"><code>sim</code>: <code>prepare_initial_conf()</code> (simple cubic lattice, box centred in the origin), <code>save_mgl_snapshot()</code>, <code>init_rng()</code></label></li>
 <li><label><input type="checkbox"><code>project/simtest.cpp</code> gives the expected output, <strong>no warnings</strong></label></li>
