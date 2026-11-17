@@ -742,7 +742,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Lab #6</h1>
-  <p class="subtitle">Virtual functions, the simulation framework and its base class</p>
+  <p class="subtitle">Virtual functions, the simulation framework: particles and base class</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -759,7 +759,7 @@ Cristiano De Michele
 <li><strong>Introduction to C++ (part VI)</strong> — virtual functions (example N13).</li>
 <li><strong>Lab #5: the solution</strong> — the methods of <code>pmatrixq</code>.</li>
 <li><strong>The simulation framework</strong> — the files of the Monte Carlo and molecular dynamics code: parameters, particles, and the class <code>sim</code>, the part common to MC and MD.</li>
-<li><strong>Task: the base class <code>sim</code></strong> — energy of a particle and total energy, periodic boundary conditions, initial configuration on a lattice, snapshots, random seed.</li>
+<li><strong>Task: the particles and the base class <code>sim</code></strong> — moves of a particle, Lennard-Jones potential and force; energy of a particle and total energy, periodic boundary conditions, initial configuration on a lattice, snapshots, random seed.</li>
 </ol>
 </section>
 <section>
@@ -871,7 +871,36 @@ Cristiano De Michele
 <li><code>printmsg()</code> is a method of <code>base</code>. Without <code>virtual</code>, the call <code>no_virt_func(txt)</code> inside it is fixed when <code>base</code> is compiled: it is always the method of <code>base</code>, even for <code>OB</code>. Redefining it in <code>derived</code> does not change what the code of <code>base</code> calls.</li>
 <li>With <code>virtual</code>, the method to call is chosen <strong>at run time</strong>, from the type of the object: <code>OB</code> is a <code>derived</code>, so <code>printmsg()</code> calls the <code>virt_func()</code> of <code>derived</code>.</li>
 <li><code>override</code> (C++11) asks the compiler to check that the method really replaces a virtual method of the base class. With another signature, e.g.&nbsp;<code>const char *txt</code>, or without <code>virtual</code> in <code>base</code>: <code>error: 'void derived::virt_func(const char*)' marked 'override', but does not override</code>.</li>
-<li><code>virt_func()</code> is private in both classes: access (<code>private</code>, <code>public</code>) and overriding are independent.</li>
+</ul>
+</section>
+<section id="access-and-overriding" class="slide level2 smaller">
+<h2>Access and overriding</h2>
+<ul>
+<li><code>virt_func()</code> is <code>private</code> in both classes: <code>derived</code> cannot call the <code>virt_func()</code> of <code>base</code>, but it can override it. Two separate rules decide:
+<ul>
+<li><strong>access</strong> (<code>private</code>, <code>protected</code>, <code>public</code>): who may write the call. The compiler checks it, with the class through which the method is called;</li>
+<li><strong><code>virtual</code></strong>: which version runs, chosen at run time from the type of the object.</li>
+</ul></li>
+<li>In N13 the call is written in <code>printmsg()</code>, a method of <code>base</code>, which may call its own <code>virt_func()</code>; at run time the version of <code>derived</code> runs, even if it is <code>private</code> too.</li>
+<li>A <code>public</code> non-virtual method calling a <code>private</code> virtual one is a common pattern: the base class decides <em>when</em> the method is called, the derived classes <em>what</em> it does.</li>
+</ul>
+</section>
+<section id="access-and-overriding-an-example" class="slide level2 smaller">
+<h2>Access and overriding: an example</h2>
+<p>A method <code>public</code> in the base class and <code>private</code> in the derived one. A reference to <code>base</code> can refer to a <code>derived</code> object (a <code>derived</code> <em>is a</em> <code>base</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="kw">class</span> base <span class="op">{</span></span>
+<span id="cb5-2"><a aria-label="2"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb5-3"><a aria-label="3"></a>  <span class="kw">virtual</span> <span class="dt">void</span> f<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"base::f</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb5-4"><a aria-label="4"></a><span class="op">};</span></span>
+<span id="cb5-5"><a aria-label="5"></a><span class="kw">class</span> derived<span class="op">:</span> <span class="kw">public</span> base <span class="op">{</span></span>
+<span id="cb5-6"><a aria-label="6"></a>  <span class="dt">void</span> f<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="kw">override</span> <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"derived::f</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span>  <span class="co">// private</span></span>
+<span id="cb5-7"><a aria-label="7"></a><span class="op">};</span></span>
+<span id="cb5-8"><a aria-label="8"></a>derived OB<span class="op">;</span></span>
+<span id="cb5-9"><a aria-label="9"></a>base<span class="op">&amp;</span> R <span class="op">=</span> OB<span class="op">;</span></span>
+<span id="cb5-10"><a aria-label="10"></a>R<span class="op">.</span>f<span class="op">();</span>   <span class="co">// allowed, base::f is public: it prints "derived::f"</span></span>
+<span id="cb5-11"><a aria-label="11"></a>OB<span class="op">.</span>f<span class="op">();</span>  <span class="co">// error: 'virtual void derived::f()' is private within this context</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>The same method, <code>derived::f()</code>, can be called through <code>R</code> but not through <code>OB</code>: the access depends on the class used in the call (<code>base</code> or <code>derived</code>), the version that runs on the object (a <code>derived</code>).</li>
 </ul>
 </section></section>
 <section>
@@ -884,99 +913,113 @@ Cristiano De Michele
 <p><code>project/pmatrix.hpp</code></p>
 <div class="columns">
 <div class="column" style="width:44%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a>  <span class="co">// ============== LAB #5</span></span>
-<span id="cb5-2"><a aria-label="2"></a></span>
-<span id="cb5-3"><a aria-label="3"></a>  <span class="co">// M1 += M2</span></span>
-<span id="cb5-4"><a aria-label="4"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">+=(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span></span>
-<span id="cb5-5"><a aria-label="5"></a>    <span class="op">{</span></span>
-<span id="cb5-6"><a aria-label="6"></a>      <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span> <span class="op">=</span> <span class="op">*</span><span class="kw">this</span> <span class="op">+</span> M2<span class="op">);</span></span>
-<span id="cb5-7"><a aria-label="7"></a>    <span class="op">}</span></span>
-<span id="cb5-8"><a aria-label="8"></a></span>
-<span id="cb5-9"><a aria-label="9"></a>  <span class="co">// M1 -= M2</span></span>
-<span id="cb5-10"><a aria-label="10"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">-=(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span></span>
-<span id="cb5-11"><a aria-label="11"></a>    <span class="op">{</span></span>
-<span id="cb5-12"><a aria-label="12"></a>      <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span> <span class="op">=</span> <span class="op">*</span><span class="kw">this</span> <span class="op">-</span> M2<span class="op">);</span></span>
-<span id="cb5-13"><a aria-label="13"></a>    <span class="op">}</span></span>
-<span id="cb5-14"><a aria-label="14"></a></span>
-<span id="cb5-15"><a aria-label="15"></a>  <span class="co">// matrix *= scalar</span></span>
-<span id="cb5-16"><a aria-label="16"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">*=(</span><span class="at">const</span> ntype<span class="op">&amp;</span> s<span class="op">)</span></span>
-<span id="cb5-17"><a aria-label="17"></a>    <span class="op">{</span></span>
-<span id="cb5-18"><a aria-label="18"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb5-19"><a aria-label="19"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb5-20"><a aria-label="20"></a>          m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">*=</span> s<span class="op">;</span></span>
-<span id="cb5-21"><a aria-label="21"></a>      <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span><span class="op">);</span></span>
-<span id="cb5-22"><a aria-label="22"></a>    <span class="op">}</span></span>
-<span id="cb5-23"><a aria-label="23"></a></span>
-<span id="cb5-24"><a aria-label="24"></a>  <span class="co">// matrix /= scalar</span></span>
-<span id="cb5-25"><a aria-label="25"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">/=(</span><span class="at">const</span> ntype<span class="op">&amp;</span> s<span class="op">)</span></span>
-<span id="cb5-26"><a aria-label="26"></a>    <span class="op">{</span></span>
-<span id="cb5-27"><a aria-label="27"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb5-28"><a aria-label="28"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb5-29"><a aria-label="29"></a>          m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">/=</span> s<span class="op">;</span></span>
-<span id="cb5-30"><a aria-label="30"></a>      <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span><span class="op">);</span></span>
-<span id="cb5-31"><a aria-label="31"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a>  <span class="co">// ============== LAB #5</span></span>
+<span id="cb6-2"><a aria-label="2"></a></span>
+<span id="cb6-3"><a aria-label="3"></a>  <span class="co">// M1 += M2</span></span>
+<span id="cb6-4"><a aria-label="4"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">+=(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span></span>
+<span id="cb6-5"><a aria-label="5"></a>    <span class="op">{</span></span>
+<span id="cb6-6"><a aria-label="6"></a>      <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span> <span class="op">=</span> <span class="op">*</span><span class="kw">this</span> <span class="op">+</span> M2<span class="op">);</span></span>
+<span id="cb6-7"><a aria-label="7"></a>    <span class="op">}</span></span>
+<span id="cb6-8"><a aria-label="8"></a></span>
+<span id="cb6-9"><a aria-label="9"></a>  <span class="co">// M1 -= M2</span></span>
+<span id="cb6-10"><a aria-label="10"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">-=(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span></span>
+<span id="cb6-11"><a aria-label="11"></a>    <span class="op">{</span></span>
+<span id="cb6-12"><a aria-label="12"></a>      <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span> <span class="op">=</span> <span class="op">*</span><span class="kw">this</span> <span class="op">-</span> M2<span class="op">);</span></span>
+<span id="cb6-13"><a aria-label="13"></a>    <span class="op">}</span></span>
+<span id="cb6-14"><a aria-label="14"></a></span>
+<span id="cb6-15"><a aria-label="15"></a>  <span class="co">// matrix *= scalar</span></span>
+<span id="cb6-16"><a aria-label="16"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">*=(</span><span class="at">const</span> ntype<span class="op">&amp;</span> s<span class="op">)</span></span>
+<span id="cb6-17"><a aria-label="17"></a>    <span class="op">{</span></span>
+<span id="cb6-18"><a aria-label="18"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb6-19"><a aria-label="19"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb6-20"><a aria-label="20"></a>          m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">*=</span> s<span class="op">;</span></span>
+<span id="cb6-21"><a aria-label="21"></a>      <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span><span class="op">);</span></span>
+<span id="cb6-22"><a aria-label="22"></a>    <span class="op">}</span></span>
+<span id="cb6-23"><a aria-label="23"></a></span>
+<span id="cb6-24"><a aria-label="24"></a>  <span class="co">// matrix /= scalar</span></span>
+<span id="cb6-25"><a aria-label="25"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">/=(</span><span class="at">const</span> ntype<span class="op">&amp;</span> s<span class="op">)</span></span>
+<span id="cb6-26"><a aria-label="26"></a>    <span class="op">{</span></span>
+<span id="cb6-27"><a aria-label="27"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb6-28"><a aria-label="28"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb6-29"><a aria-label="29"></a>          m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">/=</span> s<span class="op">;</span></span>
+<span id="cb6-30"><a aria-label="30"></a>      <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span><span class="op">);</span></span>
+<span id="cb6-31"><a aria-label="31"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:56%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-startfrom="32"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 31;"><span id="cb6-32"><a aria-label="32"></a>  <span class="co">// matrix times scalar: M*s</span></span>
-<span id="cb6-33"><a aria-label="33"></a>  pmatrixq <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> ntype<span class="op">&amp;</span> s<span class="op">)</span> <span class="at">const</span></span>
-<span id="cb6-34"><a aria-label="34"></a>    <span class="op">{</span></span>
-<span id="cb6-35"><a aria-label="35"></a>      pmatrixq MT<span class="op">;</span></span>
-<span id="cb6-36"><a aria-label="36"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb6-37"><a aria-label="37"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb6-38"><a aria-label="38"></a>          MT<span class="op">(</span>i<span class="op">,</span>j<span class="op">)</span> <span class="op">=</span> m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]*</span>s<span class="op">;</span></span>
-<span id="cb6-39"><a aria-label="39"></a>      <span class="cf">return</span> MT<span class="op">;</span></span>
-<span id="cb6-40"><a aria-label="40"></a>    <span class="op">}</span></span>
-<span id="cb6-41"><a aria-label="41"></a></span>
-<span id="cb6-42"><a aria-label="42"></a>  <span class="co">// matrix divided by scalar: M/s</span></span>
-<span id="cb6-43"><a aria-label="43"></a>  pmatrixq <span class="kw">operator</span><span class="op">/(</span><span class="at">const</span> ntype<span class="op">&amp;</span> s<span class="op">)</span> <span class="at">const</span></span>
-<span id="cb6-44"><a aria-label="44"></a>    <span class="op">{</span></span>
-<span id="cb6-45"><a aria-label="45"></a>      pmatrixq MT<span class="op">;</span></span>
-<span id="cb6-46"><a aria-label="46"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb6-47"><a aria-label="47"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb6-48"><a aria-label="48"></a>          MT<span class="op">(</span>i<span class="op">,</span>j<span class="op">)</span> <span class="op">=</span> m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]/</span>s<span class="op">;</span></span>
-<span id="cb6-49"><a aria-label="49"></a>      <span class="cf">return</span> MT<span class="op">;</span></span>
-<span id="cb6-50"><a aria-label="50"></a>    <span class="op">}</span></span>
-<span id="cb6-51"><a aria-label="51"></a></span>
-<span id="cb6-52"><a aria-label="52"></a>  <span class="co">// scalar times matrix: s*M (friend function, as "scalar times vector")</span></span>
-<span id="cb6-53"><a aria-label="53"></a>  <span class="kw">friend</span> pmatrixq <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> ntype<span class="op">&amp;</span> s<span class="op">,</span> <span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span></span>
-<span id="cb6-54"><a aria-label="54"></a>    <span class="op">{</span></span>
-<span id="cb6-55"><a aria-label="55"></a>      <span class="cf">return</span> M2<span class="op">*</span>s<span class="op">;</span></span>
-<span id="cb6-56"><a aria-label="56"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-startfrom="32"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 31;"><span id="cb7-32"><a aria-label="32"></a>  <span class="co">// matrix times scalar: M*s</span></span>
+<span id="cb7-33"><a aria-label="33"></a>  pmatrixq <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> ntype<span class="op">&amp;</span> s<span class="op">)</span> <span class="at">const</span></span>
+<span id="cb7-34"><a aria-label="34"></a>    <span class="op">{</span></span>
+<span id="cb7-35"><a aria-label="35"></a>      pmatrixq MT<span class="op">;</span></span>
+<span id="cb7-36"><a aria-label="36"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb7-37"><a aria-label="37"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb7-38"><a aria-label="38"></a>          MT<span class="op">(</span>i<span class="op">,</span>j<span class="op">)</span> <span class="op">=</span> m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]*</span>s<span class="op">;</span></span>
+<span id="cb7-39"><a aria-label="39"></a>      <span class="cf">return</span> MT<span class="op">;</span></span>
+<span id="cb7-40"><a aria-label="40"></a>    <span class="op">}</span></span>
+<span id="cb7-41"><a aria-label="41"></a></span>
+<span id="cb7-42"><a aria-label="42"></a>  <span class="co">// matrix divided by scalar: M/s</span></span>
+<span id="cb7-43"><a aria-label="43"></a>  pmatrixq <span class="kw">operator</span><span class="op">/(</span><span class="at">const</span> ntype<span class="op">&amp;</span> s<span class="op">)</span> <span class="at">const</span></span>
+<span id="cb7-44"><a aria-label="44"></a>    <span class="op">{</span></span>
+<span id="cb7-45"><a aria-label="45"></a>      pmatrixq MT<span class="op">;</span></span>
+<span id="cb7-46"><a aria-label="46"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb7-47"><a aria-label="47"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb7-48"><a aria-label="48"></a>          MT<span class="op">(</span>i<span class="op">,</span>j<span class="op">)</span> <span class="op">=</span> m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]/</span>s<span class="op">;</span></span>
+<span id="cb7-49"><a aria-label="49"></a>      <span class="cf">return</span> MT<span class="op">;</span></span>
+<span id="cb7-50"><a aria-label="50"></a>    <span class="op">}</span></span>
+<span id="cb7-51"><a aria-label="51"></a></span>
+<span id="cb7-52"><a aria-label="52"></a>  <span class="co">// scalar times matrix: s*M (friend function, as "scalar times vector")</span></span>
+<span id="cb7-53"><a aria-label="53"></a>  <span class="kw">friend</span> pmatrixq <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> ntype<span class="op">&amp;</span> s<span class="op">,</span> <span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span></span>
+<span id="cb7-54"><a aria-label="54"></a>    <span class="op">{</span></span>
+<span id="cb7-55"><a aria-label="55"></a>      <span class="cf">return</span> M2<span class="op">*</span>s<span class="op">;</span></span>
+<span id="cb7-56"><a aria-label="56"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>+=</code> and <code>-=</code> reuse <code>+</code> and <code>-</code>, then return <code>*this</code> by reference.</li>
-<li><code>s*M</code>, a friend function, reuses <code>M*s</code>.</li>
+<li><code>s*M</code> reuses <code>M*s</code>.</li>
 </ul>
 </div></div>
 </section>
 <section id="mv-and-vm" class="slide level2 smaller codice-intero codice-micro">
 <h2><code>M*V</code> and <code>V*M</code></h2>
 <p><code>project/pmatrix.hpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a>  <span class="co">// matrix times vector: (M*V)(i) = sum over j of M(i,j)*V(j)</span></span>
-<span id="cb7-2"><a aria-label="2"></a>  pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="op">&amp;</span>V2<span class="op">)</span> <span class="at">const</span></span>
-<span id="cb7-3"><a aria-label="3"></a>    <span class="op">{</span></span>
-<span id="cb7-4"><a aria-label="4"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> VT<span class="op">;</span></span>
-<span id="cb7-5"><a aria-label="5"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb7-6"><a aria-label="6"></a>        <span class="op">{</span></span>
-<span id="cb7-7"><a aria-label="7"></a>          VT<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb7-8"><a aria-label="8"></a>          <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb7-9"><a aria-label="9"></a>            VT<span class="op">(</span>i<span class="op">)</span> <span class="op">+=</span> m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]*</span>V2<span class="op">(</span>j<span class="op">);</span></span>
-<span id="cb7-10"><a aria-label="10"></a>        <span class="op">}</span></span>
-<span id="cb7-11"><a aria-label="11"></a>      <span class="cf">return</span> VT<span class="op">;</span></span>
-<span id="cb7-12"><a aria-label="12"></a>    <span class="op">}</span></span>
-<span id="cb7-13"><a aria-label="13"></a></span>
-<span id="cb7-14"><a aria-label="14"></a>  <span class="co">// vector times matrix: (V*M)(j) = sum over i of V(i)*M(i,j) (friend function)</span></span>
-<span id="cb7-15"><a aria-label="15"></a>  <span class="kw">friend</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;&amp;</span> V1<span class="op">,</span> <span class="at">const</span> pmatrixq<span class="op">&amp;</span> M2<span class="op">)</span></span>
-<span id="cb7-16"><a aria-label="16"></a>    <span class="op">{</span></span>
-<span id="cb7-17"><a aria-label="17"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> VT<span class="op">;</span></span>
-<span id="cb7-18"><a aria-label="18"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb7-19"><a aria-label="19"></a>        <span class="op">{</span></span>
-<span id="cb7-20"><a aria-label="20"></a>          VT<span class="op">(</span>j<span class="op">)</span> <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb7-21"><a aria-label="21"></a>          <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb7-22"><a aria-label="22"></a>            VT<span class="op">(</span>j<span class="op">)</span> <span class="op">+=</span> V1<span class="op">(</span>i<span class="op">)*</span>M2<span class="op">(</span>i<span class="op">,</span>j<span class="op">);</span></span>
-<span id="cb7-23"><a aria-label="23"></a>        <span class="op">}</span></span>
-<span id="cb7-24"><a aria-label="24"></a>      <span class="cf">return</span> VT<span class="op">;</span></span>
-<span id="cb7-25"><a aria-label="25"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>  <span class="co">// matrix times vector: (M*V)(i) = sum over j of M(i,j)*V(j)</span></span>
+<span id="cb8-2"><a aria-label="2"></a>  pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="op">&amp;</span>V2<span class="op">)</span> <span class="at">const</span></span>
+<span id="cb8-3"><a aria-label="3"></a>    <span class="op">{</span></span>
+<span id="cb8-4"><a aria-label="4"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> VT<span class="op">;</span></span>
+<span id="cb8-5"><a aria-label="5"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb8-6"><a aria-label="6"></a>        <span class="op">{</span></span>
+<span id="cb8-7"><a aria-label="7"></a>          VT<span class="op">(</span>i<span class="op">)</span> <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb8-8"><a aria-label="8"></a>          <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb8-9"><a aria-label="9"></a>            VT<span class="op">(</span>i<span class="op">)</span> <span class="op">+=</span> m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]*</span>V2<span class="op">(</span>j<span class="op">);</span></span>
+<span id="cb8-10"><a aria-label="10"></a>        <span class="op">}</span></span>
+<span id="cb8-11"><a aria-label="11"></a>      <span class="cf">return</span> VT<span class="op">;</span></span>
+<span id="cb8-12"><a aria-label="12"></a>    <span class="op">}</span></span>
+<span id="cb8-13"><a aria-label="13"></a></span>
+<span id="cb8-14"><a aria-label="14"></a>  <span class="co">// vector times matrix: (V*M)(j) = sum over i of V(i)*M(i,j) (friend function)</span></span>
+<span id="cb8-15"><a aria-label="15"></a>  <span class="kw">friend</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;&amp;</span> V1<span class="op">,</span> <span class="at">const</span> pmatrixq<span class="op">&amp;</span> M2<span class="op">)</span></span>
+<span id="cb8-16"><a aria-label="16"></a>    <span class="op">{</span></span>
+<span id="cb8-17"><a aria-label="17"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> VT<span class="op">;</span></span>
+<span id="cb8-18"><a aria-label="18"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb8-19"><a aria-label="19"></a>        <span class="op">{</span></span>
+<span id="cb8-20"><a aria-label="20"></a>          VT<span class="op">(</span>j<span class="op">)</span> <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb8-21"><a aria-label="21"></a>          <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb8-22"><a aria-label="22"></a>            VT<span class="op">(</span>j<span class="op">)</span> <span class="op">+=</span> V1<span class="op">(</span>i<span class="op">)*</span>M2<span class="op">(</span>i<span class="op">,</span>j<span class="op">);</span></span>
+<span id="cb8-23"><a aria-label="23"></a>        <span class="op">}</span></span>
+<span id="cb8-24"><a aria-label="24"></a>      <span class="cf">return</span> VT<span class="op">;</span></span>
+<span id="cb8-25"><a aria-label="25"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>The sum is set to 0 before the inner loop. <code>V*M</code> reads the vector with <code>V1(i)</code>: it is a friend of <code>pmatrixq</code>, not of <code>pvector</code>.</li>
+</ul>
+</section>
+<section id="is-friend-needed" class="slide level2 smaller">
+<h2>Is <code>friend</code> needed?</h2>
+<ul>
+<li><p><code>s*M</code> and <code>V*M</code> use only public members (<code>M2*s</code>, <code>V1(i)</code>, <code>M2(i,j)</code>): <code>friend</code> is not needed for the access, as for <code>mulcw()</code> and <code>divcw()</code> in Lab #4.</p></li>
+<li><p>Inside the class, <code>friend</code> is the way to define a function that is not a method. Outside the class, it becomes a function template:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">,</span> <span class="dt">int</span> NT<span class="op">&gt;</span></span>
+<span id="cb9-2"><a aria-label="2"></a>pmatrixq<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> ntype<span class="op">&amp;</span> s<span class="op">,</span> <span class="at">const</span> pmatrixq<span class="op">&lt;</span>ntype<span class="op">,</span>NT<span class="op">&gt;</span> <span class="op">&amp;</span>M2<span class="op">)</span></span>
+<span id="cb9-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb9-4"><a aria-label="4"></a>  <span class="cf">return</span> M2<span class="op">*</span>s<span class="op">;</span></span>
+<span id="cb9-5"><a aria-label="5"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>The compiler deduces <code>ntype</code> and <code>NT</code> from the arguments, without converting them: <code>2.0*A</code> works, <code>2*A</code> does not, <code>error: no match for 'operator*' (operand types are 'int' and 'pmatrixq&lt;double, 3&gt;')</code> and <code>note: deduced conflicting types for parameter 'ntype' ('int' and 'double')</code>.</p></li>
+<li><p>The friend defined inside the class is not a template: it is an ordinary function, created together with <code>pmatrixq&lt;double,3&gt;</code>. So <code>2</code> is converted to <code>double</code> and <code>2*A</code> compiles.</p></li>
 </ul>
 </section>
 <section id="matrix-times-matrix-transpose" class="slide level2 smaller codice-intero codice-micro">
@@ -984,45 +1027,45 @@ Cristiano De Michele
 <p><code>project/pmatrix.hpp</code></p>
 <div class="columns">
 <div class="column" style="width:55%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>  <span class="co">// matrix times matrix: (M1*M2)(i,j) = sum over k of M1(i,k)*M2(k,j)</span></span>
-<span id="cb8-2"><a aria-label="2"></a>  pmatrixq <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
-<span id="cb8-3"><a aria-label="3"></a>    <span class="op">{</span></span>
-<span id="cb8-4"><a aria-label="4"></a>      pmatrixq MT<span class="op">;</span></span>
-<span id="cb8-5"><a aria-label="5"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb8-6"><a aria-label="6"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb8-7"><a aria-label="7"></a>          <span class="op">{</span></span>
-<span id="cb8-8"><a aria-label="8"></a>            MT<span class="op">(</span>i<span class="op">,</span>j<span class="op">)</span> <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb8-9"><a aria-label="9"></a>            <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> NT<span class="op">;</span> k<span class="op">++)</span></span>
-<span id="cb8-10"><a aria-label="10"></a>              MT<span class="op">(</span>i<span class="op">,</span>j<span class="op">)</span> <span class="op">+=</span> m<span class="op">[</span>i<span class="op">][</span>k<span class="op">]*</span>M2<span class="op">(</span>k<span class="op">,</span>j<span class="op">);</span></span>
-<span id="cb8-11"><a aria-label="11"></a>          <span class="op">}</span></span>
-<span id="cb8-12"><a aria-label="12"></a>      <span class="cf">return</span> MT<span class="op">;</span></span>
-<span id="cb8-13"><a aria-label="13"></a>    <span class="op">}</span></span>
-<span id="cb8-14"><a aria-label="14"></a></span>
-<span id="cb8-15"><a aria-label="15"></a>  <span class="co">// M1 *= M2, i.e. M1 = M1*M2</span></span>
-<span id="cb8-16"><a aria-label="16"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">*=(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span></span>
-<span id="cb8-17"><a aria-label="17"></a>    <span class="op">{</span></span>
-<span id="cb8-18"><a aria-label="18"></a>      <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span> <span class="op">=</span> <span class="op">(*</span><span class="kw">this</span><span class="op">)*</span>M2<span class="op">);</span></span>
-<span id="cb8-19"><a aria-label="19"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a>  <span class="co">// matrix times matrix: (M1*M2)(i,j) = sum over k of M1(i,k)*M2(k,j)</span></span>
+<span id="cb10-2"><a aria-label="2"></a>  pmatrixq <span class="kw">operator</span><span class="op">*(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
+<span id="cb10-3"><a aria-label="3"></a>    <span class="op">{</span></span>
+<span id="cb10-4"><a aria-label="4"></a>      pmatrixq MT<span class="op">;</span></span>
+<span id="cb10-5"><a aria-label="5"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb10-6"><a aria-label="6"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb10-7"><a aria-label="7"></a>          <span class="op">{</span></span>
+<span id="cb10-8"><a aria-label="8"></a>            MT<span class="op">(</span>i<span class="op">,</span>j<span class="op">)</span> <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb10-9"><a aria-label="9"></a>            <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> NT<span class="op">;</span> k<span class="op">++)</span></span>
+<span id="cb10-10"><a aria-label="10"></a>              MT<span class="op">(</span>i<span class="op">,</span>j<span class="op">)</span> <span class="op">+=</span> m<span class="op">[</span>i<span class="op">][</span>k<span class="op">]*</span>M2<span class="op">(</span>k<span class="op">,</span>j<span class="op">);</span></span>
+<span id="cb10-11"><a aria-label="11"></a>          <span class="op">}</span></span>
+<span id="cb10-12"><a aria-label="12"></a>      <span class="cf">return</span> MT<span class="op">;</span></span>
+<span id="cb10-13"><a aria-label="13"></a>    <span class="op">}</span></span>
+<span id="cb10-14"><a aria-label="14"></a></span>
+<span id="cb10-15"><a aria-label="15"></a>  <span class="co">// M1 *= M2, i.e. M1 = M1*M2</span></span>
+<span id="cb10-16"><a aria-label="16"></a>  pmatrixq<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">*=(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span></span>
+<span id="cb10-17"><a aria-label="17"></a>    <span class="op">{</span></span>
+<span id="cb10-18"><a aria-label="18"></a>      <span class="cf">return</span> <span class="op">(*</span><span class="kw">this</span> <span class="op">=</span> <span class="op">(*</span><span class="kw">this</span><span class="op">)*</span>M2<span class="op">);</span></span>
+<span id="cb10-19"><a aria-label="19"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:45%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-startfrom="20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 19;"><span id="cb9-20"><a aria-label="20"></a>  <span class="co">// transpose: MT(i,j) = M(j,i)</span></span>
-<span id="cb9-21"><a aria-label="21"></a>  pmatrixq transpose<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span></span>
-<span id="cb9-22"><a aria-label="22"></a>    <span class="op">{</span></span>
-<span id="cb9-23"><a aria-label="23"></a>      pmatrixq MT<span class="op">;</span></span>
-<span id="cb9-24"><a aria-label="24"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb9-25"><a aria-label="25"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb9-26"><a aria-label="26"></a>          MT<span class="op">(</span>i<span class="op">,</span>j<span class="op">)</span> <span class="op">=</span> m<span class="op">[</span>j<span class="op">][</span>i<span class="op">];</span></span>
-<span id="cb9-27"><a aria-label="27"></a>      <span class="cf">return</span> MT<span class="op">;</span></span>
-<span id="cb9-28"><a aria-label="28"></a>    <span class="op">}</span></span>
-<span id="cb9-29"><a aria-label="29"></a></span>
-<span id="cb9-30"><a aria-label="30"></a>  <span class="co">// M1 == M2: true if all the elements are equal</span></span>
-<span id="cb9-31"><a aria-label="31"></a>  <span class="dt">bool</span> <span class="kw">operator</span><span class="op">==(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
-<span id="cb9-32"><a aria-label="32"></a>    <span class="op">{</span></span>
-<span id="cb9-33"><a aria-label="33"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
-<span id="cb9-34"><a aria-label="34"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
-<span id="cb9-35"><a aria-label="35"></a>          <span class="cf">if</span> <span class="op">(</span>m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">!=</span> M2<span class="op">(</span>i<span class="op">,</span>j<span class="op">))</span></span>
-<span id="cb9-36"><a aria-label="36"></a>            <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="cb9-37"><a aria-label="37"></a>      <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb9-38"><a aria-label="38"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-startfrom="20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 19;"><span id="cb11-20"><a aria-label="20"></a>  <span class="co">// transpose: MT(i,j) = M(j,i)</span></span>
+<span id="cb11-21"><a aria-label="21"></a>  pmatrixq transpose<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="at">const</span></span>
+<span id="cb11-22"><a aria-label="22"></a>    <span class="op">{</span></span>
+<span id="cb11-23"><a aria-label="23"></a>      pmatrixq MT<span class="op">;</span></span>
+<span id="cb11-24"><a aria-label="24"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb11-25"><a aria-label="25"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb11-26"><a aria-label="26"></a>          MT<span class="op">(</span>i<span class="op">,</span>j<span class="op">)</span> <span class="op">=</span> m<span class="op">[</span>j<span class="op">][</span>i<span class="op">];</span></span>
+<span id="cb11-27"><a aria-label="27"></a>      <span class="cf">return</span> MT<span class="op">;</span></span>
+<span id="cb11-28"><a aria-label="28"></a>    <span class="op">}</span></span>
+<span id="cb11-29"><a aria-label="29"></a></span>
+<span id="cb11-30"><a aria-label="30"></a>  <span class="co">// M1 == M2: true if all the elements are equal</span></span>
+<span id="cb11-31"><a aria-label="31"></a>  <span class="dt">bool</span> <span class="kw">operator</span><span class="op">==(</span><span class="at">const</span> pmatrixq <span class="op">&amp;</span>M2<span class="op">)</span> <span class="at">const</span></span>
+<span id="cb11-32"><a aria-label="32"></a>    <span class="op">{</span></span>
+<span id="cb11-33"><a aria-label="33"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NT<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb11-34"><a aria-label="34"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> NT<span class="op">;</span> j<span class="op">++)</span></span>
+<span id="cb11-35"><a aria-label="35"></a>          <span class="cf">if</span> <span class="op">(</span>m<span class="op">[</span>i<span class="op">][</span>j<span class="op">]</span> <span class="op">!=</span> M2<span class="op">(</span>i<span class="op">,</span>j<span class="op">))</span></span>
+<span id="cb11-36"><a aria-label="36"></a>            <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb11-37"><a aria-label="37"></a>      <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb11-38"><a aria-label="38"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <ul>
 <li><code>M1 *= M2</code> computes the product in a new matrix and then assigns it: in place, the row being computed would use elements already overwritten.</li>
@@ -1038,7 +1081,7 @@ Cristiano De Michele
 <h2>The files of the framework</h2>
 <ul>
 <li><code>params.hpp</code>: the class <code>simpars&lt;ntype&gt;</code>, all the parameters of a simulation, with their default values set in the constructor.</li>
-<li><code>particle.hpp</code>: the class <code>particle&lt;ntype&gt;</code> (position, parameters of the interaction, and what MC and MD need), and two classes derived from it, with the interaction between two particles: <code>particleLJ</code> (Lennard-Jones) and <code>particleSS</code> (soft spheres, only the repulsive term).</li>
+<li><code>particle.hpp</code>: the class <code>particle&lt;ntype&gt;</code> (position, parameters of the interaction, and what MC and MD need), and <code>particleLJ&lt;ntype&gt;</code>, derived from it, with the Lennard-Jones interaction between two particles.</li>
 <li><code>sim.hpp</code>: the class <code>sim&lt;ntype, particle_type&gt;</code>, the part common to Monte Carlo and molecular dynamics. In the next labs <code>mcsim</code> and <code>mdsim</code> will be derived from it.</li>
 <li><code>simtest.cpp</code>: today’s goal.</li>
 </ul>
@@ -1049,7 +1092,7 @@ Cristiano De Michele
 <ul>
 <li><code>sim</code> <strong>has</strong> a <code>simpars</code> (<code>pars</code>) and a <code>std::vector</code> of particles (<code>parts</code>): composition.</li>
 <li><code>particleLJ</code> <strong>is</strong> a <code>particle</code>: inheritance from a class template, with <code>using</code> for the names of the base class.</li>
-<li><code>particle_type</code> is a template parameter: the same <code>sim</code> works with <code>particleLJ</code> or <code>particleSS</code>, which must only provide a method <code>vij()</code>.</li>
+<li><code>particle_type</code> is a template parameter: the same <code>sim</code> works with any class of particles that provides a method <code>vij()</code>.</li>
 </ul>
 </section>
 <section id="parameters-params.hpp" class="slide level2 smaller">
@@ -1103,98 +1146,96 @@ Cristiano De Michele
 <p><code>project/particle.hpp</code></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">&gt;</span></span>
-<span id="cb10-2"><a aria-label="2"></a><span class="kw">class</span> particle</span>
-<span id="cb10-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb10-4"><a aria-label="4"></a>  pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> rold<span class="op">;</span> <span class="co">// to store particle's position </span></span>
-<span id="cb10-5"><a aria-label="5"></a><span class="kw">protected</span><span class="op">:</span></span>
-<span id="cb10-6"><a aria-label="6"></a>  ntype vcut<span class="op">;</span></span>
-<span id="cb10-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb10-8"><a aria-label="8"></a>  ntype sigma<span class="op">,</span> epsilon<span class="op">,</span> rc<span class="op">,</span> m<span class="op">;</span> <span class="co">// mass (m) for MD</span></span>
-<span id="cb10-9"><a aria-label="9"></a>  pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> r<span class="op">,</span> v<span class="op">,</span> f<span class="op">;</span> <span class="co">// velocity (v) and force (f) for MD </span></span>
-<span id="cb10-10"><a aria-label="10"></a></span>
-<span id="cb10-11"><a aria-label="11"></a>  <span class="co">// vcut = vLJ(rc), i.e. the value of LJ potential at r=rc</span></span>
-<span id="cb10-12"><a aria-label="12"></a>  <span class="co">// this method should be called when initializing particles</span></span>
-<span id="cb10-13"><a aria-label="13"></a>  <span class="dt">void</span> set_vcut<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
-<span id="cb10-14"><a aria-label="14"></a> </span>
-<span id="cb10-15"><a aria-label="15"></a>  <span class="dt">void</span> tra_move<span class="op">(</span>pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> delr<span class="op">)</span></span>
-<span id="cb10-16"><a aria-label="16"></a>    <span class="op">{</span></span>
-<span id="cb10-17"><a aria-label="17"></a>      r<span class="op">+=</span>delr<span class="op">;</span> </span>
-<span id="cb10-18"><a aria-label="18"></a>    <span class="op">}</span></span>
-<span id="cb10-19"><a aria-label="19"></a></span>
-<span id="cb10-20"><a aria-label="20"></a>  <span class="dt">void</span> store<span class="op">()</span></span>
-<span id="cb10-21"><a aria-label="21"></a>    <span class="op">{</span></span>
-<span id="cb10-22"><a aria-label="22"></a>     rold <span class="op">=</span> r<span class="op">;</span></span>
-<span id="cb10-23"><a aria-label="23"></a>    <span class="op">}</span></span>
-<span id="cb10-24"><a aria-label="24"></a></span>
-<span id="cb10-25"><a aria-label="25"></a>  <span class="dt">void</span> restore<span class="op">()</span></span>
-<span id="cb10-26"><a aria-label="26"></a>    <span class="op">{</span></span>
-<span id="cb10-27"><a aria-label="27"></a>      r <span class="op">=</span> rold<span class="op">;</span></span>
-<span id="cb10-28"><a aria-label="28"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">&gt;</span></span>
+<span id="cb12-2"><a aria-label="2"></a><span class="kw">class</span> particle</span>
+<span id="cb12-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb12-4"><a aria-label="4"></a>  pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> rold<span class="op">;</span> <span class="co">// to store particle's position </span></span>
+<span id="cb12-5"><a aria-label="5"></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="cb12-6"><a aria-label="6"></a>  ntype vcut<span class="op">;</span></span>
+<span id="cb12-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb12-8"><a aria-label="8"></a>  ntype sigma<span class="op">,</span> epsilon<span class="op">,</span> rc<span class="op">,</span> m<span class="op">;</span> <span class="co">// mass (m) for MD</span></span>
+<span id="cb12-9"><a aria-label="9"></a>  pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> r<span class="op">,</span> v<span class="op">,</span> f<span class="op">;</span> <span class="co">// velocity (v) and force (f) for MD </span></span>
+<span id="cb12-10"><a aria-label="10"></a></span>
+<span id="cb12-11"><a aria-label="11"></a>  <span class="co">// vcut = vLJ(rc), i.e. the value of LJ potential at r=rc</span></span>
+<span id="cb12-12"><a aria-label="12"></a>  <span class="co">// this method should be called when initializing particles</span></span>
+<span id="cb12-13"><a aria-label="13"></a>  <span class="dt">void</span> set_vcut<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
+<span id="cb12-14"><a aria-label="14"></a> </span>
+<span id="cb12-15"><a aria-label="15"></a>  <span class="dt">void</span> tra_move<span class="op">(</span>pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> delr<span class="op">)</span></span>
+<span id="cb12-16"><a aria-label="16"></a>    <span class="op">{</span></span>
+<span id="cb12-17"><a aria-label="17"></a>    <span class="op">}</span></span>
+<span id="cb12-18"><a aria-label="18"></a></span>
+<span id="cb12-19"><a aria-label="19"></a>  <span class="dt">void</span> store<span class="op">()</span></span>
+<span id="cb12-20"><a aria-label="20"></a>    <span class="op">{</span></span>
+<span id="cb12-21"><a aria-label="21"></a>    <span class="op">}</span></span>
+<span id="cb12-22"><a aria-label="22"></a></span>
+<span id="cb12-23"><a aria-label="23"></a>  <span class="dt">void</span> restore<span class="op">()</span></span>
+<span id="cb12-24"><a aria-label="24"></a>    <span class="op">{</span></span>
+<span id="cb12-25"><a aria-label="25"></a>    <span class="op">}</span></span>
+<span id="cb12-26"><a aria-label="26"></a>  <span class="dt">void</span> set_sigma<span class="op">(</span>ntype sig<span class="op">)</span></span>
+<span id="cb12-27"><a aria-label="27"></a>    <span class="op">{</span></span>
+<span id="cb12-28"><a aria-label="28"></a>      sigma <span class="op">=</span> sig<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-startfrom="29"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 28;"><span id="cb11-29"><a aria-label="29"></a>  <span class="dt">void</span> set_sigma<span class="op">(</span>ntype sig<span class="op">)</span></span>
-<span id="cb11-30"><a aria-label="30"></a>    <span class="op">{</span></span>
-<span id="cb11-31"><a aria-label="31"></a>      sigma <span class="op">=</span> sig<span class="op">;</span></span>
-<span id="cb11-32"><a aria-label="32"></a>    <span class="op">}</span></span>
-<span id="cb11-33"><a aria-label="33"></a></span>
-<span id="cb11-34"><a aria-label="34"></a>  <span class="dt">void</span> set_epsilon<span class="op">(</span>ntype eps<span class="op">)</span></span>
-<span id="cb11-35"><a aria-label="35"></a>    <span class="op">{</span></span>
-<span id="cb11-36"><a aria-label="36"></a>      epsilon <span class="op">=</span> eps<span class="op">;</span></span>
-<span id="cb11-37"><a aria-label="37"></a>    <span class="op">}</span></span>
-<span id="cb11-38"><a aria-label="38"></a></span>
-<span id="cb11-39"><a aria-label="39"></a>  <span class="dt">void</span> set_rcut<span class="op">(</span>ntype rcut<span class="op">)</span></span>
-<span id="cb11-40"><a aria-label="40"></a>    <span class="op">{</span></span>
-<span id="cb11-41"><a aria-label="41"></a>      rc <span class="op">=</span> rcut<span class="op">;</span></span>
-<span id="cb11-42"><a aria-label="42"></a>    <span class="op">}</span></span>
-<span id="cb11-43"><a aria-label="43"></a></span>
-<span id="cb11-44"><a aria-label="44"></a>  <span class="dt">void</span> set_mass<span class="op">(</span>ntype mass<span class="op">)</span></span>
-<span id="cb11-45"><a aria-label="45"></a>    <span class="op">{</span></span>
-<span id="cb11-46"><a aria-label="46"></a>      m <span class="op">=</span> mass<span class="op">;</span></span>
-<span id="cb11-47"><a aria-label="47"></a>    <span class="op">}</span></span>
-<span id="cb11-48"><a aria-label="48"></a></span>
-<span id="cb11-49"><a aria-label="49"></a>  particle<span class="op">()</span></span>
-<span id="cb11-50"><a aria-label="50"></a>    <span class="op">{</span></span>
-<span id="cb11-51"><a aria-label="51"></a>      sigma<span class="op">=</span><span class="fl">1.0</span><span class="op">;</span></span>
-<span id="cb11-52"><a aria-label="52"></a>      epsilon<span class="op">=</span><span class="fl">1.0</span><span class="op">;</span></span>
-<span id="cb11-53"><a aria-label="53"></a>      rc<span class="op">=</span><span class="fl">2.5</span><span class="op">;</span></span>
-<span id="cb11-54"><a aria-label="54"></a>      vcut <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb11-55"><a aria-label="55"></a>      m <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
-<span id="cb11-56"><a aria-label="56"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-startfrom="29"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 28;"><span id="cb13-29"><a aria-label="29"></a>    <span class="op">}</span></span>
+<span id="cb13-30"><a aria-label="30"></a></span>
+<span id="cb13-31"><a aria-label="31"></a>  <span class="dt">void</span> set_epsilon<span class="op">(</span>ntype eps<span class="op">)</span></span>
+<span id="cb13-32"><a aria-label="32"></a>    <span class="op">{</span></span>
+<span id="cb13-33"><a aria-label="33"></a>      epsilon <span class="op">=</span> eps<span class="op">;</span></span>
+<span id="cb13-34"><a aria-label="34"></a>    <span class="op">}</span></span>
+<span id="cb13-35"><a aria-label="35"></a></span>
+<span id="cb13-36"><a aria-label="36"></a>  <span class="dt">void</span> set_rcut<span class="op">(</span>ntype rcut<span class="op">)</span></span>
+<span id="cb13-37"><a aria-label="37"></a>    <span class="op">{</span></span>
+<span id="cb13-38"><a aria-label="38"></a>      rc <span class="op">=</span> rcut<span class="op">;</span></span>
+<span id="cb13-39"><a aria-label="39"></a>    <span class="op">}</span></span>
+<span id="cb13-40"><a aria-label="40"></a></span>
+<span id="cb13-41"><a aria-label="41"></a>  <span class="dt">void</span> set_mass<span class="op">(</span>ntype mass<span class="op">)</span></span>
+<span id="cb13-42"><a aria-label="42"></a>    <span class="op">{</span></span>
+<span id="cb13-43"><a aria-label="43"></a>      m <span class="op">=</span> mass<span class="op">;</span></span>
+<span id="cb13-44"><a aria-label="44"></a>    <span class="op">}</span></span>
+<span id="cb13-45"><a aria-label="45"></a></span>
+<span id="cb13-46"><a aria-label="46"></a>  particle<span class="op">()</span></span>
+<span id="cb13-47"><a aria-label="47"></a>    <span class="op">{</span></span>
+<span id="cb13-48"><a aria-label="48"></a>      sigma<span class="op">=</span><span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb13-49"><a aria-label="49"></a>      epsilon<span class="op">=</span><span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb13-50"><a aria-label="50"></a>      rc<span class="op">=</span><span class="fl">2.5</span><span class="op">;</span></span>
+<span id="cb13-51"><a aria-label="51"></a>      vcut <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb13-52"><a aria-label="52"></a>      m <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb13-53"><a aria-label="53"></a>    <span class="op">}</span></span>
+<span id="cb13-54"><a aria-label="54"></a></span>
+<span id="cb13-55"><a aria-label="55"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <ul>
-<li>Today: <code>r</code>, <code>sigma</code>, <code>epsilon</code>, <code>rc</code>, the methods <code>set_...()</code> and <code>tra_move()</code>. The rest (<code>store()</code>/<code>restore()</code>, <code>v</code>, <code>f</code>, <code>m</code>, <code>vcut</code>) is for MC and MD.</li>
+<li><code>tra_move()</code>, <code>store()</code>, <code>restore()</code>: today’s task. <code>v</code>, <code>f</code>, <code>m</code>: for MD.</li>
 </ul>
 </section>
-<section id="particlelj-the-potential" class="slide level2 smaller codice-intero codice-micro">
-<h2><code>particleLJ</code>: the potential</h2>
+<section id="particlelj" class="slide level2 smaller codice-intero codice-micro">
+<h2><code>particleLJ</code></h2>
 <p><code>project/particle.hpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">&gt;</span></span>
-<span id="cb12-2"><a aria-label="2"></a><span class="kw">class</span> particleLJ<span class="op">:</span> <span class="kw">public</span> particle<span class="op">&lt;</span>ntype<span class="op">&gt;</span></span>
-<span id="cb12-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb12-4"><a aria-label="4"></a>  <span class="kw">using</span> pt<span class="op">=</span>particle<span class="op">&lt;</span>ntype<span class="op">&gt;;</span></span>
-<span id="cb12-5"><a aria-label="5"></a><span class="kw">protected</span><span class="op">:</span></span>
-<span id="cb12-6"><a aria-label="6"></a>  <span class="kw">using</span> pt<span class="op">::</span>vcut<span class="op">;</span></span>
-<span id="cb12-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb12-8"><a aria-label="8"></a>  <span class="kw">using</span> pt<span class="op">::</span>r<span class="op">,</span> pt<span class="op">::</span>epsilon<span class="op">,</span> pt<span class="op">::</span>rc<span class="op">,</span> pt<span class="op">::</span>sigma<span class="op">;</span></span>
-<span id="cb12-9"><a aria-label="9"></a>  ntype vij<span class="op">(</span>particleLJ P<span class="op">,</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> L<span class="op">)</span></span>
-<span id="cb12-10"><a aria-label="10"></a>    <span class="op">{</span></span>
-<span id="cb12-11"><a aria-label="11"></a>      ntype ene<span class="op">;</span></span>
-<span id="cb12-12"><a aria-label="12"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> Dr<span class="op">;</span></span>
-<span id="cb12-13"><a aria-label="13"></a>     </span>
-<span id="cb12-14"><a aria-label="14"></a>      Dr <span class="op">=</span> r <span class="op">-</span> P<span class="op">.</span>r<span class="op">;</span></span>
-<span id="cb12-15"><a aria-label="15"></a>      <span class="co">// MINIMUM IMAGE CONVENTION </span></span>
-<span id="cb12-16"><a aria-label="16"></a>      Dr <span class="op">=</span> Dr <span class="op">-</span> mulcw<span class="op">(</span>L<span class="op">,</span>rint<span class="op">(</span>divcw<span class="op">(</span>Dr<span class="op">,</span>L<span class="op">)));</span> <span class="co">// Dr - L*rint(Dr/L)</span></span>
-<span id="cb12-17"><a aria-label="17"></a>      ntype rsq<span class="op">,</span> rn <span class="op">=</span> Dr<span class="op">.</span>norm<span class="op">();</span></span>
-<span id="cb12-18"><a aria-label="18"></a>      rsq <span class="op">=</span> rn<span class="op">*</span>rn<span class="op">;</span> </span>
-<span id="cb12-19"><a aria-label="19"></a>      <span class="cf">if</span> <span class="op">(</span>rsq <span class="op">&lt;</span> rc<span class="op">*</span>rc<span class="op">)</span> <span class="co">// interaction potential cut-off</span></span>
-<span id="cb12-20"><a aria-label="20"></a>        ene <span class="op">=</span> <span class="fl">4.0</span><span class="op">*</span>epsilon<span class="op">*(</span>pow<span class="op">(</span>sigma<span class="op">/</span>rn<span class="op">,</span><span class="fl">12.0</span><span class="op">)-</span>pow<span class="op">(</span>sigma<span class="op">/</span>rn<span class="op">,</span><span class="dv">6</span><span class="op">));</span></span>
-<span id="cb12-21"><a aria-label="21"></a>      <span class="cf">else</span></span>
-<span id="cb12-22"><a aria-label="22"></a>        ene <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb12-23"><a aria-label="23"></a>      <span class="cf">return</span> ene<span class="op">;</span></span>
-<span id="cb12-24"><a aria-label="24"></a></span>
-<span id="cb12-25"><a aria-label="25"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a aria-label="1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">&gt;</span></span>
+<span id="cb14-2"><a aria-label="2"></a><span class="kw">class</span> particleLJ<span class="op">:</span> <span class="kw">public</span> particle<span class="op">&lt;</span>ntype<span class="op">&gt;</span></span>
+<span id="cb14-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb14-4"><a aria-label="4"></a>  <span class="kw">using</span> pt<span class="op">=</span>particle<span class="op">&lt;</span>ntype<span class="op">&gt;;</span></span>
+<span id="cb14-5"><a aria-label="5"></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="cb14-6"><a aria-label="6"></a>  <span class="kw">using</span> pt<span class="op">::</span>vcut<span class="op">;</span></span>
+<span id="cb14-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb14-8"><a aria-label="8"></a>  <span class="kw">using</span> pt<span class="op">::</span>r<span class="op">,</span> pt<span class="op">::</span>epsilon<span class="op">,</span> pt<span class="op">::</span>rc<span class="op">,</span> pt<span class="op">::</span>sigma<span class="op">;</span></span>
+<span id="cb14-9"><a aria-label="9"></a>  ntype vij<span class="op">(</span>particleLJ P<span class="op">,</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> L<span class="op">)</span></span>
+<span id="cb14-10"><a aria-label="10"></a>    <span class="op">{</span></span>
+<span id="cb14-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb14-12"><a aria-label="12"></a>  <span class="co">// L is a vector with box dimensions</span></span>
+<span id="cb14-13"><a aria-label="13"></a>  <span class="co">// vij will be the interaction potential between i and j</span></span>
+<span id="cb14-14"><a aria-label="14"></a>  <span class="co">// vijs will be the shifted interaction potential</span></span>
+<span id="cb14-15"><a aria-label="15"></a>  <span class="co">// wij is the virial (i.e. rij*fij) for calculating the pressure</span></span>
+<span id="cb14-16"><a aria-label="16"></a>  pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> fij<span class="op">(</span>particleLJ P<span class="op">,</span> pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> L<span class="op">,</span> ntype <span class="op">&amp;</span>vij<span class="op">,</span> ntype<span class="op">&amp;</span> vijs<span class="op">,</span> ntype <span class="op">&amp;</span>wij<span class="op">)</span></span>
+<span id="cb14-17"><a aria-label="17"></a>    <span class="op">{</span></span>
+<span id="cb14-18"><a aria-label="18"></a>    <span class="op">}</span></span>
+<span id="cb14-19"><a aria-label="19"></a>  <span class="co">// vcut = vLJ(rc), i.e. the value of LJ potential at r=rc</span></span>
+<span id="cb14-20"><a aria-label="20"></a>  <span class="co">// this method should be called when initializing particles</span></span>
+<span id="cb14-21"><a aria-label="21"></a>  <span class="dt">void</span> set_vcut<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb14-22"><a aria-label="22"></a>    <span class="op">{</span></span>
+<span id="cb14-23"><a aria-label="23"></a>    <span class="op">}</span></span>
+<span id="cb14-24"><a aria-label="24"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li><span class="math inline">\(v(r) = 4\epsilon\left[(\sigma/r)^{12} - (\sigma/r)^6\right]\)</span> for <span class="math inline">\(r &lt; r_c\)</span>, 0 otherwise, with <span class="math inline">\(r\)</span> the distance of the <strong>minimum image</strong> of <code>P</code> (Lab #3): correct if <span class="math inline">\(r_c \le L/2\)</span> (here <span class="math inline">\(r_c = 5\)</span>, <span class="math inline">\(L/2 \simeq 6.3\)</span>).</li>
+<li><code>vij()</code>, <code>fij()</code>, <code>set_vcut()</code>: today’s task. <code>using pt::r, ...</code>: the base class depends on the template parameter (N10); <code>vcut</code> is <code>protected</code> in <code>particle</code>.</li>
 </ul>
 </section>
 <section id="sim.hpp-the-base-class" class="slide level2 smaller codice-intero codice-micro">
@@ -1202,83 +1243,118 @@ Cristiano De Michele
 <p><code>project/sim.hpp</code></p>
 <div class="columns">
 <div class="column" style="width:52%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
-<span id="cb13-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb13-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
-<span id="cb13-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">"./params.hpp"</span></span>
-<span id="cb13-5"><a aria-label="5"></a><span class="pp">#include </span><span class="im">"./particle.hpp"</span></span>
-<span id="cb13-6"><a aria-label="6"></a><span class="pp">#include </span><span class="im">"./randnumgen.hpp"</span></span>
-<span id="cb13-7"><a aria-label="7"></a><span class="pp">#include </span><span class="im">&lt;iomanip&gt;</span><span class="pp"> </span><span class="co">// for setprecision()</span></span>
-<span id="cb13-8"><a aria-label="8"></a></span>
-<span id="cb13-9"><a aria-label="9"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">,</span> <span class="kw">typename</span> <span class="dt">particle_type</span><span class="op">&gt;</span></span>
-<span id="cb13-10"><a aria-label="10"></a><span class="kw">class</span> sim</span>
-<span id="cb13-11"><a aria-label="11"></a><span class="op">{</span></span>
-<span id="cb13-12"><a aria-label="12"></a>  <span class="kw">using</span> simp <span class="op">=</span> simpars<span class="op">&lt;</span>ntype<span class="op">&gt;;</span></span>
-<span id="cb13-13"><a aria-label="13"></a><span class="kw">protected</span><span class="op">:</span></span>
-<span id="cb13-14"><a aria-label="14"></a>  simp pars<span class="op">;</span>  <span class="co">// parameters (by composition)</span></span>
-<span id="cb13-15"><a aria-label="15"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">particle_type</span><span class="op">&gt;</span> parts<span class="op">;</span></span>
-<span id="cb13-16"><a aria-label="16"></a>  <span class="co">// if opt=1 calculate energies only for i &lt; j</span></span>
-<span id="cb13-17"><a aria-label="17"></a>  ntype calcenergyi<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> opt<span class="op">=</span><span class="dv">0</span><span class="op">)</span> </span>
-<span id="cb13-18"><a aria-label="18"></a>    <span class="op">{</span></span>
-<span id="cb13-19"><a aria-label="19"></a>    <span class="op">}</span></span>
-<span id="cb13-20"><a aria-label="20"></a>  </span>
-<span id="cb13-21"><a aria-label="21"></a>  ntype totenergy<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb13-22"><a aria-label="22"></a>    <span class="op">{</span></span>
-<span id="cb13-23"><a aria-label="23"></a>    <span class="op">}</span></span>
-<span id="cb13-24"><a aria-label="24"></a></span>
-<span id="cb13-25"><a aria-label="25"></a>  <span class="dt">void</span> pbc<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> </span>
-<span id="cb13-26"><a aria-label="26"></a>    <span class="op">{</span></span>
-<span id="cb13-27"><a aria-label="27"></a>    <span class="op">}</span></span>
-<span id="cb13-28"><a aria-label="28"></a></span>
-<span id="cb13-29"><a aria-label="29"></a>  <span class="dt">void</span> save_mgl_snapshot<span class="op">(</span><span class="dt">long</span> <span class="dt">int</span> t<span class="op">)</span> </span>
-<span id="cb13-30"><a aria-label="30"></a>    <span class="op">{</span></span>
-<span id="cb13-31"><a aria-label="31"></a>    <span class="op">}</span></span>
-<span id="cb13-32"><a aria-label="32"></a> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb15-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb15-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
+<span id="cb15-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">"./params.hpp"</span></span>
+<span id="cb15-5"><a aria-label="5"></a><span class="pp">#include </span><span class="im">"./particle.hpp"</span></span>
+<span id="cb15-6"><a aria-label="6"></a><span class="pp">#include </span><span class="im">"./randnumgen.hpp"</span></span>
+<span id="cb15-7"><a aria-label="7"></a><span class="pp">#include </span><span class="im">&lt;iomanip&gt;</span><span class="pp"> </span><span class="co">// for setprecision()</span></span>
+<span id="cb15-8"><a aria-label="8"></a></span>
+<span id="cb15-9"><a aria-label="9"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">,</span> <span class="kw">typename</span> <span class="dt">particle_type</span><span class="op">&gt;</span></span>
+<span id="cb15-10"><a aria-label="10"></a><span class="kw">class</span> sim</span>
+<span id="cb15-11"><a aria-label="11"></a><span class="op">{</span></span>
+<span id="cb15-12"><a aria-label="12"></a>  <span class="kw">using</span> simp <span class="op">=</span> simpars<span class="op">&lt;</span>ntype<span class="op">&gt;;</span></span>
+<span id="cb15-13"><a aria-label="13"></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="cb15-14"><a aria-label="14"></a>  simp pars<span class="op">;</span>  <span class="co">// parameters (by composition)</span></span>
+<span id="cb15-15"><a aria-label="15"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">particle_type</span><span class="op">&gt;</span> parts<span class="op">;</span></span>
+<span id="cb15-16"><a aria-label="16"></a>  <span class="co">// if opt=1 calculate energies only for i &lt; j</span></span>
+<span id="cb15-17"><a aria-label="17"></a>  ntype calcenergyi<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> opt<span class="op">=</span><span class="dv">0</span><span class="op">)</span> </span>
+<span id="cb15-18"><a aria-label="18"></a>    <span class="op">{</span></span>
+<span id="cb15-19"><a aria-label="19"></a>    <span class="op">}</span></span>
+<span id="cb15-20"><a aria-label="20"></a>  </span>
+<span id="cb15-21"><a aria-label="21"></a>  ntype totenergy<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb15-22"><a aria-label="22"></a>    <span class="op">{</span></span>
+<span id="cb15-23"><a aria-label="23"></a>    <span class="op">}</span></span>
+<span id="cb15-24"><a aria-label="24"></a></span>
+<span id="cb15-25"><a aria-label="25"></a>  <span class="dt">void</span> pbc<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> </span>
+<span id="cb15-26"><a aria-label="26"></a>    <span class="op">{</span></span>
+<span id="cb15-27"><a aria-label="27"></a>    <span class="op">}</span></span>
+<span id="cb15-28"><a aria-label="28"></a></span>
+<span id="cb15-29"><a aria-label="29"></a>  <span class="dt">void</span> save_mgl_snapshot<span class="op">(</span><span class="dt">long</span> <span class="dt">int</span> t<span class="op">)</span> </span>
+<span id="cb15-30"><a aria-label="30"></a>    <span class="op">{</span></span>
+<span id="cb15-31"><a aria-label="31"></a>    <span class="op">}</span></span>
+<span id="cb15-32"><a aria-label="32"></a> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:48%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-startfrom="33"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 32;"><span id="cb14-33"><a aria-label="33"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb14-34"><a aria-label="34"></a>  <span class="dt">void</span> prepare_initial_conf<span class="op">(</span><span class="dt">void</span><span class="op">)</span> </span>
-<span id="cb14-35"><a aria-label="35"></a>    <span class="op">{</span></span>
-<span id="cb14-36"><a aria-label="36"></a>    <span class="op">}</span></span>
-<span id="cb14-37"><a aria-label="37"></a></span>
-<span id="cb14-38"><a aria-label="38"></a>  <span class="dt">void</span> <span class="dt">set_sim_type</span><span class="op">(</span><span class="dt">int</span> type<span class="op">)</span></span>
-<span id="cb14-39"><a aria-label="39"></a>    <span class="op">{</span></span>
-<span id="cb14-40"><a aria-label="40"></a>      pars<span class="op">.</span>simtype <span class="op">=</span> type<span class="op">;</span></span>
-<span id="cb14-41"><a aria-label="41"></a>    <span class="op">}</span></span>
-<span id="cb14-42"><a aria-label="42"></a> </span>
-<span id="cb14-43"><a aria-label="43"></a>  <span class="dt">void</span> init_rng<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> </span>
-<span id="cb14-44"><a aria-label="44"></a>    <span class="op">{</span></span>
-<span id="cb14-45"><a aria-label="45"></a>    <span class="op">}</span></span>
-<span id="cb14-46"><a aria-label="46"></a></span>
-<span id="cb14-47"><a aria-label="47"></a>  <span class="dt">void</span> run<span class="op">(</span><span class="dt">void</span><span class="op">)</span> </span>
-<span id="cb14-48"><a aria-label="48"></a>    <span class="op">{</span></span>
-<span id="cb14-49"><a aria-label="49"></a>      <span class="co">// intentionally void</span></span>
-<span id="cb14-50"><a aria-label="50"></a>    <span class="op">};</span> </span>
-<span id="cb14-51"><a aria-label="51"></a><span class="op">};</span></span>
-<span id="cb14-52"><a aria-label="52"></a></span>
-<span id="cb14-53"><a aria-label="53"></a><span class="pp">#endif</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-startfrom="33"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 32;"><span id="cb16-33"><a aria-label="33"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb16-34"><a aria-label="34"></a>  <span class="dt">void</span> prepare_initial_conf<span class="op">(</span><span class="dt">void</span><span class="op">)</span> </span>
+<span id="cb16-35"><a aria-label="35"></a>    <span class="op">{</span></span>
+<span id="cb16-36"><a aria-label="36"></a>    <span class="op">}</span></span>
+<span id="cb16-37"><a aria-label="37"></a></span>
+<span id="cb16-38"><a aria-label="38"></a>  <span class="dt">void</span> <span class="dt">set_sim_type</span><span class="op">(</span><span class="dt">int</span> type<span class="op">)</span></span>
+<span id="cb16-39"><a aria-label="39"></a>    <span class="op">{</span></span>
+<span id="cb16-40"><a aria-label="40"></a>      pars<span class="op">.</span>simtype <span class="op">=</span> type<span class="op">;</span></span>
+<span id="cb16-41"><a aria-label="41"></a>    <span class="op">}</span></span>
+<span id="cb16-42"><a aria-label="42"></a> </span>
+<span id="cb16-43"><a aria-label="43"></a>  <span class="dt">void</span> init_rng<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> </span>
+<span id="cb16-44"><a aria-label="44"></a>    <span class="op">{</span></span>
+<span id="cb16-45"><a aria-label="45"></a>    <span class="op">}</span></span>
+<span id="cb16-46"><a aria-label="46"></a></span>
+<span id="cb16-47"><a aria-label="47"></a>  <span class="dt">void</span> run<span class="op">(</span><span class="dt">void</span><span class="op">)</span> </span>
+<span id="cb16-48"><a aria-label="48"></a>    <span class="op">{</span></span>
+<span id="cb16-49"><a aria-label="49"></a>      <span class="co">// intentionally void</span></span>
+<span id="cb16-50"><a aria-label="50"></a>    <span class="op">};</span> </span>
+<span id="cb16-51"><a aria-label="51"></a><span class="op">};</span></span>
+<span id="cb16-52"><a aria-label="52"></a></span>
+<span id="cb16-53"><a aria-label="53"></a><span class="pp">#endif</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>protected</code>: for the derived classes. <code>run()</code> does nothing here.</li>
 </ul>
 </div></div>
 </section></section>
 <section>
-<section id="part-4-task-the-base-class-sim" class="title-slide slide level1 center">
-<h1>Part 4<br>Task: the base class <code>sim</code></h1>
+<section id="part-4-task-the-particles-and-the-base-class-sim" class="title-slide slide level1 center">
+<h1>Part 4<br>Task: the particles and the base class <code>sim</code></h1>
 
 </section>
 <section id="the-task" class="slide level2 smaller codice-intero">
 <h2>The task</h2>
 <p>Download again <code>project_classes.zip</code> (unzip it elsewhere, not over your files). New: <code>params.hpp</code>, <code>particle.hpp</code>, <code>sim.hpp</code> and the goal <code>simtest.cpp</code>; <code>pmatrix.hpp</code> now has the solution of Lab #5.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a> <span class="op">*</span>  <span class="op">=====</span> base <span class="kw">class</span> <span class="op">(</span>common stuff <span class="cf">for</span> MC <span class="kw">and</span> MD<span class="op">)</span> <span class="op">=====</span>  </span>
-<span id="cb15-2"><a aria-label="2"></a> <span class="op">*</span></span>
-<span id="cb15-3"><a aria-label="3"></a> <span class="op">*</span>   <span class="op">[*]</span>  calcenergyi<span class="op">()</span></span>
-<span id="cb15-4"><a aria-label="4"></a> <span class="op">*</span>   <span class="op">[*]</span>  totenergy<span class="op">()</span></span>
-<span id="cb15-5"><a aria-label="5"></a> <span class="op">*</span>   <span class="op">[*]</span>  pbc<span class="op">()</span> <span class="op">[</span> to apply pbc <span class="op">]</span></span>
-<span id="cb15-6"><a aria-label="6"></a> <span class="op">*</span>   <span class="op">[*]</span>  save_mgl_snapshot<span class="op">()</span> save configurations in mgl format</span>
-<span id="cb15-7"><a aria-label="7"></a> <span class="op">*</span>   <span class="op">[*]</span>  prepare_initial_conf<span class="op">()</span> </span>
-<span id="cb15-8"><a aria-label="8"></a> <span class="op">*</span>   <span class="op">[*]</span>  init_rng<span class="op">()</span></span>
-<span id="cb15-9"><a aria-label="9"></a> <span class="op">*</span>   <span class="op">[</span>X<span class="op">]</span>  run<span class="op">()</span> method <span class="op">(</span>main loop<span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Write the bodies of the <code>[*]</code> methods of <code>sim</code>, in <code>sim.hpp</code>. Then <code>simtest.cpp</code> must compile without warnings and print the output at the end of this part.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a aria-label="1"></a> <span class="op">*</span> particle <span class="kw">class</span></span>
+<span id="cb17-2"><a aria-label="2"></a> <span class="op">*</span></span>
+<span id="cb17-3"><a aria-label="3"></a> <span class="op">*</span> MC </span>
+<span id="cb17-4"><a aria-label="4"></a> <span class="op">*</span></span>
+<span id="cb17-5"><a aria-label="5"></a> <span class="op">*</span> <span class="op">[*]</span> store<span class="op">/</span>restore methods</span>
+<span id="cb17-6"><a aria-label="6"></a> <span class="op">*</span> </span>
+<span id="cb17-7"><a aria-label="7"></a> <span class="op">*</span> <span class="op">[*]</span> tra_move<span class="op">()</span></span>
+<span id="cb17-8"><a aria-label="8"></a> <span class="op">*</span> </span>
+<span id="cb17-9"><a aria-label="9"></a> <span class="op">*</span> MD </span>
+<span id="cb17-10"><a aria-label="10"></a> <span class="op">*</span> </span>
+<span id="cb17-11"><a aria-label="11"></a> <span class="op">*</span> <span class="op">[</span>E<span class="op">]</span> expiLq  <span class="op">&lt;----</span></span>
+<span id="cb17-12"><a aria-label="12"></a> <span class="op">*</span></span>
+<span id="cb17-13"><a aria-label="13"></a> <span class="op">*</span> <span class="op">[</span>E<span class="op">]</span> expiLp  <span class="op">&lt;----</span></span>
+<span id="cb17-14"><a aria-label="14"></a> <span class="op">*</span></span>
+<span id="cb17-15"><a aria-label="15"></a> <span class="op">*</span> particleLJ <span class="kw">class</span> </span>
+<span id="cb17-16"><a aria-label="16"></a> <span class="op">*</span></span>
+<span id="cb17-17"><a aria-label="17"></a> <span class="op">*</span> <span class="op">[*]</span> vij<span class="op">()</span></span>
+<span id="cb17-18"><a aria-label="18"></a> <span class="op">*</span> </span>
+<span id="cb17-19"><a aria-label="19"></a> <span class="op">*</span> <span class="op">[*]</span> set_vcut<span class="op">()</span></span>
+<span id="cb17-20"><a aria-label="20"></a> <span class="op">*</span></span>
+<span id="cb17-21"><a aria-label="21"></a> <span class="op">*</span> <span class="op">[*]</span> fij<span class="op">()</span>  <span class="op">&lt;----</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a aria-label="1"></a> <span class="op">*</span>  <span class="op">=====</span> base <span class="kw">class</span> <span class="op">(</span>common stuff <span class="cf">for</span> MC <span class="kw">and</span> MD<span class="op">)</span> <span class="op">=====</span>  </span>
+<span id="cb18-2"><a aria-label="2"></a> <span class="op">*</span></span>
+<span id="cb18-3"><a aria-label="3"></a> <span class="op">*</span>   <span class="op">[*]</span>  calcenergyi<span class="op">()</span></span>
+<span id="cb18-4"><a aria-label="4"></a> <span class="op">*</span>   <span class="op">[*]</span>  totenergy<span class="op">()</span></span>
+<span id="cb18-5"><a aria-label="5"></a> <span class="op">*</span>   <span class="op">[*]</span>  pbc<span class="op">()</span> <span class="op">[</span> to apply pbc <span class="op">]</span></span>
+<span id="cb18-6"><a aria-label="6"></a> <span class="op">*</span>   <span class="op">[*]</span>  save_mgl_snapshot<span class="op">()</span> save configurations in mgl format</span>
+<span id="cb18-7"><a aria-label="7"></a> <span class="op">*</span>   <span class="op">[*]</span>  prepare_initial_conf<span class="op">()</span> </span>
+<span id="cb18-8"><a aria-label="8"></a> <span class="op">*</span>   <span class="op">[*]</span>  init_rng<span class="op">()</span></span>
+<span id="cb18-9"><a aria-label="9"></a> <span class="op">*</span>   <span class="op">[</span>X<span class="op">]</span>  run<span class="op">()</span> method <span class="op">(</span>main loop<span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<p>Write the bodies of the <code>[*]</code> methods, in <code>particle.hpp</code> and in <code>sim.hpp</code>. Then <code>simtest.cpp</code> must compile without warnings and print the output at the end of this part.</p>
+</section>
+<section id="hints-the-particles" class="slide level2 smaller">
+<h2>Hints: the particles</h2>
+<ul>
+<li><code>store()</code> saves <code>r</code> in <code>rold</code>, <code>restore()</code> puts it back (a rejected Monte Carlo move); <code>tra_move(delr)</code>: <span class="math inline">\(\mathbf{r} \to \mathbf{r} + \delta\mathbf{r}\)</span>.</li>
+<li><code>vij(P, L)</code>: <span class="math inline">\(\mathbf{r}_{ij} = \mathbf{r} - \mathbf{r}_P\)</span>, then its minimum image (Lab #3), <span class="math inline">\(r = |\mathbf{r}_{ij}|\)</span>, and <span class="math inline">\(v(r) = 4\epsilon\left[(\sigma/r)^{12} - (\sigma/r)^6\right]\)</span> for <span class="math inline">\(r &lt; r_c\)</span>, 0 otherwise. Correct if <span class="math inline">\(r_c \le L/2\)</span> (here <span class="math inline">\(r_c = 5\)</span>, <span class="math inline">\(L/2 \simeq 6.3\)</span>).</li>
+<li><code>set_vcut()</code>: <code>vcut</code> <span class="math inline">\(= v(r_c)\)</span>.</li>
+<li><code>fij(P, L, vij, vijs, wij)</code> returns the force on this particle due to <code>P</code>, <span class="math display">\[\mathbf{F}_{ij} = -\nabla_i v = 24\epsilon\left[2(\sigma/r)^{12} - (\sigma/r)^6\right]
+\frac{\mathbf{r}_{ij}}{r^2}\]</span> and, through the arguments passed by reference, <code>vij</code> <span class="math inline">\(= v(r)\)</span>, <code>vijs</code> <span class="math inline">\(= v(r) - v(r_c)\)</span> (the shifted potential, continuous at <span class="math inline">\(r_c\)</span>) and the virial <code>wij</code> <span class="math inline">\(= \mathbf{r}_{ij} \cdot \mathbf{F}_{ij}\)</span>. For <span class="math inline">\(r \ge r_c\)</span> all of them are 0.</li>
+</ul>
 </section>
 <section id="hints-energy-and-pbc" class="slide level2 smaller">
 <h2>Hints: energy and PBC</h2>
@@ -1294,118 +1370,160 @@ Cristiano De Michele
 <ul>
 <li><p><code>prepare_initial_conf()</code>: a simple cubic lattice of <span class="math inline">\(N_p = n_x n_y n_z\)</span> particles, <code>parts.resize(pars.Np)</code>. One particle in each cubic cell of side <span class="math inline">\(a\)</span>: <span class="math inline">\(\rho = 1/a^3\)</span>, <span class="math inline">\(a = \rho^{-1/3}\)</span> (<code>cbrt()</code>), <span class="math inline">\(\mathbf{L} = (n_x a, n_y a, n_z a)\)</span>. Particle <span class="math inline">\((i_x, i_y, i_z)\)</span> at <span class="math inline">\((i_x a, i_y a, i_z a) - \mathbf{L}/2\)</span> (box centred in the origin), with <code>set_sigma()</code>, <code>set_epsilon()</code>, <code>set_rcut()</code> from <code>pars</code>.</p></li>
 <li><p><code>save_mgl_snapshot(t)</code>: the file <code>cnf-&lt;t&gt;.mgl</code>, one line for each particle, <code>x y z @ radius</code>, with radius <span class="math inline">\(\sigma/2\)</span>. A file is written as <code>std::cout</code> (header <code>&lt;fstream&gt;</code>):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="bu">std::</span>fstream f<span class="op">;</span></span>
-<span id="cb16-2"><a aria-label="2"></a><span class="bu">std::</span>string s <span class="op">=</span> <span class="st">"cnf-"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>t<span class="op">)</span> <span class="op">+</span> <span class="st">".mgl"</span><span class="op">;</span>  <span class="co">// the file name</span></span>
-<span id="cb16-3"><a aria-label="3"></a>f<span class="op">.</span>open<span class="op">(</span>s<span class="op">,</span> <span class="bu">std::</span>ios::out<span class="op">|</span><span class="bu">std::</span>ios::trunc<span class="op">);</span>             <span class="co">// write, from scratch</span></span>
-<span id="cb16-4"><a aria-label="4"></a>f <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> y <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb16-5"><a aria-label="5"></a>f<span class="op">.</span>close<span class="op">();</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb19-1"><a aria-label="1"></a><span class="bu">std::</span>fstream f<span class="op">;</span></span>
+<span id="cb19-2"><a aria-label="2"></a><span class="bu">std::</span>string s <span class="op">=</span> <span class="st">"cnf-"</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>t<span class="op">)</span> <span class="op">+</span> <span class="st">".mgl"</span><span class="op">;</span>  <span class="co">// the file name</span></span>
+<span id="cb19-3"><a aria-label="3"></a>f<span class="op">.</span>open<span class="op">(</span>s<span class="op">,</span> <span class="bu">std::</span>ios::out<span class="op">|</span><span class="bu">std::</span>ios::trunc<span class="op">);</span>             <span class="co">// write, from scratch</span></span>
+<span id="cb19-4"><a aria-label="4"></a>f <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> y <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb19-5"><a aria-label="5"></a>f<span class="op">.</span>close<span class="op">();</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ul>
 </section>
-<section id="the-goal-simtest.cpp" class="slide level2 smaller codice-intero codice-micro">
-<h2>The goal: <code>simtest.cpp</code></h2>
+<section id="the-goal-simtest.cpp-1" class="slide level2 smaller codice-intero codice-micro">
+<h2>The goal: <code>simtest.cpp</code> (1)</h2>
 <p><code>project/simtest.cpp</code></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./sim.hpp"</span></span>
-<span id="cb17-2"><a aria-label="2"></a><span class="co">// A class derived from sim, only to test the methods of the</span></span>
-<span id="cb17-3"><a aria-label="3"></a><span class="co">// base class: a derived class can use the protected members</span></span>
-<span id="cb17-4"><a aria-label="4"></a><span class="co">// of sim (as mcsim will do).</span></span>
-<span id="cb17-5"><a aria-label="5"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">,</span> <span class="kw">typename</span> <span class="dt">particle_type</span><span class="op">&gt;</span></span>
-<span id="cb17-6"><a aria-label="6"></a><span class="kw">class</span> simtest<span class="op">:</span> <span class="kw">public</span> sim<span class="op">&lt;</span>ntype<span class="op">,</span> <span class="dt">particle_type</span><span class="op">&gt;</span></span>
-<span id="cb17-7"><a aria-label="7"></a><span class="op">{</span></span>
-<span id="cb17-8"><a aria-label="8"></a>  <span class="kw">using</span> bc <span class="op">=</span> sim<span class="op">&lt;</span>ntype<span class="op">,</span> <span class="dt">particle_type</span><span class="op">&gt;;</span></span>
-<span id="cb17-9"><a aria-label="9"></a>  <span class="kw">using</span> bc<span class="op">::</span>pars<span class="op">,</span> bc<span class="op">::</span>parts<span class="op">,</span> bc<span class="op">::</span>calcenergyi<span class="op">,</span> bc<span class="op">::</span>totenergy<span class="op">,</span></span>
-<span id="cb17-10"><a aria-label="10"></a>        bc<span class="op">::</span>pbc<span class="op">,</span> bc<span class="op">::</span>save_mgl_snapshot<span class="op">;</span></span>
-<span id="cb17-11"><a aria-label="11"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb17-12"><a aria-label="12"></a>  <span class="dt">void</span> run<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="co">// it hides sim::run()</span></span>
-<span id="cb17-13"><a aria-label="13"></a>    <span class="op">{</span></span>
-<span id="cb17-14"><a aria-label="14"></a>      ntype V <span class="op">=</span> pars<span class="op">.</span>L<span class="op">(</span><span class="dv">0</span><span class="op">)*</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">1</span><span class="op">)*</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
-<span id="cb17-15"><a aria-label="15"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Np="</span> <span class="op">&lt;&lt;</span> pars<span class="op">.</span>Np <span class="op">&lt;&lt;</span> <span class="st">"  L="</span> <span class="op">&lt;&lt;</span> pars<span class="op">.</span>L</span>
-<span id="cb17-16"><a aria-label="16"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  density="</span> <span class="op">&lt;&lt;</span> pars<span class="op">.</span>Np<span class="op">/</span>V <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb17-17"><a aria-label="17"></a></span>
-<span id="cb17-18"><a aria-label="18"></a>      <span class="co">// totenergy() and calcenergyi(): on the lattice all the</span></span>
-<span id="cb17-19"><a aria-label="19"></a>      <span class="co">// particles are equivalent, each one has energy 2U/Np</span></span>
-<span id="cb17-20"><a aria-label="20"></a>      ntype U <span class="op">=</span> totenergy<span class="op">();</span></span>
-<span id="cb17-21"><a aria-label="21"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"U/Np="</span> <span class="op">&lt;&lt;</span> U<span class="op">/</span>pars<span class="op">.</span>Np</span>
-<span id="cb17-22"><a aria-label="22"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  E_0/2="</span> <span class="op">&lt;&lt;</span> calcenergyi<span class="op">(</span><span class="dv">0</span><span class="op">)/</span><span class="dv">2</span></span>
-<span id="cb17-23"><a aria-label="23"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  E_555/2="</span> <span class="op">&lt;&lt;</span> calcenergyi<span class="op">(</span><span class="dv">555</span><span class="op">)/</span><span class="dv">2</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb17-24"><a aria-label="24"></a></span>
-<span id="cb17-25"><a aria-label="25"></a>      <span class="co">// pbc(): move particle 555 by (L, -L, 2L), then bring</span></span>
-<span id="cb17-26"><a aria-label="26"></a>      <span class="co">// it back into the box</span></span>
-<span id="cb17-27"><a aria-label="27"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> r0 <span class="op">=</span> parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>r<span class="op">;</span></span>
-<span id="cb17-28"><a aria-label="28"></a>      parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>tra_move<span class="op">({</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">0</span><span class="op">),</span> <span class="op">-</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">1</span><span class="op">),</span> <span class="dv">2</span><span class="op">*</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">2</span><span class="op">)});</span></span>
-<span id="cb17-29"><a aria-label="29"></a>      pbc<span class="op">(</span><span class="dv">555</span><span class="op">);</span></span>
-<span id="cb17-30"><a aria-label="30"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"pbc: particle 555 back to its site: "</span></span>
-<span id="cb17-31"><a aria-label="31"></a>                <span class="op">&lt;&lt;</span> <span class="op">((</span>parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>r <span class="op">-</span> r0<span class="op">).</span>norm<span class="op">()</span> <span class="op">&lt;</span> <span class="fl">1e-10</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./sim.hpp"</span></span>
+<span id="cb20-2"><a aria-label="2"></a><span class="co">// A class derived from sim, only to test the methods of the</span></span>
+<span id="cb20-3"><a aria-label="3"></a><span class="co">// base class: a derived class can use the protected members</span></span>
+<span id="cb20-4"><a aria-label="4"></a><span class="co">// of sim (as mcsim will do).</span></span>
+<span id="cb20-5"><a aria-label="5"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">,</span> <span class="kw">typename</span> <span class="dt">particle_type</span><span class="op">&gt;</span></span>
+<span id="cb20-6"><a aria-label="6"></a><span class="kw">class</span> simtest<span class="op">:</span> <span class="kw">public</span> sim<span class="op">&lt;</span>ntype<span class="op">,</span> <span class="dt">particle_type</span><span class="op">&gt;</span></span>
+<span id="cb20-7"><a aria-label="7"></a><span class="op">{</span></span>
+<span id="cb20-8"><a aria-label="8"></a>  <span class="kw">using</span> bc <span class="op">=</span> sim<span class="op">&lt;</span>ntype<span class="op">,</span> <span class="dt">particle_type</span><span class="op">&gt;;</span></span>
+<span id="cb20-9"><a aria-label="9"></a>  <span class="kw">using</span> bc<span class="op">::</span>pars<span class="op">,</span> bc<span class="op">::</span>parts<span class="op">,</span> bc<span class="op">::</span>calcenergyi<span class="op">,</span> bc<span class="op">::</span>totenergy<span class="op">,</span></span>
+<span id="cb20-10"><a aria-label="10"></a>        bc<span class="op">::</span>pbc<span class="op">,</span> bc<span class="op">::</span>save_mgl_snapshot<span class="op">;</span></span>
+<span id="cb20-11"><a aria-label="11"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb20-12"><a aria-label="12"></a>  <span class="dt">void</span> run<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="co">// it hides sim::run()</span></span>
+<span id="cb20-13"><a aria-label="13"></a>    <span class="op">{</span></span>
+<span id="cb20-14"><a aria-label="14"></a>      ntype V <span class="op">=</span> pars<span class="op">.</span>L<span class="op">(</span><span class="dv">0</span><span class="op">)*</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">1</span><span class="op">)*</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
+<span id="cb20-15"><a aria-label="15"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Np="</span> <span class="op">&lt;&lt;</span> pars<span class="op">.</span>Np <span class="op">&lt;&lt;</span> <span class="st">"  L="</span> <span class="op">&lt;&lt;</span> pars<span class="op">.</span>L</span>
+<span id="cb20-16"><a aria-label="16"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  density="</span> <span class="op">&lt;&lt;</span> pars<span class="op">.</span>Np<span class="op">/</span>V <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb20-17"><a aria-label="17"></a></span>
+<span id="cb20-18"><a aria-label="18"></a>      <span class="co">// tra_move(), store() and restore() on particle 7</span></span>
+<span id="cb20-19"><a aria-label="19"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> r7 <span class="op">=</span> parts<span class="op">[</span><span class="dv">7</span><span class="op">].</span>r<span class="op">,</span> d <span class="op">=</span> <span class="op">{</span><span class="fl">0.1</span><span class="op">,</span> <span class="fl">0.2</span><span class="op">,</span> <span class="fl">0.3</span><span class="op">};</span></span>
+<span id="cb20-20"><a aria-label="20"></a>      parts<span class="op">[</span><span class="dv">7</span><span class="op">].</span>store<span class="op">();</span></span>
+<span id="cb20-21"><a aria-label="21"></a>      parts<span class="op">[</span><span class="dv">7</span><span class="op">].</span>tra_move<span class="op">(</span>d<span class="op">);</span></span>
+<span id="cb20-22"><a aria-label="22"></a>      <span class="dt">bool</span> moved <span class="op">=</span> <span class="op">(</span>parts<span class="op">[</span><span class="dv">7</span><span class="op">].</span>r <span class="op">-</span> r7 <span class="op">-</span> d<span class="op">).</span>norm<span class="op">()</span> <span class="op">&lt;</span> <span class="fl">1e-12</span><span class="op">;</span></span>
+<span id="cb20-23"><a aria-label="23"></a>      parts<span class="op">[</span><span class="dv">7</span><span class="op">].</span>restore<span class="op">();</span></span>
+<span id="cb20-24"><a aria-label="24"></a>      <span class="dt">bool</span> back <span class="op">=</span> <span class="op">(</span>parts<span class="op">[</span><span class="dv">7</span><span class="op">].</span>r <span class="op">-</span> r7<span class="op">).</span>norm<span class="op">()</span> <span class="op">&lt;</span> <span class="fl">1e-12</span><span class="op">;</span></span>
+<span id="cb20-25"><a aria-label="25"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"tra_move: "</span> <span class="op">&lt;&lt;</span> moved</span>
+<span id="cb20-26"><a aria-label="26"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  store/restore: "</span> <span class="op">&lt;&lt;</span> back <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-startfrom="33"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 32;"><span id="cb18-33"><a aria-label="33"></a>      <span class="co">// save_mgl_snapshot(): one line for each particle</span></span>
-<span id="cb18-34"><a aria-label="34"></a>      save_mgl_snapshot<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
-<span id="cb18-35"><a aria-label="35"></a>      <span class="bu">std::</span>ifstream f<span class="op">(</span><span class="st">"cnf-0.mgl"</span><span class="op">);</span> <span class="co">// a file for reading</span></span>
-<span id="cb18-36"><a aria-label="36"></a>      <span class="bu">std::</span>string first<span class="op">,</span> line<span class="op">;</span></span>
-<span id="cb18-37"><a aria-label="37"></a>      <span class="dt">int</span> nl <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb18-38"><a aria-label="38"></a>      <span class="cf">if</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> first<span class="op">))</span> <span class="co">// false at the end</span></span>
-<span id="cb18-39"><a aria-label="39"></a>        nl <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb18-40"><a aria-label="40"></a>      <span class="cf">while</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> line<span class="op">))</span></span>
-<span id="cb18-41"><a aria-label="41"></a>        nl<span class="op">++;</span></span>
-<span id="cb18-42"><a aria-label="42"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"cnf-0.mgl: "</span> <span class="op">&lt;&lt;</span> nl</span>
-<span id="cb18-43"><a aria-label="43"></a>                <span class="op">&lt;&lt;</span> <span class="st">" lines, the first one is: "</span> <span class="op">&lt;&lt;</span> first <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb18-44"><a aria-label="44"></a>    <span class="op">}</span></span>
-<span id="cb18-45"><a aria-label="45"></a><span class="op">};</span></span>
-<span id="cb18-46"><a aria-label="46"></a></span>
-<span id="cb18-47"><a aria-label="47"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb18-48"><a aria-label="48"></a><span class="op">{</span></span>
-<span id="cb18-49"><a aria-label="49"></a>  simtest<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span> particleLJ<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;</span> st<span class="op">;</span></span>
-<span id="cb18-50"><a aria-label="50"></a>  <span class="co">// init_rng(): the same seed gives the same random numbers</span></span>
-<span id="cb18-51"><a aria-label="51"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
-<span id="cb18-52"><a aria-label="52"></a>  <span class="dt">double</span> x1 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
-<span id="cb18-53"><a aria-label="53"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
-<span id="cb18-54"><a aria-label="54"></a>  <span class="dt">double</span> x2 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
-<span id="cb18-55"><a aria-label="55"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"init_rng(5) twice, the same number: "</span></span>
-<span id="cb18-56"><a aria-label="56"></a>            <span class="op">&lt;&lt;</span> <span class="op">(</span>x1 <span class="op">==</span> x2<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb18-57"><a aria-label="57"></a></span>
-<span id="cb18-58"><a aria-label="58"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
-<span id="cb18-59"><a aria-label="59"></a>  st<span class="op">.</span>prepare_initial_conf<span class="op">();</span> <span class="co">// simple cubic lattice</span></span>
-<span id="cb18-60"><a aria-label="60"></a>  st<span class="op">.</span>run<span class="op">();</span></span>
-<span id="cb18-61"><a aria-label="61"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb18-62"><a aria-label="62"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-startfrom="28"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 27;"><span id="cb21-28"><a aria-label="28"></a>      <span class="co">// vij(), fij() and set_vcut(): particles 0 and 1 are</span></span>
+<span id="cb21-29"><a aria-label="29"></a>      <span class="co">// nearest neighbours, at distance a; F must be equal to</span></span>
+<span id="cb21-30"><a aria-label="30"></a>      <span class="co">// -grad v (by finite differences), w to r.F</span></span>
+<span id="cb21-31"><a aria-label="31"></a>      ntype v<span class="op">,</span> vs<span class="op">,</span> w<span class="op">,</span> h <span class="op">=</span> <span class="fl">1e-6</span><span class="op">;</span></span>
+<span id="cb21-32"><a aria-label="32"></a>      parts<span class="op">[</span><span class="dv">0</span><span class="op">].</span>set_vcut<span class="op">();</span></span>
+<span id="cb21-33"><a aria-label="33"></a>      <span class="kw">auto</span> F <span class="op">=</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">].</span>fij<span class="op">(</span>parts<span class="op">[</span><span class="dv">1</span><span class="op">],</span> pars<span class="op">.</span>L<span class="op">,</span> v<span class="op">,</span> vs<span class="op">,</span> w<span class="op">);</span></span>
+<span id="cb21-34"><a aria-label="34"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> G<span class="op">,</span> Dr <span class="op">=</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">].</span>r <span class="op">-</span> parts<span class="op">[</span><span class="dv">1</span><span class="op">].</span>r<span class="op">;</span></span>
+<span id="cb21-35"><a aria-label="35"></a>      Dr <span class="op">=</span> Dr <span class="op">-</span> mulcw<span class="op">(</span>pars<span class="op">.</span>L<span class="op">,</span> rint<span class="op">(</span>divcw<span class="op">(</span>Dr<span class="op">,</span> pars<span class="op">.</span>L<span class="op">)));</span></span>
+<span id="cb21-36"><a aria-label="36"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> k<span class="op">++)</span></span>
+<span id="cb21-37"><a aria-label="37"></a>        <span class="op">{</span></span>
+<span id="cb21-38"><a aria-label="38"></a>          <span class="dt">particle_type</span> P <span class="op">=</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">],</span> M <span class="op">=</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb21-39"><a aria-label="39"></a>          P<span class="op">.</span>r<span class="op">(</span>k<span class="op">)</span> <span class="op">+=</span> h<span class="op">;</span></span>
+<span id="cb21-40"><a aria-label="40"></a>          M<span class="op">.</span>r<span class="op">(</span>k<span class="op">)</span> <span class="op">-=</span> h<span class="op">;</span></span>
+<span id="cb21-41"><a aria-label="41"></a>          G<span class="op">(</span>k<span class="op">)</span> <span class="op">=</span> <span class="op">-(</span>P<span class="op">.</span>vij<span class="op">(</span>parts<span class="op">[</span><span class="dv">1</span><span class="op">],</span> pars<span class="op">.</span>L<span class="op">)</span></span>
+<span id="cb21-42"><a aria-label="42"></a>                   <span class="op">-</span> M<span class="op">.</span>vij<span class="op">(</span>parts<span class="op">[</span><span class="dv">1</span><span class="op">],</span> pars<span class="op">.</span>L<span class="op">))/(</span><span class="dv">2</span><span class="op">*</span>h<span class="op">);</span></span>
+<span id="cb21-43"><a aria-label="43"></a>        <span class="op">}</span></span>
+<span id="cb21-44"><a aria-label="44"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"vij(0,1)="</span> <span class="op">&lt;&lt;</span> parts<span class="op">[</span><span class="dv">0</span><span class="op">].</span>vij<span class="op">(</span>parts<span class="op">[</span><span class="dv">1</span><span class="op">],</span> pars<span class="op">.</span>L<span class="op">)</span></span>
+<span id="cb21-45"><a aria-label="45"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  fij: v="</span> <span class="op">&lt;&lt;</span> v <span class="op">&lt;&lt;</span> <span class="st">" v-vs="</span> <span class="op">&lt;&lt;</span> v<span class="op">-</span>vs</span>
+<span id="cb21-46"><a aria-label="46"></a>                <span class="op">&lt;&lt;</span> <span class="st">" w="</span> <span class="op">&lt;&lt;</span> w <span class="op">&lt;&lt;</span> <span class="st">" |F|="</span> <span class="op">&lt;&lt;</span> F<span class="op">.</span>norm<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb21-47"><a aria-label="47"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"F=-grad v: "</span> <span class="op">&lt;&lt;</span> <span class="op">((</span>F <span class="op">-</span> G<span class="op">).</span>norm<span class="op">()</span> <span class="op">&lt;</span> <span class="fl">1e-6</span><span class="op">)</span></span>
+<span id="cb21-48"><a aria-label="48"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  w=r.F: "</span> <span class="op">&lt;&lt;</span> <span class="op">(</span>fabs<span class="op">(</span>w <span class="op">-</span> Dr<span class="op">*</span>F<span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1e-12</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+</section>
+<section id="the-goal-simtest.cpp-2" class="slide level2 smaller codice-intero codice-micro">
+<h2>The goal: <code>simtest.cpp</code> (2)</h2>
+<p><code>project/simtest.cpp</code></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a>      <span class="co">// totenergy() and calcenergyi(): on the lattice all the</span></span>
+<span id="cb22-2"><a aria-label="2"></a>      <span class="co">// particles are equivalent, each one has energy 2U/Np</span></span>
+<span id="cb22-3"><a aria-label="3"></a>      ntype U <span class="op">=</span> totenergy<span class="op">();</span></span>
+<span id="cb22-4"><a aria-label="4"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"U/Np="</span> <span class="op">&lt;&lt;</span> U<span class="op">/</span>pars<span class="op">.</span>Np</span>
+<span id="cb22-5"><a aria-label="5"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  E_0/2="</span> <span class="op">&lt;&lt;</span> calcenergyi<span class="op">(</span><span class="dv">0</span><span class="op">)/</span><span class="dv">2</span></span>
+<span id="cb22-6"><a aria-label="6"></a>                <span class="op">&lt;&lt;</span> <span class="st">"  E_555/2="</span> <span class="op">&lt;&lt;</span> calcenergyi<span class="op">(</span><span class="dv">555</span><span class="op">)/</span><span class="dv">2</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb22-7"><a aria-label="7"></a></span>
+<span id="cb22-8"><a aria-label="8"></a>      <span class="co">// pbc(): move particle 555 by (L, -L, 2L), then bring</span></span>
+<span id="cb22-9"><a aria-label="9"></a>      <span class="co">// it back into the box</span></span>
+<span id="cb22-10"><a aria-label="10"></a>      pvector<span class="op">&lt;</span>ntype<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> r0 <span class="op">=</span> parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>r<span class="op">;</span></span>
+<span id="cb22-11"><a aria-label="11"></a>      parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>tra_move<span class="op">({</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">0</span><span class="op">),</span> <span class="op">-</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">1</span><span class="op">),</span> <span class="dv">2</span><span class="op">*</span>pars<span class="op">.</span>L<span class="op">(</span><span class="dv">2</span><span class="op">)});</span></span>
+<span id="cb22-12"><a aria-label="12"></a>      pbc<span class="op">(</span><span class="dv">555</span><span class="op">);</span></span>
+<span id="cb22-13"><a aria-label="13"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"pbc: particle 555 back to its site: "</span></span>
+<span id="cb22-14"><a aria-label="14"></a>                <span class="op">&lt;&lt;</span> <span class="op">((</span>parts<span class="op">[</span><span class="dv">555</span><span class="op">].</span>r <span class="op">-</span> r0<span class="op">).</span>norm<span class="op">()</span> <span class="op">&lt;</span> <span class="fl">1e-10</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb22-15"><a aria-label="15"></a></span>
+<span id="cb22-16"><a aria-label="16"></a>      <span class="co">// save_mgl_snapshot(): one line for each particle</span></span>
+<span id="cb22-17"><a aria-label="17"></a>      save_mgl_snapshot<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb22-18"><a aria-label="18"></a>      <span class="bu">std::</span>ifstream f<span class="op">(</span><span class="st">"cnf-0.mgl"</span><span class="op">);</span> <span class="co">// a file for reading</span></span>
+<span id="cb22-19"><a aria-label="19"></a>      <span class="bu">std::</span>string first<span class="op">,</span> line<span class="op">;</span></span>
+<span id="cb22-20"><a aria-label="20"></a>      <span class="dt">int</span> nl <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb22-21"><a aria-label="21"></a>      <span class="cf">if</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> first<span class="op">))</span> <span class="co">// false at the end</span></span>
+<span id="cb22-22"><a aria-label="22"></a>        nl <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb22-23"><a aria-label="23"></a>      <span class="cf">while</span> <span class="op">(</span><span class="bu">std::</span>getline<span class="op">(</span>f<span class="op">,</span> line<span class="op">))</span></span>
+<span id="cb22-24"><a aria-label="24"></a>        nl<span class="op">++;</span></span>
+<span id="cb22-25"><a aria-label="25"></a>      <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"cnf-0.mgl: "</span> <span class="op">&lt;&lt;</span> nl</span>
+<span id="cb22-26"><a aria-label="26"></a>                <span class="op">&lt;&lt;</span> <span class="st">" lines, the first one is: "</span> <span class="op">&lt;&lt;</span> first <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb22-27"><a aria-label="27"></a>    <span class="op">}</span></span>
+<span id="cb22-28"><a aria-label="28"></a><span class="op">};</span></span>
+<span id="cb22-29"><a aria-label="29"></a></span>
+<span id="cb22-30"><a aria-label="30"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-startfrom="31"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 30;"><span id="cb23-31"><a aria-label="31"></a><span class="op">{</span></span>
+<span id="cb23-32"><a aria-label="32"></a>  simtest<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span> particleLJ<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;</span> st<span class="op">;</span></span>
+<span id="cb23-33"><a aria-label="33"></a>  <span class="co">// init_rng(): the same seed gives the same random numbers</span></span>
+<span id="cb23-34"><a aria-label="34"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb23-35"><a aria-label="35"></a>  <span class="dt">double</span> x1 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
+<span id="cb23-36"><a aria-label="36"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb23-37"><a aria-label="37"></a>  <span class="dt">double</span> x2 <span class="op">=</span> rng<span class="op">.</span>ranf<span class="op">();</span></span>
+<span id="cb23-38"><a aria-label="38"></a>  <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"init_rng(5) twice, the same number: "</span></span>
+<span id="cb23-39"><a aria-label="39"></a>            <span class="op">&lt;&lt;</span> <span class="op">(</span>x1 <span class="op">==</span> x2<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb23-40"><a aria-label="40"></a></span>
+<span id="cb23-41"><a aria-label="41"></a>  st<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb23-42"><a aria-label="42"></a>  st<span class="op">.</span>prepare_initial_conf<span class="op">();</span> <span class="co">// simple cubic lattice</span></span>
+<span id="cb23-43"><a aria-label="43"></a>  st<span class="op">.</span>run<span class="op">();</span></span>
+<span id="cb23-44"><a aria-label="44"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-45"><a aria-label="45"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </section>
 <section id="simtest.cpp-how-it-works" class="slide level2 smaller">
 <h2><code>simtest.cpp</code>: how it works</h2>
 <ul>
-<li><code>simtest</code> is derived from <code>sim</code> only to reach its <code>protected</code> members (<code>using</code> as in N10); <code>simtest::run()</code> hides <code>sim::run()</code>. Here <code>virtual</code> is not needed: <code>st.run()</code> is called on a <code>simtest</code> object.</li>
-<li><strong><code>init_rng()</code></strong>: the same seed twice, the same first number.</li>
-<li><strong>Lattice</strong>: <span class="math inline">\(N_p = 1000\)</span>, <span class="math inline">\(L = 10\,a = 10 \cdot 0.5^{-1/3} \simeq 12.599\)</span>, density 0.5.</li>
-<li><strong>Energy</strong>: on the lattice, with periodic boundary conditions, all the particles are equivalent, so each one has energy <span class="math inline">\(E_i = 2U/N_p\)</span> (each pair counted for both particles): <code>U/Np</code>, <code>E_0/2</code> and <code>E_555/2</code> must be equal.</li>
-<li><strong>PBC</strong>: particle 555 is moved by <span class="math inline">\((L, -L, 2L)\)</span>, and <code>pbc()</code> must bring it back to its site.</li>
-<li><strong>Snapshot</strong>: <code>cnf-0.mgl</code> is read back (<code>std::ifstream</code>, a file for reading; <code>std::getline()</code> reads one line and gives <code>false</code> at the end of the file): one line for each particle, the first one is particle <span class="math inline">\((0,0,0)\)</span>, at <span class="math inline">\(-\mathbf{L}/2\)</span>.</li>
+<li><code>simtest</code> is derived from <code>sim</code> only to reach its <code>protected</code> members (<code>using</code> as in N10); <code>simtest::run()</code> hides <code>sim::run()</code>. <code>virtual</code> is not needed: <code>st.run()</code> is called on a <code>simtest</code> object.</li>
+<li><strong><code>init_rng()</code></strong>: the same seed twice, the same first number. <strong>Lattice</strong>: <span class="math inline">\(N_p = 1000\)</span>, <span class="math inline">\(L = 10\,a = 10 \cdot 0.5^{-1/3} \simeq 12.599\)</span>.</li>
+<li><strong>Particles</strong>: particle 7 moved and put back. Particles 0 and 1 are nearest neighbours, <span class="math inline">\(r = a\)</span> and <span class="math inline">\(a^6 = 1/\rho^2 = 4\)</span>: <span class="math inline">\(v = 4(1/16 - 1/4) = -0.75\)</span>, <span class="math inline">\(w = 24(2/16 - 1/4) = -3\)</span>, <span class="math inline">\(|\mathbf{F}| = |w|/a\)</span>. The force is compared with <span class="math inline">\(-\nabla v\)</span> computed with <code>vij()</code> by finite differences.</li>
+<li><strong>Energy</strong>: on the lattice all the particles are equivalent, so each one has energy <span class="math inline">\(E_i = 2U/N_p\)</span> (each pair counted for both particles).</li>
+<li><strong>PBC</strong>: particle 555 is moved by <span class="math inline">\((L, -L, 2L)\)</span>, and <code>pbc()</code> must bring it back.</li>
+<li><strong>Snapshot</strong>: <code>cnf-0.mgl</code> is read back (<code>std::ifstream</code>, a file for reading; <code>std::getline()</code> reads one line, <code>false</code> at the end of the file).</li>
 </ul>
 </section>
 <section id="compile-run-compare" class="slide level2 smaller">
 <h2>Compile, run, compare</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
-<span id="cb19-2"><a aria-label="2"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> simtest simtest.cpp</span>
-<span id="cb19-3"><a aria-label="3"></a><span class="ex">./simtest</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
+<span id="cb24-2"><a aria-label="2"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-o</span> simtest simtest.cpp</span>
+<span id="cb24-3"><a aria-label="3"></a><span class="ex">./simtest</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>init_rng(5) twice, the same number: 1
 Box size is (12.5992,12.5992,12.5992)
 Initial density is 0.5
 Np=1000  L=(12.5992,12.5992,12.5992)  density=0.5
+tra_move: 1  store/restore: 1
+vij(0,1)=-0.75  fij: v=-0.75 v-vs=-0.000255984 w=-3 |F|=2.3811
+F=-grad v: 1  w=r.F: 1
 U/Np=-3.39114  E_0/2=-3.39114  E_555/2=-3.39114
 pbc: particle 555 back to its site: 1
 cnf-0.mgl: 1000 lines, the first one is: -6.29961 -6.29961 -6.29961 @ 0.5</code></pre>
 <ul>
 <li>The second and third lines are printed by our <code>prepare_initial_conf()</code>: print the box and the density there too, it is a useful check.</li>
-<li>With the skeletons, 2 warnings: <code>no return statement in function returning non-void</code> (<code>calcenergyi()</code> and <code>totenergy()</code>). Do not run the program before they are gone.</li>
+<li>With the skeletons, 4 warnings: <code>no return statement in function returning non-void</code> (<code>vij()</code>, <code>fij()</code>, <code>calcenergyi()</code>, <code>totenergy()</code>). Do not run the program before they are gone.</li>
 </ul>
 </section>
 <section id="classic-pitfalls" class="slide level2 smaller">
 <h2>Classic pitfalls</h2>
 <ul>
+<li><strong>The sign of the force</strong>: <span class="math inline">\(\mathbf{r}_{ij} = \mathbf{r}_i - \mathbf{r}_j\)</span>, with <code>this</code> as <span class="math inline">\(i\)</span>. With <code>P.r - r</code> the force has the wrong sign: <code>F=-grad v: 0  w=r.F: 0</code>.</li>
 <li><strong>Each pair counted twice</strong> in <code>totenergy()</code> (<code>calcenergyi(i)</code> with <code>opt=0</code>): <code>U/Np</code> is <span class="math inline">\(-6.78229\)</span>, twice the right value.</li>
 <li><strong>Forgetting <code>j != i</code></strong> in <code>calcenergyi()</code>: particle <code>i</code> interacts with itself at <span class="math inline">\(r = 0\)</span>, and <code>E_0/2</code> is <code>nan</code> (<code>-nan</code> with some compilers).</li>
 <li><strong>Forgetting <code>parts.resize()</code></strong>: <code>parts</code> is empty, <code>parts[i]</code> writes outside it: <code>Segmentation fault</code>.</li>
 <li><strong>The box not centred</strong> (sites at <span class="math inline">\((i_x a, i_y a, i_z a)\)</span>): the energy is the same, thanks to the minimum image, but the site of particle 555, <span class="math inline">\(\mathbf{L}/2\)</span>, is on a face of the box, and <code>pbc()</code> brings it to the opposite face: <code>pbc: particle 555 back to its site: 0</code>.</li>
-<li><strong><span class="math inline">\(r_c &gt; L/2\)</span></strong> (a small box): the minimum image no longer contains all the particles within <span class="math inline">\(r_c\)</span>, and the energy is wrong.</li>
 </ul>
 </section>
 <section id="checklist-for-today" class="slide level2 smaller scrollable">
@@ -1413,11 +1531,10 @@ cnf-0.mgl: 1000 lines, the first one is: -6.29961 -6.29961 -6.29961 @ 0.5</code>
 <ul class="task-list">
 <li><label><input type="checkbox">Examples N13 compiled and run; tried <code>override</code> with another signature; read the error</label></li>
 <li><label><input type="checkbox">Your Lab #5 methods compared with the solution; new <code>project/</code> files downloaded (<code>params.hpp</code>, <code>particle.hpp</code>, <code>sim.hpp</code>, <code>simtest.cpp</code>, <code>pmatrix.hpp</code>)</label></li>
-<li><label><input type="checkbox"><code>calcenergyi()</code> and <code>totenergy()</code></label></li>
-<li><label><input type="checkbox"><code>pbc()</code></label></li>
-<li><label><input type="checkbox"><code>prepare_initial_conf()</code>: simple cubic lattice, box centred in the origin</label></li>
-<li><label><input type="checkbox"><code>save_mgl_snapshot()</code></label></li>
-<li><label><input type="checkbox"><code>init_rng()</code></label></li>
+<li><label><input type="checkbox"><code>particle</code>: <code>tra_move()</code>, <code>store()</code>, <code>restore()</code></label></li>
+<li><label><input type="checkbox"><code>particleLJ</code>: <code>vij()</code>, <code>set_vcut()</code>, <code>fij()</code></label></li>
+<li><label><input type="checkbox"><code>sim</code>: <code>calcenergyi()</code> and <code>totenergy()</code>, <code>pbc()</code></label></li>
+<li><label><input type="checkbox"><code>sim</code>: <code>prepare_initial_conf()</code> (simple cubic lattice, box centred in the origin), <code>save_mgl_snapshot()</code>, <code>init_rng()</code></label></li>
 <li><label><input type="checkbox"><code>project/simtest.cpp</code> gives the expected output, <strong>no warnings</strong></label></li>
 </ul>
 
