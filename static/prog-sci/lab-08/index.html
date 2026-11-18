@@ -837,18 +837,24 @@ Cristiano De Michele
 <div class="columns">
 <div class="column" style="width:52%;">
 <p><img data-src="../images/init_varianza.png"></p>
+<p>Con la ReLU questa condizione basta anche all’indietro (He e altri, 2015): lo vediamo nella slide seguente.</p>
 </div><div class="column" style="width:48%;">
 <p>Un neurone calcola <span class="math inline">\(z = \sum_{i=1}^{N_{in}} w_i x_i\)</span> (trascuriamo il bias). Se i pesi sono indipendenti, di media 0 e varianza <span class="math inline">\(s^2\)</span>: <span class="math display">\[\mathrm{Var}(z) = N_{in}\, s^2\, \langle x^2 \rangle\]</span> Con la ReLU, se <span class="math inline">\(z\)</span> dello strato precedente è simmetrico attorno a 0, metà dei valori diventa zero e l’altra metà resta com’è: <span class="math inline">\(\langle x^2\rangle = \mathrm{Var}(z_{prec})/2\)</span>.</p>
 <p>La varianza resta la stessa da uno strato al successivo se <span class="math inline">\(N_{in}\, s^2/2 = 1\)</span>, cioè <span class="math inline">\(s = \sqrt{2/N_{in}}\)</span>.</p>
 </div></div>
 </section>
+<section id="la-formula-di-he-allindietro" class="slide level2 smaller">
+<h2>La formula di He all’indietro</h2>
+<p>All’indietro (Lezione 03) l’errore di un neurone dello strato precedente è <span class="math inline">\(\delta^{prec}_i = \big(\sum_{j=1}^{N_{out}} w_{ji}\,\delta_j\big)\,\mathrm{ReLU}'(z_i)\)</span>: la somma è la stessa dell’andata, ma sulle <span class="math inline">\(N_{out}\)</span> uscite; <span class="math inline">\(\mathrm{ReLU}'\)</span> vale 1 per metà dei neuroni e 0 per l’altra metà, lo stesso ½. Quindi <span class="math inline">\(\mathrm{Var}(\delta^{prec}) = \tfrac12\,N_{out}\,s^2\,\mathrm{Var}(\delta)\)</span>, e con <span class="math inline">\(s^2 = 2/N_{in}\)</span> ogni strato moltiplica la varianza dell’errore per <span class="math inline">\(N_{out}/N_{in}\)</span>.</p>
+<p>In una rete <span class="math inline">\(784 \to 256 \to 128 \to 10\)</span> le uscite di uno strato sono gli ingressi del successivo, e il prodotto dei fattori si semplifica (i numeri dello stesso colore): <span class="math display">\[\frac{\color{#d9822b}{256}}{784}\cdot\frac{\color{#2f6fb5}{128}}{\color{#d9822b}{256}}\cdot\frac{10}{\color{#2f6fb5}{128}} = \frac{10}{784}\]</span> Resta il rapporto fra l’ultimo strato e il primo, con 3 strati come con 100: nessun fattore che si ripete a ogni strato. Per questo basta la condizione in avanti.</p>
+</section>
 <section id="xavier-e-la-distribuzione-uniforme" class="slide level2 smaller">
 <h2>Xavier e la distribuzione uniforme</h2>
 <!-- Fonte: X. Glorot, Y. Bengio, "Understanding the difficulty of training deep feedforward neural networks",
      AISTATS 2010. -->
-<p>Con la tanh, vicino a 0 l’attivazione è circa lineare: <span class="math inline">\(\langle x^2\rangle \approx \mathrm{Var}(z_{prec})\)</span>, e in avanti serve <span class="math inline">\(N_{in}\, s^2 = 1\)</span>.</p>
-<p>All’indietro l’errore di un ingresso è una somma sulle <span class="math inline">\(N_{out}\)</span> uscite, e serve <span class="math inline">\(N_{out}\, s^2 = 1\)</span>. Xavier prende la via di mezzo: <span class="math display">\[s^2 = \frac{2}{N_{in} + N_{out}}\]</span> Con la sigmoide è solo un’approssimazione.</p>
-<p>Un numero uniforme in <span class="math inline">\([-a, a)\)</span> ha varianza <span class="math inline">\(a^2/3\)</span>, quindi <span class="math inline">\(a = \sqrt{3}\, s\)</span>: da qui <span class="math inline">\(\sqrt{6/N_{in}}\)</span> e <span class="math inline">\(\sqrt{6/(N_{in}+N_{out})}\)</span>, le colonne “uniforme” della tabella.</p>
+<p>Con la tanh, vicino a 0 l’attivazione è circa lineare: <span class="math inline">\(\langle x^2\rangle \approx \mathrm{Var}(z_{prec})\)</span>, e in avanti serve <span class="math inline">\(N_{in}\, s^2 = 1\)</span> (con la sigmoide è solo un’approssimazione).</p>
+<p>All’indietro (Lezione 03) l’errore che arriva a un ingresso è <span class="math inline">\(\sum_{j=1}^{N_{out}} w_{ji}\,\delta_j\)</span>, una riga di <span class="math inline">\(\mathbf{W}^T\boldsymbol\delta\)</span>: la stessa somma dell’andata, ma sulle <span class="math inline">\(N_{out}\)</span> uscite invece che sugli <span class="math inline">\(N_{in}\)</span> ingressi. Con la tanh vicino a 0, dove <span class="math inline">\(\sigma' \approx 1\)</span>, la sua varianza è <span class="math inline">\(N_{out}\, s^2\,\mathrm{Var}(\delta)\)</span>, e resta la stessa da uno strato all’altro se <span class="math inline">\(N_{out}\, s^2 = 1\)</span>.</p>
+<p>Le due condizioni chiedono <span class="math inline">\(1/s^2 = N_{in}\)</span> e <span class="math inline">\(1/s^2 = N_{out}\)</span>. Xavier prende la loro media: <span class="math display">\[\frac{1}{s^2} = \frac{N_{in} + N_{out}}{2}, \qquad s^2 = \frac{2}{N_{in} + N_{out}}\]</span> Un numero uniforme in <span class="math inline">\([-a, a)\)</span> ha varianza <span class="math inline">\(a^2/3\)</span>, quindi <span class="math inline">\(a = \sqrt{3}\, s\)</span>: da qui <span class="math inline">\(\sqrt{6/N_{in}}\)</span> e <span class="math inline">\(\sqrt{6/(N_{in}+N_{out})}\)</span>, le colonne “uniforme” della tabella.</p>
 </section>
 <section id="task-1-il-generatore-randnumgen" class="slide level2 smaller scrollable">
 <h2>Task 1: il generatore <code>randnumgen</code></h2>
