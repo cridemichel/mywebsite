@@ -790,6 +790,7 @@ Cristiano De Michele
 <li>un generatore di numeri casuali, <code>randnumgen.hpp</code>, con un seme fisso per esperimenti riproducibili;</li>
 <li>i pesi iniziali con la formula di He o di Xavier, scelta con due <code>enum class</code> (Lezione 15);</li>
 <li><code>TanhLayer</code>, accanto a <code>SigmoidLayer</code>, sotto una classe base comune delle attivazioni.</li>
+<li>(facoltativo) il test del χ² sul generatore di numeri pseudocasuali.</li>
 </ol>
 <p>Il <code>CMakeLists.txt</code> resta quello del Laboratorio 07.</p>
 </section>
@@ -1010,6 +1011,82 @@ Cristiano De Michele
 <p>Nel <code>main</code>, prima di <code>return 0;</code>, aggiungete le chiamate <code>prova_inizializzazione();</code> e <code>prova_tanh();</code>.</p>
 <p>Output atteso, nelle ultime due righe: una deviazione standard vicina a <span class="math inline">\(\sqrt{2/784} \approx 0{,}0505\)</span> (con <code>rng.seed(42)</code>, <code>0.0505046</code>), e un minimo e un massimo fra <span class="math inline">\(-1\)</span> e <span class="math inline">\(1\)</span>.</p>
 </section>
+<section id="task-6-facoltativo-il-test-del-χ²" class="slide level2 smaller">
+<h2>Task 6 (facoltativo): il test del χ²</h2>
+<!--
+  18/11/2026, dal libro "Programmazione Scientifica" (Barone, Marinari, Organtini, Ricci-Tersenghi): par. 7.4.2 (Listato
+  7.11, chiSquare; Laboratorio 7.3, chi quadro al variare del numero di intervalli) e par. 11.4.1 (test del chi quadro per
+  valutare un generatore: Phi, nu = K - 1, P(chi2, nu), Tabella 11.2, criterio di Knuth sulle due code, ripetere il test
+  5-10 volte; per nu grande gaussiana di media nu e sigma = sqrt(2 nu)). Cristiano: sottolineare che si sta valutando la
+  bonta' del generatore di numeri pseudocasuali. gauss() e' static in parametricLayer.cpp: si testano i pesi di
+  DenseLayer(128, 784), He e gaussiana. Intervalli estremi fino a -+infinito, perche' le p sommino a 1 come nel libro.
+  Verificato nel cloud (g++ 13, -O2/-O3 -Wall) sulla soluzione del Lab 08: con rng.seed(42), chiamata dopo prova_tanh,
+  Phi = 13.2069 (nu = 19). Semi 1-10: 19.0562 13.1411 15.1883 10.9114 22.6084 26.1681 16.6516 30.5684 24.8688 24.5996.
+  Con -1.9 in gauss(): deviazione standard 0.0492258, Phi = 109.877. K = 8, 50, 200 con -2.0: 4.98199, 45.5715, 186.665;
+  con -1.9: 96.4094, 153.826, 272.098. Quantili del chi quadro verificati con scipy: nu = 19: 7.63 10.12 11.65 / 27.20
+  30.14 36.19 (= Tabella 11.2); nu = 7: 2.83-12.02; nu = 49: 36.82-62.04; nu = 199: 173.90-224.96.
+-->
+<p><strong>Scopo:</strong> valutare la bontà del generatore di numeri pseudocasuali. <code>rng.ranf()</code> e Box-Muller devono dare numeri gaussiani, e gli <span class="math inline">\(n = 100\,352\)</span> pesi di un <code style="white-space: nowrap">DenseLayer(128, 784)</code> ne sono un campione. Il test è quello del χ² del libro <em>Programmazione Scientifica</em> (paragrafi 7.4.2 e 11.4.1).</p>
+<p>I pesi si dividono in <span class="math inline">\(K\)</span> intervalli: se nell’intervallo <span class="math inline">\(\alpha\)</span>, di probabilità <span class="math inline">\(p_\alpha\)</span>, cadono <span class="math inline">\(Y_\alpha\)</span> pesi, si calcola <span class="math inline">\(\Phi = \sum_{\alpha} (Y_\alpha - n\,p_\alpha)^2 / (n\,p_\alpha)\)</span>.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>main.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-filename="main.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a><span class="co">// Laboratorio 08, Task 6 (facoltativo): il test del chi quadro</span></span>
+<span id="cb9-2"><a aria-label="2"></a><span class="co">// da scrivere: come chiSquare del Listato 7.11 del libro</span></span>
+<span id="cb9-3"><a aria-label="3"></a><span class="dt">double</span> chi_quadro<span class="op">(</span><span class="at">const</span> <span class="dt">int</span><span class="op">*</span> oss<span class="op">,</span> <span class="at">const</span> <span class="dt">double</span><span class="op">*</span> att<span class="op">,</span> <span class="dt">int</span> K<span class="op">);</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Da scrivere:</strong> il corpo di <code>chi_quadro</code>, che restituisce Φ (<code>oss[α]</code> <span class="math inline">\(= Y_\alpha\)</span>, <code>att[α]</code> <span class="math inline">\(= n\,p_\alpha\)</span>), in <code>main.cpp</code> prima di <code>prova_chi_quadro</code>.</p>
+</section>
+<section id="task-6-segue-gli-intervalli" class="slide level2 smaller">
+<h2>Task 6 (segue): gli intervalli</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>main.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="main.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="co">// Laboratorio 08, Task 6: i pesi di He contro la gaussiana</span></span>
+<span id="cb10-2"><a aria-label="2"></a><span class="dt">void</span> prova_chi_quadro<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb10-3"><a aria-label="3"></a>    <span class="at">const</span> <span class="dt">int</span> K <span class="op">=</span> <span class="dv">20</span><span class="op">;</span></span>
+<span id="cb10-4"><a aria-label="4"></a>    DenseLayer l<span class="op">(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span>    <span class="co">// He, gaussiana</span></span>
+<span id="cb10-5"><a aria-label="5"></a>    <span class="at">const</span> Eigen<span class="op">::</span>MatrixXd<span class="op">&amp;</span> W <span class="op">=</span> l<span class="op">.</span>getWeights<span class="op">();</span></span>
+<span id="cb10-6"><a aria-label="6"></a>    <span class="dt">double</span> s <span class="op">=</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">2.0</span> <span class="op">/</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb10-7"><a aria-label="7"></a>    <span class="dt">double</span> xmin <span class="op">=</span> <span class="op">-</span><span class="dv">4</span> <span class="op">*</span> s<span class="op">,</span> dx <span class="op">=</span> <span class="dv">8</span> <span class="op">*</span> s <span class="op">/</span> K<span class="op">;</span></span>
+<span id="cb10-8"><a aria-label="8"></a>    <span class="dt">int</span> oss<span class="op">[</span>K<span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">};</span></span>
+<span id="cb10-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> W<span class="op">.</span>rows<span class="op">();</span> i<span class="op">++)</span></span>
+<span id="cb10-10"><a aria-label="10"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> W<span class="op">.</span>cols<span class="op">();</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb10-11"><a aria-label="11"></a>            <span class="dt">int</span> k <span class="op">=</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span> <span class="bu">std::</span>floor<span class="op">((</span>W<span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">-</span> xmin<span class="op">)</span> <span class="op">/</span> dx<span class="op">);</span></span>
+<span id="cb10-12"><a aria-label="12"></a>            k <span class="op">=</span> <span class="op">(</span>k <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">?</span> <span class="dv">0</span> <span class="op">:</span> <span class="op">(</span>k <span class="op">&gt;</span> K <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">?</span> K <span class="op">-</span> <span class="dv">1</span> <span class="op">:</span> k<span class="op">;</span>   <span class="co">// estremi fino a -/+infinito</span></span>
+<span id="cb10-13"><a aria-label="13"></a>            oss<span class="op">[</span>k<span class="op">]++;</span></span>
+<span id="cb10-14"><a aria-label="14"></a>        <span class="op">}</span></span>
+<span id="cb10-15"><a aria-label="15"></a>    <span class="dt">double</span> att<span class="op">[</span>K<span class="op">];</span></span>
+<span id="cb10-16"><a aria-label="16"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> K<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb10-17"><a aria-label="17"></a>        <span class="dt">double</span> a <span class="op">=</span> <span class="op">(</span>k <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">?</span> <span class="op">-</span>INFINITY <span class="op">:</span> xmin <span class="op">+</span> k <span class="op">*</span> dx<span class="op">;</span></span>
+<span id="cb10-18"><a aria-label="18"></a>        <span class="dt">double</span> b <span class="op">=</span> <span class="op">(</span>k <span class="op">==</span> K <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">?</span> INFINITY <span class="op">:</span> xmin <span class="op">+</span> <span class="op">(</span>k <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">*</span> dx<span class="op">;</span></span>
+<span id="cb10-19"><a aria-label="19"></a>        att<span class="op">[</span>k<span class="op">]</span> <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> W<span class="op">.</span>size<span class="op">()</span> <span class="op">*</span> <span class="op">(</span><span class="bu">std::</span>erf<span class="op">(</span>b <span class="op">/</span> <span class="op">(</span>s <span class="op">*</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">2.0</span><span class="op">)))</span></span>
+<span id="cb10-20"><a aria-label="20"></a>                                 <span class="op">-</span> <span class="bu">std::</span>erf<span class="op">(</span>a <span class="op">/</span> <span class="op">(</span>s <span class="op">*</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">2.0</span><span class="op">))));</span></span>
+<span id="cb10-21"><a aria-label="21"></a>    <span class="op">}</span></span>
+<span id="cb10-22"><a aria-label="22"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"chi quadro: "</span> <span class="op">&lt;&lt;</span> chi_quadro<span class="op">(</span>oss<span class="op">,</span> att<span class="op">,</span> K<span class="op">)</span></span>
+<span id="cb10-23"><a aria-label="23"></a>              <span class="op">&lt;&lt;</span> <span class="st">", gradi di liberta': "</span> <span class="op">&lt;&lt;</span> K <span class="op">-</span> <span class="dv">1</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb10-24"><a aria-label="24"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="task-6-segue-leggere-il-χ²" class="slide level2 smaller">
+<h2>Task 6 (segue): leggere il χ²</h2>
+<p>Chiamate <code>prova_chi_quadro();</code> nel <code>main</code>, dopo <code>prova_tanh();</code>. Con <code>rng.seed(42)</code> stampa <code>chi quadro: 13.2069, gradi di liberta': 19</code>.</p>
+<p>Gli intervalli coprono <span class="math inline">\(\pm 4\sigma\)</span>, con <span class="math inline">\(\sigma = \sqrt{2/784}\)</span>; il primo arriva a <span class="math inline">\(-\infty\)</span> e l’ultimo a <span class="math inline">\(+\infty\)</span>, così le <span class="math inline">\(p_\alpha\)</span> sommano a 1. Fra <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span>, <span class="math inline">\(p_\alpha = \tfrac12\left[\mathrm{erf}\big(b/(\sigma\sqrt2)\big) - \mathrm{erf}\big(a/(\sigma\sqrt2)\big)\right]\)</span>; <code>std::erf</code> e <code>INFINITY</code> sono in <code>&lt;cmath&gt;</code>.</p>
+<p>I gradi di libertà sono <span class="math inline">\(\nu = K - 1\)</span>: l’unico vincolo è <span class="math inline">\(\sum_\alpha Y_\alpha = n\)</span>, perché <span class="math inline">\(\sigma\)</span> viene dalla formula e non dai dati. Se il generatore è buono, Φ segue la distribuzione del χ² con <span class="math inline">\(\nu\)</span> gradi di libertà. Il libro (Tabella 11.2, con il criterio di Knuth) guarda <strong>tutte e due le code</strong>: per <span class="math inline">\(\nu = 19\)</span> il generatore è leggermente sospetto se Φ è fuori da 11,65 – 27,20, sospetto se è fuori da 10,12 – 30,14, palesemente inaccurato se è fuori da 7,63 – 36,19. Anche un Φ troppo piccolo è sospetto: numeri troppo regolari per essere casuali.</p>
+</section>
+<section id="task-6-segue-provate" class="slide level2 smaller scrollable">
+<h2>Task 6 (segue): provate</h2>
+<ol type="1">
+<li>In <code>gauss()</code> (<code>parametricLayer.cpp</code>) scrivete <code>-1.9</code> al posto di <code>-2.0</code>: <span class="math inline">\(\sigma\)</span> sbagliata del 2,5%. Cosa stampano <code>prova_inizializzazione</code> e <code>prova_chi_quadro</code>?<br>
+<span class="fragment"><code>0.0492258</code> contro <code>0.0505076</code>, a occhio vicino, ma Φ = <code>109.877</code>: palesemente inaccurato.</span></li>
+<li>Rimettete <code>-2.0</code> e ripetete il test con i semi da 1 a 10 (<code>rng.seed</code> nel <code>main</code>). Quante volte Φ esce dalla fascia 11,65 – 27,20?<br>
+<span class="fragment">Due volte: Φ va da <code>10.9114</code> a <code>30.5684</code>. La fascia lascia fuori il 20% dei casi anche con un generatore buono: per questo il libro chiede di ripetere il test e di giudicare l’insieme.</span></li>
+<li>Con <code>-2.0</code> e poi con <code>-1.9</code>, provate <span class="math inline">\(K\)</span> = 8, 50 e 200.<br>
+<span class="fragment">Con la <span class="math inline">\(\sigma\)</span> giusta Φ = <code>4.98199</code>, <code>45.5715</code>, <code>186.665</code>, dentro le fasce dei loro <span class="math inline">\(\nu\)</span>; con <code>-1.9</code>, <code>96.4094</code>, <code>153.826</code>, <code>272.098</code>, sempre fuori. Con molti intervalli piccoli lo scarto si vede meno (Laboratorio 7.3 del libro).</span></li>
+</ol>
+</section>
 <section id="task-da-completare" class="slide level2 smaller scrollable">
 <h2>Task da completare</h2>
 <ul class="task-list">
@@ -1019,6 +1096,7 @@ Cristiano De Michele
 <li><label><input type="checkbox"><code>gauss()</code> in <code>parametricLayer.cpp</code>; nel costruttore, lo <code>switch</code> su <code>type</code> che calcola <code>s</code></label></li>
 <li><label><input type="checkbox"><code>ActivationLayer</code>, con <code>SigmoidLayer</code> e <code>TanhLayer</code> derivate da lei; <code>TanhLayer::forward</code> con <code>.array().tanh()</code></label></li>
 <li><label><input type="checkbox"><code>prova_inizializzazione</code> stampa una deviazione standard vicina a 0,0505; <code>prova_tanh</code> un minimo e un massimo fra −1 e 1</label></li>
+<li><label><input type="checkbox">(facoltativo) <code>chi_quadro</code> e <code>prova_chi_quadro</code>: con <code>rng.seed(42)</code> Φ vale 13.2069, con 19 gradi di libertà</label></li>
 </ul>
 <p><strong>La soluzione verrà discussa all’inizio del prossimo laboratorio.</strong></p>
 
