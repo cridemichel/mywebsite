@@ -873,7 +873,7 @@ Cristiano De Michele
 <section id="il-downcasting-con-static_cast" class="slide level2 smaller">
 <h2>Il downcasting con <code>static_cast</code></h2>
 <div class="columns">
-<div class="column" style="width:55%;">
+<div class="column" style="width:50%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>downcasting.cpp</strong></pre>
@@ -892,9 +892,9 @@ Cristiano De Michele
 <span id="cb6-12"><a aria-label="12"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Output: <code>100352</code>.</p>
-</div><div class="column" style="width:45%;">
+</div><div class="column" style="width:50%;">
 <p><code>p</code> è un <code>Layer*</code>, ma l’oggetto è un <code>DenseLayer</code>. Per chiamare <code>numero_pesi</code> serve un <code>DenseLayer*</code>: la conversione dalla classe base alla classe derivata si chiama <strong>downcasting</strong>.</p>
-<p>Non è implicita, come l’upcasting, perché non è sicura: un <code>Layer*</code> può contenere l’indirizzo di un oggetto di un’altra classe derivata, come <code>q</code>.</p>
+<p>Non è implicita, come l’upcasting, perché non è sicura: un <code>Layer*</code> può contenere l’indirizzo di un oggetto di qualsiasi classe derivata: <code>q</code> punta a un <code>SigmoidLayer</code>, non a un <code>DenseLayer</code>.</p>
 <p><code>static_cast</code> (Lezione 04), alla riga 7, la fa senza controlli: che l’oggetto sia un <code>DenseLayer</code> lo garantisce chi scrive il codice.</p>
 </div></div>
 </section>
@@ -1007,6 +1007,7 @@ non è un DenseLayer</code></pre>
 <p>Cosa stampa?</p>
 <div class="fragment">
 <p><code>pesi della rete: 101632</code>, come prima. Ogni layer risponde per sé: <code>SigmoidLayer</code> con lo 0 di <code>Layer</code>, <code>DenseLayer</code> con il suo metodo. Il ciclo non conosce più <code>DenseLayer</code>, e una classe nuova non lo cambia.</p>
+<p><strong>Arricchendo l’interfaccia di <code>Layer</code></strong> con un metodo <code>virtual</code> che ha un comportamento di default, lo 0, il downcasting non serve più.</p>
 </div>
 </section>
 <section id="il-downcasting-nel-framework" class="slide level2 smaller">
@@ -1135,7 +1136,7 @@ non è un DenseLayer</code></pre>
 <span id="cb15-6"><a aria-label="6"></a><span class="kw">private</span><span class="op">:</span></span>
 <span id="cb15-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="va">w_</span><span class="op">;</span></span>
 <span id="cb15-8"><a aria-label="8"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb15-9"><a aria-label="9"></a>    Pesi<span class="op">(</span><span class="dt">int</span> Nn<span class="op">,</span> <span class="dt">int</span> Ni<span class="op">)</span> <span class="op">:</span> <span class="va">w_</span><span class="op">(</span>Nn <span class="op">*</span> Ni<span class="op">,</span> T<span class="op">{})</span> <span class="op">{}</span></span>
+<span id="cb15-9"><a aria-label="9"></a>    Pesi<span class="op">(</span><span class="dt">int</span> Nn<span class="op">,</span> <span class="dt">int</span> Ni<span class="op">)</span> <span class="op">:</span> <span class="va">w_</span><span class="op">(</span>Nn <span class="op">*</span> Ni<span class="op">)</span> <span class="op">{}</span></span>
 <span id="cb15-10"><a aria-label="10"></a>    <span class="dt">int</span> quanti<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">w_</span><span class="op">.</span>size<span class="op">();</span> <span class="op">}</span></span>
 <span id="cb15-11"><a aria-label="11"></a>    <span class="dt">int</span> byte<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">w_</span><span class="op">.</span>size<span class="op">()</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span>T<span class="op">);</span> <span class="op">}</span></span>
 <span id="cb15-12"><a aria-label="12"></a><span class="op">};</span></span>
@@ -1151,7 +1152,7 @@ non è un DenseLayer</code></pre>
 </div>
 </div><div class="column" style="width:45%;">
 <p>Con <code>template &lt;typename T&gt;</code> davanti alla classe, <code>T</code> si usa negli attributi e nei metodi. <code>Pesi&lt;float&gt;</code> e <code>Pesi&lt;double&gt;</code> sono due classi diverse, generate dal compilatore, come <code>std::vector&lt;double&gt;</code> (Lezione 12).</p>
-<p>Alla riga 9, <code>w_(Nn * Ni, T{})</code> crea <code>Nn * Ni</code> elementi uguali a <code>T{}</code>, il valore di un <code>T</code> creato senza argomenti: 0 per i numeri.</p>
+<p>Alla riga 9, <code style="white-space: nowrap">w_(Nn * Ni)</code> crea <code style="white-space: nowrap">Nn * Ni</code> pesi, tutti a 0.</p>
 <p>Stampa <code>100352 pesi</code>: <code>401408</code> byte in <code>float</code>, <code>802816</code> in <code>double</code>.</p>
 </div></div>
 </section>
@@ -1179,25 +1180,26 @@ non è un DenseLayer</code></pre>
 <span id="cb17-3"><a aria-label="3"></a></span>
 <span id="cb17-4"><a aria-label="4"></a><span class="co">// da completare: un template di classe Accumulatore, con</span></span>
 <span id="cb17-5"><a aria-label="5"></a><span class="co">// - due attributi private: somma_ di tipo T e n_ di tipo int;</span></span>
-<span id="cb17-6"><a aria-label="6"></a><span class="co">// - un costruttore senza argomenti che inizializza somma_ a T{} e n_ a 0;</span></span>
-<span id="cb17-7"><a aria-label="7"></a><span class="co">// - void aggiungi(const T&amp; v): aggiunge v a somma_ e incrementa n_;</span></span>
-<span id="cb17-8"><a aria-label="8"></a><span class="co">// - T totale() const e int quanti() const, che restituiscono somma_ e n_;</span></span>
-<span id="cb17-9"><a aria-label="9"></a><span class="co">// - double media() const: 0.0 se n_ vale 0, altrimenti</span></span>
-<span id="cb17-10"><a aria-label="10"></a><span class="co">//   static_cast&lt;double&gt;(somma_) / n_</span></span>
-<span id="cb17-11"><a aria-label="11"></a></span>
-<span id="cb17-12"><a aria-label="12"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb17-13"><a aria-label="13"></a>    <span class="co">// da scommentare:</span></span>
-<span id="cb17-14"><a aria-label="14"></a>    <span class="co">// Accumulatore&lt;int&gt; a;</span></span>
-<span id="cb17-15"><a aria-label="15"></a>    <span class="co">// a.aggiungi(3);</span></span>
-<span id="cb17-16"><a aria-label="16"></a>    <span class="co">// a.aggiungi(4);</span></span>
-<span id="cb17-17"><a aria-label="17"></a>    <span class="co">// a.aggiungi(5);</span></span>
-<span id="cb17-18"><a aria-label="18"></a>    <span class="co">// std::cout &lt;&lt; a.totale() &lt;&lt; " " &lt;&lt; a.media() &lt;&lt; "\n";</span></span>
-<span id="cb17-19"><a aria-label="19"></a>    <span class="co">// Accumulatore&lt;double&gt; b;</span></span>
-<span id="cb17-20"><a aria-label="20"></a>    <span class="co">// b.aggiungi(0.1);</span></span>
-<span id="cb17-21"><a aria-label="21"></a>    <span class="co">// b.aggiungi(0.2);</span></span>
-<span id="cb17-22"><a aria-label="22"></a>    <span class="co">// std::cout &lt;&lt; b.totale() &lt;&lt; " " &lt;&lt; b.media() &lt;&lt; "\n";</span></span>
-<span id="cb17-23"><a aria-label="23"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb17-24"><a aria-label="24"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-6"><a aria-label="6"></a><span class="co">// - un costruttore senza argomenti che inizializza somma_ a T{}</span></span>
+<span id="cb17-7"><a aria-label="7"></a><span class="co">//   (un T creato senza argomenti: 0 per i numeri, "" per le stringhe) e n_ a 0;</span></span>
+<span id="cb17-8"><a aria-label="8"></a><span class="co">// - void aggiungi(const T&amp; v): aggiunge v a somma_ e incrementa n_;</span></span>
+<span id="cb17-9"><a aria-label="9"></a><span class="co">// - T totale() const e int quanti() const, che restituiscono somma_ e n_;</span></span>
+<span id="cb17-10"><a aria-label="10"></a><span class="co">// - double media() const: 0.0 se n_ vale 0, altrimenti</span></span>
+<span id="cb17-11"><a aria-label="11"></a><span class="co">//   static_cast&lt;double&gt;(somma_) / n_</span></span>
+<span id="cb17-12"><a aria-label="12"></a></span>
+<span id="cb17-13"><a aria-label="13"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb17-14"><a aria-label="14"></a>    <span class="co">// da scommentare:</span></span>
+<span id="cb17-15"><a aria-label="15"></a>    <span class="co">// Accumulatore&lt;int&gt; a;</span></span>
+<span id="cb17-16"><a aria-label="16"></a>    <span class="co">// a.aggiungi(3);</span></span>
+<span id="cb17-17"><a aria-label="17"></a>    <span class="co">// a.aggiungi(4);</span></span>
+<span id="cb17-18"><a aria-label="18"></a>    <span class="co">// a.aggiungi(5);</span></span>
+<span id="cb17-19"><a aria-label="19"></a>    <span class="co">// std::cout &lt;&lt; a.totale() &lt;&lt; " " &lt;&lt; a.media() &lt;&lt; "\n";</span></span>
+<span id="cb17-20"><a aria-label="20"></a>    <span class="co">// Accumulatore&lt;double&gt; b;</span></span>
+<span id="cb17-21"><a aria-label="21"></a>    <span class="co">// b.aggiungi(0.1);</span></span>
+<span id="cb17-22"><a aria-label="22"></a>    <span class="co">// b.aggiungi(0.2);</span></span>
+<span id="cb17-23"><a aria-label="23"></a>    <span class="co">// std::cout &lt;&lt; b.totale() &lt;&lt; " " &lt;&lt; b.media() &lt;&lt; "\n";</span></span>
+<span id="cb17-24"><a aria-label="24"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb17-25"><a aria-label="25"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Compila così com’è e non stampa niente.</p>
 </section>
