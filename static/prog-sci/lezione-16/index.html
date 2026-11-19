@@ -1014,7 +1014,7 @@ non è un DenseLayer</code></pre>
 <h2>Il downcasting nel framework</h2>
 <p>Il framework fa così: <code>Layer</code> ha i metodi per inizializzare e aggiornare i pesi, che in un layer senza pesi non fanno niente, e la rete li chiama su tutti i layer attraverso un <code>Layer*</code>.</p>
 <ul>
-<li>Una catena di <code>dynamic_cast</code> va cambiata a ogni classe nuova; un metodo <code>virtual</code> no.</li>
+<li>Con il <code>dynamic_cast</code>, il ciclo che conta i pesi ha un <code>if</code> per ogni classe che ha pesi. Se arriva una classe nuova con pesi, per esempio un layer convoluzionale, bisogna aggiungere un <code>if</code> in quel ciclo, e in ogni altro punto del programma che fa lo stesso. Con un metodo <code>virtual</code> basta che la classe nuova lo ridefinisca: il ciclo resta com’è.</li>
 <li><code>dynamic_cast</code> costa più di una chiamata <code>virtual</code>, perché deve controllare il tipo: va bene una volta ogni tanto, non nei cicli dell’addestramento.</li>
 </ul>
 <p>Il downcasting resta per i casi in cui serve un metodo che una sola classe derivata ha, e che nella classe base non avrebbe senso.</p>
