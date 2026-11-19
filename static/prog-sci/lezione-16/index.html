@@ -1156,6 +1156,50 @@ non è un DenseLayer</code></pre>
 <p>Stampa <code>100352 pesi</code>: <code>401408</code> byte in <code>float</code>, <code>802816</code> in <code>double</code>.</p>
 </div></div>
 </section>
+<section id="due-forme-di-polimorfismo" class="slide level2 smaller">
+<h2>Due forme di polimorfismo</h2>
+<!-- 19/11/2026 (Cristiano: con i template si fa polimorfismo in modo nuovo, diciamolo). -->
+<p>Lo stesso codice per tipi diversi, in due modi: il polimorfismo <strong>dinamico</strong> e quello <strong>statico</strong>.</p>
+<div style="font-size: 80%">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>dinamico: <code>virtual</code> (Lezione 12)</th>
+<th>statico: template</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>quando si sceglie il codice</td>
+<td>in esecuzione, dal tipo vero dell’oggetto</td>
+<td>in compilazione, una versione per tipo</td>
+</tr>
+<tr class="even">
+<td>che cosa si chiede ai tipi</td>
+<td>una classe base comune</td>
+<td>le operazioni usate (<code>&gt;</code> in <code>massimo</code>)</td>
+</tr>
+<tr class="odd">
+<td>quando si vede un errore</td>
+<td>in esecuzione (un <code>static_cast</code> sbagliato)</td>
+<td>in compilazione (<em><code>no match for 'operator&gt;'</code></em>)</td>
+</tr>
+<tr class="even">
+<td>classi diverse nello stesso <code>std::vector</code></td>
+<td>sì: <code>std::vector&lt;Layer*&gt;</code></td>
+<td>no: <code>Pesi&lt;float&gt;</code> e <code>Pesi&lt;double&gt;</code> non hanno una base comune</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Il framework li usa tutti e due: i metodi <code>virtual</code> nella gerarchia di <code>Layer</code>, i template per scegliere fra <code>float</code> e <code>double</code>.</p>
+</section>
 <section id="esercizio-un-accumulatore" class="slide level2 smaller">
 <h2>Esercizio: un accumulatore</h2>
 <p><strong>Scopo:</strong> scrivere un template di classe, e vedere quando il compilatore controlla le operazioni che fa sul tipo <code>T</code>.</p>
