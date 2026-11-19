@@ -1202,7 +1202,7 @@ non è un DenseLayer</code></pre>
 </section>
 <section id="esercizio-un-accumulatore" class="slide level2 smaller">
 <h2>Esercizio: un accumulatore</h2>
-<p><strong>Scopo:</strong> scrivere un template di classe, e vedere quando il compilatore controlla le operazioni che fa sul tipo <code>T</code>.</p>
+<p><strong>Scopo:</strong> scrivere un template di classe, <code>Accumulatore</code>, che riceve uno alla volta valori dello stesso tipo, ne tiene la somma (per le stringhe, la concatenazione) e, se il tipo lo permette, ne calcola la media; e vedere quando il compilatore controlla le operazioni che fa sul tipo <code>T</code>.</p>
 <ol type="1">
 <li>In <code>esercizio_accumulatore.cpp</code> (slide seguente) scrivete il template di classe <code>Accumulatore</code> descritto nel commento.</li>
 <li>Nel <code>main</code> scommentate le righe.</li>
@@ -1223,27 +1223,28 @@ non è un DenseLayer</code></pre>
 <span id="cb17-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
 <span id="cb17-3"><a aria-label="3"></a></span>
 <span id="cb17-4"><a aria-label="4"></a><span class="co">// da completare: un template di classe Accumulatore, con</span></span>
-<span id="cb17-5"><a aria-label="5"></a><span class="co">// - due attributi private: somma_ di tipo T e n_ di tipo int;</span></span>
-<span id="cb17-6"><a aria-label="6"></a><span class="co">// - un costruttore senza argomenti che inizializza somma_ a T{}</span></span>
-<span id="cb17-7"><a aria-label="7"></a><span class="co">//   (un T creato senza argomenti: 0 per i numeri, "" per le stringhe) e n_ a 0;</span></span>
-<span id="cb17-8"><a aria-label="8"></a><span class="co">// - void aggiungi(const T&amp; v): aggiunge v a somma_ e incrementa n_;</span></span>
-<span id="cb17-9"><a aria-label="9"></a><span class="co">// - T totale() const e int quanti() const, che restituiscono somma_ e n_;</span></span>
-<span id="cb17-10"><a aria-label="10"></a><span class="co">// - double media() const: 0.0 se n_ vale 0, altrimenti</span></span>
-<span id="cb17-11"><a aria-label="11"></a><span class="co">//   static_cast&lt;double&gt;(somma_) / n_</span></span>
-<span id="cb17-12"><a aria-label="12"></a></span>
-<span id="cb17-13"><a aria-label="13"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb17-14"><a aria-label="14"></a>    <span class="co">// da scommentare:</span></span>
-<span id="cb17-15"><a aria-label="15"></a>    <span class="co">// Accumulatore&lt;int&gt; a;</span></span>
-<span id="cb17-16"><a aria-label="16"></a>    <span class="co">// a.aggiungi(3);</span></span>
-<span id="cb17-17"><a aria-label="17"></a>    <span class="co">// a.aggiungi(4);</span></span>
-<span id="cb17-18"><a aria-label="18"></a>    <span class="co">// a.aggiungi(5);</span></span>
-<span id="cb17-19"><a aria-label="19"></a>    <span class="co">// std::cout &lt;&lt; a.totale() &lt;&lt; " " &lt;&lt; a.media() &lt;&lt; "\n";</span></span>
-<span id="cb17-20"><a aria-label="20"></a>    <span class="co">// Accumulatore&lt;double&gt; b;</span></span>
-<span id="cb17-21"><a aria-label="21"></a>    <span class="co">// b.aggiungi(0.1);</span></span>
-<span id="cb17-22"><a aria-label="22"></a>    <span class="co">// b.aggiungi(0.2);</span></span>
-<span id="cb17-23"><a aria-label="23"></a>    <span class="co">// std::cout &lt;&lt; b.totale() &lt;&lt; " " &lt;&lt; b.media() &lt;&lt; "\n";</span></span>
-<span id="cb17-24"><a aria-label="24"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb17-25"><a aria-label="25"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-5"><a aria-label="5"></a><span class="co">// - due attributi private: somma_ di tipo T, la somma degli elementi aggiunti,</span></span>
+<span id="cb17-6"><a aria-label="6"></a><span class="co">//   e n_ di tipo int, che conta quanti elementi sono stati aggiunti;</span></span>
+<span id="cb17-7"><a aria-label="7"></a><span class="co">// - un costruttore senza argomenti che inizializza somma_ a T{}</span></span>
+<span id="cb17-8"><a aria-label="8"></a><span class="co">//   (un T creato senza argomenti: 0 per i numeri, "" per le stringhe) e n_ a 0;</span></span>
+<span id="cb17-9"><a aria-label="9"></a><span class="co">// - void aggiungi(const T&amp; v): aggiunge v a somma_ e incrementa n_;</span></span>
+<span id="cb17-10"><a aria-label="10"></a><span class="co">// - T totale() const e int quanti() const, che restituiscono somma_ e n_;</span></span>
+<span id="cb17-11"><a aria-label="11"></a><span class="co">// - double media() const: 0.0 se n_ vale 0, altrimenti</span></span>
+<span id="cb17-12"><a aria-label="12"></a><span class="co">//   static_cast&lt;double&gt;(somma_) / n_</span></span>
+<span id="cb17-13"><a aria-label="13"></a></span>
+<span id="cb17-14"><a aria-label="14"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb17-15"><a aria-label="15"></a>    <span class="co">// da scommentare:</span></span>
+<span id="cb17-16"><a aria-label="16"></a>    <span class="co">// Accumulatore&lt;int&gt; a;</span></span>
+<span id="cb17-17"><a aria-label="17"></a>    <span class="co">// a.aggiungi(3);</span></span>
+<span id="cb17-18"><a aria-label="18"></a>    <span class="co">// a.aggiungi(4);</span></span>
+<span id="cb17-19"><a aria-label="19"></a>    <span class="co">// a.aggiungi(5);</span></span>
+<span id="cb17-20"><a aria-label="20"></a>    <span class="co">// std::cout &lt;&lt; a.totale() &lt;&lt; " " &lt;&lt; a.media() &lt;&lt; "\n";</span></span>
+<span id="cb17-21"><a aria-label="21"></a>    <span class="co">// Accumulatore&lt;double&gt; b;</span></span>
+<span id="cb17-22"><a aria-label="22"></a>    <span class="co">// b.aggiungi(0.1);</span></span>
+<span id="cb17-23"><a aria-label="23"></a>    <span class="co">// b.aggiungi(0.2);</span></span>
+<span id="cb17-24"><a aria-label="24"></a>    <span class="co">// std::cout &lt;&lt; b.totale() &lt;&lt; " " &lt;&lt; b.media() &lt;&lt; "\n";</span></span>
+<span id="cb17-25"><a aria-label="25"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb17-26"><a aria-label="26"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Compila così com’è e non stampa niente.</p>
 </section>
@@ -1310,7 +1311,7 @@ non è un DenseLayer</code></pre>
 </div>
 </div><div class="column" style="width:42%;">
 <p>Con <code>std::string</code> compila e stampa <code>ciao mondo</code>: il <code>+=</code> della riga 12 concatena le stringhe.</p>
-<p>Con <code>s.media()</code> no:<br>
+<p>Scommentando la riga 37, con <code>s.media()</code>, non compila:<br>
 <em><code>error: invalid 'static_cast' from type</code></em> … <em><code>to type 'double'</code></em>: una stringa non si converte in un numero.</p>
 <p>Il compilatore genera un metodo di un template solo quando lo si chiama.</p>
 </div></div>
