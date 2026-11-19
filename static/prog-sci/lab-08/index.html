@@ -796,7 +796,11 @@ Cristiano De Michele
 </section>
 <section id="perché-linizializzazione-conta" class="slide level2 smaller">
 <h2>Perché l’inizializzazione conta</h2>
-<p>La scala dei pesi iniziali si sceglie perché la varianza del segnale resti circa la stessa da un layer al successivo: se cresce le attivazioni saturano, se cala il segnale si spegne.</p>
+<p>La scala dei pesi iniziali si sceglie perché la varianza del segnale resti circa la stessa da un layer al successivo. Se cresce, le attivazioni saturano (sigmoide, tanh) o esplodono (ReLU); se cala, il segnale si spegne.</p>
+<p>Per l’addestramento è un disastro: all’indietro (Lezione 03) ogni strato moltiplica l’errore <span class="math inline">\(\delta\)</span> per <span class="math inline">\(w\,\sigma'\)</span>, e il gradiente del peso <span class="math inline">\(w_{jk}\)</span> è <span class="math inline">\(\delta_j\, a_k\)</span>, dove <span class="math inline">\(a_k\)</span> è l’attivazione che entra nel peso dallo strato precedente. Con le attivazioni saturate <span class="math inline">\(\sigma' \approx 0\)</span> e i gradienti si annullano; con il segnale spento si annullano le <span class="math inline">\(a_k\)</span>; con la ReLU che esplode esplodono anche i gradienti (<em>vanishing</em> ed <em>exploding gradients</em>).</p>
+</section>
+<section id="le-formule-di-he-e-di-xavier" class="slide level2 smaller">
+<h2>Le formule di He e di Xavier</h2>
 <p>Due formule, ciascuna pensata per una famiglia di attivazioni, con <span class="math inline">\(N_{in}\)</span> ingressi e <span class="math inline">\(N_{out}\)</span> neuroni:</p>
 <table class="caption-top">
 <colgroup>
