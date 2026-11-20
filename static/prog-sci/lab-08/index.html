@@ -784,7 +784,7 @@ Cristiano De Michele
   uscite della rete con la tanh in (-1, 1). Il costruttore riempie Wt nello stesso ordine e con le stesse
   formule del framework.
 -->
-<p>Finora i pesi erano <code>MatrixXd::Random</code>, uniformi in <span class="math inline">\([-1, 1]\)</span>: per un’immagine fissata <span class="math inline">\(z\)</span> ha media 0 sui pesi ma deviazione standard fra 4 e 7, e per quasi metà dei neuroni (<span class="math inline">\(|z| &gt; 4\)</span>) la sigmoide è quasi costante: imparano poco (Lezione 02).</p>
+<p>Finora i pesi erano <code>MatrixXd::Random</code>, uniformi in <span class="math inline">\([-1, 1]\)</span> e indipendenti dagli ingressi: la media di <span class="math inline">\(z\)</span> è nulla, ma la deviazione standard no, e molti neuroni saturano (sigmoide quasi costante): imparano poco (Lezione 02).</p>
 <p>Oggi:</p>
 <ol type="1">
 <li>un generatore di numeri casuali, <code>randnumgen.hpp</code>, con un seme fisso per esperimenti riproducibili;</li>
@@ -851,16 +851,11 @@ Cristiano De Michele
 </section>
 <section id="il-fattore-½-della-relu" class="slide level2 smaller">
 <h2>Il fattore ½ della ReLU</h2>
-<!-- 20/11/2026 (osservazione di Cristiano: la simmetria di z non e' scontata). He et al. 2015, sez. 2.2: "if w_{l-1} has a
-     symmetric distribution around zero and b_{l-1} = 0, then y_{l-1} has zero mean and has a symmetric distribution
-     around zero". La simmetria vale rispetto ai pesi estratti (w -> -w lascia invariata la distribuzione e cambia segno
-     a z), non sul dataset a pesi fissati. -->
-<p>Con la ReLU l’ingresso di uno strato è <span class="math inline">\(x_i = \max(0, z_i)\)</span>, dove <span class="math inline">\(z_i\)</span> viene dallo strato precedente. Quanto vale <span class="math inline">\(\langle x^2 \rangle\)</span>?</p>
-<ul>
-<li><span class="math inline">\(z_i\)</span> è simmetrico attorno a 0 <strong>rispetto ai pesi estratti</strong>: i pesi hanno una distribuzione simmetrica (gaussiana o uniforme) e il bias è 0, quindi cambiando segno a tutti i pesi del neurone si ottiene <span class="math inline">\(-z_i\)</span>, con la stessa probabilità di <span class="math inline">\(z_i\)</span>.</li>
-<li>Allora metà dei valori di <span class="math inline">\(z_i\)</span> diventa zero e l’altra metà resta com’è: <span class="math inline">\(\langle x^2 \rangle = \mathrm{Var}(z_{prec})/2\)</span>.</li>
-<li>Con i pesi già fissati non è più vero: sul dataset ogni neurone ha la sua media, e la simmetria vale solo in media sulle estrazioni.</li>
-</ul>
+<!-- 20/11/2026: Cristiano ha notato che la simmetria di z non e' scontata. Vale rispetto ai pesi estratti (distribuzione
+     simmetrica e bias 0: w -> -w cambia segno a z), non sul dataset a pesi fissati, dove ogni neurone ha la sua media
+     sum_k w_k mu_k. He et al. 2015, sez. 2.2, la assumono esplicitamente. Nella slide si dice solo "se si possono
+     assumere simmetrici" (scelta di Cristiano: la versione con i pesi fissati non si capiva); il resto a voce. -->
+<p>Con la ReLU l’ingresso di uno strato è <span class="math inline">\(x_i = \max(0, z_i)\)</span>, dove <span class="math inline">\(z_i\)</span> viene dallo strato precedente. Se i valori di <span class="math inline">\(z_i\)</span> si possono assumere simmetrici attorno a 0, metà diventa zero e l’altra metà resta com’è, quindi <span class="math inline">\(\langle x^2 \rangle\)</span> è metà della varianza: <span class="math display">\[\langle x^2 \rangle = \tfrac{1}{2}\, \mathrm{Var}(z_{prec}) \qquad\Rightarrow\qquad \mathrm{Var}(z) = \tfrac{1}{2}\, N_{in}\, s^2\, \mathrm{Var}(z_{prec})\]</span></p>
 <p>La varianza resta la stessa da uno strato al successivo se <span class="math inline">\(N_{in}\, s^2/2 = 1\)</span>, cioè <span class="math inline">\(s = \sqrt{2/N_{in}}\)</span>. Con la ReLU questa condizione basta anche all’indietro (He e altri, 2015): lo vediamo nella slide seguente.</p>
 </section>
 <section id="la-formula-di-he-allindietro" class="slide level2 smaller">
@@ -954,36 +949,36 @@ Cristiano De Michele
 </div>
 </div><div class="column" style="width:38%;">
 <p>Sostituisce il costruttore del Laboratorio 07; <code>forward</code> e i getter restano.</p>
-<p><strong>Da scrivere:</strong> al posto del commento, uno <code>switch</code> su <code>type</code> che calcola <code>s</code> con le formule della tabella, senza <code>default</code> (Lezione 15), con un <code>break</code> alla fine di ogni <code>case</code> (slide seguente).</p>
 <p>Compilate ed eseguite: le righe del Laboratorio 07 ci sono ancora, con numeri diversi.</p>
 </div></div>
+<p><strong>Da scrivere:</strong> al posto del commento, uno <code>switch</code> su <code>type</code> come la <code>sigma</code> della Lezione 15, senza <code>default</code>, ma con <code>s = ...</code> al posto di <code>return</code>. In ogni <code>case</code> la formula è quella della colonna gaussiana o uniforme della tabella, secondo <code>distro</code>, e alla fine c’è un <code>break</code> (slide seguente).</p>
 </section>
 <section id="task-3-segue-il-break" class="slide level2 smaller">
 <h2>Task 3 (segue): il <code>break</code></h2>
 <!--
-  19/11/2026 (Cristiano: nella Lezione 15 gli switch finiscono con return e il break non si vede; qui serve). Verificato
-  con g++ 13 e clang 18: con -Wall nessun avviso e HE stampa 0.0468293 (il valore di Xavier); g++ avverte solo con
-  -Wextra ("this statement may fall through [-Wimplicit-fallthrough=]"), clang solo con -Wimplicit-fallthrough.
+  19/11/2026 (Cristiano: nella Lezione 15 gli switch finiscono con return e il break non si vede; qui serve).
+  20/11/2026: l'esempio non e' piu' la sigma (era quasi la soluzione del Task 3) ma stampa(DistroType). Verificato con
+  g++ 13.3 e clang 18.1: con -Wall nessun avviso, stampa(UNIFORM) scrive "uniforme" e "gaussiana"; g++ avverte con
+  -Wextra ("this statement may fall through [-Wimplicit-fallthrough=]"), clang solo con -Wimplicit-fallthrough; con il
+  break scrive solo "uniforme".
 -->
 <div class="columns">
 <div class="column" style="width:55%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="dt">double</span> sigma<span class="op">(</span>InitType type<span class="op">,</span> <span class="dt">int</span> n_in<span class="op">,</span> <span class="dt">int</span> n_out<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-2"><a aria-label="2"></a>    <span class="dt">double</span> s <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb6-3"><a aria-label="3"></a>    <span class="cf">switch</span> <span class="op">(</span>type<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-4"><a aria-label="4"></a>        <span class="cf">case</span> InitType<span class="op">::</span>HE<span class="op">:</span></span>
-<span id="cb6-5"><a aria-label="5"></a>            s <span class="op">=</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">2.0</span> <span class="op">/</span> n_in<span class="op">);</span></span>
-<span id="cb6-6"><a aria-label="6"></a>        <span class="cf">case</span> InitType<span class="op">::</span>XAVIER<span class="op">:</span></span>
-<span id="cb6-7"><a aria-label="7"></a>            s <span class="op">=</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">2.0</span> <span class="op">/</span> <span class="op">(</span>n_in <span class="op">+</span> n_out<span class="op">));</span></span>
-<span id="cb6-8"><a aria-label="8"></a>    <span class="op">}</span></span>
-<span id="cb6-9"><a aria-label="9"></a>    <span class="cf">return</span> s<span class="op">;</span></span>
-<span id="cb6-10"><a aria-label="10"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="dt">void</span> stampa<span class="op">(</span>DistroType d<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-2"><a aria-label="2"></a>    <span class="cf">switch</span> <span class="op">(</span>d<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-3"><a aria-label="3"></a>        <span class="cf">case</span> DistroType<span class="op">::</span>UNIFORM<span class="op">:</span></span>
+<span id="cb6-4"><a aria-label="4"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"uniforme</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb6-5"><a aria-label="5"></a>        <span class="cf">case</span> DistroType<span class="op">::</span>GAUSSIAN<span class="op">:</span></span>
+<span id="cb6-6"><a aria-label="6"></a>            <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"gaussiana</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb6-7"><a aria-label="7"></a>    <span class="op">}</span></span>
+<span id="cb6-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:45%;">
-<p>È la <code>sigma</code> della Lezione 15, con <code style="white-space: nowrap">s = ...</code> al posto di <code>return</code>. <code>sigma(InitType::HE, 784, 128)</code> dà <code>0.0468293</code>, il valore di Xavier, invece di <code>0.0505076</code>: finito il <code>case HE</code>, l’esecuzione prosegue nel <code>case XAVIER</code>, come in C.</p>
+<p><code>stampa(DistroType::UNIFORM)</code> scrive <code>uniforme</code> e poi anche <code>gaussiana</code>: finito il <code style="white-space: nowrap">case UNIFORM</code>, l’esecuzione prosegue nel <code style="white-space: nowrap">case GAUSSIAN</code>, come in C.</p>
 <p>Con <code>-Wall</code> il compilatore non avverte (g++ lo fa solo con <code>-Wextra</code>).</p>
 </div></div>
 <p><strong>Se un <code>case</code> non finisce con <code>return</code>, va chiuso con <code>break</code>:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="cf">case</span> InitType<span class="op">::</span>HE<span class="op">:</span></span>
-<span id="cb7-2"><a aria-label="2"></a>    s <span class="op">=</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">2.0</span> <span class="op">/</span> n_in<span class="op">);</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="cf">case</span> DistroType<span class="op">::</span>UNIFORM<span class="op">:</span></span>
+<span id="cb7-2"><a aria-label="2"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"uniforme</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="cb7-3"><a aria-label="3"></a>    <span class="cf">break</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="task-4-la-tangente-iperbolica" class="slide level2 smaller">
@@ -1040,7 +1035,7 @@ Cristiano De Michele
 <span id="cb9-8"><a aria-label="8"></a>              <span class="op">&lt;&lt;</span> <span class="st">", attesa: "</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>sqrt<span class="op">(</span><span class="fl">2.0</span> <span class="op">/</span> <span class="dv">784</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
 <span id="cb9-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Aggiungete a <code>main.cpp</code> questa funzione e quella della slide seguente, prima del <code>main</code>, e in cima <code>#include &lt;cmath&gt;</code>. <code>W.mean()</code> è la media degli elementi di <code>W</code>; la deviazione standard è la radice della media dei quadrati degli scarti.</p>
+<p>Aggiungete a <code>main.cpp</code> questa funzione e quella della slide seguente, prima del <code>main</code>, e in cima <code>#include &lt;cmath&gt;</code>. <code>W.mean()</code> è la media degli elementi di <code>W</code>. <code>W.array() - media</code> sottrae la media da ogni elemento: con <code>.array()</code> la matrice è una tabella di numeri, come in <code>SigmoidLayer::forward</code> (Laboratorio 07). <code>.square()</code> eleva al quadrato ogni elemento e il secondo <code>.mean()</code> ne fa la media: la deviazione standard è la radice della media dei quadrati degli scarti.</p>
 </section>
 <section id="task-5-segue-la-rete-con-la-tanh" class="slide level2 smaller">
 <h2>Task 5 (segue): la rete con la tanh</h2>
@@ -1081,7 +1076,7 @@ Cristiano De Michele
   30.14 36.19 (= Tabella 11.2); nu = 7: 2.83-12.02; nu = 49: 36.82-62.04; nu = 199: 173.90-224.96.
 -->
 <p><strong>Scopo:</strong> valutare la bontà del generatore di numeri pseudocasuali. <code>rng.ranf()</code> e Box-Muller devono dare numeri gaussiani, e gli <span class="math inline">\(n = 100\,352\)</span> pesi di un <code style="white-space: nowrap">DenseLayer(128, 784)</code> ne sono un campione. Il test è quello del χ² del libro <em>Programmazione Scientifica</em> (paragrafi 7.4.2 e 11.4.1).</p>
-<p>I pesi si dividono in <span class="math inline">\(K\)</span> intervalli: se nell’intervallo <span class="math inline">\(\alpha\)</span>, di probabilità <span class="math inline">\(p_\alpha\)</span>, cadono <span class="math inline">\(Y_\alpha\)</span> pesi, si calcola <span class="math inline">\(\Phi = \sum_{\alpha} (Y_\alpha - n\,p_\alpha)^2 / (n\,p_\alpha)\)</span>.</p>
+<p>I pesi si dividono in <span class="math inline">\(K\)</span> intervalli. Se nell’intervallo <span class="math inline">\(\alpha\)</span> cadono <span class="math inline">\(Y_\alpha\)</span> pesi e <span class="math inline">\(p_\alpha\)</span> è la probabilità che un numero gaussiano di media 0 e deviazione standard <span class="math inline">\(\sigma = \sqrt{2/784}\)</span> cada lì, si calcola <span class="math inline">\(\Phi = \sum_{\alpha} (Y_\alpha - n\,p_\alpha)^2 / (n\,p_\alpha)\)</span>.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>main.cpp</strong></pre>
@@ -1124,11 +1119,15 @@ Cristiano De Michele
 <span id="cb12-24"><a aria-label="24"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
+<section id="task-6-segue-le-probabilità" class="slide level2 smaller">
+<h2>Task 6 (segue): le probabilità</h2>
+<p>Le <span class="math inline">\(p_\alpha\)</span> di <code>prova_chi_quadro</code> sono quelle della gaussiana di media 0 e deviazione standard <span class="math inline">\(\sigma = \sqrt{2/784}\)</span>, la distribuzione che i pesi di He dovrebbero avere.</p>
+<p>Gli intervalli coprono <span class="math inline">\(\pm 4\sigma\)</span>; il primo arriva a <span class="math inline">\(-\infty\)</span> e l’ultimo a <span class="math inline">\(+\infty\)</span>, così le <span class="math inline">\(p_\alpha\)</span> sommano a 1. Fra <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span>: <span class="math display">\[p_\alpha = \int_a^b \frac{e^{-x^2/(2\sigma^2)}}{\sigma\sqrt{2\pi}}\,dx = \tfrac12\left[\mathrm{erf}\!\left(\frac{b}{\sigma\sqrt2}\right) - \mathrm{erf}\!\left(\frac{a}{\sigma\sqrt2}\right)\right]\]</span> <code>std::erf</code> e <code>INFINITY</code> sono in <code>&lt;cmath&gt;</code>.</p>
+</section>
 <section id="task-6-segue-leggere-il-χ²" class="slide level2 smaller">
 <h2>Task 6 (segue): leggere il χ²</h2>
 <p>Chiamate <code>prova_chi_quadro();</code> nel <code>main</code>, dopo <code>prova_tanh();</code>. Con <code>rng.seed(42)</code> stampa <code>chi quadro: 13.2069, gradi di liberta': 19</code>.</p>
-<p>Gli intervalli coprono <span class="math inline">\(\pm 4\sigma\)</span>, con <span class="math inline">\(\sigma = \sqrt{2/784}\)</span>; il primo arriva a <span class="math inline">\(-\infty\)</span> e l’ultimo a <span class="math inline">\(+\infty\)</span>, così le <span class="math inline">\(p_\alpha\)</span> sommano a 1. Fra <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span>, <span class="math inline">\(p_\alpha = \tfrac12\left[\mathrm{erf}\big(b/(\sigma\sqrt2)\big) - \mathrm{erf}\big(a/(\sigma\sqrt2)\big)\right]\)</span>; <code>std::erf</code> e <code>INFINITY</code> sono in <code>&lt;cmath&gt;</code>.</p>
-<p>I gradi di libertà sono <span class="math inline">\(\nu = K - 1\)</span>: l’unico vincolo è <span class="math inline">\(\sum_\alpha Y_\alpha = n\)</span>, perché <span class="math inline">\(\sigma\)</span> viene dalla formula e non dai dati. Se il generatore è buono, Φ segue la distribuzione del χ² con <span class="math inline">\(\nu\)</span> gradi di libertà. Il libro (Tabella 11.2, con il criterio di Knuth) guarda <strong>tutte e due le code</strong>: per <span class="math inline">\(\nu = 19\)</span> il generatore è leggermente sospetto se Φ è fuori da 11,65 – 27,20, sospetto se è fuori da 10,12 – 30,14, palesemente inaccurato se è fuori da 7,63 – 36,19. Anche un Φ troppo piccolo è sospetto: numeri troppo regolari per essere casuali.</p>
+<p>I gradi di libertà sono <span class="math inline">\(\nu = K - 1\)</span>: l’unico vincolo è <span class="math inline">\(\sum_\alpha Y_\alpha = n\)</span>, perché <span class="math inline">\(\sigma\)</span> viene dalla formula e non dai dati. Se il generatore è buono, Φ segue la distribuzione del χ² con <span class="math inline">\(\nu\)</span> gradi di libertà. Il libro (Tabella 11.2, con il criterio di Knuth) guarda <strong>tutte e due le code</strong>: per <span class="math inline">\(\nu = 19\)</span> il generatore è leggermente sospetto se Φ è fuori da 11,65 – 27,20, sospetto fuori da 10,12 – 30,14, palesemente inaccurato fuori da 7,63 – 36,19. Anche un Φ troppo piccolo è sospetto: numeri troppo regolari per essere casuali.</p>
 </section>
 <section id="task-6-segue-provate" class="slide level2 smaller scrollable">
 <h2>Task 6 (segue): provate</h2>
