@@ -791,7 +791,7 @@ Cristiano De Michele
 <li>È un <code>DenseLayer</code> senza bias: se <span class="math inline">\(\mathbf{e}_t\)</span> è il vettore <em>one-hot</em> del token (tutti zeri, un 1 in posizione <span class="math inline">\(t\)</span>), allora <span class="math inline">\(\mathbf{x} = E^\mathsf{T} \mathbf{e}_t\)</span>, con <span class="math inline">\(W = E^\mathsf{T}\)</span> di dimensione <span class="math inline">\(d \times M\)</span>. Per un quadrato d’immagine con pixel <span class="math inline">\(\mathbf{u}\)</span>, allo stesso modo <span class="math inline">\(\mathbf{x} = W \mathbf{u}\)</span>.</li>
 <li>Al token in posizione <span class="math inline">\(i\)</span> si somma un vettore <span class="math inline">\(\mathbf{r}_i\)</span> che dipende solo dalla posizione: <span class="math inline">\(\mathbf{x}_i \leftarrow \mathbf{x}_i + \mathbf{r}_i\)</span>. In GPT-2 e GPT-3 i <span class="math inline">\(\mathbf{r}_i\)</span> sono anch’essi parametri; il primo transformer usava seni e coseni di frequenze diverse. Perché servono, lo si vede nell’attenzione.</li>
 </ul>
-<p>I vettori, uno per riga, formano la matrice <span class="math inline">\(X\)</span> di dimensione <span class="math inline">\(n \times d\)</span>: la riga <span class="math inline">\(i\)</span> è <span class="math inline">\(\mathbf{x}_i^\mathsf{T}\)</span>, il token <span class="math inline">\(i\)</span>. In GPT-3, <span class="math inline">\(d = 12\,288\)</span>.</p>
+<p>Con i token della sequenza <span class="math inline">\(t_1, \dots, t_n\)</span> si forma la matrice <span class="math inline">\(X\)</span>, <span class="math inline">\(n \times d\)</span>: la riga <span class="math inline">\(i\)</span> è <span class="math inline">\(\mathbf{x}_i^\mathsf{T} = (\text{riga } t_i \text{ di } E) + \mathbf{r}_i^\mathsf{T}\)</span>. <span class="math inline">\(E\)</span> è il vocabolario, con <span class="math inline">\(M\)</span> righe, le stesse per ogni testo; <span class="math inline">\(X\)</span> è il contesto, con una riga per token, e cambia con il testo. In GPT-3, <span class="math inline">\(d = 12\,288\)</span>.</p>
 </section>
 <section id="il-modello-intero" class="slide level2 smaller">
 <h2>Il modello intero</h2>
@@ -806,7 +806,7 @@ Cristiano De Michele
 </section>
 <section id="lattenzione" class="slide level2 smaller">
 <h2>L’attenzione</h2>
-<p>Per ogni token <span class="math inline">\(i\)</span>, tre <code>DenseLayer</code> senza bias danno tre vettori di dimensione <span class="math inline">\(d_k\)</span>: <span class="math display">\[
+<p>Le righe di <span class="math inline">\(X\)</span>, <span class="math inline">\(n \times d\)</span>, sono i vettori dei token: il contesto, come in «Dagli interi ai vettori». Da <span class="math inline">\(\mathbf{x}_i \in \mathbb{R}^d\)</span>, il token <span class="math inline">\(i\)</span>, tre <code>DenseLayer</code> senza bias danno: <span class="math display">\[
 \mathbf{q}_i = W_Q\, \mathbf{x}_i \ \ (\textit{query}), \qquad \mathbf{k}_i = W_K\, \mathbf{x}_i \ \ (\textit{key}), \qquad \mathbf{v}_i = W_V\, \mathbf{x}_i \ \ (\textit{value}),
 \]</span> con <span class="math inline">\(W_Q\)</span>, <span class="math inline">\(W_K\)</span>, <span class="math inline">\(W_V\)</span> di dimensione <span class="math inline">\(d_k \times d\)</span>. Per ogni coppia di token <span class="math inline">\((i, j)\)</span>: <span class="math display">\[
 s_{ij} = \frac{\mathbf{q}_i \cdot \mathbf{k}_j}{\sqrt{d_k}}, \qquad
@@ -1002,7 +1002,7 @@ X \leftarrow X + \mathrm{MLP}\big(\mathrm{Norm}(X)\big)
 <ul>
 <li>L’<strong>attenzione</strong> mescola i token; l’<strong>MLP</strong> elabora ogni token da solo, con gli stessi pesi per tutti. La forma di <span class="math inline">\(X\)</span>, <span class="math inline">\(n \times d\)</span>, non cambia.</li>
 <li><strong>Somme residue.</strong> Ogni parte aggiunge una correzione a <span class="math inline">\(X\)</span> invece di riscriverlo (slide seguenti).</li>
-<li>Il blocco si ripete <span class="math inline">\(L\)</span> volte, ciascuna con i suoi pesi: <span class="math inline">\(L = 96\)</span> in GPT-3.</li>
+<li>Il blocco si ripete <span class="math inline">\(L\)</span> volte, ciascuna con i suoi pesi: <span class="math inline">\(L = 96\)</span> in GPT-3. Dal secondo blocco in poi ogni <span class="math inline">\(\mathbf{x}_i\)</span> porta già informazione sugli altri token, ma resta un vettore di <span class="math inline">\(d\)</span> numeri.</li>
 </ul>
 </section>
 <section id="le-somme-residue" class="slide level2 smaller">
