@@ -784,7 +784,7 @@ Cristiano De Michele
   uscite della rete con la tanh in (-1, 1). Il costruttore riempie Wt nello stesso ordine e con le stesse
   formule del framework.
 -->
-<p>Finora i pesi di un <code>DenseLayer</code> erano <code>MatrixXd::Random</code>, uniformi in <span class="math inline">\([-1, 1]\)</span>. Con 784 ingressi la somma <span class="math inline">\(z\)</span> dei 784 prodotti è dell’ordine di 10, e lì la sigmoide è quasi costante: la rete impara poco (Lezione 02).</p>
+<p>Finora i pesi erano <code>MatrixXd::Random</code>, uniformi in <span class="math inline">\([-1, 1]\)</span>: per un’immagine fissata <span class="math inline">\(z\)</span> ha media 0 sui pesi ma deviazione standard fra 4 e 7, e per quasi metà dei neuroni (<span class="math inline">\(|z| &gt; 4\)</span>) la sigmoide è quasi costante: imparano poco (Lezione 02).</p>
 <p>Oggi:</p>
 <ol type="1">
 <li>un generatore di numeri casuali, <code>randnumgen.hpp</code>, con un seme fisso per esperimenti riproducibili;</li>
@@ -836,16 +836,32 @@ Cristiano De Michele
 </section>
 <section id="da-dove-viene-la-formula-di-he" class="slide level2 smaller">
 <h2>Da dove viene la formula di He</h2>
+<!-- 20/11/2026 (domanda di Cristiano): misure su mnist_test.csv, pixel in [0,01, 1], 100 neuroni con pesi U[-1, 1]:
+     <x^2> medio 0,114 (90% delle immagini fra 0,054 e 0,188), deviazione standard di z fra 3,7 e 7,0; |z| > 4 nel 44%
+     delle coppie neurone-immagine, |z| < 1 nel 15%, sigma' medio 0,073 (con He: dev. std. 0,47, sigma' medio 0,237).
+     Con i pesi fissati, sul dataset ogni neurone ha media sum_k w_k mu_k != 0 (pixel positivi): da dire a voce. -->
 <!-- Fonte: K. He, X. Zhang, S. Ren, J. Sun, "Delving Deep into Rectifiers", ICCV 2015, sez. 2.2.
      Figura: figure/make_init_figure.py (10 strati ReLU 784 -> 256 -> ... -> 256, ingressi gaussiani di varianza 1). -->
 <div class="columns">
 <div class="column" style="width:52%;">
 <p><img data-src="../images/init_varianza.png"></p>
-<p>Con la ReLU questa condizione basta anche all’indietro (He e altri, 2015): lo vediamo nella slide seguente.</p>
 </div><div class="column" style="width:48%;">
-<p>Un neurone calcola <span class="math inline">\(z = \sum_{i=1}^{N_{in}} w_i x_i\)</span> (trascuriamo il bias). Se i pesi sono indipendenti, di media 0 e varianza <span class="math inline">\(s^2\)</span>: <span class="math display">\[\mathrm{Var}(z) = N_{in}\, s^2\, \langle x^2 \rangle\]</span> Con la ReLU, se <span class="math inline">\(z\)</span> dello strato precedente è simmetrico attorno a 0, metà dei valori diventa zero e l’altra metà resta com’è: <span class="math inline">\(\langle x^2\rangle = \mathrm{Var}(z_{prec})/2\)</span>.</p>
-<p>La varianza resta la stessa da uno strato al successivo se <span class="math inline">\(N_{in}\, s^2/2 = 1\)</span>, cioè <span class="math inline">\(s = \sqrt{2/N_{in}}\)</span>.</p>
+<p>Un neurone calcola <span class="math inline">\(z = \sum_{i=1}^{N_{in}} w_i x_i\)</span> (trascuriamo il bias). Se i pesi sono indipendenti, di media 0 e varianza <span class="math inline">\(s^2\)</span>: <span class="math display">\[\mathrm{Var}(z) = N_{in}\, s^2\, \langle x^2 \rangle\]</span> con <span class="math inline">\(\langle x^2 \rangle = \frac{1}{N_{in}} \sum_i x_i^2\)</span>, la media dei quadrati degli ingressi. Media e varianza sono sui pesi estratti, con l’ingresso fissato: la media è 0 anche se gli <span class="math inline">\(x_i\)</span> non lo sono, ed è per questo che compare <span class="math inline">\(\langle x^2 \rangle\)</span> e non la varianza degli <span class="math inline">\(x_i\)</span>. Negli strati successivi anche gli <span class="math inline">\(x_i\)</span> dipendono dai pesi estratti prima.</p>
 </div></div>
+</section>
+<section id="il-fattore-½-della-relu" class="slide level2 smaller">
+<h2>Il fattore ½ della ReLU</h2>
+<!-- 20/11/2026 (osservazione di Cristiano: la simmetria di z non e' scontata). He et al. 2015, sez. 2.2: "if w_{l-1} has a
+     symmetric distribution around zero and b_{l-1} = 0, then y_{l-1} has zero mean and has a symmetric distribution
+     around zero". La simmetria vale rispetto ai pesi estratti (w -> -w lascia invariata la distribuzione e cambia segno
+     a z), non sul dataset a pesi fissati. -->
+<p>Con la ReLU l’ingresso di uno strato è <span class="math inline">\(x_i = \max(0, z_i)\)</span>, dove <span class="math inline">\(z_i\)</span> viene dallo strato precedente. Quanto vale <span class="math inline">\(\langle x^2 \rangle\)</span>?</p>
+<ul>
+<li><span class="math inline">\(z_i\)</span> è simmetrico attorno a 0 <strong>rispetto ai pesi estratti</strong>: i pesi hanno una distribuzione simmetrica (gaussiana o uniforme) e il bias è 0, quindi cambiando segno a tutti i pesi del neurone si ottiene <span class="math inline">\(-z_i\)</span>, con la stessa probabilità di <span class="math inline">\(z_i\)</span>.</li>
+<li>Allora metà dei valori di <span class="math inline">\(z_i\)</span> diventa zero e l’altra metà resta com’è: <span class="math inline">\(\langle x^2 \rangle = \mathrm{Var}(z_{prec})/2\)</span>.</li>
+<li>Con i pesi già fissati non è più vero: sul dataset ogni neurone ha la sua media, e la simmetria vale solo in media sulle estrazioni.</li>
+</ul>
+<p>La varianza resta la stessa da uno strato al successivo se <span class="math inline">\(N_{in}\, s^2/2 = 1\)</span>, cioè <span class="math inline">\(s = \sqrt{2/N_{in}}\)</span>. Con la ReLU questa condizione basta anche all’indietro (He e altri, 2015): lo vediamo nella slide seguente.</p>
 </section>
 <section id="la-formula-di-he-allindietro" class="slide level2 smaller">
 <h2>La formula di He all’indietro</h2>

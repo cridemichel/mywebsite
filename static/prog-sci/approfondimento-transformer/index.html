@@ -845,6 +845,19 @@ S = \frac{Q K^\mathsf{T}}{\sqrt{d_k}} \ \ (n \times n), \qquad Y = A\, V
 <li><strong>Ordine.</strong> Scambiando due righe di <span class="math inline">\(X\)</span>, si scambiano solo le stesse due righe di <span class="math inline">\(Y\)</span> (senza la maschera causale, più avanti): l’attenzione vede un insieme di token, non una sequenza. Per questo si sommano le posizioni <span class="math inline">\(\mathbf{r}_i\)</span>.</li>
 </ul>
 </section>
+<section id="nel-framework-un-token-per-colonna" class="slide level2 smaller">
+<h2>Nel framework: un token per colonna</h2>
+<!-- 20/11/2026, domanda di Cristiano. Forma per colonne come nel prototipo NEURAL++ (vitLayers.hpp: si tiene At, la
+     trasposta di A, e Y = V At). Bias: in GPT-2 (e GPT-3) c_attn ha il bias; in LLaMA no; nel ViT di queste slide no.
+     Bias delle key: q_i . b costante in j, si cancella nella softmax; dei value: sum_j a_ij = 1, quindi y_i + b. -->
+<p>Nel framework ogni token è una colonna: da <span class="math inline">\(X^\mathsf{T}\)</span>, <span class="math inline">\(d \times n\)</span>, si calcolano le trasposte: <span class="math display">\[
+\begin{gathered}
+Q^\mathsf{T} = W_Q X^\mathsf{T}, \quad K^\mathsf{T} = W_K X^\mathsf{T}, \quad V^\mathsf{T} = W_V X^\mathsf{T} \ \ (d_k \times n) \\
+S^\mathsf{T} = \frac{K\, Q^\mathsf{T}}{\sqrt{d_k}} \ \ (n \times n), \qquad Y^\mathsf{T} = V^\mathsf{T} A^\mathsf{T}
+\end{gathered}
+\]</span> La colonna <span class="math inline">\(i\)</span> di <span class="math inline">\(Q^\mathsf{T}\)</span> è <span class="math inline">\(\mathbf{q}_i = W_Q \mathbf{x}_i\)</span>, come in «L’attenzione». La softmax va su ogni colonna di <span class="math inline">\(S^\mathsf{T}\)</span>, che contiene gli <span class="math inline">\(s_{ij}\)</span> del token <span class="math inline">\(i\)</span>, contigui in memoria in Eigen.</p>
+<p><strong>Bias.</strong> Qui non ci sono, come nel ViT di queste slide; GPT-2 e GPT-3 li hanno. Quello <span class="math inline">\(\mathbf{b}\)</span> delle key aggiunge <span class="math inline">\(\mathbf{q}_i \cdot \mathbf{b}\)</span> a tutti gli <span class="math inline">\(s_{ij}\)</span> della riga <span class="math inline">\(i\)</span>, e si cancella nella softmax; quello dei value si somma a ogni <span class="math inline">\(\mathbf{y}_i\)</span>, perché <span class="math inline">\(\sum_j a_{ij} = 1\)</span>. Solo quello delle query cambia gli <span class="math inline">\(a_{ij}\)</span>.</p>
+</section>
 <section id="perché-sqrtd_k" class="slide level2 smaller">
 <h2>Perché <span class="math inline">\(\sqrt{d_k}\)</span></h2>
 <p>Se le componenti <span class="math inline">\(q_c\)</span> di <span class="math inline">\(\mathbf{q}_i\)</span> e <span class="math inline">\(k_c\)</span> di <span class="math inline">\(\mathbf{k}_j\)</span> sono indipendenti, con media 0 e varianza 1 (come all’inizio, con pesi ben inizializzati), <span class="math inline">\(\mathbf{q}_i \cdot \mathbf{k}_j = \sum_c q_c\, k_c\)</span> ha media 0 e <span class="math display">\[
