@@ -757,7 +757,7 @@ Cristiano De Michele
 <!--
   Approfondimento sui transformer (7/11/2026): materiale facoltativo, NON incluso nelle lezioni. Lo include
   il deck approfondimento-transformer/index.qmd (voce "Approfondimenti" del menu); la slide "Gli stessi
-  ingredienti del corso" di _transformer.qmd vi rimanda. Teoria della traccia 14 dei progetti finali. Figure: images/transformer_architettura.png, images/transformer_attenzione.png
+  ingredienti del corso" di _transformer.qmd vi rimanda. Teoria delle tracce 14 e 15 dei progetti finali. Figure: images/transformer_architettura.png, images/transformer_attenzione.png
   (valori illustrativi, scelti a mano), da figure/make_transformer_figure.py.
   Notazione: M voci del vocabolario (non V, che e' la matrice dei value); d dimensione dei vettori; n token
   nella sequenza; L blocchi; H teste di dimensione d_k = d/H; r_i vettore della posizione i; vettori in grassetto
@@ -825,10 +825,10 @@ a_{ij} = \frac{e^{s_{ij}}}{\sum_{j'} e^{s_{ij'}}}, \qquad
      Il collegamento con il ViT sulle cifre: slide "Cosa aspettarsi" (media dei token contro un solo token).
      DA DIRE A VOCE (tolto dalla slide per lo spazio): in GPT-3 un MLP sulla sequenza avrebbe (n d)^2 = 6e14 pesi per
      strato, l'attenzione 4 d^2 = 6e8: un milione di volte meno. -->
-<p>Anche un <code>DenseLayer</code> sui token messi in fila, <span class="math inline">\(n \cdot d\)</span> numeri, mescola i token: <span class="math display">\[\text{MLP:}\quad \mathbf{y}_i = \sum_j W_{ij}\, \mathbf{x}_j \qquad\qquad \text{attenzione:}\quad \mathbf{y}_i = \sum_j a_{ij}(\mathbf{x}_i, \mathbf{x}_j)\; W_V\, \mathbf{x}_j\]</span></p>
+<p>Anche un <code>DenseLayer</code> sui token messi in fila, <span class="math inline">\(n \cdot d\)</span> numeri, mescola i token: <span class="math display">\[\text{MLP:}\quad \mathbf{y}_i = \sum_j W_{ij}\, \mathbf{x}_j \qquad\qquad \text{attenzione:}\quad \mathbf{y}_i = \sum_j a_{ij}(X)\; W_V\, \mathbf{x}_j\]</span></p>
 <ul>
-<li><strong>Pesi fissi o calcolati.</strong> Nell’MLP quanto il token <span class="math inline">\(j\)</span> conta per il token <span class="math inline">\(i\)</span>, il blocco <span class="math inline">\(W_{ij}\)</span> di <span class="math inline">\(d \times d\)</span> pesi, è fissato dall’addestramento, uguale per ogni frase. Nell’attenzione <span class="math inline">\(a_{ij}\)</span> si calcola dal contenuto, <span class="math inline">\(\mathbf{q}_i \cdot \mathbf{k}_j\)</span>: la parola che decide il senso di <em>pila</em> può essere <em>telecomando</em> o <em>libri</em>, in qualunque posizione, e l’attenzione la va a cercare.</li>
-<li><strong>Gli stessi pesi per ogni coppia.</strong> <span class="math inline">\(W_Q\)</span>, <span class="math inline">\(W_K\)</span>, <span class="math inline">\(W_V\)</span> valgono per tutte le coppie <span class="math inline">\((i, j)\)</span>: una relazione imparata fra le posizioni 3 e 5 vale anche fra 30 e 50, e <span class="math inline">\(n\)</span> può essere qualunque (una CNN ha pesi fissi, solo sui vicini).</li>
+<li><strong>Pesi fissi o calcolati.</strong> Nell’MLP quanto il token <span class="math inline">\(j\)</span> conta per il token <span class="math inline">\(i\)</span>, il blocco <span class="math inline">\(W_{ij}\)</span> di <span class="math inline">\(d \times d\)</span> pesi, è fissato dall’addestramento, uguale per ogni frase. Nell’attenzione <span class="math inline">\(a_{ij}\)</span> si calcola dal contenuto, dalla softmax dei <span class="math inline">\(\mathbf{q}_i \cdot \mathbf{k}_j\)</span>: la parola che decide il senso di <em>pila</em> può essere <em>telecomando</em> o <em>libri</em>, e l’attenzione la va a cercare.</li>
+<li><strong>Gli stessi pesi per ogni coppia.</strong> <span class="math inline">\(W_Q\)</span>, <span class="math inline">\(W_K\)</span>, <span class="math inline">\(W_V\)</span> valgono per tutte le coppie <span class="math inline">\((i, j)\)</span>: una relazione imparata fra due parole vale in qualunque posizione, e <span class="math inline">\(n\)</span> può essere qualunque (una CNN ha pesi fissi, solo sui vicini).</li>
 </ul>
 <p>Sulle cifre, con la media dei token, l’attenzione non serve (slide «Cosa aspettarsi»): serve quando un token deve raccogliere l’informazione degli altri.</p>
 </section>
@@ -842,7 +842,7 @@ S = \frac{Q K^\mathsf{T}}{\sqrt{d_k}} \ \ (n \times n), \qquad Y = A\, V
 \]</span> con <span class="math inline">\(A\)</span> la softmax di <span class="math inline">\(S\)</span> riga per riga: l’elemento <span class="math inline">\((i, j)\)</span> di <span class="math inline">\(Q K^\mathsf{T}\)</span> è proprio <span class="math inline">\(\mathbf{q}_i \cdot \mathbf{k}_j\)</span>.</p>
 <ul>
 <li><strong>Costo.</strong> <span class="math inline">\(S\)</span> ha <span class="math inline">\(n^2\)</span> elementi: raddoppiando la sequenza il costo dell’attenzione quadruplica. Per questo il contesto è limitato (2048 token in GPT-3).</li>
-<li><strong>Ordine.</strong> Scambiando due righe di <span class="math inline">\(X\)</span>, si scambiano solo le stesse due righe di <span class="math inline">\(Y\)</span> (senza la maschera della slide seguente): l’attenzione vede un insieme di token, non una sequenza. Per questo si sommano le posizioni <span class="math inline">\(\mathbf{r}_i\)</span>.</li>
+<li><strong>Ordine.</strong> Scambiando due righe di <span class="math inline">\(X\)</span>, si scambiano solo le stesse due righe di <span class="math inline">\(Y\)</span> (senza la maschera causale, più avanti): l’attenzione vede un insieme di token, non una sequenza. Per questo si sommano le posizioni <span class="math inline">\(\mathbf{r}_i\)</span>.</li>
 </ul>
 </section>
 <section id="perché-sqrtd_k" class="slide level2 smaller">
@@ -855,33 +855,6 @@ S = \frac{Q K^\mathsf{T}}{\sqrt{d_k}} \ \ (n \times n), \qquad Y = A\, V
 <li>La softmax è allora <em>satura</em>, come una sigmoide con ingresso grande: le sue derivate sono quasi nulle e la backpropagation non corregge più i pesi.</li>
 <li>Dividendo per <span class="math inline">\(\sqrt{d_k}\)</span> la varianza è 1 per ogni <span class="math inline">\(d_k\)</span>: i pesi partono distribuiti, e l’addestramento decide quali token contano.</li>
 </ul>
-</section>
-<section id="altre-misure-di-somiglianza" class="slide level2 smaller">
-<h2>Altre misure di somiglianza</h2>
-<!-- Fonti verificate il 16/11/2026: Bahdanau, Cho, Bengio 2014 (additiva); Kim, Papamakarios, Mnih, "The Lipschitz
-     constant of self-attention" (arXiv:2006.04710): dot-product non lipschitziana, L2 lipschitziana con W_Q = W_K;
-     Swin Transformer V2 (arXiv:2111.09883): cos(q, k)/tau + B, tau appreso, addestramento piu' stabile; ViT-22B
-     (Dehghani et al., ICML 2023): LayerNorm su query e key contro la crescita dei logit; Katharopoulos et al.,
-     "Transformers are RNNs" (arXiv:2006.16236): phi(q)^T phi(k), da O(N^2) a O(N). -->
-<p><span class="math inline">\(s_{ij} = \mathbf{x}_i^\mathsf{T} W_Q^\mathsf{T} W_K\, \mathbf{x}_j / \sqrt{d_k}\)</span> è una forma bilineare appresa, di rango al più <span class="math inline">\(d_k\)</span>, non una distanza: in generale <span class="math inline">\(s_{ij} \ne s_{ji}\)</span>, e <span class="math inline">\(s_{ii}\)</span> non è il massimo della riga. Come misurare la somiglianza lo impara la rete. Si usano anche:</p>
-<ul>
-<li><strong>additiva</strong> (Bahdanau e altri, 2014): <span class="math inline">\(s_{ij} = \mathbf{w}^\mathsf{T} \tanh(A\, \mathbf{q}_i + B\, \mathbf{k}_j)\)</span>, un piccolo MLP; più flessibile, ma non è un solo prodotto di matrici;</li>
-<li><strong>distanza</strong>: <span class="math inline">\(s_{ij} = -\|\mathbf{q}_i - \mathbf{k}_j\|^2\)</span>; il termine <span class="math inline">\(-\|\mathbf{q}_i\|^2\)</span> si semplifica nella softmax. Con <span class="math inline">\(W_Q = W_K\)</span> l’attenzione è lipschitziana, con il prodotto scalare no (Kim e altri, 2021);</li>
-<li><strong>coseno</strong> con una temperatura appresa, <span class="math inline">\(s_{ij} = \cos(\mathbf{q}_i, \mathbf{k}_j)/\tau\)</span> (Swin V2), o una Norm su query e key (ViT-22B): i punteggi non crescono senza limite, e l’addestramento dei modelli grandi resta stabile.</li>
-</ul>
-</section>
-<section id="attenzione-lineare" class="slide level2 smaller">
-<h2>Attenzione lineare</h2>
-<p>Con un kernel <span class="math inline">\(e^{\mathbf{q} \cdot \mathbf{k}} \to \phi(\mathbf{q})^\mathsf{T} \phi(\mathbf{k})\)</span> (Katharopoulos e altri, 2020, con <span class="math inline">\(\phi(x) = \mathrm{elu}(x) + 1\)</span> componente per componente) i pesi non normalizzati sono <span class="math inline">\(\phi(Q)\, \phi(K)^\mathsf{T}\)</span> e, per l’associatività del prodotto, <span class="math display">\[\big(\phi(Q)\, \phi(K)^\mathsf{T}\big)\, V = \phi(Q)\, \big(\phi(K)^\mathsf{T}\, V\big)\]</span> A sinistra si costruisce una matrice <span class="math inline">\(n \times n\)</span>, a destra solo una <span class="math inline">\(d_k \times d_k\)</span>: il costo passa da <span class="math inline">\(O(n^2)\)</span> a <span class="math inline">\(O(n)\)</span> nella lunghezza della sequenza. Al posto della softmax, la riga <span class="math inline">\(i\)</span> si divide per <span class="math inline">\(\phi(\mathbf{q}_i)^\mathsf{T} \sum_j \phi(\mathbf{k}_j)\)</span>.</p>
-<p>Il prodotto scalare con la softmax resta il più usato: per sequenze non troppo lunghe è un solo prodotto di matrici, il più veloce sulle GPU.</p>
-</section>
-<section id="attenzione-e-reti-di-hopfield" class="slide level2 smaller">
-<h2>Attenzione e reti di Hopfield</h2>
-<!-- H. Ramsauer et al., "Hopfield Networks is All You Need" (arXiv:2008.02217): E = -lse(beta, X^T xi) + xi^T xi / 2
-     + beta^-1 log N + M^2 / 2, xi_new = X softmax(beta X^T xi), beta = 1/sqrt(d_k); punti fissi: media di tutti i
-     pattern, stati metastabili (media di un sottoinsieme), un solo pattern. Il gradiente di E si annulla proprio
-     in xi = X softmax(beta X^T xi). -->
-<p>Una rete di Hopfield memorizza <span class="math inline">\(N\)</span> pattern, le colonne di <span class="math inline">\(X\)</span>, e da uno stato <span class="math inline">\(\boldsymbol{\xi}\)</span> scende verso il pattern più simile; nella versione moderna, a stati continui (Ramsauer e altri, 2020), l’energia e l’aggiornamento, i cui punti fissi annullano il gradiente di <span class="math inline">\(E\)</span>, sono <span class="math display">\[E(\boldsymbol{\xi}) = -\frac{1}{\beta} \ln \sum_{\mu=1}^{N} e^{\beta\, \mathbf{x}_\mu \cdot \boldsymbol{\xi}} + \frac{1}{2}\, \boldsymbol{\xi} \cdot \boldsymbol{\xi} + \text{cost.}, \qquad \boldsymbol{\xi}^{\text{nuovo}} = X\, \mathrm{softmax}\big(\beta\, X^\mathsf{T} \boldsymbol{\xi}\big)\]</span> Con lo stato dato dalla query e i pattern dalle key, e moltiplicando per <span class="math inline">\(W_V\)</span>, è l’attenzione, con <span class="math inline">\(\beta = 1/\sqrt{d_k}\)</span> nel ruolo dell’inverso della temperatura. A <span class="math inline">\(\beta\)</span> grande lo stato va su un solo pattern, a <span class="math inline">\(\beta\)</span> piccolo su una media di più pattern o di tutti. Scegliere la misura di somiglianza vuol dire scegliere l’energia di interazione fra query e pattern.</p>
 </section>
 <section id="la-maschera-causale" class="slide level2 smaller">
 <h2>La maschera causale</h2>
@@ -992,6 +965,34 @@ Y =
 <p><span class="fragment"><code>1 0 0</code>: il primo token guarda solo se stesso. La seconda riga diventa <code>0.19557 0.80443 0</code>, la terza non cambia.</span></p>
 </div></div>
 </section>
+<section id="altre-misure-di-somiglianza" class="slide level2 smaller">
+<h2>Altre misure di somiglianza</h2>
+<!-- Fonti verificate il 16/11/2026: Bahdanau, Cho, Bengio 2014 (additiva); Kim, Papamakarios, Mnih, "The Lipschitz
+     constant of self-attention" (arXiv:2006.04710): dot-product non lipschitziana, L2 lipschitziana con W_Q = W_K;
+     Swin Transformer V2 (arXiv:2111.09883): cos(q, k)/tau + B, tau appreso, addestramento piu' stabile; ViT-22B
+     (Dehghani et al., ICML 2023): LayerNorm su query e key contro la crescita dei logit; Katharopoulos et al.,
+     "Transformers are RNNs" (arXiv:2006.16236): phi(q)^T phi(k), da O(N^2) a O(N). -->
+<p><span class="math inline">\(s_{ij} = \mathbf{x}_i^\mathsf{T} W_Q^\mathsf{T} W_K\, \mathbf{x}_j / \sqrt{d_k}\)</span> è una forma bilineare appresa, di rango al più <span class="math inline">\(d_k\)</span>, non una distanza: in generale <span class="math inline">\(s_{ij} \ne s_{ji}\)</span>, e <span class="math inline">\(s_{ii}\)</span> non è necessariamente il massimo della riga. Come misurare la somiglianza lo impara la rete. Si usano anche:</p>
+<ul>
+<li><strong>additiva</strong> (Bahdanau e altri, 2014): <span class="math inline">\(s_{ij} = \mathbf{w}^\mathsf{T} \tanh(U \mathbf{q}_i + U' \mathbf{k}_j)\)</span>, un piccolo MLP; più flessibile, ma non è un solo prodotto di matrici;</li>
+<li><strong>distanza</strong>: <span class="math inline">\(s_{ij} = -\|\mathbf{q}_i - \mathbf{k}_j\|^2\)</span>; il termine <span class="math inline">\(-\|\mathbf{q}_i\|^2\)</span> si semplifica nella softmax. Con <span class="math inline">\(W_Q = W_K\)</span> l’attenzione è lipschitziana, con il prodotto scalare no (Kim e altri, 2021);</li>
+<li><strong>coseno</strong> con una temperatura appresa, <span class="math inline">\(s_{ij} = \cos(\mathbf{q}_i, \mathbf{k}_j)/\tau\)</span> (Swin V2), o una Norm su query e key (ViT-22B): i punteggi non crescono senza limite, e l’addestramento dei modelli grandi resta stabile.</li>
+</ul>
+</section>
+<section id="attenzione-lineare" class="slide level2 smaller">
+<h2>Attenzione lineare</h2>
+<p>Con un kernel <span class="math inline">\(e^{\mathbf{q} \cdot \mathbf{k}} \to \phi(\mathbf{q})^\mathsf{T} \phi(\mathbf{k})\)</span> (Katharopoulos e altri, 2020, con <span class="math inline">\(\phi(x) = \mathrm{elu}(x) + 1\)</span> componente per componente, dove <span class="math inline">\(\mathrm{elu}(x)\)</span> vale <span class="math inline">\(x\)</span> per <span class="math inline">\(x &gt; 0\)</span> e <span class="math inline">\(e^x - 1\)</span> altrimenti: <span class="math inline">\(\phi\)</span> è sempre positiva) i pesi non normalizzati sono <span class="math inline">\(\phi(Q)\, \phi(K)^\mathsf{T}\)</span> e, per l’associatività del prodotto, <span class="math display">\[\big(\phi(Q)\, \phi(K)^\mathsf{T}\big)\, V = \phi(Q)\, \big(\phi(K)^\mathsf{T}\, V\big)\]</span> A sinistra si costruisce una matrice <span class="math inline">\(n \times n\)</span>, a destra solo una <span class="math inline">\(d_k \times d_k\)</span>: il costo passa da <span class="math inline">\(O(n^2)\)</span> a <span class="math inline">\(O(n)\)</span> nella lunghezza della sequenza. Al posto della softmax, la riga <span class="math inline">\(i\)</span> si divide per <span class="math inline">\(\phi(\mathbf{q}_i)^\mathsf{T} \sum_j \phi(\mathbf{k}_j)\)</span>.</p>
+<p>Il prodotto scalare con la softmax resta il più usato: per sequenze non troppo lunghe è un solo prodotto di matrici, il più veloce sulle GPU.</p>
+</section>
+<section id="attenzione-e-reti-di-hopfield" class="slide level2 smaller">
+<h2>Attenzione e reti di Hopfield</h2>
+<!-- H. Ramsauer et al., "Hopfield Networks is All You Need" (arXiv:2008.02217): E = -lse(beta, X^T xi) + xi^T xi / 2
+     + beta^-1 log N + M^2 / 2, xi_new = X softmax(beta X^T xi), beta = 1/sqrt(d_k); punti fissi: media di tutti i
+     pattern, stati metastabili (media di un sottoinsieme), un solo pattern. Il gradiente di E si annulla proprio
+     in xi = X softmax(beta X^T xi). Nella slide (20/11/2026, audit) i pattern sono le RIGHE di X, come i token del deck:
+     xi_new = X^T softmax(beta X xi); n pattern (N e' il numero di parametri in "Quanto costa"). -->
+<p>Una rete di Hopfield memorizza <span class="math inline">\(n\)</span> pattern, le righe <span class="math inline">\(\mathbf{x}_\mu^\mathsf{T}\)</span> di <span class="math inline">\(X\)</span> come i token, e da uno stato <span class="math inline">\(\boldsymbol{\xi}\)</span> scende verso il pattern più simile; nella versione moderna, a stati continui (Ramsauer e altri, 2020), l’energia e l’aggiornamento, i cui punti fissi annullano il gradiente di <span class="math inline">\(E\)</span>, sono <span class="math display">\[E(\boldsymbol{\xi}) = -\frac{1}{\beta} \ln \sum_{\mu=1}^{n} e^{\beta\, \mathbf{x}_\mu \cdot \boldsymbol{\xi}} + \frac{1}{2}\, \boldsymbol{\xi} \cdot \boldsymbol{\xi} + \text{cost.}, \qquad \boldsymbol{\xi}^{\text{nuovo}} = X^\mathsf{T} \mathrm{softmax}\big(\beta\, X \boldsymbol{\xi}\big)\]</span> Con lo stato dato dalla query e i pattern dalle key, e moltiplicando per <span class="math inline">\(W_V\)</span>, è l’attenzione, con <span class="math inline">\(\beta = 1/\sqrt{d_k}\)</span> nel ruolo dell’inverso della temperatura. A <span class="math inline">\(\beta\)</span> grande lo stato va su un solo pattern, a <span class="math inline">\(\beta\)</span> piccolo su una media di più pattern o di tutti. Scegliere la misura di somiglianza vuol dire scegliere l’energia di interazione fra query e pattern.</p>
+</section>
 <section id="il-blocco-transformer" class="slide level2 smaller">
 <h2>Il blocco transformer</h2>
 <p><span class="math display">\[
@@ -1013,7 +1014,7 @@ X \leftarrow X + \mathrm{MLP}\big(\mathrm{Norm}(X)\big)
 </section>
 <section id="somme-residue-e-gradiente" class="slide level2 smaller">
 <h2>Somme residue e gradiente</h2>
-<p>Per una sola componente <span class="math inline">\(x_\ell\)</span>, con <span class="math inline">\(x_{\ell+1} = x_\ell + f_\ell(x_\ell)\)</span>, la regola della catena dà: <span class="math display">\[\frac{\partial E}{\partial x_\ell} = \frac{\partial E}{\partial x_{\ell+1}}\,\big(1 + f_\ell'(x_\ell)\big) \quad\Rightarrow\quad \frac{\partial E}{\partial x_0} = \frac{\partial E}{\partial x_{\text{fine}}} \prod_\ell \big(1 + f_\ell'\big)\]</span> Sviluppando il prodotto, <span class="math inline">\(1 + \sum_\ell f_\ell' + \dots\)</span>, c’è il termine 1: l’errore dell’uscita arriva intatto anche al primo blocco.</p>
+<p>Per una sola componente <span class="math inline">\(x_\ell\)</span>, con <span class="math inline">\(x_{\ell+1} = x_\ell + f_\ell(x_\ell)\)</span>, la regola della catena dà: <span class="math display">\[\frac{\partial \mathcal{L}}{\partial x_\ell} = \frac{\partial \mathcal{L}}{\partial x_{\ell+1}}\,\big(1 + f_\ell'(x_\ell)\big) \quad\Rightarrow\quad \frac{\partial \mathcal{L}}{\partial x_0} = \frac{\partial \mathcal{L}}{\partial x_{\text{fine}}} \prod_\ell \big(1 + f_\ell'\big)\]</span> Sviluppando il prodotto, <span class="math inline">\(1 + \sum_\ell f_\ell' + \dots\)</span>, c’è il termine 1: l’errore dell’uscita ha sempre una via diretta fino al primo blocco, e se le correzioni <span class="math inline">\(f_\ell'\)</span> sono piccole, come all’inizio dell’addestramento, il prodotto resta vicino a 1.</p>
 <p>Senza le somme resterebbe solo <span class="math inline">\(\prod_\ell f_\ell'\)</span>, come i fattori <span class="math inline">\(\sigma'\)</span> della Lezione 03: con fattori di 0,25, dieci passi danno <span class="math inline">\(0{,}25^{10} \approx 10^{-6}\)</span>.</p>
 <p>Con le matrici, 1 diventa l’identità <span class="math inline">\(I\)</span> e <span class="math inline">\(f_\ell'\)</span> la jacobiana <span class="math inline">\(\partial F_\ell / \partial X_\ell\)</span>. Sono le stesse somme delle ResNet (<a href="../approfondimento-cnn/index.html">approfondimento sulle CNN</a>).</p>
 </section>
@@ -1096,18 +1097,38 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
 <h2>Dal modello all’assistente</h2>
 <p>Addestrato sui testi, il modello li continua: a una domanda può rispondere con altre domande. Seguono due fasi (InstructGPT, 2022):</p>
 <ol type="1">
-<li><strong>Esempi.</strong> Stessa loss, su conversazioni scritte da persone, anche con l’uso di strumenti.</li>
+<li><strong>Esempi.</strong> Stessa loss, su conversazioni scritte da persone. Nei modelli più recenti ci sono anche conversazioni con l’uso di strumenti (slide «Strumenti e web»).</li>
 <li><strong>Preferenze.</strong> Delle persone confrontano due risposte alla stessa domanda <span class="math inline">\(x\)</span>: <span class="math inline">\(y_+\)</span> la migliore, <span class="math inline">\(y_-\)</span> l’altra. Una seconda rete, ottenuta dal modello, impara un punteggio <span class="math inline">\(r(x, y)\)</span> minimizzando <span class="math inline">\(-\ln \sigma\big( r(x, y_+) - r(x, y_-) \big)\)</span>, con <span class="math inline">\(\sigma\)</span> la sigmoide: la loss è piccola quando la risposta preferita ha il punteggio più alto. Poi si cambiano i pesi del modello perché le sue risposte abbiano <span class="math inline">\(r\)</span> alto, senza allontanarsi troppo dal modello di partenza (<em>RLHF</em>, <em>reinforcement learning from human feedback</em>).</li>
 </ol>
 </section>
 <section id="immagini-e-suoni" class="slide level2 smaller">
 <h2>Immagini e suoni</h2>
 <ul>
-<li><strong>Immagini</strong> (<em>Vision Transformer</em>, 2020). Un’immagine <span class="math inline">\(224 \times 224\)</span> a colori dà <span class="math inline">\(14 \times 14 = 196\)</span> quadrati di <span class="math inline">\(16 \times 16 \times 3 = 768\)</span> numeri; un <code>DenseLayer</code> li porta a dimensione <span class="math inline">\(d\)</span>, si sommano le posizioni, poi lo stesso transformer, senza maschera; come costruirne uno per le cifre, nelle slide seguenti.</li>
+<li><strong>Immagini</strong> (<em>Vision Transformer</em>, 2020). Un’immagine <span class="math inline">\(224 \times 224\)</span> a colori dà <span class="math inline">\(14 \times 14 = 196\)</span> quadrati di <span class="math inline">\(16 \times 16 \times 3 = 768\)</span> numeri; un <code>DenseLayer</code> li porta a dimensione <span class="math inline">\(d\)</span>, si sommano le posizioni, poi lo stesso transformer, senza maschera; come costruirne uno per le cifre, nelle ultime slide.</li>
 <li><strong>Suoni</strong> (<em>Whisper</em>, 2022). 30 s di audio a 16 kHz; Fourier su 25 ms ogni 10 ms, in 80 bande: 3000 colonne, che due strati convoluzionali riducono a 1500 vettori. Un transformer (<em>encoder</em>) li elabora, un secondo (<em>decoder</em>) genera il testo.</li>
 <li><strong>Cross-attention.</strong> Nel decoder alcune attenzioni prendono le query dal testo, e key e value dall’audio: <span class="math inline">\(Q = X_\text{testo} W_Q^\mathsf{T}\)</span>, <span class="math inline">\(K = X_\text{audio} W_K^\mathsf{T}\)</span>, <span class="math inline">\(V = X_\text{audio} W_V^\mathsf{T}\)</span>. È la stessa formula, con <span class="math inline">\(S\)</span> di dimensione <span class="math inline">\(n_\text{testo} \times n_\text{audio}\)</span>.</li>
-<li><strong>Il vocabolario.</strong> Quadrati e colonne non vi passano, e il softmax sulle <span class="math inline">\(M\)</span> voci genera solo testo; alcuni modelli (<em>Chameleon</em>, 2024) trasformano le immagini in codici di un vocabolario.</li>
+<li><strong>Il vocabolario.</strong> Quadrati e colonne non vi passano, e la softmax sulle <span class="math inline">\(M\)</span> voci genera solo testo; alcuni modelli (<em>Chameleon</em>, 2024) trasformano le immagini in codici di un vocabolario.</li>
 </ul>
+</section>
+<section id="strumenti-e-web" class="slide level2 smaller">
+<h2>Strumenti e web</h2>
+<ul>
+<li>Il programma che fa girare il modello mette all’inizio della sequenza la descrizione degli strumenti e del formato delle richieste.</li>
+<li>Il vocabolario contiene anche token speciali, che non compaiono nei testi: per esempio «inizio richiesta» e «fine richiesta». Quando il modello genera «fine richiesta», il programma interrompe la generazione, esegue la richiesta e aggiunge il risultato alla sequenza, fra altri token speciali. Poi la generazione riprende.</li>
+<li>Lo stesso meccanismo apre pagine, esegue codice o legge una schermata: l’immagine dello schermo diventa token come nel Vision Transformer.</li>
+</ul>
+<p>Il modello non naviga e non vede: riceve sequenze di vettori e produce probabilità sul token successivo. Il resto lo fanno i programmi intorno.</p>
+</section>
+<section id="chi-esegue-le-richieste" class="slide level2 smaller">
+<h2>Chi esegue le richieste</h2>
+<p>Fra i due token speciali il modello scrive la richiesta in un formato strutturato, di solito JSON. Il programma la legge e chiama il codice dello strumento:</p>
+<pre><code>«inizio richiesta» {"strumento": "cerca", "testo": "previsioni meteo Roma domani"} «fine richiesta»</code></pre>
+<ul>
+<li><strong>ricerca:</strong> il servizio di un motore di ricerca, senza browser; i risultati tornano come testo;</li>
+<li><strong>una pagina:</strong> una richiesta HTTP, e il testo estratto dall’HTML;</li>
+<li><strong>un browser vero:</strong> azioni come <code>clicca(412, 230)</code> o <code>scrivi("Roma")</code>, tradotte in comandi per il browser (per esempio con Playwright); dopo ogni azione uno screenshot torna nella sequenza come token d’immagine.</li>
+</ul>
+<p>Il modello produce solo testo: se e come eseguirlo lo decide il programma, con i suoi controlli di sicurezza.</p>
 </section>
 <section id="un-vit-per-le-cifre-i-token" class="slide level2 smaller">
 <h2>Un ViT per le cifre: i token</h2>
@@ -1118,7 +1139,7 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
      queste slide (con e senza Norm, ReLU e GELU) verificate il 15/11 con le differenze finite in numpy, double:
      errore relativo massimo 1,3e-8. Figura: images/vit_quadrati.png da figure/make_vit_figure.py. -->
 
-<img data-src="../images/vit_quadrati.png" class="quarto-figure quarto-figure-center r-stretch" style="width:62.0%"><p>Il quadrato <span class="math inline">\(k = 4P + Q\)</span> (<span class="math inline">\(P, Q = 0, \dots, 3\)</span>; da 0, come gli indici in C++, mentre la Lezione 13 conta da 1 a 16) ha i pixel <span class="math inline">\(u_k[7r + c] = \mathrm{img}[7P + r,\ 7Q + c]\)</span>, con <span class="math inline">\(r, c = 0, \dots, 6\)</span>: un vettore <span class="math inline">\(\mathbf{u}_k\)</span> di 49 numeri, che diventa un token come in «Dagli interi ai vettori»: <span class="math display">\[\mathbf{x}_k = W \mathbf{u}_k + \mathbf{r}_k \qquad (W:\ d \times 49 \text{ senza bias},\ \ \mathbf{r}_k \in \mathbb{R}^d \text{ parametri})\]</span> Con un token per riga, <span class="math inline">\(X = U W^\mathsf{T} + R\)</span>, di dimensione <span class="math inline">\(16 \times d\)</span>. Il framework lavora per colonne: lì conviene una colonna per token, e tutte le formule di questa sezione si traspongono.</p>
+<img data-src="../images/vit_quadrati.png" class="quarto-figure quarto-figure-center r-stretch" style="width:62.0%"><p>Il quadrato <span class="math inline">\(k = 4a + b\)</span>, nella riga <span class="math inline">\(a\)</span> e nella colonna <span class="math inline">\(b\)</span> (<span class="math inline">\(a, b = 0, \dots, 3\)</span>; da 0, come gli indici in C++, mentre la Lezione 13 conta da 1 a 16), ha i pixel <span class="math inline">\(u_k[7r + c] = \mathrm{img}[7a + r,\ 7b + c]\)</span>, con <span class="math inline">\(r, c = 0, \dots, 6\)</span>: un vettore <span class="math inline">\(\mathbf{u}_k\)</span> di 49 numeri, che diventa un token come in «Dagli interi ai vettori»: <span class="math display">\[\mathbf{x}_k = W \mathbf{u}_k + \mathbf{r}_k \qquad (W:\ d \times 49 \text{ senza bias},\ \ \mathbf{r}_k \in \mathbb{R}^d \text{ parametri})\]</span> Con un token per riga, <span class="math inline">\(X = U W^\mathsf{T} + R\)</span>, di dimensione <span class="math inline">\(16 \times d\)</span>. Il framework lavora per colonne: lì conviene una colonna per token, e tutte le formule di questa sezione si traspongono.</p>
 </section>
 <section id="il-vit-intero" class="slide level2 smaller">
 <h2>Il ViT intero</h2>
@@ -1158,7 +1179,7 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
 </tr>
 <tr class="odd">
 <td>testa</td>
-<td><span class="math inline">\(\mathbf{p} = \mathrm{softmax}(W_h \mathbf{h} + \mathbf{b}_h)\)</span>, <span class="math inline">\(\ E = -\ln p_y\)</span></td>
+<td><span class="math inline">\(\mathbf{p} = \mathrm{softmax}(W_h \mathbf{h} + \mathbf{b}_h)\)</span>, <span class="math inline">\(\ \mathcal{L} = -\ln p_y\)</span></td>
 <td><span class="math inline">\(10\)</span></td>
 </tr>
 </tbody>
@@ -1168,7 +1189,7 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
 </section>
 <section id="la-backpropagation-testa-e-mlp" class="slide level2 smaller">
 <h2>La backpropagation: testa e MLP</h2>
-<p>Notazione: <span class="math inline">\(dM = \partial E / \partial M\)</span>, della forma di <span class="math inline">\(M\)</span>. Per una matrice applicata a tutti i token, <span class="math inline">\(Z = X W^\mathsf{T}\)</span>: <span class="math inline">\(dW = dZ^\mathsf{T} X\)</span> (somma sui token) e <span class="math inline">\(dX = dZ\, W\)</span>.</p>
+<p>Notazione: <span class="math inline">\(dM = \partial \mathcal{L} / \partial M\)</span>, della forma di <span class="math inline">\(M\)</span>. Per una matrice applicata a tutti i token, <span class="math inline">\(Z = X W^\mathsf{T}\)</span>: <span class="math inline">\(dW = dZ^\mathsf{T} X\)</span> (somma sui token) e <span class="math inline">\(dX = dZ\, W\)</span>.</p>
 <ul>
 <li><strong>Testa</strong> (softmax e cross-entropy insieme): <span class="math inline">\(d\mathbf{z} = \mathbf{p} - \mathbf{e}_y\)</span>, con <span class="math inline">\(\mathbf{e}_y\)</span> il vettore <em>one-hot</em> della cifra giusta; <span class="math inline">\(dW_h = d\mathbf{z}\, \mathbf{h}^\mathsf{T}\)</span>, <span class="math inline">\(d\mathbf{b}_h = d\mathbf{z}\)</span>, <span class="math inline">\(d\mathbf{h} = W_h^\mathsf{T} d\mathbf{z}\)</span>.</li>
 <li><strong>Media:</strong> ogni riga di <span class="math inline">\(dX_2\)</span> è <span class="math inline">\(d\mathbf{h}^\mathsf{T} / 16\)</span>.</li>
@@ -1189,16 +1210,67 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
 </section>
 <section id="verificare-il-gradiente" class="slide level2 smaller">
 <h2>Verificare il gradiente</h2>
-<p>Prima di addestrare, ogni <code>backward</code> si controlla con le differenze finite: per ogni parametro <span class="math inline">\(\theta\)</span> <span class="math display">\[\frac{\partial E}{\partial \theta} \approx \frac{E(\theta + \varepsilon) - E(\theta - \varepsilon)}{2\varepsilon}, \qquad \varepsilon = 10^{-6}\]</span> in <code>double</code>, su una sola immagine e con dimensioni piccole (per esempio <span class="math inline">\(d = d_k = 8\)</span>). Si confronta con il gradiente calcolato dal <code>backward</code> attraverso l’errore relativo <span class="math inline">\(\max |g_\text{num} - g| / \max |g_\text{num}|\)</span>.</p>
+<p>Prima di addestrare, ogni <code>backward</code> si controlla con le differenze finite: per ogni parametro <span class="math inline">\(\theta\)</span> <span class="math display">\[\frac{\partial \mathcal{L}}{\partial \theta} \approx \frac{\mathcal{L}(\theta + \varepsilon) - \mathcal{L}(\theta - \varepsilon)}{2\varepsilon}, \qquad \varepsilon = 10^{-6}\]</span> in <code>double</code>, su una sola immagine e con dimensioni piccole (per esempio <span class="math inline">\(d = d_k = 8\)</span>). Si confronta con il gradiente calcolato dal <code>backward</code> attraverso l’errore relativo <span class="math inline">\(\max |g_\text{num} - g| / \max |g_\text{num}|\)</span>.</p>
 <p>Con le formule di queste slide l’errore relativo è circa <span class="math inline">\(10^{-8}\)</span>, con e senza Norm, con la ReLU e con la GELU. Un errore di <span class="math inline">\(10^{-2}\)</span> o più indica uno sbaglio; di solito una trasposta o un <span class="math inline">\(\sqrt{d_k}\)</span> dimenticato.</p>
+</section>
+<section id="i-pesi-iniziali" class="slide level2 smaller">
+<h2>I pesi iniziali</h2>
+<!-- Dal prototipo in NEURAL++, verificato sul codice il 20/11/2026: vit_model.hpp e vitLayers.hpp (Xavier gaussiana
+     per W, W_Q, W_K, W_V, W_O, W_2 e testa, He per W_1; PositionBiasLayer con sigma 0,02; bias a zero);
+     parametricLayer.hpp (s = sqrt(2/(Nin + Nout)) e sqrt(2/Nin), come nel Lab 08); optimizers.hpp (AdamW con beta
+     0,9 e 0,999, weight decay solo se !is_bias, e r_k passato come bias); train_vit.cpp (lr 3e-3, wd 0,01, batch 32,
+     CosineLRScheduler da lr a lr/100 senza warmup, step(ep - 1) all'inizio di ogni epoca, mescolamento a ogni
+     epoca); loss.hpp (FUSED: (P - T)/N, loss media sul batch); mnist_dataset.hpp (pixel / 255 * 0,99 + 0,01). -->
+<p>Pesi gaussiani con le formule del Laboratorio 08, dove <span class="math inline">\(N_{in}\)</span> e <span class="math inline">\(N_{out}\)</span> sono le dimensioni d’ingresso e d’uscita di ogni matrice:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>parametri</th>
+<th>deviazione standard iniziale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(W\)</span>, <span class="math inline">\(W_Q\)</span>, <span class="math inline">\(W_K\)</span>, <span class="math inline">\(W_V\)</span>, <span class="math inline">\(W_O\)</span>, <span class="math inline">\(W_2\)</span>, <span class="math inline">\(W_h\)</span></td>
+<td>Xavier, <span class="math inline">\(\sqrt{2/(N_{in} + N_{out})}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(W_1\)</span>, seguita dalla ReLU</td>
+<td>He, <span class="math inline">\(\sqrt{2/N_{in}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>posizioni <span class="math inline">\(\mathbf{r}_k\)</span></td>
+<td><span class="math inline">\(0{,}02\)</span></td>
+</tr>
+<tr class="even">
+<td>bias <span class="math inline">\(\mathbf{b}_1\)</span>, <span class="math inline">\(\mathbf{b}_2\)</span>, <span class="math inline">\(\mathbf{b}_h\)</span></td>
+<td>0: partono tutti da zero</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ottimizzatore-e-passo" class="slide level2 smaller">
+<h2>Ottimizzatore e passo</h2>
+<ul>
+<li><strong>Dati:</strong> pixel portati in <span class="math inline">\([0{,}01,\ 1]\)</span> come nei laboratori; le 60 000 immagini si mescolano a ogni epoca; 30 epoche.</li>
+<li><strong>AdamW</strong> (Lezione 20): <span class="math inline">\(\eta = 3 \cdot 10^{-3}\)</span>, <span class="math inline">\(\beta_1 = 0{,}9\)</span>, <span class="math inline">\(\beta_2 = 0{,}999\)</span>, <em>weight decay</em> <span class="math inline">\(\lambda = 0{,}01\)</span>, ma non sui bias e su <span class="math inline">\(\mathbf{r}_k\)</span>; batch di 32 immagini, con la loss media sul batch.</li>
+<li><strong>Passo a coseno</strong> (Lezione 20): all’epoca <span class="math inline">\(e = 0, \dots, 29\)</span> <span class="math display">\[\eta_e = \eta_\text{min} + \frac{1}{2}\,(\eta - \eta_\text{min}) \Big(1 + \cos\frac{\pi e}{30}\Big), \qquad \eta_\text{min} = \frac{\eta}{100}\]</span></li>
+<li><strong>Oppure</strong> la discesa semplice dei laboratori: un’immagine per passo, <span class="math inline">\(\eta = 0{,}01\)</span> e lo stesso passo a coseno.</li>
+</ul>
 </section>
 <section id="cosa-aspettarsi" class="slide level2 smaller">
 <h2>Cosa aspettarsi</h2>
-<!-- Risultati del prototipo in NEURAL++ (PROGETTI/prova_vit/LEGGIMI.txt, 12/11/2026, M3 Max, 3 semi): ViT 10 698
-     parametri 97,66 +- 0,09 (AdamW, lr a coseno, 30 epoche); 96,4-96,5 con lr costante; SGD un'immagine per passo
-     97,59 (coseno); senza posizioni 92,5; MLP 784-13-10 (10 345 parametri) 95,0; senza attenzione a pari parametri
-     97,76; uscita da un solo token (LEGGIMI, 3 semi): angolo 93,56 contro 13,75 senza attenzione, centro 95,89 contro 70,95. -->
-<p>Con <span class="math inline">\(d = d_k = 32\)</span>, un MLP <span class="math inline">\(32 \to 64 \to 32\)</span> e la ReLU i parametri sono 10 698: <span class="math inline">\(W\)</span> 1568, <span class="math inline">\(R\)</span> 512, <span class="math inline">\(W_Q, W_K, W_V, W_O\)</span> 4096, MLP 4192, testa 330. Sul test di MNIST:</p>
+<!-- Risultati del prototipo in NEURAL++ (PROGETTI/prova_vit/LEGGIMI.txt, numeri RIMISURATI il 13/11/2026, 3 semi, passo a
+     coseno, 30 epoche): ViT 10 698 parametri 97,70 +- 0,12 (AdamW batch 32, lr 3e-3); SGD un'immagine per passo
+     97,59 +- 0,07 (lr 0,01); senza posizioni 92,67 (AdamW); MLP 784-13-10 (10 345 parametri) 95,11 (AdamW);
+     senza attenzione a pari parametri (MLP per token h = 128, 10 762 parametri) 97,70 +- 0,16; uscita da un solo
+     token: angolo 93,56 contro 13,75 senza attenzione, centro 95,89 contro 70,95. Audit del 20/11/2026: prima c'erano
+     i numeri del 12/11 (92,5; 95,0; 97,8). -->
+<p>Con <span class="math inline">\(d = d_k = 32\)</span>, un MLP <span class="math inline">\(32 \to 64 \to 32\)</span> e la ReLU i parametri sono 10 698: <span class="math inline">\(W\)</span> 1568, <span class="math inline">\(R\)</span> 512, <span class="math inline">\(W_Q, W_K, W_V, W_O\)</span> 4096, MLP 4192, testa 330. Sul test di MNIST, con 30 epoche e il passo a coseno (media di 3 semi):</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1209,48 +1281,28 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
 </thead>
 <tbody>
 <tr class="odd">
-<td>ViT, AdamW con passo a coseno, 30 epoche</td>
+<td>ViT, AdamW con batch 32</td>
 <td>10 698</td>
 <td>97,7%</td>
 </tr>
 <tr class="even">
-<td>ViT, SGD con un’immagine per passo, passo a coseno</td>
+<td>ViT, discesa semplice con un’immagine per passo</td>
 <td>10 698</td>
 <td>97,6%</td>
 </tr>
 <tr class="odd">
-<td>ViT senza posizioni <span class="math inline">\(\mathbf{r}_k\)</span></td>
+<td>ViT senza posizioni <span class="math inline">\(\mathbf{r}_k\)</span>, AdamW</td>
 <td>10 186</td>
-<td>92,5%</td>
+<td>92,7%</td>
 </tr>
 <tr class="even">
-<td>MLP 784 → 13 → 10</td>
+<td>MLP 784 → 13 → 10, AdamW</td>
 <td>10 345</td>
-<td>95,0%</td>
+<td>95,1%</td>
 </tr>
 </tbody>
 </table>
-<p>Senza le posizioni il modello non sa da quale quadrato viene un token. Con la media dei token l’attenzione non aiuta: senza, a pari parametri, l’MLP per token arriva al 97,8%. Si vede quando l’uscita legge <strong>un solo</strong> token: da un quadrato d’angolo 93,6% con l’attenzione e 13,8% senza, da uno centrale 95,9% e 71,0%.</p>
-</section>
-<section id="strumenti-e-web" class="slide level2 smaller">
-<h2>Strumenti e web</h2>
-<ul>
-<li>Il programma che fa girare il modello mette all’inizio della sequenza la descrizione degli strumenti e del formato delle richieste.</li>
-<li>Il vocabolario contiene anche token speciali, che non compaiono nei testi: per esempio «inizio richiesta» e «fine richiesta». Quando il modello genera «fine richiesta», il programma interrompe la generazione, esegue la richiesta e aggiunge il risultato alla sequenza, fra altri token speciali. Poi la generazione riprende.</li>
-<li>Lo stesso meccanismo apre pagine, esegue codice o legge una schermata: l’immagine dello schermo diventa token come nel Vision Transformer.</li>
-</ul>
-<p>Il modello non naviga e non vede: riceve sequenze di vettori e produce probabilità sul token successivo. Il resto lo fanno i programmi intorno.</p>
-</section>
-<section id="chi-esegue-le-richieste" class="slide level2 smaller">
-<h2>Chi esegue le richieste</h2>
-<p>Fra i due token speciali il modello scrive la richiesta in un formato strutturato, di solito JSON. Il programma la legge e chiama il codice dello strumento:</p>
-<pre><code>«inizio richiesta» {"strumento": "cerca", "testo": "previsioni meteo Roma domani"} «fine richiesta»</code></pre>
-<ul>
-<li><strong>ricerca:</strong> il servizio di un motore di ricerca, senza browser; i risultati tornano come testo;</li>
-<li><strong>una pagina:</strong> una richiesta HTTP, e il testo estratto dall’HTML;</li>
-<li><strong>un browser vero:</strong> azioni come <code>clicca(412, 230)</code> o <code>scrivi("Roma")</code>, tradotte in comandi per il browser (per esempio con Playwright); dopo ogni azione uno screenshot torna nella sequenza come token d’immagine.</li>
-</ul>
-<p>Il modello produce solo testo: se e come eseguirlo lo decide il programma, con i suoi controlli di sicurezza.</p>
+<p>Senza le posizioni il modello non sa da quale quadrato viene un token. Con la media dei token l’attenzione non aiuta: senza, a pari parametri, l’MLP per token arriva anch’esso al 97,7%. Si vede quando l’uscita legge <strong>un solo</strong> token: da un quadrato d’angolo 93,6% con l’attenzione e 13,8% senza, da uno centrale 95,9% e 71,0%.</p>
 </section>
 <section id="per-saperne-di-più" class="slide level2 smaller">
 <h2>Per saperne di più</h2>
@@ -1261,7 +1313,16 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
 <li>ViT: Dosovitskiy et al.&nbsp;(2020), arXiv:2010.11929. Whisper: Radford et al.&nbsp;(2022), arXiv:2212.04356.</li>
 <li>Video: 3Blue1Brown, serie <em>Neural networks</em>, capitoli sui transformer; A. Karpathy, <em>Let’s build GPT: from scratch, in code, spelled out</em> (2023), un piccolo GPT scritto in Python.</li>
 </ul>
-<p>Per metterlo in pratica: la traccia 14 dei progetti finali (Laboratorio 15), un piccolo transformer in C++ dentro <code>BASIC_NEURAL++</code>.</p>
+</section>
+<section id="per-saperne-di-più-le-varianti" class="slide level2 smaller">
+<h2>Per saperne di più: le varianti</h2>
+<ul>
+<li>Altre misure di somiglianza: Bahdanau et al.&nbsp;(2014), arXiv:1409.0473; Kim et al.&nbsp;(2021), arXiv:2006.04710; Swin V2, Liu et al.&nbsp;(2022), arXiv:2111.09883; ViT-22B, Dehghani et al.&nbsp;(2023), arXiv:2302.05442.</li>
+<li>Attenzione lineare: Katharopoulos et al.&nbsp;(2020), arXiv:2006.16236.</li>
+<li>Reti di Hopfield: Ramsauer et al.&nbsp;(2020), arXiv:2008.02217.</li>
+<li>Somme residue (ResNet): He et al.&nbsp;(2015), arXiv:1512.03385.</li>
+</ul>
+<p>Per metterlo in pratica, nei progetti finali (Laboratorio 15): la traccia 14, un piccolo transformer in C++ dentro <code>BASIC_NEURAL++</code>, e la traccia 15, il ViT di queste slide.</p>
 
 
 </section>

@@ -759,7 +759,10 @@ Cristiano De Michele
   approfondimento-cnn/index.qmd (voce "Approfondimenti" del menu); l'ultima slide del blocco sulle CNN (_cnn.qmd,
   Lezione 15) vi rimandera'. Scaletta approvata da Cristiano: strati e canali (1-3), geometria (padding, stride,
   campo recettivo, pooling grande), addestramento (backpropagation di filtro e pooling, correlazione), un filtro
-  in C++, costo, dalle cifre a ImageNet, bibliografia.
+  in C++, costo, dalle cifre a ImageNet, bibliografia. Audit del 20/11/2026: aggiunte "La rete intera" (prima della
+  backpropagation), "La backpropagation con piu' canali", "La backpropagation della rete intera" e
+  "Addestramento e verifica" (dopo la correlazione),
+  perche' l'approfondimento basti a implementare la rete; c da 0 come p, q e k.
   La rete e' quella della slide "Dai bordi alle cifre": 8 filtri 3 x 3, pooling, 16 filtri 3 x 3 su 8 canali,
   pooling, DenseLayer(10, 400); 5258 parametri. Notazione come in _cnn.qmd: z_ij = sum_pq w_pq x_(i+p,j+q) + b,
   senza padding, indici da 0; k indice del filtro, c del canale in ingresso.
@@ -769,7 +772,7 @@ Cristiano De Michele
   orizzontale.
 -->
 
-<img data-src="../images/cnn_appr_canali.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>Un filtro dello strato 2 ha un quadrato di 3 × 3 pesi <strong>per ogni canale</strong> in ingresso, diverso da canale a canale. In ogni posizione somma i prodotti su tutti i canali, più un bias: <span class="math display">\[z^{(k)}_{ij} = \sum_{c=1}^{C} \sum_{p=0}^{2} \sum_{q=0}^{2} w^{(k,c)}_{pq}\, x^{(c)}_{i+p,\, j+q} + b^{(k)}\]</span> dove <span class="math inline">\(k\)</span> è il filtro e <span class="math inline">\(c\)</span> il canale. Questo filtro, dopo l’addestramento, risponde alla barra orizzontale del 7.</p>
+<img data-src="../images/cnn_appr_canali.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>Un filtro dello strato 2 ha un quadrato di 3 × 3 pesi <strong>per ogni canale</strong> in ingresso, diverso da canale a canale. In ogni posizione somma i prodotti su tutti i <span class="math inline">\(C\)</span> canali, più un bias: <span class="math display">\[z^{(k)}_{ij} = \sum_{c=0}^{C-1} \sum_{p=0}^{2} \sum_{q=0}^{2} w^{(k,c)}_{pq}\, x^{(c)}_{i+p,\, j+q} + b^{(k)}\]</span> dove <span class="math inline">\(k\)</span> è il filtro e <span class="math inline">\(c\)</span> il canale. Questo filtro, dopo l’addestramento, risponde alla barra orizzontale del 7.</p>
 </section>
 <section id="perché-mescolare-i-canali" class="slide level2 smaller">
 <h2>Perché mescolare i canali</h2>
@@ -845,7 +848,7 @@ Cristiano De Michele
 <p><img data-src="../images/cnn_appr_pool8.png" class="quarto-figure quarto-figure-center" style="width:39.0%"></p>
 </figure>
 </div>
-<p>Con un pooling 8 × 8 la mappa passa da 26 × 26 a 3 × 3: ogni valore dice solo che in una zona di 8 × 8 pixel c’è un tratto, non dove né accanto a cosa. Nelle stesse condizioni:</p>
+<p>Con un pooling 8 × 8 la mappa passa da 26 × 26 a 3 × 3: ogni valore dice solo che in una zona di 8 × 8 pixel c’è un tratto, non dove né accanto a cosa. Con lo stesso addestramento (Adam, 10 epoche, slide «Addestramento e verifica»):</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -878,6 +881,58 @@ Cristiano De Michele
 </tbody>
 </table>
 </section>
+<section id="la-rete-intera" class="slide level2 smaller">
+<h2>La rete intera</h2>
+<!-- 20/11/2026, audit: dimensioni e ordine in memoria da figure/addestra_cnn.py (conv_forward, pool_forward, il
+     reshape di h2 in f: indice 25 c + 5 i + j). In BASIC_NEURAL++ ogni esempio e' una colonna della Matrix. -->
+<table class="caption-top">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 64%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>passo</th>
+<th>operazione</th>
+<th>dimensione</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ingresso</td>
+<td>pixel divisi per 255</td>
+<td>1 × 28 × 28</td>
+</tr>
+<tr class="even">
+<td>strato 1</td>
+<td>8 filtri 3 × 3, ReLU</td>
+<td>8 × 26 × 26</td>
+</tr>
+<tr class="odd">
+<td>pooling</td>
+<td>massimo su 2 × 2</td>
+<td>8 × 13 × 13</td>
+</tr>
+<tr class="even">
+<td>strato 2</td>
+<td>16 filtri 3 × 3 su 8 canali, ReLU</td>
+<td>16 × 11 × 11</td>
+</tr>
+<tr class="odd">
+<td>pooling</td>
+<td>massimo su 2 × 2, scartando l’ultima riga e colonna</td>
+<td>16 × 5 × 5</td>
+</tr>
+<tr class="even">
+<td>testa</td>
+<td><code>DenseLayer(10, 400)</code>, softmax, <span class="math inline">\(E = -\ln p_y\)</span></td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p>Nel framework ogni esempio è una colonna: una mappa <span class="math inline">\(C \times H \times W\)</span> vi sta canale per canale, e ogni canale riga per riga come i pixel nel CSV, con il valore <span class="math inline">\((c, i, j)\)</span> alla riga <span class="math inline">\(c\,H W + i\,W + j\)</span>. Così le 16 mappe 5 × 5 sono già, nello stesso ordine, i 400 ingressi del <code>DenseLayer</code>.</p>
+</section>
 <section id="la-backpropagation-di-un-filtro" class="slide level2 smaller">
 <h2>La backpropagation di un filtro</h2>
 <!-- Formule verificate con il gradcheck di figure/addestra_cnn.py (errore relativo massimo 2,6e-7): dW e' la
@@ -898,6 +953,35 @@ Cristiano De Michele
      cross-correlation but call it convolution". In PyTorch, Conv2d e' la cross-correlazione. -->
 <p>In matematica la <strong>convoluzione</strong> di <span class="math inline">\(x\)</span> con <span class="math inline">\(w\)</span> capovolge il filtro: <span class="math display">\[(w * x)_{ij} = \sum_{p,q} w_{pq}\, x_{i-p,\, j-q}\]</span> Quello che calcola uno strato di una CNN, con <span class="math inline">\(x_{i+p,\, j+q}\)</span>, è una <strong>correlazione</strong>: una convoluzione con il filtro ruotato di 180°. Molte librerie calcolano la correlazione e la chiamano convoluzione.</p>
 <p>Per una rete non cambia niente: i pesi si imparano, e la rete impara direttamente il filtro ruotato. La convoluzione vera compare comunque: il gradiente verso l’ingresso, nella slide «La backpropagation di un filtro», è la convoluzione dei <span class="math inline">\(\delta\)</span> con il filtro.</p>
+</section>
+<section id="la-backpropagation-con-più-canali" class="slide level2 smaller">
+<h2>La backpropagation con più canali</h2>
+<!-- 20/11/2026, audit: le formule sono quelle di conv_backward in figure/addestra_cnn.py (gradcheck 2,6e-7). Indici
+     da 0: filtri k = 0..F-1, canali c = 0..C-1. -->
+<p>Per uno strato con <span class="math inline">\(C\)</span> canali in ingresso e <span class="math inline">\(F\)</span> filtri, con <span class="math inline">\(\delta^{(k)}_{ij} = \partial E / \partial z^{(k)}_{ij}\)</span> il segnale d’errore della mappa <span class="math inline">\(k\)</span>: <span class="math display">\[\frac{\partial E}{\partial w^{(k,c)}_{pq}} = \sum_{i,j} \delta^{(k)}_{ij}\, x^{(c)}_{i+p,\, j+q}, \qquad\qquad \frac{\partial E}{\partial b^{(k)}} = \sum_{i,j} \delta^{(k)}_{ij}\]</span> <span class="math display">\[\frac{\partial E}{\partial x^{(c)}_{mn}} = \sum_{k=0}^{F-1} \sum_{p,q} \delta^{(k)}_{m-p,\, n-q}\, w^{(k,c)}_{pq}\]</span> con <span class="math inline">\(\delta = 0\)</span> fuori dalla mappa. Sono le formule di «La backpropagation di un filtro», con un indice in più: i pesi del filtro <span class="math inline">\(k\)</span> sul canale <span class="math inline">\(c\)</span> usano solo il canale <span class="math inline">\(c\)</span> dell’ingresso, mentre il gradiente verso il canale <span class="math inline">\(c\)</span> raccoglie tutti i filtri, perché ogni filtro legge tutti i canali. Per lo strato 1 il gradiente verso i pixel non serve.</p>
+</section>
+<section id="la-backpropagation-della-rete-intera" class="slide level2 smaller">
+<h2>La backpropagation della rete intera</h2>
+<!-- 20/11/2026, audit: CNN.backward in figure/addestra_cnn.py. -->
+<ul>
+<li><strong>Testa</strong> (softmax e cross-entropy insieme): <span class="math inline">\(d\mathbf{z} = \mathbf{p} - \mathbf{e}_y\)</span>, con <span class="math inline">\(\mathbf{e}_y\)</span> il vettore <em>one-hot</em> della cifra giusta; come in un <code>DenseLayer</code>, <span class="math inline">\(\partial E / \partial W_3 = d\mathbf{z}\, \mathbf{f}^\mathsf{T}\)</span> e <span class="math inline">\(\partial E / \partial \mathbf{f} = W_3^\mathsf{T} d\mathbf{z}\)</span>, da rileggere come 16 mappe 5 × 5.</li>
+<li><strong>Pooling:</strong> ogni valore torna al massimo del suo quadrato; gli altri ricevono 0, come la riga e la colonna scartate dal secondo pooling.</li>
+<li><strong>ReLU:</strong> il gradiente arrivato passa dove <span class="math inline">\(z^{(k)}_{ij} &gt; 0\)</span>, altrimenti diventa 0; il risultato è <span class="math inline">\(\delta^{(k)}_{ij}\)</span>.</li>
+<li><strong>Strati di filtri:</strong> le formule della slide precedente, dallo strato 2 allo strato 1.</li>
+</ul>
+<p>Con un batch di <span class="math inline">\(B\)</span> immagini la loss è la media: <span class="math inline">\(d\mathbf{z} = (\mathbf{p} - \mathbf{e}_y)/B\)</span> per ogni immagine, e i gradienti dei pesi si sommano su tutte.</p>
+</section>
+<section id="addestramento-e-verifica" class="slide level2 smaller">
+<h2>Addestramento e verifica</h2>
+<!-- 20/11/2026, audit: da figure/addestra_cnn.py (CNN.__init__, train, gradcheck) e addestra_cnn_varianti_risultati.txt
+     (98,4-98,6% con i semi 1-3). La testa usa s = sqrt(1/400), non He ne' Xavier: e' quella con cui sono stati
+     misurati i risultati. -->
+<ul>
+<li><strong>Pesi iniziali</strong> gaussiani, bias a 0. Filtri con la formula di He (Laboratorio 08), <span class="math inline">\(s = \sqrt{2 / N_{in}}\)</span> con <span class="math inline">\(N_{in} = C K^2\)</span> ingressi per posizione: <span class="math inline">\(\sqrt{2/9} = 0{,}47\)</span> nello strato 1, <span class="math inline">\(\sqrt{2/72} = 0{,}17\)</span> nello strato 2. <code>DenseLayer(10, 400)</code> con <span class="math inline">\(s = \sqrt{1/400} = 0{,}05\)</span>.</li>
+<li><strong>Adam</strong> (Lezione 20): <span class="math inline">\(\eta = 10^{-3}\)</span> costante, <span class="math inline">\(\beta_1 = 0{,}9\)</span>, <span class="math inline">\(\beta_2 = 0{,}999\)</span>, <span class="math inline">\(\varepsilon = 10^{-8}\)</span>; batch di 64 immagini, mescolate a ogni epoca; 10 epoche.</li>
+<li><strong>Verifica del gradiente</strong>, prima di addestrare: in <code>double</code>, su 3 immagini, con le differenze centrali e <span class="math inline">\(h = 10^{-6}\)</span> su 8 elementi a caso di ogni matrice. L’errore relativo <span class="math inline">\(|g_\text{num} - g| / (|g_\text{num}| + |g|)\)</span> è al più <span class="math inline">\(2{,}6 \cdot 10^{-7}\)</span>; un errore di <span class="math inline">\(10^{-2}\)</span> o più indica uno sbaglio.</li>
+<li><strong>Cosa aspettarsi:</strong> dal 98,4% al 98,6% sul test con 5258 parametri, a seconda del seme.</li>
+</ul>
 </section>
 <section id="un-filtro-in-c" class="slide level2 smaller">
 <h2>Un filtro in C++</h2>
