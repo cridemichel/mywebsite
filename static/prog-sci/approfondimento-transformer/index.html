@@ -1041,6 +1041,21 @@ X \leftarrow X + \mathrm{MLP}\big(\mathrm{Norm}(X)\big)
 \mathrm{GELU}(z) = z\, \Phi(z),
 \]</span> con <span class="math inline">\(W_1\)</span>: <span class="math inline">\(4d \times d\)</span>, <span class="math inline">\(W_2\)</span>: <span class="math inline">\(d \times 4d\)</span> e <span class="math inline">\(\Phi\)</span> la funzione di ripartizione della gaussiana standard. La GELU è una ReLU smussata: circa <span class="math inline">\(z\)</span> per <span class="math inline">\(z \gg 0\)</span>, circa 0 per <span class="math inline">\(z \ll 0\)</span>.</p>
 </section>
+<section id="la-varianza-lungo-i-blocchi" class="slide level2 smaller">
+<h2>La varianza lungo i blocchi</h2>
+<!-- 22/11/2026 (Cristiano: portare qui dal Lab 08 la parte su LayerNorm e GPT-2). GPT-2, Radford et al. 2019, sez. 2.3
+     (verificato sul testo): "Layer normalization (Ba et al., 2016) was moved to the input of each sub-block", "We scale
+     the weights of residual layers at initialization by a factor of 1/sqrt(N) where N is the number of residual layers".
+     Quali strati: nelle implementazioni (nanoGPT, Hugging Face) le proiezioni d'uscita c_proj dell'attenzione e dell'MLP,
+     cioe' W_O e W_2, con N = 2L. Lo 0,02 delle implementazioni non e' nell'articolo. Var della somma = somma delle
+     varianze se le correzioni sono scorrelate (ipotesi, all'inizio). LayerNorm: gamma = 1, beta = 0 all'inizio. -->
+<p>Nel Laboratorio 08 i pesi iniziali tengono costante la varianza da uno strato all’altro. Lungo i blocchi di un transformer ci pensano due accorgimenti:</p>
+<ul>
+<li><strong>Norm all’ingresso.</strong> Attenzione e MLP ricevono <span class="math inline">\(\mathrm{Norm}(X)\)</span>: all’inizio <span class="math inline">\(\boldsymbol{\gamma} = \mathbf{1}\)</span> e <span class="math inline">\(\boldsymbol{\beta} = \mathbf{0}\)</span>, e ogni riga ha componenti di media 0 e varianza 1, qualunque sia la varianza di <span class="math inline">\(X\)</span>. Così ogni correzione <span class="math inline">\(F_\ell\)</span> ha la stessa varianza <span class="math inline">\(v\)</span> in tutti i blocchi.</li>
+<li><strong>Correzioni ridotte.</strong> In <span class="math inline">\(X_{\text{fine}} = X_0 + \sum_\ell F_\ell(X_\ell)\)</span>, con <span class="math inline">\(N\)</span> correzioni scorrelate, la varianza cresce di <span class="math inline">\(N v\)</span>. GPT-2 moltiplica per <span class="math inline">\(1/\sqrt{N}\)</span> i pesi iniziali dell’ultimo strato di ogni correzione, <span class="math inline">\(W_O\)</span> nell’attenzione e <span class="math inline">\(W_2\)</span> nell’MLP, con <span class="math inline">\(N = 2L\)</span> le somme residue: ogni <span class="math inline">\(F_\ell\)</span> ha varianza <span class="math inline">\(v/N\)</span> e la somma cresce solo di <span class="math inline">\(v\)</span>.</li>
+</ul>
+<p>Nel ViT di queste slide c’è un solo blocco: bastano le formule del Laboratorio 08.</p>
+</section>
 <section id="il-token-successivo" class="slide level2 smaller">
 <h2>Il token successivo</h2>
 <ul>
@@ -1321,7 +1336,7 @@ p_t = \frac{e^{z_t / T}}{\sum_{s=0}^{M-1} e^{z_s / T}} .
 <h2>Per saperne di più</h2>
 <ul>
 <li>Il transformer: Vaswani et al.&nbsp;(2017), <em>Attention Is All You Need</em>, arXiv:1706.03762. I token: Sennrich et al.&nbsp;(2016), arXiv:1508.07909.</li>
-<li>GPT-3: Brown et al.&nbsp;(2020), arXiv:2005.14165. Dal modello all’assistente: Ouyang et al.&nbsp;(2022), arXiv:2203.02155.</li>
+<li>GPT-2: Radford et al.&nbsp;(2019), <em>Language Models are Unsupervised Multitask Learners</em>, OpenAI, sez. 2.3. GPT-3: Brown et al.&nbsp;(2020), arXiv:2005.14165. Dal modello all’assistente: Ouyang et al.&nbsp;(2022), arXiv:2203.02155.</li>
 <li>Norm: Ba et al.&nbsp;(2016), arXiv:1607.06450. GELU: Hendrycks e Gimpel (2016), arXiv:1606.08415.</li>
 <li>ViT: Dosovitskiy et al.&nbsp;(2020), arXiv:2010.11929. Whisper: Radford et al.&nbsp;(2022), arXiv:2212.04356.</li>
 <li>Video: 3Blue1Brown, serie <em>Neural networks</em>, capitoli sui transformer; A. Karpathy, <em>Let’s build GPT: from scratch, in code, spelled out</em> (2023), un piccolo GPT scritto in Python.</li>

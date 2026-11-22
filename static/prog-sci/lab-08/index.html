@@ -784,7 +784,7 @@ Cristiano De Michele
   uscite della rete con la tanh in (-1, 1). Il costruttore riempie Wt nello stesso ordine e con le stesse
   formule del framework.
 -->
-<p>Finora i pesi erano <code>MatrixXd::Random</code>, uniformi in <span class="math inline">\([-1, 1]\)</span> e indipendenti dagli ingressi: la media di <span class="math inline">\(z\)</span> è nulla, ma la deviazione standard no, e molti neuroni saturano (sigmoide quasi costante): imparano poco (Lezione 02).</p>
+<p>Finora i pesi erano <code>MatrixXd::Random</code>, uniformi in <span class="math inline">\([-1, 1]\)</span>: scelti così, possono creare problemi all’addestramento, come vediamo nella slide seguente.</p>
 <p>Oggi:</p>
 <ol type="1">
 <li>un generatore di numeri casuali, <code>randnumgen.hpp</code>, con un seme fisso per esperimenti riproducibili;</li>
@@ -796,8 +796,12 @@ Cristiano De Michele
 </section>
 <section id="perché-linizializzazione-conta" class="slide level2 smaller">
 <h2>Perché l’inizializzazione conta</h2>
-<p>La scala dei pesi iniziali si sceglie perché la varianza del segnale resti circa la stessa da un layer al successivo. Se cresce, le attivazioni saturano (sigmoide, tanh) o esplodono (ReLU); se cala, il segnale si spegne.</p>
-<p>Per l’addestramento è un disastro: all’indietro (Lezione 03) ogni strato moltiplica l’errore <span class="math inline">\(\delta\)</span> per <span class="math inline">\(w\,\sigma'\)</span>, e il gradiente del peso <span class="math inline">\(w_{jk}\)</span> è <span class="math inline">\(\delta_j\, a_k\)</span>, dove <span class="math inline">\(a_k\)</span> è l’attivazione che entra nel peso dallo strato precedente. Con le attivazioni saturate <span class="math inline">\(\sigma' \approx 0\)</span> e i gradienti si annullano; con il segnale spento si annullano le <span class="math inline">\(a_k\)</span>; con la ReLU che esplode esplodono anche i gradienti (<em>vanishing</em> ed <em>exploding gradients</em>).</p>
+<p>La scala dei pesi iniziali si sceglie perché la varianza delle pre-attivazioni e degli errori resti circa la stessa da uno strato all’altro, <strong>in tutte e due le direzioni</strong>:</p>
+<ul>
+<li><strong>in avanti</strong> si calcolano le attivazioni <span class="math inline">\(\mathbf{a}^{(\ell)}\)</span>: se la varianza delle pre-attivazioni cresce, saturano (sigmoide, tanh) o esplodono (ReLU); se cala, le pre-attivazioni vanno a 0;</li>
+<li><strong>all’indietro</strong> (Lezione 03) si calcolano i <span class="math inline">\(\boldsymbol\delta^{(\ell)}\)</span>: ogni strato moltiplica l’errore per <span class="math inline">\(w\, f'\)</span>, con <span class="math inline">\(f\)</span> l’attivazione (<span class="math inline">\(\sigma\)</span> nella Lezione 03).</li>
+</ul>
+<p>Il gradiente di un peso, <span class="math inline">\(\partial E/\partial w^{(\ell)}_{jk} = \delta^{(\ell)}_j\, a^{(\ell-1)}_k\)</span>, dipende da tutti e due. Con le attivazioni saturate <span class="math inline">\(f' \approx 0\)</span> e i <span class="math inline">\(\delta\)</span> si annullano; con le pre-attivazioni che vanno a 0 le <span class="math inline">\(a^{(\ell-1)}_k\)</span> diventano tutte uguali (0 con tanh e ReLU, ½ con la sigmoide) e non portano più informazione; con la ReLU che esplode esplodono anche i gradienti (<em>vanishing</em> ed <em>exploding gradients</em>).</p>
 </section>
 <section id="le-formule-di-he-e-di-xavier" class="slide level2 smaller">
 <h2>Le formule di He e di Xavier</h2>
@@ -814,7 +818,7 @@ Cristiano De Michele
 <th></th>
 <th>pensata per</th>
 <th><span class="math inline">\(s\)</span> (gaussiana)</th>
-<th><span class="math inline">\(s\)</span> (uniforme)</th>
+<th><span class="math inline">\(a\)</span> (uniforme)</th>
 </tr>
 </thead>
 <tbody>
@@ -826,16 +830,16 @@ Cristiano De Michele
 </tr>
 <tr class="even">
 <td><strong>Xavier</strong></td>
-<td>sigmoide, tanh</td>
+<td>tanh</td>
 <td><span class="math inline">\(\sqrt{2/(N_{in}+N_{out})}\)</span></td>
 <td><span class="math inline">\(\sqrt{6/(N_{in}+N_{out})}\)</span></td>
 </tr>
 </tbody>
 </table>
-<p>Con la distribuzione gaussiana i pesi hanno deviazione standard <span class="math inline">\(s\)</span>; con quella uniforme stanno in <span class="math inline">\([-s, s)\)</span>. Nel framework il default è He con pesi gaussiani.</p>
+<p>Con la gaussiana i pesi hanno deviazione standard <span class="math inline">\(s\)</span>; con l’uniforme stanno in <span class="math inline">\([-a, a)\)</span>, di varianza <span class="math inline">\(a^2/3\)</span>, e la deviazione standard è la stessa se <span class="math inline">\(a = \sqrt{3}\, s\)</span>. Glorot e Bengio (2010) propongono Xavier uniforme, He e altri (2015) He gaussiana; le altre due caselle sono le stesse formule, con la stessa varianza, per l’altra distribuzione. «Xavier» è il nome di Xavier Glorot, il primo autore. Nel framework il default è He con pesi gaussiani.</p>
 </section>
-<section id="da-dove-viene-la-formula-di-he" class="slide level2 smaller">
-<h2>Da dove viene la formula di He</h2>
+<section id="la-varianza-di-z-in-avanti" class="slide level2 smaller">
+<h2>La varianza di <span class="math inline">\(z\)</span> in avanti</h2>
 <!-- 20/11/2026 (domanda di Cristiano): misure su mnist_test.csv, pixel in [0,01, 1], 100 neuroni con pesi U[-1, 1]:
      <x^2> medio 0,114 (90% delle immagini fra 0,054 e 0,188), deviazione standard di z fra 3,7 e 7,0; |z| > 4 nel 44%
      delle coppie neurone-immagine, |z| < 1 nel 15%, sigma' medio 0,073 (con He: dev. std. 0,47, sigma' medio 0,237).
@@ -845,8 +849,9 @@ Cristiano De Michele
 <div class="columns">
 <div class="column" style="width:52%;">
 <p><img data-src="../images/init_varianza.png"></p>
+<p>Deviazione standard di <span class="math inline">\(z\)</span> strato per strato, in 10 strati ReLU (784 → 256 → … → 256) con ingressi gaussiani di varianza 1. Con <span class="math inline">\(s = \sqrt{2/N_{in}}\)</span> resta costante; con <span class="math inline">\(s = 0{,}2\)</span> cresce di circa 2,3 volte a strato, con <span class="math inline">\(s = 0{,}01\)</span> cala di circa 9 volte.</p>
 </div><div class="column" style="width:48%;">
-<p>Un neurone calcola <span class="math inline">\(z = \sum_{i=1}^{N_{in}} w_i x_i\)</span> (trascuriamo il bias). Se i pesi sono indipendenti, di media 0 e varianza <span class="math inline">\(s^2\)</span>: <span class="math display">\[\mathrm{Var}(z) = N_{in}\, s^2\, \langle x^2 \rangle\]</span> con <span class="math inline">\(\langle x^2 \rangle = \frac{1}{N_{in}} \sum_i x_i^2\)</span>, la media dei quadrati degli ingressi. Media e varianza sono sui pesi estratti, con l’ingresso fissato: la media è 0 anche se gli <span class="math inline">\(x_i\)</span> non lo sono, ed è per questo che compare <span class="math inline">\(\langle x^2 \rangle\)</span> e non la varianza degli <span class="math inline">\(x_i\)</span>. Negli strati successivi anche gli <span class="math inline">\(x_i\)</span> dipendono dai pesi estratti prima.</p>
+<p>Lo strato <span class="math inline">\(\ell\)</span> calcola (all’inizio il bias è 0) <span class="math display">\[z^{(\ell)}_j = \sum_{k=1}^{N_{in}} w^{(\ell)}_{jk}\, a^{(\ell-1)}_k\]</span> con <span class="math inline">\(\mathbf{a}^{(0)} = \mathbf{x}\)</span>, i pixel. Con pesi indipendenti fra loro e dagli ingressi <span class="math inline">\(a^{(\ell-1)}_k\)</span>, di media 0 e varianza <span class="math inline">\(s^2\)</span>, la media di <span class="math inline">\(z^{(\ell)}_j\)</span> è 0 e la varianza è: <span class="math display">\[\mathrm{Var}(z^{(\ell)}) = N_{in}\, s^2\, \langle (a^{(\ell-1)})^2 \rangle\]</span> con <span class="math inline">\(\langle (a^{(\ell-1)})^2 \rangle\)</span> la media dei quadrati degli ingressi.</p>
 </div></div>
 </section>
 <section id="il-fattore-½-della-relu" class="slide level2 smaller">
@@ -855,21 +860,67 @@ Cristiano De Michele
      simmetrica e bias 0: w -> -w cambia segno a z), non sul dataset a pesi fissati, dove ogni neurone ha la sua media
      sum_k w_k mu_k. He et al. 2015, sez. 2.2, la assumono esplicitamente. Nella slide si dice solo "se si possono
      assumere simmetrici" (scelta di Cristiano: la versione con i pesi fissati non si capiva); il resto a voce. -->
-<p>Con la ReLU l’ingresso di uno strato è <span class="math inline">\(x_i = \max(0, z_i)\)</span>, dove <span class="math inline">\(z_i\)</span> viene dallo strato precedente. Se i valori di <span class="math inline">\(z_i\)</span> si possono assumere simmetrici attorno a 0, metà diventa zero e l’altra metà resta com’è, quindi <span class="math inline">\(\langle x^2 \rangle\)</span> è metà della varianza: <span class="math display">\[\langle x^2 \rangle = \tfrac{1}{2}\, \mathrm{Var}(z_{prec}) \qquad\Rightarrow\qquad \mathrm{Var}(z) = \tfrac{1}{2}\, N_{in}\, s^2\, \mathrm{Var}(z_{prec})\]</span></p>
-<p>La varianza resta la stessa da uno strato al successivo se <span class="math inline">\(N_{in}\, s^2/2 = 1\)</span>, cioè <span class="math inline">\(s = \sqrt{2/N_{in}}\)</span>. Con la ReLU questa condizione basta anche all’indietro (He e altri, 2015): lo vediamo nella slide seguente.</p>
+<p>Con la ReLU gli ingressi dello strato <span class="math inline">\(\ell\)</span> sono <span class="math inline">\(a^{(\ell-1)}_k = \max(0, z^{(\ell-1)}_k)\)</span>. All’inizio si pongono i bias a 0 e si estraggono i pesi da una distribuzione simmetrica attorno a 0 (He e altri lo assumono): allora <span class="math inline">\(w\)</span> e <span class="math inline">\(-w\)</span>, e con loro <span class="math inline">\(z\)</span> e <span class="math inline">\(-z\)</span>, sono ugualmente probabili, cioè i valori di <span class="math inline">\(z^{(\ell-1)}_k\)</span> sono simmetrici attorno a 0. La ReLU azzera i valori negativi, cioè metà, e lascia gli altri com’erano: la media dei quadrati è metà della varianza: <span class="math display">\[\langle (a^{(\ell-1)})^2 \rangle = \tfrac{1}{2}\, \mathrm{Var}(z^{(\ell-1)}) \qquad\Rightarrow\qquad \mathrm{Var}(z^{(\ell)}) = \tfrac{1}{2}\, N_{in}\, s^2\, \mathrm{Var}(z^{(\ell-1)})\]</span></p>
+<p>La varianza resta la stessa da uno strato al successivo se <span class="math inline">\(N_{in}\, s^2/2 = 1\)</span>, cioè <span class="math inline">\(s = \sqrt{2/N_{in}}\)</span>. Con la ReLU questa condizione basta anche all’indietro (He e altri, 2015): lo vediamo nelle due slide seguenti.</p>
+<p>Nel primo strato gli ingressi sono i pixel, non uscite di una ReLU: He e altri usano la stessa formula anche lì, perché un fattore 2 su un solo strato non cambia niente.</p>
 </section>
 <section id="la-formula-di-he-allindietro" class="slide level2 smaller">
 <h2>La formula di He all’indietro</h2>
-<p>All’indietro (Lezione 03) l’errore di un neurone dello strato precedente è <span class="math inline">\(\delta^{prec}_i = \big(\sum_{j=1}^{N_{out}} w_{ji}\,\delta_j\big)\,\mathrm{ReLU}'(z_i)\)</span>: la somma è la stessa dell’andata, ma sulle <span class="math inline">\(N_{out}\)</span> uscite; <span class="math inline">\(\mathrm{ReLU}'\)</span> vale 1 per metà dei neuroni e 0 per l’altra metà, lo stesso ½. Quindi <span class="math inline">\(\mathrm{Var}(\delta^{prec}) = \tfrac12\,N_{out}\,s^2\,\mathrm{Var}(\delta)\)</span>, e con <span class="math inline">\(s^2 = 2/N_{in}\)</span> ogni strato moltiplica la varianza dell’errore per <span class="math inline">\(N_{out}/N_{in}\)</span>.</p>
-<p>In una rete <span class="math inline">\(784 \to 256 \to 128 \to 10\)</span> le uscite di uno strato sono gli ingressi del successivo, e il prodotto dei fattori si semplifica (i numeri dello stesso colore): <span class="math display">\[\frac{\color{#d9822b}{256}}{784}\cdot\frac{\color{#2f6fb5}{128}}{\color{#d9822b}{256}}\cdot\frac{10}{\color{#2f6fb5}{128}} = \frac{10}{784}\]</span> Resta il rapporto fra l’ultimo strato e il primo, con 3 strati come con 100: nessun fattore che si ripete a ogni strato. Per questo basta la condizione in avanti.</p>
+<p>All’indietro (Lezione 03) <span class="math display">\[\delta^{(\ell)}_j = \Big(\sum_{k=1}^{N_{out}} w^{(\ell+1)}_{kj}\,\delta^{(\ell+1)}_k\Big)\,\mathrm{ReLU}'(z^{(\ell)}_j)\]</span> con <span class="math inline">\(N_{in}\)</span>, <span class="math inline">\(N_{out}\)</span> e <span class="math inline">\(s\)</span> dello strato <span class="math inline">\(\ell+1\)</span>. È la somma della propagazione in avanti, ma sulle <span class="math inline">\(N_{out}\)</span> uscite. <span class="math inline">\(\mathrm{ReLU}'\)</span> vale 1 per metà dei neuroni e 0 per l’altra metà: lo stesso fattore ½ della propagazione in avanti. Quindi <span class="math display">\[\mathrm{Var}(\delta^{(\ell)}) = \tfrac12\,N_{out}\,s^2\,\mathrm{Var}(\delta^{(\ell+1)})\]</span> e con <span class="math inline">\(s^2 = 2/N_{in}\)</span> ogni strato moltiplica la varianza dell’errore per <span class="math inline">\(N_{out}/N_{in}\)</span>.</p>
 </section>
-<section id="xavier-e-la-distribuzione-uniforme" class="slide level2 smaller">
-<h2>Xavier e la distribuzione uniforme</h2>
+<section id="perché-basta-la-condizione-in-avanti" class="slide level2 smaller">
+<h2>Perché basta la condizione in avanti</h2>
+<p>In una rete <span class="math inline">\(784 \to 256 \to 128 \to 10\)</span> le uscite di uno strato sono gli ingressi del successivo, e il prodotto dei fattori si semplifica (i numeri dello stesso colore): <span class="math display">\[\frac{\color{#d9822b}{256}}{784}\cdot\frac{\color{#2f6fb5}{128}}{\color{#d9822b}{256}}\cdot\frac{10}{\color{#2f6fb5}{128}} = \frac{10}{784}\]</span> Resta un fattore fisso, qui <span class="math inline">\(10/784\)</span>, che non dipende dal numero di strati: con 3 come con 100. Non si accumula strato dopo strato, e per questo basta la condizione in avanti.</p>
+</section>
+<section id="la-formula-di-xavier" class="slide level2 smaller">
+<h2>La formula di Xavier</h2>
 <!-- Fonte: X. Glorot, Y. Bengio, "Understanding the difficulty of training deep feedforward neural networks",
-     AISTATS 2010. -->
-<p>Con la tanh, vicino a 0 l’attivazione è circa lineare: <span class="math inline">\(\langle x^2\rangle \approx \mathrm{Var}(z_{prec})\)</span>, e in avanti serve <span class="math inline">\(N_{in}\, s^2 = 1\)</span> (con la sigmoide è solo un’approssimazione).</p>
-<p>All’indietro (Lezione 03) l’errore che arriva a un ingresso è <span class="math inline">\(\sum_{j=1}^{N_{out}} w_{ji}\,\delta_j\)</span>, una riga di <span class="math inline">\(\mathbf{W}^T\boldsymbol\delta\)</span>: la stessa somma dell’andata, ma sulle <span class="math inline">\(N_{out}\)</span> uscite invece che sugli <span class="math inline">\(N_{in}\)</span> ingressi. Con la tanh vicino a 0, dove <span class="math inline">\(\sigma' \approx 1\)</span>, la sua varianza è <span class="math inline">\(N_{out}\, s^2\,\mathrm{Var}(\delta)\)</span>, e resta la stessa da uno strato all’altro se <span class="math inline">\(N_{out}\, s^2 = 1\)</span>.</p>
-<p>Le due condizioni chiedono <span class="math inline">\(1/s^2 = N_{in}\)</span> e <span class="math inline">\(1/s^2 = N_{out}\)</span>. Xavier prende la loro media: <span class="math display">\[\frac{1}{s^2} = \frac{N_{in} + N_{out}}{2}, \qquad s^2 = \frac{2}{N_{in} + N_{out}}\]</span> Un numero uniforme in <span class="math inline">\([-a, a)\)</span> ha varianza <span class="math inline">\(a^2/3\)</span>, quindi <span class="math inline">\(a = \sqrt{3}\, s\)</span>: da qui <span class="math inline">\(\sqrt{6/N_{in}}\)</span> e <span class="math inline">\(\sqrt{6/(N_{in}+N_{out})}\)</span>, le colonne “uniforme” della tabella.</p>
+     AISTATS 2010, sez. 4.2.1: regime lineare, attivazione simmetrica con f'(0) = 1, pesi indipendenti, stessa varianza
+     degli ingressi; eq. (10)-(11) le due condizioni, eq. (12) "compromise" 2/(n_i + n_(i+1)), eq. (16) uniforme (nessuna
+     versione gaussiana nell'articolo). La sigmoide e' sconsigliata (sez. 3.1 e conclusioni). Audit del 20/11/2026,
+     verificato sul testo; He et al. 2015 sez. 2.2 (ICCV eq. 7, 10, 12-16, nota 3) per le slide precedenti. -->
+<p>Glorot e Bengio assumono pesi indipendenti e il <strong>regime lineare</strong>: all’inizio le <span class="math inline">\(z\)</span> restano vicino a 0, dove <span class="math inline">\(f(z) \approx z\)</span>, cioè <span class="math inline">\(f(0) = 0\)</span> e <span class="math inline">\(f'(0) = 1\)</span>, come per la tanh. Allora <span class="math inline">\(a^{(\ell-1)} \approx z^{(\ell-1)}\)</span> e <span class="math inline">\(\langle (a^{(\ell-1)})^2\rangle \approx \mathrm{Var}(z^{(\ell-1)})\)</span>: in avanti serve <span class="math inline">\(N_{in}\, s^2 = 1\)</span>.</p>
+<p>All’indietro (Lezione 03) l’errore che arriva al neurone <span class="math inline">\(j\)</span> dello strato <span class="math inline">\(\ell\)</span> è <span class="math inline">\(\sum_{k=1}^{N_{out}} w^{(\ell+1)}_{kj}\,\delta^{(\ell+1)}_k\)</span>, con <span class="math inline">\(N_{out}\)</span> e <span class="math inline">\(s\)</span> dello strato <span class="math inline">\(\ell+1\)</span>: la stessa somma della propagazione in avanti, ma sulle <span class="math inline">\(N_{out}\)</span> uscite. Con la tanh vicino a 0, dove <span class="math inline">\(\tanh' \approx 1\)</span>, la varianza di <span class="math inline">\(\delta^{(\ell)}\)</span> è <span class="math inline">\(N_{out}\, s^2\,\mathrm{Var}(\delta^{(\ell+1)})\)</span>, e resta la stessa se <span class="math inline">\(N_{out}\, s^2 = 1\)</span>.</p>
+<p>Le due condizioni chiedono <span class="math inline">\(1/s^2 = N_{in}\)</span> e <span class="math inline">\(1/s^2 = N_{out}\)</span>: se <span class="math inline">\(N_{in} \neq N_{out}\)</span> non si possono soddisfare insieme, e Xavier prende la loro media, come compromesso: <span class="math display">\[\frac{1}{s^2} = \frac{N_{in} + N_{out}}{2}, \qquad s^2 = \frac{2}{N_{in} + N_{out}}\]</span></p>
+</section>
+<section id="e-la-sigmoide" class="slide level2 smaller">
+<h2>E la sigmoide?</h2>
+<!-- 20/11/2026 (Cristiano: la usiamo nel framework; poi "semplificare un po'": due slide ridotte a una, senza tabella).
+     Linearizzazione sigma(z) ~ 1/2 + z/4, sigma' <= 1/4. In avanti Var(z^(l)) ~ N s^2 (1/4 + Var(z^(l-1))/16): il
+     termine costante fa convergere la varianza a un valore fisso in 1-2 strati, nessun fattore geometrico. Strati di
+     uguale larghezza N, z gaussiano, punto fisso Var(z) = N s^2 E[sigma(z)^2] e rapporto della varianza dell'errore
+     N s^2 E[sigma'(z)^2], per integrazione numerica (simulazione 10 x 256 coerente):
+       Xavier     N s^2 = 1:  dev. std. di z 0,51, Var(delta) x 0,056 (diviso ~18)
+       He         N s^2 = 2:  dev. std. di z 0,75, Var(delta) x 0,10  (diviso ~10)
+       Xavier x 4 N s^2 = 16: dev. std. di z 2,4,  Var(delta) x 0,40
+     Il valore fisso non dipende dagli ingressi della rete (simulazione 20/11, strati da 256, ingressi tipo pixel,
+     gaussiani di varianza 1 e 100, costanti: dal secondo-terzo strato dev. std. ~0,75 con He e ~0,5 con Xavier).
+     Rapporto 1 solo con N s^2 = 103: dev. std. di z 6,75, |z| > 4 nel 55% dei casi. Fonti: Bengio 2012 (arXiv:1206.5533,
+     sez. 3.2, x4 per la sigmoide, dai Deep Learning Tutorials); PyTorch calculate_gain('sigmoid') = 1; Glorot e Bengio
+     2010, sez. 3.1 e conclusioni: sigmoide sconsigliata negli strati nascosti. -->
+<p>Nei nostri laboratori gli strati nascosti usano la sigmoide, fuori dalle ipotesi di He e di Xavier: <span class="math inline">\(\sigma(0) = \tfrac12\)</span> e <span class="math inline">\(\sigma'(0) = \tfrac14\)</span>. Con strati di uguale larghezza:</p>
+<ul>
+<li><strong>in avanti</strong> non c’è problema: le uscite hanno media <span class="math inline">\(\tfrac12\)</span>, e dopo uno o due strati la deviazione standard di <span class="math inline">\(z\)</span> si ferma su un valore fisso, che dipende solo da <span class="math inline">\(N_{in}\, s^2\)</span> e non dagli ingressi della rete (circa 0,75 con He e 0,5 con Xavier);</li>
+<li><strong>all’indietro</strong> ogni strato moltiplica la varianza dell’errore per <span class="math inline">\(N_{out}\,s^2\,\langle \sigma'(z)^2\rangle\)</span>, con <span class="math inline">\(\sigma' \le \tfrac14\)</span>: il fattore è circa <span class="math inline">\(1/10\)</span> con He e <span class="math inline">\(1/18\)</span> con Xavier: l’errore cala a ogni strato.</li>
+</ul>
+<p>Pesi più grandi non bastano: il «Xavier × 4» di Bengio (2012), cioè <span class="math inline">\(s \times 4\)</span>, dà <span class="math inline">\(N_{out}\,s^2 = 16 = 1/\sigma'(0)^2\)</span>, e il fattore sarebbe 1 se <span class="math inline">\(\sigma'\)</span> restasse <span class="math inline">\(\tfrac14\)</span>. Ma cresce anche <span class="math inline">\(|z|\)</span>, la sigmoide satura e il fattore arriva solo a circa 0,4. Per questo nelle reti profonde si usano la tanh o la ReLU, e la sigmoide resta in uscita.</p>
+</section>
+<section id="oltre-he-e-xavier" class="slide level2 smaller">
+<h2>Oltre He e Xavier</h2>
+<!-- 22/11/2026 (Cristiano: una slide sulle altre scelte, con il messaggio "varianza costante in avanti e all'indietro" e
+     "per reti poco profonde He va bene"; poi: solo cose che gli studenti conoscono o che si definiscono in una riga, niente
+     PReLU, SiLU, SELU, CNN, BatchNorm/LayerNorm, transformer). Verificati: Leaky ReLU/PReLU in He et al. 2015 sez. 2.2
+     (1/2 (1 + a^2) n Var[w] = 1); GELU con He: <f^2>/Var(z) = 0,425 (Var 1), 0,461 (Var 2), <f'^2> = 0,456-0,489
+     (integrazione Monte Carlo, 22/11); GPT-2 scala di 1/sqrt(N) i pesi degli strati residui, N numero di strati residui
+     (nelle implementazioni: le proiezioni d'uscita dei rami); Fixup (Zhang, Dauphin, Ma, ICLR 2019): ultimo strato di
+     ogni ramo residuo a 0, gli altri ridotti con la profondita'. -->
+<p>L’idea è sempre la stessa: si calcolano <span class="math inline">\(\langle f(z)^2\rangle\)</span> e <span class="math inline">\(\langle f'(z)^2\rangle\)</span> e si sceglie <span class="math inline">\(s\)</span> perché la varianza resti costante <strong>in avanti e all’indietro</strong>. Per esempio:</p>
+<ul>
+<li><strong>Leaky ReLU</strong>, <span class="math inline">\(f(z) = z\)</span> per <span class="math inline">\(z &gt; 0\)</span> e <span class="math inline">\(a z\)</span> per <span class="math inline">\(z &lt; 0\)</span>: <span class="math inline">\(\langle f(z)^2\rangle = \tfrac12(1+a^2)\,\mathrm{Var}(z)\)</span> e <span class="math inline">\(\langle f'(z)^2\rangle = \tfrac12(1+a^2)\)</span>, quindi serve <span class="math inline">\(\tfrac12(1+a^2)\,N_{in}\,s^2 = 1\)</span> (con <span class="math inline">\(a = 0\)</span> è He);</li>
+<li><strong>GELU</strong>, una ReLU smussata usata in GPT: con He <span class="math inline">\(\langle f(z)^2\rangle \approx 0{,}45\,\mathrm{Var}(z)\)</span> invece dello 0,5 della ReLU, e He va quasi bene;</li>
+<li><strong>reti molto profonde</strong>, come GPT: se a ogni strato la varianza si moltiplica per 0,9, dopo 100 strati si è moltiplicata per <span class="math inline">\(0{,}9^{100} \approx 3 \cdot 10^{-5}\)</span>. Servono altri accorgimenti, che vediamo nell’<a href="../approfondimento-transformer/index.html">approfondimento sul transformer</a>.</li>
+</ul>
+<p>Da noi gli strati sono pochi e i fattori si accumulano poco: basta non saturare e He va bene.</p>
 </section>
 <section id="task-1-il-generatore-randnumgen" class="slide level2 smaller scrollable">
 <h2>Task 1: il generatore <code>randnumgen</code></h2>
@@ -934,18 +985,19 @@ Cristiano De Michele
 <span id="cb5-3"><a aria-label="3"></a>    <span class="co">// da completare: uno switch su type, senza default,</span></span>
 <span id="cb5-4"><a aria-label="4"></a>    <span class="co">// che calcola s con le formule della tabella</span></span>
 <span id="cb5-5"><a aria-label="5"></a>    <span class="dt">double</span> s <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb5-6"><a aria-label="6"></a>    <span class="co">// pesi uniformi in [-s, s), o gaussiani con sigma = s</span></span>
-<span id="cb5-7"><a aria-label="7"></a>    Wt <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">(</span>Nn<span class="op">,</span> Ni<span class="op">);</span></span>
-<span id="cb5-8"><a aria-label="8"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> Nn<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb5-9"><a aria-label="9"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> Ni<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb5-10"><a aria-label="10"></a>            <span class="cf">if</span> <span class="op">(</span>distro <span class="op">==</span> DistroType<span class="op">::</span>UNIFORM<span class="op">)</span></span>
-<span id="cb5-11"><a aria-label="11"></a>                Wt<span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> s <span class="op">*</span> <span class="op">(</span>rng<span class="op">.</span>ranf<span class="op">()</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">);</span></span>
-<span id="cb5-12"><a aria-label="12"></a>            <span class="cf">else</span></span>
-<span id="cb5-13"><a aria-label="13"></a>                Wt<span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">=</span> s <span class="op">*</span> gauss<span class="op">();</span></span>
-<span id="cb5-14"><a aria-label="14"></a>        <span class="op">}</span></span>
-<span id="cb5-15"><a aria-label="15"></a>    <span class="op">}</span></span>
-<span id="cb5-16"><a aria-label="16"></a>    biases <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Zero<span class="op">(</span>Nn<span class="op">,</span> <span class="dv">1</span><span class="op">);</span>   <span class="co">// bias nulli</span></span>
-<span id="cb5-17"><a aria-label="17"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-6"><a aria-label="6"></a>    <span class="co">// s: deviazione standard (gaussiana)</span></span>
+<span id="cb5-7"><a aria-label="7"></a>    <span class="co">//    o estremo a, pesi in [-a, a) (uniforme)</span></span>
+<span id="cb5-8"><a aria-label="8"></a>    Wt <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">(</span>Nn<span class="op">,</span> Ni<span class="op">);</span></span>
+<span id="cb5-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> Nn<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-10"><a aria-label="10"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> Ni<span class="op">;</span> j<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-11"><a aria-label="11"></a>            <span class="cf">if</span> <span class="op">(</span>distro <span class="op">==</span> DistroType<span class="op">::</span>UNIFORM<span class="op">)</span></span>
+<span id="cb5-12"><a aria-label="12"></a>                Wt<span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> s <span class="op">*</span> <span class="op">(</span>rng<span class="op">.</span>ranf<span class="op">()</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">);</span></span>
+<span id="cb5-13"><a aria-label="13"></a>            <span class="cf">else</span></span>
+<span id="cb5-14"><a aria-label="14"></a>                Wt<span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">=</span> s <span class="op">*</span> gauss<span class="op">();</span></span>
+<span id="cb5-15"><a aria-label="15"></a>        <span class="op">}</span></span>
+<span id="cb5-16"><a aria-label="16"></a>    <span class="op">}</span></span>
+<span id="cb5-17"><a aria-label="17"></a>    biases <span class="op">=</span> Eigen<span class="op">::</span>MatrixXd<span class="op">::</span>Zero<span class="op">(</span>Nn<span class="op">,</span> <span class="dv">1</span><span class="op">);</span>   <span class="co">// bias nulli</span></span>
+<span id="cb5-18"><a aria-label="18"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:38%;">
 <p>Sostituisce il costruttore del Laboratorio 07; <code>forward</code> e i getter restano.</p>
@@ -1152,6 +1204,26 @@ Cristiano De Michele
 <li><label><input type="checkbox">(facoltativo) <code>chi_quadro</code> e <code>prova_chi_quadro</code>: con <code>rng.seed(42)</code> Φ vale 13.2069, con 19 gradi di libertà</label></li>
 </ul>
 <p><strong>La soluzione verrà discussa all’inizio del prossimo laboratorio.</strong></p>
+</section>
+<section id="per-saperne-di-più-linizializzazione" class="slide level2 smaller">
+<h2>Per saperne di più: l’inizializzazione</h2>
+<!-- 20/11/2026, regola d'audit 6 (Cristiano): chi cita un lavoro lo mette anche nella bibliografia in fondo. Dati
+     verificati: He et al. su ICCV/arXiv; Glorot e Bengio su PMLR v9; Bengio 2012 su arXiv (sez. 3.2, x4 per la sigmoide,
+     attribuito ai Deep Learning Tutorials); il libro dal PDF in LABORATORIO_DI_CALCOLO (Pearson Education Italia 2006,
+     ISBN 978-88-7192-242-3; Knuth e' il suo riferimento [31]); TAOCP vol. 2, sez. 3.3.1 "General Test Procedures for
+     Studying Random Data". -->
+<ul>
+<li>K. He, X. Zhang, S. Ren, J. Sun, «Delving Deep into Rectifiers», ICCV 2015, sez. 2.2: He e la Leaky ReLU.</li>
+<li>X. Glorot, Y. Bengio, «Understanding the difficulty of training deep feedforward neural networks», AISTATS 2010, sez. 4.2.1: Xavier.</li>
+<li>Y. Bengio, «Practical recommendations for gradient-based training of deep architectures», 2012, arXiv:1206.5533, sez. 3.2: Xavier × 4.</li>
+</ul>
+</section>
+<section id="per-saperne-di-più-il-test-del-χ²" class="slide level2 smaller">
+<h2>Per saperne di più: il test del χ²</h2>
+<ul>
+<li>L. M. Barone, E. Marinari, G. Organtini, F. Ricci-Tersenghi, <em>Programmazione scientifica. Linguaggio C, algoritmi e modelli nella scienza</em>, Pearson 2006, par. 7.4.2 e 11.4.1: il test del χ².</li>
+<li>D. E. Knuth, <em>The Art of Computer Programming</em>, vol.&nbsp;2, <em>Seminumerical Algorithms</em>, Addison-Wesley (3ª ed.&nbsp;1997), sez. 3.3.1: il criterio di Knuth.</li>
+</ul>
 
 
 </section>

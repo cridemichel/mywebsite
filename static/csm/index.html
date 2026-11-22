@@ -80,6 +80,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
+<style id="non-pubblicata">.non-pubblicata{color:#9a9a9a;cursor:default;pointer-events:none}.dropdown-item.non-pubblicata{color:#9a9a9a}</style>
 </head>
 
 <body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
@@ -301,6 +302,14 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="./lab-06/index.html">
  <span class="dropdown-text">Lab 6. Virtual functions, particles and the simulation base class</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./lab-07/index.html">
+ <span class="dropdown-text">Lab 7. Monte Carlo in the NTV ensemble</span></a>
+  </li>  
+        <li>
+    <span class="dropdown-item non-pubblicata" title="Not yet published">
+ <span class="dropdown-text">Lab 8. Monte Carlo in the NPT ensemble</span></span>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -422,7 +431,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <ul>
 <li><strong>C++ examples</strong>: the examples shown in the labs so far (folder <code>examples/</code>).</li>
-<li><strong>Project classes</strong>: the classes of the project you are writing (<code>project/</code>: vectors, matrices and random numbers so far, with the test programs).</li>
+<li><strong>Project classes</strong>: the classes of the project you are writing (<code>project/</code>: vectors, matrices, random numbers, particles and the simulation classes, with the test programs).</li>
 </ul>
 <p>Both archives grow as the labs go on.</p>
 </section>
@@ -459,6 +468,14 @@ ul.task-list li input[type="checkbox"] {
 <tr class="even">
 <td><a href="./lab-06/index.html">Lab 6</a></td>
 <td>Introduction to C++ (part VI): virtual functions; the simulation framework: particles (moves, Lennard-Jones potential) and the base class (energies, periodic boundary conditions, initial lattice, snapshots)</td>
+</tr>
+<tr class="odd">
+<td><a href="./lab-07/index.html">Lab 7</a></td>
+<td>The class <code>mcsim</code>: Metropolis Monte Carlo in the NTV ensemble (trial moves, acceptance, adjustment of the maximum displacement, energy measures); the soft-sphere potential</td>
+</tr>
+<tr class="even">
+<td><span class="non-pubblicata" title="Not yet published">Lab 8</span></td>
+<td>Monte Carlo in the NPT ensemble: volume moves and their acceptance, density measures; tail corrections and an isotherm (optional)</td>
 </tr>
 </tbody>
 </table>
