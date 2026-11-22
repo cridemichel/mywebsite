@@ -741,7 +741,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Programmazione Scientifica++: Lezione 17</h1>
-  <p class="subtitle">Template negli Header e Smart Pointers</p>
+  <p class="subtitle">Template negli header e smart pointer</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -753,323 +753,661 @@ Cristiano De Michele
 
 </section>
 <section id="argomenti-di-oggi" class="slide level2 smaller">
-<h2>Argomenti di Oggi</h2>
+<h2>Argomenti di oggi</h2>
+<!--
+  Audit del 22/11/2026 con le linee guida di ottobre e novembre (cartella della lezione, un eseguibile per
+  esempio, slide "Provate", messaggi di g++ su Linux, esercizio con scopo e file da completare, ripassi
+  dichiarati, registro sobrio, titoli in sentence case, criterio 7 sulla chiarezza, nomi del framework).
+  Riscritta quasi tutta; l'originale e' nel backup del Mac index.qmd.pre-audit2211. Secondo audit (22/11): tolta la
+  slide sui dettagli di unique_ptr nel framework (get_layer, load_model: arrivano nel Lab 11, da spiegare li'); su
+  macOS i leak con leaks (Lezione 08), e senza virtual l'AddressSanitizer di Apple puo' non segnalare niente (senza
+  AddressSanitizer: due ~Layer e nessun ~DenseLayer, verificato su Linux). Riparte dalla Lezione 16
+  (template Pesi, layers.hpp). Il RAII c'e' gia' nelle Lezioni 09 e 10: qui solo il rimando. Tolti: i tempi
+  di shared_ptr, "non si scrive mai delete", lo stampo/Scatola. Aggiunto l'esercizio facoltativo dal libro
+  (par. 16.3, Listato 16.5, Laboratorio 16.6), previsto in TODO.txt ("Punto 2").
+  Verificato nel cloud con g++ 13.3 (Ubuntu 24.04) e clang 18, con il CMakeLists della lezione (-Wall e
+  AddressSanitizer): nessun warning. pesi con pesi.cpp a parte: "undefined reference to `Pesi<float>::Pesi(int,
+  int)'" e "`Pesi<float>::quanti() const'"; nm pesi.o non stampa niente (anche llvm-nm); con le definizioni
+  nell'header stampa 100352 pesi. bits/stl_vector.h di g++ 13: 2135 righe. anticipato: "Direct leak of 16
+  byte(s) in 1 object(s)"; unico: nessun messaggio. delete d: "type 'class std::unique_ptr<DenseLayer>'
+  argument given to 'delete', expected pointer". Copia: "use of deleted function 'std::unique_ptr<_Tp,
+  _Dp>::unique_ptr(const std::unique_ptr<_Tp, _Dp>&) [with _Tp = DenseLayer; _Dp =
+  std::default_delete<DenseLayer>]'". Dopo std::move: "SEGV on unknown address 0x000000000008". condiviso:
+  "2 proprietari". esercizio_rete: ordine L1 poi L2 con libstdc++, rovesciato con libc++ (clang
+  -stdlib=libc++); senza virtual "new-delete-type-mismatch", 8 contro 1 byte. esercizio_albero (seme
+  12345, R = 100, profondita' di ogni nodo misurata subito dopo l'inserimento, con p = nuovo.get()):
+  100 6.5824 12.39; 1000 10.9841 21.19; 10000 15.715 30.47 (2,4 s con AddressSanitizer); lo scheletro con
+  il main stampa 0 0. Valore esatto della profondita' media: 2 (1 + 1/N) H_N - 4 = 6,48; 10,99; 15,58. Il codice di ogni
+  blocco sta entro 25 righe e 100 caratteri: oltre, reveal lo taglia dentro il riquadro.
+-->
 <ul>
-<li><strong>Template e linker</strong>
-<ul>
-<li>Perché l’implementazione di un template deve stare nell’header</li>
-</ul></li>
-<li><strong>Ripasso dei guai della RAM</strong>: il return prematuro</li>
-<li><strong>Gli smart pointer del C++11</strong>
-<ul>
-<li><code>std::unique_ptr</code>, <code>std::make_unique</code>, il passaggio con <code>std::move</code></li>
-<li>Cenni a <code>std::shared_ptr</code></li>
-</ul></li>
-<li><strong>La nostra rete neurale aggiornata</strong>: dal puntatore grezzo allo smart pointer</li>
+<li><strong>Template e header</strong>: perché un template di classe non si divide fra <code>.hpp</code> e <code>.cpp</code></li>
+<li><strong><code>std::unique_ptr</code></strong>: un oggetto nell’heap con un proprietario che lo distrugge da solo</li>
+<li><strong>Copiare e cedere</strong>: un <code>std::unique_ptr</code> non si copia; la proprietà si cede con <code>std::move</code></li>
+<li><strong>La rete con <code>std::unique_ptr</code></strong>: i layer senza un distruttore scritto a mano</li>
+<li><strong>Cenni a <code>std::shared_ptr</code></strong>: più proprietari per lo stesso oggetto</li>
+<li><strong>Esercizio</strong>: una rete di <code>std::unique_ptr</code>; <strong>esercizio facoltativo</strong>: un albero binario di ricerca, dal libro</li>
 </ul>
 </section>
-<section id="lerrore-fatale-del-.cpp-bug-del-linking" class="slide level2 smaller">
-<h2>L’Errore Fatale del <code>.cpp</code> (Bug del Linking)</h2>
-<div class="callout callout-warning callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Avviso</strong></p>
-</div>
-<div class="callout-content">
-<p>IL PIÙ GRANDE ERRORE CHE POTETE FARE CON I TEMPLATE!</p>
-</div>
-</div>
-</div>
-<p>Fin dalla prima lezione vi abbiamo fatto il lavaggio del cervello: <em>“Separate l’interfaccia nel file <code>.hpp</code> e l’implementazione nel file <code>.cpp</code>!”</em>.</p>
-<p><strong>I Template VIOLANO questa regola assoluta.</strong></p>
-<p>Se provate a dichiarare <code>template &lt;typename T&gt; class Scatola;</code> nel <code>.hpp</code> e scrivete l’implementazione dei suoi metodi nel <code>.cpp</code>, il compilatore non fiata: sono i <strong>due <code>.o</code> a non trovarsi</strong>.</p>
-<p><em><code>undefined reference to 'Scatola&lt;int&gt;::estrai() const'</code></em>, e sotto <em><code>collect2: error: ld returned 1 exit status</code></em>. Notate: la referenza mancante non è la classe, è il <strong>metodo</strong>. Perché?</p>
+<section id="gli-argomenti-di-oggi-nel-framework" class="slide level2 smaller">
+<h2>Gli argomenti di oggi nel framework</h2>
+<ul>
+<li><strong>Template e header.</strong> Le classi del framework sono template sul tipo dei numeri (Lezione 16), e per questo stanno tutte negli header: <code>layer.hpp</code>, <code>parametricLayer.hpp</code>, <code>sequential.hpp</code> e gli altri, senza un file <code>.cpp</code> per le classi.</li>
+<li><strong><code>std::unique_ptr</code>.</strong> <code>Sequential</code> tiene i suoi layer in un <code>std::vector&lt;std::unique_ptr&lt;Layer&lt;ntype&gt;&gt;&gt;</code>: la rete possiede i layer e li distrugge quando viene distrutta. I programmi creano i layer con <code>std::make_unique</code> e li consegnano alla rete:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a>model<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">));</span></span>
+<span id="cb1-2"><a aria-label="2"></a>model<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>SigmoidLayer<span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;&gt;());</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Nel Laboratorio 10 anche la vostra <code>Sequential</code> passa da un array di <code>Layer&lt;ntype&gt;*</code> a un <code>std::vector</code> di <code>std::unique_ptr</code>.</p>
 </section>
-<section id="perché-i-template-spaccano-il-linker" class="slide level2 smaller">
-<h2>Perché i Template spaccano il linker?</h2>
-<p>Ricordate la metafora dello “stampo”? I file <code>.cpp</code> vengono compilati separatamente e indipendentemente (Translation Units).</p>
-<p>Quando il compilatore processa <code>Scatola.cpp</code>, non vede nessun <code>Scatola&lt;int&gt;</code> o <code>Scatola&lt;double&gt;</code> nel main. Vede solo lo stampo con la <code>T</code>. Poiché non ha la minima idea di quali tipi l’utente userà nel <code>main</code>, <strong>non genera alcun codice binario!</strong></p>
-<p>Poi arriva il file <code>main.cpp</code>, che dice “Voglio usare <code>Scatola&lt;int&gt;</code>!”. Il linker cerca il binario, ma il file <code>Scatola.o</code> è completamente vuoto. Disastro totale.</p>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Consiglio</strong></p>
-</div>
-<div class="callout-content">
-<p>Verificatelo voi: compilate <code>Scatola.cpp</code> da solo e poi date <code>nm -C Scatola.o</code>. Il numero di simboli definiti è <strong>zero</strong>. Lo stampo non è codice.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="la-soluzione-tutto-nellheader-.hpp" class="slide level2 smaller">
-<h2>La soluzione: Tutto nell’Header (<code>.hpp</code>)</h2>
-<p>Perché un Template funzioni, chiunque lo usi (il <code>main.cpp</code>) deve poter vedere l’<strong>intero codice sorgente</strong> dell’implementazione in fase di compilazione, per poterselo “stampare” su misura (es. per <code>int</code>).</p>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Consiglio</strong></p>
-</div>
-<div class="callout-content">
-<p><strong>Regola Universale per i Template:</strong> L’intera definizione della classe E l’implementazione di tutti i suoi metodi <strong>DEBBONO</strong> risiedere esclusivamente all’interno del file <code>.hpp</code>. Niente file <code>.cpp</code>.</p>
-</div>
-</div>
-</div>
-<p>Se aprite la libreria standard <code>&lt;vector&gt;</code>, troverete Header da migliaia di righe con dentro tutto il codice sorgente: su g++ 13 il solo <code>bits/stl_vector.h</code> ne conta 2135.</p>
-</section>
-<section id="i-veri-problemi-della-ram-ripasso" class="slide level2 smaller">
-<h2>I veri problemi della RAM (Ripasso)</h2>
-<p>Archiviamo i Template (per un attimo) e torniamo ai grandi problemi del C++.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="dt">void</span> calcolaReteNeurale<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb1-2"><a aria-label="2"></a>    Layer<span class="op">*</span> dl <span class="op">=</span> <span class="kw">new</span> DenseLayer<span class="op">(</span><span class="st">"Hidden"</span><span class="op">,</span> <span class="dv">128</span><span class="op">);</span> <span class="co">// RAM ALLOCATA &lt;1&gt;</span></span>
-<span id="cb1-3"><a aria-label="3"></a>    </span>
-<span id="cb1-4"><a aria-label="4"></a>    dl<span class="op">-&gt;</span>forward<span class="op">();</span> <span class="co">// Faccio girare la rete...</span></span>
-<span id="cb1-5"><a aria-label="5"></a>    </span>
-<span id="cb1-6"><a aria-label="6"></a>    <span class="kw">delete</span> dl<span class="op">;</span> <span class="co">// RAM PULITA &lt;2&gt;</span></span>
-<span id="cb1-7"><a aria-label="7"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<ol type="1">
-<li>Allocazione manuale in Heap (magazzino dinamico).</li>
-<li>De-allocazione vitale.</li>
-</ol>
-<p>Tutto sembra perfetto. Ma è codice estremamente fragile!</p>
-</section>
-<section id="il-return-prematuro-memory-leak-invisibile" class="slide level2 smaller">
-<h2>Il “Return Prematuro” (Memory Leak Invisibile)</h2>
-<p>Cosa succede se il calcolo fallisce e usciamo in anticipo?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a aria-label="1"></a><span class="dt">void</span> calcolaReteNeurale<span class="op">(</span><span class="dt">bool</span> errore_critico<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-2"><a aria-label="2"></a>    Layer<span class="op">*</span> dl <span class="op">=</span> <span class="kw">new</span> DenseLayer<span class="op">(</span><span class="st">"Hidden"</span><span class="op">,</span> <span class="dv">128</span><span class="op">);</span></span>
-<span id="cb2-3"><a aria-label="3"></a>    </span>
-<span id="cb2-4"><a aria-label="4"></a>    <span class="cf">if</span> <span class="op">(</span>errore_critico<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-5"><a aria-label="5"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Abort! Uscita emergenza!</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb2-6"><a aria-label="6"></a>        <span class="cf">return</span><span class="op">;</span> <span class="co">// DISASTRO CATASTROFICO! &lt;1&gt;</span></span>
-<span id="cb2-7"><a aria-label="7"></a>    <span class="op">}</span></span>
-<span id="cb2-8"><a aria-label="8"></a>    </span>
-<span id="cb2-9"><a aria-label="9"></a>    dl<span class="op">-&gt;</span>forward<span class="op">();</span></span>
-<span id="cb2-10"><a aria-label="10"></a>    <span class="kw">delete</span> dl<span class="op">;</span> <span class="co">// Questa riga non verrà mai raggiunta.</span></span>
-<span id="cb2-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<ol type="1">
-<li>La funzione termina e lo stack distrugge il puntatore <code>dl</code>. Ma le matrici di pesi nell’Heap restano lì, <strong>orfane</strong>: nessuno le punta più, nessuno potrà più liberarle. <strong>Memory Leak irreversibile.</strong> (Non è un <em>dangling pointer</em>: quello è il problema opposto, il puntatore che sopravvive alla memoria.)</li>
-</ol>
-</section>
-<section id="il-paradigma-raii-c-storico" class="slide level2 smaller">
-<h2>Il Paradigma RAII (C++ Storico)</h2>
-<p>I creatori del C++ (anni ’80) idearono il principio <strong>RAII</strong> (<em>Resource Acquisition Is Initialization</em>).</p>
-<p>L’idea geniale: <em>“Non legare l’allocazione al programmatore. Legala alla vita di un oggetto nello Stack!”</em>. Gli oggetti nello Stack vengono <strong>sempre</strong> distrutti matematicamente quando la funzione termina (anche a causa di un <code>return</code> o di un’eccezione).</p>
-<p>Se avvolgo il mio puntatore grezzo all’interno di un Oggetto-Sentinella che vive nello stack, il suo Distruttore verrà invocato infallibilmente, e lui farà il <code>delete</code> per me!</p>
-</section>
-<section id="la-rivoluzione-del-c-moderno-c11" class="slide level2 smaller">
-<h2>La Rivoluzione del C++ Moderno (C++11)</h2>
-<p>Quell’idea è rimasta teoria noiosa per decenni, finché il C++11 non ha cambiato le sorti dell’informatica introducendo nella libreria standard (l’header <code>&lt;memory&gt;</code>) i <strong>Puntatori Intelligenti (Smart Pointers)</strong>.</p>
-<p>Gli Smart Pointers usano <em>esattamente i Template</em> che abbiamo appena imparato per avvolgere puntatori a qualsiasi cosa (<code>int</code>, <code>Layer</code>, <code>DenseLayer</code>).</p>
-<p>Sono classi agili e istantanee che si occupano di far morire le variabili in Heap al posto vostro. <strong>Nel C++ moderno, non si scrive MAI MAI MAI la parola <code>delete</code>.</strong></p>
-</section>
-<section id="stdunique_ptrt-il-proprietario-unico" class="slide level2 smaller">
-<h2><code>std::unique_ptr&lt;T&gt;</code> (Il Proprietario Unico)</h2>
-<p>Il principe degli smart pointers è <code>std::unique_ptr&lt;T&gt;</code>.</p>
-<p>Esso modella il concetto di <strong>Proprietà Unica ed Esclusiva</strong> (Unique Ownership). Se un <code>unique_ptr</code> punta a un’area di memoria Heap, lui (e solo lui) ne è il padrone. Nessun altro può possederla.</p>
-<p>Quando il padrone “muore” (es. finisce lo scope della funzione), l’area di memoria che possedeva <strong>viene automaticamente distrutta</strong>. È la fine definitiva dei Memory Leaks.</p>
-</section>
-<section id="sintassi-di-base-e-stdmake_unique" class="slide level2 smaller">
-<h2>Sintassi di Base e <code>std::make_unique</code></h2>
-<p>Dimenticate la parola magica <code>new</code> che avete usato per tutto l’anno. Da oggi, usate il super-costruttore template <code>std::make_unique&lt;Tipo&gt;(argomenti)</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
-<span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-label="2"></a></span>
-<span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-label="3"></a><span class="dt">void</span> calcolaReteNeuraleSicura<span class="op">(</span><span class="dt">bool</span> errore_critico<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-label="4"></a>    <span class="co">// 1. Addio ai raw pointers! Benvenuto unique_ptr!</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-5" class="code-annotation-target"><a href="#annotated-cell-3-5" aria-label="5"></a>    <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Layer<span class="op">&gt;</span> dl <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="st">"Hidden"</span><span class="op">);</span></span>
-<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-label="6"></a>    </span>
-<span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-label="7"></a>    <span class="co">// 2. Si usa in modo IDENTICO ai vecchi puntatori</span></span>
-<span id="annotated-cell-3-8"><a href="#annotated-cell-3-8" aria-label="8"></a>    dl<span class="op">-&gt;</span>forward<span class="op">();</span> <span class="co">// Usa l'operatore freccia -&gt;</span></span>
-<span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-label="9"></a>    </span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-3-10" class="code-annotation-target"><a href="#annotated-cell-3-10" aria-label="10"></a>    <span class="cf">if</span> <span class="op">(</span>errore_critico<span class="op">)</span> <span class="cf">return</span><span class="op">;</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-3-11" class="code-annotation-target"><a href="#annotated-cell-3-11" aria-label="11"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="5" data-code-annotation="1">Alloca in Heap un DenseLayer e lo affida alla custodia dell’unique_ptr <code>dl</code>.</span>
-</dd>
-<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="10" data-code-annotation="2">Se faccio un <code>return</code> anticipato, NON SUCCEDE NULLA DI MALE!</span>
-</dd>
-<dt data-target-cell="annotated-cell-3" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="11" data-code-annotation="3">Qualunque sia il percorso, a fine scope <code>dl</code> muore e porta con sé il DenseLayer!</span>
-</dd>
-</dl>
-</section>
-<section id="luccisione-automatica-distruttore-silente" class="slide level2 smaller">
-<h2>L’Uccisione Automatica (Distruttore silente)</h2>
-<p>Come fa un banalissimo Template a sapere quando fare <code>delete</code>? La struttura interna di <code>unique_ptr</code> è (estremamente semplificata) questa:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a aria-label="1"></a><span class="co">// Come è fatto dentro (pseudo-codice)</span></span>
-<span id="cb3-2"><a aria-label="2"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
-<span id="cb3-3"><a aria-label="3"></a><span class="kw">class</span> unique_ptr <span class="op">{</span></span>
-<span id="cb3-4"><a aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb3-5"><a aria-label="5"></a>    T<span class="op">*</span> ptr<span class="op">;</span> <span class="co">// Il vero raw pointer nascosto!</span></span>
-<span id="cb3-6"><a aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb3-7"><a aria-label="7"></a>    <span class="co">// ...</span></span>
-<span id="cb3-8"><a aria-label="8"></a>    <span class="op">~</span>unique_ptr<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb3-9"><a aria-label="9"></a>        <span class="kw">delete</span> ptr<span class="op">;</span> <span class="co">// IL VERO SEGRETO E' QUI.</span></span>
-<span id="cb3-10"><a aria-label="10"></a>    <span class="op">}</span></span>
-<span id="cb3-11"><a aria-label="11"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Sfrutta il determinismo infallibile del distruttore dello Stack!</p>
-</section>
-<section id="la-trasmissione-della-proprietà-stdmove" class="slide level2 smaller">
-<h2>La Trasmissione della Proprietà: <code>std::move</code></h2>
-<p>Poiché è a Proprietà Unica, un <code>unique_ptr</code> <strong>NON PUÒ ESSERE COPIATO</strong>.</p>
-<p>Se provate a fare <code>unique_ptr&lt;Layer&gt; B = A;</code> il compilatore vi ferma: <em><code>error: use of deleted function 'std::unique_ptr&lt;...&gt;::unique_ptr(const std::unique_ptr&lt;...&gt;&amp;)'</code></em>. Il costruttore di copia non è privato: è stato <strong>cancellato</strong>. Se si potesse copiare, due oggetti farebbero un <code>delete</code> della stessa RAM (Double Free crash).</p>
-<p>Ma potete <strong>trasferire</strong> la proprietà a qualcun altro (come passare un testimone). Per farlo usate <code>std::move()</code>. Il padrone originale verrà svuotato (impostato a <code>nullptr</code>), e il nuovo padrone assumerà il comando totale.</p>
-</section>
-<section id="aggiorniamo-la-rete-neurale" class="slide level2 smaller">
-<h2>Aggiorniamo la Rete Neurale!</h2>
-<p>Adesso abbiamo tutti i tasselli del puzzle. Nella Lezione 12 avevamo costruito la rete come un <code>std::vector&lt;Layer*&gt;</code> di puntatori grezzi — la stessa idea del vostro <code>Sequential</code> attuale: puntatori nudi e un distruttore scritto a mano.</p>
-<p>Eravamo costretti a scrivere a mano un pericoloso Distruttore della Rete Neurale, per iterare in un loop il vettore e fare <code>delete</code> di ogni singolo Layer uno ad uno, pregando che nessuno avesse scordato un distruttore <code>virtual</code>.</p>
-<p><strong>Cancelliamo tutto</strong>. Usiamo il C++ Moderno.</p>
-</section>
-<section id="dal-vecchio-al-nuovo-raw-vs-smart" class="slide level2 smaller scrollable">
-<h2>Dal Vecchio al Nuovo (Raw vs Smart)</h2>
-<p>Ecco la rivoluzione, affiancata in stile colonne:</p>
+<section id="la-cartella-della-lezione" class="slide level2 smaller">
+<h2>La cartella della lezione</h2>
+<p>Come nelle lezioni precedenti, gli esempi si scrivono e si compilano durante la lezione, in una cartella a parte.</p>
 <div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Vecchio Codice C++98</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a aria-label="1"></a><span class="kw">class</span> Sequential <span class="op">{</span></span>
-<span id="cb4-2"><a aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="cb4-3"><a aria-label="3"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span>Layer<span class="op">*&gt;</span> net<span class="op">;</span></span>
-<span id="cb4-4"><a aria-label="4"></a></span>
-<span id="cb4-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="cb4-6"><a aria-label="6"></a>    <span class="dt">void</span> add<span class="op">(</span>Layer<span class="op">*</span> l<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-7"><a aria-label="7"></a>        net<span class="op">.</span>push_back<span class="op">(</span>l<span class="op">);</span></span>
-<span id="cb4-8"><a aria-label="8"></a>    <span class="op">}</span></span>
-<span id="cb4-9"><a aria-label="9"></a>    </span>
-<span id="cb4-10"><a aria-label="10"></a>    <span class="co">// OBBLIGO MORTALE</span></span>
-<span id="cb4-11"><a aria-label="11"></a>    <span class="op">~</span>Sequential<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb4-12"><a aria-label="12"></a>        <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>net<span class="op">.</span>size<span class="op">();</span> i<span class="op">++)</span></span>
-<span id="cb4-13"><a aria-label="13"></a>            <span class="kw">delete</span> net<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb4-14"><a aria-label="14"></a>    <span class="op">}</span></span>
-<span id="cb4-15"><a aria-label="15"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<p><strong>Nuovo Codice C++14</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-9"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy"><code class="sourceCode cpp"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
-<span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-label="2"></a></span>
-<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-label="3"></a><span class="kw">class</span> Sequential <span class="op">{</span></span>
-<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-label="4"></a><span class="kw">private</span><span class="op">:</span></span>
-<span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-label="5"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Layer<span class="op">&gt;&gt;</span> net<span class="op">;</span></span>
-<span id="annotated-cell-9-6"><a href="#annotated-cell-9-6" aria-label="6"></a></span>
-<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-9-8"><a href="#annotated-cell-9-8" aria-label="8"></a>    <span class="dt">void</span> add<span class="op">(</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Layer<span class="op">&gt;</span> l<span class="op">)</span> <span class="op">{</span></span>
-<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-label="9"></a>        net<span class="op">.</span>push_back<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>l<span class="op">));</span></span>
-<span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-label="10"></a>    <span class="op">}</span></span>
-<span id="annotated-cell-9-11"><a href="#annotated-cell-9-11" aria-label="11"></a>    </span>
-<span id="annotated-cell-9-12"><a href="#annotated-cell-9-12" aria-label="12"></a>    <span class="co">// NESSUN DISTRUTTORE!</span></span>
-<span id="annotated-cell-9-13"><a href="#annotated-cell-9-13" aria-label="13"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="column" style="width:55%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>CMakeLists.txt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="CMakeLists.txt"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb2-1"><a aria-label="1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> <span class="dt">3.15</span>)</span>
+<span id="cb2-2"><a aria-label="2"></a><span class="kw">project</span>(Lezione17)</span>
+<span id="cb2-3"><a aria-label="3"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 17)</span>
+<span id="cb2-4"><a aria-label="4"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="ot">ON</span>)</span>
+<span id="cb2-5"><a aria-label="5"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_FLAGS</span> <span class="st">"</span><span class="dv">${CMAKE_CXX_FLAGS}</span><span class="st"> -Wall"</span>)</span>
+<span id="cb2-6"><a aria-label="6"></a><span class="co"># AddressSanitizer (Lezione 08)</span></span>
+<span id="cb2-7"><a aria-label="7"></a><span class="kw">add_compile_options</span>(-fsanitize=address -g)</span>
+<span id="cb2-8"><a aria-label="8"></a><span class="kw">add_link_options</span>(-fsanitize=address)</span>
+<span id="cb2-9"><a aria-label="9"></a><span class="co"># qui una riga add_executable per esempio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:45%;">
+<ol type="1">
+<li>Create la cartella <code>LEZIONE_17</code>, fuori da <code>basic_neural_plusplus</code>, e apritela in VS Code.</li>
+<li>Createvi il file <code>CMakeLists.txt</code> qui a sinistra.</li>
+<li>Dalla cartella <code>LEZIONE_17</code>:<br>
+<code>cmake -B build</code>.</li>
+</ol>
+<p>Il <code>CMakeLists.txt</code> è quello della Lezione 16, con <code>-Wall</code> e l’AddressSanitizer.</p>
 </div></div>
+</section>
+<section id="un-eseguibile-per-esempio" class="slide level2 smaller">
+<h2>Un eseguibile per esempio</h2>
+<p>Sopra ogni esempio c’è il nome del suo file. Quando lo incontrate, create il file, copiatevi il codice e aggiungete al <code>CMakeLists.txt</code> la sua riga:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb3-1"><a aria-label="1"></a><span class="kw">add_executable</span>(<span class="bn">pesi</span> main_pesi.cpp pesi.cpp)</span>
+<span id="cb3-2"><a aria-label="2"></a><span class="kw">add_executable</span>(<span class="bn">anticipato</span> anticipato.cpp)</span>
+<span id="cb3-3"><a aria-label="3"></a><span class="kw">add_executable</span>(<span class="bn">unico</span> unico.cpp)</span>
+<span id="cb3-4"><a aria-label="4"></a><span class="kw">add_executable</span>(<span class="bn">cedere</span> cedere.cpp)</span>
+<span id="cb3-5"><a aria-label="5"></a><span class="kw">add_executable</span>(<span class="bn">condiviso</span> condiviso.cpp)</span>
+<span id="cb3-6"><a aria-label="6"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_rete</span> esercizio_rete.cpp)        <span class="co"># esercizio</span></span>
+<span id="cb3-7"><a aria-label="7"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_albero</span> esercizio_albero.cpp)    <span class="co"># esercizio facoltativo</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>L’esempio <code>pesi</code> è fatto di due file <code>.cpp</code>, e la sua riga li elenca tutti e due. Gli esempi da <code>anticipato</code> a <code>condiviso</code> usano le classi di <code>layers.hpp</code> della Lezione 16: copiatelo in <code>LEZIONE_17</code>. Poi, dalla cartella <code>LEZIONE_17</code>, compilate ed eseguite solo l’esempio che vi serve:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> pesi <span class="kw">&amp;&amp;</span> <span class="ex">./build/pesi</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I messaggi citati sono quelli di g++ su Linux; con clang (macOS) il testo cambia, il significato no.</p>
+</section>
+<section id="ripasso-header-e-sorgente" class="slide level2 smaller">
+<h2>Ripasso: header e sorgente</h2>
+<p>Nella Lezione 08 una classe si poteva scrivere in due modi:</p>
+<ul>
+<li><strong>divisa in due file</strong>: la classe, con i prototipi dei metodi, nell’header <code>.hpp</code>; il codice dei metodi in un file sorgente <code>.cpp</code>, compilato a parte;</li>
+<li><strong>tutta nell’header</strong>, come Eigen e come il framework.</li>
+</ul>
+<p>Nella Lezione 16 il template <code>Pesi</code> era tutto in un file. Oggi proviamo a dividerlo in <code>pesi.hpp</code> e <code>pesi.cpp</code>, e vediamo perché per un template non si può.</p>
+<p>Ricordate i due passi della Lezione 08:</p>
 <ol type="1">
-<li>Array Polimorfico Eterogeneo Infrangibile.</li>
-<li>Uso <code>std::move</code> per cedere la proprietà del Layer al Vettore. Il Vettore ora ne è l’unico Padrone.</li>
+<li><strong>compilazione</strong>: ogni <code>.cpp</code> diventa un file oggetto <code>.o</code>, senza vedere gli altri <code>.cpp</code>;</li>
+<li><strong>linking</strong>: il linker unisce i file <code>.o</code> e collega ogni chiamata al codice della funzione chiamata. Se quel codice non c’è in nessun <code>.o</code>, si ferma con <em><code>undefined reference</code></em>.</li>
 </ol>
 </section>
-<section id="il-vantaggio-definitivo-nessun-distruttore" class="slide level2 smaller">
-<h2>Il Vantaggio Definitivo: Nessun Distruttore</h2>
-<p>Perché nel “Nuovo Codice” la Rete Neurale non ha il Distruttore?</p>
-<p>Quando la Rete Neurale muore nel <code>main</code> (perché il programma finisce o perché esce dallo scope), i suoi membri privati muoiono. Il membro privato <code>net</code> (uno <code>std::vector</code>) muore e svuota le sue celle in automatico.</p>
-<p>Le sue celle contengono degli <code>std::unique_ptr&lt;Layer&gt;</code>. Quando le celle si svuotano, l’<code>unique_ptr</code> intercetta la morte ed esegue il <code>delete</code> fisico sull’oggetto in RAM.</p>
-<p><strong>Una gigantesca, bellissima, automatica reazione a catena che libera tutta la RAM senza un singolo <code>delete</code> da parte vostra!</strong></p>
+<section id="un-template-diviso-in-due-file" class="slide level2 smaller">
+<h2>Un template diviso in due file</h2>
+<div class="columns">
+<div class="column" style="width:42%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pesi.hpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="pesi.hpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="pp">#ifndef PESI_HPP</span></span>
+<span id="cb5-2"><a aria-label="2"></a><span class="pp">#define PESI_HPP</span></span>
+<span id="cb5-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb5-4"><a aria-label="4"></a></span>
+<span id="cb5-5"><a aria-label="5"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb5-6"><a aria-label="6"></a><span class="kw">class</span> Pesi <span class="op">{</span></span>
+<span id="cb5-7"><a aria-label="7"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb5-8"><a aria-label="8"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="va">w_</span><span class="op">;</span></span>
+<span id="cb5-9"><a aria-label="9"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb5-10"><a aria-label="10"></a>    Pesi<span class="op">(</span><span class="dt">int</span> Nn<span class="op">,</span> <span class="dt">int</span> Ni<span class="op">);</span></span>
+<span id="cb5-11"><a aria-label="11"></a>    <span class="dt">int</span> quanti<span class="op">()</span> <span class="at">const</span><span class="op">;</span></span>
+<span id="cb5-12"><a aria-label="12"></a><span class="op">};</span></span>
+<span id="cb5-13"><a aria-label="13"></a></span>
+<span id="cb5-14"><a aria-label="14"></a><span class="pp">#endif</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:58%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pesi.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="pesi.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"pesi.hpp"</span></span>
+<span id="cb6-2"><a aria-label="2"></a></span>
+<span id="cb6-3"><a aria-label="3"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb6-4"><a aria-label="4"></a>Pesi<span class="op">&lt;</span>T<span class="op">&gt;::</span>Pesi<span class="op">(</span><span class="dt">int</span> Nn<span class="op">,</span> <span class="dt">int</span> Ni<span class="op">)</span> <span class="op">:</span> <span class="va">w_</span><span class="op">(</span>Nn <span class="op">*</span> Ni<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb6-5"><a aria-label="5"></a></span>
+<span id="cb6-6"><a aria-label="6"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb6-7"><a aria-label="7"></a><span class="dt">int</span> Pesi<span class="op">&lt;</span>T<span class="op">&gt;::</span>quanti<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">w_</span><span class="op">.</span>size<span class="op">();</span> <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Fuori dalla classe anche ogni metodo è un template: si ripete <code>template &lt;typename T&gt;</code>, e il nome della classe si scrive <code>Pesi&lt;T&gt;</code>.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>main_pesi.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="main_pesi.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb7-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">"pesi.hpp"</span></span>
+<span id="cb7-3"><a aria-label="3"></a></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb7-5"><a aria-label="5"></a>    Pesi<span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;</span> f<span class="op">(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb7-6"><a aria-label="6"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> f<span class="op">.</span>quanti<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" pesi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb7-7"><a aria-label="7"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-8"><a aria-label="8"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div></div>
 </section>
-<section id="cenni-al-fratello-maggiore-shared_ptrt" class="slide level2 smaller">
-<h2>Cenni al Fratello Maggiore: <code>shared_ptr&lt;T&gt;</code></h2>
-<p>Nella libreria <code>&lt;memory&gt;</code> c’è un altro smart pointer: <code>std::shared_ptr&lt;T&gt;</code>. A differenza di quello unico, permette <strong>Proprietari Multipli</strong>. Mantiene un “Reference Counter” (Contatore di Riferimenti). Ogni volta che viene copiato (<code>A = B;</code>), il contatore sale. Ogni volta che una delle copie muore, il contatore scende. L’oggetto fisico nell’Heap verrà distrutto dal <code>delete</code> <strong>soltanto quando l’ultimo shared pointer rimasto raggiungerà la sua morte (Contatore a 0).</strong></p>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Nota</strong></p>
-</div>
-<div class="callout-content">
-<p>“Lento” va precisato. Misurato con <code>g++ -O2</code>: <strong>usarlo</strong> non costa nulla (dereferenziare uno <code>shared_ptr</code> o un puntatore grezzo: 0,29 ns entrambi). Costa <strong>copiarlo</strong> — 1,44 ns, per l’incremento e il decremento atomici del contatore — e occupa il doppio, 16 byte contro 8.</p>
-</div>
-</div>
-</div>
-<p>Ma la ragione per non usarlo qui non è la velocità: un Layer appartiene a <strong>una</strong> rete e a nessun’altra. La proprietà condivisa sarebbe una bugia architetturale.</p>
+<section id="lerrore-del-linker" class="slide level2 smaller">
+<h2>L’errore del linker</h2>
+<p><code>pesi.cpp</code> e <code>main_pesi.cpp</code> si compilano senza errori; si ferma il linker:</p>
+<pre><code>undefined reference to `Pesi&lt;float&gt;::Pesi(int, int)'
+undefined reference to `Pesi&lt;float&gt;::quanti() const'
+collect2: error: ld returned 1 exit status</code></pre>
+<p>Il codice dei due metodi per <code>T = float</code> non c’è in nessun <code>.o</code>:</p>
+<ul>
+<li>un template diventa codice macchina solo per un tipo scelto: il compilatore genera la classe e i metodi per ogni tipo usato (Lezione 16), nei file che lo usano;</li>
+<li>in <code>pesi.cpp</code> il codice dei metodi c’è, ma nessuno usa <code>Pesi&lt;float&gt;</code>: il compilatore non genera niente, e <code>pesi.o</code> è vuoto;</li>
+<li>in <code>main_pesi.cpp</code> si usa <code>Pesi&lt;float&gt;</code>, ma <code>pesi.hpp</code> ha solo i prototipi: in <code>main_pesi.o</code> restano due chiamate, e il linker non trova il loro codice.</li>
+</ul>
+<p>Mancano i metodi, non la classe: sono i metodi a diventare codice macchina.</p>
 </section>
-<section id="esercizio-il-vettore-intelligente-10-min" class="slide level2 smaller">
-<h2>Esercizio: Il Vettore Intelligente (10 min)</h2>
+<section id="provate-il-file-oggetto-vuoto" class="slide level2 smaller">
+<h2>Provate: il file oggetto vuoto</h2>
 <ol type="1">
-<li>Crea un file <code>SmartNet.cpp</code>. Ricordati l’include <code>&lt;memory&gt;</code>.</li>
-<li>Dichiara una classe vuota Base <code>Layer</code> e un figlio <code>DenseLayer</code>. Metti dei distruttori rumorosi (<code>cout &lt;&lt; "Morto!\n";</code>). Ricordati il Distruttore Virtuale!!!</li>
-<li>Nel <code>main</code>, crea un <code>std::vector&lt;std::unique_ptr&lt;Layer&gt;&gt; rete;</code>.</li>
-<li>Inserisci tre <code>DenseLayer</code> nella rete con <code>std::make_unique&lt;DenseLayer&gt;()</code>. Attenzione: <code>std::move</code> serve solo quando cedi un <code>unique_ptr</code> che ha già un nome, non su un temporaneo appena creato.</li>
-<li>Non scrivere nessun <code>delete</code> nel main! Esegui il programma e goditi i <code>cout</code> che confermano che tutti e tre i Layer sono stati magicamente distrutti e le perdite di memoria azzerate.</li>
+<li><p>Dalla cartella <code>LEZIONE_17</code> compilate solo <code>pesi.cpp</code> e guardate che cosa contiene il file oggetto. <code>nm</code> elenca i simboli di un file oggetto, cioè le sue funzioni e le sue variabili:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-c</span> pesi.cpp <span class="at">-o</span> pesi.o <span class="kw">&amp;&amp;</span> <span class="fu">nm</span> pesi.o</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cosa stampa <code>nm</code>?<br>
+<span class="fragment">Niente: <code>pesi.o</code> non contiene nessuna funzione.</span></p></li>
+<li><p>Spostate le due definizioni, con il loro <code>template &lt;typename T&gt;</code>, da <code>pesi.cpp</code> in <code>pesi.hpp</code>, prima di <code>#endif</code>. Nel <code>CMakeLists.txt</code> togliete <code>pesi.cpp</code> dalla riga di <code>pesi</code>, rifate <code>cmake -B build</code> e ricompilate. Funziona?<br>
+<span class="fragment">Sì, stampa <code>100352 pesi</code>: <code>main_pesi.cpp</code> ora vede il codice dei metodi, e il compilatore lo genera per <code>float</code>.</span></p></li>
 </ol>
 </section>
-<section id="esercizio-soluzione-le-classi" class="slide level2 smaller">
-<h2>Esercizio: Soluzione (le classi)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-5"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
-<span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
-<span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-label="4"></a></span>
-<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-label="5"></a><span class="kw">class</span> Layer <span class="op">{</span></span>
-<span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-label="6"></a><span class="kw">public</span><span class="op">:</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-7" class="code-annotation-target"><a href="#annotated-cell-5-7" aria-label="7"></a>    <span class="kw">virtual</span> <span class="op">~</span>Layer<span class="op">()</span> <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Layer distrutto</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-label="8"></a><span class="op">};</span></span>
-<span id="annotated-cell-5-9"><a href="#annotated-cell-5-9" aria-label="9"></a></span>
-<span id="annotated-cell-5-10"><a href="#annotated-cell-5-10" aria-label="10"></a><span class="kw">class</span> DenseLayer <span class="op">:</span> <span class="kw">public</span> Layer <span class="op">{</span></span>
-<span id="annotated-cell-5-11"><a href="#annotated-cell-5-11" aria-label="11"></a>    <span class="bu">std::</span>string <span class="va">nome_</span><span class="op">;</span></span>
-<span id="annotated-cell-5-12"><a href="#annotated-cell-5-12" aria-label="12"></a><span class="kw">public</span><span class="op">:</span></span>
-<span id="annotated-cell-5-13"><a href="#annotated-cell-5-13" aria-label="13"></a>    DenseLayer<span class="op">(</span><span class="bu">std::</span>string n<span class="op">)</span> <span class="op">:</span> <span class="va">nome_</span><span class="op">(</span>n<span class="op">)</span> <span class="op">{}</span></span>
-<span id="annotated-cell-5-14"><a href="#annotated-cell-5-14" aria-label="14"></a>    <span class="op">~</span>DenseLayer<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"DenseLayer "</span> <span class="op">&lt;&lt;</span> <span class="va">nome_</span> <span class="op">&lt;&lt;</span> <span class="st">" distrutto</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="annotated-cell-5-15"><a href="#annotated-cell-5-15" aria-label="15"></a><span class="op">};</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="7" data-code-annotation="1">Senza <code>virtual</code> qui, distruggere un <code>DenseLayer</code> attraverso un <code>unique_ptr&lt;Layer&gt;</code> sarebbe Undefined Behaviour: il distruttore del figlio non verrebbe mai chiamato.</span>
-</dd>
-</dl>
+<section id="un-template-sta-tutto-nellheader" class="slide level2 smaller">
+<h2>Un template sta tutto nell’header</h2>
+<p>Un template di classe si scrive tutto nell’header, metodi compresi: chi include l’header vede il codice dei metodi, e il compilatore lo genera per i tipi che usa. I metodi si possono definire dentro la classe, come in <code>Pesi</code> della Lezione 16, o fuori, nell’header, con <code>template &lt;typename T&gt;</code> davanti.</p>
+<p>Se più file <code>.cpp</code> usano lo stesso template con lo stesso tipo, il compilatore genera i metodi in ognuno, e il linker ne tiene una copia sola: l’errore <em><code>multiple definition</code></em> che si ha definendo la stessa funzione in due file non c’è.</p>
+<p>È la scelta del framework, con tutte le classi negli header, e della libreria standard: <code>&lt;vector&gt;</code> è un header che contiene tutto il codice di <code>std::vector</code>. Con g++ 13 il solo <code>bits/stl_vector.h</code>, uno dei file che <code>&lt;vector&gt;</code> include, ha 2135 righe.</p>
 </section>
-<section id="esercizio-soluzione-il-main" class="slide level2 smaller">
-<h2>Esercizio: Soluzione (il <code>main</code>)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-label="1"></a><span class="co">// (va incollato sotto il blocco della slide precedente)</span></span>
-<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-label="2"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-label="3"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Layer<span class="op">&gt;&gt;</span> rete<span class="op">;</span></span>
-<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-label="4"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-5" class="code-annotation-target"><a href="#annotated-cell-6-5" aria-label="5"></a>    rete<span class="op">.</span>push_back<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="st">"L1"</span><span class="op">));</span></span>
-<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-label="6"></a>    rete<span class="op">.</span>push_back<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="st">"L2"</span><span class="op">));</span></span>
-<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-label="7"></a></span>
-<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-label="8"></a>    <span class="kw">auto</span> l3 <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="st">"L3"</span><span class="op">);</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-6-9" class="code-annotation-target"><a href="#annotated-cell-6-9" aria-label="9"></a>    rete<span class="op">.</span>push_back<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>l3<span class="op">));</span></span>
-<span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-label="10"></a></span>
-<span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Fine del main. Nessun delete scritto da me.</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="annotated-cell-6-12"><a href="#annotated-cell-6-12" aria-label="12"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="5" data-code-annotation="1">È un temporaneo, già pronto a cedere il possesso: <code>std::move</code> qui sarebbe superfluo.</span>
-</dd>
-<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="9" data-code-annotation="2"><code>l3</code> ha un nome, quindi la proprietà va ceduta esplicitamente. Dopo questa riga <code>l3</code> vale <code>nullptr</code>.</span>
-</dd>
-</dl>
+<section id="ripasso-il-return-anticipato" class="slide level2 smaller">
+<h2>Ripasso: il <code>return</code> anticipato</h2>
+<p>Nella Lezione 08 un’uscita anticipata saltava il <code>delete[]</code>; nella Lezione 09 l’array aveva un proprietario, <code>Buffer</code>, che lo liberava nel suo distruttore a ogni uscita (il RAII). Lo stesso problema, con un oggetto creato con <code>new</code>:</p>
+<div class="columns">
+<div class="column" style="width:56%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>anticipato.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="anticipato.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb10-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">"layers.hpp"</span></span>
+<span id="cb10-3"><a aria-label="3"></a></span>
+<span id="cb10-4"><a aria-label="4"></a><span class="dt">void</span> costruisci<span class="op">(</span><span class="dt">bool</span> errore<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-5"><a aria-label="5"></a>    DenseLayer<span class="op">*</span> d <span class="op">=</span> <span class="kw">new</span> DenseLayer<span class="op">(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb10-6"><a aria-label="6"></a>    <span class="cf">if</span> <span class="op">(</span>errore<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-7"><a aria-label="7"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb10-8"><a aria-label="8"></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb10-9"><a aria-label="9"></a>    <span class="op">}</span></span>
+<span id="cb10-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> d<span class="op">-&gt;</span>numero_pesi<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" pesi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb10-11"><a aria-label="11"></a>    <span class="kw">delete</span> d<span class="op">;</span></span>
+<span id="cb10-12"><a aria-label="12"></a><span class="op">}</span></span>
+<span id="cb10-13"><a aria-label="13"></a></span>
+<span id="cb10-14"><a aria-label="14"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb10-15"><a aria-label="15"></a>    costruisci<span class="op">(</span><span class="kw">true</span><span class="op">);</span></span>
+<span id="cb10-16"><a aria-label="16"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-17"><a aria-label="17"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:44%;">
+<p>Alla riga 8 si esce senza <code>delete</code>: il puntatore <code>d</code>, variabile locale, viene distrutto, ma il <code>DenseLayer</code> resta nell’heap, e nessuno ne conosce più l’indirizzo.</p>
+<p>Dopo <code>Errore</code>, l’AddressSanitizer segnala <em><code>detected memory leaks</code></em> e <em><code>Direct leak of 16 byte(s) in 1 object(s)</code></em>: i 16 byte sono il <code>DenseLayer</code>. Su macOS i leak si cercano con <code>leaks</code> (Lezione 08).</p>
+</div></div>
 </section>
-<section id="esercizio-cosa-stampa" class="slide level2 smaller">
-<h2>Esercizio: cosa stampa</h2>
-<pre><code>Fine del main. Nessun delete scritto da me.
-DenseLayer L1 distrutto
-Layer distrutto
-DenseLayer L2 distrutto
-Layer distrutto
-DenseLayer L3 distrutto
-Layer distrutto</code></pre>
-<p>Due cose da notare. Le distruzioni arrivano <strong>dopo</strong> l’ultimo <code>cout</code>: sono la fine dello scope del <code>main</code>, non una vostra istruzione. E ogni layer stampa <strong>due</strong> righe: prima il distruttore del figlio, poi quello del padre. È la catena dei distruttori, ed è la prova che il <code>virtual</code> ha funzionato.</p>
+<section id="un-proprietario-stdunique_ptr" class="slide level2 smaller">
+<h2>Un proprietario: <code>std::unique_ptr</code></h2>
+<p>Per un oggetto creato nell’heap la libreria standard ha un proprietario già pronto: <code>std::unique_ptr&lt;T&gt;</code>, dall’header <code>&lt;memory&gt;</code> (C++11). È un template di classe che contiene l’indirizzo di un oggetto di tipo <code>T</code>; quando il <code>std::unique_ptr</code> viene distrutto, il suo distruttore fa <code>delete</code> dell’oggetto.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> d <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb11-2"><a aria-label="2"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> d<span class="op">-&gt;</span>numero_pesi<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" pesi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>std::make_unique&lt;DenseLayer&gt;(128, 784)</code> (C++14) crea il <code>DenseLayer</code> nell’heap, come <code>new DenseLayer(128, 784)</code>, e restituisce un <code>std::unique_ptr&lt;DenseLayer&gt;</code> che ne contiene l’indirizzo.</li>
+<li><code>d</code> si usa come un puntatore, con <code>-&gt;</code>.</li>
+<li><code>d</code> è il proprietario del <code>DenseLayer</code>: quando <code>d</code> viene distrutto, per esempio alla fine del blocco in cui è dichiarato, il <code>DenseLayer</code> viene distrutto con lui.</li>
+</ul>
+</section>
+<section id="un-return-anticipato-senza-leak" class="slide level2 smaller">
+<h2>Un <code>return</code> anticipato senza leak</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>unico.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="unico.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb12-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
+<span id="cb12-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">"layers.hpp"</span></span>
+<span id="cb12-4"><a aria-label="4"></a></span>
+<span id="cb12-5"><a aria-label="5"></a><span class="dt">void</span> costruisci<span class="op">(</span><span class="dt">bool</span> errore<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-6"><a aria-label="6"></a>    <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> d <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb12-7"><a aria-label="7"></a>    <span class="cf">if</span> <span class="op">(</span>errore<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-8"><a aria-label="8"></a>        <span class="bu">std::</span>cerr <span class="op">&lt;&lt;</span> <span class="st">"Errore</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb12-9"><a aria-label="9"></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb12-10"><a aria-label="10"></a>    <span class="op">}</span></span>
+<span id="cb12-11"><a aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> d<span class="op">-&gt;</span>numero_pesi<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" pesi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb12-12"><a aria-label="12"></a><span class="op">}</span></span>
+<span id="cb12-13"><a aria-label="13"></a></span>
+<span id="cb12-14"><a aria-label="14"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-15"><a aria-label="15"></a>    costruisci<span class="op">(</span><span class="kw">true</span><span class="op">);</span></span>
+<span id="cb12-16"><a aria-label="16"></a>    costruisci<span class="op">(</span><span class="kw">false</span><span class="op">);</span></span>
+<span id="cb12-17"><a aria-label="17"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-18"><a aria-label="18"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Alle righe 9 e 12 <code>d</code> viene distrutto, e il suo distruttore fa <code>delete</code> del <code>DenseLayer</code>: stampa <code>Errore</code> e <code>100352 pesi</code>, senza leak.</p>
+</section>
+<section id="provate-anticipato-e-unico" class="slide level2 smaller">
+<h2>Provate: <code>anticipato</code> e <code>unico</code></h2>
+<ol type="1">
+<li><p>Eseguite <code>anticipato</code> e <code>unico</code>: in quale dei due l’AddressSanitizer segnala un leak? Su macOS l’AddressSanitizer non cerca i leak (Lezione 08): compilate senza e usate <code>leaks</code>, poi lo stesso per <code>unico</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a aria-label="1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-g</span> anticipato.cpp <span class="at">-o</span> anticipato_mac <span class="kw">&amp;&amp;</span> <span class="ex">leaks</span> <span class="at">--atExit</span> <span class="at">--</span> ./anticipato_mac</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="fragment">Solo in <code>anticipato</code>. In <code>unico</code> il <code>DenseLayer</code> ha un proprietario, <code>d</code>, che lo distrugge anche quando si esce alla riga 9.</span></p></li>
+<li><p>In <code>unico.cpp</code>, dopo la riga 11, scrivete <code>delete d;</code>. Compila?<br>
+<span class="fragment">No: <em><code>error: type 'class std::unique_ptr&lt;DenseLayer&gt;' argument given to 'delete', expected pointer</code></em>. <code>d</code> non è un puntatore ma un oggetto, che contiene un puntatore: il <code>delete</code> lo fa il suo distruttore, e voi non lo scrivete.</span></p></li>
+</ol>
+</section>
+<section id="comè-fatto-un-stdunique_ptr" class="slide level2 smaller">
+<h2>Com’è fatto un <code>std::unique_ptr</code></h2>
+<p>Una versione ridotta, solo per vedere il meccanismo:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a aria-label="1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb14-2"><a aria-label="2"></a><span class="kw">class</span> unique_ptr <span class="op">{</span></span>
+<span id="cb14-3"><a aria-label="3"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb14-4"><a aria-label="4"></a>    T<span class="op">*</span> <span class="va">ptr_</span><span class="op">;</span></span>
+<span id="cb14-5"><a aria-label="5"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb14-6"><a aria-label="6"></a>    unique_ptr<span class="op">(</span>T<span class="op">*</span> p<span class="op">)</span> <span class="op">:</span> <span class="va">ptr_</span><span class="op">(</span>p<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb14-7"><a aria-label="7"></a>    <span class="op">~</span>unique_ptr<span class="op">()</span> <span class="op">{</span> <span class="kw">delete</span> <span class="va">ptr_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb14-8"><a aria-label="8"></a>    T<span class="op">*</span> <span class="kw">operator</span><span class="op">-&gt;()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">ptr_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb14-9"><a aria-label="9"></a>    T<span class="op">*</span> get<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="va">ptr_</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb14-10"><a aria-label="10"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>ptr_</code> è l’indirizzo dell’oggetto, e il costruttore lo riceve.</li>
+<li>Il distruttore fa <code>delete</code>: è la classe <code>Buffer</code> della Lezione 09, scritta una volta per tutti i tipi con un template.</li>
+<li>L’operatore <code>-&gt;</code>, ridefinito come gli operatori della Lezione 10, restituisce l’indirizzo: per questo <code>d-&gt;numero_pesi()</code> funziona come con un puntatore.</li>
+<li><code>get()</code> restituisce l’indirizzo, senza cedere l’oggetto.</li>
+</ul>
+</section>
+<section id="un-stdunique_ptr-non-si-copia" class="slide level2 smaller">
+<h2>Un <code>std::unique_ptr</code> non si copia</h2>
+<p>Se un <code>std::unique_ptr</code> si potesse copiare, due oggetti conterrebbero lo stesso indirizzo, e alla loro distruzione farebbero due volte <code>delete</code> della stessa memoria: il double free della Lezione 08. Per questo la copia di un <code>std::unique_ptr</code> è vietata: il suo costruttore di copia è cancellato con <code>= delete</code>, come nel Singleton della Lezione 13 e in <code>Sequential</code> dal Laboratorio 06:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> a <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb15-2"><a aria-label="2"></a><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> b <span class="op">=</span> a<span class="op">;</span>      <span class="co">// non compila</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>error: use of deleted function 'std::unique_ptr&lt;_Tp, _Dp&gt;::unique_ptr(const std::unique_ptr&lt;_Tp, _Dp&gt;&amp;)
+       [with _Tp = DenseLayer; _Dp = std::default_delete&lt;DenseLayer&gt;]'</code></pre>
+<p><code>_Tp</code> e <code>_Dp</code> sono i parametri del template <code>std::unique_ptr</code>: il tipo dell’oggetto, <code>DenseLayer</code>, e chi lo distrugge, <code>std::default_delete&lt;DenseLayer&gt;</code>, che fa <code>delete</code>. Un <code>std::unique_ptr</code> non si copia, ma può <strong>cedere</strong> l’oggetto a un altro <code>std::unique_ptr</code>.</p>
+</section>
+<section id="cedere-la-proprietà-stdmove" class="slide level2 smaller">
+<h2>Cedere la proprietà: <code>std::move</code></h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>cedere.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-filename="cedere.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb17-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
+<span id="cb17-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;utility&gt;</span></span>
+<span id="cb17-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">"layers.hpp"</span></span>
+<span id="cb17-5"><a aria-label="5"></a></span>
+<span id="cb17-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb17-7"><a aria-label="7"></a>    <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> a <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb17-8"><a aria-label="8"></a>    <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> b <span class="op">=</span> <span class="bu">std::</span>move<span class="op">(</span>a<span class="op">);</span></span>
+<span id="cb17-9"><a aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> b<span class="op">-&gt;</span>numero_pesi<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" pesi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb17-10"><a aria-label="10"></a>    <span class="cf">if</span> <span class="op">(</span>a <span class="op">==</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-11"><a aria-label="11"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"a non possiede niente</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb17-12"><a aria-label="12"></a>    <span class="op">}</span></span>
+<span id="cb17-13"><a aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb17-14"><a aria-label="14"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Riga 8: <code>std::move(a)</code>, da <code>&lt;utility&gt;</code>, dice che il contenuto di <code>a</code> si può cedere: <code>b</code> prende l’indirizzo del <code>DenseLayer</code>, e <code>a</code> resta vuoto. Il <code>DenseLayer</code> non viene copiato e non si sposta in memoria: cambia solo il proprietario.</li>
+<li>Riga 10: dopo la cessione <code>a</code> vale <code>nullptr</code>. Stampa <code>100352 pesi</code> e <code>a non possiede niente</code>; alla fine solo <code>b</code> fa <code>delete</code>.</li>
+</ul>
+</section>
+<section id="provate-copiare-e-cedere" class="slide level2 smaller">
+<h2>Provate: copiare e cedere</h2>
+<ol type="1">
+<li>In <code>cedere.cpp</code>, alla riga 8, scrivete <code>= a;</code> al posto di <code>= std::move(a);</code>. Compila?<br>
+<span class="fragment">No: è la copia della slide precedente, <em><code>use of deleted function</code></em>.</span></li>
+<li>Rimettete <code>std::move(a)</code>, e prima di <code>return 0;</code> scrivete <code style="white-space: nowrap">std::cout &lt;&lt; a-&gt;numero_pesi() &lt;&lt; "\n";</code>. Compila? Cosa succede in esecuzione?<br>
+<span class="fragment">Compila: il compilatore non sa che <code>a</code> è vuoto. Dopo le due righe di output l’AddressSanitizer ferma il programma con <em><code>SEGV on unknown address 0x000000000008</code></em>: <code>a</code> contiene <code>nullptr</code>, e <code>numero_pesi</code> legge <code>Nn_</code> a un indirizzo vicino a 0. Dopo <code>std::move</code> un <code>std::unique_ptr</code> non si usa più.</span></li>
+</ol>
+</section>
+<section id="la-rete-con-stdunique_ptr" class="slide level2 smaller">
+<h2>La rete con <code>std::unique_ptr</code></h2>
+<p>Nella Lezione 16 la rete era un <code>std::vector&lt;Layer*&gt;</code>, e i layer andavano distrutti con un ciclo di <code>delete</code>. Scritta come classe, con la copia vietata come nel Laboratorio 06:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a aria-label="1"></a><span class="kw">class</span> Sequential <span class="op">{</span></span>
+<span id="cb18-2"><a aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb18-3"><a aria-label="3"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span>Layer<span class="op">*&gt;</span> layers<span class="op">;</span></span>
+<span id="cb18-4"><a aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb18-5"><a aria-label="5"></a>    Sequential<span class="op">()</span> <span class="op">=</span> <span class="cf">default</span><span class="op">;</span></span>
+<span id="cb18-6"><a aria-label="6"></a>    Sequential<span class="op">(</span><span class="at">const</span> Sequential<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="cb18-7"><a aria-label="7"></a>    Sequential<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> Sequential<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="cb18-8"><a aria-label="8"></a>    <span class="dt">void</span> add<span class="op">(</span>Layer<span class="op">*</span> l<span class="op">)</span> <span class="op">{</span> layers<span class="op">.</span>push_back<span class="op">(</span>l<span class="op">);</span> <span class="op">}</span></span>
+<span id="cb18-9"><a aria-label="9"></a>    <span class="op">~</span>Sequential<span class="op">()</span> <span class="op">{</span> <span class="cf">for</span> <span class="op">(</span>Layer<span class="op">*</span> l <span class="op">:</span> layers<span class="op">)</span> <span class="kw">delete</span> l<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb18-10"><a aria-label="10"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Con <code>std::unique_ptr</code>, come nel framework:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb19-1"><a aria-label="1"></a><span class="kw">class</span> Sequential <span class="op">{</span></span>
+<span id="cb19-2"><a aria-label="2"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb19-3"><a aria-label="3"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Layer<span class="op">&gt;&gt;</span> layers<span class="op">;</span></span>
+<span id="cb19-4"><a aria-label="4"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb19-5"><a aria-label="5"></a>    <span class="dt">void</span> add<span class="op">(</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Layer<span class="op">&gt;</span> l<span class="op">)</span> <span class="op">{</span> layers<span class="op">.</span>push_back<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>l<span class="op">));</span> <span class="op">}</span></span>
+<span id="cb19-6"><a aria-label="6"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="che-cosa-cambia-nella-rete" class="slide level2 smaller">
+<h2>Che cosa cambia nella rete</h2>
+<ul>
+<li><p><strong>Niente distruttore.</strong> Quando la rete viene distrutta, viene distrutto il suo attributo <code>layers</code>; il <code>std::vector</code> distrugge i suoi <code>std::unique_ptr</code>, e ognuno fa <code>delete</code> del suo layer.</p></li>
+<li><p><strong>Niente <code>= delete</code>.</strong> Un <code>std::vector</code> di <code>std::unique_ptr</code> non si copia, e quindi nemmeno la rete: una copia non compila, anche senza <code>= delete</code>.</p></li>
+<li><p><strong><code>add</code> riceve un <code>std::unique_ptr</code> e lo cede al vettore con <code>std::move</code>.</strong> Chi chiama scrive:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a>rete<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">));</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Il risultato di <code>std::make_unique</code> non ha un nome, e si cede senza <code>std::move</code>. Un <code>std::unique_ptr</code> con un nome, invece, si cede con <code>rete.add(std::move(u));</code>, e dopo <code>u</code> vale <code>nullptr</code>.</p></li>
+<li><p><strong>Il distruttore di <code>Layer</code> resta <code>virtual</code></strong> (Lezione 12): il <code>delete</code> di un <code>std::unique_ptr&lt;Layer&gt;</code> passa da un <code>Layer*</code>.</p></li>
+</ul>
+</section>
+<section id="cenni-a-stdshared_ptr" class="slide level2 smaller">
+<h2>Cenni a <code>std::shared_ptr</code></h2>
+<p><code>std::shared_ptr&lt;T&gt;</code>, sempre da <code>&lt;memory&gt;</code>, permette <strong>più proprietari</strong> dello stesso oggetto: tiene il conto dei proprietari, che sale a ogni copia e scende quando una copia viene distrutta. L’ultima, quando il conto arriva a 0, fa <code>delete</code> dell’oggetto.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>condiviso.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-filename="condiviso.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb21-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb21-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
+<span id="cb21-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">"layers.hpp"</span></span>
+<span id="cb21-4"><a aria-label="4"></a></span>
+<span id="cb21-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb21-6"><a aria-label="6"></a>    <span class="bu">std::</span>shared_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> a <span class="op">=</span> <span class="bu">std::</span>make_shared<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
+<span id="cb21-7"><a aria-label="7"></a>    <span class="bu">std::</span>shared_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> b <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb21-8"><a aria-label="8"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> a<span class="op">.</span>use_count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" proprietari</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb21-9"><a aria-label="9"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb21-10"><a aria-label="10"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Alla riga 6 <code>std::make_shared</code> crea l’oggetto, come <code>std::make_unique</code>; alla riga 7 il <code>std::shared_ptr</code> si copia, e <code>use_count()</code> stampa <code>2 proprietari</code>. Nel framework un layer appartiene a una sola rete, e basta <code>std::unique_ptr</code>: <code>std::shared_ptr</code> serve solo per un oggetto con più proprietari.</p>
+</section>
+<section id="esercizio-i-layer-di-una-rete" class="slide level2 smaller">
+<h2>Esercizio: i layer di una rete</h2>
+<p><strong>Scopo:</strong> tenere i layer di una rete in un <code>std::vector</code> di <code>std::unique_ptr&lt;Layer&gt;</code>, come <code>Sequential</code> nel framework, e vedere dai messaggi dei distruttori che i layer vengono distrutti senza scrivere nessun <code>delete</code>, e in che ordine.</p>
+<ol type="1">
+<li><p>In <code>esercizio_rete.cpp</code> (slide seguente) completate i due distruttori e il <code>main</code>, come descritto nei commenti.</p></li>
+<li><p>Compilate ed eseguite:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_rete <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_rete</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Quante righe stampa, e in che ordine?</p></li>
+<li><p>Togliete <code>virtual</code> dal distruttore di <code>Layer</code> e <code>override</code> da quello di <code>DenseLayer</code>, ricompilate ed eseguite. Cosa cambia?</p></li>
+</ol>
+</section>
+<section id="rete-il-file-da-completare" class="slide level2 smaller">
+<h2>Rete: il file da completare</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_rete.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-filename="esercizio_rete.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb23-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb23-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
+<span id="cb23-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;utility&gt;</span></span>
+<span id="cb23-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb23-5"><a aria-label="5"></a></span>
+<span id="cb23-6"><a aria-label="6"></a><span class="kw">class</span> Layer <span class="op">{</span></span>
+<span id="cb23-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb23-8"><a aria-label="8"></a>    <span class="co">// da completare: un distruttore virtual che stampa "~Layer"</span></span>
+<span id="cb23-9"><a aria-label="9"></a><span class="op">};</span></span>
+<span id="cb23-10"><a aria-label="10"></a></span>
+<span id="cb23-11"><a aria-label="11"></a><span class="kw">class</span> DenseLayer <span class="op">:</span> <span class="kw">public</span> Layer <span class="op">{</span></span>
+<span id="cb23-12"><a aria-label="12"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb23-13"><a aria-label="13"></a>    <span class="dt">int</span> Nn_<span class="op">,</span> Ni_<span class="op">;</span></span>
+<span id="cb23-14"><a aria-label="14"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb23-15"><a aria-label="15"></a>    DenseLayer<span class="op">(</span><span class="dt">int</span> Nn<span class="op">,</span> <span class="dt">int</span> Ni<span class="op">)</span> <span class="op">:</span> Nn_<span class="op">(</span>Nn<span class="op">),</span> Ni_<span class="op">(</span>Ni<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb23-16"><a aria-label="16"></a>    <span class="co">// da completare: un distruttore (con override) che stampa per esempio "~DenseLayer 128x784"</span></span>
+<span id="cb23-17"><a aria-label="17"></a><span class="op">};</span></span>
+<span id="cb23-18"><a aria-label="18"></a></span>
+<span id="cb23-19"><a aria-label="19"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb23-20"><a aria-label="20"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Layer<span class="op">&gt;&gt;</span> rete<span class="op">;</span></span>
+<span id="cb23-21"><a aria-label="21"></a>    <span class="co">// da completare: aggiungete con push_back un DenseLayer(128, 784) creato con std::make_unique;</span></span>
+<span id="cb23-22"><a aria-label="22"></a>    <span class="co">// poi un std::unique_ptr&lt;Layer&gt; u con un DenseLayer(10, 128), da cedere a rete con std::move;</span></span>
+<span id="cb23-23"><a aria-label="23"></a>    <span class="co">// stampate "fine del main"</span></span>
+<span id="cb23-24"><a aria-label="24"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-25"><a aria-label="25"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Compila così com’è e non stampa niente.</p>
+</section>
+<section id="soluzione-dellesercizio" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_rete.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-filename="esercizio_rete.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb24-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb24-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
+<span id="cb24-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;utility&gt;</span></span>
+<span id="cb24-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb24-5"><a aria-label="5"></a></span>
+<span id="cb24-6"><a aria-label="6"></a><span class="kw">class</span> Layer <span class="op">{</span></span>
+<span id="cb24-7"><a aria-label="7"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb24-8"><a aria-label="8"></a>    <span class="kw">virtual</span> <span class="op">~</span>Layer<span class="op">()</span> <span class="op">{</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"~Layer</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb24-9"><a aria-label="9"></a><span class="op">};</span></span>
+<span id="cb24-10"><a aria-label="10"></a></span>
+<span id="cb24-11"><a aria-label="11"></a><span class="kw">class</span> DenseLayer <span class="op">:</span> <span class="kw">public</span> Layer <span class="op">{</span></span>
+<span id="cb24-12"><a aria-label="12"></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb24-13"><a aria-label="13"></a>    <span class="dt">int</span> Nn_<span class="op">,</span> Ni_<span class="op">;</span></span>
+<span id="cb24-14"><a aria-label="14"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb24-15"><a aria-label="15"></a>    DenseLayer<span class="op">(</span><span class="dt">int</span> Nn<span class="op">,</span> <span class="dt">int</span> Ni<span class="op">)</span> <span class="op">:</span> Nn_<span class="op">(</span>Nn<span class="op">),</span> Ni_<span class="op">(</span>Ni<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb24-16"><a aria-label="16"></a>    <span class="op">~</span>DenseLayer<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb24-17"><a aria-label="17"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"~DenseLayer "</span> <span class="op">&lt;&lt;</span> Nn_ <span class="op">&lt;&lt;</span> <span class="st">"x"</span> <span class="op">&lt;&lt;</span> Ni_ <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb24-18"><a aria-label="18"></a>    <span class="op">}</span></span>
+<span id="cb24-19"><a aria-label="19"></a><span class="op">};</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Il distruttore di <code>Layer</code> è <code>virtual</code>, e quello di <code>DenseLayer</code> lo ridefinisce, con <code>override</code> (Lezione 12).</p>
+</section>
+<section id="soluzione-il-main" class="slide level2 smaller">
+<h2>Soluzione: il <code>main</code></h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_rete.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25" data-filename="esercizio_rete.cpp" data-startfrom="20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 19;"><span id="cb25-20"><a aria-label="20"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb25-21"><a aria-label="21"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Layer<span class="op">&gt;&gt;</span> rete<span class="op">;</span></span>
+<span id="cb25-22"><a aria-label="22"></a>    rete<span class="op">.</span>push_back<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">));</span></span>
+<span id="cb25-23"><a aria-label="23"></a>    <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Layer<span class="op">&gt;</span> u <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">128</span><span class="op">);</span></span>
+<span id="cb25-24"><a aria-label="24"></a>    rete<span class="op">.</span>push_back<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>u<span class="op">));</span></span>
+<span id="cb25-25"><a aria-label="25"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"fine del main</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb25-26"><a aria-label="26"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-27"><a aria-label="27"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Riga 22: il risultato di <code>std::make_unique</code> non ha un nome, e si cede senza <code>std::move</code>.</li>
+<li>Riga 24: <code>u</code> ha un nome, e si cede con <code>std::move</code>; dopo, <code>u</code> vale <code>nullptr</code>.</li>
+<li>Righe 22 e 23: <code>std::make_unique&lt;DenseLayer&gt;</code> restituisce un <code>std::unique_ptr&lt;DenseLayer&gt;</code>, che si converte in un <code>std::unique_ptr&lt;Layer&gt;</code>, come un <code>DenseLayer*</code> in un <code>Layer*</code> (l’upcasting della Lezione 15).</li>
+</ul>
+</section>
+<section id="soluzione-cosa-stampa" class="slide level2 smaller">
+<h2>Soluzione: cosa stampa</h2>
+<div class="columns">
+<div class="column" style="width:35%;">
+<p>Con g++ su Linux:</p>
+<pre><code>fine del main
+~DenseLayer 128x784
+~Layer
+~DenseLayer 10x128
+~Layer</code></pre>
+</div><div class="column" style="width:65%;">
+<ul>
+<li>I layer vengono distrutti dopo l’ultima riga del <code>main</code>, quando viene distrutto <code>rete</code>: il <code>std::vector</code> distrugge i suoi <code>std::unique_ptr</code>, che fanno <code>delete</code> dei layer.</li>
+<li>Ogni layer stampa prima il distruttore della classe derivata, poi quello della base (Lezione 12).</li>
+<li>L’ordine fra i layer non è fissato dallo standard: con clang su macOS è rovesciato.</li>
+</ul>
+</div></div>
+<p><strong>Senza <code>virtual</code></strong> (punto 3): dopo <code>fine del main</code> compare solo <code>~Layer</code>, e l’AddressSanitizer si ferma con <em><code>new-delete-type-mismatch</code></em>: il <code>delete</code> passa da un <code>Layer*</code> ed esegue solo <code>~Layer</code>, come nella Lezione 12. Se l’AddressSanitizer non se ne accorge, il programma finisce con due <code>~Layer</code> e nessun <code>~DenseLayer</code>. Il distruttore <code>virtual</code> serve anche con <code>std::unique_ptr&lt;Layer&gt;</code>.</p>
+</section>
+<section id="esercizio-facoltativo-un-albero" class="slide level2 smaller">
+<h2>Esercizio facoltativo: un albero</h2>
+<p><strong>Scopo:</strong> riscrivere in C++ l’albero binario di ricerca del libro (par. 16.3), con i figli di ogni nodo posseduti da <code>std::unique_ptr</code>, e misurare come cresce la profondità dei nodi con il numero <code>N</code> dei dati (Laboratorio 16.6 del libro).</p>
+<ul>
+<li>Ogni nodo contiene un dato e ha al più due figli. Un dato nuovo si inserisce partendo dalla radice: se è minore o uguale al dato del nodo si scende a sinistra, altrimenti a destra, fino a un posto libero (Listato 16.5).</li>
+<li>La <strong>profondità</strong> di un nodo è il numero di passi dalla radice al nodo; la radice ha profondità 0.</li>
+<li>Ogni nodo <strong>possiede</strong> i suoi figli, <code>sinistra</code> e <code>destra</code>, che sono <code>std::unique_ptr&lt;Nodo&gt;</code>. Il puntatore al genitore, <code>su</code>, è un <code>Nodo*</code>, che non possiede niente: se fosse un proprietario, padre e figlio si possiederebbero a vicenda.</li>
+<li>Distruggere la radice distrugge tutto l’albero, a catena.</li>
+</ul>
+</section>
+<section id="esercizio-facoltativo-che-cosa-fare" class="slide level2 smaller">
+<h2>Esercizio facoltativo: che cosa fare</h2>
+<ol type="1">
+<li><p>In <code>esercizio_albero.cpp</code> (slide seguente) completate <code>profondita</code> e <code>inserisci</code>, come descritto nei commenti.</p></li>
+<li><p>Copiate in fondo al file il <code>main</code> della slide «Soluzione: il <code>main</code>» dell’esercizio facoltativo. Riempie 100 alberi con <code>N</code> numeri casuali uniformi in [0, 1), per <code>N</code> = 100, 1000 e 10 000, e stampa <code>N</code>, la profondità media dei nodi e quella massima, mediate sui 100 alberi.</p></li>
+<li><p>Compilate ed eseguite:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_albero <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_albero</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Come cresce la profondità media quando <code>N</code> si moltiplica per 10? Confrontatela con ln <code>N</code>.</p></li>
+</ol>
+</section>
+<section id="albero-il-file-da-completare" class="slide level2 smaller">
+<h2>Albero: il file da completare</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_albero.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28" data-filename="esercizio_albero.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb28-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb28-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
+<span id="cb28-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;random&gt;</span></span>
+<span id="cb28-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;utility&gt;</span></span>
+<span id="cb28-5"><a aria-label="5"></a></span>
+<span id="cb28-6"><a aria-label="6"></a><span class="kw">struct</span> Nodo <span class="op">{</span></span>
+<span id="cb28-7"><a aria-label="7"></a>    <span class="dt">double</span> dato<span class="op">;</span></span>
+<span id="cb28-8"><a aria-label="8"></a>    Nodo<span class="op">*</span> su <span class="op">=</span> <span class="kw">nullptr</span><span class="op">;</span>                      <span class="co">// il genitore: non lo possiede</span></span>
+<span id="cb28-9"><a aria-label="9"></a>    <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> sinistra<span class="op">,</span> destra<span class="op">;</span>  <span class="co">// i figli: li possiede</span></span>
+<span id="cb28-10"><a aria-label="10"></a>    Nodo<span class="op">(</span><span class="dt">double</span> d<span class="op">)</span> <span class="op">:</span> dato<span class="op">(</span>d<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb28-11"><a aria-label="11"></a><span class="op">};</span></span>
+<span id="cb28-12"><a aria-label="12"></a></span>
+<span id="cb28-13"><a aria-label="13"></a><span class="co">// da completare: i passi dal nodo p alla radice; si sale con p = p-&gt;su finche' p-&gt;su non vale nullptr</span></span>
+<span id="cb28-14"><a aria-label="14"></a><span class="dt">int</span> profondita<span class="op">(</span><span class="at">const</span> Nodo<span class="op">*</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb28-16"><a aria-label="16"></a><span class="op">}</span></span>
+<span id="cb28-17"><a aria-label="17"></a></span>
+<span id="cb28-18"><a aria-label="18"></a><span class="co">// da completare (Listato 16.5 del libro): attacca il nodo nuovo sotto il nodo vecchio.</span></span>
+<span id="cb28-19"><a aria-label="19"></a><span class="co">// Se nuovo-&gt;dato &lt;= vecchio-&gt;dato si va a sinistra, altrimenti a destra. Se da quella parte il figlio</span></span>
+<span id="cb28-20"><a aria-label="20"></a><span class="co">// vale nullptr, il genitore di nuovo diventa vecchio, e nuovo si cede al figlio con std::move;</span></span>
+<span id="cb28-21"><a aria-label="21"></a><span class="co">// altrimenti si chiama inserisci con std::move(nuovo) e il figlio, ottenuto con get().</span></span>
+<span id="cb28-22"><a aria-label="22"></a><span class="dt">void</span> inserisci<span class="op">(</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> nuovo<span class="op">,</span> Nodo<span class="op">*</span> vecchio<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-23"><a aria-label="23"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Con il <code>main</code> copiato in fondo, il file compila così com’è e stampa profondità 0.</p>
+</section>
+<section id="soluzione-dellesercizio-facoltativo" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio facoltativo</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_albero.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29" data-filename="esercizio_albero.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb29-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb29-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
+<span id="cb29-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;random&gt;</span></span>
+<span id="cb29-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;utility&gt;</span></span>
+<span id="cb29-5"><a aria-label="5"></a></span>
+<span id="cb29-6"><a aria-label="6"></a><span class="kw">struct</span> Nodo <span class="op">{</span></span>
+<span id="cb29-7"><a aria-label="7"></a>    <span class="dt">double</span> dato<span class="op">;</span></span>
+<span id="cb29-8"><a aria-label="8"></a>    Nodo<span class="op">*</span> su <span class="op">=</span> <span class="kw">nullptr</span><span class="op">;</span>                      <span class="co">// il genitore: non lo possiede</span></span>
+<span id="cb29-9"><a aria-label="9"></a>    <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> sinistra<span class="op">,</span> destra<span class="op">;</span>  <span class="co">// i figli: li possiede</span></span>
+<span id="cb29-10"><a aria-label="10"></a>    Nodo<span class="op">(</span><span class="dt">double</span> d<span class="op">)</span> <span class="op">:</span> dato<span class="op">(</span>d<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb29-11"><a aria-label="11"></a><span class="op">};</span></span>
+<span id="cb29-12"><a aria-label="12"></a></span>
+<span id="cb29-13"><a aria-label="13"></a><span class="dt">int</span> profondita<span class="op">(</span><span class="at">const</span> Nodo<span class="op">*</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb29-14"><a aria-label="14"></a>    <span class="dt">int</span> h <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb29-15"><a aria-label="15"></a>    <span class="cf">while</span> <span class="op">(</span>p<span class="op">-&gt;</span>su <span class="op">!=</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb29-16"><a aria-label="16"></a>        p <span class="op">=</span> p<span class="op">-&gt;</span>su<span class="op">;</span></span>
+<span id="cb29-17"><a aria-label="17"></a>        h<span class="op">++;</span></span>
+<span id="cb29-18"><a aria-label="18"></a>    <span class="op">}</span></span>
+<span id="cb29-19"><a aria-label="19"></a>    <span class="cf">return</span> h<span class="op">;</span></span>
+<span id="cb29-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>profondita</code> risale con <code>su</code> fino alla radice, l’unico nodo con <code>su</code> uguale a <code>nullptr</code>.</p>
+</section>
+<section id="soluzione-inserisci" class="slide level2 smaller">
+<h2>Soluzione: <code>inserisci</code></h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_albero.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30" data-filename="esercizio_albero.cpp" data-startfrom="21"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 20;"><span id="cb30-21"><a aria-label="21"></a><span class="dt">void</span> inserisci<span class="op">(</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> nuovo<span class="op">,</span> Nodo<span class="op">*</span> vecchio<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb30-22"><a aria-label="22"></a>    <span class="cf">if</span> <span class="op">(</span>nuovo<span class="op">-&gt;</span>dato <span class="op">&lt;=</span> vecchio<span class="op">-&gt;</span>dato<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb30-23"><a aria-label="23"></a>        <span class="cf">if</span> <span class="op">(</span>vecchio<span class="op">-&gt;</span>sinistra <span class="op">==</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb30-24"><a aria-label="24"></a>            nuovo<span class="op">-&gt;</span>su <span class="op">=</span> vecchio<span class="op">;</span></span>
+<span id="cb30-25"><a aria-label="25"></a>            vecchio<span class="op">-&gt;</span>sinistra <span class="op">=</span> <span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">);</span></span>
+<span id="cb30-26"><a aria-label="26"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb30-27"><a aria-label="27"></a>            inserisci<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">),</span> vecchio<span class="op">-&gt;</span>sinistra<span class="op">.</span>get<span class="op">());</span></span>
+<span id="cb30-28"><a aria-label="28"></a>        <span class="op">}</span></span>
+<span id="cb30-29"><a aria-label="29"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb30-30"><a aria-label="30"></a>        <span class="cf">if</span> <span class="op">(</span>vecchio<span class="op">-&gt;</span>destra <span class="op">==</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb30-31"><a aria-label="31"></a>            nuovo<span class="op">-&gt;</span>su <span class="op">=</span> vecchio<span class="op">;</span></span>
+<span id="cb30-32"><a aria-label="32"></a>            vecchio<span class="op">-&gt;</span>destra <span class="op">=</span> <span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">);</span></span>
+<span id="cb30-33"><a aria-label="33"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb30-34"><a aria-label="34"></a>            inserisci<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">),</span> vecchio<span class="op">-&gt;</span>destra<span class="op">.</span>get<span class="op">());</span></span>
+<span id="cb30-35"><a aria-label="35"></a>        <span class="op">}</span></span>
+<span id="cb30-36"><a aria-label="36"></a>    <span class="op">}</span></span>
+<span id="cb30-37"><a aria-label="37"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Righe 24 e 25: <code>nuovo-&gt;su = vecchio</code> va scritto prima di <code>std::move(nuovo)</code>, perché dopo il nodo appartiene a <code>vecchio-&gt;sinistra</code> e <code>nuovo</code> vale <code>nullptr</code>.</li>
+<li>Riga 27: il nodo nuovo passa con <code>std::move</code> alla chiamata successiva, finché non trova il suo posto; <code>get()</code> dà l’indirizzo del figlio senza cederlo.</li>
+</ul>
+</section>
+<section id="soluzione-il-main-1" class="slide level2 smaller">
+<h2>Soluzione: il <code>main</code></h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_albero.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31" data-filename="esercizio_albero.cpp" data-startfrom="38"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 37;"><span id="cb31-38"><a aria-label="38"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb31-39"><a aria-label="39"></a>    <span class="bu">std::</span>mt19937 motore<span class="op">(</span><span class="dv">12345</span><span class="op">);</span></span>
+<span id="cb31-40"><a aria-label="40"></a>    <span class="bu">std::</span>uniform_real_distribution<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> uniforme<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb31-41"><a aria-label="41"></a>    <span class="at">const</span> <span class="dt">int</span> R <span class="op">=</span> <span class="dv">100</span><span class="op">;</span>                                <span class="co">// alberi per ogni N</span></span>
+<span id="cb31-42"><a aria-label="42"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> N <span class="op">=</span> <span class="dv">100</span><span class="op">;</span> N <span class="op">&lt;=</span> <span class="dv">10000</span><span class="op">;</span> N <span class="op">*=</span> <span class="dv">10</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb31-43"><a aria-label="43"></a>        <span class="dt">double</span> media <span class="op">=</span> <span class="fl">0.0</span><span class="op">,</span> massima <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb31-44"><a aria-label="44"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> r <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> r <span class="op">&lt;</span> R<span class="op">;</span> r<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb31-45"><a aria-label="45"></a>            <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> radice <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>Nodo<span class="op">&gt;(</span>uniforme<span class="op">(</span>motore<span class="op">));</span></span>
+<span id="cb31-46"><a aria-label="46"></a>            <span class="dt">long</span> somma <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>                           <span class="co">// la radice ha profondita' 0</span></span>
+<span id="cb31-47"><a aria-label="47"></a>            <span class="dt">int</span> hmax <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb31-48"><a aria-label="48"></a>            <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb31-49"><a aria-label="49"></a>                <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> nuovo <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>Nodo<span class="op">&gt;(</span>uniforme<span class="op">(</span>motore<span class="op">));</span></span>
+<span id="cb31-50"><a aria-label="50"></a>                Nodo<span class="op">*</span> p <span class="op">=</span> nuovo<span class="op">.</span>get<span class="op">();</span>                <span class="co">// l'indirizzo, prima di cederlo</span></span>
+<span id="cb31-51"><a aria-label="51"></a>                inserisci<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">),</span> radice<span class="op">.</span>get<span class="op">());</span></span>
+<span id="cb31-52"><a aria-label="52"></a>                <span class="dt">int</span> h <span class="op">=</span> profondita<span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb31-53"><a aria-label="53"></a>                somma <span class="op">+=</span> h<span class="op">;</span></span>
+<span id="cb31-54"><a aria-label="54"></a>                <span class="cf">if</span> <span class="op">(</span>h <span class="op">&gt;</span> hmax<span class="op">)</span> hmax <span class="op">=</span> h<span class="op">;</span></span>
+<span id="cb31-55"><a aria-label="55"></a>            <span class="op">}</span></span>
+<span id="cb31-56"><a aria-label="56"></a>            media <span class="op">+=</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span>somma<span class="op">)</span> <span class="op">/</span> N<span class="op">;</span></span>
+<span id="cb31-57"><a aria-label="57"></a>            massima <span class="op">+=</span> hmax<span class="op">;</span></span>
+<span id="cb31-58"><a aria-label="58"></a>        <span class="op">}</span>                                             <span class="co">// qui radice distrugge l'albero</span></span>
+<span id="cb31-59"><a aria-label="59"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> N <span class="op">&lt;&lt;</span> <span class="st">"  "</span> <span class="op">&lt;&lt;</span> media <span class="op">/</span> R <span class="op">&lt;&lt;</span> <span class="st">"  "</span> <span class="op">&lt;&lt;</span> massima <span class="op">/</span> R <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb31-60"><a aria-label="60"></a>    <span class="op">}</span></span>
+<span id="cb31-61"><a aria-label="61"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb31-62"><a aria-label="62"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="soluzione-i-risultati" class="slide level2 smaller">
+<h2>Soluzione: i risultati</h2>
+<p>Nel <code>main</code>, alla riga 50, <code>p</code> conserva l’indirizzo del nodo prima di cederlo: dopo <code>inserisci</code> il nodo appartiene al suo genitore, e <code>p</code>, che non lo possiede, resta valido finché l’albero esiste.</p>
+<p>Output:</p>
+<pre><code>100  6.5824  12.39
+1000  10.9841  21.19
+10000  15.715  30.47</code></pre>
+<ul>
+<li>Quando <code>N</code> si moltiplica per 10 la profondità media cresce di 4,4 e poi di 4,7, vicino a 2 ln 10 = 4,6: cresce come 2 ln <code>N</code>, non come <code>N</code>. I passi per inserire o cercare un dato crescono quindi come ln <code>N</code>.</li>
+<li>Con i dati in ordine crescente ogni nodo finirebbe a destra del precedente: l’albero diventerebbe una catena, di profondità media (<code>N</code> − 1)/2.</li>
+</ul>
+</section>
+<section id="per-saperne-di-più" class="slide level2 smaller">
+<h2>Per saperne di più</h2>
+<ul>
+<li>L. M. Barone, E. Marinari, G. Organtini, F. Ricci-Tersenghi, <em>Programmazione scientifica. Linguaggio C, algoritmi e modelli nella scienza</em>, Pearson 2006, par. 16.3: gli alberi binari di ricerca (Listato 16.5 per l’inserimento, Laboratorio 16.6 per la profondità).</li>
+</ul>
 
 
 </section>
