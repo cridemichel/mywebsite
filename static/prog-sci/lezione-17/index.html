@@ -783,7 +783,7 @@ Cristiano De Michele
 -->
 <ul>
 <li><strong>Template e header</strong>: perché un template di classe non si divide fra <code>.hpp</code> e <code>.cpp</code></li>
-<li><strong><code>std::unique_ptr</code></strong>: un puntatore che è l’unico proprietario di un oggetto nell’heap, e lo distrugge da solo</li>
+<li><strong><code>std::unique_ptr</code></strong>: uno <em>smart pointer</em>, cioè un oggetto che si usa come un puntatore; è l’unico proprietario di un oggetto nell’heap, e lo distrugge da solo</li>
 <li><strong>Copiare e cedere</strong>: un <code>std::unique_ptr</code> non si copia; la proprietà si cede con <code>std::move</code></li>
 <li><strong>La rete con <code>std::unique_ptr</code></strong>: i layer senza un distruttore scritto a mano</li>
 <li><strong>Cenni a <code>std::shared_ptr</code></strong>: più proprietari per lo stesso oggetto</li>
