@@ -1046,15 +1046,16 @@ collect2: error: ld returned 1 exit status</code></pre>
 <ul>
 <li><code>ptr_</code> è l’indirizzo dell’oggetto, e il costruttore lo riceve.</li>
 <li>Il distruttore fa <code>delete</code>: è la classe <code>Buffer</code> della Lezione 09, scritta una volta per tutti i tipi con un template.</li>
-<li>L’operatore <code>-&gt;</code>, ridefinito come gli operatori della Lezione 10, restituisce l’indirizzo: per questo <code>d-&gt;numero_pesi()</code> funziona come con un puntatore.</li>
-<li><code>get()</code> restituisce l’indirizzo, senza cedere l’oggetto.</li>
+<li>L’operatore <code>-&gt;</code>, ridefinito come gli operatori della Lezione 10, e <code>get()</code> restituiscono lo stesso indirizzo, senza cedere l’oggetto: <code>d-&gt;numero_pesi()</code> è <code style="white-space: nowrap">d.get()-&gt;numero_pesi()</code>. Con <code>-&gt;</code> si usa <code>d</code> come un puntatore; <code>get()</code> serve quando si vuole l’indirizzo, per esempio per passarlo a una funzione.</li>
 </ul>
 </section>
 <section id="un-stdunique_ptr-non-si-copia" class="slide level2 smaller">
 <h2>Un <code>std::unique_ptr</code> non si copia</h2>
-<p>Se un <code>std::unique_ptr</code> si potesse copiare, due oggetti conterrebbero lo stesso indirizzo, e alla loro distruzione farebbero due volte <code>delete</code> della stessa memoria: il double free della Lezione 08. Per questo la copia di un <code>std::unique_ptr</code> è vietata: il suo costruttore di copia è cancellato con <code>= delete</code>, come nel Singleton della Lezione 13 e in <code>Sequential</code> dal Laboratorio 06:</p>
+<p>Se un <code>std::unique_ptr</code> si potesse copiare, due oggetti conterrebbero lo stesso indirizzo, e alla loro distruzione farebbero due volte <code>delete</code> della stessa memoria: il double free della Lezione 08. Per questo la copia di un <code>std::unique_ptr</code> è vietata: il suo costruttore di copia e il suo operatore di assegnamento (Lezione 10) sono cancellati con <code>= delete</code>, come nel Singleton della Lezione 13 e in <code>Sequential</code> dal Laboratorio 06:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> a <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">);</span></span>
-<span id="cb16-2"><a aria-label="2"></a><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> b <span class="op">=</span> a<span class="op">;</span>      <span class="co">// non compila</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-2"><a aria-label="2"></a><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> b <span class="op">=</span> a<span class="op">;</span>      <span class="co">// non compila: costruttore di copia</span></span>
+<span id="cb16-3"><a aria-label="3"></a><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;</span> c<span class="op">;</span>          <span class="co">// vuoto, vale nullptr</span></span>
+<span id="cb16-4"><a aria-label="4"></a>c <span class="op">=</span> a<span class="op">;</span>                                  <span class="co">// non compila: operatore di assegnamento</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>error: use of deleted function 'std::unique_ptr&lt;_Tp, _Dp&gt;::unique_ptr(const std::unique_ptr&lt;_Tp, _Dp&gt;&amp;)
        [with _Tp = DenseLayer; _Dp = std::default_delete&lt;DenseLayer&gt;]'</code></pre>
 <p><code>_Tp</code> e <code>_Dp</code> sono i parametri del template <code>std::unique_ptr</code>: il tipo dell’oggetto, <code>DenseLayer</code>, e chi lo distrugge, <code>std::default_delete&lt;DenseLayer&gt;</code>, che fa <code>delete</code>. Un <code>std::unique_ptr</code> non si copia, ma può <strong>cedere</strong> l’oggetto a un altro <code>std::unique_ptr</code>.</p>
@@ -1243,18 +1244,18 @@ collect2: error: ld returned 1 exit status</code></pre>
 <section id="soluzione-cosa-stampa" class="slide level2 smaller">
 <h2>Soluzione: cosa stampa</h2>
 <div class="columns">
-<div class="column" style="width:35%;">
+<div class="column" style="width:30%;">
 <p>Con g++ su Linux:</p>
 <pre><code>fine del main
 ~DenseLayer 128x784
 ~Layer
 ~DenseLayer 10x128
 ~Layer</code></pre>
-</div><div class="column" style="width:65%;">
+</div><div class="column" style="width:70%;">
 <ul>
 <li>I layer vengono distrutti dopo l’ultima riga del <code>main</code>, quando viene distrutto <code>rete</code>: il <code>std::vector</code> distrugge i suoi <code>std::unique_ptr</code>, che fanno <code>delete</code> dei layer.</li>
 <li>Ogni layer stampa prima il distruttore della classe derivata, poi quello della base (Lezione 12).</li>
-<li>L’ordine fra i layer non è fissato dallo standard: con clang su macOS è rovesciato.</li>
+<li>Su macOS, con clang, i due layer escono in ordine inverso: non è un errore, lo standard non fissa quest’ordine.</li>
 </ul>
 </div></div>
 <p><strong>Senza <code>virtual</code></strong> (punto 3): dopo <code>fine del main</code> compare solo <code>~Layer</code>, e l’AddressSanitizer si ferma con <em><code>new-delete-type-mismatch</code></em>: il <code>delete</code> passa da un <code>Layer*</code> ed esegue solo <code>~Layer</code>, come nella Lezione 12. Se l’AddressSanitizer non se ne accorge, il programma finisce con due <code>~Layer</code> e nessun <code>~DenseLayer</code>. Il distruttore <code>virtual</code> serve anche con <code>std::unique_ptr&lt;Layer&gt;</code>.</p>
@@ -1273,7 +1274,7 @@ collect2: error: ld returned 1 exit status</code></pre>
 <h2>Esercizio facoltativo: che cosa fare</h2>
 <ol type="1">
 <li><p>In <code>esercizio_albero.cpp</code> (slide seguente) completate <code>profondita</code> e <code>inserisci</code>, come descritto nei commenti.</p></li>
-<li><p>Copiate in fondo al file il <code>main</code> della slide «Soluzione: il <code>main</code>» dell’esercizio facoltativo. Riempie 100 alberi con <code>N</code> numeri casuali uniformi in [0, 1), per <code>N</code> = 100, 1000 e 10 000, e stampa <code>N</code>, la profondità media dei nodi e quella massima, mediate sui 100 alberi.</p></li>
+<li><p>Copiate in fondo al file il <code>main</code> della slide «Albero: il <code>main</code>», che è già completo. Riempie 100 alberi con <code>N</code> numeri casuali uniformi in [0, 1), per <code>N</code> = 100, 1000 e 10 000, e stampa <code>N</code>, la profondità media dei nodi e quella massima, mediate sui 100 alberi.</p></li>
 <li><p>Compilate ed eseguite:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_albero <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_albero</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Come cresce la profondità media quando <code>N</code> si moltiplica per 10? Confrontatela con ln <code>N</code>.</p></li>
@@ -1309,7 +1310,40 @@ collect2: error: ld returned 1 exit status</code></pre>
 <span id="cb29-22"><a aria-label="22"></a><span class="dt">void</span> inserisci<span class="op">(</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> nuovo<span class="op">,</span> Nodo<span class="op">*</span> vecchio<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb29-23"><a aria-label="23"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Con il <code>main</code> copiato in fondo, il file compila così com’è e stampa profondità 0.</p>
+<p>Con il <code>main</code> della slide seguente, il file compila così com’è e stampa profondità 0.</p>
+</section>
+<section id="albero-il-main" class="slide level2 smaller">
+<h2>Albero: il <code>main</code></h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_albero.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30" data-filename="esercizio_albero.cpp" data-startfrom="25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 24;"><span id="cb30-25"><a aria-label="25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb30-26"><a aria-label="26"></a>    <span class="bu">std::</span>mt19937 motore<span class="op">(</span><span class="dv">12345</span><span class="op">);</span></span>
+<span id="cb30-27"><a aria-label="27"></a>    <span class="bu">std::</span>uniform_real_distribution<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> uniforme<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb30-28"><a aria-label="28"></a>    <span class="at">const</span> <span class="dt">int</span> R <span class="op">=</span> <span class="dv">100</span><span class="op">;</span>                                <span class="co">// alberi per ogni N</span></span>
+<span id="cb30-29"><a aria-label="29"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> N <span class="op">=</span> <span class="dv">100</span><span class="op">;</span> N <span class="op">&lt;=</span> <span class="dv">10000</span><span class="op">;</span> N <span class="op">*=</span> <span class="dv">10</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb30-30"><a aria-label="30"></a>        <span class="dt">double</span> media <span class="op">=</span> <span class="fl">0.0</span><span class="op">,</span> massima <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb30-31"><a aria-label="31"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> r <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> r <span class="op">&lt;</span> R<span class="op">;</span> r<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb30-32"><a aria-label="32"></a>            <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> radice <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>Nodo<span class="op">&gt;(</span>uniforme<span class="op">(</span>motore<span class="op">));</span></span>
+<span id="cb30-33"><a aria-label="33"></a>            <span class="dt">long</span> somma <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>                           <span class="co">// la radice ha profondita' 0</span></span>
+<span id="cb30-34"><a aria-label="34"></a>            <span class="dt">int</span> hmax <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb30-35"><a aria-label="35"></a>            <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb30-36"><a aria-label="36"></a>                <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> nuovo <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>Nodo<span class="op">&gt;(</span>uniforme<span class="op">(</span>motore<span class="op">));</span></span>
+<span id="cb30-37"><a aria-label="37"></a>                Nodo<span class="op">*</span> p <span class="op">=</span> nuovo<span class="op">.</span>get<span class="op">();</span>                <span class="co">// l'indirizzo, prima di cederlo</span></span>
+<span id="cb30-38"><a aria-label="38"></a>                inserisci<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">),</span> radice<span class="op">.</span>get<span class="op">());</span></span>
+<span id="cb30-39"><a aria-label="39"></a>                <span class="dt">int</span> h <span class="op">=</span> profondita<span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb30-40"><a aria-label="40"></a>                somma <span class="op">+=</span> h<span class="op">;</span></span>
+<span id="cb30-41"><a aria-label="41"></a>                <span class="cf">if</span> <span class="op">(</span>h <span class="op">&gt;</span> hmax<span class="op">)</span> hmax <span class="op">=</span> h<span class="op">;</span></span>
+<span id="cb30-42"><a aria-label="42"></a>            <span class="op">}</span></span>
+<span id="cb30-43"><a aria-label="43"></a>            media <span class="op">+=</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span>somma<span class="op">)</span> <span class="op">/</span> N<span class="op">;</span></span>
+<span id="cb30-44"><a aria-label="44"></a>            massima <span class="op">+=</span> hmax<span class="op">;</span></span>
+<span id="cb30-45"><a aria-label="45"></a>        <span class="op">}</span>                                             <span class="co">// qui radice distrugge l'albero</span></span>
+<span id="cb30-46"><a aria-label="46"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> N <span class="op">&lt;&lt;</span> <span class="st">"  "</span> <span class="op">&lt;&lt;</span> media <span class="op">/</span> R <span class="op">&lt;&lt;</span> <span class="st">"  "</span> <span class="op">&lt;&lt;</span> massima <span class="op">/</span> R <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb30-47"><a aria-label="47"></a>    <span class="op">}</span></span>
+<span id="cb30-48"><a aria-label="48"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb30-49"><a aria-label="49"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 <section id="soluzione-dellesercizio-facoltativo" class="slide level2 smaller">
 <h2>Soluzione dell’esercizio facoltativo</h2>
@@ -1317,26 +1351,26 @@ collect2: error: ld returned 1 exit status</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>esercizio_albero.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30" data-filename="esercizio_albero.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb30-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb30-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
-<span id="cb30-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;random&gt;</span></span>
-<span id="cb30-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;utility&gt;</span></span>
-<span id="cb30-5"><a aria-label="5"></a></span>
-<span id="cb30-6"><a aria-label="6"></a><span class="kw">struct</span> Nodo <span class="op">{</span></span>
-<span id="cb30-7"><a aria-label="7"></a>    <span class="dt">double</span> dato<span class="op">;</span></span>
-<span id="cb30-8"><a aria-label="8"></a>    Nodo<span class="op">*</span> su <span class="op">=</span> <span class="kw">nullptr</span><span class="op">;</span>                      <span class="co">// il genitore: non lo possiede</span></span>
-<span id="cb30-9"><a aria-label="9"></a>    <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> sinistra<span class="op">,</span> destra<span class="op">;</span>  <span class="co">// i figli: li possiede</span></span>
-<span id="cb30-10"><a aria-label="10"></a>    Nodo<span class="op">(</span><span class="dt">double</span> d<span class="op">)</span> <span class="op">:</span> dato<span class="op">(</span>d<span class="op">)</span> <span class="op">{}</span></span>
-<span id="cb30-11"><a aria-label="11"></a><span class="op">};</span></span>
-<span id="cb30-12"><a aria-label="12"></a></span>
-<span id="cb30-13"><a aria-label="13"></a><span class="dt">int</span> profondita<span class="op">(</span><span class="at">const</span> Nodo<span class="op">*</span> p<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb30-14"><a aria-label="14"></a>    <span class="dt">int</span> h <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb30-15"><a aria-label="15"></a>    <span class="cf">while</span> <span class="op">(</span>p<span class="op">-&gt;</span>su <span class="op">!=</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb30-16"><a aria-label="16"></a>        p <span class="op">=</span> p<span class="op">-&gt;</span>su<span class="op">;</span></span>
-<span id="cb30-17"><a aria-label="17"></a>        h<span class="op">++;</span></span>
-<span id="cb30-18"><a aria-label="18"></a>    <span class="op">}</span></span>
-<span id="cb30-19"><a aria-label="19"></a>    <span class="cf">return</span> h<span class="op">;</span></span>
-<span id="cb30-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31" data-filename="esercizio_albero.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb31-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb31-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
+<span id="cb31-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;random&gt;</span></span>
+<span id="cb31-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;utility&gt;</span></span>
+<span id="cb31-5"><a aria-label="5"></a></span>
+<span id="cb31-6"><a aria-label="6"></a><span class="kw">struct</span> Nodo <span class="op">{</span></span>
+<span id="cb31-7"><a aria-label="7"></a>    <span class="dt">double</span> dato<span class="op">;</span></span>
+<span id="cb31-8"><a aria-label="8"></a>    Nodo<span class="op">*</span> su <span class="op">=</span> <span class="kw">nullptr</span><span class="op">;</span>                      <span class="co">// il genitore: non lo possiede</span></span>
+<span id="cb31-9"><a aria-label="9"></a>    <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> sinistra<span class="op">,</span> destra<span class="op">;</span>  <span class="co">// i figli: li possiede</span></span>
+<span id="cb31-10"><a aria-label="10"></a>    Nodo<span class="op">(</span><span class="dt">double</span> d<span class="op">)</span> <span class="op">:</span> dato<span class="op">(</span>d<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb31-11"><a aria-label="11"></a><span class="op">};</span></span>
+<span id="cb31-12"><a aria-label="12"></a></span>
+<span id="cb31-13"><a aria-label="13"></a><span class="dt">int</span> profondita<span class="op">(</span><span class="at">const</span> Nodo<span class="op">*</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb31-14"><a aria-label="14"></a>    <span class="dt">int</span> h <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb31-15"><a aria-label="15"></a>    <span class="cf">while</span> <span class="op">(</span>p<span class="op">-&gt;</span>su <span class="op">!=</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb31-16"><a aria-label="16"></a>        p <span class="op">=</span> p<span class="op">-&gt;</span>su<span class="op">;</span></span>
+<span id="cb31-17"><a aria-label="17"></a>        h<span class="op">++;</span></span>
+<span id="cb31-18"><a aria-label="18"></a>    <span class="op">}</span></span>
+<span id="cb31-19"><a aria-label="19"></a>    <span class="cf">return</span> h<span class="op">;</span></span>
+<span id="cb31-20"><a aria-label="20"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>profondita</code> risale con <code>su</code> fino alla radice, l’unico nodo con <code>su</code> uguale a <code>nullptr</code>.</p>
 </section>
@@ -1346,65 +1380,33 @@ collect2: error: ld returned 1 exit status</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>esercizio_albero.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31" data-filename="esercizio_albero.cpp" data-startfrom="21"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 20;"><span id="cb31-21"><a aria-label="21"></a><span class="dt">void</span> inserisci<span class="op">(</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> nuovo<span class="op">,</span> Nodo<span class="op">*</span> vecchio<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb31-22"><a aria-label="22"></a>    <span class="cf">if</span> <span class="op">(</span>nuovo<span class="op">-&gt;</span>dato <span class="op">&lt;=</span> vecchio<span class="op">-&gt;</span>dato<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb31-23"><a aria-label="23"></a>        <span class="cf">if</span> <span class="op">(</span>vecchio<span class="op">-&gt;</span>sinistra <span class="op">==</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb31-24"><a aria-label="24"></a>            nuovo<span class="op">-&gt;</span>su <span class="op">=</span> vecchio<span class="op">;</span></span>
-<span id="cb31-25"><a aria-label="25"></a>            vecchio<span class="op">-&gt;</span>sinistra <span class="op">=</span> <span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">);</span></span>
-<span id="cb31-26"><a aria-label="26"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb31-27"><a aria-label="27"></a>            inserisci<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">),</span> vecchio<span class="op">-&gt;</span>sinistra<span class="op">.</span>get<span class="op">());</span></span>
-<span id="cb31-28"><a aria-label="28"></a>        <span class="op">}</span></span>
-<span id="cb31-29"><a aria-label="29"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb31-30"><a aria-label="30"></a>        <span class="cf">if</span> <span class="op">(</span>vecchio<span class="op">-&gt;</span>destra <span class="op">==</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb31-31"><a aria-label="31"></a>            nuovo<span class="op">-&gt;</span>su <span class="op">=</span> vecchio<span class="op">;</span></span>
-<span id="cb31-32"><a aria-label="32"></a>            vecchio<span class="op">-&gt;</span>destra <span class="op">=</span> <span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">);</span></span>
-<span id="cb31-33"><a aria-label="33"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb31-34"><a aria-label="34"></a>            inserisci<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">),</span> vecchio<span class="op">-&gt;</span>destra<span class="op">.</span>get<span class="op">());</span></span>
-<span id="cb31-35"><a aria-label="35"></a>        <span class="op">}</span></span>
-<span id="cb31-36"><a aria-label="36"></a>    <span class="op">}</span></span>
-<span id="cb31-37"><a aria-label="37"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32" data-filename="esercizio_albero.cpp" data-startfrom="21"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 20;"><span id="cb32-21"><a aria-label="21"></a><span class="dt">void</span> inserisci<span class="op">(</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> nuovo<span class="op">,</span> Nodo<span class="op">*</span> vecchio<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb32-22"><a aria-label="22"></a>    <span class="cf">if</span> <span class="op">(</span>nuovo<span class="op">-&gt;</span>dato <span class="op">&lt;=</span> vecchio<span class="op">-&gt;</span>dato<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb32-23"><a aria-label="23"></a>        <span class="cf">if</span> <span class="op">(</span>vecchio<span class="op">-&gt;</span>sinistra <span class="op">==</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb32-24"><a aria-label="24"></a>            nuovo<span class="op">-&gt;</span>su <span class="op">=</span> vecchio<span class="op">;</span></span>
+<span id="cb32-25"><a aria-label="25"></a>            vecchio<span class="op">-&gt;</span>sinistra <span class="op">=</span> <span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">);</span></span>
+<span id="cb32-26"><a aria-label="26"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb32-27"><a aria-label="27"></a>            inserisci<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">),</span> vecchio<span class="op">-&gt;</span>sinistra<span class="op">.</span>get<span class="op">());</span></span>
+<span id="cb32-28"><a aria-label="28"></a>        <span class="op">}</span></span>
+<span id="cb32-29"><a aria-label="29"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb32-30"><a aria-label="30"></a>        <span class="cf">if</span> <span class="op">(</span>vecchio<span class="op">-&gt;</span>destra <span class="op">==</span> <span class="kw">nullptr</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb32-31"><a aria-label="31"></a>            nuovo<span class="op">-&gt;</span>su <span class="op">=</span> vecchio<span class="op">;</span></span>
+<span id="cb32-32"><a aria-label="32"></a>            vecchio<span class="op">-&gt;</span>destra <span class="op">=</span> <span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">);</span></span>
+<span id="cb32-33"><a aria-label="33"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb32-34"><a aria-label="34"></a>            inserisci<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">),</span> vecchio<span class="op">-&gt;</span>destra<span class="op">.</span>get<span class="op">());</span></span>
+<span id="cb32-35"><a aria-label="35"></a>        <span class="op">}</span></span>
+<span id="cb32-36"><a aria-label="36"></a>    <span class="op">}</span></span>
+<span id="cb32-37"><a aria-label="37"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li>Righe 24 e 25: <code>nuovo-&gt;su = vecchio</code> va scritto prima di <code>std::move(nuovo)</code>, perché dopo il nodo appartiene a <code>vecchio-&gt;sinistra</code> e <code>nuovo</code> vale <code>nullptr</code>.</li>
 <li>Riga 27: il nodo nuovo passa con <code>std::move</code> alla chiamata successiva, finché non trova il suo posto; <code>get()</code> dà l’indirizzo del figlio senza cederlo.</li>
 </ul>
 </section>
-<section id="soluzione-il-main-1" class="slide level2 smaller">
-<h2>Soluzione: il <code>main</code></h2>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>esercizio_albero.cpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32" data-filename="esercizio_albero.cpp" data-startfrom="38"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp" style="counter-reset: source-line 37;"><span id="cb32-38"><a aria-label="38"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb32-39"><a aria-label="39"></a>    <span class="bu">std::</span>mt19937 motore<span class="op">(</span><span class="dv">12345</span><span class="op">);</span></span>
-<span id="cb32-40"><a aria-label="40"></a>    <span class="bu">std::</span>uniform_real_distribution<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> uniforme<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span></span>
-<span id="cb32-41"><a aria-label="41"></a>    <span class="at">const</span> <span class="dt">int</span> R <span class="op">=</span> <span class="dv">100</span><span class="op">;</span>                                <span class="co">// alberi per ogni N</span></span>
-<span id="cb32-42"><a aria-label="42"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> N <span class="op">=</span> <span class="dv">100</span><span class="op">;</span> N <span class="op">&lt;=</span> <span class="dv">10000</span><span class="op">;</span> N <span class="op">*=</span> <span class="dv">10</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb32-43"><a aria-label="43"></a>        <span class="dt">double</span> media <span class="op">=</span> <span class="fl">0.0</span><span class="op">,</span> massima <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb32-44"><a aria-label="44"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> r <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> r <span class="op">&lt;</span> R<span class="op">;</span> r<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb32-45"><a aria-label="45"></a>            <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> radice <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>Nodo<span class="op">&gt;(</span>uniforme<span class="op">(</span>motore<span class="op">));</span></span>
-<span id="cb32-46"><a aria-label="46"></a>            <span class="dt">long</span> somma <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>                           <span class="co">// la radice ha profondita' 0</span></span>
-<span id="cb32-47"><a aria-label="47"></a>            <span class="dt">int</span> hmax <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb32-48"><a aria-label="48"></a>            <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb32-49"><a aria-label="49"></a>                <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> nuovo <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>Nodo<span class="op">&gt;(</span>uniforme<span class="op">(</span>motore<span class="op">));</span></span>
-<span id="cb32-50"><a aria-label="50"></a>                Nodo<span class="op">*</span> p <span class="op">=</span> nuovo<span class="op">.</span>get<span class="op">();</span>                <span class="co">// l'indirizzo, prima di cederlo</span></span>
-<span id="cb32-51"><a aria-label="51"></a>                inserisci<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>nuovo<span class="op">),</span> radice<span class="op">.</span>get<span class="op">());</span></span>
-<span id="cb32-52"><a aria-label="52"></a>                <span class="dt">int</span> h <span class="op">=</span> profondita<span class="op">(</span>p<span class="op">);</span></span>
-<span id="cb32-53"><a aria-label="53"></a>                somma <span class="op">+=</span> h<span class="op">;</span></span>
-<span id="cb32-54"><a aria-label="54"></a>                <span class="cf">if</span> <span class="op">(</span>h <span class="op">&gt;</span> hmax<span class="op">)</span> hmax <span class="op">=</span> h<span class="op">;</span></span>
-<span id="cb32-55"><a aria-label="55"></a>            <span class="op">}</span></span>
-<span id="cb32-56"><a aria-label="56"></a>            media <span class="op">+=</span> <span class="kw">static_cast</span><span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span>somma<span class="op">)</span> <span class="op">/</span> N<span class="op">;</span></span>
-<span id="cb32-57"><a aria-label="57"></a>            massima <span class="op">+=</span> hmax<span class="op">;</span></span>
-<span id="cb32-58"><a aria-label="58"></a>        <span class="op">}</span>                                             <span class="co">// qui radice distrugge l'albero</span></span>
-<span id="cb32-59"><a aria-label="59"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> N <span class="op">&lt;&lt;</span> <span class="st">"  "</span> <span class="op">&lt;&lt;</span> media <span class="op">/</span> R <span class="op">&lt;&lt;</span> <span class="st">"  "</span> <span class="op">&lt;&lt;</span> massima <span class="op">/</span> R <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb32-60"><a aria-label="60"></a>    <span class="op">}</span></span>
-<span id="cb32-61"><a aria-label="61"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb32-62"><a aria-label="62"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
 <section id="soluzione-i-risultati" class="slide level2 smaller">
 <h2>Soluzione: i risultati</h2>
-<p>Nel <code>main</code>, alla riga 50, <code>p</code> conserva l’indirizzo del nodo prima di cederlo: dopo <code>inserisci</code> il nodo appartiene al suo genitore, e <code>p</code>, che non lo possiede, resta valido finché l’albero esiste.</p>
+<!-- Copia del main della slide «Albero: il main», nascosta: serve solo a genera_soluzioni.py, che costruisce lo zip dai blocchi delle slide di soluzione. Se si cambia quel main, va cambiata anche questa copia. -->
+<p>Nel <code>main</code>, alla riga 37, <code>p</code> conserva l’indirizzo del nodo prima di cederlo: dopo <code>inserisci</code> il nodo appartiene al suo genitore, e <code>p</code>, che non lo possiede, resta valido finché l’albero esiste.</p>
 <p>Output:</p>
 <pre><code>100  6.5824  12.39
 1000  10.9841  21.19
