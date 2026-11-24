@@ -980,7 +980,7 @@ collect2: error: ld returned 1 exit status</code></pre>
 <li><strong>una funzione</strong>, che ne tiene l’indirizzo in un puntatore: il <code>delete</code> va scritto a mano prima di ogni uscita, ed è facile dimenticarne una, come alla riga 8;</li>
 <li><strong>un oggetto</strong>, con il RAII della Lezione 09: il <code>delete</code> sta nel suo distruttore, che viene chiamato a ogni uscita, e non si scrive più. Sono così <code>Buffer</code> con il suo array e <code>Sequential</code> con i suoi layer.</li>
 </ul>
-<p>Il <code>std::unique_ptr</code> della slide seguente è un proprietario del secondo tipo.</p>
+<p>Il <code>std::unique_ptr</code> della slide seguente è un proprietario del secondo tipo. Con lui il <code>delete</code> non si scrive più, e si riduce il rischio dei due errori della Lezione 08: il <strong>leak</strong>, un <code>delete</code> dimenticato, e il <strong>double free</strong>, due <code>delete</code> dello stesso oggetto, che un <code>std::unique_ptr</code> evita perché non si copia.</p>
 </section>
 <section id="un-proprietario-stdunique_ptr" class="slide level2 smaller">
 <h2>Un proprietario: <code>std::unique_ptr</code></h2>
