@@ -797,7 +797,7 @@ Cristiano De Michele
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a>model<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">));</span></span>
 <span id="cb1-2"><a aria-label="2"></a>model<span class="op">.</span>add<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>SigmoidLayer<span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;&gt;());</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Nel Laboratorio 10 anche la vostra <code>Sequential</code> passa da un array di <code>Layer&lt;ntype&gt;*</code> a un <code>std::vector</code> di <code>std::unique_ptr</code>.</p>
+<p>Nel Laboratorio 10 anche la vostra <code>Sequential</code> passa da un <code>std::vector</code> di <code>Layer&lt;ntype&gt;*</code> a un <code>std::vector</code> di <code>std::unique_ptr</code>.</p>
 </section>
 <section id="la-cartella-della-lezione" class="slide level2 smaller">
 <h2>La cartella della lezione</h2>
