@@ -783,7 +783,7 @@ Cristiano De Michele
 -->
 <ul>
 <li><strong>Template e header</strong>: perché un template di classe non si divide fra <code>.hpp</code> e <code>.cpp</code></li>
-<li><strong><code>std::unique_ptr</code></strong>: un oggetto nell’heap con un proprietario che lo distrugge da solo</li>
+<li><strong><code>std::unique_ptr</code></strong>: un puntatore che è l’unico proprietario di un oggetto nell’heap, e lo distrugge da solo</li>
 <li><strong>Copiare e cedere</strong>: un <code>std::unique_ptr</code> non si copia; la proprietà si cede con <code>std::move</code></li>
 <li><strong>La rete con <code>std::unique_ptr</code></strong>: i layer senza un distruttore scritto a mano</li>
 <li><strong>Cenni a <code>std::shared_ptr</code></strong>: più proprietari per lo stesso oggetto</li>
@@ -991,7 +991,7 @@ collect2: error: ld returned 1 exit status</code></pre>
 <ul>
 <li><code>std::make_unique&lt;DenseLayer&gt;(128, 784)</code> (C++14) crea il <code>DenseLayer</code> nell’heap, come <code>new DenseLayer(128, 784)</code>, e restituisce un <code>std::unique_ptr&lt;DenseLayer&gt;</code> che ne contiene l’indirizzo.</li>
 <li><code>d</code> si usa come un puntatore, con <code>-&gt;</code>.</li>
-<li><code>d</code> è il proprietario del <code>DenseLayer</code>: quando <code>d</code> viene distrutto, per esempio alla fine del blocco in cui è dichiarato, il <code>DenseLayer</code> viene distrutto con lui.</li>
+<li><code>d</code> è l’<strong>unico</strong> proprietario del <code>DenseLayer</code>, da cui il nome <em>unique</em>: quando <code>d</code> viene distrutto, per esempio alla fine del blocco in cui è dichiarato, il <code>DenseLayer</code> viene distrutto con lui.</li>
 </ul>
 </section>
 <section id="un-return-anticipato-senza-leak" class="slide level2 smaller">
