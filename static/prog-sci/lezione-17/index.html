@@ -760,7 +760,8 @@ Cristiano De Michele
   dichiarati, registro sobrio, titoli in sentence case, criterio 7 sulla chiarezza, nomi del framework).
   Riscritta quasi tutta; l'originale e' nel backup del Mac index.qmd.pre-audit2211. Secondo audit (22/11): tolta la
   slide sui dettagli di unique_ptr nel framework (get_layer, load_model: arrivano nel Lab 11, da spiegare li'); su
-  macOS i leak con leaks (Lezione 08), e senza virtual l'AddressSanitizer di Apple puo' non segnalare niente (senza
+  macOS i leak con leaks (Lezione 08), e senza virtual l'AddressSanitizer di Apple non segnala niente: su Apple non
+  intercetta il delete con la dimensione (asan_new_delete.cpp; provato su Mac il 24/11) (senza
   AddressSanitizer: due ~Layer e nessun ~DenseLayer, verificato su Linux). Riparte dalla Lezione 16
   (template Pesi, layers.hpp). Il RAII c'e' gia' nelle Lezioni 09 e 10: qui solo il rimando. Tolti: i tempi
   di shared_ptr, "non si scrive mai delete", lo stampo/Scatola. Aggiunto l'esercizio facoltativo dal libro
@@ -1258,7 +1259,7 @@ collect2: error: ld returned 1 exit status</code></pre>
 <li>Su macOS, con clang, i due layer escono in ordine inverso: non è un errore, lo standard non fissa quest’ordine.</li>
 </ul>
 </div></div>
-<p><strong>Senza <code>virtual</code></strong> (punto 3): dopo <code>fine del main</code> compare solo <code>~Layer</code>, e l’AddressSanitizer si ferma con <em><code>new-delete-type-mismatch</code></em>: il <code>delete</code> passa da un <code>Layer*</code> ed esegue solo <code>~Layer</code>, come nella Lezione 12. Se l’AddressSanitizer non se ne accorge, il programma finisce con due <code>~Layer</code> e nessun <code>~DenseLayer</code>. Il distruttore <code>virtual</code> serve anche con <code>std::unique_ptr&lt;Layer&gt;</code>.</p>
+<p><strong>Senza <code>virtual</code></strong> (punto 3): dopo <code>fine del main</code> compare solo <code>~Layer</code>, e l’AddressSanitizer si ferma con <em><code>new-delete-type-mismatch</code></em>: il <code>delete</code> passa da un <code>Layer*</code> ed esegue solo <code>~Layer</code>, come nella Lezione 12. Su macOS l’AddressSanitizer non se ne accorge: escono due <code>~Layer</code> e nessun <code>~DenseLayer</code>. Il distruttore <code>virtual</code> serve anche con <code>std::unique_ptr&lt;Layer&gt;</code>.</p>
 </section>
 <section id="esercizio-facoltativo-un-albero" class="slide level2 smaller">
 <h2>Esercizio facoltativo: un albero</h2>
@@ -1324,9 +1325,9 @@ collect2: error: ld returned 1 exit status</code></pre>
 <span id="cb30-28"><a aria-label="28"></a>    <span class="at">const</span> <span class="dt">int</span> R <span class="op">=</span> <span class="dv">100</span><span class="op">;</span>                                <span class="co">// alberi per ogni N</span></span>
 <span id="cb30-29"><a aria-label="29"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> N <span class="op">=</span> <span class="dv">100</span><span class="op">;</span> N <span class="op">&lt;=</span> <span class="dv">10000</span><span class="op">;</span> N <span class="op">*=</span> <span class="dv">10</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb30-30"><a aria-label="30"></a>        <span class="dt">double</span> media <span class="op">=</span> <span class="fl">0.0</span><span class="op">,</span> massima <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb30-31"><a aria-label="31"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> r <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> r <span class="op">&lt;</span> R<span class="op">;</span> r<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb30-31"><a aria-label="31"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> r <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> r <span class="op">&lt;</span> R<span class="op">;</span> r<span class="op">++)</span> <span class="op">{</span>                 <span class="co">// media su R realizzazioni</span></span>
 <span id="cb30-32"><a aria-label="32"></a>            <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> radice <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>Nodo<span class="op">&gt;(</span>uniforme<span class="op">(</span>motore<span class="op">));</span></span>
-<span id="cb30-33"><a aria-label="33"></a>            <span class="dt">long</span> somma <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>                           <span class="co">// la radice ha profondita' 0</span></span>
+<span id="cb30-33"><a aria-label="33"></a>            <span class="dt">int</span> somma <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>                            <span class="co">// la radice ha profondita' 0</span></span>
 <span id="cb30-34"><a aria-label="34"></a>            <span class="dt">int</span> hmax <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb30-35"><a aria-label="35"></a>            <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
 <span id="cb30-36"><a aria-label="36"></a>                <span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>Nodo<span class="op">&gt;</span> nuovo <span class="op">=</span> <span class="bu">std::</span>make_unique<span class="op">&lt;</span>Nodo<span class="op">&gt;(</span>uniforme<span class="op">(</span>motore<span class="op">));</span></span>
