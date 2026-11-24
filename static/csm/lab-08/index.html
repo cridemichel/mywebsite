@@ -915,38 +915,34 @@ Cristiano De Michele
 <p><code>project/sim.hpp</code></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a>  <span class="dt">void</span> move_box<span class="op">(</span><span class="dt">void</span><span class="op">)</span><span class="co">// &lt;------------------------------------------------</span></span>
 <span id="cb6-2"><a aria-label="2"></a>    <span class="op">{</span></span>
-<span id="cb6-3"><a aria-label="3"></a>      ntype DG<span class="op">,</span> fact<span class="op">;</span> <span class="co">// DG is \Delta G as discussed during lectures (see pdf of lectures)</span></span>
-<span id="cb6-4"><a aria-label="4"></a>      store_all_pars<span class="op">();</span> <span class="co">// store all particle positions before attempting a box move</span></span>
-<span id="cb6-5"><a aria-label="5"></a>      alpha_box<span class="op">(</span>DG<span class="op">,</span> fact<span class="op">);</span></span>
-<span id="cb6-6"><a aria-label="6"></a>      acc_box<span class="op">(</span>DG<span class="op">,</span> fact<span class="op">);</span></span>
-<span id="cb6-7"><a aria-label="7"></a>    <span class="op">}</span></span>
-<span id="cb6-8"><a aria-label="8"></a></span>
-<span id="cb6-9"><a aria-label="9"></a>  <span class="co">// trial box move</span></span>
+<span id="cb6-3"><a aria-label="3"></a>    <span class="op">}</span></span>
+<span id="cb6-4"><a aria-label="4"></a></span>
+<span id="cb6-5"><a aria-label="5"></a>  <span class="co">// trial box move</span></span>
+<span id="cb6-6"><a aria-label="6"></a>  <span class="co">//</span></span>
+<span id="cb6-7"><a aria-label="7"></a>  <span class="co">// 1) choose randomly a new volume</span></span>
+<span id="cb6-8"><a aria-label="8"></a>  <span class="co">//</span></span>
+<span id="cb6-9"><a aria-label="9"></a>  <span class="co">// 2) scale all particle positions and box size by factor "fact"</span></span>
 <span id="cb6-10"><a aria-label="10"></a>  <span class="co">//</span></span>
-<span id="cb6-11"><a aria-label="11"></a>  <span class="co">// 1) choose randomly a new volume</span></span>
+<span id="cb6-11"><a aria-label="11"></a>  <span class="co">// 3) calculate new total interaction energy</span></span>
 <span id="cb6-12"><a aria-label="12"></a>  <span class="co">//</span></span>
-<span id="cb6-13"><a aria-label="13"></a>  <span class="co">// 2) scale all particle positions and box size by factor "fact"</span></span>
-<span id="cb6-14"><a aria-label="14"></a>  <span class="co">//</span></span>
-<span id="cb6-15"><a aria-label="15"></a>  <span class="co">// 3) calculate new total interaction energy</span></span>
-<span id="cb6-16"><a aria-label="16"></a>  <span class="co">//</span></span>
-<span id="cb6-17"><a aria-label="17"></a>  <span class="co">// 4) calculate \DeltaG (see pdf of lectures)</span></span>
-<span id="cb6-18"><a aria-label="18"></a>  <span class="dt">void</span> alpha_box<span class="op">(</span>ntype<span class="op">&amp;</span> DG<span class="op">,</span> ntype<span class="op">&amp;</span> fact<span class="op">)</span></span>
-<span id="cb6-19"><a aria-label="19"></a>    <span class="op">{</span></span>
-<span id="cb6-20"><a aria-label="20"></a>    <span class="op">}</span></span>
-<span id="cb6-21"><a aria-label="21"></a></span>
-<span id="cb6-22"><a aria-label="22"></a>  <span class="co">// accept or reject box move</span></span>
-<span id="cb6-23"><a aria-label="23"></a>  <span class="co">//</span></span>
-<span id="cb6-24"><a aria-label="24"></a>  <span class="co">// 1) calculate e^{-\Delta G} (see pdf of lectures)</span></span>
-<span id="cb6-25"><a aria-label="25"></a>  <span class="co">// 2) generate a random number \xi and check whether to accept the box trial move</span></span>
-<span id="cb6-26"><a aria-label="26"></a>  <span class="co">// 3) if move is rejected:</span></span>
-<span id="cb6-27"><a aria-label="27"></a>  <span class="co">//    i)   restore all particle positions through method restore_all_pars()</span></span>
-<span id="cb6-28"><a aria-label="28"></a>  <span class="co">//    ii)  restore box size</span></span>
-<span id="cb6-29"><a aria-label="29"></a>  <span class="co">//    iii) update counter vol_rej of rejected box moves for calculating acceptance ratio</span></span>
-<span id="cb6-30"><a aria-label="30"></a>  <span class="dt">void</span> acc_box<span class="op">(</span>ntype DG<span class="op">,</span> ntype fact<span class="op">)</span></span>
-<span id="cb6-31"><a aria-label="31"></a>    <span class="op">{</span></span>
-<span id="cb6-32"><a aria-label="32"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-13"><a aria-label="13"></a>  <span class="co">// 4) calculate \DeltaG (see pdf of lectures)</span></span>
+<span id="cb6-14"><a aria-label="14"></a>  <span class="dt">void</span> alpha_box<span class="op">(</span>ntype<span class="op">&amp;</span> DG<span class="op">,</span> ntype<span class="op">&amp;</span> fact<span class="op">)</span></span>
+<span id="cb6-15"><a aria-label="15"></a>    <span class="op">{</span></span>
+<span id="cb6-16"><a aria-label="16"></a>    <span class="op">}</span></span>
+<span id="cb6-17"><a aria-label="17"></a></span>
+<span id="cb6-18"><a aria-label="18"></a>  <span class="co">// accept or reject box move</span></span>
+<span id="cb6-19"><a aria-label="19"></a>  <span class="co">//</span></span>
+<span id="cb6-20"><a aria-label="20"></a>  <span class="co">// 1) calculate e^{-\Delta G} (see pdf of lectures)</span></span>
+<span id="cb6-21"><a aria-label="21"></a>  <span class="co">// 2) generate a random number \xi and check whether to accept the box trial move</span></span>
+<span id="cb6-22"><a aria-label="22"></a>  <span class="co">// 3) if move is rejected:</span></span>
+<span id="cb6-23"><a aria-label="23"></a>  <span class="co">//    i)   restore all particle positions through method restore_all_pars()</span></span>
+<span id="cb6-24"><a aria-label="24"></a>  <span class="co">//    ii)  restore box size</span></span>
+<span id="cb6-25"><a aria-label="25"></a>  <span class="co">//    iii) update counter vol_rej of rejected box moves for calculating acceptance ratio</span></span>
+<span id="cb6-26"><a aria-label="26"></a>  <span class="dt">void</span> acc_box<span class="op">(</span>ntype DG<span class="op">,</span> ntype fact<span class="op">)</span></span>
+<span id="cb6-27"><a aria-label="27"></a>    <span class="op">{</span></span>
+<span id="cb6-28"><a aria-label="28"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li><code>move_box()</code> is given: it calls the three methods to write.</li>
+<li><code>move_box()</code> is the volume move, as <code>move_NTV()</code> is the particle move: today you write it too, with <code>alpha_box()</code> and <code>acc_box()</code>.</li>
 </ul>
 </section>
 <section id="mcsim-store-restore-measures" class="slide level2 smaller codice-intero codice-micro">
@@ -1025,11 +1021,13 @@ Cristiano De Michele
 <span id="cb9-14"><a aria-label="14"></a> <span class="op">*</span></span>
 <span id="cb9-15"><a aria-label="15"></a> <span class="op">*</span>   <span class="op">[</span> <span class="op">]</span> alpha_box<span class="op">()</span> i<span class="op">.</span>e<span class="op">.</span> trial box move</span>
 <span id="cb9-16"><a aria-label="16"></a> <span class="op">*</span>   </span>
-<span id="cb9-17"><a aria-label="17"></a> <span class="op">*</span>   <span class="op">[</span> <span class="op">]</span> acc_box<span class="op">()</span> i<span class="op">.</span>e<span class="op">.</span> acceptance of trial box move</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-17"><a aria-label="17"></a> <span class="op">*</span>   <span class="op">[</span> <span class="op">]</span> acc_box<span class="op">()</span> i<span class="op">.</span>e<span class="op">.</span> acceptance of trial box move</span>
+<span id="cb9-18"><a aria-label="18"></a> <span class="op">*</span></span>
+<span id="cb9-19"><a aria-label="19"></a> <span class="op">*</span>   <span class="op">[</span> <span class="op">]</span> move_box<span class="op">()</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:44%;">
 <p>In <code>sim.hpp</code>, the file of Lab #7 with your NTV methods (or those of Part 1), write (in the list they are still marked <code>[ ]</code>):</p>
 <ul>
-<li><code>store_all_pars()</code>, <code>restore_all_pars()</code>, <code>alpha_box()</code>, <code>acc_box()</code>;</li>
+<li><code>move_box()</code>, <code>store_all_pars()</code>, <code>restore_all_pars()</code>, <code>alpha_box()</code>, <code>acc_box()</code>;</li>
 <li>the volume moves in <code>calc_acceptance_and_adjust()</code> and in <code>run()</code>;</li>
 <li><code>density.dat</code> in <code>init_measures()</code> and <code>save_measures()</code>.</li>
 </ul>
@@ -1039,15 +1037,15 @@ Cristiano De Michele
 <section id="hints-the-trial-volume-move" class="slide level2 smaller scrollable">
 <h2>Hints: the trial volume move</h2>
 <ul>
+<li><code>move_box()</code>, as <code>move_NTV()</code>: <code>store_all_pars()</code>, <code>alpha_box(DG, fact)</code>, <code>acc_box(DG, fact)</code>, with <code>DG</code> (<span class="math inline">\(\Delta G\)</span>) and <code>fact</code> local variables of type <code>ntype</code>.</li>
 <li><code>store_all_pars()</code>, <code>restore_all_pars()</code>: a loop over the particles, <code>parts[i].store()</code> or <code>parts[i].restore()</code>.</li>
-<li><code>alpha_box(DG, fact)</code>: <code>DG</code> and <code>fact</code> are references, <code>alpha_box()</code> writes them and <code>acc_box()</code> reads them. The four steps of the comments:
+<li><code>alpha_box(DG, fact)</code>: <code>DG</code> and <code>fact</code> are references, <code>alpha_box()</code> writes them and <code>acc_box()</code> reads them. The four steps of the comments (<code>delV</code>, <code>eno</code>, <code>Vo</code>, <code>Vn</code>, <code>enn</code>: local variables of type <code>ntype</code>):
 <ol type="1">
 <li><code>delV = pars.delv*(2.0*rng.ranf()-1.0)</code>, uniform in <span class="math inline">\([-\delta_V, \delta_V)\)</span>; before the scaling, <code>eno = totenergy()</code> and <span class="math inline">\(V_o\)</span> = <code>pars.L(0)*pars.L(1)*pars.L(2)</code>; <span class="math inline">\(V_n = V_o\)</span> + <code>delV</code>;</li>
 <li><code>fact = cbrt(Vn/Vo)</code>; <code>parts[i].r *= fact</code> for every particle, and <code>pars.L *= fact</code>;</li>
 <li><code>enn = totenergy()</code>;</li>
 <li><code>DG = pars.P*delV + (enn-eno) - pars.T*pars.Np*log(Vn/Vo)</code>.</li>
-</ol>
-<code>delV</code>, <code>eno</code>, <code>Vo</code>, <code>Vn</code>, <code>enn</code>: local variables of type <code>ntype</code>.</li>
+</ol></li>
 </ul>
 </section>
 <section id="hints-acceptance-and-run" class="slide level2 smaller">
@@ -1175,7 +1173,7 @@ total energy per particle is -4.45749</code></pre>
 <h2>Checklist for today</h2>
 <ul class="task-list">
 <li><label><input type="checkbox"><code>simtype = 1</code> in <code>params.hpp</code> (or <code>mc.set_sim_type(1)</code>)</label></li>
-<li><label><input type="checkbox"><code>store_all_pars()</code> and <code>restore_all_pars()</code></label></li>
+<li><label><input type="checkbox"><code>move_box()</code>, <code>store_all_pars()</code> and <code>restore_all_pars()</code></label></li>
 <li><label><input type="checkbox"><code>alpha_box()</code>: new volume, scaling of positions and box, <span class="math inline">\(\Delta G\)</span></label></li>
 <li><label><input type="checkbox"><code>acc_box()</code>: the Metropolis criterion; for a rejected move positions, box and <code>vol_rej++</code></label></li>
 <li><label><input type="checkbox"><code>run()</code>: volume moves with probability <span class="math inline">\(1/(N_p+1)\)</span></label></li>

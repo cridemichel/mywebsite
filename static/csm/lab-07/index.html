@@ -933,7 +933,7 @@ Cristiano De Michele
 <li>the <strong>NPT ensemble</strong> (Lab #8): <code>move_box()</code>, <code>alpha_box()</code>, <code>acc_box()</code>, <code>store_all_pars()</code>, <code>restore_all_pars()</code>;</li>
 <li>the main loop <code>run()</code>, which hides the empty <code>run()</code> of <code>sim</code>.</li>
 </ul></li>
-<li><code>run()</code> and <code>move_box()</code> are given; the other methods are skeletons.</li>
+<li><code>run()</code> is given (for now with particle moves only); the other methods, <code>move_box()</code> included, are skeletons.</li>
 </ul>
 </section>
 <section id="mcsim-the-ntv-methods" class="slide level2 smaller codice-intero codice-micro">
@@ -980,22 +980,23 @@ Cristiano De Michele
 <section id="mcsim-acceptance-rate-and-measures" class="slide level2 smaller codice-intero codice-micro">
 <h2><code>mcsim</code>: acceptance rate and measures</h2>
 <p><code>project/sim.hpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>  <span class="co">// ADJUST pars.deltra</span></span>
-<span id="cb8-2"><a aria-label="2"></a>  <span class="co">// adjust maximum volume "displacement" in alpha_box</span></span>
-<span id="cb8-3"><a aria-label="3"></a>  <span class="co">// so that acceptance rate of box move is around 0.5</span></span>
-<span id="cb8-4"><a aria-label="4"></a>  <span class="dt">void</span> calc_acceptance_and_adjust<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb8-5"><a aria-label="5"></a>    <span class="op">{</span></span>
-<span id="cb8-6"><a aria-label="6"></a>    <span class="op">}</span></span>
-<span id="cb8-7"><a aria-label="7"></a></span>
-<span id="cb8-8"><a aria-label="8"></a>  <span class="co">// open files in writing mode to truncate them to 0</span></span>
-<span id="cb8-9"><a aria-label="9"></a>  <span class="dt">void</span> init_measures<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
-<span id="cb8-10"><a aria-label="10"></a>    <span class="op">{</span></span>
-<span id="cb8-11"><a aria-label="11"></a>    <span class="op">}</span></span>
-<span id="cb8-12"><a aria-label="12"></a></span>
-<span id="cb8-13"><a aria-label="13"></a> <span class="co">// save potential energy per particle</span></span>
-<span id="cb8-14"><a aria-label="14"></a> <span class="dt">void</span> save_measures<span class="op">(</span><span class="dt">long</span> <span class="dt">int</span> t<span class="op">)</span></span>
-<span id="cb8-15"><a aria-label="15"></a>    <span class="op">{</span></span>
-<span id="cb8-16"><a aria-label="16"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a>  <span class="co">// CALC ACCEPTANCE RATES AND</span></span>
+<span id="cb8-2"><a aria-label="2"></a>  <span class="co">// ADJUST pars.deltra</span></span>
+<span id="cb8-3"><a aria-label="3"></a>  <span class="co">// adjust maximum volume "displacement" in alpha_box</span></span>
+<span id="cb8-4"><a aria-label="4"></a>  <span class="co">// so that acceptance rate of box move is around 0.5</span></span>
+<span id="cb8-5"><a aria-label="5"></a>  <span class="dt">void</span> calc_acceptance_and_adjust<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb8-6"><a aria-label="6"></a>    <span class="op">{</span></span>
+<span id="cb8-7"><a aria-label="7"></a>    <span class="op">}</span></span>
+<span id="cb8-8"><a aria-label="8"></a></span>
+<span id="cb8-9"><a aria-label="9"></a>  <span class="co">// open files in writing mode to truncate them to 0</span></span>
+<span id="cb8-10"><a aria-label="10"></a>  <span class="dt">void</span> init_measures<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb8-11"><a aria-label="11"></a>    <span class="op">{</span></span>
+<span id="cb8-12"><a aria-label="12"></a>    <span class="op">}</span></span>
+<span id="cb8-13"><a aria-label="13"></a></span>
+<span id="cb8-14"><a aria-label="14"></a> <span class="co">// save potential energy per particle</span></span>
+<span id="cb8-15"><a aria-label="15"></a> <span class="dt">void</span> save_measures<span class="op">(</span><span class="dt">long</span> <span class="dt">int</span> t<span class="op">)</span></span>
+<span id="cb8-16"><a aria-label="16"></a>    <span class="op">{</span></span>
+<span id="cb8-17"><a aria-label="17"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>calc_acceptance_and_adjust()</code> also adjusts the volume moves of the NPT ensemble (Lab #8): today only the part of the particle moves.</li>
 </ul>
