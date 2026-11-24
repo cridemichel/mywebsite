@@ -1414,14 +1414,14 @@ collect2: error: ld returned 1 exit status</code></pre>
 10000  15.715  30.47</code></pre>
 <ul>
 <li>Da una riga alla seguente <code>N</code> si moltiplica per 10, e la profondità media (seconda colonna) aumenta di 4,4 e poi di 4,7.</li>
-<li>Se la profondità valesse <em>c</em>&nbsp;ln&nbsp;<code>N</code> più una costante, a ogni riga aumenterebbe di <em>c</em>&nbsp;ln&nbsp;10&nbsp;≈&nbsp;2,3&nbsp;<em>c</em>. Gli aumenti misurati danno <em>c</em>&nbsp;≈&nbsp;2: la profondità media cresce come 2 ln <code>N</code>, molto più lentamente di <code>N</code>.</li>
+<li>Un aumento fisso a ogni fattore 10 è il segno di una crescita come ln&nbsp;<code>N</code>: <code>N</code> si moltiplica per 100, la profondità media nemmeno per 2,5. L’aumento è circa 2&nbsp;ln&nbsp;10&nbsp;≈&nbsp;4,6: la profondità media cresce come 2&nbsp;ln&nbsp;<code>N</code>.</li>
 </ul>
 </section>
 <section id="soluzione-quanti-passi-servono" class="slide level2 smaller">
 <h2>Soluzione: quanti passi servono</h2>
 <ul>
 <li>Per inserire o cercare un dato si scende dalla radice di un livello a ogni passo: i passi sono tanti quanti la profondità, e crescono anche loro come 2&nbsp;ln&nbsp;<code>N</code>. Con <code>N</code>&nbsp;=&nbsp;10&nbsp;000 sono in media circa 16.</li>
-<li>Con i dati in ordine crescente ogni nodo finirebbe a destra del precedente: l’albero diventerebbe una catena, di profondità media (<code>N</code> − 1)/2, cioè circa 5000 passi per <code>N</code>&nbsp;=&nbsp;10&nbsp;000.</li>
+<li>Con i dati in ordine crescente ogni nodo finirebbe a destra del precedente: l’albero diventerebbe una catena, con profondità da 0 a <code>N</code>&nbsp;−&nbsp;1. Per <code>N</code>&nbsp;=&nbsp;10&nbsp;000 la profondità massima sarebbe 9999 e quella media dei nodi (<code>N</code>&nbsp;−&nbsp;1)/2&nbsp;≈&nbsp;5000, contro 30 e 16 con i dati casuali.</li>
 </ul>
 </section>
 <section id="per-saperne-di-più" class="slide level2 smaller">
