@@ -1126,7 +1126,7 @@ Cristiano De Michele
 </div></div>
 <ul>
 <li><code>savemeasure</code> = 1: a line of <code>energy.dat</code> at every step.</li>
-<li>The cost of a step grows as <span class="math inline">\(N_p^2\)</span>: with 512 particles a run takes about a minute and a half (compiled with <code>-O2</code>, see below).</li>
+<li>The cost of a step grows as <span class="math inline">\(N_p^2\)</span>: with 512 particles a run takes about a minute (compiled with <code>-O2</code>, see below).</li>
 </ul>
 </section></section>
 <section>
@@ -1189,33 +1189,46 @@ Cristiano De Michele
 <li><code>particleSS::vij()</code>: as <code>particleLJ::vij()</code>, with only the repulsive term, <span class="math inline">\(v(r) = 4\epsilon(\sigma/r)^{12}\)</span> for <span class="math inline">\(r &lt; r_c\)</span>. To test it: <code>particleSS&lt;double&gt;</code> instead of <code>particleLJ&lt;double&gt;</code> in <code>mcsim.cpp</code> (or in a copy of it).</li>
 </ul>
 </section>
-<section id="hints-acceptance-rate-and-measures" class="slide level2 smaller">
-<h2>Hints: acceptance rate and measures</h2>
+<section id="hints-acceptance-rate" class="slide level2 smaller">
+<h2>Hints: acceptance rate</h2>
 <ul>
 <li><p><code>calc_acceptance_and_adjust()</code>: the acceptance rate of the last <code>adjstps</code> steps, <code>(tot_tra - tra_rej)/tot_tra</code>, in floating point (the counters are integers: cast one of the two to <code>double</code>). Print it with <code>deltra</code>, so that the line is the one of the slides:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a aria-label="1"></a><span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"rate tra: "</span> <span class="op">&lt;&lt;</span> rate <span class="op">&lt;&lt;</span> <span class="st">" deltra="</span> <span class="op">&lt;&lt;</span> pars<span class="op">.</span>deltra <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>then, if the rate is above 0.5, <code>pars.deltra *= 1.1</code>, otherwise <code>pars.deltra /= 1.1</code>; set <code>tot_tra</code> and <code>tra_rej</code> back to 0.</p></li>
-<li><p><code>init_measures()</code>: as in <code>save_mgl_snapshot()</code>, a <code>std::fstream f</code>; open <code>energy.dat</code> with <code>std::ios::out|std::ios::trunc</code> and close it: an old file is emptied.</p></li>
-<li><p><code>save_measures(t)</code>: open <code>energy.dat</code> with <code>std::ios::out|std::ios::app</code> (append at the end), write <code>t</code>, a space, <code>totenergy()/pars.Np</code> and <code>"\n"</code>, and close it.</p></li>
+</ul>
+</section>
+<section id="hints-the-measures" class="slide level2 smaller">
+<h2>Hints: the measures</h2>
+<ul>
+<li><p>A file is a <code>std::fstream</code>, as in <code>save_mgl_snapshot()</code>. <code>open()</code> takes the name of the file and how to open it: flags combined with <code>|</code>, <code>std::ios::out</code> for writing and then <code>std::ios::trunc</code> (the file is emptied) or <code>std::ios::app</code> (each write goes at the end).</p></li>
+<li><p><code>init_measures()</code>: empties an old <code>energy.dat</code>, of a previous run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a aria-label="1"></a><span class="bu">std::</span>fstream f<span class="op">;</span></span>
+<span id="cb14-2"><a aria-label="2"></a>f<span class="op">.</span>open<span class="op">(</span><span class="st">"energy.dat"</span><span class="op">,</span> <span class="bu">std::</span>ios::out<span class="op">|</span><span class="bu">std::</span>ios::trunc<span class="op">);</span></span>
+<span id="cb14-3"><a aria-label="3"></a>f<span class="op">.</span>close<span class="op">();</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><code>save_measures(t)</code>: adds a line at the end of <code>energy.dat</code>, with <code>t</code>, a space, <code>totenergy()/pars.Np</code> and <code>"\n"</code> (<code>f &lt;&lt; ...</code>, as with <code>std::cout</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="bu">std::</span>fstream f<span class="op">;</span></span>
+<span id="cb15-2"><a aria-label="2"></a>f<span class="op">.</span>open<span class="op">(</span><span class="st">"energy.dat"</span><span class="op">,</span> <span class="bu">std::</span>ios::out<span class="op">|</span><span class="bu">std::</span>ios::app<span class="op">);</span></span>
+<span id="cb15-3"><a aria-label="3"></a><span class="co">// write the line</span></span>
+<span id="cb15-4"><a aria-label="4"></a>f<span class="op">.</span>close<span class="op">();</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ul>
 </section>
 <section id="the-goal-mcsim.cpp" class="slide level2 smaller">
 <h2>The goal: <code>mcsim.cpp</code></h2>
 <p><code>project/mcsim.cpp</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./sim.hpp"</span></span>
-<span id="cb14-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span> <span class="op">**</span>argv<span class="op">)</span></span>
-<span id="cb14-3"><a aria-label="3"></a><span class="op">{</span></span>
-<span id="cb14-4"><a aria-label="4"></a>  mcsim<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span> particleLJ<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;</span> mc<span class="op">;</span></span>
-<span id="cb14-5"><a aria-label="5"></a>  mc<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">0</span><span class="op">);</span> <span class="co">//  initialize the random number generator</span></span>
-<span id="cb14-6"><a aria-label="6"></a>  mc<span class="op">.</span>prepare_initial_conf<span class="op">();</span> <span class="co">// create initial configuration</span></span>
-<span id="cb14-7"><a aria-label="7"></a>  mc<span class="op">.</span>run<span class="op">();</span> <span class="co">// launch MC simulation</span></span>
-<span id="cb14-8"><a aria-label="8"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb14-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
-<span id="cb15-2"><a aria-label="2"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-O2</span> <span class="at">-o</span> mcsim mcsim.cpp</span>
-<span id="cb15-3"><a aria-label="3"></a><span class="ex">./mcsim</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">"./sim.hpp"</span></span>
+<span id="cb16-2"><a aria-label="2"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span> <span class="op">**</span>argv<span class="op">)</span></span>
+<span id="cb16-3"><a aria-label="3"></a><span class="op">{</span></span>
+<span id="cb16-4"><a aria-label="4"></a>  mcsim<span class="op">&lt;</span><span class="dt">double</span><span class="op">,</span> particleLJ<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;</span> mc<span class="op">;</span></span>
+<span id="cb16-5"><a aria-label="5"></a>  mc<span class="op">.</span>init_rng<span class="op">(</span><span class="dv">0</span><span class="op">);</span> <span class="co">//  initialize the random number generator</span></span>
+<span id="cb16-6"><a aria-label="6"></a>  mc<span class="op">.</span>prepare_initial_conf<span class="op">();</span> <span class="co">// create initial configuration</span></span>
+<span id="cb16-7"><a aria-label="7"></a>  mc<span class="op">.</span>run<span class="op">();</span> <span class="co">// launch MC simulation</span></span>
+<span id="cb16-8"><a aria-label="8"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb16-9"><a aria-label="9"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a aria-label="1"></a><span class="bu">cd</span> ~/csm/project</span>
+<span id="cb17-2"><a aria-label="2"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++17 <span class="at">-Wall</span> <span class="at">-O2</span> <span class="at">-o</span> mcsim mcsim.cpp</span>
+<span id="cb17-3"><a aria-label="3"></a><span class="ex">./mcsim</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li><code>-O2</code>: the compiler optimizes the code. Here it makes the run about 6 times faster: on our machine 5000 steps take about a minute and a half, instead of nine.</li>
+<li><code>-O2</code>: the compiler optimizes the code. Here it makes the run about 6 times faster: on our machine 5000 steps take about a minute, instead of six.</li>
 <li>With the skeletons the program compiles without warnings (the methods to write return <code>void</code>) and runs, but nothing moves: the energy stays at its lattice value, <code>-3.36561</code>.</li>
 </ul>
 </section>
@@ -1247,8 +1260,8 @@ total energy per particle is -3.12133</code></pre>
 <ul>
 <li><code>energy.dat</code> of the run above, and the average of the longer run. Your average, only after <code>maxadjstps</code> (<code>-3.08359</code> for the run above), and the plot (or use Python):</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a aria-label="1"></a><span class="fu">awk</span> <span class="st">'$1 &gt;= 2000 {s += $2; n++} END {print s/n}'</span> energy.dat</span>
-<span id="cb17-2"><a aria-label="2"></a><span class="ex">gnuplot</span> <span class="at">-p</span> <span class="at">-e</span> <span class="st">"plot 'energy.dat' with lines"</span>     <span class="co"># sudo apt install gnuplot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a aria-label="1"></a><span class="fu">awk</span> <span class="st">'$1 &gt;= 2000 {s += $2; n++} END {print s/n}'</span> energy.dat</span>
+<span id="cb19-2"><a aria-label="2"></a><span class="ex">gnuplot</span> <span class="at">-p</span> <span class="at">-e</span> <span class="st">"plot 'energy.dat' with lines"</span>     <span class="co"># sudo apt install gnuplot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="classic-pitfalls" class="slide level2 smaller">
 <h2>Classic pitfalls</h2>
