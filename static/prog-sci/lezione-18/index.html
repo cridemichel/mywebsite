@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c2b08e7e9e4d0725d7c99c9a799ba6e7.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.11.9">
+
+  <meta name="author" content="Cristiano De Michele">
+  <title>Programmazione Scientifica++ – Programmazione Scientifica++: Lezione 18</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-00ad5a49dff614330cd349bcec985ec3.css">
+  <link rel="stylesheet" href="../annotazioni.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="text/x-mathjax-config">
+  // Solo i font TeX serviti dal sito (mathjax/, 30/9/2026). Sul Mac sono installati
+  // i font STIX: MathJax li preferiva, chiedeva fonts/STIX/fontdata.js, che la copia
+  // ridotta non ha, e mostrava "Math Processing Error" (slide "Piegare lo spazio").
+  MathJax.Hub.Config({"HTML-CSS": {availableFonts: ["TeX"], preferredFont: "TeX",
+                                   webFont: "TeX", imageFont: null}});
+  // Anteprime della speaker view (8/10/2026): formule viste DOPPIE con schermo esteso.
+  // Solo li' si spengono la copia MathML nascosta (per i lettori di schermo) e la
+  // bozza veloce che precede il disegno definitivo: le slide proiettate e il sito
+  // degli studenti restano come prima.
+  if (/receiver/i.test(window.location.search))
+    MathJax.Hub.Config({menuSettings: {assistiveMML: false, FastPreview: false},
+                        AssistiveMML: {disabled: true}, "fast-preview": {disabled: true}});
+  </script>
+  <script>
+  // Collega ogni spiegazione alla sua riga di codice e viceversa.
+  //   - col mouse: passandoci sopra si accendono entrambe;
+  //   - col dito (tablet): un tocco FISSA l'evidenziazione, un altro tocco
+  //     (o il tocco su un'altra annotazione) la sposta.
+  // Va usato con "code-annotations: below", che lascia le spiegazioni visibili.
+  window.addEventListener('load', function () {
+    function righe(spec) {                 // "2" | "2,4" | "2-4"
+      var out = [];
+      String(spec || '').split(',').forEach(function (p) {
+        var m = p.trim().match(/^(\d+)(?:-(\d+))?$/);
+        if (!m) return;
+        for (var i = +m[1], b = m[2] ? +m[2] : +m[1]; i <= b; i++) out.push(i);
+      });
+      return out;
+    }
+
+    var fissato = null;                    // gruppo attualmente bloccato dal tocco
+
+    document.querySelectorAll('.code-annotation-container-grid').forEach(function (dl) {
+      var dts = dl.querySelectorAll('dt');
+      dl.querySelectorAll('dd > span[data-code-annotation]').forEach(function (span, i) {
+        var cella = span.dataset.codeCell, n = span.dataset.codeAnnotation;
+        var gruppo = [span, span.parentElement, dts[i]].filter(Boolean);
+
+        var anchor = document.querySelector(
+          '.code-annotation-anchor[data-target-cell="' + cella + '"][data-target-annotation="' + n + '"]');
+        if (anchor) gruppo.push(anchor);
+
+        righe(span.dataset.codeLines).forEach(function (r) {
+          var el = document.getElementById(cella + '-' + r);
+          if (el) gruppo.push(el);
+        });
+
+        function on()  { gruppo.forEach(function (e) { e.classList.add('ann-on'); }); }
+        function off() { gruppo.forEach(function (e) { e.classList.remove('ann-on'); }); }
+
+        var trigger = [span.parentElement, dts[i], anchor].filter(Boolean);
+        trigger.forEach(function (t) {
+          t.addEventListener('mouseenter', function () { if (!fissato) on(); });
+          t.addEventListener('mouseleave', function () { if (fissato !== gruppo) off(); });
+          t.addEventListener('click', function (ev) {
+            ev.preventDefault(); ev.stopPropagation();
+            if (fissato === gruppo) { off(); fissato = null; return; }
+            if (fissato) fissato.forEach(function (e) { e.classList.remove('ann-on'); });
+            on(); fissato = gruppo;
+          });
+        });
+      });
+    });
+  });
+  </script>
+  <style>
+  /* pulsanti "gomma" e "schermo intero" accanto a lavagna e notes canvas (29/9/2026) */
+  .reveal .slide-chalkboard-buttons .fa-eraser::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-schermo-intero::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/></svg>')}
+  .reveal .slide-chalkboard-buttons .fa-esci-schermo::before{background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" viewBox="0 0 16 16"><path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/></svg>')}
+  </style>
+  <script>
+  // Due pulsanti in piu' in basso a sinistra, per chi presenta dal tablet
+  // senza tastiera:
+  //  - la gomma cancella in un colpo i disegni della slide corrente, nel modo
+  //    attivo (la lavagna se e' aperta, altrimenti il notes canvas): e' il
+  //    tasto Canc. Le altre slide non si toccano;
+  //  - schermo intero, entra ed esce (il tasto F); l'icona segue lo stato.
+  window.addEventListener('load', function () {
+    var tentativi = 0;
+    (function aggiungi() {
+      var div = document.querySelector('.reveal .slide-chalkboard-buttons');
+      if (!div || typeof RevealChalkboard === 'undefined') {
+        if (++tentativi < 50) setTimeout(aggiungi, 100);
+        return;
+      }
+      if (div.querySelector('.fa-eraser')) return;
+      var span = document.createElement('span');
+      span.title = 'Cancella i disegni di questa slide (Canc)';
+      var icona = document.createElement('i');
+      icona.className = 'fas fa-eraser';
+      span.appendChild(icona);
+      span.onclick = function (ev) { ev.preventDefault(); RevealChalkboard.clear(); };
+      div.appendChild(span);
+
+      var doc = document.documentElement;
+      if (!doc.requestFullscreen) return;       // browser senza schermo intero
+      var fs = document.createElement('span');
+      var ifs = document.createElement('i');
+      fs.appendChild(ifs);
+      function aggiorna() {
+        var dentro = !!document.fullscreenElement;
+        ifs.className = 'fas ' + (dentro ? 'fa-esci-schermo' : 'fa-schermo-intero');
+        fs.title = dentro ? 'Esci dallo schermo intero (F)' : 'Schermo intero (F)';
+      }
+      fs.onclick = function (ev) {
+        ev.preventDefault();
+        if (document.fullscreenElement) document.exitFullscreen();
+        else doc.requestFullscreen().catch(function () {});
+      };
+      document.addEventListener('fullscreenchange', aggiorna);
+      aggiorna();
+      div.appendChild(fs);
+    })();
+  });
+  </script>
+  <script>
+  // Swipe a DUE dita per cambiare slide (29/9/2026). Lo swipe a un dito resta
+  // quello di reveal.js, che pero' non funziona se il dito parte su qualcosa che
+  // scorre (slide .scrollable, blocchi di codice): li' il browser si prende il
+  // gesto per lo scorrimento. Con due dita si cambia slide ovunque, anche con la
+  // matita attiva. Un pinch (dita che si allontanano) resta uno zoom.
+  (function () {
+    var SOGLIA = 60;            // px di spostamento del punto medio delle due dita
+    var g = null;               // gesto a due dita in corso
+    var tocchi = new Set();     // pointer "touch" attivi
+    var muto = false;           // da quando posi il secondo dito a quando li togli tutti
+
+    function medio(t) {
+      return { x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2,
+               d: Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) };
+    }
+    document.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) { var m = medio(e.touches); g = { x: m.x, y: m.y, d: m.d, fatto: false }; }
+      else if (e.touches.length > 2) g = null;
+    }, { capture: true, passive: true });
+
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches.length < 2) return;
+      e.stopPropagation();                      // la lavagna non disegna col secondo dito
+      if (!g || e.touches.length !== 2) return;
+      if (g.fatto) { if (e.cancelable) e.preventDefault(); return; }
+      var m = medio(e.touches), dx = m.x - g.x, dy = m.y - g.y;
+      if (Math.abs(m.d - g.d) > 0.35 * g.d) { g = null; return; }      // pinch: al browser
+      if (Math.abs(dx) > SOGLIA && Math.abs(dx) > 1.5 * Math.abs(dy)) {
+        g.fatto = true;
+        if (e.cancelable) e.preventDefault();
+        if (dx < 0) Reveal.next(); else Reveal.prev();
+      } else if (Math.abs(dy) > SOGLIA && Math.abs(dy) > 1.5 * Math.abs(dx)) {
+        g = null;                                // due dita in verticale: scorrimento
+      }
+    }, { capture: true, passive: false });
+
+    document.addEventListener('touchend', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+    document.addEventListener('touchcancel', function (e) {
+      if (e.touches.length < 2) g = null;
+    }, true);
+
+    // reveal.js legge lo swipe dai pointer events, dito per dito: con due dita
+    // vedrebbe anche uno swipe a un dito e salterebbe due slide. Dal secondo dito
+    // in poi, e finche' non si alzano tutti, i suoi pointermove non gli arrivano.
+    function conta(e) {
+      if (e.pointerType !== 'touch') return;
+      if (e.type === 'pointerdown') { tocchi.add(e.pointerId); if (tocchi.size >= 2) muto = true; }
+      else { tocchi.delete(e.pointerId); if (tocchi.size === 0) muto = false; }
+    }
+    ['pointerdown', 'pointerup', 'pointercancel'].forEach(function (t) {
+      document.addEventListener(t, conta, true);
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch' && muto) e.stopPropagation();
+    }, true);
+  })();
+  </script>
+  <script>
+  // Speaker view su schermo esteso (8/10/2026): quello che si fa sull'anteprima
+  // della slide CORRENTE nella speaker view (tasto S) si vede anche sulla finestra
+  // proiettata, che il cursore non raggiunge.
+  //  - Puntatore: muovendo il mouse sull'anteprima compare un pallino rosso nello
+  //    stesso punto della vista proiettata; resta finche' il mouse e' sull'anteprima
+  //    e sparisce uscendo (8/10: tolto lo spegnimento dopo 4 s fermo, e il pallino
+  //    remoto non risente piu' di clic o cambi di finestra su quella proiettata).
+  //    Tasto R premuto nella speaker view: spegne/riaccende questo pallino (all'apertura
+  //    e' acceso; la conferma compare solo nell'anteprima, non sul proiettore).
+  //  - Evidenziatore: il testo selezionato nell'anteprima si colora di giallo sulla
+  //    vista proiettata (8/10/2026). Non usa la selezione vera (in una finestra senza
+  //    fuoco e' grigio chiaro) ma la CSS Custom Highlight API; le formule si saltano.
+  //  - Annotazioni del codice (i numerini): quella accesa nell'anteprima, passandoci
+  //    sopra o con un clic, si accende anche sulla vista proiettata, con la sua riga
+  //    di codice (12/10/2026).
+  //  - Lavagna e penna: i disegni fatti sull'anteprima (tasti C e B, gomma, Canc)
+  //    passano alla vista proiettata, e viceversa; aprendo la speaker view
+  //    l'anteprima riceve i disegni gia' fatti.
+  // Usa i messaggi "broadcast"/"received" previsti dal plugin chalkboard per le
+  // presentazioni condivise; l'anteprima della slide successiva e' esclusa.
+  //  - Senza speaker view il pallino segue il mouse sulla slide e la freccia viene
+  //    nascosta; tornano manina/freccia sugli elementi cliccabili (pulsanti, link,
+  //    callout richiudibili, menu, footer), il cursore di disegno con penna e lavagna,
+  //    il cursore normale tenendo premuto il tasto (selezione del testo).
+  //    Dopo 3 s fermo spariscono pallino e freccia: basta muovere il mouse.
+  //    Questo pallino parte SPENTO: si accende e si spegne col tasto R. Riguarda solo
+  //    l'uso senza speaker view: il pallino comandato dall'anteprima funziona sempre.
+  (function () {
+    var NS = 'speaker-view-ponte';
+    function area() {                    // dove stanno le slide in questa finestra
+      var v = document.querySelector('.reveal');
+      if (!v || typeof Reveal === 'undefined' || !Reveal.isReady()) return null;
+      var r = v.getBoundingClientRect(), c = Reveal.getConfig(), s = Reveal.getScale();
+      var w = c.width * s, h = c.height * s;
+      return { x: r.left + (r.width - w) / 2, y: r.top + (r.height - h) / 2, w: w, h: h };
+    }
+    function manda(dest, m) { m.namespace = NS; try { dest.postMessage(JSON.stringify(m), '*'); } catch (e) {} }
+    function leggi(ev) {
+      var m; try { m = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data; } catch (e) { return null; }
+      return (m && m.namespace === NS) ? m : null;
+    }
+    // Testo di una slide come sequenza di caratteri, saltando formule e script: le due
+    // finestre caricano la stessa pagina, quindi le posizioni coincidono.
+    var SALTA = 'script, style, .MathJax, .MathJax_Display, .MathJax_Preview, .MJX_Assistive_MathML, mjx-container';
+    function testi(sez) {
+      var w = document.createTreeWalker(sez, NodeFilter.SHOW_TEXT, null), n, l = [], tot = 0;
+      while ((n = w.nextNode())) {
+        if (n.parentElement && n.parentElement.closest(SALTA)) continue;
+        l.push({ n: n, da: tot }); tot += n.length;
+      }
+      return l;
+    }
+    function ricevuto(contenuto) {       // consegna al plugin chalkboard
+      var e = new CustomEvent('received'); e.content = contenuto; document.dispatchEvent(e);
+    }
+
+    if (/receiver/i.test(window.location.search)) {
+      // anteprima dentro la speaker view: solo quella della slide corrente
+      var cornice = null, dest = null;
+      try { cornice = window.frameElement; dest = window.parent.opener; } catch (e) {}
+      if (!cornice || !dest || !cornice.closest('#current-slide')) return;
+      var invia = true, scritta = null, timerScritta = null;   // acceso all'apertura
+      function conferma(testo) {         // scritta solo nell'anteprima
+        if (!scritta) {
+          scritta = document.createElement('div');
+          scritta.style.cssText = 'position:fixed;left:50%;bottom:60px;transform:translateX(-50%);' +
+            'padding:6px 18px;border-radius:8px;background:rgba(0,0,0,.75);color:#fff;' +
+            'font:28px sans-serif;pointer-events:none;z-index:100001;display:none';
+          document.body.appendChild(scritta);
+        }
+        scritta.textContent = testo; scritta.style.display = 'block';
+        clearTimeout(timerScritta);
+        timerScritta = setTimeout(function () { scritta.style.display = 'none'; }, 1500);
+      }
+      window.addEventListener('load', function () {   // la speaker view gira qui i tasti premuti
+        if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+          Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Pallino sulla vista proiettata acceso/spento' },
+            function () {
+              invia = !invia;
+              if (!invia) manda(dest, { via: true });
+              conferma('Pallino sul proiettore ' + (invia ? 'acceso' : 'spento') + ' (tasto R)');
+            });
+      });
+      document.addEventListener('mousemove', function (e) {
+        if (!invia) return;
+        var a = area(); if (!a) return;
+        manda(dest, { x: (e.clientX - a.x) / a.w, y: (e.clientY - a.y) / a.h });
+      });
+      document.documentElement.addEventListener('mouseleave', function () { manda(dest, { via: true }); });
+      document.addEventListener('broadcast', function (e) {
+        if (e.content && e.content.sender === 'chalkboard-plugin') manda(dest, { lavagna: e.content });
+      });
+      window.addEventListener('message', function (ev) {
+        var m = leggi(ev); if (m && m.lavagna) ricevuto(m.lavagna);
+      });
+      window.addEventListener('load', function () { setTimeout(function () { manda(dest, { ciao: true }); }, 500); });
+      var ultimeAnn = '', attesaAnn = null;
+      function mandaAnn() {              // annotazioni accese nella slide corrente
+        attesaAnn = null;
+        var sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide(), l = [];
+        if (sez) sez.querySelectorAll('dd > span[data-code-annotation].ann-on').forEach(function (sp) {
+          l.push([sp.dataset.codeCell, sp.dataset.codeAnnotation]);
+        });
+        var k = JSON.stringify(l); if (k === ultimeAnn) return; ultimeAnn = k;
+        var i = Reveal.getIndices();
+        manda(dest, { ann: l, h: i.h, v: i.v });
+      }
+      window.addEventListener('load', function () {
+        new MutationObserver(function () {
+          if (!attesaAnn) attesaAnn = setTimeout(mandaAnn, 0);
+        }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+      });
+      var ultimaSel = '';
+      document.addEventListener('selectionchange', function () {   // evidenziatore
+        var sel = document.getSelection(), sez = (typeof Reveal !== 'undefined') && Reveal.getCurrentSlide();
+        var ev = null;
+        if (sel && sel.rangeCount && !sel.isCollapsed && sez) {
+          var r = sel.getRangeAt(0), da = null, a = null;
+          testi(sez).forEach(function (t) {
+            if (!r.intersectsNode(t.n)) return;
+            if (da === null) da = t.da + (t.n === r.startContainer ? r.startOffset : 0);
+            a = t.da + (t.n === r.endContainer ? r.endOffset : t.n.length);
+          });
+          if (da !== null && a > da) ev = [da, a];
+        }
+        var k = JSON.stringify(ev); if (k === ultimaSel) return; ultimaSel = k;
+        var i = Reveal.getIndices();
+        manda(dest, { evid: ev, h: i.h, v: i.v });
+      });
+      return;
+    }
+
+    // finestra proiettata
+    var punto = null, puntoRemoto = null, timer = null, timerRemoto = null, anteprime = [];
+    function nuovoPallino() {
+      var d = document.createElement('div');
+      d.style.cssText = 'position:fixed;width:18px;height:18px;margin:-9px 0 0 -9px;' +
+        'border-radius:50%;background:rgba(220,30,30,.85);box-shadow:0 0 10px 3px rgba(220,30,30,.5);' +
+        'pointer-events:none;z-index:100000;display:none';
+      document.body.appendChild(d);
+      return d;
+    }
+    function pallino() { return punto || (punto = nuovoPallino()); }               // mouse qui
+    function pallinoRemoto() { return puntoRemoto || (puntoRemoto = nuovoPallino()); } // speaker view
+    document.addEventListener('broadcast', function (e) {
+      if (!e.content || e.content.sender !== 'chalkboard-plugin') return;
+      anteprime = anteprime.filter(function (w) { return !w.closed; });
+      anteprime.forEach(function (w) { manda(w, { lavagna: e.content }); });
+    });
+    // anche senza speaker view: il pallino segue il mouse sulla slide al posto della freccia
+    var stile = document.createElement('style');
+    stile.textContent = 'html.laser-attivo, html.laser-attivo * { cursor: none !important; }';
+    document.head.appendChild(stile);
+    var radice = document.documentElement, premuto = false, ultimo = null, ultimoCliccabile = false;
+    var laserAcceso = false, avviso = null, timerAvviso = null;   // spento all'avvio
+    function mostraAvviso(testo) {     // piccola scritta in basso, per un secondo e mezzo
+      if (!avviso) {
+        avviso = document.createElement('div');
+        avviso.style.cssText = 'position:fixed;left:50%;bottom:48px;transform:translateX(-50%);' +
+          'padding:4px 12px;border-radius:6px;background:rgba(0,0,0,.7);color:#fff;' +
+          'font:15px sans-serif;pointer-events:none;z-index:100001;display:none';
+        document.body.appendChild(avviso);
+      }
+      avviso.textContent = testo; avviso.style.display = 'block';
+      clearTimeout(timerAvviso);
+      timerAvviso = setTimeout(function () { avviso.style.display = 'none'; }, 1500);
+    }
+    function cambiaLaser() {
+      laserAcceso = !laserAcceso;
+      if (!laserAcceso) { clearTimeout(timer); spegni(true); }
+      mostraAvviso('Puntatore laser ' + (laserAcceso ? 'acceso' : 'spento') + ' (tasto R)');
+    }
+    window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined' && Reveal.addKeyBinding)
+        Reveal.addKeyBinding({ keyCode: 82, key: 'R', description: 'Puntatore laser acceso/spento' }, cambiaLaser);
+    });
+    var CLICCABILI = 'a, button, summary, label, input, select, textarea, [role="button"], [onclick],' +
+      ' .controls, .progress, .slide-number, .footer, .slide-menu-button, .slide-menu,' +
+      ' .slide-chalkboard-buttons, .chalkboard-buttons';
+    function cliccabile(t) {            // elemento con manina, o comunque interattivo
+      if (!t || t.nodeType !== 1) return false;
+      if (t === ultimo) return ultimoCliccabile;
+      var c = radice.classList.contains('laser-attivo');
+      if (c) radice.classList.remove('laser-attivo');   // per leggere il cursore vero
+      var cur = getComputedStyle(t).cursor;
+      if (c) radice.classList.add('laser-attivo');
+      ultimo = t;
+      ultimoCliccabile = !!t.closest(CLICCABILI) || cur === 'pointer' ||
+        (t.tagName === 'CANVAS' && !!t.closest('#notescanvas, #chalkboard'));
+      return ultimoCliccabile;
+    }
+    function spegni(anchefreccia) {     // nasconde il pallino; con true ridà la freccia
+      if (punto) punto.style.display = 'none';
+      if (anchefreccia) radice.classList.remove('laser-attivo');
+    }
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || premuto || !laserAcceso) return;
+      var a = area();
+      clearTimeout(timer);
+      var fuori = !a || e.clientX < a.x || e.clientX > a.x + a.w || e.clientY < a.y || e.clientY > a.y + a.h;
+      if (fuori || cliccabile(e.target)) { spegni(true); return; }
+      var p = pallino();
+      p.style.left = e.clientX + 'px'; p.style.top = e.clientY + 'px'; p.style.display = 'block';
+      radice.classList.add('laser-attivo');
+      timer = setTimeout(function () { spegni(false); }, 3000);   // fermo: sparisce tutto
+    });
+    document.addEventListener('pointerdown', function (e) {   // clic, selezione, doppio clic
+      if (e.pointerType !== 'mouse') return;
+      premuto = true; clearTimeout(timer); spegni(true);
+    }, true);
+    function rilascia() { premuto = false; }
+    document.addEventListener('pointerup', rilascia, true);
+    window.addEventListener('blur', function () { premuto = false; spegni(true); });
+    radice.addEventListener('mouseleave', function () { spegni(true); });
+
+    // evidenziatore: stessa porzione di testo selezionata nell'anteprima
+    var EVIDENZIA = !!(window.CSS && CSS.highlights && window.Highlight);
+    if (EVIDENZIA) {
+      var stileEv = document.createElement('style');
+      stileEv.textContent = '::highlight(speaker-view) { background-color: rgba(255, 220, 0, .6); }';
+      document.head.appendChild(stileEv);
+    }
+    function evidenzia(m) {
+      if (!EVIDENZIA) return;
+      CSS.highlights.delete('speaker-view');
+      var i = Reveal.getIndices();
+      if (!m.evid || m.h !== i.h || m.v !== i.v) return;
+      var l = testi(Reveal.getCurrentSlide()), r = document.createRange(), ok = 0;
+      for (var k = 0; k < l.length; k++) {
+        var t = l[k], fine = t.da + t.n.length;
+        if (!(ok & 1) && m.evid[0] < fine) { r.setStart(t.n, m.evid[0] - t.da); ok |= 1; }
+        if (!(ok & 2) && m.evid[1] <= fine) { r.setEnd(t.n, m.evid[1] - t.da); ok |= 2; break; }
+      }
+      if (ok === 3) CSS.highlights.set('speaker-view', new Highlight(r));
+    }
+    if (EVIDENZIA) window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { CSS.highlights.delete('speaker-view'); });
+    });
+    // annotazioni del codice accese dall'anteprima: stessi elementi dello script delle
+    // annotazioni (spiegazione, numerino, marcatore nel codice, righe di codice)
+    var annRemote = [];
+    function annotazioni(m) {
+      annRemote.forEach(function (e) { e.classList.remove('ann-on'); });
+      annRemote = [];
+      var i = Reveal.getIndices();
+      if (!m.ann || m.h !== i.h || m.v !== i.v) return;
+      m.ann.forEach(function (c) {
+        var cella = c[0], n = c[1];
+        var span = document.querySelector('dd > span[data-code-cell="' + cella + '"][data-code-annotation="' + n + '"]');
+        if (!span) return;
+        var dd = span.parentElement, dl = dd.parentElement, g = [span, dd];
+        var dds = Array.prototype.slice.call(dl.querySelectorAll('dd')), dts = dl.querySelectorAll('dt');
+        if (dts[dds.indexOf(dd)]) g.push(dts[dds.indexOf(dd)]);
+        var anchor = document.querySelector('.code-annotation-anchor[data-target-cell="' + cella +
+                                            '"][data-target-annotation="' + n + '"]');
+        if (anchor) g.push(anchor);
+        String(span.dataset.codeLines || '').split(',').forEach(function (p) {
+          var r = p.trim().match(/^(\d+)(?:-(\d+))?$/); if (!r) return;
+          for (var j = +r[1], b = r[2] ? +r[2] : +r[1]; j <= b; j++) {
+            var el = document.getElementById(cella + '-' + j); if (el) g.push(el);
+          }
+        });
+        g.forEach(function (e) { if (!e.classList.contains('ann-on')) { e.classList.add('ann-on'); annRemote.push(e); } });
+      });
+    }
+    window.addEventListener('load', function () {
+      if (typeof Reveal !== 'undefined') Reveal.on('slidechanged', function () { annotazioni({}); });
+    });
+
+    window.addEventListener('message', function (ev) {
+      var m = leggi(ev); if (!m) return;
+      if (m.ciao) {                      // nuova anteprima: le mando i disegni gia' fatti
+        if (anteprime.indexOf(ev.source) < 0) anteprime.push(ev.source);
+        var w = new CustomEvent('welcome'); w.id = 'speaker-view'; document.dispatchEvent(w);
+        return;
+      }
+      if (m.lavagna) { ricevuto(m.lavagna); return; }
+      if ('evid' in m) { evidenzia(m); return; }
+      if ('ann' in m) { annotazioni(m); return; }
+      var p = pallinoRemoto();
+      clearTimeout(timerRemoto);
+      if (m.via || m.x < 0 || m.x > 1 || m.y < 0 || m.y > 1) { p.style.display = 'none'; return; }
+      var a = area(); if (!a) return;
+      p.style.left = (a.x + m.x * a.w) + 'px';
+      p.style.top = (a.y + m.y * a.h) + 'px';
+      p.style.display = 'block';
+      // sicurezza: se l'uscita dall'anteprima andasse persa, sparisce dopo 30 s fermo
+      timerRemoto = setTimeout(function () { p.style.display = 'none'; }, 30000);
+    });
+  })();
+  </script>
+  <script>
+  // File di codice divisi in piu' blocchi (13/10/2026). Un blocco con startFrom="..."
+  // (numerazione che prosegue) e' la continuazione del blocco precedente: sulla stessa
+  // slide (due colonne) o, se e' il primo blocco della slide, dell'ultimo blocco della
+  // slide precedente (con lo stesso filename, se indicato). Il pulsante "copia" copia
+  // l'INTERO file; sulla stessa slide resta solo il pulsante del primo pezzo.
+  (function () {
+    var it = /^it/i.test(document.documentElement.lang || '');
+    function testo(div) {                      // testo di un blocco, senza i cerchietti delle annotazioni
+      var code = div.querySelector('pre code');
+      if (!code) return '';
+      var c = code.cloneNode(true);
+      c.querySelectorAll('.code-annotation-anchor').forEach(function (a) { a.remove(); });
+      var righe = c.querySelectorAll(':scope > span');   // una <span> per riga: conserva anche le righe vuote
+      if (righe.length) return Array.prototype.map.call(righe, function (r) { return r.textContent; }).join('\n');
+      return c.textContent.replace(/\n$/, '');
+    }
+    function copia(t, btn) {
+      function ok() {
+        btn.classList.add('code-copy-button-checked');
+        setTimeout(function () { btn.classList.remove('code-copy-button-checked'); }, 1500);
+      }
+      function ripiego() {                     // senza https (es. file aperto in locale)
+        var ta = document.createElement('textarea');
+        ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { if (document.execCommand('copy')) ok(); } catch (e) {}
+        ta.remove();
+      }
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, ripiego);
+      else ripiego();
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      var sezioni = Array.prototype.filter.call(document.querySelectorAll('.reveal .slides section'),
+                                                function (s) { return !s.querySelector('section'); });
+      var tutti = [], prec = null;
+      sezioni.forEach(function (sez) {
+        var g = null;
+        sez.querySelectorAll('div.sourceCode').forEach(function (div) {
+          var segue = div.hasAttribute('data-startfrom');
+          if (segue && g) g.push(div);
+          else if (segue && prec && (div.dataset.filename || '') === (prec[0].dataset.filename || '')) {
+            prec.push(div); g = prec;                // continua dalla slide precedente
+          } else { g = [div]; tutti.push(g); }
+        });
+        prec = g;                                    // null se la slide non ha codice
+      });
+      tutti.forEach(function (gr) {
+        if (gr.length < 2) return;
+        var piuSlide = gr[0].closest('section') !== gr[gr.length - 1].closest('section');
+        gr.forEach(function (div, k) {
+          var b = div.parentElement.querySelector('.code-copy-button');
+          if (!b) return;
+          if (k > 0 && div.closest('section') === gr[k - 1].closest('section')) { b.style.display = 'none'; return; }
+          b.title = it ? (piuSlide ? "Copia l'intero file (tutte le parti)" : "Copia l'intero file")
+                       : (piuSlide ? 'Copy the whole file (all its parts)' : 'Copy the whole file');
+          b._gruppo = gr;
+        });
+      });
+      // in cattura: arriva prima del gestore di Quarto (ClipboardJS) e lo sostituisce
+      document.addEventListener('click', function (ev) {
+        var b = ev.target.closest && ev.target.closest('.code-copy-button');
+        if (!b || !b._gruppo) return;
+        ev.preventDefault(); ev.stopImmediatePropagation();
+        copia(b._gruppo.map(testo).join('\n'), b);
+      }, true);
+    });
+  })();
+  </script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Programmazione Scientifica++: Lezione 18</h1>
+  <p class="subtitle">La libreria standard: contenitori, iteratori, algoritmi</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Cristiano De Michele
+</div>
+</div>
+</div>
+
+</section>
+<section id="argomenti-di-oggi" class="slide level2 smaller">
+<h2>Argomenti di oggi</h2>
+<!--
+  Audit del 22/11/2026 con le linee guida di ottobre e novembre e il criterio 7 (chiarezza): cartella della
+  lezione, un eseguibile per esempio, slide "Provate", messaggi di g++ su Linux, esercizi con scopo e file da
+  completare, ripassi dichiarati, registro sobrio, titoli in sentence case. Riscritta; l'originale e' nel backup
+  del Mac index.qmd.pre-audit2211. Ripassi: std::vector e il for sugli elementi (Lezione 12), auto (Lezione 14,
+  "si riprende nella Lezione 18"), std::sort (Lezione 16), unique_ptr (Lezione 17), eccezioni e out_of_range
+  (Lezione 10), cache e contiguita' (Lezione 14). Nuovo: at(), capacity, iteratori, for con reference,
+  std::map, find, std::pair, algoritmi, lambda (il framework le usa in opencv_wrap.hpp con std::sort e
+  std::max_element). Tolti: la Sequential con unique_ptr (e' nella L17), Stepanov, gli altri contenitori,
+  le structured bindings, i numeri non verificati ("99%").
+  Verificato nel cloud con g++ 13.3 (Ubuntu 24.04), clang 18 e libc++, con il CMakeLists della lezione (-Wall e
+  AddressSanitizer): nessun warning. indici: "Errore: vector::_M_range_check: __n (which is 5) >= this->size()
+  (which is 3)", poi "heap-buffer-overflow ... READ of size 4" (con libc++ il messaggio di at() e' solo
+  "vector"). capacita: 0/0 1/1 2/2 3/4 4/4 5/8 6/8 7/8 8/8 9/16, uguale con libc++; con reserve(10): sempre /10.
+  vector<vector<double>>: righe da 4 double a 48 byte l'una dall'altra (g++, glibc). iteratori: 1.5 2.5 3.5 e
+  3 5 7. riferimenti: 3 5 7 e 100352 1280; senza & alla riga 9: 1.5 2.5 3.5; con for (auto d : rete): "use of
+  deleted function 'std::unique_ptr<_Tp, _Dp>::unique_ptr(const std::unique_ptr<_Tp, _Dp>&)". mappa: 0.01 e
+  2 chiavi; con "learnig_rate" alla riga 9: 0 e 3 chiavi. cerca: chiave assente, momentum = 0.9,
+  learning_rate = 0.01, momentum = 0.9, 2 chiavi. algoritmi: 0 1 1 2 3 4 5 9, posizione 5, 2, 9. lambda:
+  -0.91 e 0.77 0.42 0.05 -0.91. Esercizi: le prime 20 etichette di mnist_train.csv (5 0 4 1 9 2 1 3 1 4 3 5 3 6
+  1 7 2 8 6 9, lette dal file); conteggio 1 4 2 3 2 2 2 1 1 2, il 9 due volte, 10 cifre; la cifra 1 quattro
+  volte, 2 cifre almeno 3 volte, 9 9 8 7 6 6 5 5 4 4 3 3 3 2 2 1 1 1 1 0. log2(10^6) = 19,9.
+  clang segnala voti[5] su un array C con indice costante (-Warray-bounds), g++ no; su un std::vector nessuno
+  dei due. Il codice di ogni blocco sta entro 25 righe e 100 caratteri.
+  Secondo audit del 23/11/2026 (Cristiano: "audit approfondito ... ripetizioni, completo e semplice"; poi "si").
+  Ripetizioni tolte: codice del ripasso di std::vector (L12, resta il vettore con le graffe), Provate su [] (L12) e
+  sull'eccezione non ricevuta (L10), sostituite da at(2) e at(3); vettore di vettori come la matrice con l'array di
+  puntatori della L08. Aggiunti: invalidazione dopo una riallocazione (Provate 3 di reserve, heap-use-after-free,
+  verificato), "con g++ e con clang" per il raddoppio, sintassi delle lambda, definizione dell'albero binario di
+  ricerca, la complessita' di std::sort (spunto dal libro, par. 15.1), "Per saperne di piu'" (Stroustrup, A Tour of
+  C++, 3a ed. 2022, capp. 12-13, indice verificato su stroustrup.com; cppreference Algorithms library). Corretti:
+  "gli algoritmi funzionano con ogni contenitore" (std::sort no), unique_ptr "non si copia", config[chiave] si legge
+  o si assegna. Framework: Laboratori 10 e 12 indicati. Spunto heap/priority_queue (par. 16.2) non usato: il
+  framework non la usa.
+-->
+<ul>
+<li><strong>La libreria standard</strong>: contenitori, iteratori e algoritmi</li>
+<li><strong><code>std::vector</code></strong>: ripasso, e cosa aggiungiamo oggi: <code>at()</code>, la capacità, la memoria contigua</li>
+<li><strong>Gli iteratori</strong>: <code>begin()</code> ed <code>end()</code>, <code>auto</code>, il <code>for</code> sugli elementi con le reference</li>
+<li><strong><code>std::map</code></strong>: un valore per ogni chiave, come i dizionari di Python; leggere, cercare, scorrere. Il framework non la usa, ma può servire nei progetti finali</li>
+<li><strong>Gli algoritmi</strong> di <code>&lt;algorithm&gt;</code>, e le <strong>lambda</strong> per scegliere il criterio</li>
+<li><strong>Esercizi</strong>: quante immagini per cifra, e quale cifra compare più spesso</li>
+</ul>
+</section>
+<section id="gli-argomenti-di-oggi-nel-framework" class="slide level2 smaller">
+<h2>Gli argomenti di oggi nel framework</h2>
+<ul>
+<li><p><strong>Il <code>for</code> con le reference.</strong> La rete inizializza i pesi di tutti i suoi layer così:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a aria-label="1"></a><span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span><span class="op">&amp;</span> l <span class="op">:</span> layers<span class="op">)</span> <span class="op">{</span> l<span class="op">-&gt;</span>init_weights<span class="op">(</span>type<span class="op">,</span> distro<span class="op">);</span> <span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>l</code> è una reference a un <code>std::unique_ptr</code> del vettore <code>layers</code>, che non si può copiare (Lezione 17; nella vostra <code>Sequential</code> dal Laboratorio 10); <code>type</code> e <code>distro</code> scelgono la formula e la distribuzione dei pesi (Laboratorio 08).</p></li>
+<li><p><strong>Gli algoritmi.</strong> Per mescolare le immagini a ogni epoca (Laboratorio 12) il framework tiene un <code>std::vector</code> di indici, che <code>std::iota</code> (da <code>&lt;numeric&gt;</code>) riempie con 0, 1, 2, ….</p></li>
+<li><p><strong>Le lambda.</strong> Per leggere una fila di cifre da una foto (Laboratorio 12) il framework ordina con <code>std::sort</code> i rettangoli che contengono le cifre, da sinistra a destra, con un criterio scritto come lambda.</p></li>
+</ul>
+</section>
+<section id="la-cartella-della-lezione" class="slide level2 smaller">
+<h2>La cartella della lezione</h2>
+<p>Come nelle lezioni precedenti, gli esempi si scrivono e si compilano durante la lezione, in una cartella a parte.</p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>CMakeLists.txt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="CMakeLists.txt"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb2-1"><a aria-label="1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> <span class="dt">3.15</span>)</span>
+<span id="cb2-2"><a aria-label="2"></a><span class="kw">project</span>(Lezione18)</span>
+<span id="cb2-3"><a aria-label="3"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 17)</span>
+<span id="cb2-4"><a aria-label="4"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="ot">ON</span>)</span>
+<span id="cb2-5"><a aria-label="5"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_FLAGS</span> <span class="st">"</span><span class="dv">${CMAKE_CXX_FLAGS}</span><span class="st"> -Wall"</span>)</span>
+<span id="cb2-6"><a aria-label="6"></a><span class="co"># AddressSanitizer (Lezione 08)</span></span>
+<span id="cb2-7"><a aria-label="7"></a><span class="kw">add_compile_options</span>(-fsanitize=address -g)</span>
+<span id="cb2-8"><a aria-label="8"></a><span class="kw">add_link_options</span>(-fsanitize=address)</span>
+<span id="cb2-9"><a aria-label="9"></a><span class="co"># qui una riga add_executable per esempio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:45%;">
+<ol type="1">
+<li>Create la cartella <code>LEZIONE_18</code>, fuori da <code>basic_neural_plusplus</code>, e apritela in VS Code.</li>
+<li>Createvi il file <code>CMakeLists.txt</code> qui a sinistra.</li>
+<li>Dalla cartella <code>LEZIONE_18</code>:<br>
+<code>cmake -B build</code>.</li>
+</ol>
+<p>Il <code>CMakeLists.txt</code> è quello della Lezione 17, con <code>-Wall</code> e l’AddressSanitizer.</p>
+</div></div>
+</section>
+<section id="un-eseguibile-per-esempio" class="slide level2 smaller">
+<h2>Un eseguibile per esempio</h2>
+<p>Sopra ogni esempio c’è il nome del suo file. Quando lo incontrate, create il file, copiatevi il codice e aggiungete al <code>CMakeLists.txt</code> la sua riga:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cmake number-lines code-with-copy"><code class="sourceCode cmake"><span id="cb3-1"><a aria-label="1"></a><span class="kw">add_executable</span>(<span class="bn">indici</span> indici.cpp)</span>
+<span id="cb3-2"><a aria-label="2"></a><span class="kw">add_executable</span>(<span class="bn">capacita</span> capacita.cpp)</span>
+<span id="cb3-3"><a aria-label="3"></a><span class="kw">add_executable</span>(<span class="bn">iteratori</span> iteratori.cpp)</span>
+<span id="cb3-4"><a aria-label="4"></a><span class="kw">add_executable</span>(<span class="bn">riferimenti</span> riferimenti.cpp)</span>
+<span id="cb3-5"><a aria-label="5"></a><span class="kw">add_executable</span>(<span class="bn">mappa</span> mappa.cpp)</span>
+<span id="cb3-6"><a aria-label="6"></a><span class="kw">add_executable</span>(<span class="bn">cerca</span> cerca.cpp)</span>
+<span id="cb3-7"><a aria-label="7"></a><span class="kw">add_executable</span>(<span class="bn">algoritmi</span> algoritmi.cpp)</span>
+<span id="cb3-8"><a aria-label="8"></a><span class="kw">add_executable</span>(<span class="bn">lambda</span> lambda.cpp)</span>
+<span id="cb3-9"><a aria-label="9"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_conteggio</span> esercizio_conteggio.cpp)    <span class="co"># esercizio</span></span>
+<span id="cb3-10"><a aria-label="10"></a><span class="kw">add_executable</span>(<span class="bn">esercizio_frequenze</span> esercizio_frequenze.cpp)    <span class="co"># esercizio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>riferimenti</code> usa le classi di <code>layers.hpp</code> della Lezione 16: copiatelo in <code>LEZIONE_18</code>. Poi, dalla cartella <code>LEZIONE_18</code>, compilate ed eseguite solo l’esempio che vi serve:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> indici <span class="kw">&amp;&amp;</span> <span class="ex">./build/indici</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I messaggi citati sono quelli di g++ su Linux; con clang (macOS) il testo cambia, il significato no.</p>
+</section>
+<section id="la-libreria-standard" class="slide level2 smaller">
+<h2>La libreria standard</h2>
+<p>La libreria standard del C++ contiene, fra l’altro, strutture dati e algoritmi già scritti, tutti template (Lezione 16): si usano con il tipo che serve, come <code>std::vector&lt;double&gt;</code> o <code>std::vector&lt;Layer*&gt;</code>. Questa parte si chiama spesso <strong>STL</strong> (<em>Standard Template Library</em>), dal nome della libreria da cui è nata. Ha tre componenti:</p>
+<ol type="1">
+<li>i <strong>contenitori</strong>, che tengono gli elementi: <code>std::vector</code> (Lezione 12) e, oggi, <code>std::map</code>;</li>
+<li>gli <strong>iteratori</strong>, oggetti che indicano un elemento di un contenitore e passano al successivo: servono a scorrere un contenitore senza sapere come è fatto dentro;</li>
+<li>gli <strong>algoritmi</strong>, funzioni template di <code>&lt;algorithm&gt;</code> come <code>std::sort</code> (Lezione 16), che lavorano su un intervallo di elementi indicato da due iteratori.</li>
+</ol>
+</section>
+<section id="ripasso-stdvector" class="slide level2 smaller">
+<h2>Ripasso: <code>std::vector</code></h2>
+<p>Dalla Lezione 12, <code>std::vector&lt;T&gt;</code> (da <code>&lt;vector&gt;</code>) è un array nell’heap, di dimensione variabile, che gestisce da sé la sua memoria (RAII, Lezione 09): <code>push_back</code> aggiunge un elemento in fondo, <code>size()</code> dà il numero di elementi, <code>v[i]</code> è l’elemento <code>i</code>, e <code style="white-space: nowrap">for (double x : v)</code> scorre gli elementi.</p>
+<p>Un vettore si può anche creare già pieno, con i valori fra graffe:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a aria-label="1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> w <span class="op">=</span> <span class="op">{</span><span class="dv">28</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">24</span><span class="op">};</span>    <span class="co">// un vettore con tre elementi</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Oggi aggiungiamo:</p>
+<ul>
+<li>che cosa succede con un indice fuori dal vettore, e il metodo <code>at()</code>;</li>
+<li>come cresce la memoria del vettore: <code>capacity()</code> e <code>reserve()</code>;</li>
+<li>perché gli elementi contigui contano, e perché un vettore di vettori non li ha.</li>
+</ul>
+</section>
+<section id="lindice-fuori-dal-vettore-e-at" class="slide level2 smaller">
+<h2>L’indice fuori dal vettore: <code>[]</code> e <code>at()</code></h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>indici.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="indici.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb6-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;stdexcept&gt;</span></span>
+<span id="cb6-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb6-4"><a aria-label="4"></a></span>
+<span id="cb6-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-6"><a aria-label="6"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> v <span class="op">=</span> <span class="op">{</span><span class="dv">28</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">24</span><span class="op">};</span></span>
+<span id="cb6-7"><a aria-label="7"></a>    <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb6-8"><a aria-label="8"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> v<span class="op">.</span>at<span class="op">(</span><span class="dv">5</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb6-9"><a aria-label="9"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>out_of_range<span class="op">&amp;</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-10"><a aria-label="10"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Errore: "</span> <span class="op">&lt;&lt;</span> e<span class="op">.</span>what<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb6-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb6-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> v<span class="op">[</span><span class="dv">5</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb6-13"><a aria-label="13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-14"><a aria-label="14"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:44%;">
+<ul>
+<li>Riga 8: <code>at(5)</code> controlla l’indice, e se è fuori lancia un’eccezione <code>std::out_of_range</code> (Lezione 10), che il <code>catch</code> riceve: <em><code>Errore: vector::_M_range_check: __n (which is 5) &gt;= this-&gt;size() (which is 3)</code></em>.</li>
+<li>Riga 12: come nella Lezione 12, <code>[]</code> non controlla l’indice e legge dopo la fine del vettore: l’AddressSanitizer si ferma con <em><code>heap-buffer-overflow</code></em>.</li>
+</ul>
+</div></div>
+</section>
+<section id="provate-e-at" class="slide level2 smaller">
+<h2>Provate: <code>[]</code> e <code>at()</code></h2>
+<ol type="1">
+<li>In <code>indici.cpp</code>, alla riga 8, scrivete <code>v.at(2)</code> al posto di <code>v.at(5)</code>. Cosa stampa?<br>
+<span class="fragment"><code>24</code>, l’ultimo elemento, senza eccezioni: gli indici vanno da 0 a <code>size() - 1</code>. Poi la riga 12 ferma l’AddressSanitizer come prima.</span></li>
+<li>Ora scrivete <code>v.at(3)</code>. Cosa succede?<br>
+<span class="fragment"><code>at()</code> lancia l’eccezione, e il messaggio finisce con <em><code style="white-space: nowrap">__n (which is 3) &gt;= this-&gt;size() (which is 3)</code></em>: con tre elementi l’indice 3 è già fuori.</span></li>
+</ol>
+<p><strong>Regola pratica.</strong> <code>[]</code> quando l’indice lo controllate voi, per esempio in un ciclo da 0 a <code>size()</code>; <code>at()</code> quando l’indice arriva da fuori: un file, la riga di comando, chi usa il programma.</p>
+</section>
+<section id="size-e-capacity" class="slide level2 smaller">
+<h2><code>size()</code> e <code>capacity()</code></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>capacita.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="capacita.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb7-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb7-3"><a aria-label="3"></a></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb7-5"><a aria-label="5"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> v<span class="op">;</span></span>
+<span id="cb7-6"><a aria-label="6"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">10</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb7-7"><a aria-label="7"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> v<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"/"</span></span>
+<span id="cb7-8"><a aria-label="8"></a>                  <span class="op">&lt;&lt;</span> v<span class="op">.</span>capacity<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb7-9"><a aria-label="9"></a>        v<span class="op">.</span>push_back<span class="op">(</span><span class="fl">0.1</span> <span class="op">*</span> i<span class="op">);</span></span>
+<span id="cb7-10"><a aria-label="10"></a>    <span class="op">}</span></span>
+<span id="cb7-11"><a aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb7-12"><a aria-label="12"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-13"><a aria-label="13"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><code>size()</code>: quanti elementi ci sono nel vettore.</li>
+<li><code>capacity()</code>: per quanti elementi c’è già posto nella memoria allocata.</li>
+</ul>
+<p>Output, uguale con g++ e con clang: <code>0/0 1/1 2/2 3/4 4/4 5/8 6/8 7/8 8/8 9/16</code>.</p>
+</div></div>
+<p>Quando il posto finisce, <code>push_back</code> alloca un blocco più grande, ci copia gli elementi e libera quello vecchio. Con g++ e con clang il blocco nuovo ha il <strong>doppio</strong> dei posti: da 0 si passa a 1, poi a 2, 4, 8, 16 (in <code>1/1</code> e <code>2/2</code> il vettore è pieno). Le riallocazioni diventano sempre più rare, e in media una <code>push_back</code> richiede un tempo che non cresce con il numero degli elementi. Se il numero si conosce prima, <code>v.reserve(n)</code> alloca subito il posto per <code>n</code> elementi, e non si rialloca più.</p>
+</section>
+<section id="provate-reserve" class="slide level2 smaller">
+<h2>Provate: <code>reserve</code></h2>
+<ol type="1">
+<li>In <code>capacita.cpp</code>, dopo la riga 5, scrivete <code>v.reserve(10);</code>. Cosa stampa?<br>
+<span class="fragment"><code>0/10 1/10 2/10 … 9/10</code>: il posto per 10 elementi c’è dall’inizio, e il vettore non rialloca mai.</span></li>
+<li>Cambiate <code>v.reserve(10);</code> in <code>v.reserve(4);</code>. Cosa stampa?<br>
+<span class="fragment"><code>0/4 1/4 2/4 3/4 4/4 5/8 6/8 7/8 8/8 9/16</code>: finiti i 4 posti, il vettore raddoppia come prima.</span></li>
+<li>Togliete <code>v.reserve(4);</code>. Dopo la riga 5 scrivete <code>v.push_back(1.0);</code> e <code style="white-space: nowrap">double&amp; primo = v[0];</code>, e prima di <code>return 0;</code> scrivete <code style="white-space: nowrap">std::cout &lt;&lt; primo &lt;&lt; "\n";</code>. Cosa succede?<br>
+<span class="fragment">L’AddressSanitizer si ferma con <em><code>heap-use-after-free</code></em>: <code>primo</code> è una reference al primo elemento nel primo blocco, che le <code>push_back</code> del ciclo hanno sostituito e liberato. Dopo una riallocazione le reference, i puntatori e gli iteratori agli elementi non valgono più.</span></li>
+</ol>
+</section>
+<section id="gli-elementi-contigui" class="slide level2 smaller">
+<h2>Gli elementi contigui</h2>
+<p>Gli elementi di un <code>std::vector</code> stanno uno dopo l’altro nella memoria, come in un array: <code>&amp;v[1]</code> è <code>&amp;v[0] + 1</code>. Nella Lezione 14 l’ordine dei cicli contava proprio per questo: la CPU legge più in fretta elementi vicini.</p>
+<p>Un vettore di vettori <strong>non</strong> è contiguo:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;</span> immagine<span class="op">(</span><span class="dv">28</span><span class="op">,</span> <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span><span class="dv">28</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">));</span></span>
+<span id="cb8-2"><a aria-label="2"></a>immagine<span class="op">[</span><span class="dv">14</span><span class="op">][</span><span class="dv">14</span><span class="op">]</span> <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>immagine</code> contiene 28 <code>std::vector&lt;double&gt;</code>, e ognuno ha un suo blocco nell’heap, come le righe della matrice fatta con un array di puntatori nella Lezione 08: due righe consecutive non stanno una dopo l’altra in memoria.</p>
+<p>Per questo la <code>Matrix</code> del Laboratorio 05, e le matrici di Eigen, tengono tutti gli elementi in <strong>un solo blocco</strong>, e calcolano a mano la posizione di un elemento dalla riga e dalla colonna.</p>
+</section>
+<section id="gli-iteratori-begin-ed-end" class="slide level2 smaller">
+<h2>Gli iteratori: <code>begin()</code> ed <code>end()</code></h2>
+<p>Nella Lezione 16 <code>std::sort(w, w + 5)</code> riceveva il primo elemento e la posizione <strong>subito dopo</strong> l’ultimo. Per un contenitore li danno due metodi:</p>
+<ul>
+<li><code>v.begin()</code>: un iteratore che indica il primo elemento;</li>
+<li><code>v.end()</code>: un iteratore che indica la posizione subito dopo l’ultimo. Non indica un elemento: serve a sapere dove fermarsi.</li>
+</ul>
+<p>Un iteratore si usa come un puntatore: <code>*it</code> è l’elemento indicato e <code>it-&gt;</code> accede ai suoi membri, <code>++it</code> passa all’elemento successivo, <code>it != v.end()</code> controlla se si è arrivati in fondo.</p>
+<p>Per un <code>std::vector</code> un iteratore è in pratica un puntatore. In un contenitore che non è un array, come <code>std::map</code>, <code>++it</code> trova l’elemento successivo anche se in memoria non è accanto: per questo molti algoritmi, che usano solo <code>++</code> e <code>*</code>, funzionano con ogni contenitore. <code>std::sort</code> no: usa anche <code>it + k</code>, che c’è solo per <code>std::vector</code> e gli array.</p>
+</section>
+<section id="un-ciclo-con-gli-iteratori" class="slide level2 smaller">
+<h2>Un ciclo con gli iteratori</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>iteratori.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-filename="iteratori.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb9-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb9-3"><a aria-label="3"></a></span>
+<span id="cb9-4"><a aria-label="4"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb9-5"><a aria-label="5"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> v <span class="op">=</span> <span class="op">{</span><span class="fl">1.5</span><span class="op">,</span> <span class="fl">2.5</span><span class="op">,</span> <span class="fl">3.5</span><span class="op">};</span></span>
+<span id="cb9-6"><a aria-label="6"></a>    <span class="cf">for</span> <span class="op">(</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;::</span>iterator it <span class="op">=</span> v<span class="op">.</span>begin<span class="op">();</span> it <span class="op">!=</span> v<span class="op">.</span>end<span class="op">();</span> <span class="op">++</span>it<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-7"><a aria-label="7"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="op">*</span>it <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb9-8"><a aria-label="8"></a>    <span class="op">}</span></span>
+<span id="cb9-9"><a aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb9-10"><a aria-label="10"></a>    <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> it <span class="op">=</span> v<span class="op">.</span>begin<span class="op">();</span> it <span class="op">!=</span> v<span class="op">.</span>end<span class="op">();</span> <span class="op">++</span>it<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-11"><a aria-label="11"></a>        <span class="op">*</span>it <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> <span class="op">*</span>it<span class="op">;</span></span>
+<span id="cb9-12"><a aria-label="12"></a>    <span class="op">}</span></span>
+<span id="cb9-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> v<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> v<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> v<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb9-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Riga 6: il tipo dell’iteratore di un <code>std::vector&lt;double&gt;</code> è <code>std::vector&lt;double&gt;::iterator</code>. Stampa <code>1.5 2.5 3.5</code>.</li>
+<li>Riga 10: con <code>auto</code> (Lezione 14) il tipo lo deduce il compilatore da <code>v.begin()</code>. Attraverso <code>*it</code> gli elementi si possono anche modificare: stampa <code>3 5 7</code>.</li>
+</ul>
+</section>
+<section id="il-for-sugli-elementi" class="slide level2 smaller">
+<h2>Il <code>for</code> sugli elementi</h2>
+<p>Il <code>for</code> della Lezione 12, <code>for (double x : v)</code>, è un ciclo con gli iteratori scritto in breve: va da <code>v.begin()</code> a <code>v.end()</code>. La variabile del ciclo può essere una copia o una reference:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>riferimenti.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="riferimenti.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb10-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
+<span id="cb10-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb10-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">"layers.hpp"</span><span class="pp">     </span><span class="co">// quello della Lezione 16, copiato in LEZIONE_18</span></span>
+<span id="cb10-5"><a aria-label="5"></a></span>
+<span id="cb10-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb10-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> v <span class="op">=</span> <span class="op">{</span><span class="fl">1.5</span><span class="op">,</span> <span class="fl">2.5</span><span class="op">,</span> <span class="fl">3.5</span><span class="op">};</span></span>
+<span id="cb10-8"><a aria-label="8"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">double</span> x <span class="op">:</span> v<span class="op">)</span> x <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> x<span class="op">;</span></span>
+<span id="cb10-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">double</span><span class="op">&amp;</span> x <span class="op">:</span> v<span class="op">)</span> x <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> x<span class="op">;</span></span>
+<span id="cb10-10"><a aria-label="10"></a>    <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="dt">double</span><span class="op">&amp;</span> x <span class="op">:</span> v<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb10-11"><a aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb10-12"><a aria-label="12"></a></span>
+<span id="cb10-13"><a aria-label="13"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>unique_ptr<span class="op">&lt;</span>DenseLayer<span class="op">&gt;&gt;</span> rete<span class="op">;</span></span>
+<span id="cb10-14"><a aria-label="14"></a>    rete<span class="op">.</span>push_back<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="dv">128</span><span class="op">,</span> <span class="dv">784</span><span class="op">));</span></span>
+<span id="cb10-15"><a aria-label="15"></a>    rete<span class="op">.</span>push_back<span class="op">(</span><span class="bu">std::</span>make_unique<span class="op">&lt;</span>DenseLayer<span class="op">&gt;(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">128</span><span class="op">));</span></span>
+<span id="cb10-16"><a aria-label="16"></a>    <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> d <span class="op">:</span> rete<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> d<span class="op">-&gt;</span>numero_pesi<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb10-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb10-18"><a aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-19"><a aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="copia-o-reference" class="slide level2 smaller">
+<h2>Copia o reference</h2>
+<p>In <code>riferimenti.cpp</code>:</p>
+<ul>
+<li>riga 8: <code>x</code> è una <strong>copia</strong> dell’elemento: il ciclo raddoppia la copia, e <code>v</code> non cambia;</li>
+<li>riga 9: <code>x</code> è una <strong>reference</strong> all’elemento: il ciclo raddoppia gli elementi di <code>v</code>;</li>
+<li>riga 10: una reference <code>const</code>: niente copia, e nessuna modifica. Stampa <code>3 5 7</code>;</li>
+<li>riga 16: <code>auto</code> al posto del tipo, che è <code>std::unique_ptr&lt;DenseLayer&gt;</code>; stampa i pesi dei due layer, <code>100352</code> e <code>1280</code>.</li>
+</ul>
+<p><strong>Regola pratica.</strong> Una copia per i tipi piccoli, come <code>int</code> e <code>double</code>; <code>const auto&amp;</code> per leggere oggetti più grandi, come stringhe e layer, e quelli che non si copiano, come <code>std::unique_ptr</code>; <code>auto&amp;</code> per modificarli.</p>
+</section>
+<section id="provate-copia-o-reference" class="slide level2 smaller">
+<h2>Provate: copia o reference</h2>
+<ol type="1">
+<li>In <code>riferimenti.cpp</code>, alla riga 9, togliete la <code>&amp;</code>. Cosa stampa la prima riga?<br>
+<span class="fragment"><code>1.5 2.5 3.5</code>: tutti e due i cicli raddoppiano una copia, e <code>v</code> resta com’era.</span></li>
+<li>Rimettete la <code>&amp;</code> e, alla riga 16, scrivete <code>for (auto d : rete)</code>. Compila?<br>
+<span class="fragment">No: <em><code>use of deleted function 'std::unique_ptr&lt;_Tp, _Dp&gt;::unique_ptr(const std::unique_ptr&lt;_Tp, _Dp&gt;&amp;)'</code></em>. Con <code>auto d</code> ogni elemento si copierebbe in <code>d</code>, e un <code>std::unique_ptr</code> non si copia (Lezione 17). Per questo nel framework il ciclo sui layer è <code>for (auto&amp; l : layers)</code>.</span></li>
+</ol>
+</section>
+<section id="stdmap-un-valore-per-ogni-chiave" class="slide level2 smaller">
+<h2><code>std::map</code>: un valore per ogni chiave</h2>
+<p><code>std::map&lt;K, V&gt;</code> (da <code>&lt;map&gt;</code>) tiene coppie <strong>chiave</strong>, di tipo <code>K</code>, e <strong>valore</strong>, di tipo <code>V</code>: un valore si cerca dalla sua chiave, invece che da un indice.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>mappa.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="mappa.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb11-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
+<span id="cb11-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb11-4"><a aria-label="4"></a></span>
+<span id="cb11-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-6"><a aria-label="6"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="bu">std::</span>string<span class="op">,</span> <span class="dt">double</span><span class="op">&gt;</span> config<span class="op">;</span></span>
+<span id="cb11-7"><a aria-label="7"></a>    config<span class="op">[</span><span class="st">"learning_rate"</span><span class="op">]</span> <span class="op">=</span> <span class="fl">0.01</span><span class="op">;</span></span>
+<span id="cb11-8"><a aria-label="8"></a>    config<span class="op">[</span><span class="st">"momentum"</span><span class="op">]</span> <span class="op">=</span> <span class="fl">0.9</span><span class="op">;</span></span>
+<span id="cb11-9"><a aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> config<span class="op">[</span><span class="st">"learning_rate"</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb11-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> config<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" chiavi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb11-11"><a aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-12"><a aria-label="12"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Righe 7 e 8: <code>config[chiave]</code> è il valore della chiave, che si può leggere o assegnare; se la chiave non c’è, prima la <strong>crea</strong>, con il valore 0. Riga 9: la chiave c’è, e stampa <code>0.01</code>; riga 10: <code style="white-space: nowrap">2 chiavi</code>.</p>
+</section>
+<section id="provate-una-chiave-che-non-cè" class="slide level2 smaller">
+<h2>Provate: una chiave che non c’è</h2>
+<p>In <code>mappa.cpp</code>, alla riga 9, scrivete <code>"learnig_rate"</code>, senza la seconda <code>n</code>, come per un errore di battitura. Cosa stampa?</p>
+<div class="fragment">
+<pre><code>0
+3 chiavi</code></pre>
+<p>Nessun errore e nessun avviso: la lettura con <code>[]</code> ha <strong>creato</strong> la chiave <code>learnig_rate</code>, con il valore 0, e il programma continua con un learning rate nullo. Per leggere una chiave che potrebbe non esserci si usa <code>find</code>, nella slide seguente.</p>
+</div>
+</section>
+<section id="cercare-senza-creare-find" class="slide level2 smaller">
+<h2>Cercare senza creare: <code>find</code></h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>cerca.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-filename="cerca.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb13-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
+<span id="cb13-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb13-4"><a aria-label="4"></a></span>
+<span id="cb13-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb13-6"><a aria-label="6"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="bu">std::</span>string<span class="op">,</span> <span class="dt">double</span><span class="op">&gt;</span> config <span class="op">=</span> <span class="op">{{</span><span class="st">"momentum"</span><span class="op">,</span> <span class="fl">0.9</span><span class="op">},</span> <span class="op">{</span><span class="st">"learning_rate"</span><span class="op">,</span> <span class="fl">0.01</span><span class="op">}};</span></span>
+<span id="cb13-7"><a aria-label="7"></a>    <span class="kw">auto</span> it <span class="op">=</span> config<span class="op">.</span>find<span class="op">(</span><span class="st">"learnig_rate"</span><span class="op">);</span></span>
+<span id="cb13-8"><a aria-label="8"></a>    <span class="cf">if</span> <span class="op">(</span>it <span class="op">==</span> config<span class="op">.</span>end<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb13-9"><a aria-label="9"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"chiave assente</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb13-10"><a aria-label="10"></a>    <span class="op">}</span></span>
+<span id="cb13-11"><a aria-label="11"></a>    it <span class="op">=</span> config<span class="op">.</span>find<span class="op">(</span><span class="st">"momentum"</span><span class="op">);</span></span>
+<span id="cb13-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>first <span class="op">&lt;&lt;</span> <span class="st">" = "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb13-13"><a aria-label="13"></a>    <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> p <span class="op">:</span> config<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-14"><a aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p<span class="op">.</span>first <span class="op">&lt;&lt;</span> <span class="st">" = "</span> <span class="op">&lt;&lt;</span> p<span class="op">.</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb13-15"><a aria-label="15"></a>    <span class="op">}</span></span>
+<span id="cb13-16"><a aria-label="16"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> config<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" chiavi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb13-17"><a aria-label="17"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb13-18"><a aria-label="18"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Riga 6: una mappa si riempie anche con un elenco di coppie fra graffe.</li>
+<li>Righe 7 e 11: <code>find</code> restituisce un iteratore alla coppia con quella chiave, o <code>config.end()</code> se non c’è. Non crea niente: alla fine le chiavi sono ancora 2.</li>
+</ul>
+</section>
+<section id="gli-elementi-di-una-mappa" class="slide level2 smaller">
+<h2>Gli elementi di una mappa</h2>
+<p>Gli elementi di una <code>std::map&lt;K, V&gt;</code> sono coppie, di tipo <code>std::pair&lt;const K, V&gt;</code>: <code>first</code> è la chiave, <code>const</code> perché non si può cambiare, e <code>second</code> è il valore. In <code>cerca.cpp</code>:</p>
+<ul>
+<li><p>riga 12: <code>it-&gt;first</code> e <code>it-&gt;second</code> sono la chiave e il valore della coppia trovata, e stampa <code>momentum = 0.9</code>;</p></li>
+<li><p>righe 13-15: il <code>for</code> scorre le coppie, con <code>const auto&amp;</code> per non copiare le stringhe, e stampa</p>
+<pre><code>learning_rate = 0.01
+momentum = 0.9</code></pre>
+<p>in <strong>ordine alfabetico delle chiavi</strong>, anche se nella riga 6 sono scritte nell’altro ordine.</p></li>
+</ul>
+</section>
+<section id="comè-fatta-una-stdmap" class="slide level2 smaller">
+<h2>Com’è fatta una <code>std::map</code></h2>
+<p>Le chiavi sono sempre in ordine perché una <code>std::map</code> tiene le coppie in un <strong>albero binario di ricerca</strong>: a sinistra di ogni nodo stanno le chiavi minori, a destra le maggiori, come nell’esercizio facoltativo della Lezione 17. L’albero però è <strong>bilanciato</strong>: mentre le coppie si inseriscono si riorganizza, e la sua profondità resta dell’ordine di log₂ N anche se le chiavi arrivano già in ordine.</p>
+<p>Per trovare una chiave fra un milione bastano quindi una ventina di confronti: <span style="white-space: nowrap">log₂ 10⁶ ≈ 20</span>. Per confronto, <code>std::sort</code> ordina N elementi con un numero di confronti dell’ordine di N log₂ N.</p>
+<p><code>std::unordered_map</code>, da <code>&lt;unordered_map&gt;</code>, non tiene le chiavi in ordine, e trova una chiave in un tempo che in media non cresce con N. Si usa come <code>std::map</code>, con <code>[]</code> e <code>find</code>.</p>
+</section>
+<section id="gli-algoritmi-di-algorithm" class="slide level2 smaller">
+<h2>Gli algoritmi di <code>&lt;algorithm&gt;</code></h2>
+<div class="columns">
+<div class="column" style="width:62%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>algoritmi.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-filename="algoritmi.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb15-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb15-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb15-4"><a aria-label="4"></a></span>
+<span id="cb15-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb15-6"><a aria-label="6"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> v <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">};</span></span>
+<span id="cb15-7"><a aria-label="7"></a>    <span class="bu">std::</span>sort<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">());</span></span>
+<span id="cb15-8"><a aria-label="8"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> x <span class="op">:</span> v<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb15-9"><a aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb15-10"><a aria-label="10"></a>    <span class="kw">auto</span> it <span class="op">=</span> <span class="bu">std::</span>find<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">(),</span> <span class="dv">4</span><span class="op">);</span></span>
+<span id="cb15-11"><a aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> it <span class="op">-</span> v<span class="op">.</span>begin<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb15-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="bu">std::</span>count<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">(),</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb15-13"><a aria-label="13"></a>              <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb15-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="op">*</span><span class="bu">std::</span>max_element<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">())</span></span>
+<span id="cb15-15"><a aria-label="15"></a>              <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb15-16"><a aria-label="16"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb15-17"><a aria-label="17"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:38%;">
+<p>Ognuno riceve l’intervallo da <code>begin()</code> a <code>end()</code>:</p>
+<ul>
+<li><code>std::sort</code> (Lezione 16) ordina: <code>0 1 1 2 3 4 5 9</code>;</li>
+<li><code>std::find</code> restituisce un iteratore al primo 4, o <code>end()</code>; per un vettore <code>it - v.begin()</code> è la posizione, <code>5</code>;</li>
+<li><code>std::count</code> conta gli 1: <code>2</code>;</li>
+<li><code>std::max_element</code> restituisce un iteratore al massimo, e <code>*</code> lo legge: <code>9</code>.</li>
+</ul>
+</div></div>
+</section>
+<section id="il-criterio-di-confronto-le-lambda" class="slide level2 smaller">
+<h2>Il criterio di confronto: le lambda</h2>
+<p>Per un criterio diverso da <code>&lt;</code>, <code>std::sort</code> e <code>std::max_element</code> ricevono un terzo argomento: una funzione che restituisce <code>true</code> se <code>a</code> va prima di <code>b</code>, scritta sul posto come <strong>lambda</strong>: una funzione senza nome, con <code>[]</code>, i parametri fra tonde e il corpo fra graffe.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>lambda.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="lambda.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb16-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
+<span id="cb16-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb16-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb16-5"><a aria-label="5"></a></span>
+<span id="cb16-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb16-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> w <span class="op">=</span> <span class="op">{</span><span class="fl">0.42</span><span class="op">,</span> <span class="op">-</span><span class="fl">0.91</span><span class="op">,</span> <span class="fl">0.05</span><span class="op">,</span> <span class="fl">0.77</span><span class="op">};</span></span>
+<span id="cb16-8"><a aria-label="8"></a>    <span class="kw">auto</span> m <span class="op">=</span> <span class="bu">std::</span>max_element<span class="op">(</span>w<span class="op">.</span>begin<span class="op">(),</span> w<span class="op">.</span>end<span class="op">(),</span></span>
+<span id="cb16-9"><a aria-label="9"></a>                              <span class="op">[](</span><span class="dt">double</span> a<span class="op">,</span> <span class="dt">double</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="bu">std::</span>abs<span class="op">(</span>a<span class="op">)</span> <span class="op">&lt;</span> <span class="bu">std::</span>abs<span class="op">(</span>b<span class="op">);</span> <span class="op">});</span></span>
+<span id="cb16-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"massimo in modulo: "</span> <span class="op">&lt;&lt;</span> <span class="op">*</span>m <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// -0.91</span></span>
+<span id="cb16-11"><a aria-label="11"></a>    <span class="bu">std::</span>sort<span class="op">(</span>w<span class="op">.</span>begin<span class="op">(),</span> w<span class="op">.</span>end<span class="op">(),</span> <span class="op">[](</span><span class="dt">double</span> a<span class="op">,</span> <span class="dt">double</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a <span class="op">&gt;</span> b<span class="op">;</span> <span class="op">});</span></span>
+<span id="cb16-12"><a aria-label="12"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">double</span> x <span class="op">:</span> w<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span>          <span class="co">// 0.77 0.42 0.05 -0.91</span></span>
+<span id="cb16-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb16-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb16-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="provate-le-lambda" class="slide level2 smaller">
+<h2>Provate: le lambda</h2>
+<ol type="1">
+<li>In <code>lambda.cpp</code>, alla riga 11, scrivete <code>a &lt; b</code> al posto di <code>a &gt; b</code>. Cosa stampa l’ultima riga?<br>
+<span class="fragment"><code>-0.91 0.05 0.42 0.77</code>: con <code>a &lt; b</code> la lambda è il confronto normale, e l’ordine è crescente, come senza lambda.</span></li>
+<li>Alla riga 11 fate ordinare i pesi per modulo crescente. Cosa stampa?<br>
+<span class="fragment">Con <code>return std::abs(a) &lt; std::abs(b);</code> stampa <code>0.05 0.42 0.77 -0.91</code>.</span></li>
+</ol>
+<p>Il tipo restituito da una lambda lo deduce il compilatore dal <code>return</code>. Fra le <code>[]</code> si possono elencare variabili del codice intorno da usare nella lambda: qui, e nel framework, restano vuote. Al posto del tipo dei parametri si può scrivere <code>auto</code>, <code>[](auto a, auto b)</code>: il tipo lo deduce il compilatore, come in un template.</p>
+</section>
+<section id="esercizio-quante-immagini-per-cifra" class="slide level2 smaller">
+<h2>Esercizio: quante immagini per cifra</h2>
+<p><strong>Scopo:</strong> contare con una <code>std::map</code> quante volte compare ogni cifra fra le prime 20 etichette di <code>mnist_train.csv</code>, e cercare una cifra con <code>find</code>. Qui la lettura con <code>[]</code>, che crea la chiave con il valore 0, è proprio quello che serve.</p>
+<ol type="1">
+<li><p>In <code>esercizio_conteggio.cpp</code> (slide seguente) completate il <code>main</code>, come descritto nei commenti.</p></li>
+<li><p>Compilate ed eseguite:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_conteggio <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_conteggio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>In che ordine escono le cifre, e perché?</p></li>
+</ol>
+</section>
+<section id="conteggio-il-file-da-completare" class="slide level2 smaller">
+<h2>Conteggio: il file da completare</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_conteggio.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="esercizio_conteggio.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb18-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
+<span id="cb18-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb18-4"><a aria-label="4"></a></span>
+<span id="cb18-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb18-6"><a aria-label="6"></a>    <span class="co">// le prime 20 etichette di mnist_train.csv</span></span>
+<span id="cb18-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> etichette <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">9</span><span class="op">};</span></span>
+<span id="cb18-8"><a aria-label="8"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> <span class="dt">int</span><span class="op">&gt;</span> conteggio<span class="op">;</span>    <span class="co">// cifra -&gt; quante volte compare</span></span>
+<span id="cb18-9"><a aria-label="9"></a>    <span class="co">// da completare:</span></span>
+<span id="cb18-10"><a aria-label="10"></a>    <span class="co">// - con un for sulle etichette, aumentate di 1 conteggio[e] per ogni etichetta e;</span></span>
+<span id="cb18-11"><a aria-label="11"></a>    <span class="co">// - con un for sulle coppie di conteggio, stampate per ogni cifra "cifra: volte";</span></span>
+<span id="cb18-12"><a aria-label="12"></a>    <span class="co">// - con find, cercate la cifra 9 e, se c'e', stampate "il 9 compare ... volte";</span></span>
+<span id="cb18-13"><a aria-label="13"></a>    <span class="co">// - stampate quante cifre diverse ci sono, con size()</span></span>
+<span id="cb18-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb18-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Compila così com’è e non stampa niente. Alla prima volta che compare una cifra, <code>conteggio[e]</code> crea la chiave con il valore 0: <code>conteggio[e]++</code> la porta a 1.</p>
+</section>
+<section id="soluzione-dellesercizio" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_conteggio.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" data-filename="esercizio_conteggio.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb19-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb19-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
+<span id="cb19-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb19-4"><a aria-label="4"></a></span>
+<span id="cb19-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb19-6"><a aria-label="6"></a>    <span class="co">// le prime 20 etichette di mnist_train.csv</span></span>
+<span id="cb19-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> etichette <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">9</span><span class="op">};</span></span>
+<span id="cb19-8"><a aria-label="8"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> <span class="dt">int</span><span class="op">&gt;</span> conteggio<span class="op">;</span>    <span class="co">// cifra -&gt; quante volte compare</span></span>
+<span id="cb19-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> e <span class="op">:</span> etichette<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-10"><a aria-label="10"></a>        conteggio<span class="op">[</span>e<span class="op">]++;</span></span>
+<span id="cb19-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb19-12"><a aria-label="12"></a>    <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> p <span class="op">:</span> conteggio<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-13"><a aria-label="13"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p<span class="op">.</span>first <span class="op">&lt;&lt;</span> <span class="st">": "</span> <span class="op">&lt;&lt;</span> p<span class="op">.</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb19-14"><a aria-label="14"></a>    <span class="op">}</span></span>
+<span id="cb19-15"><a aria-label="15"></a>    <span class="kw">auto</span> it <span class="op">=</span> conteggio<span class="op">.</span>find<span class="op">(</span><span class="dv">9</span><span class="op">);</span></span>
+<span id="cb19-16"><a aria-label="16"></a>    <span class="cf">if</span> <span class="op">(</span>it <span class="op">!=</span> conteggio<span class="op">.</span>end<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb19-17"><a aria-label="17"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"il 9 compare "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>second <span class="op">&lt;&lt;</span> <span class="st">" volte</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb19-18"><a aria-label="18"></a>    <span class="op">}</span></span>
+<span id="cb19-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> conteggio<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" cifre diverse</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb19-20"><a aria-label="20"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb19-21"><a aria-label="21"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="soluzione-cosa-stampa" class="slide level2 smaller">
+<h2>Soluzione: cosa stampa</h2>
+<div class="columns">
+<div class="column" style="width:35%;">
+<pre><code>0: 1
+1: 4
+2: 2
+3: 3
+4: 2
+5: 2
+6: 2
+7: 1
+8: 1
+9: 2
+il 9 compare 2 volte
+10 cifre diverse</code></pre>
+</div><div class="column" style="width:65%;">
+<ul>
+<li>Le cifre escono in ordine crescente, perché la mappa tiene le chiavi in ordine.</li>
+<li>Riga 10: la prima volta che compare una cifra, <code>conteggio[e]</code> crea la chiave con il valore 0, e <code>++</code> la porta a 1.</li>
+<li>Riga 15: <code>find(9)</code> restituisce un iteratore alla coppia con chiave 9, e <code>it-&gt;second</code> è il suo conteggio.</li>
+</ul>
+</div></div>
+</section>
+<section id="esercizio-la-cifra-più-frequente" class="slide level2 smaller">
+<h2>Esercizio: la cifra più frequente</h2>
+<p><strong>Scopo:</strong> rispondere a tre domande sulle stesse etichette con gli algoritmi e le lambda, senza scrivere a mano i cicli di ricerca.</p>
+<ol type="1">
+<li><p>In <code>esercizio_frequenze.cpp</code> (slide seguente), che riparte dal conteggio, completate il <code>main</code>:</p>
+<ul>
+<li>la cifra che compare più spesso (<code>std::max_element</code> e una lambda che confronta <code>second</code>);</li>
+<li>quante cifre compaiono almeno 3 volte (<code>std::count_if</code>, che conta gli elementi per cui una lambda è <code>true</code>);</li>
+<li>le etichette in ordine decrescente (<code>std::sort</code> e una lambda).</li>
+</ul></li>
+<li><p>Compilate ed eseguite:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_frequenze <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_frequenze</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+</section>
+<section id="frequenze-il-file-da-completare" class="slide level2 smaller">
+<h2>Frequenze: il file da completare</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_frequenze.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-filename="esercizio_frequenze.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb22-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb22-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
+<span id="cb22-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb22-5"><a aria-label="5"></a></span>
+<span id="cb22-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb22-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> etichette <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">9</span><span class="op">};</span></span>
+<span id="cb22-8"><a aria-label="8"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> <span class="dt">int</span><span class="op">&gt;</span> conteggio<span class="op">;</span></span>
+<span id="cb22-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> e <span class="op">:</span> etichette<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb22-10"><a aria-label="10"></a>        conteggio<span class="op">[</span>e<span class="op">]++;</span></span>
+<span id="cb22-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb22-12"><a aria-label="12"></a>    <span class="co">// da completare:</span></span>
+<span id="cb22-13"><a aria-label="13"></a>    <span class="co">// - con std::max_element sulle coppie di conteggio, e una lambda che confronta a.second</span></span>
+<span id="cb22-14"><a aria-label="14"></a>    <span class="co">//   e b.second, trovate la cifra piu' frequente e stampate "la cifra ... compare ... volte";</span></span>
+<span id="cb22-15"><a aria-label="15"></a>    <span class="co">// - con std::count_if, e una lambda che restituisce p.second &gt;= 3, contate le cifre che</span></span>
+<span id="cb22-16"><a aria-label="16"></a>    <span class="co">//   compaiono almeno 3 volte, e stampate "... cifre compaiono almeno 3 volte";</span></span>
+<span id="cb22-17"><a aria-label="17"></a>    <span class="co">// - con std::sort e una lambda, ordinate etichette in ordine decrescente, e stampatele</span></span>
+<span id="cb22-18"><a aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb22-19"><a aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Compila così com’è e non stampa niente. Nelle lambda sulle coppie si può scrivere <code>const auto&amp;</code>: il tipo vero è <code>std::pair&lt;const int, int&gt;</code>.</p>
+</section>
+<section id="soluzione-del-secondo-esercizio" class="slide level2 smaller">
+<h2>Soluzione del secondo esercizio</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_frequenze.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-filename="esercizio_frequenze.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb23-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb23-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb23-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
+<span id="cb23-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb23-5"><a aria-label="5"></a></span>
+<span id="cb23-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb23-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> etichette <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">9</span><span class="op">};</span></span>
+<span id="cb23-8"><a aria-label="8"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> <span class="dt">int</span><span class="op">&gt;</span> conteggio<span class="op">;</span></span>
+<span id="cb23-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> e <span class="op">:</span> etichette<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-10"><a aria-label="10"></a>        conteggio<span class="op">[</span>e<span class="op">]++;</span></span>
+<span id="cb23-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb23-12"><a aria-label="12"></a>    <span class="kw">auto</span> it <span class="op">=</span> <span class="bu">std::</span>max_element<span class="op">(</span>conteggio<span class="op">.</span>begin<span class="op">(),</span> conteggio<span class="op">.</span>end<span class="op">(),</span></span>
+<span id="cb23-13"><a aria-label="13"></a>        <span class="op">[](</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> a<span class="op">,</span> <span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a<span class="op">.</span>second <span class="op">&lt;</span> b<span class="op">.</span>second<span class="op">;</span> <span class="op">});</span></span>
+<span id="cb23-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"la cifra "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>first <span class="op">&lt;&lt;</span> <span class="st">" compare "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>second <span class="op">&lt;&lt;</span> <span class="st">" volte</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb23-15"><a aria-label="15"></a>    <span class="dt">int</span> n <span class="op">=</span> <span class="bu">std::</span>count_if<span class="op">(</span>conteggio<span class="op">.</span>begin<span class="op">(),</span> conteggio<span class="op">.</span>end<span class="op">(),</span></span>
+<span id="cb23-16"><a aria-label="16"></a>        <span class="op">[](</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> p<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> p<span class="op">.</span>second <span class="op">&gt;=</span> <span class="dv">3</span><span class="op">;</span> <span class="op">});</span></span>
+<span id="cb23-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" cifre compaiono almeno 3 volte</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb23-18"><a aria-label="18"></a>    <span class="bu">std::</span>sort<span class="op">(</span>etichette<span class="op">.</span>begin<span class="op">(),</span> etichette<span class="op">.</span>end<span class="op">(),</span> <span class="op">[](</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a <span class="op">&gt;</span> b<span class="op">;</span> <span class="op">});</span></span>
+<span id="cb23-19"><a aria-label="19"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> e <span class="op">:</span> etichette<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> e <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb23-20"><a aria-label="20"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb23-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="soluzione-cosa-stampa-1" class="slide level2 smaller">
+<h2>Soluzione: cosa stampa</h2>
+<pre><code>la cifra 1 compare 4 volte
+2 cifre compaiono almeno 3 volte
+9 9 8 7 6 6 5 5 4 4 3 3 3 2 2 1 1 1 1 0</code></pre>
+<ul>
+<li>Righe 12-13: <code>std::max_element</code> confronta le coppie con la lambda, cioè per numero di volte, e restituisce un iteratore alla coppia con chiave 1 e valore 4.</li>
+<li>Righe 15-16: <code>std::count_if</code> conta le coppie per cui la lambda restituisce <code>true</code>: le cifre 1 e 3.</li>
+<li>Riga 18: la lambda <code>a &gt; b</code> mette prima i numeri più grandi.</li>
+</ul>
+</section>
+<section id="per-saperne-di-più" class="slide level2 smaller">
+<h2>Per saperne di più</h2>
+<ul>
+<li>B. Stroustrup, <em>A Tour of C++</em>, 3ª edizione, Addison-Wesley 2022: capitolo 12 sui contenitori (12.2 <code>vector</code>, 12.5 <code>map</code>, 12.6 <code>unordered_map</code>) e capitolo 13 sugli algoritmi (13.2 e 13.3 gli iteratori, 13.4 i predicati, i criteri spesso scritti come lambda).</li>
+<li><a href="https://www.cppreference.com/w/cpp/algorithm.html">cppreference.com</a>, la pagina <em>Algorithms library</em>: tutti gli algoritmi della libreria standard, con una pagina per ognuno.</li>
+</ul>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../images/logo_sapienza.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="../index.html">🏠 Torna alla Home</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\">\u003ckbd>b\u003c/kbd> Toggle Chalkboard\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"6\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\">\u003ckbd>c\u003c/kbd> Toggle Notes Canvas\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"7\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\">\u003ckbd>d\u003c/kbd> Download Drawings\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"8\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":true,"openButtonLabel":"Slide menu"},
+'chalkboard': {"buttons":true,"storage":"lavagna-lezione-18"},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'convex',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: '../mathjax/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+          window.quartoDecorateExternalLinks = function (root) {
+         var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+              if (!link.classList.contains('no-external-icon')) {
+              }
+            }
+          }
+          };
+          window.quartoDecorateExternalLinks(window.document);
+        // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+        // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+        const hideOnEscAndFocusOut = {
+          name: 'hideOnEscAndFocusOut',
+          defaultValue: true,
+          fn(instance) {
+            const dismiss = () => {
+              // A show scheduled by the trigger delay would otherwise reopen it
+              instance.clearDelayTimeouts();
+              instance.hide();
+            };
+            const onKeyDown = (event) => {
+              if (event.key !== 'Escape') {
+                return;
+              }
+              // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+              // except an open reveal.js slide menu, which Esc should close too.
+              // The menu handles keys only when its keyboard option is on.
+              const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+                window.Reveal.getConfig().menu?.keyboard !== false;
+              if (!menuHandlesEsc) {
+                event.stopPropagation();
+              }
+              if (instance.popper.contains(window.document.activeElement)) {
+                // Disabled while refocusing so the focus trigger does not reopen it
+                instance.disable();
+                instance.reference.focus();
+                instance.enable();
+              }
+              dismiss();
+            };
+            const onFocusOut = (event) => {
+              const target = event.relatedTarget;
+              if (target && !instance.reference.contains(target) &&
+                  !instance.popper.contains(target)) {
+                dismiss();
+              }
+            };
+            // On the trigger too: a click trigger (code-annotations: select) has no
+            // blur handling. Attached for the instance's lifetime so leaving the
+            // trigger also cancels a show still pending on the trigger delay.
+            instance.reference.addEventListener('focusout', onFocusOut);
+            return {
+              onShow() {
+                window.document.addEventListener('keydown', onKeyDown, true);
+                instance.popper.addEventListener('focusout', onFocusOut);
+              },
+              onHide() {
+                window.document.removeEventListener('keydown', onKeyDown, true);
+                instance.popper.removeEventListener('focusout', onFocusOut);
+              },
+              onDestroy() {
+                instance.reference.removeEventListener('focusout', onFocusOut);
+              },
+            };
+          },
+        };
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+            plugins: [hideOnEscAndFocusOut],
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+            let selectedAnnoteEl;
+            const selectorForAnnotation = ( cell, annotation) => {
+              let cellAttr = 'data-code-cell="' + cell + '"';
+              let lineAttr = 'data-code-annotation="' +  annotation + '"';
+              const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+              return selector;
+            }
+            const selectCodeLines = (annoteEl) => {
+              const doc = window.document;
+              const targetCell = annoteEl.getAttribute("data-target-cell");
+              const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+              const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+              const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+              const lineIds = lines.map((line) => {
+                return targetCell + "-" + line;
+              })
+              // Each band is positioned against its own containing block, which is
+              // not the offsetParent of the lines, so place it from client rects.
+              const placeBand = (band, firstEl, lastEl, codeBlock) => {
+                const container = band.offsetParent;
+                if (container === null) {
+                  return;
+                }
+                const containerRect = container.getBoundingClientRect();
+                // Reveal.js scales slides with a transform, so convert client
+                // pixels back to the CSS pixels of the container.
+                const scale = containerRect.height / container.offsetHeight || 1;
+                const firstRect = firstEl.getBoundingClientRect();
+                const lastRect = lastEl.getBoundingClientRect();
+                const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+                const height = (lastRect.bottom - firstRect.top) / scale;
+                band.style.top = top - 2 + "px";
+                band.style.height = height + 4 + "px";
+                if (codeBlock) {
+                  // Without the copy button wrapper, the containing block is wider
+                  // than the code block, so span the code block explicitly.
+                  const blockRect = codeBlock.getBoundingClientRect();
+                  band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+                  band.style.width = blockRect.width / scale + "px";
+                }
+              };
+              if (lineIds.length > 0) {
+                const el = window.document.getElementById(lineIds[0]);
+                const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+                const parent = el.parentElement.parentElement;
+                // cook up a div (if necessary) and position it
+                let div = window.document.getElementById("code-annotation-line-highlight");
+                if (div === null) {
+                  div = window.document.createElement("div");
+                  div.setAttribute("id", "code-annotation-line-highlight");
+                  div.style.position = 'absolute';
+                  parent.appendChild(div);
+                }
+                placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+                let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+                if (gutterDiv === null) {
+                  gutterDiv = window.document.createElement("div");
+                  gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                  gutterDiv.style.position = 'absolute';
+                  const codeCell = window.document.getElementById(targetCell);
+                  const gutter = codeCell.querySelector('.code-annotation-gutter');
+                  gutter.appendChild(gutterDiv);
+                }
+                placeBand(gutterDiv, el, lastEl);
+                selectedAnnoteEl = annoteEl;
+              }
+            };
+            const unselectCodeLines = () => {
+              const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+              elementsIds.forEach((elId) => {
+                const div = window.document.getElementById(elId);
+                if (div) {
+                  div.remove();
+                }
+              });
+              selectedAnnoteEl = undefined;
+            };
+              // Handle positioning of the toggle
+          window.addEventListener(
+            "resize",
+            throttle(() => {
+              elRect = undefined;
+              if (selectedAnnoteEl) {
+                selectCodeLines(selectedAnnoteEl);
+              }
+            }, 10)
+          );
+          function throttle(fn, ms) {
+          let throttle = false;
+          let timer;
+            return (...args) => {
+              if(!throttle) { // first call gets through
+                  fn.apply(this, args);
+                  throttle = true;
+              } else { // all the others get throttled
+                  if(timer) clearTimeout(timer); // cancel #2
+                  timer = setTimeout(() => {
+                    fn.apply(this, args);
+                    timer = throttle = false;
+                  }, ms);
+              }
+            };
+          }
+            // Attach click handler to the DT
+            const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+            for (const annoteDlNode of annoteDls) {
+              annoteDlNode.addEventListener('click', (event) => {
+                const clickedEl = event.target;
+                if (clickedEl !== selectedAnnoteEl) {
+                  unselectCodeLines();
+                  const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+                  if (activeEl) {
+                    activeEl.classList.remove('code-annotation-active');
+                  }
+                  selectCodeLines(clickedEl);
+                  clickedEl.classList.add('code-annotation-active');
+                } else {
+                  // Unselect the line
+                  unselectCodeLines();
+                  clickedEl.classList.remove('code-annotation-active');
+                }
+              });
+            }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
