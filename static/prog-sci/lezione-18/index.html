@@ -1127,10 +1127,10 @@ momentum = 0.9</code></pre>
 <h2>Com’è fatta una <code>std::map</code></h2>
 <p>Le chiavi sono sempre in ordine perché una <code>std::map</code> tiene le coppie in un <strong>albero binario di ricerca</strong>: a sinistra di ogni nodo stanno le chiavi minori, a destra le maggiori, come nell’esercizio facoltativo della Lezione 17. L’albero però è <strong>bilanciato</strong>: mentre le coppie si inseriscono si riorganizza, e la sua profondità resta dell’ordine di log₂ N anche se le chiavi arrivano già in ordine.</p>
 <p>Per trovare una chiave fra un milione bastano quindi una ventina di confronti: <span style="white-space: nowrap">log₂ 10⁶ ≈ 20</span>. Per confronto, <code>std::sort</code> ordina N elementi con un numero di confronti dell’ordine di N log₂ N.</p>
-<p><code>std::unordered_map</code>, da <code>&lt;unordered_map&gt;</code>, non tiene le chiavi in ordine: da ogni chiave calcola un numero, il suo <em>hash</em>, che dice dove cercarla. Per trovare una chiave bastano così in media pochi passi, lo stesso numero con dieci chiavi o con un milione. Con la O grande dell’analisi, per <span class="math inline">\(N \to \infty\)</span>: <span class="math inline">\(O(1)\)</span> in media, contro <span class="math inline">\(O(\log N)\)</span> per <code>std::map</code>. Si usa come <code>std::map</code>, con <code>[]</code> e <code>find</code>.</p>
+<p><code>std::unordered_map</code>, da <code>&lt;unordered_map&gt;</code>, non tiene le chiavi in ordine: da ogni chiave calcola un numero, il suo <em>hash</em>, che dice dove cercarla. Per trovare una chiave bastano così in media pochi passi, lo stesso numero con dieci chiavi o con un milione. Con la O grande dell’analisi, per <span class="math inline">\(N \to \infty\)</span>: <span class="math inline">\(O(1)\)</span> in media, contro <span class="math inline">\(O(\log N)\)</span> per <code>std::map</code>. Si usa come <code>std::map</code>, con <code>[]</code> e <code>find</code>, ed è più veloce anche a inserire: si sceglie quando l’ordine delle chiavi non serve.</p>
 </section>
-<section id="gli-algoritmi-di-algorithm" class="slide level2 smaller">
-<h2>Gli algoritmi di <code>&lt;algorithm&gt;</code></h2>
+<section id="alcuni-algoritmi-di-algorithm" class="slide level2 smaller">
+<h2>Alcuni algoritmi di <code>&lt;algorithm&gt;</code></h2>
 <div class="columns">
 <div class="column" style="width:62%;">
 <div class="code-with-filename">
@@ -1197,7 +1197,7 @@ momentum = 0.9</code></pre>
 <li>Alla riga 11 fate ordinare i pesi per modulo crescente. Cosa stampa?<br>
 <span class="fragment">Con <code>return std::abs(a) &lt; std::abs(b);</code> stampa <code>0.05 0.42 0.77 -0.91</code>.</span></li>
 </ol>
-<p>Il tipo restituito da una lambda lo deduce il compilatore dal <code>return</code>. Fra le <code>[]</code> si possono elencare variabili del codice intorno da usare nella lambda: qui, e nel framework, restano vuote. Al posto del tipo dei parametri si può scrivere <code>auto</code>, <code>[](auto a, auto b)</code>: il tipo lo deduce il compilatore, come in un template.</p>
+<p>Il tipo restituito da una lambda lo deduce il compilatore dal <code>return</code>. Fra le <code>[]</code> si possono elencare variabili locali della funzione in cui la lambda è scritta, per usarle nel suo corpo: la lambda le <strong>cattura</strong>. Qui, e nel framework, le <code>[]</code> restano vuote. <code>std::count_if</code> è come <code>std::count</code>, ma al posto del valore riceve una funzione, per esempio una lambda, che restituisce <code>true</code> per gli elementi da contare. Al posto del tipo dei parametri si può scrivere <code>auto</code>, <code>[](auto a, auto b)</code>: il tipo lo deduce il compilatore, come in un template.</p>
 </section>
 <section id="esercizio-quante-immagini-per-cifra" class="slide level2 smaller">
 <h2>Esercizio: quante immagini per cifra</h2>
@@ -1225,11 +1225,12 @@ momentum = 0.9</code></pre>
 <span id="cb18-8"><a aria-label="8"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> <span class="dt">int</span><span class="op">&gt;</span> conteggio<span class="op">;</span>    <span class="co">// cifra -&gt; quante volte compare</span></span>
 <span id="cb18-9"><a aria-label="9"></a>    <span class="co">// da completare:</span></span>
 <span id="cb18-10"><a aria-label="10"></a>    <span class="co">// - con un for sulle etichette, aumentate di 1 conteggio[e] per ogni etichetta e;</span></span>
-<span id="cb18-11"><a aria-label="11"></a>    <span class="co">// - con un for sulle coppie di conteggio, stampate per ogni cifra "cifra: volte";</span></span>
-<span id="cb18-12"><a aria-label="12"></a>    <span class="co">// - con find, cercate la cifra 9 e, se c'e', stampate "il 9 compare ... volte";</span></span>
-<span id="cb18-13"><a aria-label="13"></a>    <span class="co">// - stampate quante cifre diverse ci sono, con size()</span></span>
-<span id="cb18-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb18-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-11"><a aria-label="11"></a>    <span class="co">// - con un for sugli elementi di conteggio, coppie std::pair con first = cifra</span></span>
+<span id="cb18-12"><a aria-label="12"></a>    <span class="co">//   e second = volte, stampate per ogni cifra "cifra: volte";</span></span>
+<span id="cb18-13"><a aria-label="13"></a>    <span class="co">// - con find, cercate la cifra 9 e, se c'e', stampate "il 9 compare ... volte";</span></span>
+<span id="cb18-14"><a aria-label="14"></a>    <span class="co">// - stampate quante cifre diverse ci sono, con size()</span></span>
+<span id="cb18-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb18-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Compila così com’è e non stampa niente. Alla prima volta che compare una cifra, <code>conteggio[e]</code> crea la chiave con il valore 0: <code>conteggio[e]++</code> la porta a 1.</p>
 </section>
