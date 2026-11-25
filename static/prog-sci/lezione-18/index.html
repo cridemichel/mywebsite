@@ -1073,8 +1073,8 @@ Cristiano De Michele
 </div>
 <p>Righe 7 e 8: <code>config[chiave]</code> è il valore della chiave, che si può leggere o assegnare; se la chiave non c’è, prima la <strong>crea</strong>, con il valore 0. Riga 9: la chiave c’è, e stampa <code>0.01</code>; riga 10: <code style="white-space: nowrap">2 chiavi</code>.</p>
 </section>
-<section id="provate-una-chiave-che-non-cè" class="slide level2 smaller">
-<h2>Provate: una chiave che non c’è</h2>
+<section id="provate-con-una-chiave-assente" class="slide level2 smaller">
+<h2>Provate: <code>[]</code> con una chiave assente</h2>
 <p>In <code>mappa.cpp</code>, alla riga 9, scrivete <code>"learnig_rate"</code>, senza la seconda <code>n</code>, come per un errore di battitura. Cosa stampa?</p>
 <div class="fragment">
 <pre><code>0
@@ -1082,8 +1082,8 @@ Cristiano De Michele
 <p>Nessun errore e nessun avviso: la lettura con <code>[]</code> ha <strong>creato</strong> la chiave <code>learnig_rate</code>, con il valore 0, e il programma continua con un learning rate nullo. Per leggere una chiave che potrebbe non esserci si usa <code>find</code>, nella slide seguente.</p>
 </div>
 </section>
-<section id="cercare-senza-creare-find" class="slide level2 smaller">
-<h2>Cercare senza creare: <code>find</code></h2>
+<section id="cercare-una-chiave-find" class="slide level2 smaller">
+<h2>Cercare una chiave: <code>find</code></h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>cerca.cpp</strong></pre>
@@ -1099,7 +1099,7 @@ Cristiano De Michele
 <span id="cb13-9"><a aria-label="9"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"chiave assente</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="cb13-10"><a aria-label="10"></a>    <span class="op">}</span></span>
 <span id="cb13-11"><a aria-label="11"></a>    it <span class="op">=</span> config<span class="op">.</span>find<span class="op">(</span><span class="st">"momentum"</span><span class="op">);</span></span>
-<span id="cb13-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>first <span class="op">&lt;&lt;</span> <span class="st">" = "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb13-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>first <span class="op">&lt;&lt;</span> <span class="st">" = "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>   <span class="co">// chiave e valore della coppia</span></span>
 <span id="cb13-13"><a aria-label="13"></a>    <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> p <span class="op">:</span> config<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb13-14"><a aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p<span class="op">.</span>first <span class="op">&lt;&lt;</span> <span class="st">" = "</span> <span class="op">&lt;&lt;</span> p<span class="op">.</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
 <span id="cb13-15"><a aria-label="15"></a>    <span class="op">}</span></span>
@@ -1127,7 +1127,7 @@ momentum = 0.9</code></pre>
 <h2>Com’è fatta una <code>std::map</code></h2>
 <p>Le chiavi sono sempre in ordine perché una <code>std::map</code> tiene le coppie in un <strong>albero binario di ricerca</strong>: a sinistra di ogni nodo stanno le chiavi minori, a destra le maggiori, come nell’esercizio facoltativo della Lezione 17. L’albero però è <strong>bilanciato</strong>: mentre le coppie si inseriscono si riorganizza, e la sua profondità resta dell’ordine di log₂ N anche se le chiavi arrivano già in ordine.</p>
 <p>Per trovare una chiave fra un milione bastano quindi una ventina di confronti: <span style="white-space: nowrap">log₂ 10⁶ ≈ 20</span>. Per confronto, <code>std::sort</code> ordina N elementi con un numero di confronti dell’ordine di N log₂ N.</p>
-<p><code>std::unordered_map</code>, da <code>&lt;unordered_map&gt;</code>, non tiene le chiavi in ordine, e trova una chiave in un tempo che in media non cresce con N. Si usa come <code>std::map</code>, con <code>[]</code> e <code>find</code>.</p>
+<p><code>std::unordered_map</code>, da <code>&lt;unordered_map&gt;</code>, non tiene le chiavi in ordine: da ogni chiave calcola un numero, il suo <em>hash</em>, che dice dove cercarla. Per trovare una chiave bastano così in media pochi passi, lo stesso numero con dieci chiavi o con un milione. Con la O grande dell’analisi, per <span class="math inline">\(N \to \infty\)</span>: <span class="math inline">\(O(1)\)</span> in media, contro <span class="math inline">\(O(\log N)\)</span> per <code>std::map</code>. Si usa come <code>std::map</code>, con <code>[]</code> e <code>find</code>.</p>
 </section>
 <section id="gli-algoritmi-di-algorithm" class="slide level2 smaller">
 <h2>Gli algoritmi di <code>&lt;algorithm&gt;</code></h2>
