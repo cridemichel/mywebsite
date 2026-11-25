@@ -759,6 +759,9 @@ Cristiano De Michele
   25/11/2026 (Cristiano): il Task 2 si scrive. Il layer.hpp scaricabile e' la classe del Laboratorio 08 con quattro
   commenti; le altre classi usano gia' Layer<ntype>, quindi si compila solo alla fine del Task 2 (scheletro + commenti
   eseguiti alla lettera: compila e non stampa niente; con la soluzione, output identico, g++ 13 e clang 18).
+  25/11/2026 (Cristiano): Task 7 facoltativo, il tempo di 10 000 forward in float e in double con una funzione template
+  (nel cloud, g++ 13 e clang 18 -O3: float 88-93 ms, double 193-194 ms, rapporto 2,1-2,2; con AddressSanitizer nessun
+  errore). Mescolare Matrix<double> e Matrix<float>: static assertion di Eigen YOU_MIXED_DIFFERENT_NUMERIC_TYPES...
   Audit del 23/11/2026 sul modello del Laboratorio 08 (scopo di ogni task, scheletro che compila, output atteso),
   con le decisioni di Cristiano: la Sequential resta un std::vector di puntatori con la copia vietata, come nei
   Laboratori 06-08; Layer<ntype> contiene solo cio' che si usa oggi (outputs e forward per reference; delta_l, dWt,
@@ -1254,6 +1257,32 @@ tanh:     -0.964028         0  0.964028</code></pre>
 <p>Lo scarto fra le due reti è dell’ordine di <span class="math inline">\(10^{-7}\)</span>: le uscite servono a scegliere una cifra, e l’addestramento cambia i pesi di quantità molto più grandi. Per la rete la differenza non conta.</p>
 <p>In cambio un <code>float</code> occupa metà della memoria, e le istruzioni SIMD ne elaborano il doppio alla volta («Perché <code>float</code>»). Per questo il framework usa <code>float</code>.</p>
 </section>
+<section id="task-7-facoltativo-il-tempo-in-float-e-in-double" class="slide level2 smaller">
+<h2>Task 7 (facoltativo): il tempo in <code>float</code> e in <code>double</code></h2>
+<p><strong>Scopo:</strong> misurare quanto è più veloce la rete del Task 6 in <code>float</code> che in <code>double</code>, con una sola funzione template usata per i due tipi (Lezione 16).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> ntype<span class="op">&gt;</span></span>
+<span id="cb20-2"><a aria-label="2"></a><span class="dt">double</span> tempo_forward<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-3"><a aria-label="3"></a>    <span class="cf">return</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb20-4"><a aria-label="4"></a><span class="op">}</span></span>
+<span id="cb20-5"><a aria-label="5"></a></span>
+<span id="cb20-6"><a aria-label="6"></a><span class="dt">void</span> prova_tempo<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb20-7"><a aria-label="7"></a>    <span class="dt">double</span> tf <span class="op">=</span> tempo_forward<span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;(</span><span class="dv">10000</span><span class="op">);</span></span>
+<span id="cb20-8"><a aria-label="8"></a>    <span class="dt">double</span> td <span class="op">=</span> tempo_forward<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span><span class="dv">10000</span><span class="op">);</span></span>
+<span id="cb20-9"><a aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"10000 forward: float "</span> <span class="op">&lt;&lt;</span> tf <span class="op">&lt;&lt;</span> <span class="st">" ms, double "</span> <span class="op">&lt;&lt;</span> td <span class="op">&lt;&lt;</span> <span class="st">" ms, rapporto "</span></span>
+<span id="cb20-10"><a aria-label="10"></a>              <span class="op">&lt;&lt;</span> td <span class="op">/</span> tf <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb20-11"><a aria-label="11"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Da scrivere:</strong> in <code>main.cpp</code>, il corpo di <code>tempo_forward</code>: la rete del Task 6 con <code>Sequential&lt;ntype&gt;</code>, un ingresso <code>Matrix&lt;ntype&gt;::Random(784, 1)</code> e gli <code>n</code> forward misurati con <code>std::chrono</code>, come nel Task 4 del Laboratorio 07. Poi nel <code>main</code> togliete <code>//</code> davanti a <code>prova_tempo();</code>.</p>
+</section>
+<section id="task-7-segue-il-rapporto" class="slide level2 smaller">
+<h2>Task 7 (segue): il rapporto</h2>
+<p>I tempi dipendono dal computer, il rapporto molto meno: è vicino a 2, per esempio <code style="white-space: nowrap">10000 forward: float 93 ms, double 194 ms, rapporto 2.08602</code>.</p>
+<ul>
+<li><code>tempo_forward&lt;float&gt;</code> e <code>tempo_forward&lt;double&gt;</code> sono due funzioni diverse, che il compilatore scrive dallo stesso template, come <code>Sequential&lt;float&gt;</code> e <code>Sequential&lt;double&gt;</code>.</li>
+<li>Il rapporto è quello della slide «Perché <code>float</code>»: le istruzioni SIMD elaborano insieme 8 <code>float</code> o 4 <code>double</code>.</li>
+</ul>
+<p><strong>Provate:</strong> in <code>confronto_precisione</code> passate <code>x64</code> a <code>rete32.forward</code>. Compila?</p>
+<p><span class="fragment">No: Eigen si ferma con un messaggio che contiene <em><code>YOU_MIXED_DIFFERENT_NUMERIC_TYPES</code></em>. Una <code>Matrix&lt;double&gt;</code> non diventa da sola una <code>Matrix&lt;float&gt;</code>: la conversione va chiesta con <code>.cast&lt;float&gt;()</code>, come per l’ingresso del Task 6.</span></p>
+</section>
 <section id="task-da-completare" class="slide level2 smaller">
 <h2>Task da completare</h2>
 <ul class="task-list">
@@ -1262,7 +1291,8 @@ tanh:     -0.964028         0  0.964028</code></pre>
 <li><label><input type="checkbox"><code>DenseLayer::forward</code>: il prodotto di <code>Wt</code> per <code>input</code> in <code>outputs</code>; <code>prova_dense</code> stampa <code>128 x 1</code> e <code>z(0) = -2.38111</code></label></li>
 <li><label><input type="checkbox"><code>TanhLayer::forward</code>; <code>prova_attivazioni</code> stampa <code>0.119203 0.5 0.880797</code> e <code>-0.964028 0 0.964028</code></label></li>
 <li><label><input type="checkbox"><code>Sequential::forward</code>: l’uscita di un layer diventa l’ingresso del successivo; <code>prova_rete</code> stampa <code>10 x 1</code>, minimo e massimo fra −1 e 1</label></li>
-<li><label><input type="checkbox"><code>confronto_precisione</code> stampa uno scarto dell’ordine di <span class="math inline">\(\varepsilon\)</span>, <code>1.49732e-07</code>; senza il secondo seme o senza il <code>cast</code> lo scarto è dell’ordine di 1 o di qualche decimo</label></li>
+<li><label><input type="checkbox"><code>confronto_precisione</code> stampa uno scarto dell’ordine di <span class="math inline">\(\varepsilon\)</span>, <code>1.49732e-07</code></label></li>
+<li><label><input type="checkbox">(facoltativo) <code>tempo_forward</code>: il rapporto fra i tempi è vicino a 2</label></li>
 </ul>
 <p><strong>La soluzione verrà discussa all’inizio del prossimo laboratorio.</strong></p>
 </section>
