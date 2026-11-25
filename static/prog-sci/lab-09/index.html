@@ -1249,6 +1249,11 @@ tanh:     -0.964028         0  0.964028</code></pre>
 </ol>
 <p>I due programmi girano senza errori e stampano numeri plausibili, eppure non misurano la differenza fra <code>float</code> e <code>double</code>: un confronto ha senso solo se le due misure differiscono per una cosa sola.</p>
 </section>
+<section id="task-6-segue-float-o-double" class="slide level2 smaller">
+<h2>Task 6 (segue): <code>float</code> o <code>double</code>?</h2>
+<p>Lo scarto fra le due reti è dell’ordine di <span class="math inline">\(10^{-7}\)</span>: le uscite servono a scegliere una cifra, e l’addestramento cambia i pesi di quantità molto più grandi. Per la rete la differenza non conta.</p>
+<p>In cambio un <code>float</code> occupa metà della memoria, e le istruzioni SIMD ne elaborano il doppio alla volta («Perché <code>float</code>»). Per questo il framework usa <code>float</code>.</p>
+</section>
 <section id="task-da-completare" class="slide level2 smaller">
 <h2>Task da completare</h2>
 <ul class="task-list">
