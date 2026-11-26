@@ -961,8 +961,13 @@ Cristiano De Michele
 <h2>Gli elementi contigui</h2>
 <p>Gli elementi di un <code>std::vector</code> stanno uno dopo l’altro nella memoria, come in un array: <code>&amp;v[1]</code> è <code>&amp;v[0] + 1</code>. Nella Lezione 14 l’ordine dei cicli contava proprio per questo: la CPU legge più in fretta elementi vicini.</p>
 <p>Un vettore di vettori <strong>non</strong> è contiguo:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;</span> immagine<span class="op">(</span><span class="dv">28</span><span class="op">,</span> <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;(</span><span class="dv">28</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">));</span></span>
-<span id="cb8-2"><a aria-label="2"></a>immagine<span class="op">[</span><span class="dv">14</span><span class="op">][</span><span class="dv">14</span><span class="op">]</span> <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a aria-label="1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&gt;</span> immagine<span class="op">;</span>     <span class="co">// per ora vuoto</span></span>
+<span id="cb8-2"><a aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">28</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb8-3"><a aria-label="3"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> riga<span class="op">;</span>                  <span class="co">// una riga nuova, con il suo blocco</span></span>
+<span id="cb8-4"><a aria-label="4"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> <span class="dv">28</span><span class="op">;</span> j<span class="op">++)</span> riga<span class="op">.</span>push_back<span class="op">(</span><span class="fl">0.0</span><span class="op">);</span></span>
+<span id="cb8-5"><a aria-label="5"></a>    immagine<span class="op">.</span>push_back<span class="op">(</span>riga<span class="op">);</span></span>
+<span id="cb8-6"><a aria-label="6"></a><span class="op">}</span></span>
+<span id="cb8-7"><a aria-label="7"></a>immagine<span class="op">[</span><span class="dv">14</span><span class="op">][</span><span class="dv">14</span><span class="op">]</span> <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>immagine</code> contiene 28 <code>std::vector&lt;double&gt;</code>, e ognuno ha un suo blocco nell’heap, come le righe della matrice fatta con un array di puntatori nella Lezione 08: due righe consecutive non stanno una dopo l’altra in memoria.</p>
 <p>Per questo la <code>Matrix</code> del Laboratorio 05, e le matrici di Eigen, tengono tutti gli elementi in <strong>un solo blocco</strong>, e calcolano a mano la posizione di un elemento dalla riga e dalla colonna.</p>
 </section>
@@ -1034,6 +1039,10 @@ Cristiano De Michele
 <section id="copia-o-reference" class="slide level2 smaller">
 <h2>Copia o reference</h2>
 <p>In <code>riferimenti.cpp</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">double</span> x <span class="op">:</span> v<span class="op">)</span> x <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> x<span class="op">;</span>                                      <span class="co">// riga 8</span></span>
+<span id="cb11-2"><a aria-label="2"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">double</span><span class="op">&amp;</span> x <span class="op">:</span> v<span class="op">)</span> x <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> x<span class="op">;</span>                                     <span class="co">// riga 9</span></span>
+<span id="cb11-3"><a aria-label="3"></a><span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="dt">double</span><span class="op">&amp;</span> x <span class="op">:</span> v<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span>                   <span class="co">// riga 10</span></span>
+<span id="cb11-4"><a aria-label="4"></a><span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> d <span class="op">:</span> rete<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> d<span class="op">-&gt;</span>numero_pesi<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span>   <span class="co">// riga 16</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>riga 8: <code>x</code> è una <strong>copia</strong> dell’elemento: il ciclo raddoppia la copia, e <code>v</code> non cambia;</li>
 <li>riga 9: <code>x</code> è una <strong>reference</strong> all’elemento: il ciclo raddoppia gli elementi di <code>v</code>;</li>
@@ -1058,18 +1067,18 @@ Cristiano De Michele
 <div class="code-with-filename-file">
 <pre><strong>mappa.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="mappa.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb11-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
-<span id="cb11-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb11-4"><a aria-label="4"></a></span>
-<span id="cb11-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb11-6"><a aria-label="6"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="bu">std::</span>string<span class="op">,</span> <span class="dt">double</span><span class="op">&gt;</span> config<span class="op">;</span></span>
-<span id="cb11-7"><a aria-label="7"></a>    config<span class="op">[</span><span class="st">"learning_rate"</span><span class="op">]</span> <span class="op">=</span> <span class="fl">0.01</span><span class="op">;</span></span>
-<span id="cb11-8"><a aria-label="8"></a>    config<span class="op">[</span><span class="st">"momentum"</span><span class="op">]</span> <span class="op">=</span> <span class="fl">0.9</span><span class="op">;</span></span>
-<span id="cb11-9"><a aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> config<span class="op">[</span><span class="st">"learning_rate"</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb11-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> config<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" chiavi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb11-11"><a aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb11-12"><a aria-label="12"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="mappa.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb12-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
+<span id="cb12-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb12-4"><a aria-label="4"></a></span>
+<span id="cb12-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-6"><a aria-label="6"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="bu">std::</span>string<span class="op">,</span> <span class="dt">double</span><span class="op">&gt;</span> config<span class="op">;</span></span>
+<span id="cb12-7"><a aria-label="7"></a>    config<span class="op">[</span><span class="st">"learning_rate"</span><span class="op">]</span> <span class="op">=</span> <span class="fl">0.01</span><span class="op">;</span></span>
+<span id="cb12-8"><a aria-label="8"></a>    config<span class="op">[</span><span class="st">"momentum"</span><span class="op">]</span> <span class="op">=</span> <span class="fl">0.9</span><span class="op">;</span></span>
+<span id="cb12-9"><a aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> config<span class="op">[</span><span class="st">"learning_rate"</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb12-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> config<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" chiavi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb12-11"><a aria-label="11"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-12"><a aria-label="12"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Righe 7 e 8: <code>config[chiave]</code> è il valore della chiave, che si può leggere o assegnare; se la chiave non c’è, prima la <strong>crea</strong>, con il valore 0. Riga 9: la chiave c’è, e stampa <code>0.01</code>; riga 10: <code style="white-space: nowrap">2 chiavi</code>.</p>
 </section>
@@ -1088,24 +1097,24 @@ Cristiano De Michele
 <div class="code-with-filename-file">
 <pre><strong>cerca.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-filename="cerca.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb13-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
-<span id="cb13-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb13-4"><a aria-label="4"></a></span>
-<span id="cb13-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb13-6"><a aria-label="6"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="bu">std::</span>string<span class="op">,</span> <span class="dt">double</span><span class="op">&gt;</span> config <span class="op">=</span> <span class="op">{{</span><span class="st">"momentum"</span><span class="op">,</span> <span class="fl">0.9</span><span class="op">},</span> <span class="op">{</span><span class="st">"learning_rate"</span><span class="op">,</span> <span class="fl">0.01</span><span class="op">}};</span></span>
-<span id="cb13-7"><a aria-label="7"></a>    <span class="kw">auto</span> it <span class="op">=</span> config<span class="op">.</span>find<span class="op">(</span><span class="st">"learnig_rate"</span><span class="op">);</span></span>
-<span id="cb13-8"><a aria-label="8"></a>    <span class="cf">if</span> <span class="op">(</span>it <span class="op">==</span> config<span class="op">.</span>end<span class="op">())</span> <span class="op">{</span></span>
-<span id="cb13-9"><a aria-label="9"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"chiave assente</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb13-10"><a aria-label="10"></a>    <span class="op">}</span></span>
-<span id="cb13-11"><a aria-label="11"></a>    it <span class="op">=</span> config<span class="op">.</span>find<span class="op">(</span><span class="st">"momentum"</span><span class="op">);</span></span>
-<span id="cb13-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>first <span class="op">&lt;&lt;</span> <span class="st">" = "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>   <span class="co">// chiave e valore della coppia</span></span>
-<span id="cb13-13"><a aria-label="13"></a>    <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> p <span class="op">:</span> config<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb13-14"><a aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p<span class="op">.</span>first <span class="op">&lt;&lt;</span> <span class="st">" = "</span> <span class="op">&lt;&lt;</span> p<span class="op">.</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb13-15"><a aria-label="15"></a>    <span class="op">}</span></span>
-<span id="cb13-16"><a aria-label="16"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> config<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" chiavi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb13-17"><a aria-label="17"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb13-18"><a aria-label="18"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-filename="cerca.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb14-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
+<span id="cb14-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb14-4"><a aria-label="4"></a></span>
+<span id="cb14-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb14-6"><a aria-label="6"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="bu">std::</span>string<span class="op">,</span> <span class="dt">double</span><span class="op">&gt;</span> config <span class="op">=</span> <span class="op">{{</span><span class="st">"momentum"</span><span class="op">,</span> <span class="fl">0.9</span><span class="op">},</span> <span class="op">{</span><span class="st">"learning_rate"</span><span class="op">,</span> <span class="fl">0.01</span><span class="op">}};</span></span>
+<span id="cb14-7"><a aria-label="7"></a>    <span class="kw">auto</span> it <span class="op">=</span> config<span class="op">.</span>find<span class="op">(</span><span class="st">"learnig_rate"</span><span class="op">);</span></span>
+<span id="cb14-8"><a aria-label="8"></a>    <span class="cf">if</span> <span class="op">(</span>it <span class="op">==</span> config<span class="op">.</span>end<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb14-9"><a aria-label="9"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"chiave assente</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb14-10"><a aria-label="10"></a>    <span class="op">}</span></span>
+<span id="cb14-11"><a aria-label="11"></a>    it <span class="op">=</span> config<span class="op">.</span>find<span class="op">(</span><span class="st">"momentum"</span><span class="op">);</span></span>
+<span id="cb14-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>first <span class="op">&lt;&lt;</span> <span class="st">" = "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>   <span class="co">// chiave e valore della coppia</span></span>
+<span id="cb14-13"><a aria-label="13"></a>    <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> p <span class="op">:</span> config<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-14"><a aria-label="14"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p<span class="op">.</span>first <span class="op">&lt;&lt;</span> <span class="st">" = "</span> <span class="op">&lt;&lt;</span> p<span class="op">.</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb14-15"><a aria-label="15"></a>    <span class="op">}</span></span>
+<span id="cb14-16"><a aria-label="16"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> config<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" chiavi</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb14-17"><a aria-label="17"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb14-18"><a aria-label="18"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li>Riga 6: una mappa si riempie anche con un elenco di coppie fra graffe.</li>
@@ -1137,23 +1146,23 @@ momentum = 0.9</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>algoritmi.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-filename="algoritmi.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
-<span id="cb15-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb15-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
-<span id="cb15-4"><a aria-label="4"></a></span>
-<span id="cb15-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb15-6"><a aria-label="6"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> v <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">};</span></span>
-<span id="cb15-7"><a aria-label="7"></a>    <span class="bu">std::</span>sort<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">());</span></span>
-<span id="cb15-8"><a aria-label="8"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> x <span class="op">:</span> v<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
-<span id="cb15-9"><a aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb15-10"><a aria-label="10"></a>    <span class="kw">auto</span> it <span class="op">=</span> <span class="bu">std::</span>find<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">(),</span> <span class="dv">4</span><span class="op">);</span></span>
-<span id="cb15-11"><a aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> it <span class="op">-</span> v<span class="op">.</span>begin<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb15-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="bu">std::</span>count<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">(),</span> <span class="dv">1</span><span class="op">)</span></span>
-<span id="cb15-13"><a aria-label="13"></a>              <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb15-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="op">*</span><span class="bu">std::</span>max_element<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">())</span></span>
-<span id="cb15-15"><a aria-label="15"></a>              <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb15-16"><a aria-label="16"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb15-17"><a aria-label="17"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="algoritmi.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb16-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb16-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb16-4"><a aria-label="4"></a></span>
+<span id="cb16-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb16-6"><a aria-label="6"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> v <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">};</span></span>
+<span id="cb16-7"><a aria-label="7"></a>    <span class="bu">std::</span>sort<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">());</span></span>
+<span id="cb16-8"><a aria-label="8"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> x <span class="op">:</span> v<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb16-9"><a aria-label="9"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb16-10"><a aria-label="10"></a>    <span class="kw">auto</span> it <span class="op">=</span> <span class="bu">std::</span>find<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">(),</span> <span class="dv">4</span><span class="op">);</span></span>
+<span id="cb16-11"><a aria-label="11"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> it <span class="op">-</span> v<span class="op">.</span>begin<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb16-12"><a aria-label="12"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="bu">std::</span>count<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">(),</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb16-13"><a aria-label="13"></a>              <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb16-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="op">*</span><span class="bu">std::</span>max_element<span class="op">(</span>v<span class="op">.</span>begin<span class="op">(),</span> v<span class="op">.</span>end<span class="op">())</span></span>
+<span id="cb16-15"><a aria-label="15"></a>              <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb16-16"><a aria-label="16"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb16-17"><a aria-label="17"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:38%;">
 <p>Ognuno riceve l’intervallo da <code>begin()</code> a <code>end()</code>:</p>
@@ -1172,21 +1181,21 @@ momentum = 0.9</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>lambda.cpp</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="lambda.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
-<span id="cb16-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
-<span id="cb16-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb16-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
-<span id="cb16-5"><a aria-label="5"></a></span>
-<span id="cb16-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb16-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> w <span class="op">=</span> <span class="op">{</span><span class="fl">0.42</span><span class="op">,</span> <span class="op">-</span><span class="fl">0.91</span><span class="op">,</span> <span class="fl">0.05</span><span class="op">,</span> <span class="fl">0.77</span><span class="op">};</span></span>
-<span id="cb16-8"><a aria-label="8"></a>    <span class="kw">auto</span> m <span class="op">=</span> <span class="bu">std::</span>max_element<span class="op">(</span>w<span class="op">.</span>begin<span class="op">(),</span> w<span class="op">.</span>end<span class="op">(),</span></span>
-<span id="cb16-9"><a aria-label="9"></a>                              <span class="op">[](</span><span class="dt">double</span> a<span class="op">,</span> <span class="dt">double</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="bu">std::</span>abs<span class="op">(</span>a<span class="op">)</span> <span class="op">&lt;</span> <span class="bu">std::</span>abs<span class="op">(</span>b<span class="op">);</span> <span class="op">});</span></span>
-<span id="cb16-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"massimo in modulo: "</span> <span class="op">&lt;&lt;</span> <span class="op">*</span>m <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// -0.91</span></span>
-<span id="cb16-11"><a aria-label="11"></a>    <span class="bu">std::</span>sort<span class="op">(</span>w<span class="op">.</span>begin<span class="op">(),</span> w<span class="op">.</span>end<span class="op">(),</span> <span class="op">[](</span><span class="dt">double</span> a<span class="op">,</span> <span class="dt">double</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a <span class="op">&gt;</span> b<span class="op">;</span> <span class="op">});</span></span>
-<span id="cb16-12"><a aria-label="12"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">double</span> x <span class="op">:</span> w<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span>          <span class="co">// 0.77 0.42 0.05 -0.91</span></span>
-<span id="cb16-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb16-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb16-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-filename="lambda.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb17-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
+<span id="cb17-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb17-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb17-5"><a aria-label="5"></a></span>
+<span id="cb17-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb17-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> w <span class="op">=</span> <span class="op">{</span><span class="fl">0.42</span><span class="op">,</span> <span class="op">-</span><span class="fl">0.91</span><span class="op">,</span> <span class="fl">0.05</span><span class="op">,</span> <span class="fl">0.77</span><span class="op">};</span></span>
+<span id="cb17-8"><a aria-label="8"></a>    <span class="kw">auto</span> m <span class="op">=</span> <span class="bu">std::</span>max_element<span class="op">(</span>w<span class="op">.</span>begin<span class="op">(),</span> w<span class="op">.</span>end<span class="op">(),</span></span>
+<span id="cb17-9"><a aria-label="9"></a>                              <span class="op">[](</span><span class="dt">double</span> a<span class="op">,</span> <span class="dt">double</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="bu">std::</span>abs<span class="op">(</span>a<span class="op">)</span> <span class="op">&lt;</span> <span class="bu">std::</span>abs<span class="op">(</span>b<span class="op">);</span> <span class="op">});</span></span>
+<span id="cb17-10"><a aria-label="10"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"massimo in modulo: "</span> <span class="op">&lt;&lt;</span> <span class="op">*</span>m <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span>    <span class="co">// -0.91</span></span>
+<span id="cb17-11"><a aria-label="11"></a>    <span class="bu">std::</span>sort<span class="op">(</span>w<span class="op">.</span>begin<span class="op">(),</span> w<span class="op">.</span>end<span class="op">(),</span> <span class="op">[](</span><span class="dt">double</span> a<span class="op">,</span> <span class="dt">double</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a <span class="op">&gt;</span> b<span class="op">;</span> <span class="op">});</span></span>
+<span id="cb17-12"><a aria-label="12"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">double</span> x <span class="op">:</span> w<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span>          <span class="co">// 0.77 0.42 0.05 -0.91</span></span>
+<span id="cb17-13"><a aria-label="13"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb17-14"><a aria-label="14"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb17-15"><a aria-label="15"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="provate-le-lambda" class="slide level2 smaller">
@@ -1205,37 +1214,12 @@ momentum = 0.9</code></pre>
 <ol type="1">
 <li><p>In <code>esercizio_conteggio.cpp</code> (slide seguente) completate il <code>main</code>, come descritto nei commenti.</p></li>
 <li><p>Compilate ed eseguite:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_conteggio <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_conteggio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_conteggio <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_conteggio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>In che ordine escono le cifre, e perché?</p></li>
 </ol>
 </section>
 <section id="conteggio-il-file-da-completare" class="slide level2 smaller">
 <h2>Conteggio: il file da completare</h2>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>esercizio_conteggio.cpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="esercizio_conteggio.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb18-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
-<span id="cb18-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
-<span id="cb18-4"><a aria-label="4"></a></span>
-<span id="cb18-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb18-6"><a aria-label="6"></a>    <span class="co">// le prime 20 etichette di mnist_train.csv</span></span>
-<span id="cb18-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> etichette <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">9</span><span class="op">};</span></span>
-<span id="cb18-8"><a aria-label="8"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> <span class="dt">int</span><span class="op">&gt;</span> conteggio<span class="op">;</span>    <span class="co">// cifra -&gt; quante volte compare</span></span>
-<span id="cb18-9"><a aria-label="9"></a>    <span class="co">// da completare:</span></span>
-<span id="cb18-10"><a aria-label="10"></a>    <span class="co">// - con un for sulle etichette, aumentate di 1 conteggio[e] per ogni etichetta e;</span></span>
-<span id="cb18-11"><a aria-label="11"></a>    <span class="co">// - con un for sugli elementi di conteggio, coppie std::pair con first = cifra</span></span>
-<span id="cb18-12"><a aria-label="12"></a>    <span class="co">//   e second = volte, stampate per ogni cifra "cifra: volte";</span></span>
-<span id="cb18-13"><a aria-label="13"></a>    <span class="co">// - con find, cercate la cifra 9 e, se c'e', stampate "il 9 compare ... volte";</span></span>
-<span id="cb18-14"><a aria-label="14"></a>    <span class="co">// - stampate quante cifre diverse ci sono, con size()</span></span>
-<span id="cb18-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb18-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Compila così com’è e non stampa niente. Alla prima volta che compare una cifra, <code>conteggio[e]</code> crea la chiave con il valore 0: <code>conteggio[e]++</code> la porta a 1.</p>
-</section>
-<section id="soluzione-dellesercizio" class="slide level2 smaller">
-<h2>Soluzione dell’esercizio</h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>esercizio_conteggio.cpp</strong></pre>
@@ -1248,19 +1232,44 @@ momentum = 0.9</code></pre>
 <span id="cb19-6"><a aria-label="6"></a>    <span class="co">// le prime 20 etichette di mnist_train.csv</span></span>
 <span id="cb19-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> etichette <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">9</span><span class="op">};</span></span>
 <span id="cb19-8"><a aria-label="8"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> <span class="dt">int</span><span class="op">&gt;</span> conteggio<span class="op">;</span>    <span class="co">// cifra -&gt; quante volte compare</span></span>
-<span id="cb19-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> e <span class="op">:</span> etichette<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb19-10"><a aria-label="10"></a>        conteggio<span class="op">[</span>e<span class="op">]++;</span></span>
-<span id="cb19-11"><a aria-label="11"></a>    <span class="op">}</span></span>
-<span id="cb19-12"><a aria-label="12"></a>    <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> p <span class="op">:</span> conteggio<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb19-13"><a aria-label="13"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p<span class="op">.</span>first <span class="op">&lt;&lt;</span> <span class="st">": "</span> <span class="op">&lt;&lt;</span> p<span class="op">.</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb19-14"><a aria-label="14"></a>    <span class="op">}</span></span>
-<span id="cb19-15"><a aria-label="15"></a>    <span class="kw">auto</span> it <span class="op">=</span> conteggio<span class="op">.</span>find<span class="op">(</span><span class="dv">9</span><span class="op">);</span></span>
-<span id="cb19-16"><a aria-label="16"></a>    <span class="cf">if</span> <span class="op">(</span>it <span class="op">!=</span> conteggio<span class="op">.</span>end<span class="op">())</span> <span class="op">{</span></span>
-<span id="cb19-17"><a aria-label="17"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"il 9 compare "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>second <span class="op">&lt;&lt;</span> <span class="st">" volte</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb19-18"><a aria-label="18"></a>    <span class="op">}</span></span>
-<span id="cb19-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> conteggio<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" cifre diverse</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb19-20"><a aria-label="20"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb19-21"><a aria-label="21"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-9"><a aria-label="9"></a>    <span class="co">// da completare:</span></span>
+<span id="cb19-10"><a aria-label="10"></a>    <span class="co">// - con un for sulle etichette, aumentate di 1 conteggio[e] per ogni etichetta e;</span></span>
+<span id="cb19-11"><a aria-label="11"></a>    <span class="co">// - con un for sugli elementi di conteggio, coppie std::pair con first = cifra</span></span>
+<span id="cb19-12"><a aria-label="12"></a>    <span class="co">//   e second = volte, stampate per ogni cifra "cifra: volte";</span></span>
+<span id="cb19-13"><a aria-label="13"></a>    <span class="co">// - con find, cercate la cifra 9 e, se c'e', stampate "il 9 compare ... volte";</span></span>
+<span id="cb19-14"><a aria-label="14"></a>    <span class="co">// - stampate quante cifre diverse ci sono, con size()</span></span>
+<span id="cb19-15"><a aria-label="15"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb19-16"><a aria-label="16"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Compila così com’è e non stampa niente. Alla prima volta che compare una cifra, <code>conteggio[e]</code> crea la chiave con il valore 0: <code>conteggio[e]++</code> la porta a 1.</p>
+</section>
+<section id="soluzione-dellesercizio" class="slide level2 smaller">
+<h2>Soluzione dell’esercizio</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_conteggio.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-filename="esercizio_conteggio.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb20-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
+<span id="cb20-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb20-4"><a aria-label="4"></a></span>
+<span id="cb20-5"><a aria-label="5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb20-6"><a aria-label="6"></a>    <span class="co">// le prime 20 etichette di mnist_train.csv</span></span>
+<span id="cb20-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> etichette <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">9</span><span class="op">};</span></span>
+<span id="cb20-8"><a aria-label="8"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> <span class="dt">int</span><span class="op">&gt;</span> conteggio<span class="op">;</span>    <span class="co">// cifra -&gt; quante volte compare</span></span>
+<span id="cb20-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> e <span class="op">:</span> etichette<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-10"><a aria-label="10"></a>        conteggio<span class="op">[</span>e<span class="op">]++;</span></span>
+<span id="cb20-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb20-12"><a aria-label="12"></a>    <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> p <span class="op">:</span> conteggio<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-13"><a aria-label="13"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> p<span class="op">.</span>first <span class="op">&lt;&lt;</span> <span class="st">": "</span> <span class="op">&lt;&lt;</span> p<span class="op">.</span>second <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb20-14"><a aria-label="14"></a>    <span class="op">}</span></span>
+<span id="cb20-15"><a aria-label="15"></a>    <span class="kw">auto</span> it <span class="op">=</span> conteggio<span class="op">.</span>find<span class="op">(</span><span class="dv">9</span><span class="op">);</span></span>
+<span id="cb20-16"><a aria-label="16"></a>    <span class="cf">if</span> <span class="op">(</span>it <span class="op">!=</span> conteggio<span class="op">.</span>end<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb20-17"><a aria-label="17"></a>        <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"il 9 compare "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>second <span class="op">&lt;&lt;</span> <span class="st">" volte</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb20-18"><a aria-label="18"></a>    <span class="op">}</span></span>
+<span id="cb20-19"><a aria-label="19"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> conteggio<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" cifre diverse</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb20-20"><a aria-label="20"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb20-21"><a aria-label="21"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="soluzione-cosa-stampa" class="slide level2 smaller">
@@ -1298,39 +1307,11 @@ il 9 compare 2 volte
 <li>le etichette in ordine decrescente (<code>std::sort</code> e una lambda).</li>
 </ul></li>
 <li><p>Compilate ed eseguite:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_frequenze <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_frequenze</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a aria-label="1"></a><span class="fu">cmake</span> <span class="at">-B</span> build <span class="kw">&amp;&amp;</span> <span class="fu">cmake</span> <span class="at">--build</span> build <span class="at">--target</span> esercizio_frequenze <span class="kw">&amp;&amp;</span> <span class="ex">./build/esercizio_frequenze</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ol>
 </section>
 <section id="frequenze-il-file-da-completare" class="slide level2 smaller">
 <h2>Frequenze: il file da completare</h2>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>esercizio_frequenze.cpp</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-filename="esercizio_frequenze.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
-<span id="cb22-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb22-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
-<span id="cb22-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
-<span id="cb22-5"><a aria-label="5"></a></span>
-<span id="cb22-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb22-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> etichette <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">9</span><span class="op">};</span></span>
-<span id="cb22-8"><a aria-label="8"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> <span class="dt">int</span><span class="op">&gt;</span> conteggio<span class="op">;</span></span>
-<span id="cb22-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> e <span class="op">:</span> etichette<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb22-10"><a aria-label="10"></a>        conteggio<span class="op">[</span>e<span class="op">]++;</span></span>
-<span id="cb22-11"><a aria-label="11"></a>    <span class="op">}</span></span>
-<span id="cb22-12"><a aria-label="12"></a>    <span class="co">// da completare:</span></span>
-<span id="cb22-13"><a aria-label="13"></a>    <span class="co">// - con std::max_element sulle coppie di conteggio, e una lambda che confronta a.second</span></span>
-<span id="cb22-14"><a aria-label="14"></a>    <span class="co">//   e b.second, trovate la cifra piu' frequente e stampate "la cifra ... compare ... volte";</span></span>
-<span id="cb22-15"><a aria-label="15"></a>    <span class="co">// - con std::count_if, e una lambda che restituisce p.second &gt;= 3, contate le cifre che</span></span>
-<span id="cb22-16"><a aria-label="16"></a>    <span class="co">//   compaiono almeno 3 volte, e stampate "... cifre compaiono almeno 3 volte";</span></span>
-<span id="cb22-17"><a aria-label="17"></a>    <span class="co">// - con std::sort e una lambda, ordinate etichette in ordine decrescente, e stampatele</span></span>
-<span id="cb22-18"><a aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb22-19"><a aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Compila così com’è e non stampa niente. Nelle lambda sulle coppie si può scrivere <code>const auto&amp;</code>: il tipo vero è <code>std::pair&lt;const int, int&gt;</code>.</p>
-</section>
-<section id="soluzione-del-secondo-esercizio" class="slide level2 smaller">
-<h2>Soluzione del secondo esercizio</h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>esercizio_frequenze.cpp</strong></pre>
@@ -1346,17 +1327,45 @@ il 9 compare 2 volte
 <span id="cb23-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> e <span class="op">:</span> etichette<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb23-10"><a aria-label="10"></a>        conteggio<span class="op">[</span>e<span class="op">]++;</span></span>
 <span id="cb23-11"><a aria-label="11"></a>    <span class="op">}</span></span>
-<span id="cb23-12"><a aria-label="12"></a>    <span class="kw">auto</span> it <span class="op">=</span> <span class="bu">std::</span>max_element<span class="op">(</span>conteggio<span class="op">.</span>begin<span class="op">(),</span> conteggio<span class="op">.</span>end<span class="op">(),</span></span>
-<span id="cb23-13"><a aria-label="13"></a>        <span class="op">[](</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> a<span class="op">,</span> <span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a<span class="op">.</span>second <span class="op">&lt;</span> b<span class="op">.</span>second<span class="op">;</span> <span class="op">});</span></span>
-<span id="cb23-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"la cifra "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>first <span class="op">&lt;&lt;</span> <span class="st">" compare "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>second <span class="op">&lt;&lt;</span> <span class="st">" volte</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb23-15"><a aria-label="15"></a>    <span class="dt">int</span> n <span class="op">=</span> <span class="bu">std::</span>count_if<span class="op">(</span>conteggio<span class="op">.</span>begin<span class="op">(),</span> conteggio<span class="op">.</span>end<span class="op">(),</span></span>
-<span id="cb23-16"><a aria-label="16"></a>        <span class="op">[](</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> p<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> p<span class="op">.</span>second <span class="op">&gt;=</span> <span class="dv">3</span><span class="op">;</span> <span class="op">});</span></span>
-<span id="cb23-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" cifre compaiono almeno 3 volte</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb23-18"><a aria-label="18"></a>    <span class="bu">std::</span>sort<span class="op">(</span>etichette<span class="op">.</span>begin<span class="op">(),</span> etichette<span class="op">.</span>end<span class="op">(),</span> <span class="op">[](</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a <span class="op">&gt;</span> b<span class="op">;</span> <span class="op">});</span></span>
-<span id="cb23-19"><a aria-label="19"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> e <span class="op">:</span> etichette<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> e <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
-<span id="cb23-20"><a aria-label="20"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
-<span id="cb23-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb23-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb23-12"><a aria-label="12"></a>    <span class="co">// da completare:</span></span>
+<span id="cb23-13"><a aria-label="13"></a>    <span class="co">// - con std::max_element sulle coppie di conteggio, e una lambda che confronta a.second</span></span>
+<span id="cb23-14"><a aria-label="14"></a>    <span class="co">//   e b.second, trovate la cifra piu' frequente e stampate "la cifra ... compare ... volte";</span></span>
+<span id="cb23-15"><a aria-label="15"></a>    <span class="co">// - con std::count_if, e una lambda che restituisce p.second &gt;= 3, contate le cifre che</span></span>
+<span id="cb23-16"><a aria-label="16"></a>    <span class="co">//   compaiono almeno 3 volte, e stampate "... cifre compaiono almeno 3 volte";</span></span>
+<span id="cb23-17"><a aria-label="17"></a>    <span class="co">// - con std::sort e una lambda, ordinate etichette in ordine decrescente, e stampatele</span></span>
+<span id="cb23-18"><a aria-label="18"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-19"><a aria-label="19"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Compila così com’è e non stampa niente. Nelle lambda sulle coppie si può scrivere <code>const auto&amp;</code>: il tipo vero è <code>std::pair&lt;const int, int&gt;</code>.</p>
+</section>
+<section id="soluzione-del-secondo-esercizio" class="slide level2 smaller">
+<h2>Soluzione del secondo esercizio</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>esercizio_frequenze.cpp</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-filename="esercizio_frequenze.cpp"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb24-1"><a aria-label="1"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb24-2"><a aria-label="2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb24-3"><a aria-label="3"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
+<span id="cb24-4"><a aria-label="4"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb24-5"><a aria-label="5"></a></span>
+<span id="cb24-6"><a aria-label="6"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb24-7"><a aria-label="7"></a>    <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> etichette <span class="op">=</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">7</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">9</span><span class="op">};</span></span>
+<span id="cb24-8"><a aria-label="8"></a>    <span class="bu">std::</span>map<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> <span class="dt">int</span><span class="op">&gt;</span> conteggio<span class="op">;</span></span>
+<span id="cb24-9"><a aria-label="9"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> e <span class="op">:</span> etichette<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-10"><a aria-label="10"></a>        conteggio<span class="op">[</span>e<span class="op">]++;</span></span>
+<span id="cb24-11"><a aria-label="11"></a>    <span class="op">}</span></span>
+<span id="cb24-12"><a aria-label="12"></a>    <span class="kw">auto</span> it <span class="op">=</span> <span class="bu">std::</span>max_element<span class="op">(</span>conteggio<span class="op">.</span>begin<span class="op">(),</span> conteggio<span class="op">.</span>end<span class="op">(),</span></span>
+<span id="cb24-13"><a aria-label="13"></a>        <span class="op">[](</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> a<span class="op">,</span> <span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a<span class="op">.</span>second <span class="op">&lt;</span> b<span class="op">.</span>second<span class="op">;</span> <span class="op">});</span></span>
+<span id="cb24-14"><a aria-label="14"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"la cifra "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>first <span class="op">&lt;&lt;</span> <span class="st">" compare "</span> <span class="op">&lt;&lt;</span> it<span class="op">-&gt;</span>second <span class="op">&lt;&lt;</span> <span class="st">" volte</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb24-15"><a aria-label="15"></a>    <span class="dt">int</span> n <span class="op">=</span> <span class="bu">std::</span>count_if<span class="op">(</span>conteggio<span class="op">.</span>begin<span class="op">(),</span> conteggio<span class="op">.</span>end<span class="op">(),</span></span>
+<span id="cb24-16"><a aria-label="16"></a>        <span class="op">[](</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> p<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> p<span class="op">.</span>second <span class="op">&gt;=</span> <span class="dv">3</span><span class="op">;</span> <span class="op">});</span></span>
+<span id="cb24-17"><a aria-label="17"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> n <span class="op">&lt;&lt;</span> <span class="st">" cifre compaiono almeno 3 volte</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb24-18"><a aria-label="18"></a>    <span class="bu">std::</span>sort<span class="op">(</span>etichette<span class="op">.</span>begin<span class="op">(),</span> etichette<span class="op">.</span>end<span class="op">(),</span> <span class="op">[](</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a <span class="op">&gt;</span> b<span class="op">;</span> <span class="op">});</span></span>
+<span id="cb24-19"><a aria-label="19"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> e <span class="op">:</span> etichette<span class="op">)</span> <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> e <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb24-20"><a aria-label="20"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb24-21"><a aria-label="21"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb24-22"><a aria-label="22"></a><span class="op">}</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="soluzione-cosa-stampa-1" class="slide level2 smaller">
@@ -1373,6 +1382,7 @@ il 9 compare 2 volte
 <section id="per-saperne-di-più" class="slide level2 smaller">
 <h2>Per saperne di più</h2>
 <ul>
+<li>L. M. Barone, E. Marinari, G. Organtini, F. Ricci-Tersenghi, <em>Programmazione scientifica. Linguaggio C, algoritmi e modelli nella scienza</em>, Pearson 2006, par. 13.2.3: un dizionario costruito con un albero binario di ricerca, in C, che si sbilancia se le parole arrivano già in ordine. È l’idea di <code>std::map</code>, che in più resta bilanciata.</li>
 <li>B. Stroustrup, <em>A Tour of C++</em>, 3ª edizione, Addison-Wesley 2022: capitolo 12 sui contenitori (12.2 <code>vector</code>, 12.5 <code>map</code>, 12.6 <code>unordered_map</code>) e capitolo 13 sugli algoritmi (13.2 e 13.3 gli iteratori, 13.4 i predicati, i criteri spesso scritti come lambda).</li>
 <li><a href="https://www.cppreference.com/w/cpp/algorithm.html">cppreference.com</a>, la pagina <em>Algorithms library</em>: tutti gli algoritmi della libreria standard, con una pagina per ognuno.</li>
 </ul>
